@@ -1,9 +1,14 @@
-﻿using System.IO;
+﻿using System.Configuration;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Events;
+using TamagotchiBot.Models;
+using TamagotchiBot.Services;
 using Telegram.Bots.Extensions.Polling;
 
 namespace Telegram.Bots.Example
@@ -32,8 +37,11 @@ namespace Telegram.Bots.Example
                   .UseSerilog()
                   .ConfigureServices((context, services) =>
                   {
-                      services.AddBotClient(context.Configuration["token"]);
+                      services.AddBotClient(context.Configuration["TokenBot"]);
                       services.AddPolling<UpdateHandler>();
+                      services.Configure<TamagotchiDatabaseSettings>(context.Configuration.GetSection(nameof(TamagotchiDatabaseSettings)));
+                      services.AddSingleton<ITamagotchiDatabaseSettings>(sp => sp.GetRequiredService<IOptions<TamagotchiDatabaseSettings>>().Value);
+                      services.AddSingleton<UserService>();
                   });
 
             return builder;
