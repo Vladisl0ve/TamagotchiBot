@@ -45,6 +45,8 @@ namespace Telegram.Bots.Example
                       
                       services.AddSingleton<UserService>();
                       services.AddSingleton<PetService>();
+
+                      services.AddLocalization(options => options.ResourcesPath = "Resources");
                   });
 
             return builder;

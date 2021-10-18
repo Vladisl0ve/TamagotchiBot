@@ -1,11 +1,12 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Serilog;
+using TamagotchiBot.Controllers;
 using TamagotchiBot.Services;
 using Telegram.Bots.Extensions.Polling;
 using Telegram.Bots.Requests;
 using Telegram.Bots.Types;
+using TamagotchiBot.Language;
 
 namespace Telegram.Bots.Example
 {
@@ -29,27 +30,24 @@ namespace Telegram.Bots.Example
             // Testing new feature
             Task Echo2(TextMessage message)
             {
-                var user = _userService.Get(message.From.Id);
-                if (user == null)
-                    _userService.Create(new TamagotchiBot.Models.User()
-                    {
-                        UserId = message.From.Id,
-                        Username = message.From.Username,
-                        FirstName = message.From.FirstName,
-                        LastName = message.From.LastName
-                    });
-                else if (user.Username != message.From.Username || user.LastName != message.From.LastName || user.FirstName != message.From.FirstName)
-                    _userService.Update(user.UserId, new TamagotchiBot.Models.User()
-                    {
-                        Id = user.Id,
-                        UserId = message.From.Id,
-                        Username = message.From.Username,
-                        FirstName = message.From.FirstName,
-                        LastName = message.From.LastName
-                    });
+                var user = new UserController(_userService, message).Update();
 
-                Log.Information($"Sending to @{message.Chat.Username}: {message.Text}");
-                return bot.HandleAsync(new SendText(message.Chat.Id, message.Text), token);
+                switch (user.Culture)
+                {
+                    case "be":
+                    case "ru":
+                        Resources.Culture = new System.Globalization.CultureInfo("ru");
+                        break;
+                    case "pl":
+                        Resources.Culture = new System.Globalization.CultureInfo("pl");
+                        break;
+                    default:
+                        Resources.Culture = new System.Globalization.CultureInfo("en");
+                        break;
+                }
+
+                Log.Information($"Sending to @{message.Chat.Username}: {Resources.Test}");
+                return bot.HandleAsync(new SendText(message.Chat.Id, Resources.Test), token);
             }
 
 

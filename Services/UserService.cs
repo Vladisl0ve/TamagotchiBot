@@ -31,7 +31,11 @@ namespace TamagotchiBot.Services
             return user;
         }
 
-        public void Update(long userId, User userIn) => _users.ReplaceOne(u => u.UserId == userIn.UserId, userIn);
+        public User Update(long userId, User userIn)
+        {
+            _users.ReplaceOne(u => u.UserId == userId, userIn);
+            return userIn;
+        }
 
         public void Remove(long userId) => _users.DeleteOne(u => u.UserId == userId);
 

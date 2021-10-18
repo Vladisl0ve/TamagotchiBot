@@ -23,5 +23,8 @@ namespace TamagotchiBot.Models
         public string FirstName { get; set; }
         [BsonElement("LastName")]
         public string LastName { get; set; }
+
+        [BsonElement("Culture")]
+        public string Culture { get; set; }
     }
 }
