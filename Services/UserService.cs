@@ -20,10 +20,19 @@ namespace TamagotchiBot.Services
             _users = database.GetCollection<User>(settings.UsersCollectionName);
         }
 
-        public List<User> Get()
+        public List<User> Get() => _users.Find(u => true).ToList();
+
+        public User Get(long userId) => _users.Find(u => u.UserId == userId).FirstOrDefault();
+
+        public User Create(User user)
         {
-            var k = _users.Find(u => true).ToList();
-            return k;
+            _users.InsertOne(user);
+            return user;
         }
+
+        public void Update(long userId, User userIn) => _users.ReplaceOne(u => u.UserId == userIn.UserId, userIn);
+
+        public void Remove(long userId) => _users.DeleteOne(u => u.UserId == userId);
+
     }
 }

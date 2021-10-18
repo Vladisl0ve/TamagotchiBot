@@ -19,5 +19,9 @@ namespace TamagotchiBot.Models
 
         [BsonElement("Username")]
         public string Username { get; set; }
+        [BsonElement("FirstName")]
+        public string FirstName { get; set; }
+        [BsonElement("LastName")]
+        public string LastName { get; set; }
     }
 }
