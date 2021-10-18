@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Events;
+using TamagotchiBot.Database;
 using TamagotchiBot.Models;
 using TamagotchiBot.Services;
 using Telegram.Bots.Extensions.Polling;
@@ -41,7 +42,9 @@ namespace Telegram.Bots.Example
                       services.AddPolling<UpdateHandler>();
                       services.Configure<TamagotchiDatabaseSettings>(context.Configuration.GetSection(nameof(TamagotchiDatabaseSettings)));
                       services.AddSingleton<ITamagotchiDatabaseSettings>(sp => sp.GetRequiredService<IOptions<TamagotchiDatabaseSettings>>().Value);
+                      
                       services.AddSingleton<UserService>();
+                      services.AddSingleton<PetService>();
                   });
 
             return builder;

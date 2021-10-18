@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using TamagotchiBot.Database;
 using TamagotchiBot.Models;
 
 namespace TamagotchiBot.Services
