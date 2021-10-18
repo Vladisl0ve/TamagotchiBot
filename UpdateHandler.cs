@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using Serilog;
 using TamagotchiBot.Controllers;
+using TamagotchiBot.Resources;
 using TamagotchiBot.Services;
 using Telegram.Bots.Extensions.Polling;
 using Telegram.Bots.Requests;
 using Telegram.Bots.Types;
-using TamagotchiBot.Language;
 
 namespace Telegram.Bots.Example
 {
@@ -35,6 +35,8 @@ namespace Telegram.Bots.Example
                 switch (user.Culture)
                 {
                     case "be":
+                        Resources.Culture = new System.Globalization.CultureInfo("be");
+                        break;
                     case "ru":
                         Resources.Culture = new System.Globalization.CultureInfo("ru");
                         break;
