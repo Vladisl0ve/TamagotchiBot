@@ -56,7 +56,7 @@ namespace Telegram.Bots.Example
             Task Echo(TextMessage message)
             {
                 Log.Information($"Sending to @{message.Chat.Username}: {message.Text}");
-                return bot.HandleAsync(new SendText(message.Chat.Id, message.Text), token);
+                return bot.HandleAsync(new Send, token);
             }
         }
     }

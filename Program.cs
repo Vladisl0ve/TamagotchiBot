@@ -8,9 +8,11 @@ using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Events;
 using TamagotchiBot.Database;
+using TamagotchiBot.Handlers;
 using TamagotchiBot.Models;
 using TamagotchiBot.Services;
-using Telegram.Bots.Extensions.Polling;
+using Telegram.Bot;
+using Telegram.Bot.Extensions.Polling;
 
 namespace Telegram.Bots.Example
 {
@@ -38,13 +40,18 @@ namespace Telegram.Bots.Example
                   .UseSerilog()
                   .ConfigureServices((context, services) =>
                   {
-                      services.AddBotClient(context.Configuration["TokenBot"]);
-                      services.AddPolling<UpdateHandler>();
+                      services.AddHostedService<TelegramBotHostedService>();
+                      services.AddTransient<IUpdateHandler, UpdateHandler>();
+                      services.AddSingleton<ITelegramBotClient>(_ => new TelegramBotClient(context.Configuration["TokenBot"]));
+
+                     
+
                       services.Configure<TamagotchiDatabaseSettings>(context.Configuration.GetSection(nameof(TamagotchiDatabaseSettings)));
                       services.AddSingleton<ITamagotchiDatabaseSettings>(sp => sp.GetRequiredService<IOptions<TamagotchiDatabaseSettings>>().Value);
-                      
+
                       services.AddSingleton<UserService>();
                       services.AddSingleton<PetService>();
+
 
                       services.AddLocalization(options => options.ResourcesPath = "Resources");
                   });

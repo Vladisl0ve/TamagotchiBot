@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TamagotchiBot.Services;
-using Telegram.Bots.Types;
+using Telegram.Bot.Types;
 
 namespace TamagotchiBot.Controllers
 {
     public class UserController
     {
         private readonly UserService _userService;
-        private readonly TextMessage message;
-        public UserController(UserService userService, TextMessage message)
+        private readonly Message message;
+        public UserController(UserService userService, Message message)
         {
             _userService = userService;
             this.message = message;
