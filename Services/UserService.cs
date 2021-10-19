@@ -31,10 +31,49 @@ namespace TamagotchiBot.Services
             return user;
         }
 
+        public User Create(Telegram.Bot.Types.User user)
+        {
+            return Create(new Models.User()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserId = user.Id,
+                Username = user.Username,
+                Culture = user.LanguageCode
+            });
+        }
+
         public User Update(long userId, User userIn)
         {
             _users.ReplaceOne(u => u.UserId == userId, userIn);
             return userIn;
+        }
+        public User UpdateLanguage(long userId, string newLanguage)
+        {
+            var user = _users.Find(p => p.UserId == userId).FirstOrDefault();
+            if (user != null)
+            {
+                user.Culture = newLanguage;
+                Update(userId, user);
+            }
+
+            return user;
+        }
+
+        public User Update(long userId, Telegram.Bot.Types.User userIn)
+        {
+            var oldUser = _users.Find(u => u.UserId == userId).First();
+            User newUser = new Models.User()
+            {
+                Id = oldUser.Id,
+                FirstName = userIn.FirstName,
+                LastName = userIn.LastName,
+                UserId = userIn.Id,
+                Username = userIn.Username,
+                Culture = oldUser.Culture
+            };
+            _users.ReplaceOne(u => u.UserId == userId, newUser);
+            return newUser;
         }
 
         public void Remove(long userId) => _users.DeleteOne(u => u.UserId == userId);

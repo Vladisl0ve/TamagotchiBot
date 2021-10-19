@@ -31,6 +31,15 @@ namespace TamagotchiBot.Services
         }
 
         public void Update(long userId, Pet petIn) => _pets.ReplaceOne(p => p.UserId == userId, petIn);
+        public void UpdateName(long userId, string newName)
+        {
+            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.Name = newName;
+                Update(userId, pet);
+            }
+        }
 
         public void Remove(long userId) => _pets.DeleteOne(p => p.UserId == userId);
 

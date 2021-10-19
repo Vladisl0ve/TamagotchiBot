@@ -20,6 +20,9 @@ namespace TamagotchiBot.Models
         [BsonElement("Name")]
         public string Name { get; set; }
 
+        [BsonElement("Type")]
+        public string Type { get; set; }
+
         [BsonElement("BirthDateTime")]
         public DateTime BirthDateTime { get; set; }
 

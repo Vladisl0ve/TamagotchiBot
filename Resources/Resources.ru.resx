@@ -120,4 +120,35 @@
   <data name="Test" xml:space="preserve">
     <value>Тестовое значение</value>
   </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>🎮 Добро пожаловать в Tamagotchi Bot! Здесь ты можешь вырастить собственного виртуального питомца, играть с ним и соревноваться с другими игроками 🎮
+Поехали?</value>
+  </data>
+  <data name="ChooseName" xml:space="preserve">
+    <value>🧸 Для начала назови своего нового друга
+Просто введите имя здесь</value>
+  </data>
+  <data name="ConfirmedName" xml:space="preserve">
+    <value>🧃 Классно!
+Твой питомец ждет 🐱
+Не забывай кормить и мыть его, играть в игры и просто любить ☺️</value>
+  </data>
+  <data name="petCommand" xml:space="preserve">
+    <value>🐱 {0}
+🎂 Дата рождения: {1}
+💊 Здоровье: {2}
+🏅 Опыт: {3} | {4} уровень✨</value>
+  </data>
+  <data name="DevelopWarning" xml:space="preserve">
+    <value>В разработке, жди обновления 👾</value>
+  </data>
+  <data name="ChangeLanguage" xml:space="preserve">
+    <value>Choose new language 🇺🇸
+Выберы новую мову 🇰🇵
+Wybierz nowy język 🇵🇱
+Выбери новый язык 🇷🇺</value>
+  </data>
+  <data name="ConfirmedLanguage" xml:space="preserve">
+    <value>Выбран русский язык 🇷🇺</value>
+  </data>
 </root>

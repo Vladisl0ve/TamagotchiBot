@@ -120,4 +120,35 @@
   <data name="Test" xml:space="preserve">
     <value>Test value</value>
   </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>🎮 Welcome to Tamagotchi Bot! Here you can raise your own virtual pet, play with him and compete with another players 🎮
+Let's start?</value>
+  </data>
+  <data name="ChooseName" xml:space="preserve">
+    <value>🧸 First of all you need to name your new friend
+Just type it here</value>
+  </data>
+  <data name="ConfirmedName" xml:space="preserve">
+    <value>🧃 Nice!
+Your pet is waiting for you 🐱
+Do not forget feed and wash him, play a games and just love ☺️</value>
+  </data>
+  <data name="petCommand" xml:space="preserve">
+    <value>🐱 {0}
+🎂 Birth date: {1}
+💊 HP: {2}
+🏅 EXP: {3} | {4} level ✨</value>
+  </data>
+  <data name="DevelopWarning" xml:space="preserve">
+    <value>In developing, wait for next update 👾</value>
+  </data>
+  <data name="ChangeLanguage" xml:space="preserve">
+    <value>Choose new language 🇺🇸
+Выберы новую мову 🇰🇵
+Wybierz nowy język 🇵🇱
+Выбери новый язык 🇷🇺</value>
+  </data>
+  <data name="ConfirmedLanguage" xml:space="preserve">
+    <value>Language was set to English 🇺🇸</value>
+  </data>
 </root>

@@ -121,4 +121,35 @@
     <value>Тэставае значэнне</value>
     <comment>2345</comment>
   </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>🎮 Вітаю ў Tamagotchi Bot! Тут можаш вырасціць свайго віртуальнага гадаванца, гуляць з ім, а таксама паспаборнічаць з іншымі гульцамі 🎮
+Пачнем?</value>
+  </data>
+  <data name="ChooseName" xml:space="preserve">
+    <value>🧸 Спачатку вам трэба даць імя новаму сябру
+Проста ўвядзіце яго тут</value>
+  </data>
+  <data name="ConfirmedName" xml:space="preserve">
+    <value>Цудоўна!
+Твой гадаванец ужо чакае 🐱
+Не забывай карміць і мыць яго, гуляць у гульні і проста любіць ☺️</value>
+  </data>
+  <data name="petCommand" xml:space="preserve">
+    <value>🐱 {0}
+🎂 Дата нараджэння: {1}
+💊 Здароўе: {2}
+🏅 Досвед: {3} | {4} узровень✨</value>
+  </data>
+  <data name="DevelopWarning" xml:space="preserve">
+    <value>У распрацоўцы, чакай наступнага абнаўлення 👾</value>
+  </data>
+  <data name="ChangeLanguage" xml:space="preserve">
+    <value>Choose new language 🇺🇸
+Выберы новую мову 🇰🇵
+Wybierz nowy język 🇵🇱
+Выбери новый язык 🇷🇺</value>
+  </data>
+  <data name="ConfirmedLanguage" xml:space="preserve">
+    <value>Выбрана беларуская мова 🤍❤️🤍</value>
+  </data>
 </root>

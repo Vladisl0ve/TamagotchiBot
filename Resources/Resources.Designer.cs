@@ -61,11 +61,84 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose new language 🇺🇸
+        ///Выберы новую мову 🇰🇵
+        ///Wybierz nowy język 🇵🇱
+        ///Выбери новый язык 🇷🇺.
+        /// </summary>
+        public static string ChangeLanguage {
+            get {
+                return ResourceManager.GetString("ChangeLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🧸 First of all you need to name your new friend
+        ///Just type it here.
+        /// </summary>
+        public static string ChooseName {
+            get {
+                return ResourceManager.GetString("ChooseName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language was set to English 🇺🇸.
+        /// </summary>
+        public static string ConfirmedLanguage {
+            get {
+                return ResourceManager.GetString("ConfirmedLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🧃 Nice!
+        ///Your pet is waiting for you 🐱
+        ///Do not forget feed and wash him, play a games and just love ☺️.
+        /// </summary>
+        public static string ConfirmedName {
+            get {
+                return ResourceManager.GetString("ConfirmedName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In developing, wait for next update 👾.
+        /// </summary>
+        public static string DevelopWarning {
+            get {
+                return ResourceManager.GetString("DevelopWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🐱 {0}
+        ///🎂 Birth date: {1}
+        ///💊 HP: {2}
+        ///🏅 EXP: {3} | {4} level ✨.
+        /// </summary>
+        public static string petCommand {
+            get {
+                return ResourceManager.GetString("petCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test value.
         /// </summary>
         public static string Test {
             get {
                 return ResourceManager.GetString("Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🎮 Welcome to Tamagotchi Bot! Here you can raise your own virtual pet, play with him and compete with another players 🎮
+        ///Let&apos;s start?.
+        /// </summary>
+        public static string Welcome {
+            get {
+                return ResourceManager.GetString("Welcome", resourceCulture);
             }
         }
     }
