@@ -136,9 +136,8 @@
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
-🎂 Дата нараджэння: {1}
-💊 Здароўе: {2}
-🏅 Досвед: {3} | {4} узровень✨</value>
+💊 Здароўе: {1}
+🏅 Досвед: {2} | {3} узровень✨</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>У распрацоўцы, чакай наступнага абнаўлення 👾</value>
@@ -151,5 +150,15 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="ConfirmedLanguage" xml:space="preserve">
     <value>Выбрана беларуская мова 🤍❤️🤍</value>
+  </data>
+  <data name="petCommandMoreInfo1" xml:space="preserve">
+    <value>🐱 {0}
+🎂 Дата нараджэння: {1}</value>
+  </data>
+  <data name="petCommandInlineBasicInfo" xml:space="preserve">
+    <value>Асноўныя звесткі 📋</value>
+  </data>
+  <data name="petCommandInlineExtraInfo" xml:space="preserve">
+    <value>Дадат інфа 📝</value>
   </data>
 </root>

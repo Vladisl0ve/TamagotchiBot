@@ -113,13 +113,40 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 🐱 {0}
-        ///🎂 Birth date: {1}
-        ///💊 HP: {2}
-        ///🏅 EXP: {3} | {4} level ✨.
+        ///💊 HP: {1}
+        ///🏅 EXP: {2} | {3} level ✨.
         /// </summary>
         public static string petCommand {
             get {
                 return ResourceManager.GetString("petCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Basic info 📋.
+        /// </summary>
+        public static string petCommandInlineBasicInfo {
+            get {
+                return ResourceManager.GetString("petCommandInlineBasicInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extra info 📝.
+        /// </summary>
+        public static string petCommandInlineExtraInfo {
+            get {
+                return ResourceManager.GetString("petCommandInlineExtraInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🐱 {0}
+        ///🎂 Birth date: {1}.
+        /// </summary>
+        public static string petCommandMoreInfo1 {
+            get {
+                return ResourceManager.GetString("petCommandMoreInfo1", resourceCulture);
             }
         }
         

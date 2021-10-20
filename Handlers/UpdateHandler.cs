@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Serilog;
 using TamagotchiBot.Controllers;
-using TamagotchiBot.Extensions;
+using TamagotchiBot.UserExtensions;
 using TamagotchiBot.Services;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
@@ -29,7 +29,7 @@ namespace TamagotchiBot.Handlers
             this.petService = petService;
         }
 
-        public UpdateType[] AllowedUpdates => new[] { UpdateType.Message };
+        public UpdateType[] AllowedUpdates => new[] { UpdateType.Message, UpdateType.CallbackQuery };
 
         public Task HandleError(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
@@ -58,6 +58,7 @@ namespace TamagotchiBot.Handlers
             Task task = update.Type switch
             {
                 UpdateType.Message => BotOnMessageReceived(bot, update.Message),
+                UpdateType.CallbackQuery => BotOnCallbackQueryReceived(bot, update.CallbackQuery),
                 _ => Task.CompletedTask
             };
             return task;
@@ -65,26 +66,35 @@ namespace TamagotchiBot.Handlers
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
                 var controller = new GameController(userService, petService, message);
-                string toSend = controller.Start();
+                Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup> toSend;
+                if (userService.Get(message.From.Id) != null)
+                    toSend = controller.Process();
+                else
+                    toSend = controller.CreateUser();
 
                 if (toSend == null)
                     return;
 
-                Log.Information($"Message send to @{message.From.Username}: {toSend.Substring(0, toSend.Length > 10 ? 10 : toSend.Length)}");
-
-                if (toSend == Resources.Resources.ChangeLanguage)
+                if (toSend.Item2 != null)
                 {
-                    await botClient.SendTextMessageAsync(message.From.Id, toSend, replyMarkup: Constants.LanguagesMarkup);
-                    return;
+                    await botClient.SendStickerAsync(message.From.Id, toSend.Item2);
+
+                    if (toSend.Item3 == null && toSend.Item4 == null)
+                        await botClient.SendTextMessageAsync(message.From.Id, toSend.Item1);
                 }
 
-                if (toSend == Resources.Resources.ConfirmedLanguage)
+                if (toSend.Item3 != null)
                 {
-                    await botClient.SendTextMessageAsync(message.From.Id, toSend, replyMarkup: new ReplyKeyboardRemove());
-                    return;
+                    await botClient.SendTextMessageAsync(message.From.Id, toSend.Item1, replyMarkup: toSend.Item3);
                 }
 
-                await botClient.SendTextMessageAsync(message.From.Id, toSend);
+                if (toSend.Item4 != null)
+                {
+                    await botClient.SendTextMessageAsync(message.From.Id, toSend.Item1, replyMarkup: toSend.Item4);
+                }
+
+                Log.Information($"Message send to @{message.From.Username}: {toSend.Item1.Substring(0, toSend.Item1.Length > 10 ? 10 : toSend.Item1.Length)}");
+
 
                 static async Task<Message> SendReplyKeyboard(ITelegramBotClient botClient, Message message, Tuple<string, ReplyKeyboardMarkup, string> toSend)
                 {
@@ -123,15 +133,21 @@ namespace TamagotchiBot.Handlers
 
             }
 
-            // Testing new feature
-            Task Echo(ITelegramBotClient bot, Message message)
+            async Task BotOnCallbackQueryReceived(ITelegramBotClient bot, CallbackQuery callbackQuery)
             {
-                if (message.Text == null)
-                    return Task.CompletedTask;
+                var controller = new GameController(userService, petService, callbackQuery);
+                var toSend = controller.CallbackHandler();
 
-                Log.Information($"Sending to @{message.Chat.Username}: {message.Text}");
-                return bot.SendTextMessageAsync(message.Chat.Id, message.Text);
+                if (toSend == null)
+                    return;
+
+                Log.Information($"Message send to @{callbackQuery.From.Username}: {toSend.Item1.Substring(0, toSend.Item1.Length > 10 ? 10 : toSend.Item1.Length)}");
+
+                await bot.EditMessageTextAsync(callbackQuery.From.Id, callbackQuery.Message.MessageId, toSend.Item1, replyMarkup: toSend.Item2);
+
             }
         }
+
+
     }
 }

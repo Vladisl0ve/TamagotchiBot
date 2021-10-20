@@ -135,9 +135,8 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️</value>
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
-🎂 Urodzony: {1}
-💊 Zdrowie: {2}
-🏅 Doświadczenie: {3} | {4} poziom✨</value>
+💊 Zdrowie: {1}
+🏅 Doświadczenie: {2} | {3} poziom✨</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>W trakcie rozwoju, poczekaj na następną aktualizację 👾</value>
@@ -150,5 +149,15 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="ConfirmedLanguage" xml:space="preserve">
     <value>Został wybrany język Polski 🇵🇱</value>
+  </data>
+  <data name="petCommandMoreInfo1" xml:space="preserve">
+    <value>🐱 {0}
+🎂 Urodzony: {1}</value>
+  </data>
+  <data name="petCommandInlineBasicInfo" xml:space="preserve">
+    <value>Informacja podstawowa 📋</value>
+  </data>
+  <data name="petCommandInlineExtraInfo" xml:space="preserve">
+    <value>Info dodat 📝</value>
   </data>
 </root>
