@@ -135,7 +135,8 @@ Do not forget feed and wash him, play a games and just love ☺️</value>
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
-💊 HP: {1}
+💊 HP: {1}%
+🍕 Hunger: {4}%
 🏅 EXP: {2} | {3} level ✨</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">

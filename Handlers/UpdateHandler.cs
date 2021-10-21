@@ -21,12 +21,15 @@ namespace TamagotchiBot.Handlers
     {
         private readonly UserService userService;
         private readonly PetService petService;
+        private readonly ChatService chatService;
 
         public UpdateHandler(UserService userService,
-                             PetService petService)
+                             PetService petService,
+                             ChatService chatService)
         {
             this.userService = userService;
             this.petService = petService;
+            this.chatService = chatService;
         }
 
         public UpdateType[] AllowedUpdates => new[] { UpdateType.Message, UpdateType.CallbackQuery };
@@ -65,7 +68,7 @@ namespace TamagotchiBot.Handlers
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
-                var controller = new GameController(userService, petService, message);
+                var controller = new GameController(userService, petService, chatService, message);
                 Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup> toSend;
                 if (userService.Get(message.From.Id) != null)
                     toSend = controller.Process();
@@ -135,7 +138,7 @@ namespace TamagotchiBot.Handlers
 
             async Task BotOnCallbackQueryReceived(ITelegramBotClient bot, CallbackQuery callbackQuery)
             {
-                var controller = new GameController(userService, petService, callbackQuery);
+                var controller = new GameController(userService, petService, chatService, callbackQuery);
                 var toSend = controller.CallbackHandler();
 
                 if (toSend == null)

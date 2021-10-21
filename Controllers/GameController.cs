@@ -11,6 +11,7 @@ using TamagotchiBot.Services;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using User = TamagotchiBot.Models.User;
+using Chat = TamagotchiBot.Models.Chat;
 
 namespace TamagotchiBot.Controllers
 {
@@ -18,29 +19,40 @@ namespace TamagotchiBot.Controllers
     {
         private readonly UserService _userService;
         private readonly PetService _petService;
+        private readonly ChatService _chatService;
         private readonly Message message;
         private readonly CallbackQuery callback;
 
         private CultureInfo localCulture;
 
-        public GameController(UserService userService, PetService petService, CallbackQuery callback)
+        public GameController(UserService userService, PetService petService, ChatService chatService, CallbackQuery callback)
         {
             _userService = userService;
             _petService = petService;
             this.callback = callback;
+            _chatService = chatService;
         }
 
-        public GameController(UserService userService, PetService petService, Message message)
+        public GameController(UserService userService, PetService petService, ChatService chatService, Message message)
         {
             _userService = userService;
             _petService = petService;
             this.message = message;
+            _chatService = chatService;
         }
 
         public Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup> CreateUser()
         {
             _userService.Create(message.From);
+            _chatService.Create(new Models.Chat()
+            {
+                ChatId = message.Chat.Id,
+                Name = message.Chat.Username ?? message.Chat.Title,
+                UserId = message.From.Id
+            });
+
             Log.Information($"User {message.From.Username} has been added to Db");
+            Log.Information($"Chat {message.Chat.Username ?? message.Chat.Title} has been added to Db");
 
             localCulture = new CultureInfo(message.From.LanguageCode);
             Resources.Resources.Culture = localCulture;
@@ -52,6 +64,7 @@ namespace TamagotchiBot.Controllers
         {
             var userMessage = message.From;
             User userDb = _userService.Get(userMessage.Id);
+            Chat chatDb = _chatService.Get(message.Chat.Id);
 
             if (userDb.Culture != null)
             {
@@ -63,6 +76,36 @@ namespace TamagotchiBot.Controllers
             {
                 _userService.Update(userDb.UserId, message.From);
                 Log.Information($"User {message.From.Username} has been updated in Db");
+            }
+
+            if (chatDb == null)
+            {
+                _chatService.Create(new Chat() { ChatId = message.Chat.Id, Name = message.Chat.Username ?? message.Chat.Title, UserId = message.From.Id });
+                chatDb = _chatService.Get(message.Chat.Id);
+                Log.Information($"Chat {message.Chat.Username ?? message.Chat.Title} has been overadded in Db");
+            }
+
+            if (message.Chat.Username != null && chatDb.Name != message.Chat.Username)
+            {
+                _chatService.Update(message.Chat.Id, new Chat()
+                {
+                    Id = chatDb.Id,
+                    Name = message.Chat.Username,
+                    ChatId = chatDb.ChatId,
+                    UserId = message.From.Id
+                });
+                Log.Information($"Chat {message.Chat.Username} has been updated in Db");
+            }
+            else if (message.Chat.Title != null && chatDb.Name != message.Chat.Username)
+            {
+                _chatService.Update(message.Chat.Id, new Chat()
+                {
+                    Id = chatDb.Id,
+                    Name = message.Chat.Title,
+                    ChatId = chatDb.ChatId,
+                    UserId = message.From.Id
+                });
+                Log.Information($"Chat {message.Chat.Title} has been updated in Db");
             }
 
             var pet = _petService.Get(userDb.UserId);
@@ -85,7 +128,9 @@ namespace TamagotchiBot.Controllers
             if (pet.LastUpdateTime.Year == 1)
                 pet.LastUpdateTime = DateTime.UtcNow;
 
+
             int minuteCounter = (int)(DateTime.UtcNow - pet.LastUpdateTime).TotalMinutes;
+            //EXP
             int toAddExp = minuteCounter * Constants.ExpFactor;
 
             pet.EXP += toAddExp;
@@ -96,6 +141,22 @@ namespace TamagotchiBot.Controllers
                 pet.Level += pet.EXP / Constants.ExpToLvl;
                 pet.EXP -= (pet.EXP / Constants.ExpToLvl) * Constants.ExpToLvl;
             }
+
+            //Hunger
+            double toAddHunger = Math.Round(minuteCounter * Constants.StarvingFactor, 2);
+            pet.Starving += toAddHunger;
+
+            if (pet.Starving > 100)
+            {
+                pet.HP -= (int)pet.Starving - 100;
+
+                if (pet.HP < 0)
+                    pet.HP = 0;
+
+                pet.Starving = 100;
+
+            }
+
             pet.LastUpdateTime = DateTime.UtcNow;
 
             _petService.Update(user.Id, pet);
@@ -195,7 +256,7 @@ namespace TamagotchiBot.Controllers
             if (textRecieved == "/pet")
             {
                 Pet pet = _petService.Get(message.From.Id);
-                string toSendText = string.Format(Resources.Resources.petCommand, pet.Name, pet.HP, pet.EXP, pet.Level);
+                string toSendText = string.Format(Resources.Resources.petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Starving);
 
                 return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(toSendText,
                                                                                             Constants.PetInfo_Cat,
@@ -259,6 +320,13 @@ namespace TamagotchiBot.Controllers
                                                             null,
                                                             null);
             }
+            if (textRecieved == "/restart")
+            {
+                return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(Resources.Resources.DevelopWarning,
+                                                            Constants.DevelopWarningSticker,
+                                                            null,
+                                                            null);
+            }
 
 
 
@@ -270,10 +338,12 @@ namespace TamagotchiBot.Controllers
             if (callback.Data == null)
                 return null;
 
+            UpdateIndicators();
+
             if (callback.Data == "petCommandInlineBasicInfo")
             {
                 Pet pet = _petService.Get(callback.From.Id);
-                string toSendText = string.Format(Resources.Resources.petCommand, pet.Name, pet.HP, pet.EXP, pet.Level);
+                string toSendText = string.Format(Resources.Resources.petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Starving);
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<Tuple<string, string>>() { new Tuple<string, string>(Resources.Resources.petCommandInlineExtraInfo, "petCommandInlineExtraInfo") });
 
                 return new Tuple<string, InlineKeyboardMarkup>(toSendText, toSendInline);

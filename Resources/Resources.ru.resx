@@ -135,7 +135,8 @@
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
-💊 Здоровье: {1}
+💊 Здоровье: {1}%
+🍕 Голод: {4}%
 🏅 Опыт: {2} | {3} уровень✨</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">

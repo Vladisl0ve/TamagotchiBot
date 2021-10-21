@@ -8,7 +8,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace TamagotchiBot.Models
 {
-    public class User
+    public class Chat
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -17,17 +17,10 @@ namespace TamagotchiBot.Models
         [BsonElement("UserId")]
         public long UserId { get; set; }
 
+        [BsonElement("Name")]
+        public string Name { get; set; }
+
         [BsonElement("ChatId")]
         public long ChatId { get; set; }
-
-        [BsonElement("Username")]
-        public string Username { get; set; }
-        [BsonElement("FirstName")]
-        public string FirstName { get; set; }
-        [BsonElement("LastName")]
-        public string LastName { get; set; }
-
-        [BsonElement("Culture")]
-        public string Culture { get; set; }
     }
 }

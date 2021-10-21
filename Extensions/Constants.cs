@@ -26,6 +26,7 @@ namespace TamagotchiBot.UserExtensions
         #region Factors
         public static int ExpFactor = 1;
         public static int ExpToLvl = 100;
+        public static double StarvingFactor = 0.138;
 
 
         #endregion

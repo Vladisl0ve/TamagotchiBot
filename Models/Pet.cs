@@ -33,7 +33,7 @@ namespace TamagotchiBot.Models
         public int HP { get; set; }
 
         [BsonElement("Starving")]
-        public int Starving { get; set; }
+        public double Starving { get; set; }
 
         [BsonElement("Joy")]
         public int Joy { get; set; }

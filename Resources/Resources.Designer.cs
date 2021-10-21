@@ -113,7 +113,8 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 🐱 {0}
-        ///💊 HP: {1}
+        ///💊 HP: {1}%
+        ///🍕 Hunger: {4}%
         ///🏅 EXP: {2} | {3} level ✨.
         /// </summary>
         public static string petCommand {

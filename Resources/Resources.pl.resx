@@ -135,7 +135,8 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️</value>
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
-💊 Zdrowie: {1}
+💊 Zdrowie: {1}%
+🍕 Głód: {4}%
 🏅 Doświadczenie: {2} | {3} poziom✨</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
