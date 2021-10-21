@@ -26,6 +26,9 @@ namespace TamagotchiBot.Models
         [BsonElement("BirthDateTime")]
         public DateTime BirthDateTime { get; set; }
 
+        [BsonElement("LastUpdateTime")]
+        public DateTime LastUpdateTime { get; set; }
+
         [BsonElement("HP")]
         public int HP { get; set; }
 

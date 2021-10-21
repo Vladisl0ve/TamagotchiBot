@@ -39,6 +39,7 @@ namespace TamagotchiBot.Services
                 LastName = user.LastName,
                 UserId = user.Id,
                 Username = user.Username,
+               
                 Culture = user.LanguageCode
             });
         }

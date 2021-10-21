@@ -77,6 +77,30 @@ namespace TamagotchiBot.Controllers
 
         }
 
+        private void UpdateIndicators()
+        {
+            Telegram.Bot.Types.User user = message == null ? callback.From : message.From;
+            Pet pet = _petService.Get(user.Id);
+
+            if (pet.LastUpdateTime.Year == 1)
+                pet.LastUpdateTime = DateTime.UtcNow;
+
+            int minuteCounter = (int)(DateTime.UtcNow - pet.LastUpdateTime).TotalMinutes;
+            int toAddExp = minuteCounter * Constants.ExpFactor;
+
+            pet.EXP += toAddExp;
+
+            if (pet.EXP > 100)
+            {
+                pet.Level = 0;
+                pet.Level += pet.EXP / Constants.ExpToLvl;
+                pet.EXP -= (pet.EXP / Constants.ExpToLvl) * Constants.ExpToLvl;
+            }
+            pet.LastUpdateTime = DateTime.UtcNow;
+
+            _petService.Update(user.Id, pet);
+        }
+
         private Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup> CreatePet()
         {
             if (message.Text == null)
@@ -91,6 +115,7 @@ namespace TamagotchiBot.Controllers
                     Name = null,
                     Level = 1,
                     BirthDateTime = DateTime.UtcNow,
+                    LastUpdateTime = DateTime.UtcNow,
                     EXP = 0,
                     HP = 100,
                     Joy = 100,
@@ -165,6 +190,8 @@ namespace TamagotchiBot.Controllers
                 return null;
 
             textRecieved = textRecieved.ToLower();
+
+            UpdateIndicators();
             if (textRecieved == "/pet")
             {
                 Pet pet = _petService.Get(message.From.Id);

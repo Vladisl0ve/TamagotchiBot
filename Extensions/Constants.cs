@@ -23,6 +23,14 @@ namespace TamagotchiBot.UserExtensions
         public static string LanguageRu = "ru";
         public static string LanguageEn = "en";
 
+        #region Factors
+        public static int ExpFactor = 1;
+        public static int ExpToLvl = 100;
+
+
+        #endregion
+
+
         #region StickersId
         //Common
         public static string WelcomeSticker = "CAACAgIAAxkBAAEDHvdhcG0r5WOkfladhV2zTUYwN6LyOQACUwADr8ZRGjkySUcbM1VLIQQ";
