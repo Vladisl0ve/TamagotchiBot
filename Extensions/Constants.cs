@@ -31,6 +31,13 @@ namespace TamagotchiBot.UserExtensions
 
         #endregion
 
+        #region FoodFactors
+        public static double BreadHungerFactor = 10; //🍞
+        public static double RedAppleHungerFactor = 5; //🍎
+        public static double ChocolateHungerFactor = 4; //🍫
+        public static double LollipopHungerFactor = 1; //🍭
+        #endregion
+
 
         #region StickersId
         //Common
@@ -47,6 +54,17 @@ namespace TamagotchiBot.UserExtensions
         public static string PetInfo_Cat = "CAACAgIAAxkBAAEDHwFhcG3C-_owIcuMOR9GTlE4MeoTOAACvRIAAhxUSUo2xUCLEnwQHiEE";
         public static string PetChooseName_Cat = "CAACAgIAAxkBAAEDHwthcG-wxtTfvF_S-6mqam-KwksPnQAC5RAAAowt_QftGb7TeRsiTyEE";
         public static string PetConfirmedName_Cat = "CAACAgIAAxkBAAEDHw1hcHBpvQQti1cmSC1LVKRNOtV3FwACjBIAAtJ0SUqCGw6E9UM1giEE";
+        public static string PetKitchen_Cat = "CAACAgIAAxkBAAEDIFVhcfZFjhITgwR6llMbPY-58IL_RAACxA4AA7xBSg8_gz8dIW-OIQQ";
+
+
+        //Tests
+        public static List<Tuple<string, string>> inlineParts = new List<Tuple<string, string>>()
+                {
+                    new Tuple<string, string>("🍞", "kitchenCommandInlineBread"),
+                    new Tuple<string, string>("🍎", "kitchenCommandInlineRedApple"),
+                    new Tuple<string, string>("🍫", "kitchenCommandInlineChocolate"),
+                    new Tuple<string, string>("🍭", "kitchenCommandInlineLollipop")
+                };
 
         #endregion
         public static ReplyKeyboardMarkup LanguagesMarkup = Extensions.ReplyKeyboardOptimizer(Extensions.LanguagesWithFlags());

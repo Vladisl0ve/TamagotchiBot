@@ -12,6 +12,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using User = TamagotchiBot.Models.User;
 using Chat = TamagotchiBot.Models.Chat;
+using Telegram.Bot;
 
 namespace TamagotchiBot.Controllers
 {
@@ -20,21 +21,24 @@ namespace TamagotchiBot.Controllers
         private readonly UserService _userService;
         private readonly PetService _petService;
         private readonly ChatService _chatService;
+        private readonly ITelegramBotClient bot;
         private readonly Message message;
         private readonly CallbackQuery callback;
 
         private CultureInfo localCulture;
 
-        public GameController(UserService userService, PetService petService, ChatService chatService, CallbackQuery callback)
+        public GameController(ITelegramBotClient bot, UserService userService, PetService petService, ChatService chatService, CallbackQuery callback)
         {
+            this.bot = bot;
             _userService = userService;
             _petService = petService;
             this.callback = callback;
             _chatService = chatService;
         }
 
-        public GameController(UserService userService, PetService petService, ChatService chatService, Message message)
+        public GameController(ITelegramBotClient bot, UserService userService, PetService petService, ChatService chatService, Message message)
         {
+            this.bot = bot;
             _userService = userService;
             _petService = petService;
             this.message = message;
@@ -283,10 +287,16 @@ namespace TamagotchiBot.Controllers
 
             if (textRecieved == "/kitchen")
             {
-                return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(Resources.Resources.DevelopWarning,
-                                                            Constants.DevelopWarningSticker,
+                Pet pet = _petService.Get(message.From.Id);
+                string toSendText = string.Format(Resources.Resources.kitchenCommand, pet.Starving);
+
+                List<Tuple<string, string>> inlineParts = Constants.inlineParts;
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+
+                return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(toSendText,
+                                                            Constants.PetKitchen_Cat,
                                                             null,
-                                                            null);
+                                                            toSendInline);
             }
 
             if (textRecieved == "/gameroom")
@@ -354,6 +364,118 @@ namespace TamagotchiBot.Controllers
                 Pet pet = _petService.Get(callback.From.Id);
                 string toSendText = string.Format(Resources.Resources.petCommandMoreInfo1, pet.Name, pet.BirthDateTime);
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<Tuple<string, string>>() { new Tuple<string, string>(Resources.Resources.petCommandInlineBasicInfo, "petCommandInlineBasicInfo") });
+
+                return new Tuple<string, InlineKeyboardMarkup>(toSendText, toSendInline);
+            }
+
+            if (callback.Data == "kitchenCommandInlineBread")
+            {
+                Pet pet = _petService.Get(callback.From.Id);
+
+                var newStarving = pet.Starving - Constants.BreadHungerFactor;
+                if (newStarving < 0)
+                    newStarving = 0;
+
+                _petService.UpdateStarving(callback.From.Id, newStarving);
+
+                string anwser = string.Format(Resources.Resources.PetFeedingAnwserCallback, (int)Constants.BreadHungerFactor);
+                bot.AnswerCallbackQueryAsync(callback.Id, anwser);
+
+                string toSendText = string.Format(Resources.Resources.kitchenCommand, newStarving);
+
+                string s1 = callback.Message.Text.ToLower().Trim();
+                s1 = s1.Replace("\n", string.Empty);
+                string s2 = toSendText.ToLower().Trim();
+                s2 = s2.Replace(Environment.NewLine, string.Empty);
+
+                if (string.Equals(s1, s2, StringComparison.InvariantCultureIgnoreCase))
+                    return null;
+
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(Constants.inlineParts, 3);
+
+                return new Tuple<string, InlineKeyboardMarkup>(toSendText, toSendInline);
+            }
+
+            if (callback.Data == "kitchenCommandInlineRedApple")
+            {
+                Pet pet = _petService.Get(callback.From.Id);
+
+                var newStarving = pet.Starving - Constants.RedAppleHungerFactor;
+                if (newStarving < 0)
+                    newStarving = 0;
+
+                _petService.UpdateStarving(callback.From.Id, newStarving);
+
+                string anwser = string.Format(Resources.Resources.PetFeedingAnwserCallback, (int)Constants.RedAppleHungerFactor);
+                bot.AnswerCallbackQueryAsync(callback.Id, anwser);
+
+                string toSendText = string.Format(Resources.Resources.kitchenCommand, newStarving);
+
+                string s1 = callback.Message.Text.ToLower().Trim();
+                s1 = s1.Replace("\n", string.Empty);
+                string s2 = toSendText.ToLower().Trim();
+                s2 = s2.Replace(Environment.NewLine, string.Empty);
+
+                if (string.Equals(s1, s2, StringComparison.InvariantCultureIgnoreCase))
+                    return null;
+
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(Constants.inlineParts, 3);
+
+                return new Tuple<string, InlineKeyboardMarkup>(toSendText, toSendInline);
+            }
+
+            if (callback.Data == "kitchenCommandInlineChocolate")
+            {
+                Pet pet = _petService.Get(callback.From.Id);
+
+                var newStarving = pet.Starving - Constants.ChocolateHungerFactor;
+                if (newStarving < 0)
+                    newStarving = 0;
+
+                _petService.UpdateStarving(callback.From.Id, newStarving);
+
+                string anwser = string.Format(Resources.Resources.PetFeedingAnwserCallback, (int)Constants.ChocolateHungerFactor);
+                bot.AnswerCallbackQueryAsync(callback.Id, anwser);
+
+                string toSendText = string.Format(Resources.Resources.kitchenCommand, newStarving);
+
+                string s1 = callback.Message.Text.ToLower().Trim();
+                s1 = s1.Replace("\n", string.Empty);
+                string s2 = toSendText.ToLower().Trim();
+                s2 = s2.Replace(Environment.NewLine, string.Empty);
+
+                if (string.Equals(s1, s2, StringComparison.InvariantCultureIgnoreCase))
+                    return null;
+
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(Constants.inlineParts, 3);
+
+                return new Tuple<string, InlineKeyboardMarkup>(toSendText, toSendInline);
+            }
+
+            if (callback.Data == "kitchenCommandInlineLollipop")
+            {
+                Pet pet = _petService.Get(callback.From.Id);
+
+                var newStarving = pet.Starving - Constants.LollipopHungerFactor;
+                if (newStarving < 0)
+                    newStarving = 0;
+
+                _petService.UpdateStarving(callback.From.Id, newStarving);
+
+                string anwser = string.Format(Resources.Resources.PetFeedingAnwserCallback, (int)Constants.LollipopHungerFactor);
+                bot.AnswerCallbackQueryAsync(callback.Id, anwser);
+
+                string toSendText = string.Format(Resources.Resources.kitchenCommand, newStarving);
+
+                string s1 = callback.Message.Text.ToLower().Trim();
+                s1 = s1.Replace("\n", string.Empty);
+                string s2 = toSendText.ToLower().Trim();
+                s2 = s2.Replace(Environment.NewLine, string.Empty);
+
+                if (string.Equals(s1, s2, StringComparison.InvariantCultureIgnoreCase))
+                    return null;
+
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(Constants.inlineParts, 3);
 
                 return new Tuple<string, InlineKeyboardMarkup>(toSendText, toSendInline);
             }

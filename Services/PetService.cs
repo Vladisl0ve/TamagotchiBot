@@ -41,6 +41,16 @@ namespace TamagotchiBot.Services
             }
         }
 
+        public void UpdateStarving(long userId, double newStarving)
+        {
+            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.Starving = newStarving;
+                Update(userId, pet);
+            }
+        }
+
         public void Remove(long userId) => _pets.DeleteOne(p => p.UserId == userId);
 
     }

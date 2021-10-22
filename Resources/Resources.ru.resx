@@ -161,4 +161,12 @@ Wybierz nowy język 🇵🇱
   <data name="petCommandInlineExtraInfo" xml:space="preserve">
     <value>Доп инфо 📝</value>
   </data>
+  <data name="kitchenCommand" xml:space="preserve">
+    <value>Вы в кухне 🥦
+🍕 Голод: {0}%
+Не забывай кормить питомца 🐣</value>
+  </data>
+  <data name="PetFeedingAnwserCallback" xml:space="preserve">
+    <value>Твой питомец насытился на {0}%</value>
+  </data>
 </root>

@@ -68,7 +68,7 @@ namespace TamagotchiBot.Handlers
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
-                var controller = new GameController(userService, petService, chatService, message);
+                var controller = new GameController(botClient, userService, petService, chatService, message);
                 Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup> toSend;
                 if (userService.Get(message.From.Id) != null)
                     toSend = controller.Process();
@@ -138,7 +138,7 @@ namespace TamagotchiBot.Handlers
 
             async Task BotOnCallbackQueryReceived(ITelegramBotClient bot, CallbackQuery callbackQuery)
             {
-                var controller = new GameController(userService, petService, chatService, callbackQuery);
+                var controller = new GameController(bot, userService, petService, chatService, callbackQuery);
                 var toSend = controller.CallbackHandler();
 
                 if (toSend == null)

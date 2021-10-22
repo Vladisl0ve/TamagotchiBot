@@ -112,6 +112,17 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are in the kitchen 🥦
+        ///🍕 Pet&apos;s hunger: {0}%
+        ///Don&apos;t forget feed him 🐣.
+        /// </summary>
+        public static string kitchenCommand {
+            get {
+                return ResourceManager.GetString("kitchenCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🐱 {0}
         ///💊 HP: {1}%
         ///🍕 Hunger: {4}%
@@ -148,6 +159,15 @@ namespace TamagotchiBot.Resources {
         public static string petCommandMoreInfo1 {
             get {
                 return ResourceManager.GetString("petCommandMoreInfo1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your pet has satisfied hunger on {0}%.
+        /// </summary>
+        public static string PetFeedingAnwserCallback {
+            get {
+                return ResourceManager.GetString("PetFeedingAnwserCallback", resourceCulture);
             }
         }
         
