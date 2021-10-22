@@ -112,6 +112,51 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to fresh.
+        /// </summary>
+        public static string FatigueFresh {
+            get {
+                return ResourceManager.GetString("FatigueFresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to rested.
+        /// </summary>
+        public static string FatigueRested {
+            get {
+                return ResourceManager.GetString("FatigueRested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sleepy.
+        /// </summary>
+        public static string FatigueSleepy {
+            get {
+                return ResourceManager.GetString("FatigueSleepy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to slightly tired.
+        /// </summary>
+        public static string FatigueSlightlyTired {
+            get {
+                return ResourceManager.GetString("FatigueSlightlyTired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to tired.
+        /// </summary>
+        public static string FatigueTired {
+            get {
+                return ResourceManager.GetString("FatigueTired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are in the kitchen 🥦
         ///🍕 Pet&apos;s hunger: {0}%
         ///Don&apos;t forget feed him 🐣.
@@ -126,6 +171,7 @@ namespace TamagotchiBot.Resources {
         ///   Looks up a localized string similar to 🐱 {0}
         ///💊 HP: {1}%
         ///🍕 Hunger: {4}%
+        ///😴 Fatigue: {5}
         ///🏅 EXP: {2} | {3} level ✨.
         /// </summary>
         public static string petCommand {

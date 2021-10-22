@@ -18,6 +18,15 @@ namespace TamagotchiBot.UserExtensions
             [Display(ShortName = "🇷🇺", Name = "ru")] Русский
         }
 
+        public enum Fatigue
+        {
+            Fresh,
+            Rested,
+            SlightlyTired,
+            Tired,
+            Sleepy
+        }
+
         public static string LanguageBe = "be";
         public static string LanguagePl = "pl";
         public static string LanguageRu = "ru";
@@ -27,6 +36,8 @@ namespace TamagotchiBot.UserExtensions
         public static int ExpFactor = 1;
         public static int ExpToLvl = 100;
         public static double StarvingFactor = 0.138;
+        public static double FatigueFactor = 0.083;
+        public static double RestFactor = 0.083;
 
 
         #endregion
@@ -42,12 +53,12 @@ namespace TamagotchiBot.UserExtensions
         #region StickersId
         //Common
         public static string WelcomeSticker = "CAACAgIAAxkBAAEDHvdhcG0r5WOkfladhV2zTUYwN6LyOQACUwADr8ZRGjkySUcbM1VLIQQ";
-        public static string ChangeLanguageSticker = "CAACAgIAAxkBAAEDHxFhcHG_oQwmuwnfp6kWn_CfBpGA8QACdQAD2ZOeGVbYJ6ArCLcyIQQ";
+        public static string ChangeLanguageSticker = "CAACAgIAAxkBAAEDIdRhcygJqmnt4ibdxEVejHOQ4Ya7pwACbAIAAladvQoqGV6cxNDenyEE";
         public static string DevelopWarningSticker = "CAACAgIAAxkBAAEDHxNhcHJP59QL8Fe9GaY3POWBIeII6QACUQADLMqqByX_VpH__oXBIQQ";
         public static string PolishLanguageSetSticker = "CAACAgIAAxkBAAEDHxVhcHU6BuzdT1sw-MZB0uBR35h5iAACKwEAAr8DyQQgsxfQYO--ECEE";
         public static string EnglishLanguageSetSticker = "CAACAgIAAxkBAAEDHxdhcHV4y14-CyrH_D1YujHDCBROUQAC6AADvwPJBGHtqaDNJtEyIQQ";
         public static string RussianLanguageSetSticker = "CAACAgIAAxkBAAEDHxlhcHWCiuvBtQ-IZJknE2hlBlZ-TwAC4gADvwPJBOLja80qqucgIQQ";
-        public static string BelarussianLanguageSetSticker = "CAACAgIAAxkBAAEDHxthcHWcDAoUNKey3svQnX0Nr0eVUAAC9wADUomRI6J6Ym0_4ftHIQQ";
+        public static string BelarussianLanguageSetSticker = "CAACAgIAAxkBAAEDIdJhcyf3ErjEmUZRgDJgMsCtstPpGAACYQIAAladvQq0dN7WdBr5ViEE";
 
         //Cat
         public static string PetCreated_Cat = "CAACAgIAAxkBAAEDHvlhcG2oG4rLAAGPvREkKoykMsNnYzsAAlsQAAKlvUhKsth-8cNoWVghBA";

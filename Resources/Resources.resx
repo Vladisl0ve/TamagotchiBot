@@ -137,6 +137,7 @@ Do not forget feed and wash him, play a games and just love ☺️</value>
     <value>🐱 {0}
 💊 HP: {1}%
 🍕 Hunger: {4}%
+😴 Fatigue: {5}
 🏅 EXP: {2} | {3} level ✨</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
@@ -168,5 +169,20 @@ Don't forget feed him 🐣</value>
   </data>
   <data name="PetFeedingAnwserCallback" xml:space="preserve">
     <value>Your pet has satisfied hunger on {0}%</value>
+  </data>
+  <data name="FatigueFresh" xml:space="preserve">
+    <value>fresh</value>
+  </data>
+  <data name="FatigueRested" xml:space="preserve">
+    <value>rested</value>
+  </data>
+  <data name="FatigueSlightlyTired" xml:space="preserve">
+    <value>slightly tired</value>
+  </data>
+  <data name="FatigueTired" xml:space="preserve">
+    <value>tired</value>
+  </data>
+  <data name="FatigueSleepy" xml:space="preserve">
+    <value>sleepy</value>
   </data>
 </root>

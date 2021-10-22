@@ -29,6 +29,9 @@ namespace TamagotchiBot.Models
         [BsonElement("LastUpdateTime")]
         public DateTime LastUpdateTime { get; set; }
 
+        [BsonElement("LastSleepingTime")]
+        public DateTime LastSleepingTime { get; set; }
+
         [BsonElement("HP")]
         public int HP { get; set; }
 
@@ -37,6 +40,9 @@ namespace TamagotchiBot.Models
 
         [BsonElement("Joy")]
         public int Joy { get; set; }
+
+        [BsonElement("Fatigue")]
+        public int Fatigue { get; set; }
 
         [BsonElement("EXP")]
         public int EXP { get; set; }

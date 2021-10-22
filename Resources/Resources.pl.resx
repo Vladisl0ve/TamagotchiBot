@@ -137,6 +137,7 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️</value>
     <value>🐱 {0}
 💊 Zdrowie: {1}%
 🍕 Głód: {4}%
+😴 Zmęczenie: {5}
 🏅 Doświadczenie: {2} | {3} poziom✨</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
@@ -168,5 +169,20 @@ Nie zapominaj karmić zwierzaka 🐣</value>
   </data>
   <data name="PetFeedingAnwserCallback" xml:space="preserve">
     <value>Twój zwierzak ugasił głód na {0}%</value>
+  </data>
+  <data name="FatigueFresh" xml:space="preserve">
+    <value>świeży</value>
+  </data>
+  <data name="FatigueRested" xml:space="preserve">
+    <value>wypoczęty</value>
+  </data>
+  <data name="FatigueSlightlyTired" xml:space="preserve">
+    <value>lekko zmęczony</value>
+  </data>
+  <data name="FatigueTired" xml:space="preserve">
+    <value>zmęczony</value>
+  </data>
+  <data name="FatigueSleepy" xml:space="preserve">
+    <value>zaspany</value>
   </data>
 </root>

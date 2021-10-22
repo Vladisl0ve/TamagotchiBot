@@ -125,17 +125,37 @@ namespace TamagotchiBot.UserExtensions
                 if (l.GetDisplayName() == flag)
                     return l;
 
-/*            if (flag == "be" || flag == "by")
-                return Constants.Language.Беларуская;
+            /*            if (flag == "be" || flag == "by")
+                            return Constants.Language.Беларуская;
 
-            if (flag == "ru")
-                return Constants.Language.Русский;
+                        if (flag == "ru")
+                            return Constants.Language.Русский;
 
 
-            if (flag == "pl")
-                return Constants.Language.Русский;*/
+                        if (flag == "pl")
+                            return Constants.Language.Русский;*/
 
             return Constants.Language.English;
+        }
+
+        public static string GetFatigue(int fatigue)
+        {
+            if (fatigue >= 0 && fatigue < 20)
+                return Resources.Resources.FatigueFresh;
+
+            if (fatigue >= 20 && fatigue < 40)
+                return Resources.Resources.FatigueRested;
+
+            if (fatigue >= 40 && fatigue < 60)
+                return Resources.Resources.FatigueSlightlyTired;
+
+            if (fatigue >= 60 && fatigue < 80)
+                return Resources.Resources.FatigueTired;
+
+            if (fatigue >= 80)
+                return Resources.Resources.FatigueSleepy;
+
+            return Resources.Resources.FatigueSleepy;
         }
 
     }

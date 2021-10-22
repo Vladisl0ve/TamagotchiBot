@@ -137,6 +137,7 @@
     <value>🐱 {0}
 💊 Здоровье: {1}%
 🍕 Голод: {4}%
+😴 Усталость: {5}
 🏅 Опыт: {2} | {3} уровень✨</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
@@ -168,5 +169,20 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="PetFeedingAnwserCallback" xml:space="preserve">
     <value>Твой питомец насытился на {0}%</value>
+  </data>
+  <data name="FatigueFresh" xml:space="preserve">
+    <value>бодрый</value>
+  </data>
+  <data name="FatigueRested" xml:space="preserve">
+    <value>отдохнувший</value>
+  </data>
+  <data name="FatigueSlightlyTired" xml:space="preserve">
+    <value>подуставший</value>
+  </data>
+  <data name="FatigueTired" xml:space="preserve">
+    <value>уставший</value>
+  </data>
+  <data name="FatigueSleepy" xml:space="preserve">
+    <value>полуспящий</value>
   </data>
 </root>

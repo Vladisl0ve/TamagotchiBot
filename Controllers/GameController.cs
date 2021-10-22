@@ -161,6 +161,13 @@ namespace TamagotchiBot.Controllers
 
             }
 
+            //Fatigue
+            double toAddFatigue = Math.Round(minuteCounter * Constants.FatigueFactor);
+            pet.Fatigue += (int)toAddFatigue;
+
+            if (pet.Fatigue > 100)
+                pet.Fatigue = 100;
+
             pet.LastUpdateTime = DateTime.UtcNow;
 
             _petService.Update(user.Id, pet);
@@ -184,6 +191,7 @@ namespace TamagotchiBot.Controllers
                     EXP = 0,
                     HP = 100,
                     Joy = 100,
+                    Fatigue = 0,
                     Starving = 0,
                     Type = null,
                     UserId = message.From.Id
@@ -260,7 +268,7 @@ namespace TamagotchiBot.Controllers
             if (textRecieved == "/pet")
             {
                 Pet pet = _petService.Get(message.From.Id);
-                string toSendText = string.Format(Resources.Resources.petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Starving);
+                string toSendText = string.Format(Resources.Resources.petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Starving, Extensions.GetFatigue(pet.Fatigue));
 
                 return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(toSendText,
                                                                                             Constants.PetInfo_Cat,
@@ -353,7 +361,7 @@ namespace TamagotchiBot.Controllers
             if (callback.Data == "petCommandInlineBasicInfo")
             {
                 Pet pet = _petService.Get(callback.From.Id);
-                string toSendText = string.Format(Resources.Resources.petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Starving);
+                string toSendText = string.Format(Resources.Resources.petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Starving, Extensions.GetFatigue(pet.Fatigue));
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<Tuple<string, string>>() { new Tuple<string, string>(Resources.Resources.petCommandInlineExtraInfo, "petCommandInlineExtraInfo") });
 
                 return new Tuple<string, InlineKeyboardMarkup>(toSendText, toSendInline);
