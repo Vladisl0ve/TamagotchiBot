@@ -387,11 +387,11 @@ namespace TamagotchiBot.Controllers
                 return new Tuple<string, InlineKeyboardMarkup>(toSendText, toSendInline);
             }
 
-            if (callback.Data == "kitchenCommandInlineBread")
+            if (callback.Data == "kitchenCommandInlineBread") //56.379999999999995
             {
                 Pet pet = _petService.Get(callback.From.Id);
 
-                var newStarving = pet.Starving - Constants.BreadHungerFactor;
+                var newStarving = Math.Round(pet.Starving - Constants.BreadHungerFactor, 2);
                 if (newStarving < 0)
                     newStarving = 0;
 
@@ -419,7 +419,7 @@ namespace TamagotchiBot.Controllers
             {
                 Pet pet = _petService.Get(callback.From.Id);
 
-                var newStarving = pet.Starving - Constants.RedAppleHungerFactor;
+                var newStarving = Math.Round(pet.Starving - Constants.RedAppleHungerFactor, 2);
                 if (newStarving < 0)
                     newStarving = 0;
 
@@ -447,7 +447,7 @@ namespace TamagotchiBot.Controllers
             {
                 Pet pet = _petService.Get(callback.From.Id);
 
-                var newStarving = pet.Starving - Constants.ChocolateHungerFactor;
+                var newStarving = Math.Round(pet.Starving - Constants.ChocolateHungerFactor, 2);
                 if (newStarving < 0)
                     newStarving = 0;
 
@@ -475,7 +475,7 @@ namespace TamagotchiBot.Controllers
             {
                 Pet pet = _petService.Get(callback.From.Id);
 
-                var newStarving = pet.Starving - Constants.LollipopHungerFactor;
+                var newStarving = Math.Round(pet.Starving - Constants.LollipopHungerFactor, 2);
                 if (newStarving < 0)
                     newStarving = 0;
 
