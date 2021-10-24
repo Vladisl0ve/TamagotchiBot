@@ -34,6 +34,8 @@ namespace TamagotchiBot.Controllers
             _petService = petService;
             this.callback = callback;
             _chatService = chatService;
+
+            Resources.Resources.Culture = new CultureInfo(_userService.Get(callback.From.Id)?.Culture ?? "en");
         }
 
         public GameController(ITelegramBotClient bot, UserService userService, PetService petService, ChatService chatService, Message message)
@@ -43,6 +45,8 @@ namespace TamagotchiBot.Controllers
             _petService = petService;
             this.message = message;
             _chatService = chatService;
+
+            Resources.Resources.Culture = new CultureInfo(_userService.Get(message.From.Id)?.Culture ?? "en");
         }
 
         public Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup> CreateUser()
@@ -353,6 +357,12 @@ namespace TamagotchiBot.Controllers
 
         public Tuple<string, InlineKeyboardMarkup> CallbackHandler()
         {
+            var userDb = _userService.Get(callback.From.Id);
+            var petDb = _petService.Get(callback.From.Id);
+
+            if (userDb == null || petDb == null)
+                return null;
+
             if (callback.Data == null)
                 return null;
 
