@@ -153,6 +153,7 @@ namespace TamagotchiBot.Controllers
             //Hunger
             double toAddHunger = Math.Round(minuteCounter * Constants.StarvingFactor, 2);
             pet.Starving += toAddHunger;
+            pet.Starving = Math.Round(pet.Starving, 2);
 
             if (pet.Starving > 100)
             {
