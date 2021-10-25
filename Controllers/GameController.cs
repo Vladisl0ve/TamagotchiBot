@@ -131,7 +131,11 @@ namespace TamagotchiBot.Controllers
         private void UpdateIndicators()
         {
             Telegram.Bot.Types.User user = message == null ? callback.From : message.From;
+
             Pet pet = _petService.Get(user.Id);
+
+            if (user == null || pet == null)
+                return;
 
             if (pet.LastUpdateTime.Year == 1)
                 pet.LastUpdateTime = DateTime.UtcNow;
@@ -269,6 +273,15 @@ namespace TamagotchiBot.Controllers
             textRecieved = textRecieved.ToLower();
 
             UpdateIndicators();
+
+            if (textRecieved == "/language")
+            {
+                User user = _userService.UpdateLanguage(message.From.Id, null);
+                return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(Resources.Resources.ChangeLanguage,
+                                                                            Constants.ChangeLanguageSticker,
+                                                                            Constants.LanguagesMarkup,
+                                                                            null);
+            }
             if (textRecieved == "/pet")
             {
                 Pet pet = _petService.Get(message.From.Id);
@@ -278,15 +291,6 @@ namespace TamagotchiBot.Controllers
                                                                                             Constants.PetInfo_Cat,
                                                                                             null,
                                                                                             Extensions.InlineKeyboardOptimizer(new List<Tuple<string, string>>() { new Tuple<string, string>(Resources.Resources.petCommandInlineExtraInfo, "petCommandInlineExtraInfo") }));
-            }
-
-            if (textRecieved == "/language")
-            {
-                User user = _userService.UpdateLanguage(message.From.Id, null);
-                return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(Resources.Resources.ChangeLanguage,
-                                                                            Constants.ChangeLanguageSticker,
-                                                                            Constants.LanguagesMarkup,
-                                                                            null);
             }
 
             if (textRecieved == "/bathroom")
