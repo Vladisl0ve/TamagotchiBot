@@ -145,7 +145,6 @@ namespace TamagotchiBot.Controllers
 
             if (pet.EXP > 100)
             {
-                pet.Level = 0;
                 pet.Level += pet.EXP / Constants.ExpToLvl;
                 pet.EXP -= (pet.EXP / Constants.ExpToLvl) * Constants.ExpToLvl;
             }
