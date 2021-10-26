@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\UserController.cs" />
     <Compile Remove="UpdateHandler.cs" />
   </ItemGroup>
 

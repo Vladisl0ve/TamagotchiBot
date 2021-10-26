@@ -122,7 +122,8 @@
   </data>
   <data name="Welcome" xml:space="preserve">
     <value>🎮 Welcome to Tamagotchi Bot! Here you can raise your own virtual pet, play with him and compete with another players 🎮
-Let's start?</value>
+Let's start? 
+/start</value>
   </data>
   <data name="ChooseName" xml:space="preserve">
     <value>🧸 First of all you need to name your new friend

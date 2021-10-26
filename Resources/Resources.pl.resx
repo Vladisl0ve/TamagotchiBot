@@ -122,7 +122,8 @@
   </data>
   <data name="Welcome" xml:space="preserve">
     <value>🎮 Witamy w Tamagotchi Bot! Tutaj możesz wychowywać własnego wirtualnego zwierzaka, bawić się z nim i rywalizować z innymi graczami 🎮
-Startujemy?</value>
+Startujemy?
+/start</value>
   </data>
   <data name="ChooseName" xml:space="preserve">
     <value>🧸 Przede wszystkim musisz nazwać swojego nowego przyjaciela

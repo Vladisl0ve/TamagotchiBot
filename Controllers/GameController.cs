@@ -25,7 +25,9 @@ namespace TamagotchiBot.Controllers
         private readonly Message message;
         private readonly CallbackQuery callback;
 
-        private CultureInfo localCulture;
+        private User user;
+        private Pet pet;
+        private Chat chat;
 
         public GameController(ITelegramBotClient bot, UserService userService, PetService petService, ChatService chatService, CallbackQuery callback)
         {
@@ -35,7 +37,9 @@ namespace TamagotchiBot.Controllers
             this.callback = callback;
             _chatService = chatService;
 
-            Resources.Resources.Culture = new CultureInfo(_userService.Get(callback.From.Id)?.Culture ?? "en");
+            GetFromDb();
+
+            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "en");
         }
 
         public GameController(ITelegramBotClient bot, UserService userService, PetService petService, ChatService chatService, Message message)
@@ -46,24 +50,58 @@ namespace TamagotchiBot.Controllers
             this.message = message;
             _chatService = chatService;
 
-            Resources.Resources.Culture = new CultureInfo(_userService.Get(message.From.Id)?.Culture ?? "en");
+            GetFromDb();
+
+            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "en");
+        }
+
+        private void GetFromDb()
+        {
+            if (message != null)
+                user = _userService.Get(message.From.Id);
+            else if (callback != null)
+                user = _userService.Get(callback.From.Id);
+
+            if (user != null)
+            {
+                pet = _petService.Get(user.UserId);
+                chat = _chatService.Get(message?.Chat.Id ?? callback.Message.Chat.Id);
+            }
         }
 
         public Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup> CreateUser()
         {
-            _userService.Create(message.From);
-            _chatService.Create(new Models.Chat()
+            if (message != null)
             {
-                ChatId = message.Chat.Id,
-                Name = message.Chat.Username ?? message.Chat.Title,
-                UserId = message.From.Id
-            });
+                _userService.Create(message.From);
+                _chatService.Create(new Chat()
+                {
+                    ChatId = message.Chat.Id,
+                    Name = message.Chat.Username ?? message.Chat.Title,
+                    UserId = message.From.Id
+                });
 
-            Log.Information($"User {message.From.Username} has been added to Db");
-            Log.Information($"Chat {message.Chat.Username ?? message.Chat.Title} has been added to Db");
+                Log.Information($"User {message.From.Username} has been added to Db");
+                Log.Information($"Chat {message.Chat.Username ?? message.Chat.Title} has been added to Db");
 
-            localCulture = new CultureInfo(message.From.LanguageCode);
-            Resources.Resources.Culture = localCulture;
+                Resources.Resources.Culture = new CultureInfo(message.From.LanguageCode);
+            }
+            else if (callback != null)
+            {
+                _userService.Create(callback.From);
+                _chatService.Create(new Chat()
+                {
+                    ChatId = callback.Message.Chat.Id,
+                    Name = callback.Message.Chat.Username ?? callback.Message.Chat.Title,
+                    UserId = callback.Message.From.Id
+                });
+
+                Log.Information($"User {callback.Message.From.Username} has been added to Db");
+                Log.Information($"Chat {callback.Message.Chat.Username ?? callback.Message.Chat.Title} has been added to Db");
+
+                Resources.Resources.Culture = new CultureInfo(message.From.LanguageCode);
+            }
+
 
             return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(Resources.Resources.Welcome, Constants.WelcomeSticker, null, null);
         }
@@ -71,13 +109,12 @@ namespace TamagotchiBot.Controllers
         public Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup> Process()
         {
             var userMessage = message.From;
-            User userDb = _userService.Get(userMessage.Id);
-            Chat chatDb = _chatService.Get(message.Chat.Id);
+            User userDb = user;
+            Chat chatDb = chat;
 
             if (userDb.Culture != null)
             {
-                localCulture = new CultureInfo(userDb.Culture);
-                Resources.Resources.Culture = localCulture;
+                Resources.Resources.Culture = new CultureInfo(userDb.Culture);
             }
 
             if (userMessage.Username != userDb.Username || userMessage.LastName != userDb.LastName || userMessage.FirstName != userDb.FirstName)
@@ -88,8 +125,7 @@ namespace TamagotchiBot.Controllers
 
             if (chatDb == null)
             {
-                _chatService.Create(new Chat() { ChatId = message.Chat.Id, Name = message.Chat.Username ?? message.Chat.Title, UserId = message.From.Id });
-                chatDb = _chatService.Get(message.Chat.Id);
+                chatDb = _chatService.Create(new Chat() { ChatId = message.Chat.Id, Name = message.Chat.Username ?? message.Chat.Title, UserId = message.From.Id });
                 Log.Information($"Chat {message.Chat.Username ?? message.Chat.Title} has been overadded in Db");
             }
 
@@ -104,7 +140,7 @@ namespace TamagotchiBot.Controllers
                 });
                 Log.Information($"Chat {message.Chat.Username} has been updated in Db");
             }
-            else if (message.Chat.Title != null && chatDb.Name != message.Chat.Username)
+            else if (message.Chat.Title != null && chatDb.Name != message.Chat.Title)
             {
                 _chatService.Update(message.Chat.Id, new Chat()
                 {
@@ -115,8 +151,6 @@ namespace TamagotchiBot.Controllers
                 });
                 Log.Information($"Chat {message.Chat.Title} has been updated in Db");
             }
-
-            var pet = _petService.Get(userDb.UserId);
 
             if ((message.Text != null && message.Text == "/language") || (userDb.Culture == null && message.Text != null))
                 return CommandHandler();
@@ -130,13 +164,12 @@ namespace TamagotchiBot.Controllers
 
         private void UpdateIndicators()
         {
-            Telegram.Bot.Types.User user = message == null ? callback.From : message.From;
+            Telegram.Bot.Types.User messageUser = message?.From ?? callback?.From;
 
-            Pet pet = _petService.Get(user.Id);
-
-            if (user == null || pet == null)
+            if (messageUser == null || pet == null)
                 return;
 
+            //just for avoid nullPointerExeption
             if (pet.LastUpdateTime.Year == 1)
                 pet.LastUpdateTime = DateTime.UtcNow;
 
@@ -178,15 +211,13 @@ namespace TamagotchiBot.Controllers
 
             pet.LastUpdateTime = DateTime.UtcNow;
 
-            _petService.Update(user.Id, pet);
+            _petService.Update(messageUser.Id, pet);
         }
 
         private Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup> CreatePet()
         {
             if (message.Text == null)
                 return null;
-
-            Pet pet = _petService.Get(message.From.Id);
 
             if (pet == null)
             {
@@ -218,21 +249,18 @@ namespace TamagotchiBot.Controllers
 
         public Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup> ExtrasHandler() //catching exceptional situations (but not exceptions!)
         {
-            User user = _userService.Get(message.From.Id);
-
             if (user.Culture == null)
             {
                 if (message.Text == null)
                     return null;
 
                 string last = message.Text.Split(' ').Last();
-                string culture = last.Culture();
+                string culture = last.GetCulture();
 
                 if (culture == null)
                     return null;
 
-                localCulture = new CultureInfo(culture);
-                Resources.Resources.Culture = localCulture;
+                Resources.Resources.Culture = new CultureInfo(culture);
 
                 _userService.UpdateLanguage(user.UserId, culture);
 
@@ -284,7 +312,6 @@ namespace TamagotchiBot.Controllers
             }
             if (textRecieved == "/pet")
             {
-                Pet pet = _petService.Get(message.From.Id);
                 string toSendText = string.Format(Resources.Resources.petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Starving, Extensions.GetFatigue(pet.Fatigue));
 
                 return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(toSendText,
@@ -303,7 +330,6 @@ namespace TamagotchiBot.Controllers
 
             if (textRecieved == "/kitchen")
             {
-                Pet pet = _petService.Get(message.From.Id);
                 string toSendText = string.Format(Resources.Resources.kitchenCommand, pet.Starving);
 
                 List<Tuple<string, string>> inlineParts = Constants.inlineParts;
@@ -361,8 +387,8 @@ namespace TamagotchiBot.Controllers
 
         public Tuple<string, InlineKeyboardMarkup> CallbackHandler()
         {
-            var userDb = _userService.Get(callback.From.Id);
-            var petDb = _petService.Get(callback.From.Id);
+            var userDb = user;
+            var petDb = pet;
 
             if (userDb == null || petDb == null)
                 return null;
@@ -374,7 +400,6 @@ namespace TamagotchiBot.Controllers
 
             if (callback.Data == "petCommandInlineBasicInfo")
             {
-                Pet pet = _petService.Get(callback.From.Id);
                 string toSendText = string.Format(Resources.Resources.petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Starving, Extensions.GetFatigue(pet.Fatigue));
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<Tuple<string, string>>() { new Tuple<string, string>(Resources.Resources.petCommandInlineExtraInfo, "petCommandInlineExtraInfo") });
 
@@ -383,7 +408,6 @@ namespace TamagotchiBot.Controllers
 
             if (callback.Data == "petCommandInlineExtraInfo")
             {
-                Pet pet = _petService.Get(callback.From.Id);
                 string toSendText = string.Format(Resources.Resources.petCommandMoreInfo1, pet.Name, pet.BirthDateTime);
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<Tuple<string, string>>() { new Tuple<string, string>(Resources.Resources.petCommandInlineBasicInfo, "petCommandInlineBasicInfo") });
 
@@ -392,8 +416,6 @@ namespace TamagotchiBot.Controllers
 
             if (callback.Data == "kitchenCommandInlineBread") //56.379999999999995
             {
-                Pet pet = _petService.Get(callback.From.Id);
-
                 var newStarving = Math.Round(pet.Starving - Constants.BreadHungerFactor, 2);
                 if (newStarving < 0)
                     newStarving = 0;
@@ -405,12 +427,7 @@ namespace TamagotchiBot.Controllers
 
                 string toSendText = string.Format(Resources.Resources.kitchenCommand, newStarving);
 
-                string s1 = callback.Message.Text.ToLower().Trim();
-                s1 = s1.Replace("\n", string.Empty);
-                string s2 = toSendText.ToLower().Trim();
-                s2 = s2.Replace(Environment.NewLine, string.Empty);
-
-                if (string.Equals(s1, s2, StringComparison.InvariantCultureIgnoreCase))
+                if (toSendText.IsEqual(callback.Message.Text))
                     return null;
 
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(Constants.inlineParts, 3);
@@ -420,8 +437,6 @@ namespace TamagotchiBot.Controllers
 
             if (callback.Data == "kitchenCommandInlineRedApple")
             {
-                Pet pet = _petService.Get(callback.From.Id);
-
                 var newStarving = Math.Round(pet.Starving - Constants.RedAppleHungerFactor, 2);
                 if (newStarving < 0)
                     newStarving = 0;
@@ -433,12 +448,7 @@ namespace TamagotchiBot.Controllers
 
                 string toSendText = string.Format(Resources.Resources.kitchenCommand, newStarving);
 
-                string s1 = callback.Message.Text.ToLower().Trim();
-                s1 = s1.Replace("\n", string.Empty);
-                string s2 = toSendText.ToLower().Trim();
-                s2 = s2.Replace(Environment.NewLine, string.Empty);
-
-                if (string.Equals(s1, s2, StringComparison.InvariantCultureIgnoreCase))
+                if (toSendText.IsEqual(callback.Message.Text))
                     return null;
 
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(Constants.inlineParts, 3);
@@ -448,8 +458,6 @@ namespace TamagotchiBot.Controllers
 
             if (callback.Data == "kitchenCommandInlineChocolate")
             {
-                Pet pet = _petService.Get(callback.From.Id);
-
                 var newStarving = Math.Round(pet.Starving - Constants.ChocolateHungerFactor, 2);
                 if (newStarving < 0)
                     newStarving = 0;
@@ -461,12 +469,7 @@ namespace TamagotchiBot.Controllers
 
                 string toSendText = string.Format(Resources.Resources.kitchenCommand, newStarving);
 
-                string s1 = callback.Message.Text.ToLower().Trim();
-                s1 = s1.Replace("\n", string.Empty);
-                string s2 = toSendText.ToLower().Trim();
-                s2 = s2.Replace(Environment.NewLine, string.Empty);
-
-                if (string.Equals(s1, s2, StringComparison.InvariantCultureIgnoreCase))
+                if (toSendText.IsEqual(callback.Message.Text))
                     return null;
 
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(Constants.inlineParts, 3);
@@ -476,8 +479,6 @@ namespace TamagotchiBot.Controllers
 
             if (callback.Data == "kitchenCommandInlineLollipop")
             {
-                Pet pet = _petService.Get(callback.From.Id);
-
                 var newStarving = Math.Round(pet.Starving - Constants.LollipopHungerFactor, 2);
                 if (newStarving < 0)
                     newStarving = 0;
@@ -489,12 +490,7 @@ namespace TamagotchiBot.Controllers
 
                 string toSendText = string.Format(Resources.Resources.kitchenCommand, newStarving);
 
-                string s1 = callback.Message.Text.ToLower().Trim();
-                s1 = s1.Replace("\n", string.Empty);
-                string s2 = toSendText.ToLower().Trim();
-                s2 = s2.Replace(Environment.NewLine, string.Empty);
-
-                if (string.Equals(s1, s2, StringComparison.InvariantCultureIgnoreCase))
+                if (toSendText.IsEqual(callback.Message.Text))
                     return null;
 
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(Constants.inlineParts, 3);

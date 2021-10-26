@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.UserExtensions.Constants;
@@ -110,7 +111,7 @@ namespace TamagotchiBot.UserExtensions
             return result;
         }
 
-        public static string Culture(this string flag)
+        public static string GetCulture(this string flag)
         {
             foreach (Language l in Enum.GetValues(typeof(Language)))
                 if (l.GetDisplayShortName() == flag)
@@ -133,7 +134,8 @@ namespace TamagotchiBot.UserExtensions
 
 
                         if (flag == "pl")
-                            return Constants.Language.Русский;*/
+                            return Constants.Language.Русский;
+            */
 
             return Constants.Language.English;
         }
@@ -156,6 +158,21 @@ namespace TamagotchiBot.UserExtensions
                 return Resources.Resources.FatigueSleepy;
 
             return Resources.Resources.FatigueSleepy;
+        }
+
+        public static bool IsEqual(this string telegramString, string defaultString)
+        {
+
+            string s1 = telegramString.ToLower().Trim();
+            s1 = Regex.Replace(s1, "(?<!\r)\n", "\r\n");
+
+            string s2 = defaultString.ToLower().Trim();
+            s2 = Regex.Replace(s2, "(?<!\r)\n", "\r\n");
+
+            if (string.Equals(s1, s2, StringComparison.InvariantCultureIgnoreCase))
+                return true;
+            else
+                return false;
         }
 
     }

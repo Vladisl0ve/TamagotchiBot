@@ -228,7 +228,8 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 🎮 Welcome to Tamagotchi Bot! Here you can raise your own virtual pet, play with him and compete with another players 🎮
-        ///Let&apos;s start?.
+        ///Let&apos;s start? 
+        ////start.
         /// </summary>
         public static string Welcome {
             get {
