@@ -64,6 +64,7 @@ namespace TamagotchiBot.Handlers
                 UpdateType.CallbackQuery => BotOnCallbackQueryReceived(bot, update.CallbackQuery),
                 _ => Task.CompletedTask
             };
+            bot.SetMyCommandsAsync(Extensions.GetCommands(), token);
             return task;
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
@@ -98,41 +99,6 @@ namespace TamagotchiBot.Handlers
 
                 Log.Information($"Message send to @{message.From.Username}: {toSend.Item1.Substring(0, toSend.Item1.Length > 10 ? 10 : toSend.Item1.Length)}");
 
-
-                static async Task<Message> SendReplyKeyboard(ITelegramBotClient botClient, Message message, Tuple<string, ReplyKeyboardMarkup, string> toSend)
-                {
-                    return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                                text: toSend.Item1,
-                                                                replyMarkup: toSend.Item2);
-                }
-
-                static async Task<Message> SendInlineKeyboard(ITelegramBotClient botClient, Message message)
-                {
-                    await botClient.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
-
-                    // Simulate longer running task
-                    await Task.Delay(500);
-
-                    var inlineKeyboard = new InlineKeyboardMarkup(new[]
-                    {
-                    // first row
-                    new []
-                    {
-                        InlineKeyboardButton.WithCallbackData("1.1", "11"),
-                        InlineKeyboardButton.WithCallbackData("1.2", "12"),
-                    },
-                    // second row
-                    new []
-                    {
-                        InlineKeyboardButton.WithCallbackData("2.1", "21"),
-                        InlineKeyboardButton.WithCallbackData("2.2", "22"),
-                    },
-                });
-
-                    return await botClient.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                                text: "Choose",
-                                                                replyMarkup: inlineKeyboard);
-                }
 
             }
 

@@ -186,4 +186,13 @@ Don't forget feed him 🐣</value>
   <data name="FatigueSleepy" xml:space="preserve">
     <value>sleepy</value>
   </data>
+  <data name="petCommandDescription" xml:space="preserve">
+    <value>pet's status ❤️‍🩹</value>
+  </data>
+  <data name="kitchenCommandDescription" xml:space="preserve">
+    <value>kitchen, here you can feed the pet 🍽</value>
+  </data>
+  <data name="languageCommandDescription" xml:space="preserve">
+    <value>language 🇺🇸 | język 🇵🇱 | мова 🇰🇵 | язык 🇷🇺</value>
+  </data>
 </root>

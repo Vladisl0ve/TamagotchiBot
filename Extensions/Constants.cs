@@ -38,8 +38,6 @@ namespace TamagotchiBot.UserExtensions
         public static double StarvingFactor = 0.138;
         public static double FatigueFactor = 0.083;
         public static double RestFactor = 0.42;
-
-
         #endregion
 
         #region FoodFactors
@@ -47,6 +45,13 @@ namespace TamagotchiBot.UserExtensions
         public static double RedAppleHungerFactor = 5; //🍎
         public static double ChocolateHungerFactor = 4; //🍫
         public static double LollipopHungerFactor = 1; //🍭
+        #endregion
+
+        #region Commands
+        public static string KitchenCommand = "kitchen";
+        public static string PetCommand = "pet";
+        public static string LanguageCommand = "language";
+        //public static string KitchenCommand = "kitchen";
         #endregion
 
 

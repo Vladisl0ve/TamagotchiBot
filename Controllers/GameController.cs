@@ -102,6 +102,7 @@ namespace TamagotchiBot.Controllers
                 Resources.Resources.Culture = new CultureInfo(message.From.LanguageCode);
             }
 
+            bot.SetMyCommandsAsync(Extensions.GetCommands());
 
             return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(Resources.Resources.Welcome, Constants.WelcomeSticker, null, null);
         }

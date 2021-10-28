@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.UserExtensions.Constants;
 
@@ -138,6 +139,30 @@ namespace TamagotchiBot.UserExtensions
             */
 
             return Constants.Language.English;
+        }
+
+        public static List<BotCommand> GetCommands()
+        {
+            List<BotCommand> result = new List<BotCommand>()
+            {
+                new BotCommand()
+                {
+                    Command = Constants.PetCommand,
+                    Description = Resources.Resources.petCommandDescription
+                },
+                new BotCommand()
+                {
+                    Command = KitchenCommand,
+                    Description = Resources.Resources.kitchenCommandDescription
+                },
+                new BotCommand()
+                {
+                    Command = LanguageCommand,
+                    Description = Resources.Resources.languageCommandDescription
+                }
+            };
+
+            return result;
         }
 
         public static string GetFatigue(int fatigue)

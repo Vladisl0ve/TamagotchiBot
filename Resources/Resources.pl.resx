@@ -186,4 +186,13 @@ Nie zapominaj karmić zwierzaka 🐣</value>
   <data name="FatigueSleepy" xml:space="preserve">
     <value>zaspany</value>
   </data>
+  <data name="kitchenCommandDescription" xml:space="preserve">
+    <value>kuchnia, gdzie można pokarmić zwierza 🍽</value>
+  </data>
+  <data name="petCommandDescription" xml:space="preserve">
+    <value>status zwierzaka ❤️‍🩹</value>
+  </data>
+  <data name="languageCommandDescription" xml:space="preserve">
+    <value>language 🇺🇸 | język 🇵🇱 | мова 🇰🇵 | язык 🇷🇺</value>
+  </data>
 </root>

@@ -187,4 +187,13 @@ Wybierz nowy język 🇵🇱
   <data name="FatigueSleepy" xml:space="preserve">
     <value>сонны</value>
   </data>
+  <data name="kitchenCommandDescription" xml:space="preserve">
+    <value>кухня, дзе можна покарміць жывёлу 🍽</value>
+  </data>
+  <data name="petCommandDescription" xml:space="preserve">
+    <value>стан жывёлы ❤️‍🩹</value>
+  </data>
+  <data name="languageCommandDescription" xml:space="preserve">
+    <value>language 🇺🇸 | język 🇵🇱 | мова 🇰🇵 | язык 🇷🇺</value>
+  </data>
 </root>
