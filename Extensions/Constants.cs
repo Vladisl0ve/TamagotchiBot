@@ -18,6 +18,12 @@ namespace TamagotchiBot.UserExtensions
             [Display(ShortName = "🇷🇺", Name = "ru")] Русский
         }
 
+        public enum CurrentStatus
+        {
+            Active,
+            Sleeping
+        }
+
         public enum Fatigue
         {
             Fresh,
@@ -40,6 +46,10 @@ namespace TamagotchiBot.UserExtensions
         public static double RestFactor = 0.42;
         #endregion
 
+        #region limits
+        public static int ToRestMinLimitOfFatigue = 20;
+        #endregion
+
         #region FoodFactors
         public static double BreadHungerFactor = 10; //🍞
         public static double RedAppleHungerFactor = 5; //🍎
@@ -51,7 +61,7 @@ namespace TamagotchiBot.UserExtensions
         public static string KitchenCommand = "kitchen";
         public static string PetCommand = "pet";
         public static string LanguageCommand = "language";
-        //public static string KitchenCommand = "kitchen";
+        public static string SleepCommand = "sleep";
         #endregion
 
 
@@ -71,10 +81,13 @@ namespace TamagotchiBot.UserExtensions
         public static string PetChooseName_Cat = "CAACAgIAAxkBAAEDHwthcG-wxtTfvF_S-6mqam-KwksPnQAC5RAAAowt_QftGb7TeRsiTyEE";
         public static string PetConfirmedName_Cat = "CAACAgIAAxkBAAEDHw1hcHBpvQQti1cmSC1LVKRNOtV3FwACjBIAAtJ0SUqCGw6E9UM1giEE";
         public static string PetKitchen_Cat = "CAACAgIAAxkBAAEDIFVhcfZFjhITgwR6llMbPY-58IL_RAACxA4AA7xBSg8_gz8dIW-OIQQ";
+        public static string PetSleep_Cat = "CAACAgIAAxkBAAEDLJJherSnCEKTmK9t5i1x9shxgGVzuwACdBIAAuAOQEqBqm_p74rsAAEhBA";
 
+        #endregion
 
+        #region InlineCommands
         //Tests
-        public static List<Tuple<string, string>> inlineParts = new List<Tuple<string, string>>()
+        public static List<Tuple<string, string>> inlineFood = new List<Tuple<string, string>>()
                 {
                     new Tuple<string, string>("🍞", "kitchenCommandInlineBread"),
                     new Tuple<string, string>("🍎", "kitchenCommandInlineRedApple"),
@@ -82,7 +95,12 @@ namespace TamagotchiBot.UserExtensions
                     new Tuple<string, string>("🍭", "kitchenCommandInlineLollipop")
                 };
 
+        public static List<Tuple<string, string>> InlineSleep = new List<Tuple<string, string>>()
+        {
+            new Tuple<string, string>(Resources.Resources.sleepCommandInlinePutToSleep, "sleepCommandInlinePutToSleep")
+        };
         #endregion
+
         public static ReplyKeyboardMarkup LanguagesMarkup = Extensions.ReplyKeyboardOptimizer(Extensions.LanguagesWithFlags());
     }
 }

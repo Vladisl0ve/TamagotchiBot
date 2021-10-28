@@ -139,6 +139,7 @@
 💊 Здоровье: {1}%
 🍕 Голод: {4}%
 😴 Усталость: {5}
+⚡️ Состояние: {6}
 🏅 Опыт: {2} | {3} уровень✨</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
@@ -194,5 +195,31 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="languageCommandDescription" xml:space="preserve">
     <value>language 🇺🇸 | język 🇵🇱 | мова 🇰🇵 | язык 🇷🇺</value>
+  </data>
+  <data name="sleepCommand" xml:space="preserve">
+    <value>🐱 {0}
+😴 Усталость: {1}%
+⚡️ Состояние: {2}</value>
+  </data>
+  <data name="sleepCommandDescription" xml:space="preserve">
+    <value>Спальня 🛏</value>
+  </data>
+  <data name="PetSleepingAlreadyAnwserCallback" xml:space="preserve">
+    <value>Ваш питомец уже спит 💤</value>
+  </data>
+  <data name="sleepCommandInlineShowTime" xml:space="preserve">
+    <value>Ещё будет спать: {0} 🌚</value>
+  </data>
+  <data name="CurrentStatusActive" xml:space="preserve">
+    <value>активный</value>
+  </data>
+  <data name="CurrentStatusSleeping" xml:space="preserve">
+    <value>спит</value>
+  </data>
+  <data name="PetSleepingDoesntWantYetAnwserCallback" xml:space="preserve">
+    <value>Питомец еще не хочет спать</value>
+  </data>
+  <data name="sleepCommandInlinePutToSleep" xml:space="preserve">
+    <value>Уложить спать 🛌</value>
   </data>
 </root>

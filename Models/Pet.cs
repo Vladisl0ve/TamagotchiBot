@@ -29,8 +29,11 @@ namespace TamagotchiBot.Models
         [BsonElement("LastUpdateTime")]
         public DateTime LastUpdateTime { get; set; }
 
-        [BsonElement("LastSleepingTime")]
-        public DateTime LastSleepingTime { get; set; }
+        [BsonElement("StartSleepingTime")]
+        public DateTime StartSleepingTime { get; set; }
+
+        [BsonElement("CurrentStatus")]
+        public int CurrentStatus { get; set; }
 
         [BsonElement("HP")]
         public int HP { get; set; }

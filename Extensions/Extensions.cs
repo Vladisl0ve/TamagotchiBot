@@ -147,7 +147,7 @@ namespace TamagotchiBot.UserExtensions
             {
                 new BotCommand()
                 {
-                    Command = Constants.PetCommand,
+                    Command = PetCommand,
                     Description = Resources.Resources.petCommandDescription
                 },
                 new BotCommand()
@@ -159,6 +159,11 @@ namespace TamagotchiBot.UserExtensions
                 {
                     Command = LanguageCommand,
                     Description = Resources.Resources.languageCommandDescription
+                },
+                new BotCommand()
+                {
+                    Command = SleepCommand,
+                    Description = Resources.Resources.sleepCommandDescription
                 }
             };
 
@@ -183,6 +188,26 @@ namespace TamagotchiBot.UserExtensions
                 return Resources.Resources.FatigueSleepy;
 
             return Resources.Resources.FatigueSleepy;
+        }
+
+        public static string GetCurrentStatus(int status)
+        {
+            //var statusEnum = Enum.GetValues(typeof(CurrentStatus)).Cast<CurrentStatus>().FirstOrDefault(s => (int)s == status);
+            if (Enum.IsDefined(typeof(CurrentStatus), status))
+            {
+                var statusEnum = (CurrentStatus)status;
+                switch (statusEnum)
+                {
+                    case CurrentStatus.Active:
+                        return Resources.Resources.CurrentStatusActive;
+                    case CurrentStatus.Sleeping:
+                        return Resources.Resources.CurrentStatusSleeping;
+                    default:
+                        return null;
+                }
+            }
+            else
+                return null;
         }
 
         public static bool IsEqual(this string telegramString, string defaultString)

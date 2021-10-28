@@ -103,6 +103,24 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to active.
+        /// </summary>
+        public static string CurrentStatusActive {
+            get {
+                return ResourceManager.GetString("CurrentStatusActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sleeping.
+        /// </summary>
+        public static string CurrentStatusSleeping {
+            get {
+                return ResourceManager.GetString("CurrentStatusSleeping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In developing, wait for next update 👾.
         /// </summary>
         public static string DevelopWarning {
@@ -190,6 +208,7 @@ namespace TamagotchiBot.Resources {
         ///💊 HP: {1}%
         ///🍕 Hunger: {4}%
         ///😴 Fatigue: {5}
+        ///⚡️ Status: {6}
         ///🏅 EXP: {2} | {3} level ✨.
         /// </summary>
         public static string petCommand {
@@ -241,6 +260,62 @@ namespace TamagotchiBot.Resources {
         public static string PetFeedingAnwserCallback {
             get {
                 return ResourceManager.GetString("PetFeedingAnwserCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your pet is sleeping now 💤.
+        /// </summary>
+        public static string PetSleepingAlreadyAnwserCallback {
+            get {
+                return ResourceManager.GetString("PetSleepingAlreadyAnwserCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet doesn&apos;t want to sleep yet.
+        /// </summary>
+        public static string PetSleepingDoesntWantYetAnwserCallback {
+            get {
+                return ResourceManager.GetString("PetSleepingDoesntWantYetAnwserCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🐱 {0}
+        ///😴 Fatigue: {1}%
+        ///⚡️ Status: {2}.
+        /// </summary>
+        public static string sleepCommand {
+            get {
+                return ResourceManager.GetString("sleepCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bedroom 🛏.
+        /// </summary>
+        public static string sleepCommandDescription {
+            get {
+                return ResourceManager.GetString("sleepCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put to sleep 🛌.
+        /// </summary>
+        public static string sleepCommandInlinePutToSleep {
+            get {
+                return ResourceManager.GetString("sleepCommandInlinePutToSleep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remains to sleep: {0} 🌚.
+        /// </summary>
+        public static string sleepCommandInlineShowTime {
+            get {
+                return ResourceManager.GetString("sleepCommandInlineShowTime", resourceCulture);
             }
         }
         

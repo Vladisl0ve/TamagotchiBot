@@ -139,6 +139,7 @@ Do not forget feed and wash him, play a games and just love ☺️</value>
 💊 HP: {1}%
 🍕 Hunger: {4}%
 😴 Fatigue: {5}
+⚡️ Status: {6}
 🏅 EXP: {2} | {3} level ✨</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
@@ -194,5 +195,31 @@ Don't forget feed him 🐣</value>
   </data>
   <data name="languageCommandDescription" xml:space="preserve">
     <value>language 🇺🇸 | język 🇵🇱 | мова 🇰🇵 | язык 🇷🇺</value>
+  </data>
+  <data name="sleepCommand" xml:space="preserve">
+    <value>🐱 {0}
+😴 Fatigue: {1}%
+⚡️ Status: {2}</value>
+  </data>
+  <data name="sleepCommandDescription" xml:space="preserve">
+    <value>Bedroom 🛏</value>
+  </data>
+  <data name="PetSleepingAlreadyAnwserCallback" xml:space="preserve">
+    <value>Your pet is sleeping now 💤</value>
+  </data>
+  <data name="sleepCommandInlineShowTime" xml:space="preserve">
+    <value>Remains to sleep: {0} 🌚</value>
+  </data>
+  <data name="CurrentStatusActive" xml:space="preserve">
+    <value>active</value>
+  </data>
+  <data name="CurrentStatusSleeping" xml:space="preserve">
+    <value>sleeping</value>
+  </data>
+  <data name="PetSleepingDoesntWantYetAnwserCallback" xml:space="preserve">
+    <value>Pet doesn't want to sleep yet</value>
+  </data>
+  <data name="sleepCommandInlinePutToSleep" xml:space="preserve">
+    <value>Put to sleep 🛌</value>
   </data>
 </root>
