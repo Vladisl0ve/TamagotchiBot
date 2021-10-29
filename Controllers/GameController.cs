@@ -176,6 +176,13 @@ namespace TamagotchiBot.Controllers
             if (pet.LastUpdateTime.Year == 1)
                 pet.LastUpdateTime = DateTime.UtcNow;
 
+            if (pet.CurrentStatus == 0)
+                pet.CurrentStatus = 0;
+
+            if (pet.StartSleepingTime.Year == 1)
+                pet.StartSleepingTime = DateTime.UtcNow;
+
+
 
             int minuteCounter = (int)(DateTime.UtcNow - pet.LastUpdateTime).TotalMinutes;
             //EXP
@@ -392,7 +399,7 @@ namespace TamagotchiBot.Controllers
                     toSendInline = Extensions.InlineKeyboardOptimizer(new List<Tuple<string, string>>() { new Tuple<string, string>(timeToWaitStr, "sleepCommandInlinePutToSleep") });
                 }
                 else
-                    toSendInline = Extensions.InlineKeyboardOptimizer(InlineSleep);
+                    toSendInline = Extensions.InlineKeyboardOptimizer(new List<Tuple<string, string>>() { new Tuple<string, string>(sleepCommandInlinePutToSleep, "sleepCommandInlinePutToSleep") });
 
                 return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(toSendText,
                                                             PetSleep_Cat,
@@ -549,6 +556,7 @@ namespace TamagotchiBot.Controllers
                     if (pet.Fatigue < ToRestMinLimitOfFatigue)
                     {
                         bot.AnswerCallbackQueryAsync(callback.Id, PetSleepingDoesntWantYetAnwserCallback);
+                        bot.EditMessageReplyMarkupAsync(callback.Message.Chat.Id, callback.Message.MessageId, Extensions.InlineKeyboardOptimizer(new List<Tuple<string, string>>() { new Tuple<string, string>(sleepCommandInlinePutToSleep, "sleepCommandInlinePutToSleep") }));
                         return null;
                     }
 
