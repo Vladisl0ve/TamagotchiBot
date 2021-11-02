@@ -13,7 +13,6 @@ using Telegram.Bot.Types.ReplyMarkups;
 using User = TamagotchiBot.Models.User;
 using Chat = TamagotchiBot.Models.Chat;
 using Telegram.Bot;
-using static TamagotchiBot.UserExtensions.Constants;
 using static TamagotchiBot.Resources.Resources;
 
 namespace TamagotchiBot.Controllers
@@ -106,7 +105,7 @@ namespace TamagotchiBot.Controllers
 
             bot.SetMyCommandsAsync(Extensions.GetCommands());
 
-            return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(Welcome, WelcomeSticker, null, null);
+            return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(Welcome, Constants.WelcomeSticker, null, null);
         }
 
         public Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup> Process()
@@ -186,18 +185,18 @@ namespace TamagotchiBot.Controllers
 
             int minuteCounter = (int)(DateTime.UtcNow - pet.LastUpdateTime).TotalMinutes;
             //EXP
-            int toAddExp = minuteCounter * ExpFactor;
+            int toAddExp = minuteCounter * Constants.ExpFactor;
 
             pet.EXP += toAddExp;
 
             if (pet.EXP > 100)
             {
-                pet.Level += pet.EXP / ExpToLvl;
-                pet.EXP -= (pet.EXP / ExpToLvl) * ExpToLvl;
+                pet.Level += pet.EXP / Constants.ExpToLvl;
+                pet.EXP -= (pet.EXP / Constants.ExpToLvl) * Constants.ExpToLvl;
             }
 
             //Hunger
-            double toAddHunger = Math.Round(minuteCounter * StarvingFactor, 2);
+            double toAddHunger = Math.Round(minuteCounter * Constants.StarvingFactor, 2);
             pet.Starving += toAddHunger;
             pet.Starving = Math.Round(pet.Starving, 2);
 
@@ -215,7 +214,7 @@ namespace TamagotchiBot.Controllers
             //Fatigue
             if (pet.CurrentStatus == 0)
             {
-                double toAddFatigue = Math.Round(minuteCounter * FatigueFactor);
+                double toAddFatigue = Math.Round(minuteCounter * Constants.FatigueFactor);
                 pet.Fatigue += (int)toAddFatigue;
             }
             if (pet.Fatigue > 100)
@@ -225,7 +224,7 @@ namespace TamagotchiBot.Controllers
             if (pet.CurrentStatus == 1)
             {
                 int minuteSleepingCounter = (int)(DateTime.UtcNow - pet.StartSleepingTime).TotalMinutes;
-                double toDecreaseFatigue = Math.Round(minuteSleepingCounter * RestFactor);
+                double toDecreaseFatigue = Math.Round(minuteSleepingCounter * Constants.RestFactor);
                 pet.StartSleepingTime = DateTime.UtcNow;
 
                 pet.Fatigue -= (int)toDecreaseFatigue;
@@ -263,13 +262,13 @@ namespace TamagotchiBot.Controllers
                     Type = null,
                     UserId = message.From.Id
                 });
-                return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(ChooseName, PetChooseName_Cat, null, null);
+                return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(ChooseName, Constants.PetChooseName_Cat, null, null);
             }
 
             if (pet.Name == null)
             {
                 _petService.UpdateName(message.From.Id, message.Text);
-                return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(ConfirmedName, PetConfirmedName_Cat, null, null);
+                return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(ConfirmedName, Constants.PetConfirmedName_Cat, null, null);
             }
 
             return null;
@@ -296,17 +295,17 @@ namespace TamagotchiBot.Controllers
 
                 switch (culture.Language())
                 {
-                    case Language.Polski:
-                        stickerToSend = PolishLanguageSetSticker;
+                    case Constants.Language.Polish:
+                        stickerToSend = Constants.PolishLanguageSetSticker;
                         break;
-                    case Language.English:
-                        stickerToSend = EnglishLanguageSetSticker;
+                    case Constants.Language.English:
+                        stickerToSend = Constants.EnglishLanguageSetSticker;
                         break;
-                    case Language.Беларуская:
-                        stickerToSend = BelarussianLanguageSetSticker;
+                    case Constants.Language.Belarusian:
+                        stickerToSend = Constants.BelarussianLanguageSetSticker;
                         break;
-                    case Language.Русский:
-                        stickerToSend = RussianLanguageSetSticker;
+                    case Constants.Language.Russian:
+                        stickerToSend = Constants.RussianLanguageSetSticker;
                         break;
                     default:
                         stickerToSend = null;
@@ -334,8 +333,8 @@ namespace TamagotchiBot.Controllers
             {
                 User user = _userService.UpdateLanguage(message.From.Id, null);
                 return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(ChangeLanguage,
-                                                                            ChangeLanguageSticker,
-                                                                            LanguagesMarkup,
+                                                                            Constants.ChangeLanguageSticker,
+                                                                            Constants.LanguagesMarkup,
                                                                             null);
             }
             if (textRecieved == "/pet")
@@ -345,7 +344,7 @@ namespace TamagotchiBot.Controllers
                                                   Extensions.GetCurrentStatus(pet.CurrentStatus));
 
                 return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(toSendText,
-                                                                                            PetInfo_Cat,
+                                                                                            Constants.PetInfo_Cat,
                                                                                             null,
                                                                                             Extensions.InlineKeyboardOptimizer(new List<Tuple<string, string>>() { new Tuple<string, string>(petCommandInlineExtraInfo, "petCommandInlineExtraInfo") }));
             }
@@ -353,7 +352,7 @@ namespace TamagotchiBot.Controllers
             if (textRecieved == "/bathroom")
             {
                 return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(DevelopWarning,
-                                                            DevelopWarningSticker,
+                                                            Constants.DevelopWarningSticker,
                                                             null,
                                                             null);
             }
@@ -362,11 +361,11 @@ namespace TamagotchiBot.Controllers
             {
                 string toSendText = string.Format(kitchenCommand, pet.Starving);
 
-                List<Tuple<string, string>> inlineParts = inlineFood;
+                List<Tuple<string, string>> inlineParts = Constants.inlineFood;
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
                 return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(toSendText,
-                                                            PetKitchen_Cat,
+                                                            Constants.PetKitchen_Cat,
                                                             null,
                                                             toSendInline);
             }
@@ -374,7 +373,7 @@ namespace TamagotchiBot.Controllers
             if (textRecieved == "/gameroom")
             {
                 return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(DevelopWarning,
-                                                            DevelopWarningSticker,
+                                                            Constants.DevelopWarningSticker,
                                                             null,
                                                             null);
             }
@@ -382,7 +381,7 @@ namespace TamagotchiBot.Controllers
             if (textRecieved == "/ranks")
             {
                 return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(DevelopWarning,
-                                                            DevelopWarningSticker,
+                                                            Constants.DevelopWarningSticker,
                                                             null,
                                                             null);
             }
@@ -391,9 +390,9 @@ namespace TamagotchiBot.Controllers
             {
                 string toSendText = string.Format(sleepCommand, pet.Name, pet.Fatigue, Extensions.GetCurrentStatus(pet.CurrentStatus));
                 InlineKeyboardMarkup toSendInline;
-                if (pet.CurrentStatus == (int)CurrentStatus.Sleeping)
+                if (pet.CurrentStatus == (int)Constants.CurrentStatus.Sleeping)
                 {
-                    var minutesToWait = pet.Fatigue / RestFactor;
+                    var minutesToWait = pet.Fatigue / Constants.RestFactor;
                     string timeToWaitStr = string.Format(sleepCommandInlineShowTime, new DateTime().AddMinutes(minutesToWait).ToString("HH:mm"));
 
                     toSendInline = Extensions.InlineKeyboardOptimizer(new List<Tuple<string, string>>() { new Tuple<string, string>(timeToWaitStr, "sleepCommandInlinePutToSleep") });
@@ -402,7 +401,7 @@ namespace TamagotchiBot.Controllers
                     toSendInline = Extensions.InlineKeyboardOptimizer(new List<Tuple<string, string>>() { new Tuple<string, string>(sleepCommandInlinePutToSleep, "sleepCommandInlinePutToSleep") });
 
                 return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(toSendText,
-                                                            PetSleep_Cat,
+                                                            Constants.PetSleep_Cat,
                                                             null,
                                                             toSendInline);
             }
@@ -410,14 +409,14 @@ namespace TamagotchiBot.Controllers
             if (textRecieved == "/test")
             {
                 return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(DevelopWarning,
-                                                            DevelopWarningSticker,
+                                                            Constants.DevelopWarningSticker,
                                                             null,
                                                             null);
             }
             if (textRecieved == "/restart")
             {
                 return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(DevelopWarning,
-                                                            DevelopWarningSticker,
+                                                            Constants.DevelopWarningSticker,
                                                             null,
                                                             null);
             }
@@ -460,13 +459,13 @@ namespace TamagotchiBot.Controllers
 
             if (callback.Data == "kitchenCommandInlineBread") //56.379999999999995
             {
-                var newStarving = Math.Round(pet.Starving - BreadHungerFactor, 2);
+                var newStarving = Math.Round(pet.Starving - Constants.BreadHungerFactor, 2);
                 if (newStarving < 0)
                     newStarving = 0;
 
                 _petService.UpdateStarving(callback.From.Id, newStarving);
 
-                string anwser = string.Format(PetFeedingAnwserCallback, (int)BreadHungerFactor);
+                string anwser = string.Format(PetFeedingAnwserCallback, (int)Constants.BreadHungerFactor);
                 bot.AnswerCallbackQueryAsync(callback.Id, anwser);
 
                 string toSendText = string.Format(kitchenCommand, newStarving);
@@ -474,20 +473,20 @@ namespace TamagotchiBot.Controllers
                 if (toSendText.IsEqual(callback.Message.Text))
                     return null;
 
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineFood, 3);
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(Constants.inlineFood, 3);
 
                 return new Tuple<string, InlineKeyboardMarkup>(toSendText, toSendInline);
             }
 
             if (callback.Data == "kitchenCommandInlineRedApple")
             {
-                var newStarving = Math.Round(pet.Starving - RedAppleHungerFactor, 2);
+                var newStarving = Math.Round(pet.Starving - Constants.RedAppleHungerFactor, 2);
                 if (newStarving < 0)
                     newStarving = 0;
 
                 _petService.UpdateStarving(callback.From.Id, newStarving);
 
-                string anwser = string.Format(PetFeedingAnwserCallback, (int)RedAppleHungerFactor);
+                string anwser = string.Format(PetFeedingAnwserCallback, (int)Constants.RedAppleHungerFactor);
                 bot.AnswerCallbackQueryAsync(callback.Id, anwser);
 
                 string toSendText = string.Format(kitchenCommand, newStarving);
@@ -495,20 +494,20 @@ namespace TamagotchiBot.Controllers
                 if (toSendText.IsEqual(callback.Message.Text))
                     return null;
 
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineFood, 3);
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(Constants.inlineFood, 3);
 
                 return new Tuple<string, InlineKeyboardMarkup>(toSendText, toSendInline);
             }
 
             if (callback.Data == "kitchenCommandInlineChocolate")
             {
-                var newStarving = Math.Round(pet.Starving - ChocolateHungerFactor, 2);
+                var newStarving = Math.Round(pet.Starving - Constants.ChocolateHungerFactor, 2);
                 if (newStarving < 0)
                     newStarving = 0;
 
                 _petService.UpdateStarving(callback.From.Id, newStarving);
 
-                string anwser = string.Format(PetFeedingAnwserCallback, (int)ChocolateHungerFactor);
+                string anwser = string.Format(PetFeedingAnwserCallback, (int)Constants.ChocolateHungerFactor);
                 bot.AnswerCallbackQueryAsync(callback.Id, anwser);
 
                 string toSendText = string.Format(kitchenCommand, newStarving);
@@ -516,20 +515,20 @@ namespace TamagotchiBot.Controllers
                 if (toSendText.IsEqual(callback.Message.Text))
                     return null;
 
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineFood, 3);
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(Constants.inlineFood, 3);
 
                 return new Tuple<string, InlineKeyboardMarkup>(toSendText, toSendInline);
             }
 
             if (callback.Data == "kitchenCommandInlineLollipop")
             {
-                var newStarving = Math.Round(pet.Starving - LollipopHungerFactor, 2);
+                var newStarving = Math.Round(pet.Starving - Constants.LollipopHungerFactor, 2);
                 if (newStarving < 0)
                     newStarving = 0;
 
                 _petService.UpdateStarving(callback.From.Id, newStarving);
 
-                string anwser = string.Format(PetFeedingAnwserCallback, (int)LollipopHungerFactor);
+                string anwser = string.Format(PetFeedingAnwserCallback, (int)Constants.LollipopHungerFactor);
                 bot.AnswerCallbackQueryAsync(callback.Id, anwser);
 
                 string toSendText = string.Format(kitchenCommand, newStarving);
@@ -537,7 +536,7 @@ namespace TamagotchiBot.Controllers
                 if (toSendText.IsEqual(callback.Message.Text))
                     return null;
 
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineFood, 3);
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(Constants.inlineFood, 3);
 
                 return new Tuple<string, InlineKeyboardMarkup>(toSendText, toSendInline);
             }
@@ -545,28 +544,28 @@ namespace TamagotchiBot.Controllers
             if (callback.Data == "sleepCommandInlinePutToSleep")
             {
 
-                if (pet.CurrentStatus == (int)CurrentStatus.Sleeping)
+                if (pet.CurrentStatus == (int)Constants.CurrentStatus.Sleeping)
                 {
                     bot.AnswerCallbackQueryAsync(callback.Id, PetSleepingAlreadyAnwserCallback);
                     return null;
                 }
 
-                if (pet.CurrentStatus == (int)CurrentStatus.Active)
+                if (pet.CurrentStatus == (int)Constants.CurrentStatus.Active)
                 {
-                    if (pet.Fatigue < ToRestMinLimitOfFatigue)
+                    if (pet.Fatigue < Constants.ToRestMinLimitOfFatigue)
                     {
                         bot.AnswerCallbackQueryAsync(callback.Id, PetSleepingDoesntWantYetAnwserCallback);
                         bot.EditMessageReplyMarkupAsync(callback.Message.Chat.Id, callback.Message.MessageId, Extensions.InlineKeyboardOptimizer(new List<Tuple<string, string>>() { new Tuple<string, string>(sleepCommandInlinePutToSleep, "sleepCommandInlinePutToSleep") }));
                         return null;
                     }
 
-                    pet.CurrentStatus = (int)CurrentStatus.Sleeping;
+                    pet.CurrentStatus = (int)Constants.CurrentStatus.Sleeping;
                     pet.StartSleepingTime = DateTime.UtcNow;
                     _petService.Update(pet.UserId, pet);
 
                     string toSendText = string.Format(sleepCommand, pet.Name, pet.Fatigue, Extensions.GetCurrentStatus(pet.CurrentStatus));
 
-                    var minutesToWait = pet.Fatigue / RestFactor;
+                    var minutesToWait = pet.Fatigue / Constants.RestFactor;
 
                     string timeToWaitStr = string.Format(sleepCommandInlineShowTime, new DateTime().AddMinutes(minutesToWait).ToString("HH:mm"));
 

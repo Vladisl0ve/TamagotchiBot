@@ -12,10 +12,10 @@ namespace TamagotchiBot.UserExtensions
     {
         public enum Language
         {
-            [Display(ShortName = "🇵🇱", Name = "pl")] Polski,
+            [Display(ShortName = "🇵🇱", Name = "pl")] Polish,
             [Display(ShortName = "🇺🇸", Name = "en")] English,
-            [Display(ShortName = "🇰🇵", Name = "be")] Беларуская,
-            [Display(ShortName = "🇷🇺", Name = "ru")] Русский
+            [Display(ShortName = "🇨🇷", Name = "be")] Belarusian,
+            [Display(ShortName = "🇷🇺", Name = "ru")] Russian
         }
 
         public enum CurrentStatus
