@@ -205,7 +205,7 @@ Nie zapominaj karmić zwierzaka 🐣</value>
     <value>Sypialnia 🛏</value>
   </data>
   <data name="PetSleepingAlreadyAnwserCallback" xml:space="preserve">
-    <value>Twój zwierzak śpi już 💤</value>
+    <value>Twój zwierzak już śpi 💤</value>
   </data>
   <data name="sleepCommandInlineShowTime" xml:space="preserve">
     <value>Koniec snu przez: {0}</value>
