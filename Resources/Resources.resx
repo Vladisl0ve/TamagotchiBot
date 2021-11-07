@@ -147,7 +147,7 @@ Do not forget feed and wash him, play a games and just love ☺️</value>
   </data>
   <data name="ChangeLanguage" xml:space="preserve">
     <value>Choose new language 🇺🇸
-Выберы новую мову 🇰🇵
+Выберы новую мову 🇨🇷
 Wybierz nowy język 🇵🇱
 Выбери новый язык 🇷🇺</value>
   </data>
@@ -191,10 +191,10 @@ Don't forget feed him 🐣</value>
     <value>pet's status ❤️‍🩹</value>
   </data>
   <data name="kitchenCommandDescription" xml:space="preserve">
-    <value>kitchen, here you can feed the pet 🍽</value>
+    <value>kitchen 🍽</value>
   </data>
   <data name="languageCommandDescription" xml:space="preserve">
-    <value>language 🇺🇸 | język 🇵🇱 | мова 🇰🇵 | язык 🇷🇺</value>
+    <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺</value>
   </data>
   <data name="sleepCommand" xml:space="preserve">
     <value>🐱 {0}

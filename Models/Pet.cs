@@ -47,6 +47,9 @@ namespace TamagotchiBot.Models
         [BsonElement("Fatigue")]
         public int Fatigue { get; set; }
 
+        [BsonElement("IsNew")]
+        public bool IsWelcomed { get; set; }
+
         [BsonElement("EXP")]
         public int EXP { get; set; }
 

@@ -62,7 +62,7 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Choose new language 🇺🇸
-        ///Выберы новую мову 🇰🇵
+        ///Выберы новую мову 🇨🇷
         ///Wybierz nowy język 🇵🇱
         ///Выбери новый язык 🇷🇺.
         /// </summary>
@@ -186,7 +186,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to kitchen, here you can feed the pet 🍽.
+        ///   Looks up a localized string similar to kitchen 🍽.
         /// </summary>
         public static string kitchenCommandDescription {
             get {
@@ -195,7 +195,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to language 🇺🇸 | język 🇵🇱 | мова 🇰🇵 | язык 🇷🇺.
+        ///   Looks up a localized string similar to language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺.
         /// </summary>
         public static string languageCommandDescription {
             get {

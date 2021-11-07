@@ -101,6 +101,6 @@ namespace TamagotchiBot.UserExtensions
         };
         #endregion
 
-        public static ReplyKeyboardMarkup LanguagesMarkup = Extensions.ReplyKeyboardOptimizer(Extensions.LanguagesWithFlags());
+        public static ReplyKeyboardMarkup LanguagesMarkup = Extensions.ReplyKeyboardOptimizer(Extensions.LanguagesWithFlags(), isOneTimeKeboard: true);
     }
 }

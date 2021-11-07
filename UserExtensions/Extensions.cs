@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using TamagotchiBot.Models;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.UserExtensions.Constants;
@@ -14,7 +15,7 @@ namespace TamagotchiBot.UserExtensions
 {
     public static class Extensions
     {
-        public static ReplyKeyboardMarkup ReplyKeyboardOptimizer(List<string> names, int columnCounter = 2)
+        public static ReplyKeyboardMarkup ReplyKeyboardOptimizer(List<string> names, int columnCounter = 2, bool isOneTimeKeboard = false)
         {
             int x = columnCounter < 2 ? 2 : columnCounter;
             int y = (int)Math.Ceiling((double)(names.Count) / x);
@@ -40,7 +41,7 @@ namespace TamagotchiBot.UserExtensions
             for (int i = 0; i < names.Count; i++)
                 keyboard[i / x][i % x] = names[i];
 
-            return new ReplyKeyboardMarkup(keyboard) { ResizeKeyboard = true };
+            return new ReplyKeyboardMarkup(keyboard) { ResizeKeyboard = true, OneTimeKeyboard = isOneTimeKeboard };
         }
 
         public static InlineKeyboardMarkup InlineKeyboardOptimizer(List<Tuple<string, string>> names, int columnCounter = 2)
@@ -141,7 +142,7 @@ namespace TamagotchiBot.UserExtensions
             return Constants.Language.English;
         }
 
-        public static List<BotCommand> GetCommands()
+        public static List<BotCommand> GetAllCommands()
         {
             List<BotCommand> result = new List<BotCommand>()
             {
@@ -169,6 +170,40 @@ namespace TamagotchiBot.UserExtensions
 
             return result;
         }
+        public static List<BotCommand> GetCommands(Pet pet)
+        {
+            List<BotCommand> result = new List<BotCommand>();
+
+            result.Add(new BotCommand()
+            {
+                Command = Constants.LanguageCommand,
+                Description = Resources.Resources.languageCommandDescription
+            });
+
+            if (pet?.Name != null)
+            {
+                result.Add(new BotCommand()
+                {
+                    Command = Constants.PetCommand,
+                    Description = Resources.Resources.petCommandDescription
+                });
+
+                result.Add(new BotCommand()
+                {
+                    Command = Constants.KitchenCommand,
+                    Description = Resources.Resources.kitchenCommandDescription
+                });
+
+                result.Add(new BotCommand()
+                {
+                    Command = Constants.SleepCommand,
+                    Description = Resources.Resources.sleepCommandDescription
+                });
+            }
+
+            return result;
+        }
+
 
         public static string GetFatigue(int fatigue)
         {

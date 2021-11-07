@@ -103,9 +103,12 @@ namespace TamagotchiBot.Controllers
                 Culture = new CultureInfo(message.From.LanguageCode);
             }
 
-            bot.SetMyCommandsAsync(Extensions.GetCommands());
+            bot.SetMyCommandsAsync(Extensions.GetCommands(pet));
 
-            return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(Welcome, Constants.WelcomeSticker, null, null);
+            return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(ChangeLanguage,
+                                                                                 Constants.ChangeLanguageSticker,
+                                                                                 Constants.LanguagesMarkup,
+                                                                                 null);
         }
 
         public Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup> Process()
@@ -259,9 +262,17 @@ namespace TamagotchiBot.Controllers
                     Joy = 100,
                     Fatigue = 0,
                     Starving = 0,
+                    IsWelcomed = true,
                     Type = null,
                     UserId = message.From.Id
                 });
+                return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(Welcome, Constants.WelcomeSticker, new ReplyKeyboardRemove(), null);
+            }
+
+            if (pet.IsWelcomed)
+            {
+                pet.IsWelcomed = false;
+                _petService.Update(message.From.Id, pet);
                 return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(ChooseName, Constants.PetChooseName_Cat, null, null);
             }
 
@@ -331,7 +342,7 @@ namespace TamagotchiBot.Controllers
 
             if (textRecieved == "/language")
             {
-                User user = _userService.UpdateLanguage(message.From.Id, null);
+                _ = _userService.UpdateLanguage(message.From.Id, null);
                 return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(ChangeLanguage,
                                                                             Constants.ChangeLanguageSticker,
                                                                             Constants.LanguagesMarkup,

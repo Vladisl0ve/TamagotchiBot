@@ -147,7 +147,7 @@
   </data>
   <data name="ChangeLanguage" xml:space="preserve">
     <value>Choose new language 🇺🇸
-Выберы новую мову 🇰🇵
+Выберы новую мову 🇨🇷
 Wybierz nowy język 🇵🇱
 Выбери новый язык 🇷🇺</value>
   </data>
@@ -188,13 +188,13 @@ Wybierz nowy język 🇵🇱
     <value>полуспящий</value>
   </data>
   <data name="kitchenCommandDescription" xml:space="preserve">
-    <value>кухня, где можно покормить питомца 🍽</value>
+    <value>кухня 🍽</value>
   </data>
   <data name="petCommandDescription" xml:space="preserve">
     <value>состояние питомца ❤️‍🩹</value>
   </data>
   <data name="languageCommandDescription" xml:space="preserve">
-    <value>language 🇺🇸 | język 🇵🇱 | мова 🇰🇵 | язык 🇷🇺</value>
+    <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺</value>
   </data>
   <data name="sleepCommand" xml:space="preserve">
     <value>🐱 {0}

@@ -64,7 +64,9 @@ namespace TamagotchiBot.Handlers
                 UpdateType.CallbackQuery => BotOnCallbackQueryReceived(bot, update.CallbackQuery),
                 _ => Task.CompletedTask
             };
-            bot.SetMyCommandsAsync(Extensions.GetCommands(), token);
+
+            var userId = update.Message?.From.Id ?? update.CallbackQuery.From.Id;
+            bot.SetMyCommandsAsync(Extensions.GetCommands(petService.Get(userId)), token);
             return task;
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
