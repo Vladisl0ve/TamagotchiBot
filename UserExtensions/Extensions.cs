@@ -199,6 +199,12 @@ namespace TamagotchiBot.UserExtensions
                     Command = Constants.SleepCommand,
                     Description = Resources.Resources.sleepCommandDescription
                 });
+
+                result.Add(new BotCommand()
+                {
+                    Command = Constants.GameroomCommand,
+                    Description = Resources.Resources.gameroomCommandDescription
+                });
             }
 
             return result;

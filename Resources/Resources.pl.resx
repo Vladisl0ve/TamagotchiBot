@@ -167,6 +167,7 @@ Wybierz nowy język 🇵🇱
   <data name="kitchenCommand" xml:space="preserve">
     <value>Jesteś w kuchni 🥦
 🍕 Głód {0}%
+
 Nie zapominaj karmić zwierzaka 🐣</value>
   </data>
   <data name="PetFeedingAnwserCallback" xml:space="preserve">
@@ -221,5 +222,17 @@ Nie zapominaj karmić zwierzaka 🐣</value>
   </data>
   <data name="sleepCommandInlinePutToSleep" xml:space="preserve">
     <value>Położyć spać 🛌</value>
+  </data>
+  <data name="gameroomCommand" xml:space="preserve">
+    <value>Jesteście w pokoju dziecięcym
+⚽️ Zmęczenie: {0}
+
+Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
+  </data>
+  <data name="gameroomCommandDescription" xml:space="preserve">
+    <value>⚽️ Pokój gier</value>
+  </data>
+  <data name="PetPlayingAnwserCallback" xml:space="preserve">
+    <value>Zmęczenie Twojego zwierzaka wzrosło o {0}%</value>
   </data>
 </root>

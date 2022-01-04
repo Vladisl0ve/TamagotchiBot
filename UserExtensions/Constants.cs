@@ -43,7 +43,9 @@ namespace TamagotchiBot.UserExtensions
         public static int ExpToLvl = 100;
         public static double StarvingFactor = 0.138;
         public static double FatigueFactor = 0.083;
-        public static double RestFactor = 0.42;
+        public static double RestFactor = 20;
+        public static int CardGameFatigueFactor = 20;
+        public static int DiceGameFatigueFactor = 5;
         #endregion
 
         #region limits
@@ -62,6 +64,7 @@ namespace TamagotchiBot.UserExtensions
         public static string PetCommand = "pet";
         public static string LanguageCommand = "language";
         public static string SleepCommand = "sleep";
+        public static string GameroomCommand = "gameroom";
         #endregion
 
 
@@ -81,6 +84,7 @@ namespace TamagotchiBot.UserExtensions
         public static string PetChooseName_Cat = "CAACAgIAAxkBAAEDHwthcG-wxtTfvF_S-6mqam-KwksPnQAC5RAAAowt_QftGb7TeRsiTyEE";
         public static string PetConfirmedName_Cat = "CAACAgIAAxkBAAEDHw1hcHBpvQQti1cmSC1LVKRNOtV3FwACjBIAAtJ0SUqCGw6E9UM1giEE";
         public static string PetKitchen_Cat = "CAACAgIAAxkBAAEDIFVhcfZFjhITgwR6llMbPY-58IL_RAACxA4AA7xBSg8_gz8dIW-OIQQ";
+        public static string PetGameroom_Cat = "CAACAgIAAxkBAAEDnIhh1LTJGdhUdSU1y0PFrMmr0wJ3EwAC_RIAAjV1SEq7O0eiJ48IqCME";
         public static string PetSleep_Cat = "CAACAgIAAxkBAAEDLJJherSnCEKTmK9t5i1x9shxgGVzuwACdBIAAuAOQEqBqm_p74rsAAEhBA";
 
         #endregion
@@ -94,6 +98,13 @@ namespace TamagotchiBot.UserExtensions
                     new Tuple<string, string>("🍫", "kitchenCommandInlineChocolate"),
                     new Tuple<string, string>("🍭", "kitchenCommandInlineLollipop")
                 };
+
+        public static List<Tuple<string, string>> inlineGames = new List<Tuple<string, string>>()
+        {
+            new Tuple<string, string>("🃏", "gameroomCommandInlineCard"),
+            new Tuple<string, string>("🎲", "gameroomCommandInlineDice")
+
+        };
 
         public static List<Tuple<string, string>> InlineSleep = new List<Tuple<string, string>>()
         {

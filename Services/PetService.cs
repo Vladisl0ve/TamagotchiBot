@@ -60,6 +60,16 @@ namespace TamagotchiBot.Services
             }
         }
 
+        public void UpdateFatigue(long userId, int newFatigue)
+        {
+            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.Fatigue = newFatigue;
+                Update(userId, pet);
+            }
+        }
+
         public void Remove(long userId) => _pets.DeleteOne(p => p.UserId == userId);
 
     }

@@ -398,12 +398,17 @@ namespace TamagotchiBot.Controllers
 
             if (textRecieved == "/gameroom")
             {
+                string toSendText = string.Format(gameroomCommand, pet.Fatigue);
+
+                List<Tuple<string, string>> inlineParts = Constants.inlineGames;
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+
                 chat.LastMessage = "/gameroom";
                 _chatService.Update(chat.ChatId, chat);
-                return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(DevelopWarning,
-                                                            Constants.DevelopWarningSticker,
+                return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(toSendText,
+                                                            Constants.PetGameroom_Cat,
                                                             null,
-                                                            null);
+                                                            toSendInline);
             }
 
             if (textRecieved == "/ranks")
@@ -611,6 +616,46 @@ namespace TamagotchiBot.Controllers
                 }
             }
 
+            if (callback.Data == "gameroomCommandInlineCard")
+            {
+                var newFatigue = pet.Fatigue + Constants.CardGameFatigueFactor;
+                if (newFatigue > 100)
+                    newFatigue = 100;
+
+                _petService.UpdateFatigue(callback.From.Id, newFatigue);
+
+                string anwser = string.Format(PetPlayingAnwserCallback, (int)Constants.CardGameFatigueFactor);
+                bot.AnswerCallbackQueryAsync(callback.Id, anwser);
+
+                string toSendText = string.Format(gameroomCommand, newFatigue);
+
+                if (toSendText.IsEqual(callback.Message.Text))
+                    return null;
+
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(Constants.inlineGames, 3);
+
+                return new Tuple<string, InlineKeyboardMarkup>(toSendText, toSendInline);
+            }
+            if (callback.Data == "gameroomCommandInlineDice")
+            {
+                var newFatigue = pet.Fatigue + Constants.DiceGameFatigueFactor;
+                if (newFatigue > 100)
+                    newFatigue = 100;
+
+                _petService.UpdateFatigue(callback.From.Id, newFatigue);
+
+                string anwser = string.Format(PetPlayingAnwserCallback, (int)Constants.DiceGameFatigueFactor);
+                bot.AnswerCallbackQueryAsync(callback.Id, anwser);
+
+                string toSendText = string.Format(gameroomCommand, newFatigue);
+
+                if (toSendText.IsEqual(callback.Message.Text))
+                    return null;
+
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(Constants.inlineGames, 3);
+
+                return new Tuple<string, InlineKeyboardMarkup>(toSendText, toSendInline);
+            }
             return null;
         }
     }

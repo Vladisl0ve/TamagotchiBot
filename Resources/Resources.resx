@@ -167,6 +167,7 @@ Wybierz nowy język 🇵🇱
   <data name="kitchenCommand" xml:space="preserve">
     <value>You are in the kitchen 🥦
 🍕 Pet's hunger: {0}%
+
 Don't forget feed him 🐣</value>
   </data>
   <data name="PetFeedingAnwserCallback" xml:space="preserve">
@@ -221,5 +222,17 @@ Don't forget feed him 🐣</value>
   </data>
   <data name="sleepCommandInlinePutToSleep" xml:space="preserve">
     <value>Put to sleep 🛌</value>
+  </data>
+  <data name="gameroomCommand" xml:space="preserve">
+    <value>You are in the gameroom
+⚽️ Fatigue level: {0}
+
+Do not play so much and safety first! 🧗‍♀️</value>
+  </data>
+  <data name="gameroomCommandDescription" xml:space="preserve">
+    <value>⚽️ Gameroom</value>
+  </data>
+  <data name="PetPlayingAnwserCallback" xml:space="preserve">
+    <value>Your pet's fatigue increased in {0}%</value>
   </data>
 </root>

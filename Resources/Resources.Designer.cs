@@ -175,8 +175,30 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are in the gameroom
+        ///⚽️ Fatigue level: {0}
+        ///
+        ///Do not play so much and safety first! 🧗‍♀️.
+        /// </summary>
+        public static string gameroomCommand {
+            get {
+                return ResourceManager.GetString("gameroomCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⚽️ Gameroom.
+        /// </summary>
+        public static string gameroomCommandDescription {
+            get {
+                return ResourceManager.GetString("gameroomCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are in the kitchen 🥦
         ///🍕 Pet&apos;s hunger: {0}%
+        ///
         ///Don&apos;t forget feed him 🐣.
         /// </summary>
         public static string kitchenCommand {
@@ -260,6 +282,15 @@ namespace TamagotchiBot.Resources {
         public static string PetFeedingAnwserCallback {
             get {
                 return ResourceManager.GetString("PetFeedingAnwserCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your pet&apos;s fatigue increased in {0}%.
+        /// </summary>
+        public static string PetPlayingAnwserCallback {
+            get {
+                return ResourceManager.GetString("PetPlayingAnwserCallback", resourceCulture);
             }
         }
         
