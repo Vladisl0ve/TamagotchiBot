@@ -20,6 +20,9 @@ namespace TamagotchiBot.Models
         [BsonElement("Name")]
         public string Name { get; set; }
 
+        [BsonElement("LastMessage")]
+        public string LastMessage { get; set; }
+
         [BsonElement("ChatId")]
         public long ChatId { get; set; }
     }

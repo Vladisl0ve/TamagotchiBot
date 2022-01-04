@@ -99,6 +99,11 @@ namespace TamagotchiBot.Handlers
                     await botClient.SendTextMessageAsync(message.From.Id, toSend.Item1, replyMarkup: toSend.Item4);
                 }
 
+                if ((petService.Get(message.From.Id) == null && chatService.Get(message.Chat.Id).LastMessage == null && toSend.Item2 != null && toSend.Item2 != Constants.ChangeLanguageSticker))
+                {
+                    await BotOnMessageReceived(botClient, message);
+                }
+
                 Log.Information($"Message send to @{message.From.Username}: {toSend.Item1.Substring(0, toSend.Item1.Length > 10 ? 10 : toSend.Item1.Length)}");
 
 
