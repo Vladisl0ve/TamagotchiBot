@@ -139,6 +139,7 @@ Do not forget feed and wash him, play a games and just love ☺️</value>
 💊 HP: {1}%
 🍕 Hunger: {4}%
 😴 Fatigue: {5}
+🎊 Joy level: {7}%
 ⚡️ Status: {6}
 🏅 EXP: {2} | {3} level ✨</value>
   </data>
@@ -212,10 +213,10 @@ Don't forget feed him 🐣</value>
     <value>Remains to sleep: {0} 🌚</value>
   </data>
   <data name="CurrentStatusActive" xml:space="preserve">
-    <value>active</value>
+    <value>active 🌞</value>
   </data>
   <data name="CurrentStatusSleeping" xml:space="preserve">
-    <value>sleeping</value>
+    <value>sleeping 🌙</value>
   </data>
   <data name="PetSleepingDoesntWantYetAnwserCallback" xml:space="preserve">
     <value>Pet doesn't want to sleep yet</value>
@@ -225,7 +226,9 @@ Don't forget feed him 🐣</value>
   </data>
   <data name="gameroomCommand" xml:space="preserve">
     <value>You are in the gameroom
+
 ⚽️ Fatigue level: {0}
+🎊 Joy level: {1}%
 
 Do not play so much and safety first! 🧗‍♀️</value>
   </data>
@@ -234,5 +237,8 @@ Do not play so much and safety first! 🧗‍♀️</value>
   </data>
   <data name="PetPlayingAnwserCallback" xml:space="preserve">
     <value>Your pet's fatigue increased in {0}%</value>
+  </data>
+  <data name="denyAccessSleeping" xml:space="preserve">
+    <value>You can not come in: pet is sleeping 🌙</value>
   </data>
 </root>

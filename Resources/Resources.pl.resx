@@ -139,6 +139,7 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️</value>
 💊 Zdrowie: {1}%
 🍕 Głód: {4}%
 😴 Zmęczenie: {5}
+🎊 Radość: {7}%
 ⚡️ Status: {6}
 🏅 Doświadczenie: {2} | {3} poziom✨</value>
   </data>
@@ -209,13 +210,13 @@ Nie zapominaj karmić zwierzaka 🐣</value>
     <value>Twój zwierzak już śpi 💤</value>
   </data>
   <data name="sleepCommandInlineShowTime" xml:space="preserve">
-    <value>Koniec snu przez: {0}</value>
+    <value>Zostało spać: {0} 🌚</value>
   </data>
   <data name="CurrentStatusActive" xml:space="preserve">
-    <value>aktywny</value>
+    <value>aktywny 🌞</value>
   </data>
   <data name="CurrentStatusSleeping" xml:space="preserve">
-    <value>śpi</value>
+    <value>śpi 🌙</value>
   </data>
   <data name="PetSleepingDoesntWantYetAnwserCallback" xml:space="preserve">
     <value>Zwierzak nie chce jeszcze spać</value>
@@ -226,6 +227,7 @@ Nie zapominaj karmić zwierzaka 🐣</value>
   <data name="gameroomCommand" xml:space="preserve">
     <value>Jesteście w pokoju dziecięcym
 ⚽️ Zmęczenie: {0}
+🎊 Radość: {1}%
 
 Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
   </data>
@@ -234,5 +236,8 @@ Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
   </data>
   <data name="PetPlayingAnwserCallback" xml:space="preserve">
     <value>Zmęczenie Twojego zwierzaka wzrosło o {0}%</value>
+  </data>
+  <data name="denyAccessSleeping" xml:space="preserve">
+    <value>Brak możliwości wejścia do pokoju: zwierzak śpi 🌙</value>
   </data>
 </root>

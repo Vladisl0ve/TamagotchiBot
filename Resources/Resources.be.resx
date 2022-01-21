@@ -140,6 +140,7 @@
 💊 Здароўе: {1}%
 🍕 Голад: {4}%
 😴 Стомленасць: {5}
+🎊 Радасць: {7}%
 ⚡️ Стан: {6}
 🏅 Досвед: {2} | {3} ўзровень✨</value>
   </data>
@@ -213,10 +214,10 @@ Wybierz nowy język 🇵🇱
     <value>Пачакай пакуль спіць: {0} 🌚</value>
   </data>
   <data name="CurrentStatusActive" xml:space="preserve">
-    <value>актыўны</value>
+    <value>актыўны 🌞</value>
   </data>
   <data name="CurrentStatusSleeping" xml:space="preserve">
-    <value>спіць</value>
+    <value>спіць 🌙</value>
   </data>
   <data name="PetSleepingDoesntWantYetAnwserCallback" xml:space="preserve">
     <value>Гадаванец яшчэ не хоча спаць</value>
@@ -227,6 +228,7 @@ Wybierz nowy język 🇵🇱
   <data name="gameroomCommand" xml:space="preserve">
     <value>Вы ў дзіцячым пакою
 ⚽️ Стомленасць: {0}
+🎊 Радасць: {1}%
 
 Гульня, ды не штодня 🧗‍♀️</value>
   </data>
@@ -235,5 +237,8 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="PetPlayingAnwserCallback" xml:space="preserve">
     <value>Стомленасць вашага гадаванца павялічылася на {0}%</value>
+  </data>
+  <data name="denyAccessSleeping" xml:space="preserve">
+    <value>Ты не можаш зайсці да пакою: твой гадаванец спіць 🌙</value>
   </data>
 </root>

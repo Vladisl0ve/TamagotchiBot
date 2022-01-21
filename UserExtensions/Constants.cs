@@ -41,11 +41,16 @@ namespace TamagotchiBot.UserExtensions
         #region Factors
         public static int ExpFactor = 1;
         public static int ExpToLvl = 100;
-        public static double StarvingFactor = 0.138;
+        public static double StarvingFactor = 0.138; // factor * 60 * 24
         public static double FatigueFactor = 0.083;
         public static double RestFactor = 20;
+        public static double JoyFactor = 0.3;
+
         public static int CardGameFatigueFactor = 20;
+        public static int CardGameJoyFactor = 40;
         public static int DiceGameFatigueFactor = 5;
+        public static int DiceGameJoyFactor = 10;
+
         #endregion
 
         #region limits
@@ -85,7 +90,8 @@ namespace TamagotchiBot.UserExtensions
         public static string PetConfirmedName_Cat = "CAACAgIAAxkBAAEDHw1hcHBpvQQti1cmSC1LVKRNOtV3FwACjBIAAtJ0SUqCGw6E9UM1giEE";
         public static string PetKitchen_Cat = "CAACAgIAAxkBAAEDIFVhcfZFjhITgwR6llMbPY-58IL_RAACxA4AA7xBSg8_gz8dIW-OIQQ";
         public static string PetGameroom_Cat = "CAACAgIAAxkBAAEDnIhh1LTJGdhUdSU1y0PFrMmr0wJ3EwAC_RIAAjV1SEq7O0eiJ48IqCME";
-        public static string PetSleep_Cat = "CAACAgIAAxkBAAEDLJJherSnCEKTmK9t5i1x9shxgGVzuwACdBIAAuAOQEqBqm_p74rsAAEhBA";
+        public static string PetSleep_Cat = "CAACAgIAAxkBAAEDuq1h6xbXEQHcyTH6hf6bDcluqK2-bgAC4ScAAvVFSEo8b-MRtutFhiME";
+        public static string PetBusy_Cat = "CAACAgIAAxkBAAEDLJJherSnCEKTmK9t5i1x9shxgGVzuwACdBIAAuAOQEqBqm_p74rsAAEhBA";
 
         #endregion
 

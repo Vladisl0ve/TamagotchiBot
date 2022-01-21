@@ -103,7 +103,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to active.
+        ///   Looks up a localized string similar to active 🌞.
         /// </summary>
         public static string CurrentStatusActive {
             get {
@@ -112,11 +112,20 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to sleeping.
+        ///   Looks up a localized string similar to sleeping 🌙.
         /// </summary>
         public static string CurrentStatusSleeping {
             get {
                 return ResourceManager.GetString("CurrentStatusSleeping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can not come in: pet is sleeping 🌙.
+        /// </summary>
+        public static string denyAccessSleeping {
+            get {
+                return ResourceManager.GetString("denyAccessSleeping", resourceCulture);
             }
         }
         
@@ -176,7 +185,9 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to You are in the gameroom
+        ///
         ///⚽️ Fatigue level: {0}
+        ///🎊 Joy level: {1}%
         ///
         ///Do not play so much and safety first! 🧗‍♀️.
         /// </summary>
@@ -230,6 +241,7 @@ namespace TamagotchiBot.Resources {
         ///💊 HP: {1}%
         ///🍕 Hunger: {4}%
         ///😴 Fatigue: {5}
+        ///🎊 Joy level: {7}%
         ///⚡️ Status: {6}
         ///🏅 EXP: {2} | {3} level ✨.
         /// </summary>

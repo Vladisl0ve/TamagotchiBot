@@ -139,6 +139,7 @@
 💊 Здоровье: {1}%
 🍕 Голод: {4}%
 😴 Усталость: {5}
+🎊 Радость: {7}%
 ⚡️ Состояние: {6}
 🏅 Опыт: {2} | {3} уровень✨</value>
   </data>
@@ -212,10 +213,10 @@ Wybierz nowy język 🇵🇱
     <value>Ещё будет спать: {0} 🌚</value>
   </data>
   <data name="CurrentStatusActive" xml:space="preserve">
-    <value>активный</value>
+    <value>активный 🌞</value>
   </data>
   <data name="CurrentStatusSleeping" xml:space="preserve">
-    <value>спит</value>
+    <value>спит 🌙</value>
   </data>
   <data name="PetSleepingDoesntWantYetAnwserCallback" xml:space="preserve">
     <value>Питомец еще не хочет спать</value>
@@ -226,6 +227,7 @@ Wybierz nowy język 🇵🇱
   <data name="gameroomCommand" xml:space="preserve">
     <value>Вы в игровой комнате
 ⚽️ Усталость: {0}
+🎊 Радость: {1}%
 
 Делу время - потехе час 🧗‍♀️</value>
   </data>
@@ -234,5 +236,8 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="PetPlayingAnwserCallback" xml:space="preserve">
     <value>Усталость питомца увеличилась на {0}%</value>
+  </data>
+  <data name="denyAccessSleeping" xml:space="preserve">
+    <value>Нельзя войти в комнату: питомец спит 🌙</value>
   </data>
 </root>

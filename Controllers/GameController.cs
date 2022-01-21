@@ -216,6 +216,16 @@ namespace TamagotchiBot.Controllers
 
             }
 
+            //Joy
+            double toDecreaseJoy = Math.Round(minuteCounter * Constants.JoyFactor);
+
+            pet.Joy -= (int)toDecreaseJoy;
+
+            if (pet.Joy < 0)
+            {
+                pet.Joy = 0;
+            }
+
             //Fatigue
             if (pet.CurrentStatus == 0)
             {
@@ -360,7 +370,8 @@ namespace TamagotchiBot.Controllers
             {
                 string toSendText = string.Format(petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Starving,
                                                   Extensions.GetFatigue(pet.Fatigue),
-                                                  Extensions.GetCurrentStatus(pet.CurrentStatus));
+                                                  Extensions.GetCurrentStatus(pet.CurrentStatus),
+                                                  pet.Joy);
 
                 chat.LastMessage = "/pet";
                 _chatService.Update(chat.ChatId, chat);
@@ -372,6 +383,14 @@ namespace TamagotchiBot.Controllers
 
             if (textRecieved == "/bathroom")
             {
+                if (pet.CurrentStatus == (int)Constants.CurrentStatus.Sleeping)
+                {
+                    string denyText = string.Format(denyAccessSleeping);
+                    return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(denyText,
+                                                                Constants.PetBusy_Cat,
+                                                                null,
+                                                                null);
+                }
 
                 chat.LastMessage = "/bathroom";
                 _chatService.Update(chat.ChatId, chat);
@@ -383,6 +402,14 @@ namespace TamagotchiBot.Controllers
 
             if (textRecieved == "/kitchen")
             {
+                if (pet.CurrentStatus == (int)Constants.CurrentStatus.Sleeping)
+                {
+                    string denyText = string.Format(denyAccessSleeping);
+                    return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(denyText,
+                                                                Constants.PetBusy_Cat,
+                                                                null,
+                                                                null);
+                }
                 string toSendText = string.Format(kitchenCommand, pet.Starving);
 
                 List<Tuple<string, string>> inlineParts = Constants.inlineFood;
@@ -398,7 +425,16 @@ namespace TamagotchiBot.Controllers
 
             if (textRecieved == "/gameroom")
             {
-                string toSendText = string.Format(gameroomCommand, pet.Fatigue);
+                if (pet.CurrentStatus == (int)Constants.CurrentStatus.Sleeping)
+                {
+                    string denyText = string.Format(denyAccessSleeping);
+                    return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(denyText,
+                                                                Constants.PetBusy_Cat,
+                                                                null,
+                                                                null);
+                }
+
+                string toSendText = string.Format(gameroomCommand, pet.Fatigue, pet.Joy);
 
                 List<Tuple<string, string>> inlineParts = Constants.inlineGames;
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -480,7 +516,8 @@ namespace TamagotchiBot.Controllers
             {
                 string toSendText = string.Format(petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Starving,
                                                   Extensions.GetFatigue(pet.Fatigue),
-                                                  Extensions.GetCurrentStatus(pet.CurrentStatus));
+                                                  Extensions.GetCurrentStatus(pet.CurrentStatus),
+                                                  pet.Joy);
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<Tuple<string, string>>() { new Tuple<string, string>(petCommandInlineExtraInfo, "petCommandInlineExtraInfo") });
 
                 return new Tuple<string, InlineKeyboardMarkup>(toSendText, toSendInline);
@@ -622,12 +659,17 @@ namespace TamagotchiBot.Controllers
                 if (newFatigue > 100)
                     newFatigue = 100;
 
+                var newJoy = pet.Joy + Constants.CardGameJoyFactor;
+                if (newJoy > 100)
+                    newJoy = 100;
+
                 _petService.UpdateFatigue(callback.From.Id, newFatigue);
+                _petService.UpdateJoy(callback.From.Id, newJoy);
 
                 string anwser = string.Format(PetPlayingAnwserCallback, (int)Constants.CardGameFatigueFactor);
                 bot.AnswerCallbackQueryAsync(callback.Id, anwser);
 
-                string toSendText = string.Format(gameroomCommand, newFatigue);
+                string toSendText = string.Format(gameroomCommand, newFatigue, newJoy);
 
                 if (toSendText.IsEqual(callback.Message.Text))
                     return null;
@@ -642,12 +684,17 @@ namespace TamagotchiBot.Controllers
                 if (newFatigue > 100)
                     newFatigue = 100;
 
+                var newJoy = pet.Joy + Constants.DiceGameJoyFactor;
+                if (newJoy > 100)
+                    newJoy = 100;
+
                 _petService.UpdateFatigue(callback.From.Id, newFatigue);
+                _petService.UpdateJoy(callback.From.Id, newJoy);
 
                 string anwser = string.Format(PetPlayingAnwserCallback, (int)Constants.DiceGameFatigueFactor);
                 bot.AnswerCallbackQueryAsync(callback.Id, anwser);
 
-                string toSendText = string.Format(gameroomCommand, newFatigue);
+                string toSendText = string.Format(gameroomCommand, newFatigue, newJoy);
 
                 if (toSendText.IsEqual(callback.Message.Text))
                     return null;
