@@ -240,4 +240,10 @@ Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
   <data name="denyAccessSleeping" xml:space="preserve">
     <value>Brak możliwości wejścia do pokoju: zwierzak śpi 🌙</value>
   </data>
+  <data name="ranksCommand" xml:space="preserve">
+    <value>🌈⭐️ Top 10 poziomów ⭐️</value>
+  </data>
+  <data name="ranksCommandDescription" xml:space="preserve">
+    <value>Ranking 🏆</value>
+  </data>
 </root>

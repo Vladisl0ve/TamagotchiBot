@@ -241,4 +241,10 @@ Wybierz nowy język 🇵🇱
   <data name="denyAccessSleeping" xml:space="preserve">
     <value>Ты не можаш зайсці да пакою: твой гадаванец спіць 🌙</value>
   </data>
+  <data name="ranksCommand" xml:space="preserve">
+    <value>🌈⭐️ Топ-10 узроўняў⭐️</value>
+  </data>
+  <data name="ranksCommandDescription" xml:space="preserve">
+    <value>Рэйтынг 🏆</value>
+  </data>
 </root>

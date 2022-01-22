@@ -70,6 +70,7 @@ namespace TamagotchiBot.UserExtensions
         public static string LanguageCommand = "language";
         public static string SleepCommand = "sleep";
         public static string GameroomCommand = "gameroom";
+        public static string RanksCommand = "ranks";
         #endregion
 
 
@@ -92,6 +93,7 @@ namespace TamagotchiBot.UserExtensions
         public static string PetGameroom_Cat = "CAACAgIAAxkBAAEDnIhh1LTJGdhUdSU1y0PFrMmr0wJ3EwAC_RIAAjV1SEq7O0eiJ48IqCME";
         public static string PetSleep_Cat = "CAACAgIAAxkBAAEDuq1h6xbXEQHcyTH6hf6bDcluqK2-bgAC4ScAAvVFSEo8b-MRtutFhiME";
         public static string PetBusy_Cat = "CAACAgIAAxkBAAEDLJJherSnCEKTmK9t5i1x9shxgGVzuwACdBIAAuAOQEqBqm_p74rsAAEhBA";
+        public static string PetRanks_Cat = "CAACAgIAAxkBAAEDuydh6-QrBh7ZWsJ08P5JPbuhEbhIlAAC6hAAAowt_QeFBFvPjWUsjyME";
 
         #endregion
 

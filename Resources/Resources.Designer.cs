@@ -325,6 +325,24 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🌈⭐️ Top 10 Levels ⭐️.
+        /// </summary>
+        public static string ranksCommand {
+            get {
+                return ResourceManager.GetString("ranksCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rating 🏆.
+        /// </summary>
+        public static string ranksCommandDescription {
+            get {
+                return ResourceManager.GetString("ranksCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🐱 {0}
         ///😴 Fatigue: {1}%
         ///⚡️ Status: {2}.

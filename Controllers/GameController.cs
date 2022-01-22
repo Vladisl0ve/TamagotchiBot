@@ -449,10 +449,39 @@ namespace TamagotchiBot.Controllers
 
             if (textRecieved == "/ranks")
             {
+
+                var topPets = _petService.Get().OrderByDescending(p => p.Level).Take(10); //First 10 top-level pets
+                string anwserRating = "";
+
+                int counter = 1;
+                foreach (var pet in topPets)
+                {
+                    if (counter == 1)
+                    {
+                        var user = _userService.Get(pet.UserId);
+
+                        anwserRating += ranksCommand + "\n\n";
+                        anwserRating += "🌟 " + pet.Level + " 🐱 " + user.Username ?? user.FirstName + user.LastName;
+                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
+                        counter++;
+                    }
+                    else
+                    {
+                        anwserRating += "\n";
+                        var user = _userService.Get(pet.UserId);
+
+                        string name = user.Username ?? user.FirstName + user.LastName;
+
+                        anwserRating += counter + ". " + pet.Level + " 🐱 " + name;
+                        counter++;
+                    }
+                }
+
+
                 chat.LastMessage = "/ranks";
                 _chatService.Update(chat.ChatId, chat);
-                return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(DevelopWarning,
-                                                            Constants.DevelopWarningSticker,
+                return new Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup>(anwserRating,
+                                                            Constants.PetRanks_Cat,
                                                             null,
                                                             null);
             }

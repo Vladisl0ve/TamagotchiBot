@@ -240,4 +240,10 @@ Wybierz nowy język 🇵🇱
   <data name="denyAccessSleeping" xml:space="preserve">
     <value>Нельзя войти в комнату: питомец спит 🌙</value>
   </data>
+  <data name="ranksCommand" xml:space="preserve">
+    <value>🌈⭐️ Топ-10 уровней ⭐️</value>
+  </data>
+  <data name="ranksCommandDescription" xml:space="preserve">
+    <value>Рейтинг 🏆</value>
+  </data>
 </root>

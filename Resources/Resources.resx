@@ -241,4 +241,10 @@ Do not play so much and safety first! 🧗‍♀️</value>
   <data name="denyAccessSleeping" xml:space="preserve">
     <value>You can not come in: pet is sleeping 🌙</value>
   </data>
+  <data name="ranksCommand" xml:space="preserve">
+    <value>🌈⭐️ Top 10 Levels ⭐️</value>
+  </data>
+  <data name="ranksCommandDescription" xml:space="preserve">
+    <value>Rating 🏆</value>
+  </data>
 </root>

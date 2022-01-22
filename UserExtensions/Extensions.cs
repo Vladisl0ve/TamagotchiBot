@@ -174,11 +174,6 @@ namespace TamagotchiBot.UserExtensions
         {
             List<BotCommand> result = new List<BotCommand>();
 
-            result.Add(new BotCommand()
-            {
-                Command = Constants.LanguageCommand,
-                Description = Resources.Resources.languageCommandDescription
-            });
 
             if (pet?.Name != null)
             {
@@ -205,7 +200,19 @@ namespace TamagotchiBot.UserExtensions
                     Command = Constants.GameroomCommand,
                     Description = Resources.Resources.gameroomCommandDescription
                 });
+
+                result.Add(new BotCommand()
+                {
+                    Command = Constants.RanksCommand,
+                    Description = Resources.Resources.ranksCommandDescription
+                });
             }
+
+            result.Add(new BotCommand()
+            {
+                Command = Constants.LanguageCommand,
+                Description = Resources.Resources.languageCommandDescription
+            });
 
             return result;
         }
