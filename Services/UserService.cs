@@ -15,7 +15,8 @@ namespace TamagotchiBot.Services
 
         public UserService(ITamagotchiDatabaseSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
+            var databaseSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);
+            var client = new MongoClient(databaseSettings);
             var database = client.GetDatabase(settings.DatabaseName);
 
             _users = database.GetCollection<User>(settings.UsersCollectionName);

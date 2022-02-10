@@ -14,7 +14,8 @@ namespace TamagotchiBot.Services
         private IMongoCollection<Pet> _pets;
         public PetService(ITamagotchiDatabaseSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
+            var databaseSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);
+            var client = new MongoClient(databaseSettings);
             var database = client.GetDatabase(settings.DatabaseName);
 
             _pets = database.GetCollection<Pet>(settings.PetsCollectionName);

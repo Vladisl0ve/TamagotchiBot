@@ -15,7 +15,8 @@ namespace TamagotchiBot.Services
 
         public ChatService(ITamagotchiDatabaseSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
+            var databaseSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);
+            var client = new MongoClient(databaseSettings);
             var database = client.GetDatabase(settings.DatabaseName);
 
             _chats = database.GetCollection<Chat>(settings.ChatsCollectionName);
