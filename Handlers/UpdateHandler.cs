@@ -103,7 +103,7 @@ namespace TamagotchiBot.Handlers
                 {
                     await BotOnMessageReceived(botClient, message);
                 }
-
+                
                 Log.Information($"Message send to @{message.From.Username}: {toSend.Item1.Substring(0, toSend.Item1.Length > 10 ? 10 : toSend.Item1.Length)}");
 
 
