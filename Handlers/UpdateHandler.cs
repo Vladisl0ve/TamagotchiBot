@@ -72,9 +72,15 @@ namespace TamagotchiBot.Handlers
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
                 var controller = new GameController(botClient, userService, petService, chatService, message);
-                Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup> toSend;
+                Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup> toSend = null;
                 if (userService.Get(message.From.Id) != null)
-                    toSend = controller.Process();
+                {
+                    try
+                    {
+                        toSend = controller.Process();
+                    }
+                    catch { }
+                }
                 else
                     toSend = controller.CreateUser();
 
@@ -103,7 +109,7 @@ namespace TamagotchiBot.Handlers
                 {
                     await BotOnMessageReceived(botClient, message);
                 }
-                
+
                 Log.Information($"Message send to @{message.From.Username}: {toSend.Item1.Substring(0, toSend.Item1.Length > 10 ? 10 : toSend.Item1.Length)}");
 
 

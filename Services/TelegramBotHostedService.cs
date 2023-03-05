@@ -26,11 +26,12 @@ namespace TamagotchiBot.Services
         {
             Log.Information("Telegram Bot Hosted Service started");
 
-            //_client.StartReceiving(_updateHandler, stoppingToken);
             _client.StartReceiving(_updateHandler, stoppingToken);
 
             // Keep hosted service alive while receiving messages
             await Task.Delay(Timeout.Infinite, stoppingToken);
         }
+
+        
     }
 }

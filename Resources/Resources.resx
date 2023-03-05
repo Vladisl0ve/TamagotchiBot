@@ -233,7 +233,7 @@ Don't forget feed him 🐣</value>
 Do not play so much and safety first! 🧗‍♀️</value>
   </data>
   <data name="gameroomCommandDescription" xml:space="preserve">
-    <value>⚽️ Gameroom</value>
+    <value>Gameroom ⚽️</value>
   </data>
   <data name="PetPlayingAnwserCallback" xml:space="preserve">
     <value>Your pet's fatigue increased in {0}%</value>
