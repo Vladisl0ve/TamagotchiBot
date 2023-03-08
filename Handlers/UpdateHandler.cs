@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Serilog;
+using System;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Serilog;
 using TamagotchiBot.Controllers;
-using TamagotchiBot.UserExtensions;
 using TamagotchiBot.Services;
+using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
-using Telegram.Bot.Extensions.Polling;
+using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -34,7 +32,7 @@ namespace TamagotchiBot.Handlers
 
         public UpdateType[] AllowedUpdates => new[] { UpdateType.Message, UpdateType.CallbackQuery };
 
-        public Task HandleError(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+        public Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
             if (exception is ApiRequestException apiRequestException)
             {
@@ -56,7 +54,7 @@ namespace TamagotchiBot.Handlers
             return Task.CompletedTask;
         }
 
-        public Task HandleUpdate(ITelegramBotClient bot, Update update, CancellationToken token)
+        public Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
         {
             Task task = update.Type switch
             {
@@ -66,7 +64,7 @@ namespace TamagotchiBot.Handlers
             };
 
             var userId = update.Message?.From.Id ?? update.CallbackQuery.From.Id;
-            bot.SetMyCommandsAsync(Extensions.GetCommands(petService.Get(userId)), token);
+            bot.SetMyCommandsAsync(Extensions.GetCommands(petService.Get(userId)));
             return task;
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)

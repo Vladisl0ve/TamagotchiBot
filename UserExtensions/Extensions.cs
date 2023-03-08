@@ -33,7 +33,7 @@ namespace TamagotchiBot.UserExtensions
                 for (int j = 0; j < keyboard[i].Length; j++)
                 {
                     if (counter < names.Count)
-                        keyboard[i][j] = new KeyboardButton();
+                        keyboard[i][j] = new KeyboardButton("-");
                     counter++;
                 }
             }
@@ -62,7 +62,7 @@ namespace TamagotchiBot.UserExtensions
                 for (int j = 0; j < keyboard[i].Length; j++)
                 {
                     if (counter < names.Count)
-                        keyboard[i][j] = new InlineKeyboardButton();
+                        keyboard[i][j] = new InlineKeyboardButton("-");
                     counter++;
                 }
             }

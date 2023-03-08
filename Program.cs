@@ -1,18 +1,15 @@
-﻿using System.Configuration;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Events;
+using System.IO;
 using TamagotchiBot.Database;
 using TamagotchiBot.Handlers;
-using TamagotchiBot.Models;
 using TamagotchiBot.Services;
 using Telegram.Bot;
-using Telegram.Bot.Extensions.Polling;
+using Telegram.Bot.Polling;
 
 namespace Telegram.Bots.Example
 {

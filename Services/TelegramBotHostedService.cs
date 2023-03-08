@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.Extensions.Hosting;
+using Serilog;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
-using Serilog;
-using TamagotchiBot.Handlers;
 using Telegram.Bot;
-using Telegram.Bot.Extensions.Polling;
+using Telegram.Bot.Polling;
+using Telegram.Bot.Types.Enums;
 
 namespace TamagotchiBot.Services
 {
@@ -16,22 +13,30 @@ namespace TamagotchiBot.Services
     {
         private readonly ITelegramBotClient _client;
         private readonly IUpdateHandler _updateHandler;
+        private readonly ReceiverOptions _receiverOptions;
 
         public TelegramBotHostedService(ITelegramBotClient telegramBotClient, IUpdateHandler updateHandler)
         {
             _client = telegramBotClient;
             _updateHandler = updateHandler;
+            _receiverOptions = new ()
+            {
+                AllowedUpdates = Array.Empty<UpdateType>() // receive all update types
+            };
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             Log.Information("Telegram Bot Hosted Service started");
 
-            _client.StartReceiving(_updateHandler, stoppingToken);
+            _client.StartReceiving(
+                updateHandler: _updateHandler,
+                cancellationToken: stoppingToken
+                );
 
             // Keep hosted service alive while receiving messages
             await Task.Delay(Timeout.Infinite, stoppingToken);
         }
 
-        
+
     }
 }
