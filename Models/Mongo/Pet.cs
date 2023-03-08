@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 
-namespace TamagotchiBot.Models
+namespace TamagotchiBot.Models.Mongo
 {
     public class Pet
     {

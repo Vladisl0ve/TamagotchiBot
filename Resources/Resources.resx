@@ -247,4 +247,13 @@ Do not play so much and safety first! 🧗‍♀️</value>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Rating 🏆</value>
   </data>
+  <data name="restartCommand" xml:space="preserve">
+    <value>Dropped pet {0} 💔</value>
+  </data>
+  <data name="renameCommand" xml:space="preserve">
+    <value>Type new name for pet 🗯️</value>
+  </data>
+  <data name="renameCommandDescription" xml:space="preserve">
+    <value>New name ✏️</value>
+  </data>
 </root>

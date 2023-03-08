@@ -247,4 +247,13 @@ Wybierz nowy język 🇵🇱
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Рэйтынг 🏆</value>
   </data>
+  <data name="renameCommand" xml:space="preserve">
+    <value>Увядзі новае імя гадаванца 🗯️</value>
+  </data>
+  <data name="restartCommand" xml:space="preserve">
+    <value>ДРОПНУЎ ГАДА {0} 💔</value>
+  </data>
+  <data name="renameCommandDescription" xml:space="preserve">
+    <value>Новае імя ✏️</value>
+  </data>
 </root>

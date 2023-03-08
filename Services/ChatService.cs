@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TamagotchiBot.Database;
-using TamagotchiBot.Models;
+using TamagotchiBot.Models.Mongo;
 
 namespace TamagotchiBot.Services
 {
@@ -34,5 +34,7 @@ namespace TamagotchiBot.Services
             _chats.ReplaceOne(c => c.ChatId == chatId, chat);
             return chat;
         }
+
+        public void Remove(long userId) => _chats.DeleteOne(u => u.UserId == userId);
     }
 }

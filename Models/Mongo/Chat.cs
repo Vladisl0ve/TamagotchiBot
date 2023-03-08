@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace TamagotchiBot.Models
+namespace TamagotchiBot.Models.Mongo
 {
     public class Chat
     {
