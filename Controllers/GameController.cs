@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using TamagotchiBot.Models;
+using TamagotchiBot.Models.Anwsers;
 using TamagotchiBot.Models.Mongo;
 using TamagotchiBot.Services;
 using TamagotchiBot.UserExtensions;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TamagotchiBot.Controllers;
-using TamagotchiBot.Models;
+using TamagotchiBot.Models.Anwsers;
 using TamagotchiBot.Services;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
