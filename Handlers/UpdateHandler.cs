@@ -1,6 +1,5 @@
 ﻿using Serilog;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TamagotchiBot.Controllers;
@@ -8,11 +7,9 @@ using TamagotchiBot.Models.Anwsers;
 using TamagotchiBot.Services;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
-using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TamagotchiBot.Handlers
 {
@@ -31,27 +28,19 @@ namespace TamagotchiBot.Handlers
             this.chatService = chatService;
         }
 
-        public UpdateType[] AllowedUpdates => new[] { UpdateType.Message, UpdateType.CallbackQuery };
 
         public Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
-            if (exception is ApiRequestException apiRequestException)
-            {
-                var warningMessages = new[] { "bot was blocked by the user", "bot was kicked from the supergroup", "have no rights to send a message" };
-
-                if (warningMessages.Any(x => apiRequestException.Message.Contains(x)))
-                {
-                    Log.Warning(apiRequestException.Message);
-                }
-                else
-                {
-                    Log.Error(apiRequestException, apiRequestException.Message);
-                }
-
-                return Task.CompletedTask;
-            }
-
             Log.Error(exception, exception.Message);
+            Log.Warning("App restarts in 10 seconds...");
+
+            Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
+            var startExe = AppDomain.CurrentDomain.BaseDirectory + AppDomain.CurrentDomain.FriendlyName + ".exe";
+            // Starts a new instance of the program itself
+            System.Diagnostics.Process.Start(startExe);
+
+            // Closes the current process
+            Environment.Exit(-1);
             return Task.CompletedTask;
         }
 

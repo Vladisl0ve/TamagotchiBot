@@ -21,7 +21,7 @@ namespace TamagotchiBot.Services
             _updateHandler = updateHandler;
             _receiverOptions = new ()
             {
-                AllowedUpdates = Array.Empty<UpdateType>() // receive all update types
+                AllowedUpdates = new[] { UpdateType.Message, UpdateType.CallbackQuery }
             };
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
