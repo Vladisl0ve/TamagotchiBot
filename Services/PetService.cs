@@ -1,9 +1,6 @@
-﻿using System;
+﻿using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MongoDB.Driver;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models;
 
@@ -11,7 +8,7 @@ namespace TamagotchiBot.Services
 {
     public class PetService
     {
-        private IMongoCollection<Pet> _pets;
+        private readonly IMongoCollection<Pet> _pets;
         public PetService(ITamagotchiDatabaseSettings settings)
         {
             var databaseSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);

@@ -1,19 +1,17 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Serilog;
-using TamagotchiBot.UserExtensions;
 using TamagotchiBot.Models;
 using TamagotchiBot.Services;
+using TamagotchiBot.UserExtensions;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
-using User = TamagotchiBot.Models.User;
-using Chat = TamagotchiBot.Models.Chat;
-using Telegram.Bot;
 using static TamagotchiBot.Resources.Resources;
+using Chat = TamagotchiBot.Models.Chat;
+using User = TamagotchiBot.Models.User;
 
 namespace TamagotchiBot.Controllers
 {
@@ -180,9 +178,6 @@ namespace TamagotchiBot.Controllers
             if (pet.LastUpdateTime.Year == 1)
                 pet.LastUpdateTime = DateTime.UtcNow;
 
-            if (pet.CurrentStatus == 0)
-                pet.CurrentStatus = 0;
-
             if (pet.StartSleepingTime.Year == 1)
                 pet.StartSleepingTime = DateTime.UtcNow;
 
@@ -227,7 +222,7 @@ namespace TamagotchiBot.Controllers
             }
 
             //Fatigue
-            if (pet.CurrentStatus == 0)
+            if (pet.CurrentStatus == (int)Constants.CurrentStatus.Active)
             {
                 double toAddFatigue = Math.Round(minuteCounter * Constants.FatigueFactor);
                 pet.Fatigue += (int)toAddFatigue;
@@ -236,7 +231,7 @@ namespace TamagotchiBot.Controllers
                 pet.Fatigue = 100;
 
             //Sleeping
-            if (pet.CurrentStatus == 1)
+            if (pet.CurrentStatus == (int)Constants.CurrentStatus.Sleeping)
             {
                 int minuteSleepingCounter = (int)(DateTime.UtcNow - pet.StartSleepingTime).TotalMinutes;
                 double toDecreaseFatigue = Math.Round(minuteSleepingCounter * Constants.RestFactor);
@@ -246,7 +241,7 @@ namespace TamagotchiBot.Controllers
 
                 if (pet.Fatigue <= 0)
                 {
-                    pet.CurrentStatus = 0;
+                    pet.CurrentStatus = (int)Constants.CurrentStatus.Active;
                     pet.Fatigue = 0;
                 }
             }
@@ -695,7 +690,7 @@ namespace TamagotchiBot.Controllers
                 _petService.UpdateFatigue(callback.From.Id, newFatigue);
                 _petService.UpdateJoy(callback.From.Id, newJoy);
 
-                string anwser = string.Format(PetPlayingAnwserCallback, (int)Constants.CardGameFatigueFactor);
+                string anwser = string.Format(PetPlayingAnwserCallback, Constants.CardGameFatigueFactor);
                 bot.AnswerCallbackQueryAsync(callback.Id, anwser);
 
                 string toSendText = string.Format(gameroomCommand, newFatigue, newJoy);
@@ -720,7 +715,7 @@ namespace TamagotchiBot.Controllers
                 _petService.UpdateFatigue(callback.From.Id, newFatigue);
                 _petService.UpdateJoy(callback.From.Id, newJoy);
 
-                string anwser = string.Format(PetPlayingAnwserCallback, (int)Constants.DiceGameFatigueFactor);
+                string anwser = string.Format(PetPlayingAnwserCallback, Constants.DiceGameFatigueFactor);
                 bot.AnswerCallbackQueryAsync(callback.Id, anwser);
 
                 string toSendText = string.Format(gameroomCommand, newFatigue, newJoy);
