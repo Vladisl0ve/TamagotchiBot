@@ -1,9 +1,6 @@
-﻿using System;
+﻿using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MongoDB.Driver;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models;
 
@@ -11,7 +8,7 @@ namespace TamagotchiBot.Services
 {
     public class UserService
     {
-        private IMongoCollection<User> _users;
+        private readonly IMongoCollection<User> _users;
 
         public UserService(ITamagotchiDatabaseSettings settings)
         {
@@ -34,12 +31,12 @@ namespace TamagotchiBot.Services
 
         public User Create(Telegram.Bot.Types.User user)
         {
-            return Create(new Models.User()
+            return Create(new User()
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 UserId = user.Id,
-                Username = user.Username,               
+                Username = user.Username,
                 //Culture = user.LanguageCode
             });
         }
@@ -64,7 +61,7 @@ namespace TamagotchiBot.Services
         public User Update(long userId, Telegram.Bot.Types.User userIn)
         {
             var oldUser = _users.Find(u => u.UserId == userId).First();
-            User newUser = new Models.User()
+            User newUser = new()
             {
                 Id = oldUser.Id,
                 FirstName = userIn.FirstName,
