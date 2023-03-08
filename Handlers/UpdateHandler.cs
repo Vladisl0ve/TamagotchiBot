@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TamagotchiBot.Controllers;
+using TamagotchiBot.Models.Anwsers;
 using TamagotchiBot.Services;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
@@ -70,7 +71,7 @@ namespace TamagotchiBot.Handlers
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
                 var controller = new GameController(botClient, userService, petService, chatService, message);
-                Tuple<string, string, IReplyMarkup, InlineKeyboardMarkup> toSend = null;
+                Answer toSend = null;
                 if (userService.Get(message.From.Id) != null)
                 {
                     try
@@ -85,30 +86,33 @@ namespace TamagotchiBot.Handlers
                 if (toSend == null)
                     return;
 
-                if (toSend.Item2 != null)
+                if (toSend.StickerId != null)
                 {
-                    await botClient.SendStickerAsync(message.From.Id, toSend.Item2);
+                    await botClient.SendStickerAsync(message.From.Id, toSend.StickerId);
 
-                    if (toSend.Item3 == null && toSend.Item4 == null)
-                        await botClient.SendTextMessageAsync(message.From.Id, toSend.Item1);
+                    if (toSend.ReplyMarkup == null && toSend.InlineKeyboardMarkup == null)
+                        await botClient.SendTextMessageAsync(message.From.Id, toSend.Text);
                 }
 
-                if (toSend.Item3 != null)
+                if (toSend.ReplyMarkup != null)
                 {
-                    await botClient.SendTextMessageAsync(message.From.Id, toSend.Item1, replyMarkup: toSend.Item3);
+                    await botClient.SendTextMessageAsync(message.From.Id, toSend.Text, replyMarkup: toSend.ReplyMarkup);
                 }
 
-                if (toSend.Item4 != null)
+                if (toSend.InlineKeyboardMarkup != null)
                 {
-                    await botClient.SendTextMessageAsync(message.From.Id, toSend.Item1, replyMarkup: toSend.Item4);
+                    await botClient.SendTextMessageAsync(message.From.Id, toSend.Text, replyMarkup: toSend.InlineKeyboardMarkup);
                 }
 
-                if ((petService.Get(message.From.Id) == null && chatService.Get(message.Chat.Id).LastMessage == null && toSend.Item2 != null && toSend.Item2 != Constants.ChangeLanguageSticker))
+                if (petService.Get(message.From.Id) == null
+                    && chatService.Get(message.Chat.Id)?.LastMessage == null
+                    && toSend.StickerId != null
+                    && toSend.StickerId != Constants.ChangeLanguageSticker)
                 {
                     await BotOnMessageReceived(botClient, message);
                 }
 
-                Log.Information($"Message send to @{message.From.Username}: {toSend.Item1.Substring(0, toSend.Item1.Length > 10 ? 10 : toSend.Item1.Length)}");
+                Log.Information($"Message send to @{message.From.Username}: {toSend.Text.Substring(0, toSend.Text.Length > 10 ? 10 : toSend.Text.Length)}");
 
 
             }
@@ -121,9 +125,9 @@ namespace TamagotchiBot.Handlers
                 if (toSend == null)
                     return;
 
-                Log.Information($"Message send to @{callbackQuery.From.Username}: {toSend.Item1.Substring(0, toSend.Item1.Length > 10 ? 10 : toSend.Item1.Length)}");
+                Log.Information($"Message send to @{callbackQuery.From.Username}: {toSend.Text.Substring(0, toSend.Text.Length > 10 ? 10 : toSend.Text.Length)}");
 
-                await bot.EditMessageTextAsync(callbackQuery.From.Id, callbackQuery.Message.MessageId, toSend.Item1, replyMarkup: toSend.Item2);
+                await bot.EditMessageTextAsync(callbackQuery.From.Id, callbackQuery.Message.MessageId, toSend.Text, replyMarkup: toSend.InlineKeyboardMarkup);
 
             }
         }

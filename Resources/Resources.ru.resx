@@ -246,4 +246,13 @@ Wybierz nowy język 🇵🇱
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Рейтинг 🏆</value>
   </data>
+  <data name="renameCommand" xml:space="preserve">
+    <value>Введи новое имя для питомца 🗯️</value>
+  </data>
+  <data name="restartCommand" xml:space="preserve">
+    <value>ДРОПНУЎ ГАДА {0} 💔</value>
+  </data>
+  <data name="renameCommandDescription" xml:space="preserve">
+    <value>Смена имени ✏️</value>
+  </data>
 </root>

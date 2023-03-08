@@ -246,4 +246,13 @@ Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Ranking 🏆</value>
   </data>
+  <data name="renameCommand" xml:space="preserve">
+    <value>Wprowadź nowe imię dla zwierzaka 🗯️</value>
+  </data>
+  <data name="restartCommand" xml:space="preserve">
+    <value>ДРОПНУЎ ГАДА {0} 💔</value>
+  </data>
+  <data name="renameCommandDescription" xml:space="preserve">
+    <value>Nowe imię ✏️</value>
+  </data>
 </root>

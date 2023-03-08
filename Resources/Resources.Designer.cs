@@ -343,6 +343,33 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Type new name for pet 🗯️.
+        /// </summary>
+        public static string renameCommand {
+            get {
+                return ResourceManager.GetString("renameCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New name ✏️.
+        /// </summary>
+        public static string renameCommandDescription {
+            get {
+                return ResourceManager.GetString("renameCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dropped pet {0} 💔.
+        /// </summary>
+        public static string restartCommand {
+            get {
+                return ResourceManager.GetString("restartCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🐱 {0}
         ///😴 Fatigue: {1}%
         ///⚡️ Status: {2}.

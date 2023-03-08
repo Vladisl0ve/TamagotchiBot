@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using TamagotchiBot.Models;
+using TamagotchiBot.Models.Mongo;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.UserExtensions.Constants;
@@ -15,7 +13,7 @@ namespace TamagotchiBot.UserExtensions
 {
     public static class Extensions
     {
-        public static ReplyKeyboardMarkup ReplyKeyboardOptimizer(List<string> names, int columnCounter = 2, bool isOneTimeKeboard = false)
+        public static ReplyKeyboardMarkup ReplyKeyboardOptimizer(List<string> names, int columnCounter = 2, bool isOneTimeKeyboard = false)
         {
             int x = columnCounter < 2 ? 2 : columnCounter;
             int y = (int)Math.Ceiling((double)(names.Count) / x);
@@ -41,7 +39,7 @@ namespace TamagotchiBot.UserExtensions
             for (int i = 0; i < names.Count; i++)
                 keyboard[i / x][i % x] = names[i];
 
-            return new ReplyKeyboardMarkup(keyboard) { ResizeKeyboard = true, OneTimeKeyboard = isOneTimeKeboard };
+            return new ReplyKeyboardMarkup(keyboard) { ResizeKeyboard = true, OneTimeKeyboard = isOneTimeKeyboard };
         }
 
         public static InlineKeyboardMarkup InlineKeyboardOptimizer(List<Tuple<string, string>> names, int columnCounter = 2)
@@ -96,7 +94,7 @@ namespace TamagotchiBot.UserExtensions
 
         public static List<string> LanguagesWithFlags()
         {
-            List<string> result = new List<string>();
+            List<string> result = new();
 
             foreach (Language l in Enum.GetValues(typeof(Language)))
                 result.Add($"{l} {l.GetDisplayShortName()}");
@@ -106,7 +104,7 @@ namespace TamagotchiBot.UserExtensions
 
         public static List<string> Languages()
         {
-            List<string> result = new List<string>();
+            List<string> result = new();
 
             foreach (var l in Enum.GetNames(typeof(Language)))
                 result.Add(l);
@@ -144,7 +142,7 @@ namespace TamagotchiBot.UserExtensions
 
         public static List<BotCommand> GetAllCommands()
         {
-            List<BotCommand> result = new List<BotCommand>()
+            List<BotCommand> result = new()
             {
                 new BotCommand()
                 {
@@ -172,7 +170,7 @@ namespace TamagotchiBot.UserExtensions
         }
         public static List<BotCommand> GetCommands(Pet pet)
         {
-            List<BotCommand> result = new List<BotCommand>();
+            List<BotCommand> result = new();
 
 
             if (pet?.Name != null)
@@ -206,6 +204,12 @@ namespace TamagotchiBot.UserExtensions
                     Command = Constants.RanksCommand,
                     Description = Resources.Resources.ranksCommandDescription
                 });
+
+                result.Add(new BotCommand()
+                {
+                    Command = Constants.RenameCommand,
+                    Description = Resources.Resources.renameCommandDescription
+                });
             }
 
             result.Add(new BotCommand()
@@ -220,16 +224,16 @@ namespace TamagotchiBot.UserExtensions
 
         public static string GetFatigue(int fatigue)
         {
-            if (fatigue >= 0 && fatigue < 20)
+            if (fatigue is >= 0 and < 20)
                 return Resources.Resources.FatigueFresh;
 
-            if (fatigue >= 20 && fatigue < 40)
+            if (fatigue is >= 20 and < 40)
                 return Resources.Resources.FatigueRested;
 
-            if (fatigue >= 40 && fatigue < 60)
+            if (fatigue is >= 40 and < 60)
                 return Resources.Resources.FatigueSlightlyTired;
 
-            if (fatigue >= 60 && fatigue < 80)
+            if (fatigue is >= 60 and < 80)
                 return Resources.Resources.FatigueTired;
 
             if (fatigue >= 80)
@@ -244,15 +248,12 @@ namespace TamagotchiBot.UserExtensions
             if (Enum.IsDefined(typeof(CurrentStatus), status))
             {
                 var statusEnum = (CurrentStatus)status;
-                switch (statusEnum)
+                return statusEnum switch
                 {
-                    case CurrentStatus.Active:
-                        return Resources.Resources.CurrentStatusActive;
-                    case CurrentStatus.Sleeping:
-                        return Resources.Resources.CurrentStatusSleeping;
-                    default:
-                        return null;
-                }
+                    CurrentStatus.Active => Resources.Resources.CurrentStatusActive,
+                    CurrentStatus.Sleeping => Resources.Resources.CurrentStatusSleeping,
+                    _ => null,
+                };
             }
             else
                 return null;
