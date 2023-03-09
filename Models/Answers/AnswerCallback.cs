@@ -1,6 +1,6 @@
 ﻿using Telegram.Bot.Types.ReplyMarkups;
 
-namespace TamagotchiBot.Models.Anwsers
+namespace TamagotchiBot.Models.Answers
 {
     public class AnswerCallback
     {

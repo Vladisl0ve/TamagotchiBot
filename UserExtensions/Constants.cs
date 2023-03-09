@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TamagotchiBot.Models;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TamagotchiBot.UserExtensions
@@ -47,13 +48,16 @@ namespace TamagotchiBot.UserExtensions
             public const int ExpToLvl = 100;
             public const double StarvingFactor = 0.138;
             public const double FatigueFactor = 0.083;
-            public const double RestFactor = 20;
+            public const double RestFactor = 10;
             public const double JoyFactor = 0.3;
 
             public const int CardGameFatigueFactor = 20;
             public const int CardGameJoyFactor = 40;
             public const int DiceGameFatigueFactor = 5;
             public const int DiceGameJoyFactor = 10;
+
+            public const int PillHPFactor = 20;
+            public const int PillJoyFactor = -10;
         }
 
 
@@ -79,12 +83,16 @@ namespace TamagotchiBot.UserExtensions
             public static string GameroomCommand = "gameroom";
             public static string RanksCommand = "ranks";
             public static string RenameCommand = "rename";
+            public static string HospitalCommand = "hospital";
+            public static string BathroomCommand = "bathroom";
+            public static string HelpCommand = "help";
         }
 
         public struct StickersId
         {
             //Common
             public static string WelcomeSticker = "CAACAgIAAxkBAAEDHvdhcG0r5WOkfladhV2zTUYwN6LyOQACUwADr8ZRGjkySUcbM1VLIQQ";
+            public static string HelpCommandSticker = "CAACAgIAAxkBAAEIEd9kCluWEaE86RH_SAr0tnJcJf_A4AACiXAAAp7OCwAB00mUUVh4ERkvBA";
             public static string ChangeLanguageSticker = "CAACAgIAAxkBAAEDIdRhcygJqmnt4ibdxEVejHOQ4Ya7pwACbAIAAladvQoqGV6cxNDenyEE";
             public static string DevelopWarningSticker = "CAACAgIAAxkBAAEDHxNhcHJP59QL8Fe9GaY3POWBIeII6QACUQADLMqqByX_VpH__oXBIQQ";
             public static string DroppedPetSticker = "CAACAgIAAxkBAAEIDftkCODBW8d3hT4S-iBjBJnpuSbGjwACcBIAAt6p8Et8ICHIsOd3qy4E";
@@ -104,29 +112,77 @@ namespace TamagotchiBot.UserExtensions
             public static string PetSleep_Cat = "CAACAgIAAxkBAAEDuq1h6xbXEQHcyTH6hf6bDcluqK2-bgAC4ScAAvVFSEo8b-MRtutFhiME";
             public static string PetBusy_Cat = "CAACAgIAAxkBAAEDLJJherSnCEKTmK9t5i1x9shxgGVzuwACdBIAAuAOQEqBqm_p74rsAAEhBA";
             public static string PetRanks_Cat = "CAACAgIAAxkBAAEDuydh6-QrBh7ZWsJ08P5JPbuhEbhIlAAC6hAAAowt_QeFBFvPjWUsjyME";
+            public static string PetHospitalLowHP_Cat = "CAACAgIAAxkBAAEIEa1kCkgUfc3lvy1OnyY5LneOAz3tQwAC2hAAAowt_QeJ21KeBteIlS8E";
+            public static string PetHospitalMidHP_Cat = "CAACAgIAAxkBAAEIEbFkCkhUqHOSaEfmY85yxF98gaUZhwAC7BAAAowt_QdvxODKmdLpri8E";
+            public static string PetHospitalHighHP_Cat = "CAACAgIAAxkBAAEIEbVkCkhxJUXWAkJ0yUyghSK6L2C5kgAC6xAAAowt_QdeNV1SjgQwPi8E";
         }
 
-        //Tests
-        public static List<Tuple<string, string>> inlineFood = new List<Tuple<string, string>>()
+        public struct InlineItems
+        {
+            public static List<CommandModel> InlineFood = new()
                 {
-                    new Tuple<string, string>("🍞", "kitchenCommandInlineBread"),
-                    new Tuple<string, string>("🍎", "kitchenCommandInlineRedApple"),
-                    new Tuple<string, string>("🍫", "kitchenCommandInlineChocolate"),
-                    new Tuple<string, string>("🍭", "kitchenCommandInlineLollipop")
+                    new CommandModel ()
+                    {
+                        Text = "🍞",
+                        CallbackData = "kitchenCommandInlineBread"
+                    },
+                    new CommandModel ()
+                    {
+                        Text = "🍎",
+                        CallbackData = "kitchenCommandInlineRedApple"
+                    },
+                    new CommandModel ()
+                    {
+                        Text = "🍫",
+                        CallbackData = "kitchenCommandInlineChocolate"
+                    },
+                    new CommandModel ()
+                    {
+                        Text = "🍭",
+                        CallbackData = "kitchenCommandInlineLollipop"
+                    }
                 };
 
-        public static List<Tuple<string, string>> inlineGames = new List<Tuple<string, string>>()
-        {
-            new Tuple<string, string>("🃏", "gameroomCommandInlineCard"),
-            new Tuple<string, string>("🎲", "gameroomCommandInlineDice")
+            public static List<CommandModel> InlineGames = new()
+                {
+                   new CommandModel()
+                   {
+                       Text = "🃏",
+                       CallbackData = "gameroomCommandInlineCard"
+                   },
+                   new CommandModel()
+                   {
+                       Text = "🎲",
+                       CallbackData = "gameroomCommandInlineDice"
+                   }
+                };
 
-        };
+            public static List<CommandModel> InlineSleep = new()
+                {
+                    new CommandModel()
+                    {
+                        Text = Resources.Resources.sleepCommandInlinePutToSleep,
+                        CallbackData = "sleepCommandInlinePutToSleep"
+                    }
+                };
 
-        public static List<Tuple<string, string>> InlineSleep = new List<Tuple<string, string>>()
-        {
-            new Tuple<string, string>(Resources.Resources.sleepCommandInlinePutToSleep, "sleepCommandInlinePutToSleep")
-        };
-
+            public static List<CommandModel> InlineHospital = new()
+                {
+                    new CommandModel()
+                    {
+                        Text = Resources.Resources.hospitalCommandCurePills,
+                        CallbackData = "hospitalCommandCurePills"
+                    }
+                };
+            public static List<CommandModel> InlinePet = new()
+            {
+                new CommandModel()
+                {
+                    Text = Resources.Resources.petCommandInlineExtraInfo,
+                    CallbackData = "petCommandInlineExtraInfo"
+                }
+            };
+        }
 
         public static ReplyKeyboardMarkup LanguagesMarkup = Extensions.ReplyKeyboardOptimizer(Extensions.LanguagesWithFlags(), isOneTimeKeyboard: true);
     }

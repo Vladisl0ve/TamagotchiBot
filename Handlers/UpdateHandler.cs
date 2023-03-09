@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using TamagotchiBot.Controllers;
-using TamagotchiBot.Models.Anwsers;
+using TamagotchiBot.Models.Answers;
 using TamagotchiBot.Services;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
@@ -29,19 +29,18 @@ namespace TamagotchiBot.Handlers
         }
 
 
-        public Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+        public async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
             Log.Error(exception, exception.Message);
             Log.Warning("App restarts in 10 seconds...");
 
-            Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
+            await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
             var startExe = AppDomain.CurrentDomain.BaseDirectory + AppDomain.CurrentDomain.FriendlyName + ".exe";
             // Starts a new instance of the program itself
             System.Diagnostics.Process.Start(startExe);
 
             // Closes the current process
             Environment.Exit(-1);
-            return Task.CompletedTask;
         }
 
         public Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
@@ -82,9 +81,10 @@ namespace TamagotchiBot.Handlers
 
                 //if new player has started the game
                 if (petService.Get(message.From.Id) == null
-                    && chatService.Get(message.Chat.Id)?.LastMessage == null
+                    && (chatService.Get(message.Chat.Id)?.LastMessage == null)
                     && toSend.StickerId != null
-                    && toSend.StickerId != Constants.StickersId.ChangeLanguageSticker)
+                    && toSend.StickerId != Constants.StickersId.ChangeLanguageSticker
+                    && toSend.StickerId != Constants.StickersId.HelpCommandSticker)
                         await BotOnMessageReceived(botClient, message);
 
 
