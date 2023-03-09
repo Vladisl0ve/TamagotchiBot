@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using TamagotchiBot.Models.Mongo;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.UserExtensions.Constants;
@@ -168,54 +167,55 @@ namespace TamagotchiBot.UserExtensions
 
             return result;
         }
-        public static List<BotCommand> GetCommands(Pet pet)
+        public static List<BotCommand> GetCommands(bool showAllCommands = true)
         {
             List<BotCommand> result = new();
 
-
-            if (pet?.Name != null)
+            if(!showAllCommands)
             {
                 result.Add(new BotCommand()
                 {
-                    Command = Constants.PetCommand,
-                    Description = Resources.Resources.petCommandDescription
+                    Command = Constants.LanguageCommand,
+                    Description = Resources.Resources.languageCommandDescription
                 });
 
-                result.Add(new BotCommand()
-                {
-                    Command = Constants.KitchenCommand,
-                    Description = Resources.Resources.kitchenCommandDescription
-                });
-
-                result.Add(new BotCommand()
-                {
-                    Command = Constants.SleepCommand,
-                    Description = Resources.Resources.sleepCommandDescription
-                });
-
-                result.Add(new BotCommand()
-                {
-                    Command = Constants.GameroomCommand,
-                    Description = Resources.Resources.gameroomCommandDescription
-                });
-
-                result.Add(new BotCommand()
-                {
-                    Command = Constants.RanksCommand,
-                    Description = Resources.Resources.ranksCommandDescription
-                });
-
-                result.Add(new BotCommand()
-                {
-                    Command = Constants.RenameCommand,
-                    Description = Resources.Resources.renameCommandDescription
-                });
+                return result;
             }
 
             result.Add(new BotCommand()
             {
-                Command = Constants.LanguageCommand,
-                Description = Resources.Resources.languageCommandDescription
+                Command = Constants.PetCommand,
+                Description = Resources.Resources.petCommandDescription
+            });
+
+            result.Add(new BotCommand()
+            {
+                Command = Constants.KitchenCommand,
+                Description = Resources.Resources.kitchenCommandDescription
+            });
+
+            result.Add(new BotCommand()
+            {
+                Command = Constants.SleepCommand,
+                Description = Resources.Resources.sleepCommandDescription
+            });
+
+            result.Add(new BotCommand()
+            {
+                Command = Constants.GameroomCommand,
+                Description = Resources.Resources.gameroomCommandDescription
+            });
+
+            result.Add(new BotCommand()
+            {
+                Command = Constants.RanksCommand,
+                Description = Resources.Resources.ranksCommandDescription
+            });
+
+            result.Add(new BotCommand()
+            {
+                Command = Constants.RenameCommand,
+                Description = Resources.Resources.renameCommandDescription
             });
 
             return result;
