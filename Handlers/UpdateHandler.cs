@@ -84,7 +84,7 @@ namespace TamagotchiBot.Handlers
                 if (petService.Get(message.From.Id) == null
                     && chatService.Get(message.Chat.Id)?.LastMessage == null
                     && toSend.StickerId != null
-                    && toSend.StickerId != Constants.ChangeLanguageSticker)
+                    && toSend.StickerId != Constants.StickersId.ChangeLanguageSticker)
                         await BotOnMessageReceived(botClient, message);
 
 

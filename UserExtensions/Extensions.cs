@@ -145,22 +145,22 @@ namespace TamagotchiBot.UserExtensions
             {
                 new BotCommand()
                 {
-                    Command = PetCommand,
+                    Command = Commands.PetCommand,
                     Description = Resources.Resources.petCommandDescription
                 },
                 new BotCommand()
                 {
-                    Command = KitchenCommand,
+                    Command = Commands.KitchenCommand,
                     Description = Resources.Resources.kitchenCommandDescription
                 },
                 new BotCommand()
                 {
-                    Command = LanguageCommand,
+                    Command = Commands.LanguageCommand,
                     Description = Resources.Resources.languageCommandDescription
                 },
                 new BotCommand()
                 {
-                    Command = SleepCommand,
+                    Command = Commands.SleepCommand,
                     Description = Resources.Resources.sleepCommandDescription
                 }
             };
@@ -175,7 +175,7 @@ namespace TamagotchiBot.UserExtensions
             {
                 result.Add(new BotCommand()
                 {
-                    Command = Constants.LanguageCommand,
+                    Command = Commands.LanguageCommand,
                     Description = Resources.Resources.languageCommandDescription
                 });
 
@@ -184,37 +184,37 @@ namespace TamagotchiBot.UserExtensions
 
             result.Add(new BotCommand()
             {
-                Command = Constants.PetCommand,
+                Command = Commands.PetCommand,
                 Description = Resources.Resources.petCommandDescription
             });
 
             result.Add(new BotCommand()
             {
-                Command = Constants.KitchenCommand,
+                Command = Commands.KitchenCommand,
                 Description = Resources.Resources.kitchenCommandDescription
             });
 
             result.Add(new BotCommand()
             {
-                Command = Constants.SleepCommand,
+                Command = Commands.SleepCommand,
                 Description = Resources.Resources.sleepCommandDescription
             });
 
             result.Add(new BotCommand()
             {
-                Command = Constants.GameroomCommand,
+                Command = Commands.GameroomCommand,
                 Description = Resources.Resources.gameroomCommandDescription
             });
 
             result.Add(new BotCommand()
             {
-                Command = Constants.RanksCommand,
+                Command = Commands.RanksCommand,
                 Description = Resources.Resources.ranksCommandDescription
             });
 
             result.Add(new BotCommand()
             {
-                Command = Constants.RenameCommand,
+                Command = Commands.RenameCommand,
                 Description = Resources.Resources.renameCommandDescription
             });
 
