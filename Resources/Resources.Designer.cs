@@ -61,6 +61,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to bathroom 🛁.
+        /// </summary>
+        public static string bathroomCommandDescription {
+            get {
+                return ResourceManager.GetString("bathroomCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose new language 🇺🇸
         ///Выберы новую мову 🇨🇷
         ///Wybierz nowy język 🇵🇱
@@ -94,7 +103,8 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 🧃 Nice!
         ///Your pet is waiting for you 🐱
-        ///Do not forget feed and wash him, play a games and just love ☺️.
+        ///Do not forget feed and wash him, play a games and just love ☺️
+        ///BTW &apos;/rename&apos; is changing pet&apos;s name.
         /// </summary>
         public static string ConfirmedName {
             get {
@@ -207,6 +217,83 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🌈 Welcome to the world of Tamagotchi! 🌈
+        ///Here, you can create your own virtual pet friend 🐩🐈🐈‍⬛🐕
+        ///Make sure to keep track of your pet&apos;s progress:
+        ///▫️ Play different games with them ⚽️
+        ///▫️ Feed them delicious treats 🍕🍳🍫
+        ///▫️ Take care of their needs 🍼
+        ///▫️ Encourage them to exercise and show love 😻
+        ///
+        ///In the command menu, you will find everything your pet needs 🌻. 
+        ///Be sure to visit your pet frequently because they also love you and will be thrilled to play with you 🤍❤️🤍.
+        /// </summary>
+        public static string helpCommand {
+            get {
+                return ResourceManager.GetString("helpCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About the game ❓.
+        /// </summary>
+        public static string helpCommandDescription {
+            get {
+                return ResourceManager.GetString("helpCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Take the pills 💊💊💊.
+        /// </summary>
+        public static string hospitalCommandCurePills {
+            get {
+                return ResourceManager.GetString("hospitalCommandCurePills", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to hospital 🏥.
+        /// </summary>
+        public static string hospitalCommandDescription {
+            get {
+                return ResourceManager.GetString("hospitalCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A healthy pet is the key to success 🏄🏄🏻‍♀️🏄
+        ///Good job, your pet is full of energy: {0}% ❤️‍🔥.
+        /// </summary>
+        public static string hospitalCommandHighHp {
+            get {
+                return ResourceManager.GetString("hospitalCommandHighHp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jesus Christ! Your pet is one foot in the grave! ☠️
+        ///Help him now! 🚑
+        ///Health: {0}%.
+        /// </summary>
+        public static string hospitalCommandLowHp {
+            get {
+                return ResourceManager.GetString("hospitalCommandLowHp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Safety first 🏥
+        ///Do not forget feed your pet! 🤕
+        ///Health is middle level: {0}%.
+        /// </summary>
+        public static string hospitalCommandMidHp {
+            get {
+                return ResourceManager.GetString("hospitalCommandMidHp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are in the kitchen 🥦
         ///🍕 Pet&apos;s hunger: {0}%
         ///
@@ -285,6 +372,16 @@ namespace TamagotchiBot.Resources {
         public static string petCommandMoreInfo1 {
             get {
                 return ResourceManager.GetString("petCommandMoreInfo1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your pet has been cured on {0}% 🌡
+        ///But joy decreased on {1}%.
+        /// </summary>
+        public static string PetCuringAnwserCallback {
+            get {
+                return ResourceManager.GetString("PetCuringAnwserCallback", resourceCulture);
             }
         }
         

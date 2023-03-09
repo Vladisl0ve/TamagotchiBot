@@ -133,7 +133,8 @@
   <data name="ConfirmedName" xml:space="preserve">
     <value>Цудоўна!
 Твой гадаванец ужо чакае 🐱
-Не забывай карміць і мыць яго, гуляць у гульні і проста любіць ☺️</value>
+Не забывай карміць і мыць яго, гуляць у гульні і проста любіць ☺️
+'/rename' мяняе імя</value>
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
@@ -255,5 +256,49 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="renameCommandDescription" xml:space="preserve">
     <value>Новае імя ✏️</value>
+  </data>
+  <data name="hospitalCommandHighHp" xml:space="preserve">
+    <value>Клопат пра сваё цела і розум - ключ да доўгага і здаровага жыцця 🏄🏄🏻‍♀️🏄
+Гадаванец здаровы на {0}% ❤️‍🔥
+Ты малайчынка 😻</value>
+  </data>
+  <data name="hospitalCommandMidHp" xml:space="preserve">
+    <value>Бяспека ў першую чаргу! 🏥
+Не забывай карміць гадаванца! 🤕
+Сярэдні ўзровень здароўя: {0}%</value>
+  </data>
+  <data name="hospitalCommandLowHp" xml:space="preserve">
+    <value>Ай-яй-яй! Яшчэ крыху і памрэ ☠️
+Ратуй свайго гадавнца! 🚑
+Здароўе: {0}%</value>
+  </data>
+  <data name="hospitalCommandCurePills" xml:space="preserve">
+    <value>З'есьці нясмачную пілюлю 💊💊💊</value>
+  </data>
+  <data name="PetCuringAnwserCallback" xml:space="preserve">
+    <value>Ваш гадаванец быў вылечаны на {0}% 🌡
+Пілюлі былі вельмі нясмачныя 😿
+Радасць змянілася на {1}%</value>
+  </data>
+  <data name="hospitalCommandDescription" xml:space="preserve">
+    <value>шпіталь 🏥</value>
+  </data>
+  <data name="bathroomCommandDescription" xml:space="preserve">
+    <value>ванная 🛁</value>
+  </data>
+  <data name="helpCommand" xml:space="preserve">
+    <value>🌈 Сардэчна запрашаем у свет тамагочы! 🌈
+Тут ты можаш завесці сабе новага віртуальнага сябра 🐩🐈🐈‍⬛🐕
+Абавязкова сачы за прагрэсам твайго гадаванца :
+▫️ гуляй з ім у розныя гульні ⚽️
+▫️ кармі смачненькім 🍕🍳🍫
+▫️ беражы яго ад хвароб 🍼
+▫️ развлякайся і проста любі 😻
+
+У меню каманд знойдзеш усё, што трэба гадаванцу 🌻
+Наведвай яго часцей, таму што ён таксама любіць цябе і будзе вельмі рады правесці час разам з табою 🤍❤️🤍</value>
+  </data>
+  <data name="helpCommandDescription" xml:space="preserve">
+    <value>даведка ❓</value>
   </data>
 </root>

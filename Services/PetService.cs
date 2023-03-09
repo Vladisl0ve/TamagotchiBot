@@ -68,6 +68,16 @@ namespace TamagotchiBot.Services
             }
         }
 
+        public void UpdateHP(long userId, int newHP)
+        {
+            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.HP = newHP;
+                Update(userId, pet);
+            }
+        }
+
         public void UpdateJoy(long userId, int newJoy)
         {
             var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();

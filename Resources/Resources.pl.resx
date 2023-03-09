@@ -132,7 +132,8 @@ Po prostu wpisz to tutaj</value>
   <data name="ConfirmedName" xml:space="preserve">
     <value>🧃 Fajnie!
 Twój zwierzak czeka na Ciebie 🐱
-Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️</value>
+Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
+'/rename' zmienia imię</value>
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
@@ -254,5 +255,48 @@ Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
   </data>
   <data name="renameCommandDescription" xml:space="preserve">
     <value>Nowe imię ✏️</value>
+  </data>
+  <data name="hospitalCommandHighHp" xml:space="preserve">
+    <value>W zdrowym ciele zdrowy duch 🏄🏄🏻‍♀️🏄
+Zwierzę jest zdrowe w {0}% ❤️‍🔥
+Brawo 😻</value>
+  </data>
+  <data name="hospitalCommandMidHp" xml:space="preserve">
+    <value>Bezpieczeństwo przede wszystkim 🏥
+Nie zapomnij nakarmić swojego zwierzaka! 🤕
+Zdrowie jest na średnim poziomie: {0}%</value>
+  </data>
+  <data name="hospitalCommandLowHp" xml:space="preserve">
+    <value>Jejku! Zwierzak prawie umarł ☠️
+Ratuj go szybko! 🚑
+Zdrowie: {0}%</value>
+  </data>
+  <data name="hospitalCommandCurePills" xml:space="preserve">
+    <value>Weź pigułki 💊💊💊</value>
+  </data>
+  <data name="PetCuringAnwserCallback" xml:space="preserve">
+    <value>Twój zwierzak został wyleczony na {0}% 🌡
+Ale radość spadła o {1}%</value>
+  </data>
+  <data name="hospitalCommandDescription" xml:space="preserve">
+    <value>szpital 🏥</value>
+  </data>
+  <data name="bathroomCommandDescription" xml:space="preserve">
+    <value>łazienka 🛁</value>
+  </data>
+  <data name="helpCommand" xml:space="preserve">
+    <value>🌈 Witaj w świecie Tamagotchi! 🌈
+Tutaj możesz stworzyć swojego wirtualnego przyjaciela 🐩🐈🐈‍⬛🐕
+ Pamiętaj, aby śledzić postępy twojego pupila:
+▫️ Graj z nim w różne gry ⚽️
+▫️ Karm go pysznymi przysmakami 🍕🍳🍫
+▫️ Dbaj o jego potrzeby 🍼
+▫️ Motywuj do aktywności fizycznej i okazuj miłość 😻
+
+W menu komend znajdziesz wszystko, czego potrzebuje twój pupil 🌻. 
+Upewnij się, że często go odwiedzasz, ponieważ on również Cię kocha i z przyjemnością będzie z tobą grał 🤍❤️🤍</value>
+  </data>
+  <data name="helpCommandDescription" xml:space="preserve">
+    <value>pomoc ❓</value>
   </data>
 </root>

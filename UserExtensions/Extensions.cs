@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using TamagotchiBot.Models.Mongo;
+using TamagotchiBot.Models;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.UserExtensions.Constants;
@@ -42,7 +42,7 @@ namespace TamagotchiBot.UserExtensions
             return new ReplyKeyboardMarkup(keyboard) { ResizeKeyboard = true, OneTimeKeyboard = isOneTimeKeyboard };
         }
 
-        public static InlineKeyboardMarkup InlineKeyboardOptimizer(List<Tuple<string, string>> names, int columnCounter = 2)
+        public static InlineKeyboardMarkup InlineKeyboardOptimizer(List<CommandModel> names, int columnCounter = 2)
         {
             int x = columnCounter < 2 ? 2 : columnCounter;
             int y = (int)Math.Ceiling((double)(names.Count) / x);
@@ -67,8 +67,8 @@ namespace TamagotchiBot.UserExtensions
 
             for (int i = 0; i < names.Count; i++)
             {
-                keyboard[i / x][i % x].Text = names[i].Item1;
-                keyboard[i / x][i % x].CallbackData = names[i].Item2;
+                keyboard[i / x][i % x].Text = names[i].Text;
+                keyboard[i / x][i % x].CallbackData = names[i].CallbackData;
             }
 
             return new InlineKeyboardMarkup(keyboard);
@@ -140,85 +140,74 @@ namespace TamagotchiBot.UserExtensions
             return Constants.Language.English;
         }
 
-        public static List<BotCommand> GetAllCommands()
+        public static List<BotCommand> GetCommands(bool showAllCommands = true)
         {
             List<BotCommand> result = new()
             {
                 new BotCommand()
                 {
-                    Command = PetCommand,
-                    Description = Resources.Resources.petCommandDescription
-                },
-                new BotCommand()
-                {
-                    Command = KitchenCommand,
-                    Description = Resources.Resources.kitchenCommandDescription
-                },
-                new BotCommand()
-                {
-                    Command = LanguageCommand,
+                    Command = Commands.LanguageCommand,
                     Description = Resources.Resources.languageCommandDescription
                 },
+
                 new BotCommand()
                 {
-                    Command = SleepCommand,
-                    Description = Resources.Resources.sleepCommandDescription
+                    Command = Commands.HelpCommand,
+                    Description = Resources.Resources.helpCommandDescription
                 }
             };
 
-            return result;
-        }
-        public static List<BotCommand> GetCommands(Pet pet)
-        {
-            List<BotCommand> result = new();
+            if (!showAllCommands)
+                return result;
 
-
-            if (pet?.Name != null)
+            List<BotCommand> resultExtra = new()
             {
-                result.Add(new BotCommand()
+                new BotCommand()
                 {
-                    Command = Constants.PetCommand,
+                    Command = Commands.PetCommand,
                     Description = Resources.Resources.petCommandDescription
-                });
+                },
 
-                result.Add(new BotCommand()
+                new BotCommand()
                 {
-                    Command = Constants.KitchenCommand,
+                    Command = Commands.KitchenCommand,
                     Description = Resources.Resources.kitchenCommandDescription
-                });
+                },
 
-                result.Add(new BotCommand()
+                new BotCommand()
                 {
-                    Command = Constants.SleepCommand,
+                    Command = Commands.SleepCommand,
                     Description = Resources.Resources.sleepCommandDescription
-                });
+                },
 
-                result.Add(new BotCommand()
+                new BotCommand()
                 {
-                    Command = Constants.GameroomCommand,
+                    Command = Commands.GameroomCommand,
                     Description = Resources.Resources.gameroomCommandDescription
-                });
+                },
 
-                result.Add(new BotCommand()
+                new BotCommand()
                 {
-                    Command = Constants.RanksCommand,
+                    Command = Commands.RanksCommand,
                     Description = Resources.Resources.ranksCommandDescription
-                });
+                },
 
-                result.Add(new BotCommand()
+                new BotCommand()
                 {
-                    Command = Constants.RenameCommand,
-                    Description = Resources.Resources.renameCommandDescription
-                });
-            }
+                    Command = Commands.HospitalCommand,
+                    Description = Resources.Resources.hospitalCommandDescription
+                },
 
-            result.Add(new BotCommand()
-            {
-                Command = Constants.LanguageCommand,
-                Description = Resources.Resources.languageCommandDescription
-            });
+                new BotCommand()
+                {
+                    Command = Commands.BathroomCommand,
+                    Description = Resources.Resources.bathroomCommandDescription
+                }
+            };
 
-            return result;
+            resultExtra.AddRange(result);
+
+            return resultExtra;
         }
 
 
