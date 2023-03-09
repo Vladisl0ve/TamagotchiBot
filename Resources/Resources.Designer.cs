@@ -94,7 +94,8 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 🧃 Nice!
         ///Your pet is waiting for you 🐱
-        ///Do not forget feed and wash him, play a games and just love ☺️.
+        ///Do not forget feed and wash him, play a games and just love ☺️
+        ///BTW &apos;/rename&apos; is changing pet&apos;s name.
         /// </summary>
         public static string ConfirmedName {
             get {

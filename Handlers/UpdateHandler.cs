@@ -61,45 +61,32 @@ namespace TamagotchiBot.Handlers
             {
                 var controller = new GameController(botClient, userService, petService, chatService, message);
                 Answer toSend = null;
-                if (userService.Get(message.From.Id) != null)
-                {
+
+                if (userService.Get(message.From.Id) == null)
+                    toSend = controller.CreateUser();
+                else
                     try
                     {
                         toSend = controller.Process();
                     }
-                    catch { }
-                }
-                else
-                    toSend = controller.CreateUser();
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex.Message, ex.StackTrace);
+                    }
+
 
                 if (toSend == null)
                     return;
 
-                if (toSend.StickerId != null)
-                {
-                    await botClient.SendStickerAsync(message.From.Id, toSend.StickerId);
+                SendMessage(botClient, toSend, message);
 
-                    if (toSend.ReplyMarkup == null && toSend.InlineKeyboardMarkup == null)
-                        await botClient.SendTextMessageAsync(message.From.Id, toSend.Text);
-                }
-
-                if (toSend.ReplyMarkup != null)
-                {
-                    await botClient.SendTextMessageAsync(message.From.Id, toSend.Text, replyMarkup: toSend.ReplyMarkup);
-                }
-
-                if (toSend.InlineKeyboardMarkup != null)
-                {
-                    await botClient.SendTextMessageAsync(message.From.Id, toSend.Text, replyMarkup: toSend.InlineKeyboardMarkup);
-                }
-
+                //if new player has started the game
                 if (petService.Get(message.From.Id) == null
                     && chatService.Get(message.Chat.Id)?.LastMessage == null
                     && toSend.StickerId != null
                     && toSend.StickerId != Constants.ChangeLanguageSticker)
-                {
-                    await BotOnMessageReceived(botClient, message);
-                }
+                        await BotOnMessageReceived(botClient, message);
+
 
                 Log.Information($"Message send to @{message.From.Username}: {toSend.Text.Substring(0, toSend.Text.Length > 10 ? 10 : toSend.Text.Length)}");
 
@@ -114,9 +101,42 @@ namespace TamagotchiBot.Handlers
                 if (toSend == null)
                     return;
 
-                Log.Information($"Message send to @{callbackQuery.From.Username}: {toSend.Text.Substring(0, toSend.Text.Length > 10 ? 10 : toSend.Text.Length)}");
+                Log.Information($"Message send to @{callbackQuery.From.Username}: {toSend.Text[..(toSend.Text.Length > 10 ? 10 : toSend.Text.Length)]}");
 
-                await bot.EditMessageTextAsync(callbackQuery.From.Id, callbackQuery.Message.MessageId, toSend.Text, replyMarkup: toSend.InlineKeyboardMarkup);
+                await bot.EditMessageTextAsync(callbackQuery.From.Id,
+                                               callbackQuery.Message.MessageId,
+                                               toSend.Text,
+                                               replyMarkup: toSend.InlineKeyboardMarkup,
+                                               cancellationToken: token);
+
+            }
+
+            async void SendMessage(ITelegramBotClient botClient, Answer toSend, Message messageFromUser)
+            {
+                if (toSend.StickerId != null)
+                {
+                    await botClient.SendStickerAsync(messageFromUser.From.Id,
+                                                     toSend.StickerId,
+                                                     cancellationToken: token);
+
+                    if (toSend.ReplyMarkup == null && toSend.InlineKeyboardMarkup == null)
+                        await botClient.SendTextMessageAsync(messageFromUser.From.Id,
+                                                             toSend.Text,
+                                                             cancellationToken: token);
+                }
+
+                if (toSend.ReplyMarkup != null)
+                    await botClient.SendTextMessageAsync(messageFromUser.From.Id,
+                                                         toSend.Text,
+                                                         replyMarkup: toSend.ReplyMarkup,
+                                                         cancellationToken: token);
+
+
+                if (toSend.InlineKeyboardMarkup != null)
+                    await botClient.SendTextMessageAsync(messageFromUser.From.Id,
+                                                         toSend.Text,
+                                                         replyMarkup: toSend.InlineKeyboardMarkup,
+                                                         cancellationToken: token);
 
             }
         }

@@ -21,6 +21,7 @@ namespace TamagotchiBot.Controllers
         private readonly UserService _userService;
         private readonly PetService _petService;
         private readonly ChatService _chatService;
+
         private readonly ITelegramBotClient bot;
         private readonly Message message;
         private readonly CallbackQuery callback;
@@ -101,8 +102,6 @@ namespace TamagotchiBot.Controllers
 
                 Culture = new CultureInfo(message.From.LanguageCode);
             }
-
-            bot.SetMyCommandsAsync(Extensions.GetCommands(pet));
 
             return new Answer(ChangeLanguage,
                                Constants.ChangeLanguageSticker,

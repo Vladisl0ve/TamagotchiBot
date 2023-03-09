@@ -132,7 +132,8 @@ Just type it here</value>
   <data name="ConfirmedName" xml:space="preserve">
     <value>🧃 Nice!
 Your pet is waiting for you 🐱
-Do not forget feed and wash him, play a games and just love ☺️</value>
+Do not forget feed and wash him, play a games and just love ☺️
+BTW '/rename' is changing pet's name</value>
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
