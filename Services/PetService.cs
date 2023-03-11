@@ -53,7 +53,7 @@ namespace TamagotchiBot.Services
             var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
-                pet.Starving = newStarving;
+                pet.Satiety = newStarving;
                 Update(userId, pet);
             }
         }

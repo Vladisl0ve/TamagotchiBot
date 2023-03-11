@@ -138,7 +138,7 @@ BTW '/rename' is changing pet's name</value>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
 💊 HP: {1}%
-🍕 Hunger: {4}%
+🍕 Satiety: {4}%
 😴 Fatigue: {5}
 🎊 Joy level: {7}%
 ⚡️ Status: {6}
@@ -168,7 +168,7 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="kitchenCommand" xml:space="preserve">
     <value>You are in the kitchen 🥦
-🍕 Pet's hunger: {0}%
+🍕 Pet's satiety: {0}%
 
 Don't forget feed him 🐣</value>
   </data>

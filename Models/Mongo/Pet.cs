@@ -34,8 +34,8 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("HP")]
         public int HP { get; set; }
 
-        [BsonElement("Starving")]
-        public double Starving { get; set; }
+        [BsonElement("Satiety")]
+        public double Satiety { get; set; }
 
         [BsonElement("Joy")]
         public int Joy { get; set; }

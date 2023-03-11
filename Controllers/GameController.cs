@@ -204,18 +204,18 @@ namespace TamagotchiBot.Controllers
             }
 
             //Hunger
-            double toAddHunger = Math.Round(minuteCounter * Constants.Factors.StarvingFactor, 2);
-            pet.Starving += toAddHunger;
-            pet.Starving = Math.Round(pet.Starving, 2);
+            double decreaseSatiety = Math.Round(minuteCounter * Constants.Factors.StarvingFactor, 2);
+            pet.Satiety -= decreaseSatiety;
+            pet.Satiety = Math.Round(pet.Satiety, 2);
 
-            if (pet.Starving > 100)
+            if (pet.Satiety < 0)
             {
-                pet.HP -= (int)pet.Starving - 100;
+                pet.HP -= (int)pet.Satiety + 100;
 
-                if (pet.HP < 0)
-                    pet.HP = 0;
+                if (pet.HP > 100)
+                    pet.HP = 100;
 
-                pet.Starving = 100;
+                pet.Satiety = 0;
 
             }
 
@@ -276,7 +276,7 @@ namespace TamagotchiBot.Controllers
                     HP = 100,
                     Joy = 100,
                     Fatigue = 0,
-                    Starving = 0,
+                    Satiety = 100,
                     IsWelcomed = true,
                     Type = null,
                     UserId = message.From.Id
@@ -412,7 +412,7 @@ namespace TamagotchiBot.Controllers
             }
             if (textReceived == "/pet")
             {
-                string toSendText = string.Format(petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Starving,
+                string toSendText = string.Format(petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Satiety,
                                                   Extensions.GetFatigue(pet.Fatigue),
                                                   Extensions.GetCurrentStatus(pet.CurrentStatus),
                                                   pet.Joy);
@@ -464,7 +464,7 @@ namespace TamagotchiBot.Controllers
                         InlineKeyboardMarkup = null
                     };
                 }
-                string toSendText = string.Format(kitchenCommand, pet.Starving);
+                string toSendText = string.Format(kitchenCommand, pet.Satiety);
 
                 List<CommandModel> inlineParts = Constants.InlineItems.InlineFood;
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -689,7 +689,7 @@ namespace TamagotchiBot.Controllers
 
             if (callback.Data == "petCommandInlineBasicInfo")
             {
-                string toSendText = string.Format(petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Starving,
+                string toSendText = string.Format(petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Satiety,
                                                   Extensions.GetFatigue(pet.Fatigue),
                                                   Extensions.GetCurrentStatus(pet.CurrentStatus),
                                                   pet.Joy);
@@ -721,9 +721,9 @@ namespace TamagotchiBot.Controllers
 
             if (callback.Data == "kitchenCommandInlineBread") //56.379999999999995
             {
-                var newStarving = Math.Round(pet.Starving - Constants.FoodFactors.BreadHungerFactor, 2);
-                if (newStarving < 0)
-                    newStarving = 0;
+                var newStarving = Math.Round(pet.Satiety + Constants.FoodFactors.BreadHungerFactor, 2);
+                if (newStarving >100)
+                    newStarving = 100;
 
                 _petService.UpdateStarving(callback.From.Id, newStarving);
 
@@ -742,9 +742,9 @@ namespace TamagotchiBot.Controllers
 
             if (callback.Data == "kitchenCommandInlineRedApple")
             {
-                var newStarving = Math.Round(pet.Starving - Constants.FoodFactors.RedAppleHungerFactor, 2);
-                if (newStarving < 0)
-                    newStarving = 0;
+                var newStarving = Math.Round(pet.Satiety + Constants.FoodFactors.RedAppleHungerFactor, 2);
+                if (newStarving > 100)
+                    newStarving = 100;
 
                 _petService.UpdateStarving(callback.From.Id, newStarving);
 
@@ -763,9 +763,9 @@ namespace TamagotchiBot.Controllers
 
             if (callback.Data == "kitchenCommandInlineChocolate")
             {
-                var newStarving = Math.Round(pet.Starving - Constants.FoodFactors.ChocolateHungerFactor, 2);
-                if (newStarving < 0)
-                    newStarving = 0;
+                var newStarving = Math.Round(pet.Satiety + Constants.FoodFactors.ChocolateHungerFactor, 2);
+                if (newStarving > 100)
+                    newStarving = 100;
 
                 _petService.UpdateStarving(callback.From.Id, newStarving);
 
@@ -784,9 +784,9 @@ namespace TamagotchiBot.Controllers
 
             if (callback.Data == "kitchenCommandInlineLollipop")
             {
-                var newStarving = Math.Round(pet.Starving - Constants.FoodFactors.LollipopHungerFactor, 2);
-                if (newStarving < 0)
-                    newStarving = 0;
+                var newStarving = Math.Round(pet.Satiety + Constants.FoodFactors.LollipopHungerFactor, 2);
+                if (newStarving > 100)
+                    newStarving = 100;
 
                 _petService.UpdateStarving(callback.From.Id, newStarving);
 
