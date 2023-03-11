@@ -139,7 +139,7 @@
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
 💊 Здароўе: {1}%
-🍕 Голад: {4}%
+🍕 Сытасць: {4}%
 😴 Стомленасць: {5}
 🎊 Радасць: {7}%
 ⚡️ Стан: {6}
@@ -169,7 +169,7 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="kitchenCommand" xml:space="preserve">
     <value>Вы на кухні 🥦
-🍕 Голад: {0}%
+🍕 Сытасць: {0}%
 
 Не забывай карміць жывёліну 🐣</value>
   </data>

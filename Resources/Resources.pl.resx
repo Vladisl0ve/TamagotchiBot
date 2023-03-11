@@ -138,7 +138,7 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
 💊 Zdrowie: {1}%
-🍕 Głód: {4}%
+🍕 Sytość: {4}%
 😴 Zmęczenie: {5}
 🎊 Radość: {7}%
 ⚡️ Status: {6}
@@ -168,7 +168,7 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="kitchenCommand" xml:space="preserve">
     <value>Jesteś w kuchni 🥦
-🍕 Głód {0}%
+🍕 Sytość{0}%
 
 Nie zapominaj karmić zwierzaka 🐣</value>
   </data>

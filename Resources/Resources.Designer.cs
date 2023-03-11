@@ -295,7 +295,7 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to You are in the kitchen 🥦
-        ///🍕 Pet&apos;s hunger: {0}%
+        ///🍕 Pet&apos;s satiety: {0}%
         ///
         ///Don&apos;t forget feed him 🐣.
         /// </summary>
@@ -326,7 +326,7 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 🐱 {0}
         ///💊 HP: {1}%
-        ///🍕 Hunger: {4}%
+        ///🍕 Satiety: {4}%
         ///😴 Fatigue: {5}
         ///🎊 Joy level: {7}%
         ///⚡️ Status: {6}
