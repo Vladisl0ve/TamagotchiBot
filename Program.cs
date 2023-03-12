@@ -50,6 +50,7 @@ namespace Telegram.Bots.Example
                       services.AddSingleton<UserService>();
                       services.AddSingleton<PetService>();
                       services.AddSingleton<ChatService>();
+                      services.AddSingleton<SInfoService>();
 
 
                       services.AddLocalization(options => options.ResourcesPath = "Resources");
