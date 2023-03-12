@@ -621,25 +621,6 @@ namespace TamagotchiBot.Controllers
                     InlineKeyboardMarkup = null
                 };
             }
-            if (textReceived == "/restart")
-            {
-                string toSendText = string.Format(restartCommand, pet.Name);
-
-                chat.LastMessage = "/restart";
-                _chatService.Update(chat.ChatId, chat);
-
-                _petService.Remove(user.UserId);
-                _userService.Remove(user.UserId);
-                _chatService.Remove(user.UserId);
-
-                return new Answer()
-                {
-                    Text = toSendText,
-                    StickerId = Constants.StickersId.DroppedPetSticker,
-                    ReplyMarkup = null,
-                    InlineKeyboardMarkup = null
-                };
-            }
             if (textReceived == "/help")
             {
                 string toSendText = string.Format(helpCommand);
@@ -667,7 +648,27 @@ namespace TamagotchiBot.Controllers
                     InlineKeyboardMarkup = null
                 };
             }
+#if DEBUG //only for debug purpose
+            if (textReceived == "/restart")
+            {
+                string toSendText = string.Format(restartCommand, pet.Name);
 
+                chat.LastMessage = "/restart";
+                _chatService.Update(chat.ChatId, chat);
+
+                _petService.Remove(user.UserId);
+                _userService.Remove(user.UserId);
+                _chatService.Remove(user.UserId);
+
+                return new Answer()
+                {
+                    Text = toSendText,
+                    StickerId = Constants.StickersId.DroppedPetSticker,
+                    ReplyMarkup = null,
+                    InlineKeyboardMarkup = null
+                };
+            }
+#endif
 
 
 
@@ -722,7 +723,7 @@ namespace TamagotchiBot.Controllers
             if (callback.Data == "kitchenCommandInlineBread") //56.379999999999995
             {
                 var newStarving = Math.Round(pet.Satiety + Constants.FoodFactors.BreadHungerFactor, 2);
-                if (newStarving >100)
+                if (newStarving > 100)
                     newStarving = 100;
 
                 _petService.UpdateStarving(callback.From.Id, newStarving);

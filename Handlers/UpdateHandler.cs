@@ -18,14 +18,17 @@ namespace TamagotchiBot.Handlers
         private readonly UserService userService;
         private readonly PetService petService;
         private readonly ChatService chatService;
+        private readonly SInfoService sinfoService;
 
         public UpdateHandler(UserService userService,
                              PetService petService,
-                             ChatService chatService)
+                             ChatService chatService,
+                             SInfoService sinfoService)
         {
             this.userService = userService;
             this.petService = petService;
             this.chatService = chatService;
+            this.sinfoService = sinfoService;
         }
 
 
@@ -54,6 +57,7 @@ namespace TamagotchiBot.Handlers
 
             var userId = update.Message?.From.Id ?? update.CallbackQuery.From.Id;
             bot.SetMyCommandsAsync(Extensions.GetCommands(petService.Get(userId) is not null), cancellationToken: token);
+            sinfoService.UpdateLastGlobalUpdate();
             return task;
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)

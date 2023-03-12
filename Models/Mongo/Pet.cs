@@ -8,7 +8,7 @@ namespace TamagotchiBot.Models.Mongo
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public ObjectId Id { get; set; }
 
         [BsonElement("UserId")]
         public long UserId { get; set; }
