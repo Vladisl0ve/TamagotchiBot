@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Events;
+using System;
 using System.IO;
 using TamagotchiBot.Database;
 using TamagotchiBot.Handlers;
@@ -58,11 +59,22 @@ namespace Telegram.Bots.Example
         }
         public static void CreateGlobalLoggerConfiguration()
         {
+            string pathToLog = Path.Combine(Directory.GetCurrentDirectory(),
+                                            "Logs",
+                                            DateTime.Now.ToString("yyyy"),
+                                            DateTime.Now.ToString("MM"),
+                                            $"{DateTime.Now:dd}-.txt");
+
             Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Error)
             .MinimumLevel.Override("System", LogEventLevel.Warning)
-            .WriteTo.Console().CreateLogger();
+            .WriteTo.File(pathToLog,
+                          rollingInterval: RollingInterval.Day,
+                          retainedFileCountLimit: null,
+                          outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")                
+            .WriteTo.Console()
+            .CreateLogger();
         }
     }
 }
