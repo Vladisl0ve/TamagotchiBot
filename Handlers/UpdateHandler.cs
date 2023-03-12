@@ -87,8 +87,7 @@ namespace TamagotchiBot.Handlers
                     && toSend.StickerId != Constants.StickersId.HelpCommandSticker)
                         await BotOnMessageReceived(botClient, message);
 
-
-                Log.Information($"Message send to @{message.From.Username}: {toSend.Text.Substring(0, toSend.Text.Length > 10 ? 10 : toSend.Text.Length)}");
+                Log.Information($"Message send to @{message.From.Username}: {toSend.Text.Replace("\r\n", " ")}");
 
 
             }
@@ -101,7 +100,7 @@ namespace TamagotchiBot.Handlers
                 if (toSend == null)
                     return;
 
-                Log.Information($"Message send to @{callbackQuery.From.Username}: {toSend.Text[..(toSend.Text.Length > 10 ? 10 : toSend.Text.Length)]}");
+                Log.Information($"Message send to @{callbackQuery.From.Username}: {toSend.Text.Replace("\r\n", " ")}");
 
                 await bot.EditMessageTextAsync(callbackQuery.From.Id,
                                                callbackQuery.Message.MessageId,
