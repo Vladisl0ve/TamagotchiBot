@@ -210,13 +210,11 @@ namespace TamagotchiBot.Controllers
 
             if (pet.Satiety < 0)
             {
+                pet.Satiety = 0;
                 pet.HP -= (int)pet.Satiety + 100;
 
-                if (pet.HP > 100)
-                    pet.HP = 100;
-
-                pet.Satiety = 0;
-
+                if (pet.HP < 0)
+                    pet.HP = 0;
             }
 
             //Joy
