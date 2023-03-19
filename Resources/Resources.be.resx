@@ -134,7 +134,8 @@
     <value>Цудоўна!
 Твой гадаванец ужо чакае 🐱
 Не забывай карміць і мыць яго, гуляць у гульні і проста любіць ☺️
-'/rename' мяняе імя</value>
+
+'/menu' пакажа больш</value>
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
@@ -192,10 +193,10 @@ Wybierz nowy język 🇵🇱
     <value>сонны</value>
   </data>
   <data name="kitchenCommandDescription" xml:space="preserve">
-    <value>кухня 🍽</value>
+    <value>Кухня 🍽</value>
   </data>
   <data name="petCommandDescription" xml:space="preserve">
-    <value>стан жывёлы ❤️‍🩹</value>
+    <value>Стан жывёлы ❤️‍🩹</value>
   </data>
   <data name="languageCommandDescription" xml:space="preserve">
     <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺</value>
@@ -281,10 +282,10 @@ Wybierz nowy język 🇵🇱
 Радасць змянілася на {1}%</value>
   </data>
   <data name="hospitalCommandDescription" xml:space="preserve">
-    <value>шпіталь 🏥</value>
+    <value>Шпіталь 🏥</value>
   </data>
   <data name="bathroomCommandDescription" xml:space="preserve">
-    <value>ванная 🛁</value>
+    <value>Ванная 🛁</value>
   </data>
   <data name="helpCommand" xml:space="preserve">
     <value>🌈 Сардэчна запрашаем у свет тамагочы! 🌈
@@ -299,6 +300,22 @@ Wybierz nowy język 🇵🇱
 Наведвай яго часцей, таму што ён таксама любіць цябе і будзе вельмі рады правесці час разам з табою 🤍❤️🤍</value>
   </data>
   <data name="helpCommandDescription" xml:space="preserve">
-    <value>даведка ❓</value>
+    <value>Даведка ❓</value>
+  </data>
+  <data name="menuCommand" xml:space="preserve">
+    <value>Што рабіць з гадаванцам:
+/pet - паказльнікі гадаванца 🐱
+/kitchen - есці тут 🍕
+/sleep - спальня 🧸
+/gameroom - забавы 🎳
+/ranks - лепшыя з лепшых! 👑
+/hospital- ветэрынар 🏥
+/bathroom - чысціня гадаванца 🛁
+
+У будучыні будзе больш!
+Сачыце за абнаўленнямі! 💝</value>
+  </data>
+  <data name="menuCommandDescription" xml:space="preserve">
+    <value>Дзеянні з гадаванцам 🎒</value>
   </data>
 </root>

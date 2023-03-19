@@ -547,7 +547,7 @@ namespace TamagotchiBot.Controllers
             if (textReceived == "/ranks")
             {
 
-                var topPets = _petService.Get().OrderByDescending(p => p.Level).Take(10); //First 10 top-level pets
+                var topPets = _petService.Get().OrderByDescending(p => p.Level).ThenByDescending(p => p.LastUpdateTime).Take(10); //First 10 top-level pets
                 string anwserRating = "";
 
                 int counter = 1;
@@ -558,7 +558,7 @@ namespace TamagotchiBot.Controllers
                         var user = _userService.Get(pet.UserId);
 
                         anwserRating += ranksCommand + "\n\n";
-                        anwserRating += "🌟 " + pet.Level + " 🐱 " + user.Username ?? user.FirstName + user.LastName;
+                        anwserRating += "🌟 " + pet.Level + " 🐱 " + pet.Name ?? user.Username ?? user.FirstName + user.LastName;
                         anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
                         counter++;
                     }
@@ -567,7 +567,7 @@ namespace TamagotchiBot.Controllers
                         anwserRating += "\n";
                         var user = _userService.Get(pet.UserId);
 
-                        string name = user.Username ?? user.FirstName + user.LastName;
+                        string name = pet.Name ?? user.Username ?? user.FirstName + user.LastName;
 
                         anwserRating += counter + ". " + pet.Level + " 🐱 " + name;
                         counter++;
@@ -631,6 +631,19 @@ namespace TamagotchiBot.Controllers
                     InlineKeyboardMarkup = null
                 };
             }
+            if (textReceived == "/menu")
+            {
+                string toSendText = string.Format(menuCommand);
+
+                return new Answer()
+                {
+                    Text = toSendText,
+                    StickerId = Constants.StickersId.MenuCommandSticker,
+                    ReplyMarkup = null,
+                    InlineKeyboardMarkup = null
+                };
+            }
+
             if (textReceived == "/rename")
             {
                 string toSendText = string.Format(renameCommand);

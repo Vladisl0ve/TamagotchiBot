@@ -133,7 +133,8 @@
     <value>🧃 Классно!
 Твой питомец ждет 🐱
 Не забывай кормить и мыть его, играть в игры и просто любить ☺️
-'/rename' изменяет имя питомцу</value>
+
+Тыкни '/menu' чтобы увидеть больше</value>
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
@@ -191,10 +192,10 @@ Wybierz nowy język 🇵🇱
     <value>полуспящий</value>
   </data>
   <data name="kitchenCommandDescription" xml:space="preserve">
-    <value>кухня 🍽</value>
+    <value>Кухня 🍽</value>
   </data>
   <data name="petCommandDescription" xml:space="preserve">
-    <value>состояние питомца ❤️‍🩹</value>
+    <value>Состояние питомца ❤️‍🩹</value>
   </data>
   <data name="languageCommandDescription" xml:space="preserve">
     <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺</value>
@@ -280,10 +281,10 @@ Wybierz nowy język 🇵🇱
 Радость изменилась на {1}%</value>
   </data>
   <data name="hospitalCommandDescription" xml:space="preserve">
-    <value>поликлинка 🏥</value>
+    <value>Поликлинка 🏥</value>
   </data>
   <data name="bathroomCommandDescription" xml:space="preserve">
-    <value>ванная 🛁</value>
+    <value>Ванная 🛁</value>
   </data>
   <data name="helpCommand" xml:space="preserve">
     <value>🌈 Добро пожаловать в мир Тамагочи! 🌈
@@ -298,6 +299,23 @@ Wybierz nowy język 🇵🇱
 Почаще навещай его, ведь он тебя тоже любит и будет очень рад погулять с тобой 🤍❤️🤍</value>
   </data>
   <data name="helpCommandDescription" xml:space="preserve">
-    <value>об игре ❓</value>
+    <value>Об игре ❓</value>
+  </data>
+  <data name="menuCommand" xml:space="preserve">
+    <value>Что делать с питомцем:
+/pet - состояние питомца 🐱
+/kitchen - кушать тут 🍕
+/sleep - спальня 🧸
+/gameroom - развлечения 🎳
+/ranks - лучшие из лучших! 👑
+/hospital- ветеринар 🏥
+/bathroom - водные процедуры 🛁
+/rename - сменить имя питомца 🌀
+
+В будущем будет больше!
+Следите за обновлениями! 💝</value>
+  </data>
+  <data name="menuCommandDescription" xml:space="preserve">
+    <value>Что можно делать 🎒</value>
   </data>
 </root>
