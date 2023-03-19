@@ -133,7 +133,8 @@ Po prostu wpisz to tutaj</value>
     <value>🧃 Fajnie!
 Twój zwierzak czeka na Ciebie 🐱
 Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
-'/rename' zmienia imię</value>
+
+'/menu' pokaże więcej</value>
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
@@ -191,10 +192,10 @@ Nie zapominaj karmić zwierzaka 🐣</value>
     <value>zaspany</value>
   </data>
   <data name="kitchenCommandDescription" xml:space="preserve">
-    <value>kuchnia 🍽</value>
+    <value>Kuchnia 🍽</value>
   </data>
   <data name="petCommandDescription" xml:space="preserve">
-    <value>status zwierzaka ❤️‍🩹</value>
+    <value>Status zwierzaka ❤️‍🩹</value>
   </data>
   <data name="languageCommandDescription" xml:space="preserve">
     <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺</value>
@@ -279,10 +280,10 @@ Zdrowie: {0}%</value>
 Ale radość spadła o {1}%</value>
   </data>
   <data name="hospitalCommandDescription" xml:space="preserve">
-    <value>szpital 🏥</value>
+    <value>Szpital 🏥</value>
   </data>
   <data name="bathroomCommandDescription" xml:space="preserve">
-    <value>łazienka 🛁</value>
+    <value>Łazienka 🛁</value>
   </data>
   <data name="helpCommand" xml:space="preserve">
     <value>🌈 Witaj w świecie Tamagotchi! 🌈
@@ -297,6 +298,22 @@ W menu komend znajdziesz wszystko, czego potrzebuje twój pupil 🌻.
 Upewnij się, że często go odwiedzasz, ponieważ on również Cię kocha i z przyjemnością będzie z tobą grał 🤍❤️🤍</value>
   </data>
   <data name="helpCommandDescription" xml:space="preserve">
-    <value>pomoc ❓</value>
+    <value>Pomoc ❓</value>
+  </data>
+  <data name="menuCommand" xml:space="preserve">
+    <value>Akcje ze zwierzakiem:
+/pet - status zwierzaka 🐱
+/kuchnia - nakarm swojego zwierzaka 🍕
+/sleep - sypialnia 🧸
+/gameroom - rozrywka 🎳
+/ranks- zobacz najlepsze zwierzaki! 👑
+/hospital- wylecz swojego zwierzaka 🏥
+/bathroom - posprzątaj swojego zwierzaka 🛁
+
+Będzie więcej w przyszłości!
+Czekaj na dalsze informacje! 💝</value>
+  </data>
+  <data name="menuCommandDescription" xml:space="preserve">
+    <value>Akcje ze zwierzakiem 🎒</value>
   </data>
 </root>

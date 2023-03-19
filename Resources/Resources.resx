@@ -133,7 +133,8 @@ Just type it here</value>
     <value>🧃 Nice!
 Your pet is waiting for you 🐱
 Do not forget feed and wash him, play a games and just love ☺️
-BTW '/rename' is changing pet's name</value>
+
+BTW '/menu' shows some commands to start</value>
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
@@ -191,10 +192,10 @@ Don't forget feed him 🐣</value>
     <value>sleepy</value>
   </data>
   <data name="petCommandDescription" xml:space="preserve">
-    <value>pet's status ❤️‍🩹</value>
+    <value>Pet's status ❤️‍🩹</value>
   </data>
   <data name="kitchenCommandDescription" xml:space="preserve">
-    <value>kitchen 🍽</value>
+    <value>Kitchen 🍽</value>
   </data>
   <data name="languageCommandDescription" xml:space="preserve">
     <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺</value>
@@ -279,10 +280,10 @@ Health: {0}%</value>
 But joy decreased on {1}%</value>
   </data>
   <data name="hospitalCommandDescription" xml:space="preserve">
-    <value>hospital 🏥</value>
+    <value>Hospital 🏥</value>
   </data>
   <data name="bathroomCommandDescription" xml:space="preserve">
-    <value>bathroom 🛁</value>
+    <value>Bathroom 🛁</value>
   </data>
   <data name="helpCommand" xml:space="preserve">
     <value>🌈 Welcome to the world of Tamagotchi! 🌈
@@ -298,5 +299,21 @@ Be sure to visit your pet frequently because they also love you and will be thri
   </data>
   <data name="helpCommandDescription" xml:space="preserve">
     <value>About the game ❓</value>
+  </data>
+  <data name="menuCommand" xml:space="preserve">
+    <value>What to do with pet:
+/pet - pet's status 🐱
+/kitchen - feed your pet 🍕
+/sleep - bedroom 🧸
+/gameroom entertainments 🎳
+/ranks - see the best pets! 👑
+/hospital - cure your pet 🏥
+/bathroom - clean your pet 🛁
+
+There will be more in future!
+Stay tuned! 💝</value>
+  </data>
+  <data name="menuCommandDescription" xml:space="preserve">
+    <value>Actions with pet 🎒</value>
   </data>
 </root>

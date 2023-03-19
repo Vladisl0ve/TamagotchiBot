@@ -61,7 +61,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to bathroom 🛁.
+        ///   Looks up a localized string similar to Bathroom 🛁.
         /// </summary>
         public static string bathroomCommandDescription {
             get {
@@ -104,7 +104,8 @@ namespace TamagotchiBot.Resources {
         ///   Looks up a localized string similar to 🧃 Nice!
         ///Your pet is waiting for you 🐱
         ///Do not forget feed and wash him, play a games and just love ☺️
-        ///BTW &apos;/rename&apos; is changing pet&apos;s name.
+        ///
+        ///BTW &apos;/menu&apos; shows some commands to start.
         /// </summary>
         public static string ConfirmedName {
             get {
@@ -253,7 +254,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to hospital 🏥.
+        ///   Looks up a localized string similar to Hospital 🏥.
         /// </summary>
         public static string hospitalCommandDescription {
             get {
@@ -306,7 +307,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to kitchen 🍽.
+        ///   Looks up a localized string similar to Kitchen 🍽.
         /// </summary>
         public static string kitchenCommandDescription {
             get {
@@ -320,6 +321,34 @@ namespace TamagotchiBot.Resources {
         public static string languageCommandDescription {
             get {
                 return ResourceManager.GetString("languageCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to What to do with pet:
+        ////pet - pet&apos;s status 🐱
+        ////kitchen - feed your pet 🍕
+        ////sleep - bedroom 🧸
+        ////gameroom entertainments 🎳
+        ////ranks - see the best pets! 👑
+        ////hospital - cure your pet 🏥
+        ////bathroom - clean your pet 🛁
+        ///
+        ///There will be more in future!
+        ///Stay tuned! 💝.
+        /// </summary>
+        public static string menuCommand {
+            get {
+                return ResourceManager.GetString("menuCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actions with pet 🎒.
+        /// </summary>
+        public static string menuCommandDescription {
+            get {
+                return ResourceManager.GetString("menuCommandDescription", resourceCulture);
             }
         }
         
@@ -339,7 +368,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pet&apos;s status ❤️‍🩹.
+        ///   Looks up a localized string similar to Pet&apos;s status ❤️‍🩹.
         /// </summary>
         public static string petCommandDescription {
             get {
