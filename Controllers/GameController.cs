@@ -12,6 +12,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.Resources.Resources;
+using static TamagotchiBot.UserExtensions.Constants;
 using Chat = TamagotchiBot.Models.Mongo.Chat;
 using User = TamagotchiBot.Models.Mongo.User;
 
@@ -211,7 +212,8 @@ namespace TamagotchiBot.Controllers
             if (pet.Satiety < 0)
             {
                 pet.Satiety = 0;
-                pet.HP -= (int)pet.Satiety + 100;
+                int tmpSat = (int)decreaseSatiety > 100 ? ((int)decreaseSatiety) - 100 : ((int)decreaseSatiety);
+                pet.HP -= tmpSat;
 
                 if (pet.HP < 0)
                     pet.HP = 0;
@@ -255,69 +257,6 @@ namespace TamagotchiBot.Controllers
             pet.LastUpdateTime = DateTime.UtcNow;
 
             _petService.Update(messageUser.Id, pet);
-        }
-
-        private Answer CreatePet()
-        {
-            if (message.Text == null)
-                return null;
-
-            if (pet == null)
-            {
-                _petService.Create(new Pet()
-                {
-                    Name = null,
-                    Level = 1,
-                    BirthDateTime = DateTime.UtcNow,
-                    LastUpdateTime = DateTime.UtcNow,
-                    EXP = 0,
-                    HP = 100,
-                    Joy = 100,
-                    Fatigue = 0,
-                    Satiety = 100,
-                    IsWelcomed = true,
-                    Type = null,
-                    UserId = message.From.Id
-                });
-                Log.Information($"Pet of {user.Username} has been added to Db");
-
-                chat.LastMessage = "/welcome";
-                _chatService.Update(chat.ChatId, chat);
-                return new Answer()
-                {
-                    Text = Welcome,
-                    StickerId = Constants.StickersId.WelcomeSticker,
-                    ReplyMarkup = new ReplyKeyboardRemove(),
-                    InlineKeyboardMarkup = null
-                };
-            }
-
-            if (pet.IsWelcomed)
-            {
-                pet.IsWelcomed = false;
-                _petService.Update(message.From.Id, pet);
-                return new Answer()
-                {
-                    Text = ChooseName,
-                    StickerId = Constants.StickersId.PetChooseName_Cat,
-                    ReplyMarkup = null,
-                    InlineKeyboardMarkup = null
-                };
-            }
-
-            if (pet.Name == null)
-            {
-                _petService.UpdateName(message.From.Id, message.Text);
-                return new Answer()
-                {
-                    Text = ConfirmedName,
-                    StickerId = Constants.StickersId.PetConfirmedName_Cat,
-                    ReplyMarkup = null,
-                    InlineKeyboardMarkup = null
-                };
-            }
-
-            return null;
         }
 
         public Answer ExtrasHandler() //catching exceptional situations (but not exceptions!)
@@ -394,6 +333,12 @@ namespace TamagotchiBot.Controllers
             textReceived = textReceived.ToLower();
 
             UpdateIndicators();
+
+            if (pet != null && IsPetGone())
+            {
+                DeleteAllUserData();
+                return GetFarewellAnswer(pet.Name, user.FirstName ?? user.Username);
+            }
 
             if (textReceived == "/language")
             {
@@ -643,7 +588,6 @@ namespace TamagotchiBot.Controllers
                     InlineKeyboardMarkup = null
                 };
             }
-
             if (textReceived == "/rename")
             {
                 string toSendText = string.Format(renameCommand);
@@ -680,8 +624,6 @@ namespace TamagotchiBot.Controllers
                 };
             }
 #endif
-
-
 
             return ExtrasHandler();
         }
@@ -952,5 +894,91 @@ namespace TamagotchiBot.Controllers
             }
             return null;
         }
+        private Answer CreatePet()
+        {
+            if (message.Text == null)
+                return null;
+
+            if (pet == null)
+            {
+                _petService.Create(new Pet()
+                {
+                    Name = null,
+                    Level = 1,
+                    BirthDateTime = DateTime.UtcNow,
+                    LastUpdateTime = DateTime.UtcNow,
+                    EXP = 0,
+                    HP = 100,
+                    Joy = 100,
+                    Fatigue = 0,
+                    Satiety = 100,
+                    IsWelcomed = true,
+                    Type = null,
+                    UserId = message.From.Id
+                });
+                Log.Information($"Pet of {user.Username} has been added to Db");
+
+                chat.LastMessage = "/welcome";
+                _chatService.Update(chat.ChatId, chat);
+                return new Answer()
+                {
+                    Text = Welcome,
+                    StickerId = Constants.StickersId.WelcomeSticker,
+                    ReplyMarkup = new ReplyKeyboardRemove(),
+                    InlineKeyboardMarkup = null
+                };
+            }
+
+            if (pet.IsWelcomed)
+            {
+                pet.IsWelcomed = false;
+                _petService.Update(message.From.Id, pet);
+                return new Answer()
+                {
+                    Text = ChooseName,
+                    StickerId = Constants.StickersId.PetChooseName_Cat,
+                    ReplyMarkup = null,
+                    InlineKeyboardMarkup = null
+                };
+            }
+
+            if (pet.Name == null)
+            {
+                _petService.UpdateName(message.From.Id, message.Text);
+                return new Answer()
+                {
+                    Text = ConfirmedName,
+                    StickerId = Constants.StickersId.PetConfirmedName_Cat,
+                    ReplyMarkup = null,
+                    InlineKeyboardMarkup = null
+                };
+            }
+
+            return null;
+        }
+
+        private bool IsPetGone()
+        {
+            return pet.HP <= 0;
+        }
+        private void DeleteAllUserData()
+        {
+            _petService.Remove(user.UserId);
+            _chatService.Remove(user.UserId);
+            _userService.Remove(user.UserId);
+        }
+
+        public Answer GetFarewellAnswer(string petName, string username)
+        {
+            string textToSend = string.Format(FarewellText, petName, username);
+
+            return new Answer()
+            {
+                Text = textToSend,
+                StickerId = StickersId.PetGone_Cat,
+                IsPetGoneMessage = true
+            };
+        }
+
     }
 }

@@ -318,4 +318,18 @@ Wybierz nowy język 🇵🇱
   <data name="menuCommandDescription" xml:space="preserve">
     <value>Дзеянні з гадаванцам 🎒</value>
   </data>
+  <data name="FarewellText" xml:space="preserve">
+    <value>Ты заходзіш да {0}, але бачыш толькі пусты пакой і занатоўку на стале:
+"Дарагі сябар {1}!
+Было вельмі прыемна бавіць з табой час, але я пачаў хварэць
+Шкода...😿
+
+Твой гадаванец сышоў, таму што яму не хапала клопату 💔</value>
+  </data>
+  <data name="EpilogueText" xml:space="preserve">
+    <value>Бывае з кожным, але жыццё працягваецца!
+Можа з новым гадаванцам табе павязе 😼
+Давай спачатку? 🫶
+/start</value>
+  </data>
 </root>

@@ -42,11 +42,10 @@ namespace Telegram.Bots.Example
                       services.AddTransient<IUpdateHandler, UpdateHandler>();
                       services.AddSingleton<ITelegramBotClient>(_ => new TelegramBotClient(context.Configuration["TokenBot"]));
 
-
-
                       services.Configure<TamagotchiDatabaseSettings>(context.Configuration.GetSection(nameof(TamagotchiDatabaseSettings)));
                       services.AddSingleton<ITamagotchiDatabaseSettings>(sp => sp.GetRequiredService<IOptions<TamagotchiDatabaseSettings>>().Value);
 
+                      services.AddSingleton<NotifyTimerService>();
                       services.AddSingleton<UserService>();
                       services.AddSingleton<PetService>();
                       services.AddSingleton<ChatService>();

@@ -13,16 +13,13 @@ namespace TamagotchiBot.Services
     {
         private readonly ITelegramBotClient _client;
         private readonly IUpdateHandler _updateHandler;
-        private readonly ReceiverOptions _receiverOptions;
+        private readonly NotifyTimerService _timerService;
 
-        public TelegramBotHostedService(ITelegramBotClient telegramBotClient, IUpdateHandler updateHandler)
+        public TelegramBotHostedService(ITelegramBotClient telegramBotClient, IUpdateHandler updateHandler, NotifyTimerService notifyTimerService)
         {
             _client = telegramBotClient;
             _updateHandler = updateHandler;
-            _receiverOptions = new ()
-            {
-                AllowedUpdates = new[] { UpdateType.Message, UpdateType.CallbackQuery }
-            };
+            _timerService = notifyTimerService;
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -32,7 +29,6 @@ namespace TamagotchiBot.Services
                 updateHandler: _updateHandler,
                 cancellationToken: stoppingToken
                 );
-
             // Keep hosted service alive while receiving messages
             await Task.Delay(Timeout.Infinite, stoppingToken);
         }

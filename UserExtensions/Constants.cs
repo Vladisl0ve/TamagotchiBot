@@ -46,7 +46,7 @@ namespace TamagotchiBot.UserExtensions
         {
             public const int ExpFactor = 1;
             public const int ExpToLvl = 100;
-            public const double StarvingFactor = 0.138;
+            public const double StarvingFactor = 0.1;
             public const double FatigueFactor = 0.083;
             public const double RestFactor = 10;
             public const double JoyFactor = 0.3;
@@ -117,6 +117,8 @@ namespace TamagotchiBot.UserExtensions
             public static string PetHospitalLowHP_Cat = "CAACAgIAAxkBAAEIEa1kCkgUfc3lvy1OnyY5LneOAz3tQwAC2hAAAowt_QeJ21KeBteIlS8E";
             public static string PetHospitalMidHP_Cat = "CAACAgIAAxkBAAEIEbFkCkhUqHOSaEfmY85yxF98gaUZhwAC7BAAAowt_QdvxODKmdLpri8E";
             public static string PetHospitalHighHP_Cat = "CAACAgIAAxkBAAEIEbVkCkhxJUXWAkJ0yUyghSK6L2C5kgAC6xAAAowt_QdeNV1SjgQwPi8E";
+            public static string PetGone_Cat = "CAACAgIAAxkBAAEINstkGKuoCNpoeRthX9rvkQyYw8aGIQAC2hAAAowt_QeJ21KeBteIlS8E";
+            public static string PetEpilogue_Cat = "CAACAgIAAxkBAAEINs1kGKvlnOEEu_6Mk1gDWEiXI2MaDQAC6RAAAowt_QcWUbbRSyZNxS8E";
         }
 
         public struct InlineItems

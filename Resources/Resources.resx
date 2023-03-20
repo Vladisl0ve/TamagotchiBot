@@ -316,4 +316,18 @@ Stay tuned! 💝</value>
   <data name="menuCommandDescription" xml:space="preserve">
     <value>Actions with pet 🎒</value>
   </data>
+  <data name="FarewellText" xml:space="preserve">
+    <value>You have come to {0}, but all you see is an empty room and a note on the table:
+"My beloved friend {1}!
+It was very nice to spend time with you, but I've started feel not good.
+You should have kept an eye on me...😿"
+
+Your pet left because he lacked care 💔</value>
+  </data>
+  <data name="EpilogueText" xml:space="preserve">
+    <value>It happens to everyone, but life goes on!
+Maybe you'll be lucky with a new pet 😼
+Try again? 🫶
+/start</value>
+  </data>
 </root>

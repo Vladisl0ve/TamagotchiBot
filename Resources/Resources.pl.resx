@@ -316,4 +316,18 @@ Czekaj na dalsze informacje! 💝</value>
   <data name="menuCommandDescription" xml:space="preserve">
     <value>Akcje ze zwierzakiem 🎒</value>
   </data>
+  <data name="FarewellText" xml:space="preserve">
+    <value>Dotarłeś do {0}, ale wszystko, co widzisz, to pusty pokój i notatka na stole:
+"Mój ukochany przyjacielu {1}!
+Bardzo miło było spędzić z tobą czas, ale zacząłem się źle czuć.
+Potrzebuję więcej uwagi...😿
+
+Twój pupil odszedł, bo brakowało mu opieki💔</value>
+  </data>
+  <data name="EpilogueText" xml:space="preserve">
+    <value>Każdemu się to zdarza, ale życie toczy się dalej!
+Może Ci się poszczęści z nowym zwierzakiem 😼
+Od początku? 🫶
+/start</value>
+  </data>
 </root>

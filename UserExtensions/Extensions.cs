@@ -216,7 +216,6 @@ namespace TamagotchiBot.UserExtensions
             return resultExtra;
         }
 
-
         public static string GetFatigue(int fatigue)
         {
             if (fatigue is >= 0 and < 20)
