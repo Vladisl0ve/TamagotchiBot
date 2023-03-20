@@ -17,5 +17,6 @@ namespace TamagotchiBot.Models.Answers
         public string StickerId { get; set; }
         public IReplyMarkup ReplyMarkup { get; set; }
         public InlineKeyboardMarkup InlineKeyboardMarkup { get; set; }
+        public bool IsPetGoneMessage { get; set; } = false;
     }
 }

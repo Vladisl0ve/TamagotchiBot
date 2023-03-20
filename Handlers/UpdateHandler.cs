@@ -88,8 +88,9 @@ namespace TamagotchiBot.Handlers
                     && (chatService.Get(message.Chat.Id)?.LastMessage == null)
                     && toSend.StickerId != null
                     && toSend.StickerId != Constants.StickersId.ChangeLanguageSticker
+                    && toSend.StickerId != Constants.StickersId.PetGone_Cat
                     && toSend.StickerId != Constants.StickersId.HelpCommandSticker)
-                        await BotOnMessageReceived(botClient, message);
+                    await BotOnMessageReceived(botClient, message);
 
                 Log.Information($"Message send to @{message.From.Username}: {toSend.Text.Replace("\r\n", " ")}");
 
@@ -140,6 +141,18 @@ namespace TamagotchiBot.Handlers
                                                          toSend.Text,
                                                          replyMarkup: toSend.InlineKeyboardMarkup,
                                                          cancellationToken: token);
+                if (toSend.IsPetGoneMessage)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(3), token);
+                    await botClient.SendStickerAsync(messageFromUser.From.Id,
+                                                     Constants.StickersId.PetEpilogue_Cat,
+                                                     cancellationToken: token);
+
+                    await botClient.SendTextMessageAsync(messageFromUser.From.Id,
+                                     Resources.Resources.EpilogueText,
+                                     cancellationToken: token);
+                }
+
 
             }
         }

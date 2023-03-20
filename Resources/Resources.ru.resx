@@ -318,4 +318,18 @@ Wybierz nowy język 🇵🇱
   <data name="menuCommandDescription" xml:space="preserve">
     <value>Что можно делать 🎒</value>
   </data>
+  <data name="FarewellText" xml:space="preserve">
+    <value>Ты заходишь к {0}, но видишь лишь пустую комнату и записку на столе:
+"Мой любимый друг {1}! 
+Было очень приятно проводить с тобой время, но моё здоровье начало хромать.
+Не уследили... 😿"
+
+Твой питомец ушёл, потому что ему не хватало заботы 💔</value>
+  </data>
+  <data name="EpilogueText" xml:space="preserve">
+    <value>Бывает с каждым, но жизнь продолжается!
+Может с новым питомцем тебе повезёт 😼
+Давай сначала? 🫶
+/start</value>
+  </data>
 </root>

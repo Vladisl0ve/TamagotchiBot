@@ -150,6 +150,32 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It happens to everyone, but life goes on!
+        ///Maybe you&apos;ll be lucky with a new pet 😼
+        ///Try again? 🫶
+        ////start.
+        /// </summary>
+        public static string EpilogueText {
+            get {
+                return ResourceManager.GetString("EpilogueText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have come to {0}, but all you see is an empty room and a note on the table:
+        ///&quot;My beloved friend {1}!
+        ///It was very nice to spend time with you, but I&apos;ve started feel not good.
+        ///You should have kept an eye on me...😿&quot;
+        ///
+        ///Your pet left because he lacked care 💔.
+        /// </summary>
+        public static string FarewellText {
+            get {
+                return ResourceManager.GetString("FarewellText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to fresh.
         /// </summary>
         public static string FatigueFresh {

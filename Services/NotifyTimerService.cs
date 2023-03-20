@@ -14,7 +14,7 @@ namespace TamagotchiBot.Services
         public NotifyTimerService(ITelegramBotClient telegramBotClient)
         {
             _botClient = telegramBotClient;
-            SetNotifyTimer();
+            //SetNotifyTimer();
         }
 
         private void SetNotifyTimer()
@@ -22,12 +22,12 @@ namespace TamagotchiBot.Services
             TimeSpan timeToWait = TimeSpan.FromSeconds(1);
             Log.Information("Timer set to wait for " + timeToWait.TotalSeconds + "s");
             _notifyTimer = new System.Timers.Timer(timeToWait);
-            _notifyTimer.Elapsed += OnTimedEvent;
+            _notifyTimer.Elapsed += OnNotifyTimedEvent;
             _notifyTimer.AutoReset = true;
             _notifyTimer.Enabled = true;
         }
 
-        private async void OnTimedEvent(object sender, ElapsedEventArgs e)
+        private async void OnNotifyTimedEvent(object sender, ElapsedEventArgs e)
         {
             try
             {
