@@ -19,7 +19,7 @@ namespace TamagotchiBot.Services
             _chats = database.GetCollection<Chat>(settings.ChatsCollectionName);
         }
 
-        public List<Chat> Get() => _chats.Find(c => true).ToList();
+        public List<Chat> GetAll() => _chats.Find(c => true).ToList();
 
         public Chat Get(long chatId) => _chats.Find(c => c.ChatId == chatId).FirstOrDefault();
 

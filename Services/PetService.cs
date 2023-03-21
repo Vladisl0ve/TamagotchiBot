@@ -18,7 +18,7 @@ namespace TamagotchiBot.Services
             _pets = database.GetCollection<Pet>(settings.PetsCollectionName);
         }
 
-        public List<Pet> Get() => _pets.Find(p => true).ToList();
+        public List<Pet> GetAll() => _pets.Find(p => true).ToList();
 
         public Pet Get(long userId) => _pets.Find(p => p.UserId == userId).FirstOrDefault();
 
