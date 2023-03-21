@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Timers;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
+using Telegram.Bot.Exceptions;
 
 namespace TamagotchiBot.Services
 {
@@ -14,11 +15,16 @@ namespace TamagotchiBot.Services
         private readonly ITelegramBotClient _botClient;
         private PetService _petService;
         private UserService _userService;
-        public NotifyTimerService(ITelegramBotClient telegramBotClient, PetService petService, UserService userService)
+        private ChatService _chatService;
+        public NotifyTimerService(ITelegramBotClient telegramBotClient,
+                                  PetService petService,
+                                  UserService userService,
+                                  ChatService chatService)
         {
             _botClient = telegramBotClient;
             _petService = petService;
             _userService = userService;
+            _chatService = chatService;
         }
 
         public void SetNotifyTimer(TimeSpan timerSpan)
@@ -33,23 +39,38 @@ namespace TamagotchiBot.Services
 
         private async void OnNotifyTimedEvent(object sender, ElapsedEventArgs e)
         {
-            try
+            var usersToNotify = GetUserIdToNotify();
+            foreach (var userId in usersToNotify)
             {
-                var usersToNotify = GetUserIdToNotify();
-                foreach (var userId in usersToNotify)
+                var user = _userService.Get(long.Parse(userId));
+                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "en");
+
+                try
                 {
-                    var user = _userService.Get(long.Parse(userId));
-                    Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "en");
                     await _botClient.SendStickerAsync(userId, Constants.StickersId.PetBored_Cat);
                     await _botClient.SendTextMessageAsync(userId, Resources.Resources.ReminderNotifyText);
+
+
                     Log.Information($"Sent reminder to '@{user.Username}'");
                 }
+                catch (ApiRequestException ex)
+                {
+                    if (ex.ErrorCode == 403) //Forbidden by user
+                    {
+                        Log.Warning($"{ex.Message} @{user.Username}, id: {user.UserId}");
 
+                        //remove all data about user
+                        _chatService.Remove(user.UserId);
+                        _petService.Remove(user.UserId);
+                        _userService.Remove(user.UserId);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                Log.Warning(ex.Message);
-            }
+
         }
 
         private List<string> GetUserIdToNotify()
