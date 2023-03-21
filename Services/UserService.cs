@@ -19,7 +19,7 @@ namespace TamagotchiBot.Services
             _users = database.GetCollection<User>(settings.UsersCollectionName);
         }
 
-        public List<User> Get() => _users.Find(u => true).ToList();
+        public List<User> GetAll() => _users.Find(u => true).ToList();
 
         public User Get(long userId) => _users.Find(u => u.UserId == userId).FirstOrDefault();
 
