@@ -166,7 +166,7 @@ Wybierz nowy język 🇵🇱
     <value>Асноўныя звесткі 📋</value>
   </data>
   <data name="petCommandInlineExtraInfo" xml:space="preserve">
-    <value>Дадатковая інфа 📝</value>
+    <value>Больш інфы 📝</value>
   </data>
   <data name="kitchenCommand" xml:space="preserve">
     <value>Вы на кухні 🥦
@@ -331,5 +331,13 @@ Wybierz nowy język 🇵🇱
 Можа з новым гадаванцам табе павязе 😼
 Давай спачатку? 🫶
 /start</value>
+  </data>
+  <data name="ReminderNotifyText" xml:space="preserve">
+    <value>😺: Ты вярнуўся!
+Мне так цябе не хапала!
+Хачу есці 🌭 і гуляць 🪁
+
+/kitchen пакарміць 🍩
+/gameroom гуляць 🏓</value>
   </data>
 </root>

@@ -228,7 +228,7 @@ Nie zapominaj karmić zwierzaka 🐣</value>
   </data>
   <data name="gameroomCommand" xml:space="preserve">
     <value>Jesteście w pokoju dziecięcym
-⚽️ Zmęczenie: {0}
+⚽️ Zmęczenie: {0}%
 🎊 Radość: {1}%
 
 Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
@@ -329,5 +329,13 @@ Twój pupil odszedł, bo brakowało mu opieki💔</value>
 Może Ci się poszczęści z nowym zwierzakiem 😼
 Od początku? 🫶
 /start</value>
+  </data>
+  <data name="ReminderNotifyText" xml:space="preserve">
+    <value>😺: Wróciłeś!
+Tak bardzo za tobą tęskniłem!
+Chcę jeść 🌭 i bawić się 🪁
+
+/kitchen karmić 🍩
+/gameroom bawić się 🏓</value>
   </data>
 </root>

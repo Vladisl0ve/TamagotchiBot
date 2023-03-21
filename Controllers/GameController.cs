@@ -364,7 +364,7 @@ namespace TamagotchiBot.Controllers
                 if (toSendText.IsEqual(callback.Message.Text))
                     return null;
 
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
 
                 return new AnswerCallback(toSendText, toSendInline);
             }
@@ -385,7 +385,7 @@ namespace TamagotchiBot.Controllers
                 if (toSendText.IsEqual(callback.Message.Text))
                     return null;
 
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
 
                 return new AnswerCallback(toSendText, toSendInline);
             }
@@ -406,7 +406,7 @@ namespace TamagotchiBot.Controllers
                 if (toSendText.IsEqual(callback.Message.Text))
                     return null;
 
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
 
                 return new AnswerCallback(toSendText, toSendInline);
             }
@@ -427,7 +427,7 @@ namespace TamagotchiBot.Controllers
                 if (toSendText.IsEqual(callback.Message.Text))
                     return null;
 
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
 
                 return new AnswerCallback(toSendText, toSendInline);
             }
@@ -505,7 +505,7 @@ namespace TamagotchiBot.Controllers
                 if (toSendText.IsEqual(callback.Message.Text))
                     return null;
 
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineGames, 3);
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineGames, 3);
 
                 return new AnswerCallback(toSendText, toSendInline);
             }
@@ -530,7 +530,7 @@ namespace TamagotchiBot.Controllers
                 if (toSendText.IsEqual(callback.Message.Text))
                     return null;
 
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineGames, 3);
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineGames, 3);
 
                 return new AnswerCallback(toSendText, toSendInline);
             }
@@ -562,7 +562,7 @@ namespace TamagotchiBot.Controllers
                 if (toSendText.IsEqual(callback.Message.Text))
                     return null;
 
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineHospital);
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineHospital);
 
                 return new AnswerCallback(toSendText, toSendInline);
 
@@ -679,7 +679,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.PetInfo_Cat,
                 ReplyMarkup = null,
-                InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(InlineItems.InlinePet)
+                InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new InlineItems().InlinePet)
             };
 
         }
@@ -719,7 +719,7 @@ namespace TamagotchiBot.Controllers
             }
             string toSendText = string.Format(kitchenCommand, pet.Satiety);
 
-            List<CommandModel> inlineParts = InlineItems.InlineFood;
+            List<CommandModel> inlineParts = new InlineItems().InlineFood;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             chat.LastMessage = "/kitchen";
@@ -748,7 +748,7 @@ namespace TamagotchiBot.Controllers
 
             string toSendText = string.Format(gameroomCommand, pet.Fatigue, pet.Joy);
 
-            List<CommandModel> inlineParts = InlineItems.InlineGames;
+            List<CommandModel> inlineParts = new InlineItems().InlineGames;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             chat.LastMessage = "/gameroom";
@@ -791,7 +791,7 @@ namespace TamagotchiBot.Controllers
 
             string toSendText = string.Format(commandHospital, pet.HP);
 
-            List<CommandModel> inlineParts = InlineItems.InlineHospital;
+            List<CommandModel> inlineParts = new InlineItems().InlineHospital;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts);
 
             chat.LastMessage = "/hospital";

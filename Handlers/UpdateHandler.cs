@@ -56,7 +56,21 @@ namespace TamagotchiBot.Handlers
             };
 
             var userId = update.Message?.From.Id ?? update.CallbackQuery.From.Id;
-            bot.SetMyCommandsAsync(Extensions.GetCommands(petService.Get(userId) is not null), cancellationToken: token);
+
+            if (petService.Get(userId) is not null && petService.Get(userId).Name is not null)
+            {
+                bot.SetMyCommandsAsync(Extensions.GetCommands(true),
+                                       cancellationToken: token,
+                                       scope: new BotCommandScopeChat() { ChatId = userId });
+            }
+            else
+            {
+                bot.SetMyCommandsAsync(Extensions.GetCommands(false),
+                       cancellationToken: token,
+                       scope: new BotCommandScopeChat() { ChatId = userId });
+            }
+
+
             sinfoService.UpdateLastGlobalUpdate();
             return task;
 

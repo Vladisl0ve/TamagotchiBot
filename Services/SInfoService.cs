@@ -27,7 +27,7 @@ namespace TamagotchiBot.Services
         public void UpdateLastGlobalUpdate()
         {
             var toInsert = new ServiceInfo() { _id = ObjectId.GenerateNewId(), LastGlobalUpdate = DateTime.Now};
-            var lgu = _sinfo.Find(si => true).First();
+            var lgu = _sinfo.Find(si => true).FirstOrDefault();
             if (lgu == null)
             {
                 _sinfo.InsertOne(toInsert);

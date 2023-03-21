@@ -118,12 +118,13 @@ namespace TamagotchiBot.UserExtensions
             public static string PetHospitalMidHP_Cat = "CAACAgIAAxkBAAEIEbFkCkhUqHOSaEfmY85yxF98gaUZhwAC7BAAAowt_QdvxODKmdLpri8E";
             public static string PetHospitalHighHP_Cat = "CAACAgIAAxkBAAEIEbVkCkhxJUXWAkJ0yUyghSK6L2C5kgAC6xAAAowt_QdeNV1SjgQwPi8E";
             public static string PetGone_Cat = "CAACAgIAAxkBAAEINstkGKuoCNpoeRthX9rvkQyYw8aGIQAC2hAAAowt_QeJ21KeBteIlS8E";
+            public static string PetBored_Cat = "CAACAgIAAxkBAAEIOhdkGhWlP20cd5VazW0bzgnCFu14TwAC7RAAAowt_Qc5_hbrTG3BAS8E";
             public static string PetEpilogue_Cat = "CAACAgIAAxkBAAEINs1kGKvlnOEEu_6Mk1gDWEiXI2MaDQAC6RAAAowt_QcWUbbRSyZNxS8E";
         }
 
-        public struct InlineItems
+        public class InlineItems
         {
-            public static List<CommandModel> InlineFood = new()
+            public List<CommandModel> InlineFood = new()
                 {
                     new CommandModel ()
                     {
@@ -147,7 +148,7 @@ namespace TamagotchiBot.UserExtensions
                     }
                 };
 
-            public static List<CommandModel> InlineGames = new()
+            public List<CommandModel> InlineGames = new()
                 {
                    new CommandModel()
                    {
@@ -161,7 +162,7 @@ namespace TamagotchiBot.UserExtensions
                    }
                 };
 
-            public static List<CommandModel> InlineSleep = new()
+            public List<CommandModel> InlineSleep = new()
                 {
                     new CommandModel()
                     {
@@ -170,7 +171,7 @@ namespace TamagotchiBot.UserExtensions
                     }
                 };
 
-            public static List<CommandModel> InlineHospital = new()
+            public List<CommandModel> InlineHospital = new()
                 {
                     new CommandModel()
                     {
@@ -178,7 +179,7 @@ namespace TamagotchiBot.UserExtensions
                         CallbackData = "hospitalCommandCurePills"
                     }
                 };
-            public static List<CommandModel> InlinePet = new()
+            public List<CommandModel> InlinePet = new()
             {
                 new CommandModel()
                 {
@@ -186,6 +187,7 @@ namespace TamagotchiBot.UserExtensions
                     CallbackData = "petCommandInlineExtraInfo"
                 }
             };
+
         }
 
         public static ReplyKeyboardMarkup LanguagesMarkup = Extensions.ReplyKeyboardOptimizer(Extensions.LanguagesWithFlags(), isOneTimeKeyboard: true);
