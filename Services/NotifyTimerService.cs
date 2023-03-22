@@ -40,6 +40,7 @@ namespace TamagotchiBot.Services
         private async void OnNotifyTimedEvent(object sender, ElapsedEventArgs e)
         {
             var usersToNotify = GetUserIdToNotify();
+            Log.Information($"Notify timer - {usersToNotify.Count} users");
             foreach (var userId in usersToNotify)
             {
                 var user = _userService.Get(long.Parse(userId));

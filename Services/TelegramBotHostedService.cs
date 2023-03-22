@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
-using Telegram.Bot.Types.Enums;
 
 namespace TamagotchiBot.Services
 {
@@ -25,7 +24,7 @@ namespace TamagotchiBot.Services
         {
             Log.Information("Telegram Bot Hosted Service started");
 
-            _timerService.SetNotifyTimer(TimeSpan.FromHours(10));
+            _timerService.SetNotifyTimer(TimeSpan.FromHours(1));
             _client.StartReceiving(
                 updateHandler: _updateHandler,
                 cancellationToken: stoppingToken
