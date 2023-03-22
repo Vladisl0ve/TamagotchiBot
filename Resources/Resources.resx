@@ -229,8 +229,8 @@ Don't forget feed him 🐣</value>
   <data name="gameroomCommand" xml:space="preserve">
     <value>You are in the gameroom
 
-⚽️ Fatigue level: {0}
-🎊 Joy level: {1}%
+⚽️ Fatigue: {0}%
+🎊 Joy: {1}%
 
 Do not play so much and safety first! 🧗‍♀️</value>
   </data>
@@ -329,5 +329,13 @@ Your pet left because he lacked care 💔</value>
 Maybe you'll be lucky with a new pet 😼
 Try again? 🫶
 /start</value>
+  </data>
+  <data name="ReminderNotifyText" xml:space="preserve">
+    <value>😺: You've come back!
+I've missed you so much!
+I want to eat 🌭 and play with you 🪁
+
+/kitchen to feed 🍩
+/gameroom for games 🏓</value>
   </data>
 </root>

@@ -165,7 +165,7 @@ Wybierz nowy język 🇵🇱
     <value>Основная информация 📋</value>
   </data>
   <data name="petCommandInlineExtraInfo" xml:space="preserve">
-    <value>Доп инфо 📝</value>
+    <value>Больше инфы 📝</value>
   </data>
   <data name="kitchenCommand" xml:space="preserve">
     <value>Вы в кухне 🥦
@@ -228,7 +228,7 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="gameroomCommand" xml:space="preserve">
     <value>Вы в игровой комнате
-⚽️ Усталость: {0}
+⚽️ Усталость: {0}%
 🎊 Радость: {1}%
 
 Делу время - потехе час 🧗‍♀️</value>
@@ -331,5 +331,13 @@ Wybierz nowy język 🇵🇱
 Может с новым питомцем тебе повезёт 😼
 Давай сначала? 🫶
 /start</value>
+  </data>
+  <data name="ReminderNotifyText" xml:space="preserve">
+    <value>😺: Ты вернулся!
+Мне тебя не хватало!
+Хочу кушать 🌭 и играть 🪁
+
+/kitchen покормить 🍩
+/gameroom гулять 🏓</value>
   </data>
 </root>

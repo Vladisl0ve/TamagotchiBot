@@ -223,8 +223,8 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to You are in the gameroom
         ///
-        ///⚽️ Fatigue level: {0}
-        ///🎊 Joy level: {1}%
+        ///⚽️ Fatigue: {0}%
+        ///🎊 Joy: {1}%
         ///
         ///Do not play so much and safety first! 🧗‍♀️.
         /// </summary>
@@ -491,6 +491,20 @@ namespace TamagotchiBot.Resources {
         public static string ranksCommandDescription {
             get {
                 return ResourceManager.GetString("ranksCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 😺: You&apos;ve come back!
+        ///I&apos;ve missed you so much!
+        ///I want to eat 🌭 and play with you 🪁
+        ///
+        ////kitchen to feed 🍩
+        ////gameroom for games 🏓.
+        /// </summary>
+        public static string ReminderNotifyText {
+            get {
+                return ResourceManager.GetString("ReminderNotifyText", resourceCulture);
             }
         }
         
