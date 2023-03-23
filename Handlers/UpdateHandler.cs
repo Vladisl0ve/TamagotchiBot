@@ -7,6 +7,7 @@ using TamagotchiBot.Models.Answers;
 using TamagotchiBot.Services;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
+using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -121,11 +122,19 @@ namespace TamagotchiBot.Handlers
 
                 Log.Information($"Message send to @{callbackQuery.From.Username}: {toSend.Text.Replace("\r\n", " ")}");
 
-                await bot.EditMessageTextAsync(callbackQuery.From.Id,
-                                               callbackQuery.Message.MessageId,
-                                               toSend.Text,
-                                               replyMarkup: toSend.InlineKeyboardMarkup,
-                                               cancellationToken: token);
+                try
+                {
+                    await bot.EditMessageTextAsync(callbackQuery.From.Id,
+                               callbackQuery.Message.MessageId,
+                               toSend.Text,
+                               replyMarkup: toSend.InlineKeyboardMarkup,
+                               cancellationToken: token);
+                }
+                catch (ApiRequestException ex)
+                {
+                    Log.Warning($"{ex.ErrorCode}: {ex.Message}, user: {callbackQuery.From.Username ?? callbackQuery.From.FirstName}");
+                }
+
 
             }
 
