@@ -143,7 +143,9 @@
 😴 Усталость: {5}
 🎊 Радость: {7}%
 ⚡️ Состояние: {6}
-🏅 Опыт: {2} | {3} уровень✨</value>
+🏅 Опыт: {2} | {3} уровень✨
+
+/gameroom - появилась новая мини-игра 🍎</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>В разработке, жди обновления 👾</value>
@@ -189,7 +191,7 @@ Wybierz nowy język 🇵🇱
     <value>уставший</value>
   </data>
   <data name="FatigueSleepy" xml:space="preserve">
-    <value>полуспящий</value>
+    <value>хочет спать</value>
   </data>
   <data name="kitchenCommandDescription" xml:space="preserve">
     <value>Кухня 🍽</value>

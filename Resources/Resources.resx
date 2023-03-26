@@ -143,7 +143,9 @@ BTW '/menu' shows some commands to start</value>
 😴 Fatigue: {5}
 🎊 Joy level: {7}%
 ⚡️ Status: {6}
-🏅 EXP: {2} | {3} level ✨</value>
+🏅 EXP: {2} | {3} level ✨
+
+/gameroom - new mini-game 🍎</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>In developing, wait for next update 👾</value>

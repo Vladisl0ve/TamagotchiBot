@@ -485,7 +485,9 @@ namespace TamagotchiBot.Resources {
         ///😴 Fatigue: {5}
         ///🎊 Joy level: {7}%
         ///⚡️ Status: {6}
-        ///🏅 EXP: {2} | {3} level ✨.
+        ///🏅 EXP: {2} | {3} level ✨
+        ///
+        ////gameroom - new mini-game 🍎.
         /// </summary>
         public static string petCommand {
             get {
