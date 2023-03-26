@@ -338,4 +338,53 @@ Chcę jeść 🌭 i bawić się 🪁
 /kitchen karmić 🍩
 /gameroom bawić się 🏓</value>
   </data>
+  <data name="quitText" xml:space="preserve">
+    <value>Zamknij</value>
+  </data>
+  <data name="againText" xml:space="preserve">
+    <value>Jeszcze raz</value>
+  </data>
+  <data name="statisticsText" xml:space="preserve">
+    <value>Statystyka</value>
+  </data>
+  <data name="ConcedeText" xml:space="preserve">
+    <value>Poddać się</value>
+  </data>
+  <data name="appleGameHelpText" xml:space="preserve">
+    <value>Zasady gry są proste - przegra ten, kto zje niedojrzałe zielone jabłko.
+Możesz zjeść jedno 🍎, dwa 🍎🍎 lub trzy 🍎🍎🍎 jabłka na raz
+Czy możesz ograć swojego zwierzaka i zostawić mu niesmaczny 🍏?</value>
+  </data>
+  <data name="appleGameUndefiendText" xml:space="preserve">
+    <value>Wybierz jedno 🍎, dwa 🍎🍎 lub trzy 🍎🍎🍎 jabłka do zjedzenia</value>
+  </data>
+  <data name="remainingApplesText" xml:space="preserve">
+    <value>Zostało {0} jabłek</value>
+  </data>
+  <data name="appleGameSysEaten" xml:space="preserve">
+    <value>🐱: zjadłem jabłka - {0}</value>
+  </data>
+  <data name="appleGameLoseText" xml:space="preserve">
+    <value>Twoje zielone jabłko pozostaje
+
+🐱: Więcej szczęścia następnym razem 😉</value>
+  </data>
+  <data name="appleGameWinText" xml:space="preserve">
+    <value>🐱: Wygrałeś, brawo!</value>
+  </data>
+  <data name="appleGameStatisticsCommand" xml:space="preserve">
+    <value>📈STATYSTYKI📉
+Wygrane: {0}
+Przegrane: {1}
+Poddania: {2}</value>
+  </data>
+  <data name="tooTiredText" xml:space="preserve">
+    <value>Twój zwierzak jest zbyt zmęczony, powinien spać 💤</value>
+  </data>
+  <data name="quitCommandDescription" xml:space="preserve">
+    <value>📛 Zamknij mini-grę</value>
+  </data>
+  <data name="backToGameroomText" xml:space="preserve">
+    <value>Znowu jesteś w pokoju gier ⚽️</value>
+  </data>
 </root>

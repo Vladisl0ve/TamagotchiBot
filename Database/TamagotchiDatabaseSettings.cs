@@ -9,12 +9,14 @@
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
         public string AllUsersDataCollectionName { get; set; }
+        public string AppleGameDataCollectionName { get; set; }
     }
 
 
     public interface ITamagotchiDatabaseSettings
     {
         string ChatsCollectionName { get; set; }
+        string AppleGameDataCollectionName { get; set; }
         string PetsCollectionName { get; set; }
         string UsersCollectionName { get; set; }
         string ServiceInfoCollectionName { get; set; }

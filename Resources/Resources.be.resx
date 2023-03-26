@@ -340,4 +340,53 @@ Wybierz nowy język 🇵🇱
 /kitchen пакарміць 🍩
 /gameroom гуляць 🏓</value>
   </data>
+  <data name="quitText" xml:space="preserve">
+    <value>Выйсці</value>
+  </data>
+  <data name="againText" xml:space="preserve">
+    <value>Яшчэ раз</value>
+  </data>
+  <data name="statisticsText" xml:space="preserve">
+    <value>Статыстыка</value>
+  </data>
+  <data name="ConcedeText" xml:space="preserve">
+    <value>Здацца</value>
+  </data>
+  <data name="appleGameHelpText" xml:space="preserve">
+    <value>Правілы гульні простыя - прайграе той, хто з'есць няспелы зялёны яблык
+З'есці за раз можна на выбар адно 🍎, два 🍎🍎 ці тры яблыкі 🍎🍎🍎
+Зможаш перайграць свайго гадаванца і пакінуць яму нясмачнае 🍏?</value>
+  </data>
+  <data name="appleGameUndefiendText" xml:space="preserve">
+    <value>Выберы адно 🍎, два 🍎🍎 або тры яблыкі 🍎🍎🍎 каб з'есці</value>
+  </data>
+  <data name="remainingApplesText" xml:space="preserve">
+    <value>Засталося {0} яблыкаў</value>
+  </data>
+  <data name="appleGameSysEaten" xml:space="preserve">
+    <value>🐱: мною з'едзена яблыкаў - {0}</value>
+  </data>
+  <data name="appleGameLoseText" xml:space="preserve">
+    <value>Застаўся твой зялёны яблык
+
+🐱: Павязе ў наступны раз 😉</value>
+  </data>
+  <data name="appleGameWinText" xml:space="preserve">
+    <value>🐱: Ты выйграў, малайчына!</value>
+  </data>
+  <data name="appleGameStatisticsCommand" xml:space="preserve">
+    <value>📈СТАТЫСТЫКА📉
+Выйграна: {0}
+Прайграна: {1}
+Здаўся раз: {2}</value>
+  </data>
+  <data name="tooTiredText" xml:space="preserve">
+    <value>Твой гадаванец занадта стаміўся, яму трэба паспаць 💤</value>
+  </data>
+  <data name="quitCommandDescription" xml:space="preserve">
+    <value>📛 Выйсці з міні-гульні</value>
+  </data>
+  <data name="backToGameroomText" xml:space="preserve">
+    <value>Вы зноў у дзіцячай ⚽️</value>
+  </data>
 </root>

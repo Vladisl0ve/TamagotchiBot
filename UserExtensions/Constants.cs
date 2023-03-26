@@ -52,7 +52,7 @@ namespace TamagotchiBot.UserExtensions
             public const double JoyFactor = 0.3;
 
             public const int CardGameFatigueFactor = 20;
-            public const int CardGameJoyFactor = 40;
+            public const int CardGameJoyFactor = 20;
             public const int DiceGameFatigueFactor = 5;
             public const int DiceGameJoyFactor = 10;
 
@@ -87,6 +87,7 @@ namespace TamagotchiBot.UserExtensions
             public static string BathroomCommand = "bathroom";
             public static string HelpCommand = "help";
             public static string MenuCommand = "menu";
+            public static string QuitCommand = "quit";
         }
 
         public struct StickersId

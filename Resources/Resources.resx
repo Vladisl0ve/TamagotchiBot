@@ -338,4 +338,53 @@ I want to eat 🌭 and play with you 🪁
 /kitchen to feed 🍩
 /gameroom for games 🏓</value>
   </data>
+  <data name="quitText" xml:space="preserve">
+    <value>Quit</value>
+  </data>
+  <data name="againText" xml:space="preserve">
+    <value>Again</value>
+  </data>
+  <data name="statisticsText" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="ConcedeText" xml:space="preserve">
+    <value>Concede</value>
+  </data>
+  <data name="appleGameHelpText" xml:space="preserve">
+    <value>The rules of the game are simple: the one who eats an unripe green apple will lose.
+You can choose to eat one 🍎, two 🍎🍎 or three 🍎🍎🍎 apples at a time
+Can you outplay your pet and leave him a tasteless 🍏?</value>
+  </data>
+  <data name="appleGameUndefiendText" xml:space="preserve">
+    <value>Choose one 🍎, two 🍎🍎 or three 🍎🍎🍎 apples to eat</value>
+  </data>
+  <data name="remainingApplesText" xml:space="preserve">
+    <value>{0} apples left</value>
+  </data>
+  <data name="appleGameSysEaten" xml:space="preserve">
+    <value>🐱: I ate apples - {0}</value>
+  </data>
+  <data name="appleGameLoseText" xml:space="preserve">
+    <value>Your green apple remains
+
+🐱: Better luck next time 😉</value>
+  </data>
+  <data name="appleGameWinText" xml:space="preserve">
+    <value>🐱: You won, well done!</value>
+  </data>
+  <data name="appleGameStatisticsCommand" xml:space="preserve">
+    <value>📈STATISTICS📉
+Won: {0}
+Lost: {1}
+Surrendered: {2}</value>
+  </data>
+  <data name="tooTiredText" xml:space="preserve">
+    <value>Your pet is too tired, he should sleep 💤</value>
+  </data>
+  <data name="quitCommandDescription" xml:space="preserve">
+    <value>📛 Quit Mini-game</value>
+  </data>
+  <data name="backToGameroomText" xml:space="preserve">
+    <value>You are in the gameroom ⚽️</value>
+  </data>
 </root>

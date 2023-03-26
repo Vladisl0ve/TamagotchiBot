@@ -61,6 +61,85 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Again.
+        /// </summary>
+        public static string againText {
+            get {
+                return ResourceManager.GetString("againText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The rules of the game are simple: the one who eats an unripe green apple will lose.
+        ///You can choose to eat one 🍎, two 🍎🍎 or three 🍎🍎🍎 apples at a time
+        ///Can you outplay your pet and leave him a tasteless 🍏?.
+        /// </summary>
+        public static string appleGameHelpText {
+            get {
+                return ResourceManager.GetString("appleGameHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your green apple remains
+        ///
+        ///🐱: Better luck next time 😉.
+        /// </summary>
+        public static string appleGameLoseText {
+            get {
+                return ResourceManager.GetString("appleGameLoseText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📈STATISTICS📉
+        ///Won: {0}
+        ///Lost: {1}
+        ///Surrendered: {2}.
+        /// </summary>
+        public static string appleGameStatisticsCommand {
+            get {
+                return ResourceManager.GetString("appleGameStatisticsCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🐱: I ate apples - {0}.
+        /// </summary>
+        public static string appleGameSysEaten {
+            get {
+                return ResourceManager.GetString("appleGameSysEaten", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose one 🍎, two 🍎🍎 or three 🍎🍎🍎 apples to eat.
+        /// </summary>
+        public static string appleGameUndefiendText {
+            get {
+                return ResourceManager.GetString("appleGameUndefiendText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🐱: You won, well done!.
+        /// </summary>
+        public static string appleGameWinText {
+            get {
+                return ResourceManager.GetString("appleGameWinText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are in the gameroom ⚽️.
+        /// </summary>
+        public static string backToGameroomText {
+            get {
+                return ResourceManager.GetString("backToGameroomText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bathroom 🛁.
         /// </summary>
         public static string bathroomCommandDescription {
@@ -88,6 +167,15 @@ namespace TamagotchiBot.Resources {
         public static string ChooseName {
             get {
                 return ResourceManager.GetString("ChooseName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Concede.
+        /// </summary>
+        public static string ConcedeText {
+            get {
+                return ResourceManager.GetString("ConcedeText", resourceCulture);
             }
         }
         
@@ -477,6 +565,24 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 📛 Quit Mini-game.
+        /// </summary>
+        public static string quitCommandDescription {
+            get {
+                return ResourceManager.GetString("quitCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quit.
+        /// </summary>
+        public static string quitText {
+            get {
+                return ResourceManager.GetString("quitText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🌈⭐️ Top 10 Levels ⭐️.
         /// </summary>
         public static string ranksCommand {
@@ -491,6 +597,15 @@ namespace TamagotchiBot.Resources {
         public static string ranksCommandDescription {
             get {
                 return ResourceManager.GetString("ranksCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} apples left.
+        /// </summary>
+        public static string remainingApplesText {
+            get {
+                return ResourceManager.GetString("remainingApplesText", resourceCulture);
             }
         }
         
@@ -574,11 +689,29 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Statistics.
+        /// </summary>
+        public static string statisticsText {
+            get {
+                return ResourceManager.GetString("statisticsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test value.
         /// </summary>
         public static string Test {
             get {
                 return ResourceManager.GetString("Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your pet is too tired, he should sleep 💤.
+        /// </summary>
+        public static string tooTiredText {
+            get {
+                return ResourceManager.GetString("tooTiredText", resourceCulture);
             }
         }
         
