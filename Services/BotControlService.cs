@@ -44,7 +44,7 @@ namespace TamagotchiBot.Services
                                      replyMarkup: replyMarkup,
                                      cancellationToken: cancellationToken);
 
-                Log.Information("Message sent for @" + userDB.Username ?? userDB.FirstName);
+                Log.Information($"Message send to @{userDB.Username ?? userDB.FirstName}: {text.Replace("\r\n", " ")}");
             }
             catch (ApiRequestException ex)
             {
@@ -102,7 +102,7 @@ namespace TamagotchiBot.Services
                                                replyMarkup: replyMarkup,
                                                cancellationToken: cancellationToken);
 
-                Log.Information("Message edited for @" + userDB.Username ?? userDB.FirstName);
+                Log.Information($"Message edited for @{userDB.Username ?? userDB.FirstName}: {text.Replace("\r\n", " ")}");
             }
             catch (ApiRequestException ex)
             {
@@ -156,7 +156,7 @@ namespace TamagotchiBot.Services
                                                showAlert: showAlert,
                                                cancellationToken: cancellationToken);
 
-                Log.Information("Answered callback for @" + userDB.Username ?? userDB.FirstName);
+                Log.Information($"Answered callback for @{userDB.Username ?? userDB.FirstName}: {text.Replace("\r\n", " ")}");
             }
             catch (ApiRequestException ex)
             {

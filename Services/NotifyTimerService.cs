@@ -13,11 +13,16 @@ namespace TamagotchiBot.Services
     {
         private Timer _notifyTimer;
         private Timer _changelogsTimer;
+
         private readonly ITelegramBotClient _botClient;
         private PetService _petService;
         private UserService _userService;
         private ChatService _chatService;
         private SInfoService _sinfoService;
+
+        private DateTime _nextNotify = DateTime.MaxValue;
+        private TimeSpan _notifyEvery = TimeSpan.MaxValue;
+        private TimeSpan _triggerNTEvery = TimeSpan.MaxValue;
         public NotifyTimerService(ITelegramBotClient telegramBotClient,
                                   PetService petService,
                                   UserService userService,
@@ -29,13 +34,18 @@ namespace TamagotchiBot.Services
             _userService = userService;
             _chatService = chatService;
             _sinfoService = sinfoService;
+
+            _nextNotify = _sinfoService.GetNextNotify();
         }
 
-        public void SetNotifyTimer(TimeSpan timerSpan)
+        public void SetNotifyTimer(TimeSpan timeToTrigger, TimeSpan timeToNotify)
         {
-            TimeSpan timeToWait = timerSpan;
-            Log.Information("Notify timer set to wait for " + timeToWait.TotalSeconds + "s");
-            _notifyTimer = new Timer(timeToWait);
+            _notifyEvery = timeToNotify;
+            _triggerNTEvery = timeToTrigger;
+            Log.Information("Notify timer set to wait for " + timeToTrigger.TotalSeconds + "s");
+            Log.Information($"Next notification: {_nextNotify} UTC || remaining {_nextNotify - DateTime.UtcNow:hh\\:mm\\:ss}");
+
+            _notifyTimer = new Timer(TimeSpan.FromSeconds(3));
             _notifyTimer.Elapsed += OnNotifyTimedEvent;
             _notifyTimer.AutoReset = true;
             _notifyTimer.Enabled = true;
@@ -93,6 +103,13 @@ namespace TamagotchiBot.Services
 
         private async void OnNotifyTimedEvent(object sender, ElapsedEventArgs e)
         {
+            _notifyTimer = new Timer(_triggerNTEvery);
+
+            DateTime nextNotifyDB = _sinfoService.GetNextNotify();
+
+            if (nextNotifyDB > DateTime.UtcNow)
+                return;
+
             var usersToNotify = GetUserIdToNotify();
             Log.Information($"Notify timer - {usersToNotify.Count} users");
             foreach (var userId in usersToNotify)
@@ -126,6 +143,9 @@ namespace TamagotchiBot.Services
                 }
             }
 
+            _nextNotify = DateTime.UtcNow + _notifyEvery ;
+            _sinfoService.UpdateNextNotify(_nextNotify);
+            Log.Information($"Next notification: {_nextNotify} UTC || remaining {_notifyEvery:c}");
         }
 
         private List<string> GetUserIdToNotify()
