@@ -184,11 +184,23 @@ namespace TamagotchiBot.Handlers
 
                 Log.Information($"Message send to @{callbackQuery.From.Username}: {toSend.Text.Replace("\r\n", " ")}");
 
-                await bot.EditMessageTextAsync(callbackQuery.From.Id,
-                                               callbackQuery.Message.MessageId,
-                                               toSend.Text,
-                                               replyMarkup: toSend.InlineKeyboardMarkup,
-                                               cancellationToken: token);
+                try
+                {
+                    await bot.EditMessageTextAsync(callbackQuery.From.Id,
+                                                   callbackQuery.Message.MessageId,
+                                                   toSend.Text,
+                                                   replyMarkup: toSend.InlineKeyboardMarkup,
+                                                   cancellationToken: token);
+                }
+                catch (ApiRequestException ex)
+                {
+                    Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {callbackQuery.From.Username ?? callbackQuery.From.FirstName}");
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"{ex.Message}, user: {callbackQuery.From.Username ?? callbackQuery.From.FirstName}");
+                }
+
 
             }
 

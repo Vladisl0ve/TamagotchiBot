@@ -24,33 +24,45 @@ namespace TamagotchiBot.Services
         }
 
         public DateTime GetLastGlobalUpdate() => _sinfo.Find(si => true).FirstOrDefault()?.LastGlobalUpdate ?? DateTime.MinValue;
-        public bool GetIsChangelogsTimed() => _sinfo.Find(si => true).FirstOrDefault()?.IsChangelogsSent ?? true;
+        public bool GetDoSendChangelogs() => _sinfo.Find(si => true).FirstOrDefault()?.DoSendChangelogs ?? false;
         public void UpdateLastGlobalUpdate()
         {
-            var toInsert = new ServiceInfo() { _id = ObjectId.GenerateNewId(), LastGlobalUpdate = DateTime.Now};
-            var lgu = _sinfo.Find(si => true).FirstOrDefault();
+            var lgu = Get();
             if (lgu == null)
             {
-                _sinfo.InsertOne(toInsert);
+                CreateDefault();
                 return;
             }
-
-            toInsert._id = lgu._id;
-            _sinfo.ReplaceOne(i => true, toInsert);
+            lgu.LastGlobalUpdate = DateTime.UtcNow;
+            _sinfo.ReplaceOne(i => i._id == lgu._id, lgu);
         }
 
         public void DisableChangelogsSending() //you can enable manually in database
         {
-            var toInsert = new ServiceInfo() { _id = ObjectId.GenerateNewId(), LastGlobalUpdate = DateTime.Now, IsChangelogsSent = true};
-            var lgu = _sinfo.Find(si => true).FirstOrDefault();
+            var lgu = Get();
             if (lgu == null)
             {
-                _sinfo.InsertOne(toInsert);
+                CreateDefault();
                 return;
             }
+            lgu.DoSendChangelogs = false;
+            _sinfo.ReplaceOne(i => i._id == lgu._id, lgu);
+        }
 
-            toInsert._id = lgu._id;
-            _sinfo.ReplaceOne(i => true, toInsert);
+        public void Create(ServiceInfo info) => _sinfo.InsertOne(info);
+        public ServiceInfo Get() => _sinfo.Find(s => true).FirstOrDefault();
+        public void CreateDefault() => _sinfo.InsertOne(new ServiceInfo()
+        {
+            DoSendChangelogs = false,
+            LastGlobalUpdate = DateTime.UtcNow
+        });
+        public void Update(ServiceInfo info)
+        {
+            var sinfoDB = Get();
+            if (sinfoDB == null)
+                Create(info);
+
+            _sinfo.ReplaceOne(s => s._id == sinfoDB._id, info);
         }
     }
 }

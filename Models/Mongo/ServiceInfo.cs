@@ -13,7 +13,7 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("LastGlobalUpdate")]
         public DateTime LastGlobalUpdate { get; set; }
 
-        [BsonElement("IsChangelogsSent")]
-        public bool IsChangelogsSent { get; set; }
+        [BsonElement("DoSendChangelogs")]
+        public bool DoSendChangelogs { get; set; }
     }
 }

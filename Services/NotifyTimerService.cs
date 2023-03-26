@@ -43,7 +43,7 @@ namespace TamagotchiBot.Services
 
         public void SetChangelogsTimer()
         {
-            if (_sinfoService.GetIsChangelogsTimed())
+            if (!_sinfoService.GetDoSendChangelogs())
                 return;
 
             TimeSpan timeToWait = TimeSpan.FromSeconds(10);
