@@ -137,7 +137,7 @@ namespace TamagotchiBot.Services
 
             _nextNotify = DateTime.UtcNow + _notifyEvery ;
             _sinfoService.UpdateNextNotify(_nextNotify);
-            Log.Information($"Next notification: {_nextNotify}; remaining {_notifyEvery:g}");
+            Log.Information($"Next notification: {_nextNotify} UTC || remaining {_notifyEvery:c}");
         }
 
         private List<string> GetUserIdToNotify()
