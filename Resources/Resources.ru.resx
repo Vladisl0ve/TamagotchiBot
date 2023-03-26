@@ -340,4 +340,59 @@ Wybierz nowy język 🇵🇱
 /kitchen покормить 🍩
 /gameroom гулять 🏓</value>
   </data>
+  <data name="quitText" xml:space="preserve">
+    <value>Закончить игру</value>
+  </data>
+  <data name="againText" xml:space="preserve">
+    <value>Ещё раз</value>
+  </data>
+  <data name="statisticsText" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
+  <data name="ConcedeText" xml:space="preserve">
+    <value>Сдаться</value>
+  </data>
+  <data name="appleGameHelpText" xml:space="preserve">
+    <value>Правила игры просты - проиграет тот, кто съест неспелое зелёное яблоко
+Вы с питомцем по очереди кушаете одно 🍎, два 🍎🍎 или три 🍎🍎🍎 яблока
+Сможешь переиграть своего питомца и оставить ему невкусное 🍏?</value>
+  </data>
+  <data name="appleGameUndefiendText" xml:space="preserve">
+    <value>Выбери одно 🍎, два 🍎🍎 или три 🍎🍎🍎 яблока чтобы съесть</value>
+  </data>
+  <data name="remainingApplesText" xml:space="preserve">
+    <value>Осталось {0} яблок</value>
+  </data>
+  <data name="appleGameSysEaten" xml:space="preserve">
+    <value>🐱: мною скушано яблок - {0}</value>
+  </data>
+  <data name="appleGameLoseText" xml:space="preserve">
+    <value>Осталось твоё зелёное яблочко
+
+🐱: Повезет в следующий раз 😉</value>
+  </data>
+  <data name="appleGameWinText" xml:space="preserve">
+    <value>🐱: Ты выиграл, молодец!</value>
+  </data>
+  <data name="appleGameStatisticsCommand" xml:space="preserve">
+    <value>📈СТАТИСТИКА📉
+Выиграно: {0} 
+Проиграно: {1}
+Сдался раз: {2}</value>
+  </data>
+  <data name="tooTiredText" xml:space="preserve">
+    <value>Твой питомец слишком устал, ему следует поспать 💤</value>
+  </data>
+  <data name="quitCommandDescription" xml:space="preserve">
+    <value>📛 Закончить мини-игру</value>
+  </data>
+  <data name="backToGameroomText" xml:space="preserve">
+    <value>Вы снова в детской ⚽️</value>
+  </data>
+  <data name="changelog1Text" xml:space="preserve">
+    <value>🐱: Привет-привет!
+Мне по секрету рассказали, что в детской (/gameroom) появилась новая игрушка про яблоки какие-то 👀
+Думаю ты сможешь её найти, нажав на кнопку с джокером, только тссс! Никому ни слова 🙊
+Давай сыграем в неё? 🪁</value>
+  </data>
 </root>

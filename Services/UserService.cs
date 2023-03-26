@@ -46,6 +46,14 @@ namespace TamagotchiBot.Services
             _users.ReplaceOne(u => u.UserId == userId, userIn);
             return userIn;
         }
+        
+        public bool UpdateAppleGameStatus(long userId, bool isInAppleGame)
+        {
+            var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
+            userDb.IsInAppleGame = isInAppleGame;
+            _users.ReplaceOne(u => u.UserId == userId, userDb);
+            return true;
+        }
         public User UpdateLanguage(long userId, string newLanguage)
         {
             var user = _users.Find(p => p.UserId == userId).FirstOrDefault();

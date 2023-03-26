@@ -215,6 +215,20 @@ namespace TamagotchiBot.UserExtensions
 
             return resultExtra;
         }
+        public static List<BotCommand> GetIngameCommands()
+        {
+            List<BotCommand> result = new()
+            {
+                new BotCommand()
+                {
+                    Command = Commands.QuitCommand,
+                    Description = Resources.Resources.quitCommandDescription
+                }
+            };
+
+            return result;
+        }
+
 
         public static string GetFatigue(int fatigue)
         {

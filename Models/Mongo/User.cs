@@ -21,7 +21,8 @@ namespace TamagotchiBot.Models.Mongo
         public string FirstName { get; set; }
         [BsonElement("LastName")]
         public string LastName { get; set; }
-
+        [BsonElement("IsInAppleGame")]
+        public bool IsInAppleGame { get; set; }
         [BsonElement("Culture")]
         public string Culture { get; set; }
     }

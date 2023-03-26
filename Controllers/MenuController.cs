@@ -18,7 +18,7 @@ using User = TamagotchiBot.Models.Mongo.User;
 
 namespace TamagotchiBot.Controllers
 {
-    public class GameController
+    public class MenuController
     {
         private readonly UserService _userService;
         private readonly PetService _petService;
@@ -32,7 +32,7 @@ namespace TamagotchiBot.Controllers
         private Pet pet;
         private Chat chat;
 
-        public GameController(ITelegramBotClient bot, UserService userService, PetService petService, ChatService chatService, CallbackQuery callback)
+        public MenuController(ITelegramBotClient bot, UserService userService, PetService petService, ChatService chatService, CallbackQuery callback)
         {
             this.bot = bot;
             _userService = userService;
@@ -45,7 +45,7 @@ namespace TamagotchiBot.Controllers
             Culture = new CultureInfo(user?.Culture ?? "en");
         }
 
-        public GameController(ITelegramBotClient bot, UserService userService, PetService petService, ChatService chatService, Message message)
+        public MenuController(ITelegramBotClient bot, UserService userService, PetService petService, ChatService chatService, Message message)
         {
             this.bot = bot;
             _userService = userService;

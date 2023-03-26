@@ -52,7 +52,7 @@ namespace TamagotchiBot.UserExtensions
             public const double JoyFactor = 0.3;
 
             public const int CardGameFatigueFactor = 20;
-            public const int CardGameJoyFactor = 40;
+            public const int CardGameJoyFactor = 20;
             public const int DiceGameFatigueFactor = 5;
             public const int DiceGameJoyFactor = 10;
 
@@ -87,6 +87,7 @@ namespace TamagotchiBot.UserExtensions
             public static string BathroomCommand = "bathroom";
             public static string HelpCommand = "help";
             public static string MenuCommand = "menu";
+            public static string QuitCommand = "quit";
         }
 
         public struct StickersId
@@ -103,6 +104,8 @@ namespace TamagotchiBot.UserExtensions
             public static string EnglishLanguageSetSticker = "CAACAgIAAxkBAAEDHxdhcHV4y14-CyrH_D1YujHDCBROUQAC6AADvwPJBGHtqaDNJtEyIQQ";
             public static string RussianLanguageSetSticker = "CAACAgIAAxkBAAEDHxlhcHWCiuvBtQ-IZJknE2hlBlZ-TwAC4gADvwPJBOLja80qqucgIQQ";
             public static string BelarussianLanguageSetSticker = "CAACAgIAAxkBAAEDIdJhcyf3ErjEmUZRgDJgMsCtstPpGAACYQIAAladvQq0dN7WdBr5ViEE";
+
+            public static string ChangelogSticker = "CAACAgIAAxkBAAIoiWQfmY19TqmIZL38KrfWnSS9frV0AAIrKwACnQhYSBduaR-WJLE7LwQ";
 
             //Cat
             public static string PetCreated_Cat = "CAACAgIAAxkBAAEDHvlhcG2oG4rLAAGPvREkKoykMsNnYzsAAlsQAAKlvUhKsth-8cNoWVghBA";
