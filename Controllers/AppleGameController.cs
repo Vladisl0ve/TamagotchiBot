@@ -46,7 +46,6 @@ namespace TamagotchiBot.Controllers
             _chatService = chatService;
             _appleGameDataService = appleGameDataService;
 
-
             Culture = new CultureInfo(_userService.Get(UserId)?.Culture ?? "ru");
         }
 
@@ -61,6 +60,7 @@ namespace TamagotchiBot.Controllers
             AppleCounter = appleGameDataService.Get(callback.From.Id)?.CurrentAppleCounter ?? 1;
             this.callback = callback;
             UserId = callback.From.Id;
+            Culture = new CultureInfo(_userService.Get(UserId)?.Culture ?? "ru");
         }
 
         public AppleGameController(ITelegramBotClient bot,
@@ -73,6 +73,7 @@ namespace TamagotchiBot.Controllers
             AppleCounter = appleGameDataService.Get(message.From.Id)?.CurrentAppleCounter ?? 1;
             this.message = message;
             UserId = message.From.Id;
+            Culture = new CultureInfo(_userService.Get(UserId)?.Culture ?? "ru");
         }
 
 
