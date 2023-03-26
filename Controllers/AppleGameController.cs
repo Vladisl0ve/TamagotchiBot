@@ -265,6 +265,10 @@ namespace TamagotchiBot.Controllers
                     systemRemove = new Random().Next(1, 3);
                     AppleCounter -= systemRemove;
                     break;
+                case 8:
+                    systemRemove = 3;
+                    AppleCounter -= systemRemove;
+                    break;
                 default:
                     systemRemove = new Random().Next(1, 4);
                     AppleCounter -= systemRemove;
