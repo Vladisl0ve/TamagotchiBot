@@ -51,6 +51,7 @@ namespace Telegram.Bots.Example
                       services.AddSingleton<ChatService>();
                       services.AddSingleton<SInfoService>();
                       services.AddSingleton<AppleGameDataService>();
+                      services.AddSingleton<BotControlService>();
 
 
                       services.AddLocalization(options => options.ResourcesPath = "Resources");

@@ -22,18 +22,21 @@ namespace TamagotchiBot.Handlers
         private readonly ChatService chatService;
         private readonly SInfoService sinfoService;
         private readonly AppleGameDataService appleGameDataService;
+        private readonly BotControlService bcService;
 
         public UpdateHandler(UserService userService,
                              PetService petService,
                              ChatService chatService,
                              SInfoService sinfoService,
-                             AppleGameDataService appleGameDataService)
+                             AppleGameDataService appleGameDataService,
+                             BotControlService botControlService)
         {
             this.userService = userService;
             this.petService = petService;
             this.chatService = chatService;
             this.sinfoService = sinfoService;
             this.appleGameDataService = appleGameDataService;
+            this.bcService = botControlService;
         }
 
 
@@ -64,21 +67,24 @@ namespace TamagotchiBot.Handlers
 
             if (petService.Get(userId) is not null && petService.Get(userId).Name is not null && (!userService.Get(userId)?.IsInAppleGame ?? false))
             {
-                bot.SetMyCommandsAsync(Extensions.GetCommands(true),
-                                       cancellationToken: token,
-                                       scope: new BotCommandScopeChat() { ChatId = userId });
+                bcService.SetMyCommandsAsync(userId,
+                                             Extensions.GetCommands(true),
+                                             cancellationToken: token,
+                                             scope: new BotCommandScopeChat() { ChatId = userId });
             }
             else if (userService.Get(userId)?.IsInAppleGame ?? false)
             {
-                bot.SetMyCommandsAsync(Extensions.GetIngameCommands(),
-                       cancellationToken: token,
-                       scope: new BotCommandScopeChat() { ChatId = userId });
+                bcService.SetMyCommandsAsync(userId,
+                                             Extensions.GetIngameCommands(),
+                                             cancellationToken: token,
+                                             scope: new BotCommandScopeChat() { ChatId = userId });
             }
             else
             {
-                bot.SetMyCommandsAsync(Extensions.GetCommands(false),
-                       cancellationToken: token,
-                       scope: new BotCommandScopeChat() { ChatId = userId });
+                bcService.SetMyCommandsAsync(userId,
+                                             Extensions.GetCommands(false),
+                                             cancellationToken: token,
+                                             scope: new BotCommandScopeChat() { ChatId = userId });
             }
 
             sinfoService.UpdateLastGlobalUpdate();
@@ -86,8 +92,8 @@ namespace TamagotchiBot.Handlers
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
-                var menuController = new MenuController(botClient, userService, petService, chatService, message);
-                var gameController = new AppleGameController(botClient, userService, petService, chatService, appleGameDataService, message);
+                var menuController = new MenuController(botClient, userService, petService, chatService, bcService, message);
+                var gameController = new AppleGameController(botClient, userService, petService, chatService, appleGameDataService, bcService, message);
                 Answer toSend = null;
 
                 if (userService.Get(message.From.Id) == null)
@@ -113,11 +119,10 @@ namespace TamagotchiBot.Handlers
                         Log.Error(ex.Message, ex.StackTrace);
                     }
 
-
                 if (toSend == null)
                     return;
 
-                SendMessage(botClient, toSend, message.From.Id);
+                SendMessage(toSend, message.From.Id);
 
                 //if new player has started the game
                 if (petService.Get(message.From.Id) == null
@@ -127,19 +132,15 @@ namespace TamagotchiBot.Handlers
                     && toSend.StickerId != Constants.StickersId.PetGone_Cat
                     && toSend.StickerId != Constants.StickersId.HelpCommandSticker)
                     await BotOnMessageReceived(botClient, message);
-
-                Log.Information($"Message send to @{message.From.Username}: {toSend.Text.Replace("\r\n", " ")}");
-
-
             }
 
-            async Task BotOnCallbackQueryReceived(ITelegramBotClient bot, CallbackQuery callbackQuery)
+            Task BotOnCallbackQueryReceived(ITelegramBotClient bot, CallbackQuery callbackQuery)
             {
                 if (callbackQuery.Data == null)
-                    return;
+                    return Task.CompletedTask;
 
                 if (userService.Get(userId).IsInAppleGame)
-                    return;
+                    return Task.CompletedTask;
 
                 if (callbackQuery.Data == "gameroomCommandInlineCard")
                 {
@@ -148,14 +149,19 @@ namespace TamagotchiBot.Handlers
                     {
 
                         string anwser = string.Format(Resources.Resources.tooTiredText);
-                        await bot.AnswerCallbackQueryAsync(callbackQuery.Id, anwser, true, cancellationToken: token);
-                        return;
+                        bcService.AnswerCallbackQueryAsync(callbackQuery.Id,
+                                                           callbackQuery.From.Id,
+                                                           anwser,
+                                                           true,
+                                                           cancellationToken: token);
+                        return Task.CompletedTask;
                     }
 
                     userService.UpdateAppleGameStatus(callbackQuery.From.Id, true);
-                    await bot.SetMyCommandsAsync(Extensions.GetIngameCommands(),
-                       cancellationToken: token,
-                       scope: new BotCommandScopeChat() { ChatId = userId });
+                    bcService.SetMyCommandsAsync(callbackQuery.From.Id,
+                                                 Extensions.GetIngameCommands(),
+                                                 cancellationToken: token,
+                                                 scope: new BotCommandScopeChat() { ChatId = userId });
                     var appleData = appleGameDataService.Get(callbackQuery.From.Id);
 
                     if (appleData == null)
@@ -169,87 +175,72 @@ namespace TamagotchiBot.Handlers
                             IsGameOvered = false,
                         });
 
-                    var gameController = new AppleGameController(bot, userService, petService, chatService, appleGameDataService, callbackQuery);
+                    var gameController = new AppleGameController(bot, userService, petService, chatService, appleGameDataService, bcService, callbackQuery);
                     Answer toSendAnswer = gameController.StartGame();
 
-                    SendMessage(bot, toSendAnswer, callbackQuery.From.Id);
-                    return;
+                    SendMessage(toSendAnswer, callbackQuery.From.Id);
+                    return Task.CompletedTask;
                 }
 
-                var controller = new MenuController(bot, userService, petService, chatService, callbackQuery);
+                var controller = new MenuController(bot, userService, petService, chatService, bcService, callbackQuery);
                 AnswerCallback toSend = controller.CallbackHandler();
 
                 if (toSend == null)
-                    return;
+                    return Task.CompletedTask;
 
-                Log.Information($"Message send to @{callbackQuery.From.Username}: {toSend.Text.Replace("\r\n", " ")}");
-
-                try
-                {
-                    await bot.EditMessageTextAsync(callbackQuery.From.Id,
-                                                   callbackQuery.Message.MessageId,
-                                                   toSend.Text,
-                                                   replyMarkup: toSend.InlineKeyboardMarkup,
-                                                   cancellationToken: token);
-                }
-                catch (ApiRequestException ex)
-                {
-                    Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {callbackQuery.From.Username ?? callbackQuery.From.FirstName}");
-                }
-                catch (Exception ex)
-                {
-                    Log.Error($"{ex.Message}, user: {callbackQuery.From.Username ?? callbackQuery.From.FirstName}");
-                }
-
-
+                bcService.EditMessageTextAsync(callbackQuery.From.Id,
+                                               callbackQuery.Message.MessageId,
+                                               toSend.Text,
+                                               replyMarkup: toSend.InlineKeyboardMarkup,
+                                               cancellationToken: token);
+                return Task.CompletedTask;
             }
 
-            async void SendMessage(ITelegramBotClient botClient, Answer toSend, long userId)
+            async void SendMessage(Answer toSend, long userId)
             {
                 if (toSend.StickerId != null)
                 {
-                    await botClient.SendStickerAsync(userId,
-                                                     toSend.StickerId,
-                                                     cancellationToken: token);
+                    bcService.SendStickerAsync(userId,
+                                               toSend.StickerId,
+                                               cancellationToken: token);
 
                     if (toSend.ReplyMarkup == null && toSend.InlineKeyboardMarkup == null)
-                        await botClient.SendTextMessageAsync(userId,
-                                                             toSend.Text,
-                                                             cancellationToken: token);
+                        bcService.SendTextMessageAsync(userId,
+                                                       toSend.Text,
+                                                       cancellationToken: token);
                 }
 
                 if (toSend.ReplyMarkup != null)
                 {
                     if (toSend.ReplyMarkup is ReplyKeyboardRemove reply && reply.RemoveKeyboard && chatService.Get(userId)?.LastMessage == "/quitApple")
                     {
-                        await botClient.SendTextMessageAsync(userId,
-                                                             Resources.Resources.backToGameroomText,
-                                                             replyMarkup: toSend.ReplyMarkup,
-                                                             cancellationToken: token);
+                        bcService.SendTextMessageAsync(userId,
+                                                       Resources.Resources.backToGameroomText,
+                                                       replyMarkup: toSend.ReplyMarkup,
+                                                       cancellationToken: token);
                     }
                     else
-                        await botClient.SendTextMessageAsync(userId,
-                                                             toSend.Text,
-                                                             replyMarkup: toSend.ReplyMarkup,
-                                                             cancellationToken: token);
+                        bcService.SendTextMessageAsync(userId,
+                                                       toSend.Text,
+                                                       replyMarkup: toSend.ReplyMarkup,
+                                                       cancellationToken: token);
                 }
 
-
                 if (toSend.InlineKeyboardMarkup != null)
-                    await botClient.SendTextMessageAsync(userId,
-                                                         toSend.Text,
-                                                         replyMarkup: toSend.InlineKeyboardMarkup,
-                                                         cancellationToken: token);
+                    bcService.SendTextMessageAsync(userId,
+                                                   toSend.Text,
+                                                   replyMarkup: toSend.InlineKeyboardMarkup,
+                                                   cancellationToken: token);
                 if (toSend.IsPetGoneMessage)
                 {
                     await Task.Delay(TimeSpan.FromSeconds(3), token);
-                    await botClient.SendStickerAsync(userId,
-                                                     Constants.StickersId.PetEpilogue_Cat,
-                                                     cancellationToken: token);
+                    bcService.SendStickerAsync(userId,
+                                               Constants.StickersId.PetEpilogue_Cat,
+                                               cancellationToken: token);
 
-                    await botClient.SendTextMessageAsync(userId,
-                                     Resources.Resources.EpilogueText,
-                                     cancellationToken: token);
+                    bcService.SendTextMessageAsync(userId,
+                                                   Resources.Resources.EpilogueText,
+                                                   cancellationToken: token);
                 }
 
 

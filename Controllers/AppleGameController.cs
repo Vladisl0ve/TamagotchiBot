@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using TamagotchiBot.Models;
 using TamagotchiBot.Models.Answers;
 using TamagotchiBot.UserExtensions;
-using TamagotchiBot.Models.Mongo;
 using TamagotchiBot.Services;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -25,6 +19,7 @@ namespace TamagotchiBot.Controllers
         private readonly PetService _petService;
         private readonly ChatService _chatService;
         private readonly AppleGameDataService _appleGameDataService;
+        private readonly BotControlService _bcService;
 
         private readonly ITelegramBotClient bot;
         private readonly Message message;
@@ -38,7 +33,8 @@ namespace TamagotchiBot.Controllers
                            UserService userService,
                            PetService petService,
                            ChatService chatService,
-                           AppleGameDataService appleGameDataService)
+                           AppleGameDataService appleGameDataService,
+                           BotControlService bcService)
         {
             this.bot = bot;
             _userService = userService;
@@ -47,6 +43,7 @@ namespace TamagotchiBot.Controllers
             _appleGameDataService = appleGameDataService;
 
             Culture = new CultureInfo(_userService.Get(UserId)?.Culture ?? "ru");
+            _bcService = bcService;
         }
 
         public AppleGameController(ITelegramBotClient bot,
@@ -54,7 +51,8 @@ namespace TamagotchiBot.Controllers
                                    PetService petService,
                                    ChatService chatService,
                                    AppleGameDataService appleGameDataService,
-                                   CallbackQuery callback) : this(bot, userService, petService, chatService, appleGameDataService)
+                                   BotControlService botControlService,
+                                   CallbackQuery callback) : this(bot, userService, petService, chatService, appleGameDataService, botControlService)
         {
 
             AppleCounter = appleGameDataService.Get(callback.From.Id)?.CurrentAppleCounter ?? 1;
@@ -68,7 +66,8 @@ namespace TamagotchiBot.Controllers
                                    PetService petService,
                                    ChatService chatService,
                                    AppleGameDataService appleGameDataService,
-                                   Message message) : this(bot, userService, petService, chatService, appleGameDataService)
+                                   BotControlService botControlService,
+                                   Message message) : this(bot, userService, petService, chatService, appleGameDataService, botControlService)
         {
             AppleCounter = appleGameDataService.Get(message.From.Id)?.CurrentAppleCounter ?? 1;
             this.message = message;
