@@ -12,29 +12,83 @@ namespace TamagotchiBot.Services
     public class NotifyTimerService
     {
         private Timer _notifyTimer;
+        private Timer _changelogsTimer;
         private readonly ITelegramBotClient _botClient;
         private PetService _petService;
         private UserService _userService;
         private ChatService _chatService;
+        private SInfoService _sinfoService;
         public NotifyTimerService(ITelegramBotClient telegramBotClient,
                                   PetService petService,
                                   UserService userService,
-                                  ChatService chatService)
+                                  ChatService chatService,
+                                  SInfoService sinfoService)
         {
             _botClient = telegramBotClient;
             _petService = petService;
             _userService = userService;
             _chatService = chatService;
+            _sinfoService = sinfoService;
         }
 
         public void SetNotifyTimer(TimeSpan timerSpan)
         {
             TimeSpan timeToWait = timerSpan;
-            Log.Information("Timer set to wait for " + timeToWait.TotalSeconds + "s");
+            Log.Information("Notify timer set to wait for " + timeToWait.TotalSeconds + "s");
             _notifyTimer = new Timer(timeToWait);
             _notifyTimer.Elapsed += OnNotifyTimedEvent;
             _notifyTimer.AutoReset = true;
             _notifyTimer.Enabled = true;
+        }
+
+        public void SetChangelogsTimer()
+        {
+            if (_sinfoService.GetIsChangelogsTimed())
+                return;
+
+            TimeSpan timeToWait = TimeSpan.FromSeconds(10);
+            Log.Information("Changelogs timer set to wait for " + timeToWait.TotalSeconds + "s");
+            _changelogsTimer = new Timer(timeToWait);
+            _changelogsTimer.Elapsed += OnChangelogsTimedEvent;
+            _changelogsTimer.AutoReset = false;
+            _changelogsTimer.Enabled = true;
+        }
+        private async void OnChangelogsTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            var usersToNotify = GetAllActiveUsersIds();
+            Log.Information($"Changelog timer - {usersToNotify.Count} users");
+            _sinfoService.DisableChangelogsSending();
+            foreach (var userId in usersToNotify)
+            {
+                var user = _userService.Get(long.Parse(userId));
+                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "en");
+
+                try
+                {
+                    await _botClient.SendStickerAsync(userId, Constants.StickersId.ChangelogSticker);
+                    await _botClient.SendTextMessageAsync(userId, Resources.Resources.changelog1Text);
+
+
+                    Log.Information($"Sent changelog to '@{user.Username}'");
+                }
+                catch (ApiRequestException ex)
+                {
+                    if (ex.ErrorCode == 403) //Forbidden by user
+                    {
+                        Log.Warning($"{ex.Message} @{user.Username}, id: {user.UserId}");
+
+                        //remove all data about user
+                        _chatService.Remove(user.UserId);
+                        _petService.Remove(user.UserId);
+                        _userService.Remove(user.UserId);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message);
+                }
+            }
+
         }
 
         private async void OnNotifyTimedEvent(object sender, ElapsedEventArgs e)
@@ -85,6 +139,16 @@ namespace TamagotchiBot.Services
                 if (spentTime > TimeSpan.FromHours(6)) //every 6 hours
                     usersToNotify.Add(pet.UserId.ToString());
             }
+
+            return usersToNotify;
+        }
+        private List<string> GetAllActiveUsersIds()
+        {
+            List<string> usersToNotify = new();
+            var petsDB = _petService.GetAll();
+
+            foreach (var pet in petsDB)
+                usersToNotify.Add(pet.UserId.ToString());
 
             return usersToNotify;
         }

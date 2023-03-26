@@ -161,6 +161,18 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🐱: Goodly-good day!
+        ///They told me in secret that in the gameroom (/gameroom) there was a new toy about apples 👀
+        ///I think you can find it by pressing the button with the joker, only shh! Not a word to anyone 🙊
+        ///Let&apos;s play it? 🪁.
+        /// </summary>
+        public static string changelog1Text {
+            get {
+                return ResourceManager.GetString("changelog1Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🧸 First of all you need to name your new friend
         ///Just type it here.
         /// </summary>

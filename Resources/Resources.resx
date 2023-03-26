@@ -387,4 +387,10 @@ Surrendered: {2}</value>
   <data name="backToGameroomText" xml:space="preserve">
     <value>You are in the gameroom ⚽️</value>
   </data>
+  <data name="changelog1Text" xml:space="preserve">
+    <value>🐱: Goodly-good day!
+They told me in secret that in the gameroom (/gameroom) there was a new toy about apples 👀
+I think you can find it by pressing the button with the joker, only shh! Not a word to anyone 🙊
+Let's play it? 🪁</value>
+  </data>
 </root>

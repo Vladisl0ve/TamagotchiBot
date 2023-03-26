@@ -387,4 +387,10 @@ Poddania: {2}</value>
   <data name="backToGameroomText" xml:space="preserve">
     <value>Znowu jesteś w pokoju gier ⚽️</value>
   </data>
+  <data name="changelog1Text" xml:space="preserve">
+    <value>🐱: Cześć, cześć!
+Powiedzieli mi w sekrecie, że w pokoju dziecinnym (/gameroom) pojawiła się nowa zabawka o jakimś jabłku 👀
+Myślę, że możesz go znaleźć, naciskając przycisk z jokerem, tylko ciii! Ani słowa nikomu 🙊
+Zagrajmy w to? 🪁</value>
+  </data>
 </root>

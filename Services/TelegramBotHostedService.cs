@@ -25,6 +25,7 @@ namespace TamagotchiBot.Services
             Log.Information("Telegram Bot Hosted Service started");
 
             _timerService.SetNotifyTimer(TimeSpan.FromHours(1));
+            _timerService.SetChangelogsTimer();
             _client.StartReceiving(
                 updateHandler: _updateHandler,
                 cancellationToken: stoppingToken

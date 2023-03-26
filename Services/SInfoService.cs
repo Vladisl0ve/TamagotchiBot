@@ -23,10 +23,25 @@ namespace TamagotchiBot.Services
             _sinfo = database.GetCollection<ServiceInfo>(settings.ServiceInfoCollectionName);
         }
 
-        public DateTime GetLastGlobalUpdate() => _sinfo.Find(si => true).First().LastGlobalUpdate;
+        public DateTime GetLastGlobalUpdate() => _sinfo.Find(si => true).FirstOrDefault()?.LastGlobalUpdate ?? DateTime.MinValue;
+        public bool GetIsChangelogsTimed() => _sinfo.Find(si => true).FirstOrDefault()?.IsChangelogsSent ?? true;
         public void UpdateLastGlobalUpdate()
         {
             var toInsert = new ServiceInfo() { _id = ObjectId.GenerateNewId(), LastGlobalUpdate = DateTime.Now};
+            var lgu = _sinfo.Find(si => true).FirstOrDefault();
+            if (lgu == null)
+            {
+                _sinfo.InsertOne(toInsert);
+                return;
+            }
+
+            toInsert._id = lgu._id;
+            _sinfo.ReplaceOne(i => true, toInsert);
+        }
+
+        public void DisableChangelogsSending() //you can enable manually in database
+        {
+            var toInsert = new ServiceInfo() { _id = ObjectId.GenerateNewId(), LastGlobalUpdate = DateTime.Now, IsChangelogsSent = true};
             var lgu = _sinfo.Find(si => true).FirstOrDefault();
             if (lgu == null)
             {
