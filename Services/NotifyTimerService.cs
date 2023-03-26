@@ -13,11 +13,15 @@ namespace TamagotchiBot.Services
     {
         private Timer _notifyTimer;
         private Timer _changelogsTimer;
+
         private readonly ITelegramBotClient _botClient;
         private PetService _petService;
         private UserService _userService;
         private ChatService _chatService;
         private SInfoService _sinfoService;
+
+        private DateTime _nextNotify = DateTime.MaxValue;
+        private TimeSpan _notifyEvery = TimeSpan.MaxValue;
         public NotifyTimerService(ITelegramBotClient telegramBotClient,
                                   PetService petService,
                                   UserService userService,
@@ -31,11 +35,11 @@ namespace TamagotchiBot.Services
             _sinfoService = sinfoService;
         }
 
-        public void SetNotifyTimer(TimeSpan timerSpan)
+        public void SetNotifyTimer(TimeSpan timeToTrigger, TimeSpan timeToNotify)
         {
-            TimeSpan timeToWait = timerSpan;
-            Log.Information("Notify timer set to wait for " + timeToWait.TotalSeconds + "s");
-            _notifyTimer = new Timer(timeToWait);
+            _notifyEvery = timeToNotify;
+            Log.Information("Notify timer set to wait for " + timeToTrigger.TotalSeconds + "s");
+            _notifyTimer = new Timer(timeToTrigger);
             _notifyTimer.Elapsed += OnNotifyTimedEvent;
             _notifyTimer.AutoReset = true;
             _notifyTimer.Enabled = true;
@@ -93,6 +97,11 @@ namespace TamagotchiBot.Services
 
         private async void OnNotifyTimedEvent(object sender, ElapsedEventArgs e)
         {
+            DateTime nextNotifyDB = _sinfoService.GetNextNotify();
+
+            if (nextNotifyDB > DateTime.UtcNow)
+                return;
+
             var usersToNotify = GetUserIdToNotify();
             Log.Information($"Notify timer - {usersToNotify.Count} users");
             foreach (var userId in usersToNotify)
@@ -126,6 +135,9 @@ namespace TamagotchiBot.Services
                 }
             }
 
+            _nextNotify = DateTime.UtcNow + _notifyEvery ;
+            _sinfoService.UpdateNextNotify(_nextNotify);
+            Log.Information($"Next notification: {_nextNotify}; remaining {_notifyEvery:g}");
         }
 
         private List<string> GetUserIdToNotify()

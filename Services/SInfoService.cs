@@ -1,10 +1,7 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
+using Serilog;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
 
@@ -21,10 +18,14 @@ namespace TamagotchiBot.Services
             var database = client.GetDatabase(settings.DatabaseName);
 
             _sinfo = database.GetCollection<ServiceInfo>(settings.ServiceInfoCollectionName);
+
+            if (_sinfo.Find(t => true).CountDocuments() == 0)
+                CreateDefault();
         }
 
         public DateTime GetLastGlobalUpdate() => _sinfo.Find(si => true).FirstOrDefault()?.LastGlobalUpdate ?? DateTime.MinValue;
         public bool GetDoSendChangelogs() => _sinfo.Find(si => true).FirstOrDefault()?.DoSendChangelogs ?? false;
+        public DateTime GetNextNotify() => _sinfo.Find(si => true).FirstOrDefault()?.NextNotify ?? DateTime.UtcNow;
         public void UpdateLastGlobalUpdate()
         {
             var lgu = Get();
@@ -35,6 +36,18 @@ namespace TamagotchiBot.Services
             }
             lgu.LastGlobalUpdate = DateTime.UtcNow;
             _sinfo.ReplaceOne(i => i._id == lgu._id, lgu);
+        }
+
+        public void UpdateNextNotify(DateTime newNotifyDate)
+        {
+            var unn = Get();
+            if (unn == null)
+            {
+                CreateDefault();
+                return;
+            }
+            unn.NextNotify = newNotifyDate;
+            _sinfo.ReplaceOne(i => i._id == unn._id, unn);
         }
 
         public void DisableChangelogsSending() //you can enable manually in database
@@ -51,11 +64,16 @@ namespace TamagotchiBot.Services
 
         public void Create(ServiceInfo info) => _sinfo.InsertOne(info);
         public ServiceInfo Get() => _sinfo.Find(s => true).FirstOrDefault();
-        public void CreateDefault() => _sinfo.InsertOne(new ServiceInfo()
+        public void CreateDefault()
         {
-            DoSendChangelogs = false,
-            LastGlobalUpdate = DateTime.UtcNow
-        });
+            _sinfo.InsertOne(new ServiceInfo()
+            {
+                DoSendChangelogs = false,
+                LastGlobalUpdate = DateTime.UtcNow,
+                NextNotify = DateTime.UtcNow + TimeSpan.FromMinutes(1),
+            });
+            Log.Warning("Created default SInfo");
+        }
         public void Update(ServiceInfo info)
         {
             var sinfoDB = Get();
