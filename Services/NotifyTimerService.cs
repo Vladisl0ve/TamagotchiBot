@@ -22,6 +22,7 @@ namespace TamagotchiBot.Services
 
         private DateTime _nextNotify = DateTime.MaxValue;
         private TimeSpan _notifyEvery = TimeSpan.MaxValue;
+        private TimeSpan _triggerNTEvery = TimeSpan.MaxValue;
         public NotifyTimerService(ITelegramBotClient telegramBotClient,
                                   PetService petService,
                                   UserService userService,
@@ -33,13 +34,18 @@ namespace TamagotchiBot.Services
             _userService = userService;
             _chatService = chatService;
             _sinfoService = sinfoService;
+
+            _nextNotify = _sinfoService.GetNextNotify();
         }
 
         public void SetNotifyTimer(TimeSpan timeToTrigger, TimeSpan timeToNotify)
         {
             _notifyEvery = timeToNotify;
+            _triggerNTEvery = timeToTrigger;
             Log.Information("Notify timer set to wait for " + timeToTrigger.TotalSeconds + "s");
-            _notifyTimer = new Timer(timeToTrigger);
+            Log.Information($"Next notification: {_nextNotify} UTC || remaining {_nextNotify - DateTime.UtcNow:hh\\:mm\\:ss}");
+
+            _notifyTimer = new Timer(TimeSpan.FromSeconds(3));
             _notifyTimer.Elapsed += OnNotifyTimedEvent;
             _notifyTimer.AutoReset = true;
             _notifyTimer.Enabled = true;
@@ -97,6 +103,8 @@ namespace TamagotchiBot.Services
 
         private async void OnNotifyTimedEvent(object sender, ElapsedEventArgs e)
         {
+            _notifyTimer = new Timer(_triggerNTEvery);
+
             DateTime nextNotifyDB = _sinfoService.GetNextNotify();
 
             if (nextNotifyDB > DateTime.UtcNow)
