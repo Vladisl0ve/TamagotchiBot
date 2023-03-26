@@ -155,7 +155,7 @@ namespace TamagotchiBot.UserExtensions
                 {
                    new CommandModel()
                    {
-                       Text = "🃏",
+                       Text = "🍏",
                        CallbackData = "gameroomCommandInlineCard"
                    },
                    new CommandModel()
