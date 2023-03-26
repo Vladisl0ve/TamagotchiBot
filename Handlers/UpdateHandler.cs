@@ -201,7 +201,6 @@ namespace TamagotchiBot.Handlers
                     Log.Error($"{ex.Message}, user: {callbackQuery.From.Username ?? callbackQuery.From.FirstName}");
                 }
 
-
             }
 
             async void SendMessage(ITelegramBotClient botClient, Answer toSend, long userId)
