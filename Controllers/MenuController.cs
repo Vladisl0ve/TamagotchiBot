@@ -23,6 +23,7 @@ namespace TamagotchiBot.Controllers
         private readonly UserService _userService;
         private readonly PetService _petService;
         private readonly ChatService _chatService;
+        private readonly BotControlService _bcService;
 
         private readonly ITelegramBotClient bot;
         private readonly Message message;
@@ -32,26 +33,28 @@ namespace TamagotchiBot.Controllers
         private Pet pet;
         private Chat chat;
 
-        public MenuController(ITelegramBotClient bot, UserService userService, PetService petService, ChatService chatService, CallbackQuery callback)
+        public MenuController(ITelegramBotClient bot, UserService userService, PetService petService, ChatService chatService, BotControlService botControlService, CallbackQuery callback)
         {
             this.bot = bot;
             _userService = userService;
             _petService = petService;
             this.callback = callback;
             _chatService = chatService;
+            _bcService = botControlService;
 
             GetFromDb();
 
             Culture = new CultureInfo(user?.Culture ?? "en");
         }
 
-        public MenuController(ITelegramBotClient bot, UserService userService, PetService petService, ChatService chatService, Message message)
+        public MenuController(ITelegramBotClient bot, UserService userService, PetService petService, ChatService chatService, BotControlService botControlService, Message message)
         {
             this.bot = bot;
             _userService = userService;
             _petService = petService;
             this.message = message;
             _chatService = chatService;
+            _bcService = botControlService;
 
             GetFromDb();
 
@@ -357,7 +360,7 @@ namespace TamagotchiBot.Controllers
                 _petService.UpdateStarving(callback.From.Id, newStarving);
 
                 string anwser = string.Format(PetFeedingAnwserCallback, (int)FoodFactors.BreadHungerFactor);
-                bot.AnswerCallbackQueryAsync(callback.Id, anwser);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
 
                 string toSendText = string.Format(kitchenCommand, newStarving);
 
@@ -378,7 +381,7 @@ namespace TamagotchiBot.Controllers
                 _petService.UpdateStarving(callback.From.Id, newStarving);
 
                 string anwser = string.Format(PetFeedingAnwserCallback, (int)FoodFactors.RedAppleHungerFactor);
-                bot.AnswerCallbackQueryAsync(callback.Id, anwser);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
 
                 string toSendText = string.Format(kitchenCommand, newStarving);
 
@@ -399,7 +402,7 @@ namespace TamagotchiBot.Controllers
                 _petService.UpdateStarving(callback.From.Id, newStarving);
 
                 string anwser = string.Format(PetFeedingAnwserCallback, (int)FoodFactors.ChocolateHungerFactor);
-                bot.AnswerCallbackQueryAsync(callback.Id, anwser);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
 
                 string toSendText = string.Format(kitchenCommand, newStarving);
 
@@ -420,7 +423,7 @@ namespace TamagotchiBot.Controllers
                 _petService.UpdateStarving(callback.From.Id, newStarving);
 
                 string anwser = string.Format(PetFeedingAnwserCallback, (int)FoodFactors.LollipopHungerFactor);
-                bot.AnswerCallbackQueryAsync(callback.Id, anwser);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
 
                 string toSendText = string.Format(kitchenCommand, newStarving);
 
@@ -437,24 +440,47 @@ namespace TamagotchiBot.Controllers
 
                 if (pet.CurrentStatus == (int)CurrentStatus.Sleeping)
                 {
-                    bot.AnswerCallbackQueryAsync(callback.Id, PetSleepingAlreadyAnwserCallback);
-                    return null;
+                    _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, PetSleepingAlreadyAnwserCallback);
+
+                    string toSendText = string.Format(sleepCommand, pet.Name, pet.Fatigue, Extensions.GetCurrentStatus(pet.CurrentStatus));
+
+                    var minutesToWait = pet.Fatigue / Factors.RestFactor;
+
+                    string timeToWaitStr = string.Format(sleepCommandInlineShowTime, new DateTime().AddMinutes(minutesToWait).ToString("HH:mm"));
+
+                    if (toSendText.IsEqual(callback.Message.Text))
+                        return null;
+
+                    InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
+                    {
+                        new CommandModel()
+                        {
+                            Text = timeToWaitStr,
+                            CallbackData = "sleepCommandInlinePutToSleep"
+                        }
+                    });
+
+                    return new AnswerCallback(toSendText, toSendInline);
                 }
 
                 if (pet.CurrentStatus == (int)CurrentStatus.Active)
                 {
                     if (pet.Fatigue < Limits.ToRestMinLimitOfFatigue)
                     {
-                        bot.AnswerCallbackQueryAsync(callback.Id, PetSleepingDoesntWantYetAnwserCallback);
-                        bot.EditMessageReplyMarkupAsync(callback.Message.Chat.Id, callback.Message.MessageId, Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
+                        _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, PetSleepingDoesntWantYetAnwserCallback);
+                        string sendTxt = string.Format(sleepCommand, pet.Name, pet.Fatigue, Extensions.GetCurrentStatus(pet.CurrentStatus));
+
+                        InlineKeyboardMarkup toSendInlineWhileActive = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
                         {
                             new CommandModel()
                             {
                                 Text = sleepCommandInlinePutToSleep,
                                 CallbackData = "sleepCommandInlinePutToSleep"
                             }
-                        }));
-                        return null;
+                        });
+
+                        Log.Warning("SLEEP TEST");
+                        return new AnswerCallback(sendTxt, toSendInlineWhileActive);
                     }
 
                     pet.CurrentStatus = (int)CurrentStatus.Sleeping;
@@ -498,7 +524,7 @@ namespace TamagotchiBot.Controllers
                 _petService.UpdateJoy(callback.From.Id, newJoy);
 
                 string anwser = string.Format(PetPlayingAnwserCallback, Factors.CardGameFatigueFactor);
-                bot.AnswerCallbackQueryAsync(callback.Id, anwser);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
 
                 string toSendText = string.Format(gameroomCommand, newFatigue, newJoy);
 
@@ -523,7 +549,7 @@ namespace TamagotchiBot.Controllers
                 _petService.UpdateJoy(callback.From.Id, newJoy);
 
                 string anwser = string.Format(PetPlayingAnwserCallback, Factors.DiceGameFatigueFactor);
-                bot.AnswerCallbackQueryAsync(callback.Id, anwser);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
 
                 string toSendText = string.Format(gameroomCommand, newFatigue, newJoy);
 
@@ -548,7 +574,7 @@ namespace TamagotchiBot.Controllers
                 _petService.UpdateJoy(callback.From.Id, newJoy);
 
                 string anwser = string.Format(PetCuringAnwserCallback, Factors.PillHPFactor, Factors.PillJoyFactor);
-                bot.AnswerCallbackQueryAsync(callback.Id, anwser, true);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser, true);
 
                 string commandHospital =  newHP switch
                 {

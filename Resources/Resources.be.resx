@@ -144,7 +144,9 @@
 😴 Стомленасць: {5}
 🎊 Радасць: {7}%
 ⚡️ Стан: {6}
-🏅 Досвед: {2} | {3} ўзровень✨</value>
+🏅 Досвед: {2} | {3} ўзровень✨
+
+/gameroom - з'явілася новая міні-гульня 🍎</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>У распрацоўцы, чакай наступнага абнаўлення 👾</value>
@@ -369,7 +371,7 @@ Wybierz nowy język 🇵🇱
   <data name="appleGameLoseText" xml:space="preserve">
     <value>Застаўся твой зялёны яблык
 
-🐱: Павязе ў наступны раз 😉</value>
+🐱: Пашанцуе другім разам 😉</value>
   </data>
   <data name="appleGameWinText" xml:space="preserve">
     <value>🐱: Ты выйграў, малайчына!</value>
