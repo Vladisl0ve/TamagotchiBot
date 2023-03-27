@@ -16,6 +16,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("NextNotify")]
         public DateTime NextNotify { get; set; }
 
+        [BsonElement("NextDevNotify")]
+        public DateTime NextDevNotify { get; set; }
+
         [BsonElement("DoSendChangelogs")]
         public bool DoSendChangelogs { get; set; }
     }
