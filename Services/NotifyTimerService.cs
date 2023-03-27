@@ -21,7 +21,9 @@ namespace TamagotchiBot.Services
         private SInfoService _sinfoService;
 
         private DateTime _nextNotify = DateTime.MaxValue;
+        private DateTime _nextDevNotify = DateTime.MaxValue;
         private TimeSpan _notifyEvery = TimeSpan.MaxValue;
+        private TimeSpan _notifyDevEvery = TimeSpan.MaxValue;
         private TimeSpan _triggerNTEvery = TimeSpan.MaxValue;
         public NotifyTimerService(ITelegramBotClient telegramBotClient,
                                   PetService petService,
@@ -36,13 +38,16 @@ namespace TamagotchiBot.Services
             _sinfoService = sinfoService;
 
             _nextNotify = _sinfoService.GetNextNotify();
+            _nextDevNotify = _sinfoService.GetNextDevNotify();
         }
 
-        public void SetNotifyTimer(TimeSpan timeToTrigger, TimeSpan timeToNotify)
+        public void SetNotifyTimer(TimeSpan timeToTrigger, TimeSpan timeToNotify, TimeSpan timeToDevNotify)
         {
             _notifyEvery = timeToNotify;
+            _notifyDevEvery = timeToDevNotify;
             _triggerNTEvery = timeToTrigger;
             Log.Information("Notify timer set to wait for " + timeToTrigger.TotalSeconds + "s");
+            Log.Information("DevNotify timer set to wait for " + timeToDevNotify.TotalSeconds + "s");
             Log.Information($"Next notification: {_nextNotify} UTC || remaining {_nextNotify - DateTime.UtcNow:hh\\:mm\\:ss}");
 
             _notifyTimer = new Timer(TimeSpan.FromSeconds(3));
@@ -105,6 +110,15 @@ namespace TamagotchiBot.Services
         {
             _notifyTimer = new Timer(_triggerNTEvery);
 
+            DateTime nextDevNotifyDB = _sinfoService.GetNextDevNotify();
+            if (nextDevNotifyDB < DateTime.UtcNow)
+            {
+                SendDevNotify();
+
+                _nextDevNotify = DateTime.UtcNow + _notifyDevEvery;
+                _sinfoService.UpdateNextDevNotify(_nextDevNotify);
+            }
+
             DateTime nextNotifyDB = _sinfoService.GetNextNotify();
 
             if (nextNotifyDB > DateTime.UtcNow)
@@ -132,9 +146,12 @@ namespace TamagotchiBot.Services
                         Log.Warning($"{ex.Message} @{user.Username}, id: {user.UserId}");
 
                         //remove all data about user
-                        _chatService.Remove(user.UserId);
-                        _petService.Remove(user.UserId);
-                        _userService.Remove(user.UserId);
+                        if (user.UserId != 1297838077) //id of devs
+                        {
+                            _chatService.Remove(user.UserId);
+                            _petService.Remove(user.UserId);
+                            _userService.Remove(user.UserId);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -143,9 +160,39 @@ namespace TamagotchiBot.Services
                 }
             }
 
-            _nextNotify = DateTime.UtcNow + _notifyEvery ;
+            _nextNotify = DateTime.UtcNow + _notifyEvery;
             _sinfoService.UpdateNextNotify(_nextNotify);
             Log.Information($"Next notification: {_nextNotify} UTC || remaining {_notifyEvery:c}");
+        }
+
+        private async void SendDevNotify()
+        {
+            var usersToNotify = new List<string>(){ "1297838077" };
+            Log.Information($"DevNotify timer - {usersToNotify.Count} users");
+            foreach (var userId in usersToNotify)
+            {
+                var user = _userService.Get(long.Parse(userId));
+                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "en");
+
+                try
+                {
+                    await _botClient.SendTextMessageAsync(userId, $"Tamagotchi is alive! {DateTime.UtcNow:g}UTC");
+
+                    Log.Information($"Sent dev-reminder to '@{user.Username}'");
+                }
+                catch (ApiRequestException ex)
+                {
+                    if (ex.ErrorCode == 403) //Forbidden by user
+                    {
+                        Log.Warning($"{ex.Message} @{user.Username}, id: {user.UserId}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message);
+                }
+            }
+
         }
 
         private List<string> GetUserIdToNotify()

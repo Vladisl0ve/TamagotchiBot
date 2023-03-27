@@ -26,6 +26,7 @@ namespace TamagotchiBot.Services
         public DateTime GetLastGlobalUpdate() => _sinfo.Find(si => true).FirstOrDefault()?.LastGlobalUpdate ?? DateTime.MinValue;
         public bool GetDoSendChangelogs() => _sinfo.Find(si => true).FirstOrDefault()?.DoSendChangelogs ?? false;
         public DateTime GetNextNotify() => _sinfo.Find(si => true).FirstOrDefault()?.NextNotify ?? DateTime.UtcNow;
+        public DateTime GetNextDevNotify() => _sinfo.Find(si => true).FirstOrDefault()?.NextDevNotify ?? DateTime.UtcNow;
         public void UpdateLastGlobalUpdate()
         {
             var lgu = Get();
@@ -50,6 +51,18 @@ namespace TamagotchiBot.Services
             _sinfo.ReplaceOne(i => i._id == unn._id, unn);
         }
 
+        public void UpdateNextDevNotify(DateTime newNotifyDate)
+        {
+            var unn = Get();
+            if (unn == null)
+            {
+                CreateDefault();
+                return;
+            }
+            unn.NextDevNotify = newNotifyDate;
+            _sinfo.ReplaceOne(i => i._id == unn._id, unn);
+        }
+
         public void DisableChangelogsSending() //you can enable manually in database
         {
             var lgu = Get();
@@ -71,6 +84,7 @@ namespace TamagotchiBot.Services
                 DoSendChangelogs = false,
                 LastGlobalUpdate = DateTime.UtcNow,
                 NextNotify = DateTime.UtcNow + TimeSpan.FromMinutes(1),
+                NextDevNotify = DateTime.UtcNow,
             });
             Log.Warning("Created default SInfo");
         }
