@@ -1,10 +1,10 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using Serilog;
 using System;
 using System.Linq;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
-using Telegram.Bot.Types;
 
 namespace TamagotchiBot.Services.Mongo
 {
@@ -19,8 +19,34 @@ namespace TamagotchiBot.Services.Mongo
 
         public DateTime GetLastGlobalUpdate() => _sinfo.Find(si => true).FirstOrDefault()?.LastGlobalUpdate ?? DateTime.MinValue;
         public bool GetDoSendChangelogs() => _sinfo.Find(si => true).FirstOrDefault()?.DoSendChangelogs ?? false;
-        public DateTime GetNextNotify() => _sinfo.Find(si => true).FirstOrDefault()?.NextNotify ?? DateTime.UtcNow;
-        public DateTime GetNextDevNotify() => _sinfo.Find(si => true).FirstOrDefault()?.NextDevNotify ?? DateTime.UtcNow;
+        public DateTime GetNextNotify()
+        {
+            bool isMongoAlive;
+            try
+            {
+                isMongoAlive = _sinfo.Database.RunCommandAsync((Command<BsonDocument>)"{ping:1}").Wait(1000);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message, ex);
+                isMongoAlive = false;
+            }
+            return isMongoAlive ? _sinfo.Find(si => true).FirstOrDefault()?.NextNotify ?? DateTime.MaxValue : DateTime.UtcNow.AddSeconds(10);
+        }
+        public DateTime GetNextDevNotify()
+        {
+            bool isMongoAlive;
+            try
+            {
+                isMongoAlive = _sinfo.Database.RunCommandAsync((Command<BsonDocument>)"{ping:1}").Wait(1000);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message, ex);
+                isMongoAlive = false;
+            }
+            return isMongoAlive ? _sinfo.Find(si => true).FirstOrDefault()?.NextDevNotify ?? DateTime.MaxValue : DateTime.UtcNow.AddSeconds(10);
+        }
         public void UpdateLastGlobalUpdate()
         {
             var lgu = Get();
