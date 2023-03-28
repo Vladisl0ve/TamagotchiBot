@@ -1,26 +1,19 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
 
-namespace TamagotchiBot.Services
+namespace TamagotchiBot.Services.Mongo
 {
-    public class AllUsersService
+    public class AllUsersService : MainConnectService
     {
         private readonly IMongoCollection<AllUsersData> _allUsersData;
 
-        public AllUsersService(ITamagotchiDatabaseSettings settings)
+        public AllUsersService(ITamagotchiDatabaseSettings settings) : base(settings)
         {
-            var databaseSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);
-            var client = new MongoClient(databaseSettings);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            _allUsersData = database.GetCollection<AllUsersData>(settings.AllUsersDataCollectionName);
+            _allUsersData = base.GetCollection<AllUsersData>(settings.AllUsersDataCollectionName);
         }
 
         public void Create(AllUsersData userData) => _allUsersData.InsertOne(userData);

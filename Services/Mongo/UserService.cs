@@ -4,19 +4,15 @@ using System.Linq;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
 
-namespace TamagotchiBot.Services
+namespace TamagotchiBot.Services.Mongo
 {
-    public class UserService
+    public class UserService : MainConnectService
     {
         private readonly IMongoCollection<User> _users;
 
-        public UserService(ITamagotchiDatabaseSettings settings)
+        public UserService(ITamagotchiDatabaseSettings settings) : base(settings)
         {
-            var databaseSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);
-            var client = new MongoClient(databaseSettings);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            _users = database.GetCollection<User>(settings.UsersCollectionName);
+            _users = base.GetCollection<User>(settings.UsersCollectionName);
         }
 
         public List<User> GetAll() => _users.Find(u => true).ToList();
@@ -46,7 +42,7 @@ namespace TamagotchiBot.Services
             _users.ReplaceOne(u => u.UserId == userId, userIn);
             return userIn;
         }
-        
+
         public bool UpdateAppleGameStatus(long userId, bool isInAppleGame)
         {
             var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
@@ -83,6 +79,5 @@ namespace TamagotchiBot.Services
         }
 
         public void Remove(long userId) => _users.DeleteOne(u => u.UserId == userId);
-
     }
 }

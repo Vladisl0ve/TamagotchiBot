@@ -1,32 +1,52 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using Serilog;
 using System;
 using System.Linq;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
 
-namespace TamagotchiBot.Services
+namespace TamagotchiBot.Services.Mongo
 {
-    public class SInfoService
+    public class SInfoService : MainConnectService
     {
         private readonly IMongoCollection<ServiceInfo> _sinfo;
 
-        public SInfoService(ITamagotchiDatabaseSettings settings)
+        public SInfoService(ITamagotchiDatabaseSettings settings) : base(settings)
         {
-            var databaseSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);
-            var client = new MongoClient(databaseSettings);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            _sinfo = database.GetCollection<ServiceInfo>(settings.ServiceInfoCollectionName);
-
-            if (_sinfo.Find(t => true).CountDocuments() == 0)
-                CreateDefault();
+            _sinfo = base.GetCollection<ServiceInfo>(settings.ServiceInfoCollectionName);
         }
 
         public DateTime GetLastGlobalUpdate() => _sinfo.Find(si => true).FirstOrDefault()?.LastGlobalUpdate ?? DateTime.MinValue;
         public bool GetDoSendChangelogs() => _sinfo.Find(si => true).FirstOrDefault()?.DoSendChangelogs ?? false;
-        public DateTime GetNextNotify() => _sinfo.Find(si => true).FirstOrDefault()?.NextNotify ?? DateTime.UtcNow;
-        public DateTime GetNextDevNotify() => _sinfo.Find(si => true).FirstOrDefault()?.NextDevNotify ?? DateTime.UtcNow;
+        public DateTime GetNextNotify()
+        {
+            bool isMongoAlive;
+            try
+            {
+                isMongoAlive = _sinfo.Database.RunCommandAsync((Command<BsonDocument>)"{ping:1}").Wait(1000);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message, ex);
+                isMongoAlive = false;
+            }
+            return isMongoAlive ? _sinfo.Find(si => true).FirstOrDefault()?.NextNotify ?? DateTime.MaxValue : DateTime.UtcNow.AddSeconds(10);
+        }
+        public DateTime GetNextDevNotify()
+        {
+            bool isMongoAlive;
+            try
+            {
+                isMongoAlive = _sinfo.Database.RunCommandAsync((Command<BsonDocument>)"{ping:1}").Wait(1000);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message, ex);
+                isMongoAlive = false;
+            }
+            return isMongoAlive ? _sinfo.Find(si => true).FirstOrDefault()?.NextDevNotify ?? DateTime.MaxValue : DateTime.UtcNow.AddSeconds(10);
+        }
         public void UpdateLastGlobalUpdate()
         {
             var lgu = Get();

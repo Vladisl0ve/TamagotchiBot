@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TamagotchiBot.Controllers;
 using TamagotchiBot.Models.Answers;
 using TamagotchiBot.Services;
+using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
@@ -56,7 +57,7 @@ namespace TamagotchiBot.Handlers
 
         public Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
         {
-            var userId = update.Message?.From.Id ?? update.CallbackQuery.From.Id;
+            var userId = update.Message?.From.Id ?? update.CallbackQuery?.From.Id ?? default;
 
             Task task = update.Type switch
             {
@@ -233,7 +234,9 @@ namespace TamagotchiBot.Handlers
                                                    cancellationToken: token);
                 if (toSend.IsPetGoneMessage)
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(3), token);
+                    await Task.Delay(TimeSpan.FromSeconds(1), token);
+                    bcService.SendChatActionAsync(userId, ChatAction.Typing, token);
+                    await Task.Delay(TimeSpan.FromSeconds(5), token);
                     bcService.SendStickerAsync(userId,
                                                Constants.StickersId.PetEpilogue_Cat,
                                                cancellationToken: token);

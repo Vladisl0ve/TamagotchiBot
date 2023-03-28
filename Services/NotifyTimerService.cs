@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Timers;
+using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
@@ -46,9 +47,9 @@ namespace TamagotchiBot.Services
             _notifyEvery = timeToNotify;
             _notifyDevEvery = timeToDevNotify;
             _triggerNTEvery = timeToTrigger;
-            Log.Information("Notify timer set to wait for " + timeToTrigger.TotalSeconds + "s");
+            Log.Information("Triggers every " + timeToTrigger.TotalSeconds + "s");
             Log.Information("DevNotify timer set to wait for " + timeToDevNotify.TotalSeconds + "s");
-            Log.Information($"Next notification: {_nextNotify} UTC || remaining {_nextNotify - DateTime.UtcNow:hh\\:mm\\:ss}");
+            Log.Information($"Next 'wake up' notification: {_nextNotify} UTC || remaining {_nextNotify - DateTime.UtcNow:hh\\:mm\\:ss}");
 
             _notifyTimer = new Timer(TimeSpan.FromSeconds(3));
             _notifyTimer.Elapsed += OnNotifyTimedEvent;

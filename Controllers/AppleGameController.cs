@@ -10,6 +10,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.Resources.Resources;
 using static TamagotchiBot.UserExtensions.Constants;
+using TamagotchiBot.Services.Mongo;
 
 namespace TamagotchiBot.Controllers
 {
