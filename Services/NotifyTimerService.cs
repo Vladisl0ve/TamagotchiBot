@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Timers;
+using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;

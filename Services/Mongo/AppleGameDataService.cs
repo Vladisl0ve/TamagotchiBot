@@ -1,25 +1,18 @@
 ﻿using MongoDB.Driver;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo.Games;
 
-namespace TamagotchiBot.Services
+namespace TamagotchiBot.Services.Mongo
 {
-    public class AppleGameDataService
+    public class AppleGameDataService : MainConnectService
     {
         readonly IMongoCollection<AppleGameData> _appleGameData;
 
-        public AppleGameDataService(ITamagotchiDatabaseSettings settings)
+        public AppleGameDataService(ITamagotchiDatabaseSettings settings) : base(settings)
         {
-            var databaseSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);
-            var client = new MongoClient(databaseSettings);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            _appleGameData = database.GetCollection<AppleGameData>(settings.AppleGameDataCollectionName);
+            _appleGameData = base.GetCollection<AppleGameData>(settings.AppleGameDataCollectionName);
         }
 
         public List<AppleGameData> GetAll() => _appleGameData.Find(c => true).ToList();

@@ -9,6 +9,7 @@ using System.IO;
 using TamagotchiBot.Database;
 using TamagotchiBot.Handlers;
 using TamagotchiBot.Services;
+using TamagotchiBot.Services.Mongo;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 

@@ -1,22 +1,21 @@
 ﻿using MongoDB.Driver;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
+using TamagotchiBot.Models.Mongo.Games;
 
-namespace TamagotchiBot.Services
+namespace TamagotchiBot.Services.Mongo
 {
-    public class ChatService
+    public class ChatService : MainConnectService
     {
         readonly IMongoCollection<Chat> _chats;
 
-        public ChatService(ITamagotchiDatabaseSettings settings)
+        public ChatService(ITamagotchiDatabaseSettings settings) : base(settings)
         {
-            var databaseSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);
-            var client = new MongoClient(databaseSettings);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            _chats = database.GetCollection<Chat>(settings.ChatsCollectionName);
+            _chats = base.GetCollection<Chat>(settings.ChatsCollectionName);
         }
 
         public List<Chat> GetAll() => _chats.Find(c => true).ToList();

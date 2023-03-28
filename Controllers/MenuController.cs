@@ -7,6 +7,7 @@ using TamagotchiBot.Models;
 using TamagotchiBot.Models.Answers;
 using TamagotchiBot.Models.Mongo;
 using TamagotchiBot.Services;
+using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -263,6 +264,7 @@ namespace TamagotchiBot.Controllers
             if (pet != null && IsPetGone())
             {
                 DeleteAllUserData();
+                bot.SendChatActionAsync(user.UserId, Telegram.Bot.Types.Enums.ChatAction.Typing);
                 return GetFarewellAnswer(pet.Name, user.FirstName ?? user.Username);
             }
 

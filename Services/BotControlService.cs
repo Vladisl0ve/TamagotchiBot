@@ -8,10 +8,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using TamagotchiBot.Models.Answers;
 using TamagotchiBot.Models.Mongo;
+using TamagotchiBot.Services.Mongo;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using static System.Formats.Asn1.AsnWriter;
+using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.Services
 {
@@ -32,10 +36,8 @@ namespace TamagotchiBot.Services
             var userDB = _userService.Get(userId);
 
             if (userDB == null)
-            {
-                Log.Warning("There is no user with id:" + userId + "\nNo stickerId has been sent");
-                return;
-            }
+                Log.Warning("There is no user with id:" + userId + "\nNo sticker has been sent");
+
 
             try
             {
@@ -44,15 +46,15 @@ namespace TamagotchiBot.Services
                                      replyMarkup: replyMarkup,
                                      cancellationToken: cancellationToken);
 
-                Log.Information($"Message send to @{userDB.Username ?? userDB.FirstName}: {text.Replace("\r\n", " ")}");
+                Log.Information($"Message sent to @{userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
             }
             catch (ApiRequestException ex)
             {
-                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB.Username ?? userDB.FirstName}");
+                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}");
             }
             catch (Exception ex)
             {
-                Log.Error($"{ex.Message}, user: {userDB.Username ?? userDB.FirstName}");
+                Log.Error($"{ex.Message}, user: {userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}");
             }
         }
 
@@ -61,10 +63,7 @@ namespace TamagotchiBot.Services
             var userDB = _userService.Get(userId);
 
             if (userDB == null)
-            {
                 Log.Warning("There is no user with id:" + userId + "\nNo sticker has been sent");
-                return;
-            }
 
             try
             {
@@ -72,15 +71,15 @@ namespace TamagotchiBot.Services
                                      stickerId,
                                      cancellationToken: cancellationToken);
 
-                Log.Information("Sticker sent for @" + userDB.Username ?? userDB.FirstName);
+                Log.Information("Sticker sent for @" + userDB?.Username ?? userDB?.FirstName ?? userId.ToString());
             }
             catch (ApiRequestException ex)
             {
-                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB.Username ?? userDB.FirstName}");
+                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}");
             }
             catch (Exception ex)
             {
-                Log.Error($"{ex.Message}, user: {userDB.Username ?? userDB.FirstName}");
+                Log.Error($"{ex.Message}, user: {userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}");
             }
         }
 
@@ -89,10 +88,7 @@ namespace TamagotchiBot.Services
             var userDB = _userService.Get(userId);
 
             if (userDB == null)
-            {
                 Log.Warning("There is no user with id:" + userId + "\nMessage has not been modified");
-                return;
-            }
 
             try
             {
@@ -102,15 +98,15 @@ namespace TamagotchiBot.Services
                                                replyMarkup: replyMarkup,
                                                cancellationToken: cancellationToken);
 
-                Log.Information($"Message edited for @{userDB.Username ?? userDB.FirstName}: {text.Replace("\r\n", " ")}");
+                Log.Information($"Message edited for @{userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
             }
             catch (ApiRequestException ex)
             {
-                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB.Username ?? userDB.FirstName}");
+                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}");
             }
             catch (Exception ex)
             {
-                Log.Error($"{ex.Message}, user: {userDB.Username ?? userDB.FirstName}");
+                Log.Error($"{ex.Message}, user: {userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}");
             }
         }
         public async void EditMessageReplyMarkupAsync(ChatId chatId, long userId, int messageId, InlineKeyboardMarkup replyMarkup = default, CancellationToken cancellationToken = default)
@@ -118,36 +114,30 @@ namespace TamagotchiBot.Services
             var userDB = _userService.Get(userId);
 
             if (userDB == null)
-            {
                 Log.Warning("There is no user with id:" + userId + "\nMessage reply has not been modified");
-                return;
-            }
 
             try
             {
                 await _botClient.EditMessageReplyMarkupAsync(chatId, messageId, replyMarkup: replyMarkup, cancellationToken: cancellationToken);
 
-                Log.Information("Message reply edited for @" + userDB.Username ?? userDB.FirstName);
+                Log.Information("Message reply edited for @" + userDB.Username ?? userDB.FirstName ?? userId.ToString());
             }
             catch (ApiRequestException ex)
             {
-                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB.Username ?? userDB.FirstName}");
+                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}");
             }
             catch (Exception ex)
             {
-                Log.Error($"{ex.Message}, user: {userDB.Username ?? userDB.FirstName}");
+                Log.Error($"{ex.Message}, user: {userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}");
             }
         }
-    
+
         public async void AnswerCallbackQueryAsync(string callbackQueryId, long userId, string text = default, bool showAlert = false, CancellationToken cancellationToken = default)
         {
             var userDB = _userService.Get(userId);
 
             if (userDB == null)
-            {
                 Log.Warning("There is no user with id:" + userId + "\nCallback has not been answered");
-                return;
-            }
 
             try
             {
@@ -156,15 +146,15 @@ namespace TamagotchiBot.Services
                                                showAlert: showAlert,
                                                cancellationToken: cancellationToken);
 
-                Log.Information($"Answered callback for @{userDB.Username ?? userDB.FirstName}: {text.Replace("\r\n", " ")}");
+                Log.Information($"Answered callback for @{userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
             }
             catch (ApiRequestException ex)
             {
-                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB.Username ?? userDB.FirstName}");
+                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}");
             }
             catch (Exception ex)
             {
-                Log.Error($"{ex.Message}, user: {userDB.Username ?? userDB.FirstName}");
+                Log.Error($"{ex.Message}, user: {userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}");
             }
 
         }
@@ -174,17 +164,13 @@ namespace TamagotchiBot.Services
             var userDB = _userService.Get(userId);
 
             if (userDB == null)
-            {
                 Log.Warning("There is no user with id:" + userId + "\nCommands have not been set");
-                return;
-            }
 
             try
             {
                 await _botClient.SetMyCommandsAsync(commands,
                                                     scope: scope,
                                                     cancellationToken: cancellationToken);
-                //Log.Information("Commands updated for @" + userDB.Username ?? userDB.FirstName);
             }
             catch (ApiRequestException ex)
             {
@@ -196,6 +182,21 @@ namespace TamagotchiBot.Services
             }
         }
 
+        public async void SendChatActionAsync(ChatId chatId, ChatAction chatAction, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+               await _botClient.SendChatActionAsync(chatId, chatAction, cancellationToken);
+            }
+            catch (ApiRequestException ex)
+            {
+                Log.Error($"{ex.ErrorCode}: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"{ex.Message}");
+            }
+        }
 
     }
 }

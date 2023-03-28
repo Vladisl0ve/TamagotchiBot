@@ -4,23 +4,17 @@ using System;
 using System.Linq;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
+using Telegram.Bot.Types;
 
-namespace TamagotchiBot.Services
+namespace TamagotchiBot.Services.Mongo
 {
-    public class SInfoService
+    public class SInfoService : MainConnectService
     {
         private readonly IMongoCollection<ServiceInfo> _sinfo;
 
-        public SInfoService(ITamagotchiDatabaseSettings settings)
+        public SInfoService(ITamagotchiDatabaseSettings settings) : base(settings)
         {
-            var databaseSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);
-            var client = new MongoClient(databaseSettings);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            _sinfo = database.GetCollection<ServiceInfo>(settings.ServiceInfoCollectionName);
-
-            if (_sinfo.Find(t => true).CountDocuments() == 0)
-                CreateDefault();
+            _sinfo = base.GetCollection<ServiceInfo>(settings.ServiceInfoCollectionName);
         }
 
         public DateTime GetLastGlobalUpdate() => _sinfo.Find(si => true).FirstOrDefault()?.LastGlobalUpdate ?? DateTime.MinValue;

@@ -4,18 +4,14 @@ using System.Linq;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
 
-namespace TamagotchiBot.Services
+namespace TamagotchiBot.Services.Mongo
 {
-    public class PetService
+    public class PetService : MainConnectService
     {
         private readonly IMongoCollection<Pet> _pets;
-        public PetService(ITamagotchiDatabaseSettings settings)
+        public PetService(ITamagotchiDatabaseSettings settings) : base(settings)
         {
-            var databaseSettings = MongoClientSettings.FromConnectionString(settings.ConnectionString);
-            var client = new MongoClient(databaseSettings);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            _pets = database.GetCollection<Pet>(settings.PetsCollectionName);
+            _pets = base.GetCollection<Pet>(settings.PetsCollectionName);
         }
 
         public List<Pet> GetAll() => _pets.Find(p => true).ToList();
