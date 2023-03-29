@@ -332,7 +332,7 @@ Może Ci się poszczęści z nowym zwierzakiem 😼
 Od początku? 🫶
 /start</value>
   </data>
-  <data name="ReminderNotifyText" xml:space="preserve">
+  <data name="ReminderNotifyText1" xml:space="preserve">
     <value>😺: Wróciłeś!
 Tak bardzo za tobą tęskniłem!
 Chcę jeść 🌭 i bawić się 🪁
@@ -394,5 +394,17 @@ Poddania: {2}</value>
 Powiedzieli mi w sekrecie, że w pokoju dziecinnym (/gameroom) pojawiła się nowa zabawka o jakimś jabłku 👀
 Myślę, że możesz go znaleźć, naciskając przycisk z jokerem, tylko ciii! Ani słowa nikomu 🙊
 Zagrajmy w to? 🪁</value>
+  </data>
+  <data name="ReminderNotifyText2" xml:space="preserve">
+    <value>🐱: Czekam tu na Ciebie, wróć
+
+/kitchen karmić 🍩
+/gameroom bawić się 🏓</value>
+  </data>
+  <data name="ReminderNotifyText3" xml:space="preserve">
+    <value>🐱: Siedzę, tęsknię...
+
+/kitchen karmić 🍩
+/gameroom bawić się 🏓</value>
   </data>
 </root>

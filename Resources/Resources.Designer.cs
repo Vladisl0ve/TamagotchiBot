@@ -631,9 +631,33 @@ namespace TamagotchiBot.Resources {
         ////kitchen to feed 🍩
         ////gameroom for games 🏓.
         /// </summary>
-        public static string ReminderNotifyText {
+        public static string ReminderNotifyText1 {
             get {
-                return ResourceManager.GetString("ReminderNotifyText", resourceCulture);
+                return ResourceManager.GetString("ReminderNotifyText1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🐱: Waiting for you here, come back
+        ///
+        ////kitchen to feed 🍩
+        ////gameroom for games 🏓.
+        /// </summary>
+        public static string ReminderNotifyText2 {
+            get {
+                return ResourceManager.GetString("ReminderNotifyText2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🐱: Sadness to be alone...
+        ///
+        ////kitchen to feed 🍩
+        ////gameroom for games 🏓.
+        /// </summary>
+        public static string ReminderNotifyText3 {
+            get {
+                return ResourceManager.GetString("ReminderNotifyText3", resourceCulture);
             }
         }
         

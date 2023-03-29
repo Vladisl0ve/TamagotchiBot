@@ -332,7 +332,7 @@ Maybe you'll be lucky with a new pet 😼
 Try again? 🫶
 /start</value>
   </data>
-  <data name="ReminderNotifyText" xml:space="preserve">
+  <data name="ReminderNotifyText1" xml:space="preserve">
     <value>😺: You've come back!
 I've missed you so much!
 I want to eat 🌭 and play with you 🪁
@@ -394,5 +394,17 @@ Surrendered: {2}</value>
 They told me in secret that in the gameroom (/gameroom) there was a new toy about apples 👀
 I think you can find it by pressing the button with the joker, only shh! Not a word to anyone 🙊
 Let's play it? 🪁</value>
+  </data>
+  <data name="ReminderNotifyText2" xml:space="preserve">
+    <value>🐱: Waiting for you here, come back
+
+/kitchen to feed 🍩
+/gameroom for games 🏓</value>
+  </data>
+  <data name="ReminderNotifyText3" xml:space="preserve">
+    <value>🐱: Sadness to be alone...
+
+/kitchen to feed 🍩
+/gameroom for games 🏓</value>
   </data>
 </root>
