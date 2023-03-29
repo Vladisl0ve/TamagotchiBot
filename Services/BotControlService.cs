@@ -36,7 +36,7 @@ namespace TamagotchiBot.Services
             var userDB = _userService.Get(userId);
 
             if (userDB == null)
-                Log.Warning("There is no user with id:" + userId + "\nNo sticker has been sent");
+                Log.Warning("There is no user with id:" + userId);
 
 
             try
@@ -63,7 +63,7 @@ namespace TamagotchiBot.Services
             var userDB = _userService.Get(userId);
 
             if (userDB == null)
-                Log.Warning("There is no user with id:" + userId + "\nNo sticker has been sent");
+                Log.Warning("There is no user with id:" + userId);
 
             try
             {
@@ -88,7 +88,7 @@ namespace TamagotchiBot.Services
             var userDB = _userService.Get(userId);
 
             if (userDB == null)
-                Log.Warning("There is no user with id:" + userId + "\nMessage has not been modified");
+                Log.Warning("There is no user with id:" + userId);
 
             try
             {
@@ -114,7 +114,7 @@ namespace TamagotchiBot.Services
             var userDB = _userService.Get(userId);
 
             if (userDB == null)
-                Log.Warning("There is no user with id:" + userId + "\nMessage reply has not been modified");
+                Log.Warning("There is no user with id:" + userId);
 
             try
             {
@@ -137,7 +137,7 @@ namespace TamagotchiBot.Services
             var userDB = _userService.Get(userId);
 
             if (userDB == null)
-                Log.Warning("There is no user with id:" + userId + "\nCallback has not been answered");
+                Log.Warning("There is no user with id:" + userId);
 
             try
             {
@@ -164,7 +164,7 @@ namespace TamagotchiBot.Services
             var userDB = _userService.Get(userId);
 
             if (userDB == null)
-                Log.Warning("There is no user with id:" + userId + "\nCommands have not been set");
+                Log.Warning("There is no user with id:" + userId);
 
             try
             {

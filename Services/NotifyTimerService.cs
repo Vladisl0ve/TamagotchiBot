@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Timers;
 using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.UserExtensions;
@@ -131,11 +132,19 @@ namespace TamagotchiBot.Services
             {
                 var user = _userService.Get(long.Parse(userId));
                 Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "en");
+                int rand = new Random().Next(3);
+                var notifyText = new List<string>()
+                {
+                    Resources.Resources.ReminderNotifyText1,
+                    Resources.Resources.ReminderNotifyText2,
+                    Resources.Resources.ReminderNotifyText3
+                };
 
+                string toSendText =notifyText.ElementAtOrDefault(rand) ?? Resources.Resources.ReminderNotifyText1;
                 try
                 {
                     await _botClient.SendStickerAsync(userId, Constants.StickersId.PetBored_Cat);
-                    await _botClient.SendTextMessageAsync(userId, Resources.Resources.ReminderNotifyText);
+                    await _botClient.SendTextMessageAsync(userId, toSendText);
 
 
                     Log.Information($"Sent reminder to '@{user.Username}'");

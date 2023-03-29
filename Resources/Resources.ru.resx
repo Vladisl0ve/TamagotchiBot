@@ -334,7 +334,7 @@ Wybierz nowy język 🇵🇱
 Давай сначала? 🫶
 /start</value>
   </data>
-  <data name="ReminderNotifyText" xml:space="preserve">
+  <data name="ReminderNotifyText1" xml:space="preserve">
     <value>😺: Ты вернулся!
 Мне тебя не хватало!
 Хочу кушать 🌭 и играть 🪁
@@ -396,5 +396,17 @@ Wybierz nowy język 🇵🇱
 Мне по секрету рассказали, что в детской (/gameroom) появилась новая игрушка про яблоки какие-то 👀
 Думаю ты сможешь её найти, нажав на кнопку с джокером, только тссс! Никому ни слова 🙊
 Давай сыграем в неё? 🪁</value>
+  </data>
+  <data name="ReminderNotifyText2" xml:space="preserve">
+    <value>🐱: Жду тебя тут, возвращайся 
+
+/kitchen покормить 🍩
+/gameroom гулять 🏓</value>
+  </data>
+  <data name="ReminderNotifyText3" xml:space="preserve">
+    <value>🐱: Сижу, скучаю, грусть прогоняю...
+
+/kitchen покормить 🍩
+/gameroom гулять 🏓</value>
   </data>
 </root>

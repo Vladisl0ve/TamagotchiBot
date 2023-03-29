@@ -125,7 +125,7 @@ namespace TamagotchiBot.Handlers
 
                 SendMessage(toSend, message.From.Id);
 
-                //if new player has started the game
+                //if new player starts the game
                 if (petService.Get(message.From.Id) == null
                     && (chatService.Get(message.Chat.Id)?.LastMessage == null)
                     && toSend.StickerId != null
