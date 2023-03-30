@@ -27,7 +27,7 @@ namespace TamagotchiBot.Services
 #if DEBUG
             _timerService.SetNotifyTimer(TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(6), TimeSpan.FromSeconds(30));
 #else
-            _timerService.SetNotifyTimer(TimeSpan.FromMinutes(1), TimeSpan.FromHours(6), TimeSpan.FromMinutes(30));
+            _timerService.SetNotifyTimer(TimeSpan.FromMinutes(1), TimeSpan.FromHours(6), TimeSpan.FromMinutes(1));
 #endif
             _timerService.SetChangelogsTimer();
             _client.StartReceiving(

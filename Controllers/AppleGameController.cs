@@ -20,6 +20,7 @@ namespace TamagotchiBot.Controllers
         private readonly PetService _petService;
         private readonly ChatService _chatService;
         private readonly AppleGameDataService _appleGameDataService;
+        private readonly AllUsersDataService _allUsersService;
         private readonly BotControlService _bcService;
 
         private readonly ITelegramBotClient bot;
@@ -35,6 +36,7 @@ namespace TamagotchiBot.Controllers
                            PetService petService,
                            ChatService chatService,
                            AppleGameDataService appleGameDataService,
+                           AllUsersDataService allUsersService,
                            BotControlService bcService)
         {
             this.bot = bot;
@@ -42,7 +44,7 @@ namespace TamagotchiBot.Controllers
             _petService = petService;
             _chatService = chatService;
             _appleGameDataService = appleGameDataService;
-
+            this._allUsersService = allUsersService;
             Culture = new CultureInfo(_userService.Get(UserId)?.Culture ?? "ru");
             _bcService = bcService;
         }
@@ -52,8 +54,9 @@ namespace TamagotchiBot.Controllers
                                    PetService petService,
                                    ChatService chatService,
                                    AppleGameDataService appleGameDataService,
+                                   AllUsersDataService allUsersService,
                                    BotControlService botControlService,
-                                   CallbackQuery callback) : this(bot, userService, petService, chatService, appleGameDataService, botControlService)
+                                   CallbackQuery callback) : this(bot, userService, petService, chatService, appleGameDataService, allUsersService, botControlService)
         {
 
             AppleCounter = appleGameDataService.Get(callback.From.Id)?.CurrentAppleCounter ?? 1;
@@ -67,8 +70,8 @@ namespace TamagotchiBot.Controllers
                                    PetService petService,
                                    ChatService chatService,
                                    AppleGameDataService appleGameDataService,
-                                   BotControlService botControlService,
-                                   Message message) : this(bot, userService, petService, chatService, appleGameDataService, botControlService)
+                                   AllUsersDataService allUsersService, BotControlService botControlService,
+                                   Message message) : this(bot, userService, petService, chatService, appleGameDataService, allUsersService, botControlService)
         {
             AppleCounter = appleGameDataService.Get(message.From.Id)?.CurrentAppleCounter ?? 1;
             this.message = message;
@@ -78,8 +81,8 @@ namespace TamagotchiBot.Controllers
 
 
         public int AppleCounter { get; set; }
-        public List<string> MenuCommands => new List<string>() { againText, statisticsText, quitText };
-        public List<string> ApplesToChoose
+        private List<string> MenuCommands => new List<string>() { againText, statisticsText, quitText };
+        private List<string> ApplesToChoose
         {
             get
             {
@@ -93,7 +96,7 @@ namespace TamagotchiBot.Controllers
             }
         }
 
-        public string ApplesIcons
+        private string ApplesIcons
         {
             get
             {
@@ -232,6 +235,7 @@ namespace TamagotchiBot.Controllers
         {
             var appleDataToUpdate = _appleGameDataService.Get(UserId);
             var petDB = _petService.Get(UserId);
+            var aud = _allUsersService.Get(UserId);
 
             int toRemove = message.Text == "🍎" ? 1 : message.Text == "🍎🍎" ? 2 : message.Text == "🍎🍎🍎" ? 3 : 0;
             AppleCounter -= toRemove;
@@ -295,6 +299,9 @@ namespace TamagotchiBot.Controllers
                     if (petDB.Fatigue > 100)
                         petDB.Fatigue = 100;
 
+                    aud.AppleGamePlayedCounter++;
+                    _allUsersService.Update(aud);
+
                     break;
                 case 1 when systemRemove == 0:
                     textToSay += appleGameWinText;
@@ -308,6 +315,9 @@ namespace TamagotchiBot.Controllers
                     petDB.Fatigue += Factors.CardGameFatigueFactor;
                     if (petDB.Fatigue > 100)
                         petDB.Fatigue = 100;
+
+                    aud.AppleGamePlayedCounter++;
+                    _allUsersService.Update(aud);
 
                     break;
                 default:

@@ -23,6 +23,7 @@ namespace TamagotchiBot.Handlers
         private readonly ChatService chatService;
         private readonly SInfoService sinfoService;
         private readonly AppleGameDataService appleGameDataService;
+        private readonly AllUsersDataService allUsersService;
         private readonly BotControlService bcService;
 
         public UpdateHandler(UserService userService,
@@ -30,6 +31,7 @@ namespace TamagotchiBot.Handlers
                              ChatService chatService,
                              SInfoService sinfoService,
                              AppleGameDataService appleGameDataService,
+                             AllUsersDataService allUsersService,
                              BotControlService botControlService)
         {
             this.userService = userService;
@@ -37,6 +39,7 @@ namespace TamagotchiBot.Handlers
             this.chatService = chatService;
             this.sinfoService = sinfoService;
             this.appleGameDataService = appleGameDataService;
+            this.allUsersService = allUsersService;
             this.bcService = botControlService;
         }
 
@@ -93,8 +96,8 @@ namespace TamagotchiBot.Handlers
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
-                var menuController = new MenuController(botClient, userService, petService, chatService, bcService, message);
-                var gameController = new AppleGameController(botClient, userService, petService, chatService, appleGameDataService, bcService, message);
+                var menuController = new MenuController(botClient, userService, petService, chatService, bcService, allUsersService, message);
+                var gameController = new AppleGameController(botClient, userService, petService, chatService, appleGameDataService, allUsersService, bcService, message);
                 Answer toSend = null;
 
                 if (userService.Get(message.From.Id) == null)
@@ -148,7 +151,6 @@ namespace TamagotchiBot.Handlers
                     var petDB = petService.Get(userId);
                     if (petDB?.Fatigue >= 100)
                     {
-
                         string anwser = string.Format(Resources.Resources.tooTiredText);
                         bcService.AnswerCallbackQueryAsync(callbackQuery.Id,
                                                            callbackQuery.From.Id,
@@ -176,14 +178,14 @@ namespace TamagotchiBot.Handlers
                             IsGameOvered = false,
                         });
 
-                    var gameController = new AppleGameController(bot, userService, petService, chatService, appleGameDataService, bcService, callbackQuery);
+                    var gameController = new AppleGameController(bot, userService, petService, chatService, appleGameDataService, allUsersService, bcService, callbackQuery);
                     Answer toSendAnswer = gameController.StartGame();
 
                     SendMessage(toSendAnswer, callbackQuery.From.Id);
                     return Task.CompletedTask;
                 }
 
-                var controller = new MenuController(bot, userService, petService, chatService, bcService, callbackQuery);
+                var controller = new MenuController(bot, userService, petService, chatService, bcService, allUsersService, callbackQuery);
                 AnswerCallback toSend = controller.CallbackHandler();
 
                 if (toSend == null)

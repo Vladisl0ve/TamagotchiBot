@@ -7,29 +7,27 @@ using TamagotchiBot.Models.Mongo;
 
 namespace TamagotchiBot.Services.Mongo
 {
-    public class AllUsersService : MainConnectService
+    public class AllUsersDataService : MainConnectService
     {
         private readonly IMongoCollection<AllUsersData> _allUsersData;
 
-        public AllUsersService(ITamagotchiDatabaseSettings settings) : base(settings)
+        public AllUsersDataService(ITamagotchiDatabaseSettings settings) : base(settings)
         {
             _allUsersData = base.GetCollection<AllUsersData>(settings.AllUsersDataCollectionName);
         }
 
+        public AllUsersData Get(long userId) => _allUsersData.Find(x => x.UserId == userId).FirstOrDefault();
+
         public void Create(AllUsersData userData) => _allUsersData.InsertOne(userData);
 
-        public bool Update(AllUsersData usersData)
+        public void Update(AllUsersData usersData)
         {
             var userDataDB = _allUsersData.Find(ud => ud.UserId == usersData.UserId).FirstOrDefault();
 
             if (userDataDB == null)
-                return false;
+                return;
 
-            var updateDefintion = new BsonDocument();
-            var bDoc = usersData.ToBsonDocument();
-            SetUpdatableElements(usersData.ToBsonDocument(), updateDefintion, new HashSet<string>() { nameof(usersData.UserId), nameof(usersData.Id), nameof(usersData.Created) });
-            var result = _allUsersData.UpdateOne(p => p.UserId == usersData.UserId, new BsonDocument("$set", updateDefintion));
-            return result.IsAcknowledged;
+            _allUsersData.ReplaceOne(u => u.UserId == usersData.UserId, usersData);
         }
 
         private void SetUpdatableElements(BsonDocument bdoc, BsonDocument updateDefintion, HashSet<string> excluded = null, string parentName = "")
