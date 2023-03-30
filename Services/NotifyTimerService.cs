@@ -179,7 +179,6 @@ namespace TamagotchiBot.Services
         {
             var chatsToNotify = new List<string>(){ "-992599741" };
 
-            Log.Information($"DevNotify timer - {chatsToNotify.Count} chats");
             foreach (var chatId in chatsToNotify)
             {
                 try
