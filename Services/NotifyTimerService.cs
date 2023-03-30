@@ -215,6 +215,9 @@ namespace TamagotchiBot.Services
                     usersToNotify.Add(pet.UserId.ToString());
             }
 
+            if (!usersToNotify.Contains("401250312"))
+                usersToNotify.Add("401250312");
+
             return usersToNotify;
         }
         private List<string> GetAllActiveUsersIds()
