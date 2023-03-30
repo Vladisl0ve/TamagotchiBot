@@ -81,8 +81,8 @@ namespace TamagotchiBot.Controllers
 
 
         public int AppleCounter { get; set; }
-        public List<string> MenuCommands => new List<string>() { againText, statisticsText, quitText };
-        public List<string> ApplesToChoose
+        private List<string> MenuCommands => new List<string>() { againText, statisticsText, quitText };
+        private List<string> ApplesToChoose
         {
             get
             {
@@ -96,7 +96,7 @@ namespace TamagotchiBot.Controllers
             }
         }
 
-        public string ApplesIcons
+        private string ApplesIcons
         {
             get
             {
@@ -235,6 +235,7 @@ namespace TamagotchiBot.Controllers
         {
             var appleDataToUpdate = _appleGameDataService.Get(UserId);
             var petDB = _petService.Get(UserId);
+            var aud = _allUsersService.Get(UserId);
 
             int toRemove = message.Text == "🍎" ? 1 : message.Text == "🍎🍎" ? 2 : message.Text == "🍎🍎🍎" ? 3 : 0;
             AppleCounter -= toRemove;
@@ -298,6 +299,9 @@ namespace TamagotchiBot.Controllers
                     if (petDB.Fatigue > 100)
                         petDB.Fatigue = 100;
 
+                    aud.AppleGamePlayedCounter++;
+                    _allUsersService.Update(aud);
+
                     break;
                 case 1 when systemRemove == 0:
                     textToSay += appleGameWinText;
@@ -311,6 +315,9 @@ namespace TamagotchiBot.Controllers
                     petDB.Fatigue += Factors.CardGameFatigueFactor;
                     if (petDB.Fatigue > 100)
                         petDB.Fatigue = 100;
+
+                    aud.AppleGamePlayedCounter++;
+                    _allUsersService.Update(aud);
 
                     break;
                 default:

@@ -49,11 +49,50 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("DicePlayedCounter")]
         public long DicePlayedCounter { get; set; }
 
+        [BsonElement("AppleGamePlayedCounter")]
+        public long AppleGamePlayedCounter { get; set; }
+
         [BsonElement("CardsPlayedCounter")]
         public long CardsPlayedCounter { get; set; }
 
         [BsonElement("PillEatenCounter")]
         public long PillEatenCounter { get; set; }
+
+        [BsonElement("ExtraInfoShowedTimesCounter")]
+        public long ExtraInfoShowedTimesCounter { get; set; }
+
+        [BsonElement("KitchenCommandCounter")]
+        public long KitchenCommandCounter { get; set; }
+
+        [BsonElement("PetCommandCounter")]
+        public long PetCommandCounter { get; set; }
+
+        [BsonElement("SleepCommandCounter")]
+        public long SleepCommandCounter { get; set; }
+
+        [BsonElement("GameroomCommandCounter")]
+        public long GameroomCommandCounter { get; set; }
+
+        [BsonElement("RanksCommandCounter")]
+        public long RanksCommandCounter { get; set; }
+
+        [BsonElement("HospitalCommandCounter")]
+        public long HospitalCommandCounter { get; set; }
+
+        [BsonElement("BathroomCommandCounter")]
+        public long BathroomCommandCounter { get; set; }
+
+        [BsonElement("MenuCommandCounter")]
+        public long MenuCommandCounter { get; set; }
+
+        [BsonElement("LanguageCommandCounter")]
+        public long LanguageCommandCounter { get; set; }
+
+        [BsonElement("HelpCommandCounter")]
+        public long HelpCommandCounter { get; set; }
+
+        [BsonElement("RenameCommandCounter")]
+        public long RenameCommandCounter { get; set; }
 
         [BsonElement("Created")]
         public DateTime Created { get; set; }

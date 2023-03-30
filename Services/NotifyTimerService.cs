@@ -78,7 +78,7 @@ namespace TamagotchiBot.Services
             foreach (var userId in usersToNotify)
             {
                 var user = _userService.Get(long.Parse(userId));
-                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "en");
+                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
 
                 try
                 {
@@ -131,7 +131,7 @@ namespace TamagotchiBot.Services
             foreach (var userId in usersToNotify)
             {
                 var user = _userService.Get(long.Parse(userId));
-                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "en");
+                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
                 int rand = new Random().Next(3);
                 var notifyText = new List<string>()
                 {
@@ -140,20 +140,20 @@ namespace TamagotchiBot.Services
                     Resources.Resources.ReminderNotifyText3
                 };
 
-                string toSendText =notifyText.ElementAtOrDefault(rand) ?? Resources.Resources.ReminderNotifyText1;
+                string toSendText = notifyText.ElementAtOrDefault(rand) ?? Resources.Resources.ReminderNotifyText1;
                 try
                 {
                     await _botClient.SendStickerAsync(userId, Constants.StickersId.PetBored_Cat);
                     await _botClient.SendTextMessageAsync(userId, toSendText);
 
 
-                    Log.Information($"Sent reminder to '@{user.Username}'");
+                    Log.Information($"Sent reminder to '@{user?.Username ?? userId}'");
                 }
                 catch (ApiRequestException ex)
                 {
                     if (ex.ErrorCode == 403) //Forbidden by user
                     {
-                        Log.Warning($"{ex.Message} @{user.Username}, id: {user.UserId}");
+                        Log.Warning($"{ex.Message} @{user?.Username ?? userId}, id: {userId}");
 
                         //remove all data about user
                         if (user.UserId != 1297838077) //id of devs
@@ -177,24 +177,22 @@ namespace TamagotchiBot.Services
 
         private async void SendDevNotify()
         {
-            var usersToNotify = new List<string>(){ "1297838077" };
-            Log.Information($"DevNotify timer - {usersToNotify.Count} users");
-            foreach (var userId in usersToNotify)
-            {
-                var user = _userService.Get(long.Parse(userId));
-                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "en");
+            var chatsToNotify = new List<string>(){ "-992599741" };
 
+            Log.Information($"DevNotify timer - {chatsToNotify.Count} chats");
+            foreach (var chatId in chatsToNotify)
+            {
                 try
                 {
-                    await _botClient.SendTextMessageAsync(userId, $"Tamagotchi is alive! {DateTime.UtcNow:g}UTC");
+                    await _botClient.SendTextMessageAsync(chatId, $"Tamagotchi is alive! {DateTime.UtcNow:g}UTC");
 
-                    Log.Information($"Sent dev-reminder to '@{user.Username}'");
+                    Log.Information($"Sent dev-reminder to '{chatId}'");
                 }
                 catch (ApiRequestException ex)
                 {
                     if (ex.ErrorCode == 403) //Forbidden by user
                     {
-                        Log.Warning($"{ex.Message} @{user.Username}, id: {user.UserId}");
+                        Log.Warning($"{ex.Message}, id: {chatId}");
                     }
                 }
                 catch (Exception ex)
