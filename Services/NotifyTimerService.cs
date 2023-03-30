@@ -131,7 +131,7 @@ namespace TamagotchiBot.Services
             foreach (var userId in usersToNotify)
             {
                 var user = _userService.Get(long.Parse(userId));
-                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "en");
+                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
                 int rand = new Random().Next(3);
                 var notifyText = new List<string>()
                 {
