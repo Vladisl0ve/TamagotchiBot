@@ -20,6 +20,7 @@ namespace TamagotchiBot.Controllers
         private readonly PetService _petService;
         private readonly ChatService _chatService;
         private readonly AppleGameDataService _appleGameDataService;
+        private readonly AllUsersDataService _allUsersService;
         private readonly BotControlService _bcService;
 
         private readonly ITelegramBotClient bot;
@@ -35,6 +36,7 @@ namespace TamagotchiBot.Controllers
                            PetService petService,
                            ChatService chatService,
                            AppleGameDataService appleGameDataService,
+                           AllUsersDataService allUsersService,
                            BotControlService bcService)
         {
             this.bot = bot;
@@ -42,7 +44,7 @@ namespace TamagotchiBot.Controllers
             _petService = petService;
             _chatService = chatService;
             _appleGameDataService = appleGameDataService;
-
+            this._allUsersService = allUsersService;
             Culture = new CultureInfo(_userService.Get(UserId)?.Culture ?? "ru");
             _bcService = bcService;
         }
@@ -52,8 +54,9 @@ namespace TamagotchiBot.Controllers
                                    PetService petService,
                                    ChatService chatService,
                                    AppleGameDataService appleGameDataService,
+                                   AllUsersDataService allUsersService,
                                    BotControlService botControlService,
-                                   CallbackQuery callback) : this(bot, userService, petService, chatService, appleGameDataService, botControlService)
+                                   CallbackQuery callback) : this(bot, userService, petService, chatService, appleGameDataService, allUsersService, botControlService)
         {
 
             AppleCounter = appleGameDataService.Get(callback.From.Id)?.CurrentAppleCounter ?? 1;
@@ -67,8 +70,8 @@ namespace TamagotchiBot.Controllers
                                    PetService petService,
                                    ChatService chatService,
                                    AppleGameDataService appleGameDataService,
-                                   BotControlService botControlService,
-                                   Message message) : this(bot, userService, petService, chatService, appleGameDataService, botControlService)
+                                   AllUsersDataService allUsersService, BotControlService botControlService,
+                                   Message message) : this(bot, userService, petService, chatService, appleGameDataService, allUsersService, botControlService)
         {
             AppleCounter = appleGameDataService.Get(message.From.Id)?.CurrentAppleCounter ?? 1;
             this.message = message;

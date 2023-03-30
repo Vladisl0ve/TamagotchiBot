@@ -23,6 +23,7 @@ namespace TamagotchiBot.Handlers
         private readonly ChatService chatService;
         private readonly SInfoService sinfoService;
         private readonly AppleGameDataService appleGameDataService;
+        private readonly AllUsersDataService allUsersService;
         private readonly BotControlService bcService;
 
         public UpdateHandler(UserService userService,
@@ -30,6 +31,7 @@ namespace TamagotchiBot.Handlers
                              ChatService chatService,
                              SInfoService sinfoService,
                              AppleGameDataService appleGameDataService,
+                             AllUsersDataService allUsersService,
                              BotControlService botControlService)
         {
             this.userService = userService;
@@ -37,6 +39,7 @@ namespace TamagotchiBot.Handlers
             this.chatService = chatService;
             this.sinfoService = sinfoService;
             this.appleGameDataService = appleGameDataService;
+            this.allUsersService = allUsersService;
             this.bcService = botControlService;
         }
 
@@ -93,8 +96,8 @@ namespace TamagotchiBot.Handlers
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
-                var menuController = new MenuController(botClient, userService, petService, chatService, bcService, message);
-                var gameController = new AppleGameController(botClient, userService, petService, chatService, appleGameDataService, bcService, message);
+                var menuController = new MenuController(botClient, userService, petService, chatService, bcService, allUsersService, message);
+                var gameController = new AppleGameController(botClient, userService, petService, chatService, appleGameDataService, bcService, allUsersService, message);
                 Answer toSend = null;
 
                 if (userService.Get(message.From.Id) == null)

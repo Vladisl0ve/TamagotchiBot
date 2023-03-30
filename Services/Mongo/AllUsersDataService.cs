@@ -7,14 +7,16 @@ using TamagotchiBot.Models.Mongo;
 
 namespace TamagotchiBot.Services.Mongo
 {
-    public class AllUsersService : MainConnectService
+    public class AllUsersDataService : MainConnectService
     {
         private readonly IMongoCollection<AllUsersData> _allUsersData;
 
-        public AllUsersService(ITamagotchiDatabaseSettings settings) : base(settings)
+        public AllUsersDataService(ITamagotchiDatabaseSettings settings) : base(settings)
         {
             _allUsersData = base.GetCollection<AllUsersData>(settings.AllUsersDataCollectionName);
         }
+
+        public AllUsersData Get(long userId) => _allUsersData.Find(x => x.UserId == userId).FirstOrDefault();
 
         public void Create(AllUsersData userData) => _allUsersData.InsertOne(userData);
 

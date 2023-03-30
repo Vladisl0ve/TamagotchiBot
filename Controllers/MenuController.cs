@@ -25,7 +25,7 @@ namespace TamagotchiBot.Controllers
         private readonly PetService _petService;
         private readonly ChatService _chatService;
         private readonly BotControlService _bcService;
-
+        private readonly AllUsersDataService _allUsersService;
         private readonly ITelegramBotClient bot;
         private readonly Message message;
         private readonly CallbackQuery callback;
@@ -34,7 +34,13 @@ namespace TamagotchiBot.Controllers
         private Pet pet;
         private Chat chat;
 
-        public MenuController(ITelegramBotClient bot, UserService userService, PetService petService, ChatService chatService, BotControlService botControlService, CallbackQuery callback)
+        public MenuController(ITelegramBotClient bot,
+                              UserService userService,
+                              PetService petService,
+                              ChatService chatService,
+                              BotControlService botControlService,
+                              AllUsersDataService allUsersService,
+                              CallbackQuery callback)
         {
             this.bot = bot;
             _userService = userService;
@@ -42,13 +48,19 @@ namespace TamagotchiBot.Controllers
             this.callback = callback;
             _chatService = chatService;
             _bcService = botControlService;
-
+            this._allUsersService = allUsersService;
             GetFromDb();
 
             Culture = new CultureInfo(user?.Culture ?? "en");
         }
 
-        public MenuController(ITelegramBotClient bot, UserService userService, PetService petService, ChatService chatService, BotControlService botControlService, Message message)
+        public MenuController(ITelegramBotClient bot,
+                              UserService userService,
+                              PetService petService,
+                              ChatService chatService,
+                              BotControlService botControlService,
+                              AllUsersDataService allUsersService,
+                              Message message)
         {
             this.bot = bot;
             _userService = userService;
@@ -56,6 +68,7 @@ namespace TamagotchiBot.Controllers
             this.message = message;
             _chatService = chatService;
             _bcService = botControlService;
+            this._allUsersService = allUsersService;
 
             GetFromDb();
 
@@ -75,7 +88,16 @@ namespace TamagotchiBot.Controllers
                 chat = _chatService.Get(message?.Chat.Id ?? callback.Message.Chat.Id);
             }
         }
+        private void AddToAUD(Telegram.Bot.Types.User user)
+        {
+            if (user == null)
+            {
+                Log.Warning("User is null, can not add to AUD");
+            }
 
+           // if (_allUsersService.Get(user.Id) == null)
+            //    _allUsersService.Create(new )
+        }
         public Answer CreateUser()
         {
             if (message != null)
