@@ -17,6 +17,7 @@ namespace TamagotchiBot.Services.Mongo
         }
 
         public AllUsersData Get(long userId) => _allUsersData.Find(x => x.UserId == userId).FirstOrDefault();
+        public List<AllUsersData> GetAll() => _allUsersData.Find(x => true).ToList();
 
         public void Create(AllUsersData userData) => _allUsersData.InsertOne(userData);
 
