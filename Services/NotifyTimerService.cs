@@ -243,8 +243,8 @@ namespace TamagotchiBot.Services
             _dailyInfoService.UpdateOrCreate(dailyInfoDB);
             string text = $"{dailyInfoDB.DateInfo:G}:" + Environment.NewLine
                         + $"Played   users  : {playedUsersToday}" + Environment.NewLine                        
-                        + $"Messages today: {messagesSent}" + Environment.NewLine
-                        + $"Callbacks today: {messagesSent}" + Environment.NewLine
+                        + $"Messages today: {messagesSentToday}" + Environment.NewLine
+                        + $"Callbacks today: {callbacksSentToday}" + Environment.NewLine
                         + $"------------------------" + Environment.NewLine
                         + $"Messages sent: {messagesSent}" + Environment.NewLine
                         + $"Callbacks sent  : {callbacksSent}";
