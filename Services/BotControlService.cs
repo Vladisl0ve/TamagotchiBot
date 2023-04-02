@@ -46,7 +46,6 @@ namespace TamagotchiBot.Services
                                      text,
                                      replyMarkup: replyMarkup,
                                      cancellationToken: cancellationToken);
-
             }
             catch (ApiRequestException ex)
             {
@@ -71,7 +70,6 @@ namespace TamagotchiBot.Services
                 await _botClient.SendStickerAsync(userId,
                                      stickerId,
                                      cancellationToken: cancellationToken);
-
             }
             catch (ApiRequestException ex)
             {
@@ -98,7 +96,6 @@ namespace TamagotchiBot.Services
                                                text,
                                                replyMarkup: replyMarkup,
                                                cancellationToken: cancellationToken);
-
             }
             catch (ApiRequestException ex)
             {
@@ -120,7 +117,6 @@ namespace TamagotchiBot.Services
             {
                 Log.Information("Message reply edited for @" + userDB.Username ?? userDB.FirstName ?? userId.ToString());
                 await _botClient.EditMessageReplyMarkupAsync(chatId, messageId, replyMarkup: replyMarkup, cancellationToken: cancellationToken);
-
             }
             catch (ApiRequestException ex)
             {
@@ -156,7 +152,6 @@ namespace TamagotchiBot.Services
             {
                 Log.Error($"{ex.Message}, user: {userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}");
             }
-
         }
 
         public async void SetMyCommandsAsync(long userId, IEnumerable<BotCommand> commands, BotCommandScope scope = default, CancellationToken cancellationToken = default)
