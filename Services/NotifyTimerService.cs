@@ -228,16 +228,24 @@ namespace TamagotchiBot.Services
 
             var dailyInfoDB = _dailyInfoService.GetToday() ?? _dailyInfoService.CreateDefault();
             long messagesSent = _allUsersDataService.GetAll().Select(u => u.MessageCounter).Sum();
+            var t = _dailyInfoService.GetAll().Where(u => u.DateInfo.Date == DateTime.UtcNow.AddDays(-1).Date);
+            long messagesSentToday = messagesSent - (_dailyInfoService.GetAll().Where(u => u.DateInfo.Date == DateTime.UtcNow.AddDays(-1).Date).FirstOrDefault()?.MessagesSent ?? 0);
             long callbacksSent = _allUsersDataService.GetAll().Select(u => u.CallbacksCounter).Sum();
+            long callbacksSentToday = callbacksSent - (_dailyInfoService.GetAll().Where(u => u.DateInfo.Date == DateTime.UtcNow.AddDays(-1).Date).FirstOrDefault()?.CallbacksSent ?? 0);
 
             dailyInfoDB.UsersPlayed = playedUsersToday;
             dailyInfoDB.MessagesSent = messagesSent;
             dailyInfoDB.CallbacksSent = callbacksSent;
             dailyInfoDB.DateInfo = DateTime.UtcNow;
+            dailyInfoDB.TodayCallbacks = (int)callbacksSentToday;
+            dailyInfoDB.TodayMessages = (int)messagesSentToday;
 
             _dailyInfoService.UpdateOrCreate(dailyInfoDB);
             string text = $"{dailyInfoDB.DateInfo:G}:" + Environment.NewLine
-                        + $"Played   users  : {playedUsersToday}" + Environment.NewLine
+                        + $"Played   users  : {playedUsersToday}" + Environment.NewLine                        
+                        + $"Messages today: {messagesSent}" + Environment.NewLine
+                        + $"Callbacks today: {messagesSent}" + Environment.NewLine
+                        + $"------------------------" + Environment.NewLine
                         + $"Messages sent: {messagesSent}" + Environment.NewLine
                         + $"Callbacks sent  : {callbacksSent}";
 
