@@ -41,12 +41,11 @@ namespace TamagotchiBot.Services
 
             try
             {
+                Log.Information($"Message sent to @{userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
                 await _botClient.SendTextMessageAsync(userId,
                                      text,
                                      replyMarkup: replyMarkup,
                                      cancellationToken: cancellationToken);
-
-                Log.Information($"Message sent to @{userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
             }
             catch (ApiRequestException ex)
             {
@@ -67,11 +66,10 @@ namespace TamagotchiBot.Services
 
             try
             {
+                Log.Information("Sticker sent for @" + userDB?.Username ?? userDB?.FirstName ?? userId.ToString());
                 await _botClient.SendStickerAsync(userId,
                                      stickerId,
                                      cancellationToken: cancellationToken);
-
-                Log.Information("Sticker sent for @" + userDB?.Username ?? userDB?.FirstName ?? userId.ToString());
             }
             catch (ApiRequestException ex)
             {
@@ -92,13 +90,12 @@ namespace TamagotchiBot.Services
 
             try
             {
+                Log.Information($"Message edited for @{userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
                 await _botClient.EditMessageTextAsync(userId,
                                                messageId,
                                                text,
                                                replyMarkup: replyMarkup,
                                                cancellationToken: cancellationToken);
-
-                Log.Information($"Message edited for @{userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
             }
             catch (ApiRequestException ex)
             {
@@ -118,9 +115,8 @@ namespace TamagotchiBot.Services
 
             try
             {
-                await _botClient.EditMessageReplyMarkupAsync(chatId, messageId, replyMarkup: replyMarkup, cancellationToken: cancellationToken);
-
                 Log.Information("Message reply edited for @" + userDB.Username ?? userDB.FirstName ?? userId.ToString());
+                await _botClient.EditMessageReplyMarkupAsync(chatId, messageId, replyMarkup: replyMarkup, cancellationToken: cancellationToken);
             }
             catch (ApiRequestException ex)
             {
@@ -141,12 +137,12 @@ namespace TamagotchiBot.Services
 
             try
             {
+                Log.Information($"Answered callback for @{userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
                 await _botClient.AnswerCallbackQueryAsync(callbackQueryId,
                                                text: text,
                                                showAlert: showAlert,
                                                cancellationToken: cancellationToken);
 
-                Log.Information($"Answered callback for @{userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
             }
             catch (ApiRequestException ex)
             {
@@ -156,7 +152,6 @@ namespace TamagotchiBot.Services
             {
                 Log.Error($"{ex.Message}, user: {userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}");
             }
-
         }
 
         public async void SetMyCommandsAsync(long userId, IEnumerable<BotCommand> commands, BotCommandScope scope = default, CancellationToken cancellationToken = default)
@@ -164,7 +159,7 @@ namespace TamagotchiBot.Services
             var userDB = _userService.Get(userId);
 
             if (userDB == null)
-                Log.Warning("There is no user with id:" + userId);
+                Log.Warning("There is no user with id:" + userId + ", setCommands");
 
             try
             {
@@ -184,6 +179,11 @@ namespace TamagotchiBot.Services
 
         public async void SendChatActionAsync(ChatId chatId, ChatAction chatAction, CancellationToken cancellationToken = default)
         {
+            var userDB = _userService.Get(chatId.Identifier ?? -1);
+
+            if (userDB == null)
+                Log.Warning("There is no user with id:" + chatId + ", setActions");
+
             try
             {
                await _botClient.SendChatActionAsync(chatId, chatAction, cancellationToken);

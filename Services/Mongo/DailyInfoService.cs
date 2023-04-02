@@ -34,6 +34,8 @@ namespace TamagotchiBot.Services.Mongo
                 DateInfo = DateTime.UtcNow,
                 MessagesSent = 0,
                 UsersPlayed = 0,
+                TodayCallbacks = 0,
+                TodayMessages = 0
             };
             _dailyInfo.InsertOne(d);
 
