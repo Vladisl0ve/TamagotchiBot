@@ -423,6 +423,7 @@ namespace TamagotchiBot.Controllers
                     Satiety = 100,
                     IsWelcomed = true,
                     Type = null,
+                    Gold = 0,
                     UserId = _userId
                 });
                 Log.Information($"Pet of {user.Username} has been added to Db");

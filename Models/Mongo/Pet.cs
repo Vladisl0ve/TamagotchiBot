@@ -31,6 +31,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("CurrentStatus")]
         public int CurrentStatus { get; set; }
 
+        [BsonElement("Gold")]
+        public int Gold { get; set; }
+
         [BsonElement("HP")]
         public int HP { get; set; }
 

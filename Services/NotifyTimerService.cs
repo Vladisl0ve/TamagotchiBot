@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Timers;
 using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.UserExtensions;
@@ -149,6 +150,7 @@ namespace TamagotchiBot.Services
                 string toSendText = notifyText.ElementAtOrDefault(rand) ?? Resources.Resources.ReminderNotifyText1;
                 try
                 {
+                    await Task.Delay(5000); //pause between notification to avoid 429 error
                     await _botClient.SendStickerAsync(userId, Constants.StickersId.PetBored_Cat);
                     await _botClient.SendTextMessageAsync(userId, toSendText);
 
