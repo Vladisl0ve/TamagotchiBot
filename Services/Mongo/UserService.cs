@@ -46,6 +46,9 @@ namespace TamagotchiBot.Services.Mongo
         public bool UpdateAppleGameStatus(long userId, bool isInAppleGame)
         {
             var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
+            if(userDb == null)
+                return false;
+
             userDb.IsInAppleGame = isInAppleGame;
             _users.ReplaceOne(u => u.UserId == userId, userDb);
             return true;

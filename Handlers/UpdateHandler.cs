@@ -140,10 +140,13 @@ namespace TamagotchiBot.Handlers
 
             Task BotOnCallbackQueryReceived(ITelegramBotClient bot, CallbackQuery callbackQuery)
             {
+                if(userService.Get(callbackQuery.From.Id) == null || petService.Get(callbackQuery.From.Id) == null)
+                    return Task.CompletedTask;
+
                 if (callbackQuery.Data == null)
                     return Task.CompletedTask;
 
-                if (userService.Get(userId).IsInAppleGame)
+                if (userService.Get(userId)?.IsInAppleGame ?? false)
                     return Task.CompletedTask;
 
                 if (callbackQuery.Data == "gameroomCommandInlineCard")
