@@ -1,21 +1,13 @@
-﻿using Newtonsoft.Json.Linq;
-using Serilog;
+﻿using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using TamagotchiBot.Models.Answers;
-using TamagotchiBot.Models.Mongo;
 using TamagotchiBot.Services.Mongo;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
-using static System.Formats.Asn1.AsnWriter;
-using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.Services
 {
@@ -169,11 +161,11 @@ namespace TamagotchiBot.Services
             }
             catch (ApiRequestException ex)
             {
-                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB.Username ?? userDB.FirstName}");
+                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}");
             }
             catch (Exception ex)
             {
-                Log.Error($"{ex.Message}, user: {userDB.Username ?? userDB.FirstName}");
+                Log.Error($"{ex.Message}, user: {userDB?.Username ?? userDB?.FirstName ?? userId.ToString()}");
             }
         }
 
