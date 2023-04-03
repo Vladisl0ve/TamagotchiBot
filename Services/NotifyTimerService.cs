@@ -67,7 +67,6 @@ namespace TamagotchiBot.Services
             _notifyTimer.AutoReset = true;
             _notifyTimer.Enabled = true;
         }
-
         public void SetChangelogsTimer()
         {
             if (!_sinfoService.GetDoSendChangelogs())
@@ -117,7 +116,6 @@ namespace TamagotchiBot.Services
             }
 
         }
-
         private async void OnNotifyTimedEvent(object sender, ElapsedEventArgs e)
         {
             _notifyTimer = new Timer(_triggerNTEvery);
@@ -175,12 +173,12 @@ namespace TamagotchiBot.Services
                     Log.Error(ex.Message);
                 }
             }
-
+            Log.Information("Notifications completed!");
+            
             _nextNotify = DateTime.UtcNow + _notifyEvery;
             _sinfoService.UpdateNextNotify(_nextNotify);
             Log.Information($"Next notification: {_nextNotify} UTC || remaining {_notifyEvery:c}");
         }
-
         private async void SendDevNotify()
         {
             var chatsToNotify = new List<string>(_envs.ChatsToDevNotify);
@@ -206,7 +204,7 @@ namespace TamagotchiBot.Services
                         await _botClient.SendTextMessageAsync(chatId, ToSendExtraDevNotify());
 #endif
 
-                    Log.Information($"Sent dev-reminder to '{chatId}'");
+                   // Log.Information($"Sent dev-reminder to '{chatId}'");
                 }
                 catch (ApiRequestException ex)
                 {
@@ -228,7 +226,6 @@ namespace TamagotchiBot.Services
 
             var dailyInfoDB = _dailyInfoService.GetToday() ?? _dailyInfoService.CreateDefault();
             long messagesSent = _allUsersDataService.GetAll().Select(u => u.MessageCounter).Sum();
-            var t = _dailyInfoService.GetAll().Where(u => u.DateInfo.Date == DateTime.UtcNow.AddDays(-1).Date);
             long messagesSentToday = messagesSent - (_dailyInfoService.GetAll().Where(u => u.DateInfo.Date <= DateTime.UtcNow.AddDays(-1).Date).OrderByDescending(i => i.DateInfo).FirstOrDefault()?.MessagesSent ?? 0);
             long callbacksSent = _allUsersDataService.GetAll().Select(u => u.CallbacksCounter).Sum();
             long callbacksSentToday = callbacksSent - (_dailyInfoService.GetAll().Where(u => u.DateInfo.Date <= DateTime.UtcNow.AddDays(-1).Date).OrderByDescending(i => i.DateInfo).FirstOrDefault()?.CallbacksSent ?? 0);
@@ -241,7 +238,7 @@ namespace TamagotchiBot.Services
             dailyInfoDB.TodayMessages = (int)messagesSentToday;
 
             _dailyInfoService.UpdateOrCreate(dailyInfoDB);
-            string text = $"{dailyInfoDB.DateInfo:G}:" + Environment.NewLine
+            string text = $"{dailyInfoDB.DateInfo:G}" + Environment.NewLine
                         + $"Played   users  : {playedUsersToday}" + Environment.NewLine
                         + $"Messages today: {messagesSentToday}" + Environment.NewLine
                         + $"Callbacks today: {callbacksSentToday}" + Environment.NewLine
@@ -251,7 +248,6 @@ namespace TamagotchiBot.Services
 
             return text;
         }
-
         private List<string> GetUserIdToNotify()
         {
             List<string> usersToNotify = new();
@@ -260,7 +256,7 @@ namespace TamagotchiBot.Services
             foreach (var pet in petsDB)
             {
                 var spentTime = DateTime.UtcNow - pet.LastUpdateTime;
-                if (spentTime > TimeSpan.FromHours(6)) //every 6 hours
+                if (spentTime > _envs.AwakeWhenAFKFor)
                     usersToNotify.Add(pet.UserId.ToString());
             }
 

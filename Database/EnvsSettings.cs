@@ -10,6 +10,7 @@ namespace TamagotchiBot.Database
         public TimeSpan NotifyEvery { get; set; }
         public TimeSpan DevNotifyEvery { get; set; }
         public TimeSpan TriggersEvery { get; set; }
+        public TimeSpan AwakeWhenAFKFor { get; set; }
     }
 
     public interface IEnvsSettings
@@ -19,5 +20,6 @@ namespace TamagotchiBot.Database
         TimeSpan NotifyEvery { get; set; }
         TimeSpan DevNotifyEvery { get; set; }
         TimeSpan TriggersEvery { get; set; }
+        TimeSpan AwakeWhenAFKFor { get; set; }
     }
 }
