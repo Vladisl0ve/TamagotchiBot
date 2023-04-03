@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TamagotchiBot.Database
 {
@@ -10,13 +7,17 @@ namespace TamagotchiBot.Database
     {
         public List<string> AlwaysNotifyUsers { get; set; }
         public List<string> ChatsToDevNotify { get; set; }
-
+        public TimeSpan NotifyEvery { get; set; }
+        public TimeSpan DevNotifyEvery { get; set; }
+        public TimeSpan TriggersEvery { get; set; }
     }
 
     public interface IEnvsSettings
     {
         List<string> AlwaysNotifyUsers { get; set; }
         List<string> ChatsToDevNotify { get; set; }
-
+        TimeSpan NotifyEvery { get; set; }
+        TimeSpan DevNotifyEvery { get; set; }
+        TimeSpan TriggersEvery { get; set; }
     }
 }

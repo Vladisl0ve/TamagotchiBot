@@ -53,13 +53,13 @@ namespace TamagotchiBot.Services
             _dailyInfoService = dailyInfoService;
         }
 
-        public void SetNotifyTimer(TimeSpan timeToTrigger, TimeSpan timeToNotify, TimeSpan timeToDevNotify)
+        public void SetNotifyTimer(TimeSpan timeToTrigger = default, TimeSpan timeToNotify = default, TimeSpan timeToDevNotify = default)
         {
-            _notifyEvery = timeToNotify;
-            _notifyDevEvery = timeToDevNotify;
-            _triggerNTEvery = timeToTrigger;
-            Log.Information("Triggers every " + timeToTrigger.TotalSeconds + "s");
-            Log.Information("DevNotify timer set to wait for " + timeToDevNotify.TotalSeconds + "s");
+            _notifyEvery = timeToNotify == default ? _envs.NotifyEvery : timeToNotify;
+            _notifyDevEvery = timeToDevNotify == default ? _envs.DevNotifyEvery : timeToDevNotify;
+            _triggerNTEvery = timeToTrigger == default ? _envs.TriggersEvery : timeToTrigger;
+            Log.Information("Triggers every " + _triggerNTEvery.TotalSeconds + "s");
+            Log.Information("DevNotify timer set to wait for " + _notifyDevEvery.TotalSeconds + "s");
             Log.Information($"Next 'wake up' notification: {_nextNotify} UTC || remaining {_nextNotify - DateTime.UtcNow:hh\\:mm\\:ss}");
 
             _notifyTimer = new Timer(TimeSpan.FromSeconds(3));
