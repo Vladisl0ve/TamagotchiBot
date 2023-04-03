@@ -47,6 +47,8 @@ namespace Telegram.Bots.Example
                       services.AddSingleton<ITamagotchiDatabaseSettings>(sp => sp.GetRequiredService<IOptions<TamagotchiDatabaseSettings>>().Value);
 
                       services.AddSingleton<NotifyTimerService>();
+                      services.Configure<EnvsSettings>(context.Configuration.GetSection(nameof(EnvsSettings)));
+                      services.AddSingleton<IEnvsSettings>(sp => sp.GetRequiredService<IOptions<EnvsSettings>>().Value);
                       services.AddSingleton<UserService>();
                       services.AddSingleton<PetService>();
                       services.AddSingleton<ChatService>();
@@ -77,7 +79,7 @@ namespace Telegram.Bots.Example
             .WriteTo.File(pathToLog,
                           rollingInterval: RollingInterval.Day,
                           retainedFileCountLimit: null,
-                          outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")                
+                          outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
             .WriteTo.Console()
             .CreateLogger();
         }
