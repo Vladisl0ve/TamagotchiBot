@@ -190,21 +190,13 @@ namespace TamagotchiBot.Services
                     await _botClient.SendTextMessageAsync(chatId, $"Tamagotchi is alive! {DateTime.UtcNow:g}UTC");
 
                     var dailyInfoToday = _dailyInfoService.GetToday();
-#if DEBUG
-                    if (dailyInfoToday != null && (DateTime.UtcNow - dailyInfoToday.DateInfo) > TimeSpan.FromSeconds(5)) //every 5 seconds if DEBUG
-                        await _botClient.SendTextMessageAsync(chatId, ToSendExtraDevNotify());
 
-                    if (dailyInfoToday == null)
+                    if (dailyInfoToday == null || 
+                        (dailyInfoToday != null && (DateTime.UtcNow - dailyInfoToday.DateInfo) > _envs.DevExtraNotifyEvery))
+                    {
+                        Log.Information("Sent extra dev notify");
                         await _botClient.SendTextMessageAsync(chatId, ToSendExtraDevNotify());
-#else
-                    if (dailyInfoToday != null && (DateTime.UtcNow - dailyInfoToday.DateInfo) > TimeSpan.FromMinutes(5)) //every 5 minutes
-                        await _botClient.SendTextMessageAsync(chatId, ToSendExtraDevNotify());
-
-                    if (dailyInfoToday == null)
-                        await _botClient.SendTextMessageAsync(chatId, ToSendExtraDevNotify());
-#endif
-
-                   // Log.Information($"Sent dev-reminder to '{chatId}'");
+                    }
                 }
                 catch (ApiRequestException ex)
                 {
