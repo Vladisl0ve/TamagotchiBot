@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Timers;
+using TamagotchiBot.Database;
 using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
@@ -23,6 +24,7 @@ namespace TamagotchiBot.Services
         private SInfoService _sinfoService;
         private DailyInfoService _dailyInfoService;
         private AllUsersDataService _allUsersDataService;
+        private IEnvsSettings _envs;
 
         private DateTime _nextNotify = DateTime.MaxValue;
         private DateTime _nextDevNotify = DateTime.MaxValue;
@@ -30,6 +32,7 @@ namespace TamagotchiBot.Services
         private TimeSpan _notifyDevEvery = TimeSpan.MaxValue;
         private TimeSpan _triggerNTEvery = TimeSpan.MaxValue;
         public NotifyTimerService(ITelegramBotClient telegramBotClient,
+                                  IEnvsSettings envs,
                                   PetService petService,
                                   UserService userService,
                                   ChatService chatService,
@@ -43,19 +46,20 @@ namespace TamagotchiBot.Services
             _chatService = chatService;
             _sinfoService = sinfoService;
             _allUsersDataService = allUsersDataService;
+            _envs = envs;
 
             _nextNotify = _sinfoService.GetNextNotify();
             _nextDevNotify = _sinfoService.GetNextDevNotify();
             _dailyInfoService = dailyInfoService;
         }
 
-        public void SetNotifyTimer(TimeSpan timeToTrigger, TimeSpan timeToNotify, TimeSpan timeToDevNotify)
+        public void SetNotifyTimer(TimeSpan timeToTrigger = default, TimeSpan timeToNotify = default, TimeSpan timeToDevNotify = default)
         {
-            _notifyEvery = timeToNotify;
-            _notifyDevEvery = timeToDevNotify;
-            _triggerNTEvery = timeToTrigger;
-            Log.Information("Triggers every " + timeToTrigger.TotalSeconds + "s");
-            Log.Information("DevNotify timer set to wait for " + timeToDevNotify.TotalSeconds + "s");
+            _notifyEvery = timeToNotify == default ? _envs.NotifyEvery : timeToNotify;
+            _notifyDevEvery = timeToDevNotify == default ? _envs.DevNotifyEvery : timeToDevNotify;
+            _triggerNTEvery = timeToTrigger == default ? _envs.TriggersEvery : timeToTrigger;
+            Log.Information("Triggers every " + _triggerNTEvery.TotalSeconds + "s");
+            Log.Information("DevNotify timer set to wait for " + _notifyDevEvery.TotalSeconds + "s");
             Log.Information($"Next 'wake up' notification: {_nextNotify} UTC || remaining {_nextNotify - DateTime.UtcNow:hh\\:mm\\:ss}");
 
             _notifyTimer = new Timer(TimeSpan.FromSeconds(3));
@@ -63,7 +67,6 @@ namespace TamagotchiBot.Services
             _notifyTimer.AutoReset = true;
             _notifyTimer.Enabled = true;
         }
-
         public void SetChangelogsTimer()
         {
             if (!_sinfoService.GetDoSendChangelogs())
@@ -113,7 +116,6 @@ namespace TamagotchiBot.Services
             }
 
         }
-
         private async void OnNotifyTimedEvent(object sender, ElapsedEventArgs e)
         {
             _notifyTimer = new Timer(_triggerNTEvery);
@@ -161,13 +163,9 @@ namespace TamagotchiBot.Services
                     {
                         Log.Warning($"{ex.Message} @{user?.Username ?? userId}, id: {userId}");
 
-                        //remove all data about user
-                        if (user.UserId != 1297838077) //id of devs
-                        {
-                            _chatService.Remove(user.UserId);
-                            _petService.Remove(user.UserId);
-                            _userService.Remove(user.UserId);
-                        }
+                        _chatService.Remove(user.UserId);
+                        _petService.Remove(user.UserId);
+                        _userService.Remove(user.UserId);
                     }
                 }
                 catch (Exception ex)
@@ -175,15 +173,15 @@ namespace TamagotchiBot.Services
                     Log.Error(ex.Message);
                 }
             }
-
+            Log.Information("Notifications completed!");
+            
             _nextNotify = DateTime.UtcNow + _notifyEvery;
             _sinfoService.UpdateNextNotify(_nextNotify);
             Log.Information($"Next notification: {_nextNotify} UTC || remaining {_notifyEvery:c}");
         }
-
         private async void SendDevNotify()
         {
-            var chatsToNotify = new List<string>(){ "-992599741" };
+            var chatsToNotify = new List<string>(_envs.ChatsToDevNotify);
 
             foreach (var chatId in chatsToNotify)
             {
@@ -192,21 +190,13 @@ namespace TamagotchiBot.Services
                     await _botClient.SendTextMessageAsync(chatId, $"Tamagotchi is alive! {DateTime.UtcNow:g}UTC");
 
                     var dailyInfoToday = _dailyInfoService.GetToday();
-#if DEBUG
-                    if (dailyInfoToday != null && (DateTime.UtcNow - dailyInfoToday.DateInfo) > TimeSpan.FromSeconds(5)) //every 5 seconds if DEBUG
-                        await _botClient.SendTextMessageAsync(chatId, ToSendExtraDevNotify());
 
-                    if (dailyInfoToday == null)
+                    if (dailyInfoToday == null || 
+                        (dailyInfoToday != null && (DateTime.UtcNow - dailyInfoToday.DateInfo) > _envs.DevExtraNotifyEvery))
+                    {
+                        Log.Information("Sent extra dev notify");
                         await _botClient.SendTextMessageAsync(chatId, ToSendExtraDevNotify());
-#else
-                    if (dailyInfoToday != null && (DateTime.UtcNow - dailyInfoToday.DateInfo) > TimeSpan.FromMinutes(5)) //every 5 minutes
-                        await _botClient.SendTextMessageAsync(chatId, ToSendExtraDevNotify());
-
-                    if (dailyInfoToday == null)
-                        await _botClient.SendTextMessageAsync(chatId, ToSendExtraDevNotify());
-#endif
-
-                    Log.Information($"Sent dev-reminder to '{chatId}'");
+                    }
                 }
                 catch (ApiRequestException ex)
                 {
@@ -228,7 +218,6 @@ namespace TamagotchiBot.Services
 
             var dailyInfoDB = _dailyInfoService.GetToday() ?? _dailyInfoService.CreateDefault();
             long messagesSent = _allUsersDataService.GetAll().Select(u => u.MessageCounter).Sum();
-            var t = _dailyInfoService.GetAll().Where(u => u.DateInfo.Date == DateTime.UtcNow.AddDays(-1).Date);
             long messagesSentToday = messagesSent - (_dailyInfoService.GetAll().Where(u => u.DateInfo.Date <= DateTime.UtcNow.AddDays(-1).Date).OrderByDescending(i => i.DateInfo).FirstOrDefault()?.MessagesSent ?? 0);
             long callbacksSent = _allUsersDataService.GetAll().Select(u => u.CallbacksCounter).Sum();
             long callbacksSentToday = callbacksSent - (_dailyInfoService.GetAll().Where(u => u.DateInfo.Date <= DateTime.UtcNow.AddDays(-1).Date).OrderByDescending(i => i.DateInfo).FirstOrDefault()?.CallbacksSent ?? 0);
@@ -241,8 +230,8 @@ namespace TamagotchiBot.Services
             dailyInfoDB.TodayMessages = (int)messagesSentToday;
 
             _dailyInfoService.UpdateOrCreate(dailyInfoDB);
-            string text = $"{dailyInfoDB.DateInfo:G}:" + Environment.NewLine
-                        + $"Played   users  : {playedUsersToday}" + Environment.NewLine                        
+            string text = $"{dailyInfoDB.DateInfo:G}" + Environment.NewLine
+                        + $"Played   users  : {playedUsersToday}" + Environment.NewLine
                         + $"Messages today: {messagesSentToday}" + Environment.NewLine
                         + $"Callbacks today: {callbacksSentToday}" + Environment.NewLine
                         + $"------------------------" + Environment.NewLine
@@ -251,7 +240,6 @@ namespace TamagotchiBot.Services
 
             return text;
         }
-
         private List<string> GetUserIdToNotify()
         {
             List<string> usersToNotify = new();
@@ -260,12 +248,13 @@ namespace TamagotchiBot.Services
             foreach (var pet in petsDB)
             {
                 var spentTime = DateTime.UtcNow - pet.LastUpdateTime;
-                if (spentTime > TimeSpan.FromHours(6)) //every 6 hours
+                if (spentTime > _envs.AwakeWhenAFKFor)
                     usersToNotify.Add(pet.UserId.ToString());
             }
 
-            if (!usersToNotify.Contains("401250312"))
-                usersToNotify.Add("401250312");
+            foreach (var userAlwaysNotify in _envs.AlwaysNotifyUsers)
+                if (!usersToNotify.Contains(userAlwaysNotify))
+                    usersToNotify.Add(userAlwaysNotify);
 
             return usersToNotify;
         }

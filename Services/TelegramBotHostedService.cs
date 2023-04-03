@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Serilog;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -14,7 +13,9 @@ namespace TamagotchiBot.Services
         private readonly IUpdateHandler _updateHandler;
         private readonly NotifyTimerService _timerService;
 
-        public TelegramBotHostedService(ITelegramBotClient telegramBotClient, IUpdateHandler updateHandler, NotifyTimerService notifyTimerService)
+        public TelegramBotHostedService(ITelegramBotClient telegramBotClient,
+                                        IUpdateHandler updateHandler,
+                                        NotifyTimerService notifyTimerService)
         {
             _client = telegramBotClient;
             _updateHandler = updateHandler;
@@ -22,13 +23,12 @@ namespace TamagotchiBot.Services
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            Log.Information("Telegram Bot Hosted Service started");
-
 #if DEBUG
-            _timerService.SetNotifyTimer(TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(6), TimeSpan.FromSeconds(1));
+            Log.Information("DEBUG: Telegram Bot Hosted Service started");
 #else
-            _timerService.SetNotifyTimer(TimeSpan.FromMinutes(1), TimeSpan.FromHours(6), TimeSpan.FromMinutes(1));
+            Log.Information("RELEASE: Telegram Bot Hosted Service started");
 #endif
+            _timerService.SetNotifyTimer();
             _timerService.SetChangelogsTimer();
             _client.StartReceiving(
                 updateHandler: _updateHandler,
