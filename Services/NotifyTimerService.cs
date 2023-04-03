@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Timers;
+using TamagotchiBot.Database;
 using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
@@ -23,6 +24,7 @@ namespace TamagotchiBot.Services
         private SInfoService _sinfoService;
         private DailyInfoService _dailyInfoService;
         private AllUsersDataService _allUsersDataService;
+        private IEnvsSettings _envs;
 
         private DateTime _nextNotify = DateTime.MaxValue;
         private DateTime _nextDevNotify = DateTime.MaxValue;
@@ -30,6 +32,7 @@ namespace TamagotchiBot.Services
         private TimeSpan _notifyDevEvery = TimeSpan.MaxValue;
         private TimeSpan _triggerNTEvery = TimeSpan.MaxValue;
         public NotifyTimerService(ITelegramBotClient telegramBotClient,
+                                  IEnvsSettings envs,
                                   PetService petService,
                                   UserService userService,
                                   ChatService chatService,
@@ -43,6 +46,7 @@ namespace TamagotchiBot.Services
             _chatService = chatService;
             _sinfoService = sinfoService;
             _allUsersDataService = allUsersDataService;
+            _envs = envs;
 
             _nextNotify = _sinfoService.GetNextNotify();
             _nextDevNotify = _sinfoService.GetNextDevNotify();
@@ -161,13 +165,9 @@ namespace TamagotchiBot.Services
                     {
                         Log.Warning($"{ex.Message} @{user?.Username ?? userId}, id: {userId}");
 
-                        //remove all data about user
-                        if (user.UserId != 1297838077) //id of devs
-                        {
-                            _chatService.Remove(user.UserId);
-                            _petService.Remove(user.UserId);
-                            _userService.Remove(user.UserId);
-                        }
+                        _chatService.Remove(user.UserId);
+                        _petService.Remove(user.UserId);
+                        _userService.Remove(user.UserId);
                     }
                 }
                 catch (Exception ex)
@@ -183,7 +183,7 @@ namespace TamagotchiBot.Services
 
         private async void SendDevNotify()
         {
-            var chatsToNotify = new List<string>(){ "-992599741" };
+            var chatsToNotify = new List<string>(_envs.ChatsToDevNotify);
 
             foreach (var chatId in chatsToNotify)
             {
@@ -242,7 +242,7 @@ namespace TamagotchiBot.Services
 
             _dailyInfoService.UpdateOrCreate(dailyInfoDB);
             string text = $"{dailyInfoDB.DateInfo:G}:" + Environment.NewLine
-                        + $"Played   users  : {playedUsersToday}" + Environment.NewLine                        
+                        + $"Played   users  : {playedUsersToday}" + Environment.NewLine
                         + $"Messages today: {messagesSentToday}" + Environment.NewLine
                         + $"Callbacks today: {callbacksSentToday}" + Environment.NewLine
                         + $"------------------------" + Environment.NewLine
@@ -264,8 +264,9 @@ namespace TamagotchiBot.Services
                     usersToNotify.Add(pet.UserId.ToString());
             }
 
-            if (!usersToNotify.Contains("401250312"))
-                usersToNotify.Add("401250312");
+            foreach (var userAlwaysNotify in _envs.AlwaysNotifyUsers)
+                if (!usersToNotify.Contains(userAlwaysNotify))
+                    usersToNotify.Add(userAlwaysNotify);
 
             return usersToNotify;
         }
