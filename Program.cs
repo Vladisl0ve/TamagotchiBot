@@ -30,7 +30,7 @@ namespace Telegram.Bots.Example
                   .ConfigureAppConfiguration(x =>
                   {
                       var conf = new ConfigurationBuilder()
-                               .SetBasePath(Directory.GetCurrentDirectory())
+                               .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                                .AddJsonFile("config.json", false, true)
                                .Build();
 
@@ -66,7 +66,7 @@ namespace Telegram.Bots.Example
         }
         public static void CreateGlobalLoggerConfiguration()
         {
-            string pathToLog = Path.Combine(Directory.GetCurrentDirectory(),
+            string pathToLog = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                                             "Logs",
                                             DateTime.Now.ToString("yyyy"),
                                             DateTime.Now.ToString("MM"),
