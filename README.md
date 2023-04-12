@@ -3,8 +3,20 @@ Telegram Bot "Tamagotchi" on C# with DI framework
 
 [![CodeFactor](https://www.codefactor.io/repository/github/vladisl0ve/tamagotchibot/badge)](https://www.codefactor.io/repository/github/vladisl0ve/tamagotchibot)
 
-![image](https://user-images.githubusercontent.com/36882979/223864170-0313b433-65ff-425c-b891-32a9f1d54631.png)
 
-![image](https://user-images.githubusercontent.com/36882979/223864241-919cf068-bf2a-4975-bc88-bddebd9e14bc.png)
+![ezgif com-resize (2)](https://user-images.githubusercontent.com/36882979/231561742-0ae3efdb-6991-4ccc-8bb1-99693bc56da4.gif)
 
-![image](https://user-images.githubusercontent.com/36882979/223864386-fb91fc10-60c6-4b0e-95eb-23c366dbf46d.png)
+🌈 Welcome to the world of Tamagotchi! 🌈
+
+Here, you can create your own virtual pet friend 🐩🐈🐈‍⬛🐕
+
+Make sure to keep track of your pet's progress:
+- Play different games with them ⚽️
+- Feed them delicious treats 🍕🍳🍫
+- Take care of their needs 🍼
+- Encourage them to exercise and show love 😻
+
+
+In the command menu, you will find everything your pet needs 🌻.
+
+Be sure to visit your pet frequently because they also love you and will be thrilled to play with you 🤍❤️🤍
