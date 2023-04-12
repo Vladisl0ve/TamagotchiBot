@@ -82,6 +82,8 @@ namespace Telegram.Bots.Example
                           outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
             .WriteTo.Console()
             .CreateLogger();
+
+            Log.Warning("Path to logs: " + pathToLog);
         }
     }
 }
