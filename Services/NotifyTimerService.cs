@@ -135,6 +135,9 @@ namespace TamagotchiBot.Services
             if (nextNotifyDB > DateTime.UtcNow)
                 return;
 
+            _nextNotify = DateTime.UtcNow + _notifyEvery;
+            _sinfoService.UpdateNextNotify(_nextNotify);
+
             var usersToNotify = GetUserIdToNotify();
             Log.Information($"Notify timer - {usersToNotify.Count} users");
             foreach (var userId in usersToNotify)
@@ -156,7 +159,6 @@ namespace TamagotchiBot.Services
                     await _botClient.SendStickerAsync(userId, Constants.StickersId.PetBored_Cat);
                     await _botClient.SendTextMessageAsync(userId, toSendText);
 
-
                     Log.Information($"Sent reminder to '@{user?.Username ?? userId}'");
                 }
                 catch (ApiRequestException ex)
@@ -175,10 +177,7 @@ namespace TamagotchiBot.Services
                     Log.Error(ex.Message);
                 }
             }
-            Log.Information("Notifications completed!");
-            
-            _nextNotify = DateTime.UtcNow + _notifyEvery;
-            _sinfoService.UpdateNextNotify(_nextNotify);
+            Log.Information("Notifications completed!");      
             Log.Information($"Next notification: {_nextNotify} UTC || remaining {_notifyEvery:c}");
         }
         private async void SendDevNotify()
