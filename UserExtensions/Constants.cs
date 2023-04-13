@@ -22,7 +22,8 @@ namespace TamagotchiBot.UserExtensions
         public enum CurrentStatus
         {
             Active,
-            Sleeping
+            Sleeping,
+            WorkingOnPC
         }
 
         public enum Fatigue

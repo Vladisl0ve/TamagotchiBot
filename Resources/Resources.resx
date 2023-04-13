@@ -407,4 +407,10 @@ Let's play it? 🪁</value>
 /kitchen to feed 🍩
 /gameroom for games 🏓</value>
   </data>
+  <data name="CurrentStatusWorkingOnPC" xml:space="preserve">
+    <value>on work 💻</value>
+  </data>
+  <data name="denyAccessWorking" xml:space="preserve">
+    <value>You can not come in: pet is on work 💻</value>
+  </data>
 </root>

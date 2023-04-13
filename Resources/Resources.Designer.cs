@@ -232,11 +232,29 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to on work 💻.
+        /// </summary>
+        public static string CurrentStatusWorkingOnPC {
+            get {
+                return ResourceManager.GetString("CurrentStatusWorkingOnPC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can not come in: pet is sleeping 🌙.
         /// </summary>
         public static string denyAccessSleeping {
             get {
                 return ResourceManager.GetString("denyAccessSleeping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can not come in: pet is on work 💻.
+        /// </summary>
+        public static string denyAccessWorking {
+            get {
+                return ResourceManager.GetString("denyAccessWorking", resourceCulture);
             }
         }
         

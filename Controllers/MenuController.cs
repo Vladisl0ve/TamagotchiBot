@@ -525,9 +525,30 @@ namespace TamagotchiBot.Controllers
             };
 
         }
-        private Answer GoToBathroom()
+        private bool CheckIsInactive(bool IsGoToSleepCommand = false)
         {
-            if (pet.CurrentStatus == (int)CurrentStatus.Sleeping)
+            if (pet.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
+            {
+                string denyText = string.Format(denyAccessSleeping);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, denyText, true);
+
+                return true;
+            }
+
+            if (pet.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
+            {
+                string denyText = string.Format(denyAccessWorking);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, denyText, true);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private Answer CheckIsInactiveOrNull(bool IsGoToSleepCommand = false)
+        {
+            if (pet.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
             {
                 string denyText = string.Format(denyAccessSleeping);
                 return new Answer()
@@ -536,6 +557,24 @@ namespace TamagotchiBot.Controllers
                     StickerId = StickersId.PetBusy_Cat
                 };
             }
+
+            if (pet.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
+            {
+                string denyText = string.Format(denyAccessWorking);
+                return new Answer()
+                {
+                    Text = denyText,
+                    StickerId = StickersId.PetBusy_Cat
+                };
+            }
+
+            return null;
+        }
+        private Answer GoToBathroom()
+        {
+            var accessCheck = CheckIsInactiveOrNull();
+            if (accessCheck != null)
+                return accessCheck;
 
             var aud = _allUsersService.Get(_userId);
             aud.BathroomCommandCounter++;
@@ -552,17 +591,10 @@ namespace TamagotchiBot.Controllers
         }
         private Answer GoToKitchen()
         {
-            if (pet.CurrentStatus == (int)CurrentStatus.Sleeping)
-            {
-                string denyText = string.Format(denyAccessSleeping);
-                return new Answer()
-                {
-                    Text = denyText,
-                    StickerId = StickersId.PetBusy_Cat,
-                    ReplyMarkup = null,
-                    InlineKeyboardMarkup = null
-                };
-            }
+            var accessCheck = CheckIsInactiveOrNull();
+            if (accessCheck != null)
+                return accessCheck;
+
             string toSendText = string.Format(kitchenCommand, pet.Satiety);
 
             List<CommandModel> inlineParts = new InlineItems().InlineFood;
@@ -584,17 +616,9 @@ namespace TamagotchiBot.Controllers
         }
         private Answer GoToGameroom()
         {
-            if (pet.CurrentStatus == (int)CurrentStatus.Sleeping)
-            {
-                string denyText = string.Format(denyAccessSleeping);
-                return new Answer()
-                {
-                    Text = denyText,
-                    StickerId = StickersId.PetBusy_Cat,
-                    ReplyMarkup = null,
-                    InlineKeyboardMarkup = null
-                };
-            }
+            var accessCheck = CheckIsInactiveOrNull();
+            if (accessCheck != null)
+                return accessCheck;
 
             string toSendText = string.Format(gameroomCommand, pet.Fatigue, pet.Joy);
 
@@ -617,17 +641,9 @@ namespace TamagotchiBot.Controllers
         }
         private Answer GoToHospital()
         {
-            if (pet.CurrentStatus == (int)CurrentStatus.Sleeping)
-            {
-                string denyText = string.Format(denyAccessSleeping);
-                return new Answer()
-                {
-                    Text = denyText,
-                    StickerId = StickersId.PetBusy_Cat,
-                    ReplyMarkup = null,
-                    InlineKeyboardMarkup = null
-                };
-            }
+            var accessCheck = CheckIsInactiveOrNull();
+            if (accessCheck != null)
+                return accessCheck;
 
             string commandHospital =  pet.HP switch
             {
@@ -710,6 +726,10 @@ namespace TamagotchiBot.Controllers
         }
         private Answer GoToSleep()
         {
+            var accessCheck = CheckIsInactiveOrNull(true);
+            if (accessCheck != null)
+                return accessCheck;
+
             string toSendText = string.Format(sleepCommand, pet.Name, pet.Fatigue, Extensions.GetCurrentStatus(pet.CurrentStatus));
 
             InlineKeyboardMarkup toSendInline;
@@ -1031,6 +1051,9 @@ namespace TamagotchiBot.Controllers
         }
         private AnswerCallback PutToSleepInline()
         {
+            if (CheckIsInactive(true))
+                return null;
+
             if (pet.CurrentStatus == (int)CurrentStatus.Sleeping)
             {
                 _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, PetSleepingAlreadyAnwserCallback);

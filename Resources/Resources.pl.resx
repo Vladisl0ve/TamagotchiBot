@@ -407,4 +407,10 @@ Zagrajmy w to? 🪁</value>
 /kitchen karmić 🍩
 /gameroom bawić się 🏓</value>
   </data>
+  <data name="CurrentStatusWorkingOnPC" xml:space="preserve">
+    <value>w pracy 💻</value>
+  </data>
+  <data name="denyAccessWorking" xml:space="preserve">
+    <value>Brak możliwości wejścia do pokoju: zwierzak pracuje 💻</value>
+  </data>
 </root>

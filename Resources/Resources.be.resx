@@ -410,4 +410,10 @@ Wybierz nowy język 🇵🇱
 /kitchen пакарміць 🍩
 /gameroom гуляць 🏓</value>
   </data>
+  <data name="CurrentStatusWorkingOnPC" xml:space="preserve">
+    <value>на працы💻</value>
+  </data>
+  <data name="denyAccessWorking" xml:space="preserve">
+    <value>Ты не можаш зайсці да пакою: твой гадаванец на працы 💻</value>
+  </data>
 </root>
