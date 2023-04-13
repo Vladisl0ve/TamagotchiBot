@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using TamagotchiBot.Controllers;
@@ -48,11 +49,26 @@ namespace TamagotchiBot.Handlers
         {
             Log.Error(exception, exception.Message);
             Log.Warning("App restarts in 10 seconds...");
+            await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
 
-            await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
-            var startExe = AppDomain.CurrentDomain.BaseDirectory + AppDomain.CurrentDomain.FriendlyName + ".exe";
-            // Starts a new instance of the program itself
-            System.Diagnostics.Process.Start(startExe);
+            if(OperatingSystem.IsWindows())
+            {
+                var startWinExe = AppDomain.CurrentDomain.BaseDirectory + AppDomain.CurrentDomain.FriendlyName + ".exe";
+                // Starts a new instance of the program itself
+                Process.Start(startWinExe);
+            }
+            else if(OperatingSystem.IsLinux())
+            {
+                var processInfo = new ProcessStartInfo()
+                {
+                    FileName = "bash",
+                    Arguments = $"-c /home/Vladislove/Tamagotchi/wrapper.sh",
+                    UseShellExecute = true,
+                };
+
+                // Starts a new instance of the program itself
+                Process.Start(processInfo);
+            }
 
             // Closes the current process
             Environment.Exit(-1);
