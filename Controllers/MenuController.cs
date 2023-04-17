@@ -1279,6 +1279,7 @@ namespace TamagotchiBot.Controllers
                 _petService.UpdateCurrentStatus(_userId, (int)CurrentStatus.WorkingOnPC);
 
                 var aud = _allUsersService.Get(_userId);
+                aud.GoldEarnedCounter += Rewards.WorkOnPCGoldReward;
                 aud.WorkOnPCCounter++;
                 _allUsersService.Update(aud);
 
