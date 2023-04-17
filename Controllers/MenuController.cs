@@ -250,9 +250,26 @@ namespace TamagotchiBot.Controllers
             if (pet.CurrentStatus == (int)CurrentStatus.Sleeping)
                 UpdateIndicatorSleeping();
 
+            //Work
+            if (pet.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
+                UpdateIndicatorWork();
+
             pet.LastUpdateTime = DateTime.UtcNow;
 
             _petService.Update(messageUser.Id, pet);
+        }
+
+        private void UpdateIndicatorWork()
+        {
+            TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - pet.StartWorkingTime);
+
+            //if callback handled when time of work is over
+            if (remainsTime <= TimeSpan.Zero)
+            {
+                pet.CurrentStatus = (int)CurrentStatus.Active;
+                _petService.UpdateCurrentStatus(_userId, pet.CurrentStatus);
+            }
+
         }
 
         public Answer ExtrasHandler() //catching exceptional situations (but not exceptions!)
@@ -350,12 +367,56 @@ namespace TamagotchiBot.Controllers
                 return ShowMenuInfo();
             if (textReceived == "/rename")
                 return RenamePet();
+            if (textReceived == "/work")
+                return ShowWorkInfo();
 #if DEBUG //only for debug purpose
             if (textReceived == "/restart")
                 return RestartPet();
 #endif
 
             return ExtrasHandler();
+        }
+
+        private Answer ShowWorkInfo()
+        {
+            var accessCheck = CheckStatusIsInactiveOrNull(IsGoToWorkCommand: true);
+            if (accessCheck != null)
+                return accessCheck;
+
+            string toSendText = string.Empty;
+
+            List<CommandModel> inlineParts;
+            InlineKeyboardMarkup toSendInline = default;
+
+            if (pet.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
+            {
+                TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - pet.StartWorkingTime);
+
+                //if callback handled when pet is working
+                if (remainsTime > TimeSpan.Zero)
+                    return ShowRemainedTimeWork(remainsTime);
+            }
+            else
+            {
+                toSendText = string.Format(workCommand);
+
+                inlineParts = new InlineItems().InlineWork;
+                toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+
+                var aud = _allUsersService.Get(_userId);
+                aud.WorkCommandCounter++;
+                _allUsersService.Update(aud);
+
+                chat.LastMessage = "/work";
+                _chatService.Update(chat.ChatId, chat);
+            }
+
+            return new Answer()
+            {
+                Text = toSendText,
+                StickerId = StickersId.PetWork_Cat,
+                InlineKeyboardMarkup = toSendInline
+            };
         }
 
         public AnswerCallback CallbackHandler()
@@ -391,6 +452,12 @@ namespace TamagotchiBot.Controllers
 
             if (callback.Data == "sleepCommandInlinePutToSleep")
                 return PutToSleepInline();
+
+            if (callback.Data == "workCommandInlineWorkOnPC")
+                return WorkOnPCInline();
+
+            if (callback.Data == "workCommandInlineShowTime")
+                return WorkOnPCInline();
 
             if (callback.Data == "gameroomCommandInlineCard")
                 return PlayCardInline();
@@ -508,7 +575,8 @@ namespace TamagotchiBot.Controllers
             string toSendText = string.Format(petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Satiety,
                                                   Extensions.GetFatigue(pet.Fatigue),
                                                   Extensions.GetCurrentStatus(pet.CurrentStatus),
-                                                  pet.Joy);
+                                                  pet.Joy,
+                                                  pet.Gold);
 
             var aud = _allUsersService.Get(_userId);
             aud.PetCommandCounter++;
@@ -525,7 +593,7 @@ namespace TamagotchiBot.Controllers
             };
 
         }
-        private bool CheckIsInactive(bool IsGoToSleepCommand = false)
+        private bool CheckStatusIsInactive(bool IsGoToSleepCommand = false)
         {
             if (pet.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
             {
@@ -546,7 +614,7 @@ namespace TamagotchiBot.Controllers
             return false;
         }
 
-        private Answer CheckIsInactiveOrNull(bool IsGoToSleepCommand = false)
+        private Answer CheckStatusIsInactiveOrNull(bool IsGoToSleepCommand = false, bool IsGoToWorkCommand = false)
         {
             if (pet.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
             {
@@ -558,7 +626,7 @@ namespace TamagotchiBot.Controllers
                 };
             }
 
-            if (pet.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
+            if (pet.CurrentStatus == (int)CurrentStatus.WorkingOnPC && !IsGoToWorkCommand)
             {
                 string denyText = string.Format(denyAccessWorking);
                 return new Answer()
@@ -572,7 +640,7 @@ namespace TamagotchiBot.Controllers
         }
         private Answer GoToBathroom()
         {
-            var accessCheck = CheckIsInactiveOrNull();
+            var accessCheck = CheckStatusIsInactiveOrNull();
             if (accessCheck != null)
                 return accessCheck;
 
@@ -591,7 +659,7 @@ namespace TamagotchiBot.Controllers
         }
         private Answer GoToKitchen()
         {
-            var accessCheck = CheckIsInactiveOrNull();
+            var accessCheck = CheckStatusIsInactiveOrNull();
             if (accessCheck != null)
                 return accessCheck;
 
@@ -616,7 +684,7 @@ namespace TamagotchiBot.Controllers
         }
         private Answer GoToGameroom()
         {
-            var accessCheck = CheckIsInactiveOrNull();
+            var accessCheck = CheckStatusIsInactiveOrNull();
             if (accessCheck != null)
                 return accessCheck;
 
@@ -641,7 +709,7 @@ namespace TamagotchiBot.Controllers
         }
         private Answer GoToHospital()
         {
-            var accessCheck = CheckIsInactiveOrNull();
+            var accessCheck = CheckStatusIsInactiveOrNull();
             if (accessCheck != null)
                 return accessCheck;
 
@@ -726,7 +794,7 @@ namespace TamagotchiBot.Controllers
         }
         private Answer GoToSleep()
         {
-            var accessCheck = CheckIsInactiveOrNull(true);
+            var accessCheck = CheckStatusIsInactiveOrNull(true);
             if (accessCheck != null)
                 return accessCheck;
 
@@ -928,7 +996,8 @@ namespace TamagotchiBot.Controllers
             string toSendText = string.Format(petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Satiety,
                                                   Extensions.GetFatigue(pet.Fatigue),
                                                   Extensions.GetCurrentStatus(pet.CurrentStatus),
-                                                  pet.Joy);
+                                                  pet.Joy,
+                                                  pet.Gold);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
                 {
                     new CommandModel()
@@ -1051,7 +1120,7 @@ namespace TamagotchiBot.Controllers
         }
         private AnswerCallback PutToSleepInline()
         {
-            if (CheckIsInactive(true))
+            if (CheckStatusIsInactive(true))
                 return null;
 
             if (pet.CurrentStatus == (int)CurrentStatus.Sleeping)
@@ -1183,6 +1252,128 @@ namespace TamagotchiBot.Controllers
 
             return new AnswerCallback(toSendText, toSendInline);
         }
+        private AnswerCallback WorkOnPCInline()
+        {
+            InlineKeyboardMarkup toSendInline;
+            string toSendText;
+
+            if (pet.CurrentStatus == (int)CurrentStatus.Active)
+            {
+                if (callback.Data == "workCommandInlineShowTime" || callback.Data == null)
+                {
+                    string toSendTextIfTimeOver = string.Format(workCommand);
+
+                    List<CommandModel> inlineParts = new InlineItems().InlineWork;
+                    InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+
+                    return new AnswerCallback(toSendTextIfTimeOver, toSendInlineIfTimeOver);
+                }
+
+
+                var newFatigue = pet.Fatigue + Factors.WorkOnPCFatigueFactor;
+                if (newFatigue > 100)
+                    newFatigue = 100;
+
+                _petService.UpdateFatigue(_userId, newFatigue);
+                _petService.UpdateGold(_userId, Rewards.WorkOnPCGoldReward);
+                _petService.UpdateCurrentStatus(_userId, (int)CurrentStatus.WorkingOnPC);
+
+                var aud = _allUsersService.Get(_userId);
+                aud.WorkOnPCCounter++;
+                _allUsersService.Update(aud);
+
+                var startWorkingTime = DateTime.UtcNow;
+                _petService.UpdateStartWorkingTime(_userId, startWorkingTime);
+
+                string anwser = string.Format(PetWorkingAnswerCallback, Factors.WorkOnPCFatigueFactor, Rewards.WorkOnPCGoldReward);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser, true);
+
+                toSendText = string.Format(workCommandPCWorking);
+
+                TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - startWorkingTime);
+                string inlineStr = string.Format(workCommandInlineShowTime, new DateTime(remainsTime.Ticks).ToString("HH:mm:ss"));
+
+                toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
+                    {
+                        new CommandModel()
+                        {
+                            Text = inlineStr,
+                            CallbackData = "workCommandInlineShowTime"
+                        }
+                    });
+
+                return new AnswerCallback(toSendText, toSendInline);
+            }
+            else if (pet.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
+            {
+                TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - pet.StartWorkingTime);
+
+                //if callback handled when time of work is over
+                if (remainsTime <= TimeSpan.Zero)
+                {
+                    pet.CurrentStatus = (int)CurrentStatus.Active;
+                    _petService.UpdateCurrentStatus(_userId, pet.CurrentStatus);
+
+                    string toSendTextIfTimeOver = string.Format(workCommand);
+
+                    List<CommandModel> inlineParts = new InlineItems().InlineWork;
+                    InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+
+                    return new AnswerCallback(toSendTextIfTimeOver, toSendInlineIfTimeOver);
+                }
+
+                //if callback handled when pet is still working
+                return ShowRemainedTimeWorkCallback(remainsTime);
+            }
+            else
+                return null;
+        }
+
+        private Answer ShowRemainedTimeWork(TimeSpan remainedTime)
+        {
+            InlineKeyboardMarkup toSendInline;
+            string toSendText;
+
+            toSendText = string.Format(workCommandPCWorking);
+            string inlineStr = string.Format(workCommandInlineShowTime, new DateTime(remainedTime.Ticks).ToString("HH:mm:ss"));
+
+            toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
+                    {
+                        new CommandModel()
+                        {
+                            Text = inlineStr,
+                            CallbackData = "workCommandInlineShowTime"
+                        }
+                    });
+
+            return new Answer() { InlineKeyboardMarkup = toSendInline, Text = toSendText, StickerId = StickersId.PetWork_Cat };
+        }
+        private AnswerCallback ShowRemainedTimeWorkCallback(TimeSpan remainedTime = default)
+        {
+            InlineKeyboardMarkup toSendInline;
+            string toSendText;
+
+            if (remainedTime == default)
+                remainedTime = new TimeSpan(0);
+
+            string anwser = string.Format(workCommandPCWorking);
+            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
+
+            toSendText = string.Format(workCommandPCWorking);
+            string inlineStr = string.Format(workCommandInlineShowTime, new DateTime(remainedTime.Ticks).ToString("HH:mm:ss"));
+
+            toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
+                    {
+                        new CommandModel()
+                        {
+                            Text = inlineStr,
+                            CallbackData = "workCommandInlineShowTime"
+                        }
+                    });
+
+            return new AnswerCallback(toSendText, toSendInline);
+        }
+
         private AnswerCallback CureWithPill()
         {
             var newHP = pet.HP + Factors.PillHPFactor;

@@ -472,6 +472,7 @@ namespace TamagotchiBot.Resources {
         ///   Looks up a localized string similar to What to do with pet:
         ////pet - pet&apos;s status 🐱
         ////kitchen - feed your pet 🍕
+        ////work - to earn more gold 💰
         ////sleep - bedroom 🧸
         ////gameroom entertainments 🎳
         ////ranks - see the best pets! 👑
@@ -502,6 +503,8 @@ namespace TamagotchiBot.Resources {
         ///🍕 Satiety: {4}%
         ///😴 Fatigue: {5}
         ///🎊 Joy level: {7}%
+        ///
+        ///💰 Gold: {8} 💴
         ///⚡️ Status: {6}
         ///🏅 EXP: {2} | {3} level ✨
         ///
@@ -593,6 +596,17 @@ namespace TamagotchiBot.Resources {
         public static string PetSleepingDoesntWantYetAnwserCallback {
             get {
                 return ResourceManager.GetString("PetSleepingDoesntWantYetAnwserCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gold +{1} 💰
+        ///The pet is tired at +{0}% 😓
+        ///Wait until the pet finishes work.
+        /// </summary>
+        public static string PetWorkingAnswerCallback {
+            get {
+                return ResourceManager.GetString("PetWorkingAnswerCallback", resourceCulture);
             }
         }
         
@@ -779,6 +793,51 @@ namespace TamagotchiBot.Resources {
         public static string Welcome {
             get {
                 return ResourceManager.GetString("Welcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose what your pet will be doing 💡.
+        /// </summary>
+        public static string workCommand {
+            get {
+                return ResourceManager.GetString("workCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jobs 💰.
+        /// </summary>
+        public static string workCommandDescription {
+            get {
+                return ResourceManager.GetString("workCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Program 💻.
+        /// </summary>
+        public static string workCommandInlinePC {
+            get {
+                return ResourceManager.GetString("workCommandInlinePC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remains to work: {0} ⏱.
+        /// </summary>
+        public static string workCommandInlineShowTime {
+            get {
+                return ResourceManager.GetString("workCommandInlineShowTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet is working now 👩‍💻.
+        /// </summary>
+        public static string workCommandPCWorking {
+            get {
+                return ResourceManager.GetString("workCommandPCWorking", resourceCulture);
             }
         }
     }

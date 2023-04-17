@@ -142,6 +142,8 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
 🍕 Sytość: {4}%
 😴 Zmęczenie: {5}
 🎊 Radość: {7}%
+
+💰 Gold: {8} 💴
 ⚡️ Status: {6}
 🏅 Doświadczenie: {2} | {3} poziom✨
 
@@ -306,6 +308,7 @@ Upewnij się, że często go odwiedzasz, ponieważ on również Cię kocha i z p
     <value>Akcje ze zwierzakiem:
 /pet - status zwierzaka 🐱
 /kuchnia - nakarm swojego zwierzaka 🍕
+/work - zarabiać kasę 💰
 /sleep - sypialnia 🧸
 /gameroom - rozrywka 🎳
 /ranks- zobacz najlepsze zwierzaki! 👑
@@ -412,5 +415,25 @@ Zagrajmy w to? 🪁</value>
   </data>
   <data name="denyAccessWorking" xml:space="preserve">
     <value>Brak możliwości wejścia do pokoju: zwierzak pracuje 💻</value>
+  </data>
+  <data name="workCommand" xml:space="preserve">
+    <value>Wybierz, co zrobi Twój zwierzak 💡</value>
+  </data>
+  <data name="workCommandInlinePC" xml:space="preserve">
+    <value>Programowanie 💻</value>
+  </data>
+  <data name="workCommandDescription" xml:space="preserve">
+    <value>Praca 💰</value>
+  </data>
+  <data name="PetWorkingAnswerCallback" xml:space="preserve">
+    <value>Złoto +{1} 💰
+Zwierzę jest zmęczone na +{0}% 😓
+Poczekaj aż zwierzak skończy pracę</value>
+  </data>
+  <data name="workCommandPCWorking" xml:space="preserve">
+    <value>Zwierzak w pracy teraz 👩‍💻</value>
+  </data>
+  <data name="workCommandInlineShowTime" xml:space="preserve">
+    <value>Pozostało do pracy: {0} ⏱</value>
   </data>
 </root>

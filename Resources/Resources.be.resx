@@ -143,6 +143,8 @@
 🍕 Сытасць: {4}%
 😴 Стомленасць: {5}
 🎊 Радасць: {7}%
+
+💰 Gold: {8} 💴
 ⚡️ Стан: {6}
 🏅 Досвед: {2} | {3} ўзровень✨
 
@@ -308,6 +310,7 @@ Wybierz nowy język 🇵🇱
     <value>Што рабіць з гадаванцам:
 /pet - паказльнікі гадаванца 🐱
 /kitchen - есці тут 🍕
+/work - зарабляць грошы 💰
 /sleep - спальня 🧸
 /gameroom - забавы 🎳
 /ranks - лепшыя з лепшых! 👑
@@ -415,5 +418,25 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="denyAccessWorking" xml:space="preserve">
     <value>Ты не можаш зайсці да пакою: твой гадаванец на працы 💻</value>
+  </data>
+  <data name="workCommand" xml:space="preserve">
+    <value>Выберы чым будзе займацца твой гадаванец 💡</value>
+  </data>
+  <data name="workCommandInlinePC" xml:space="preserve">
+    <value>Кодзіць 💻</value>
+  </data>
+  <data name="workCommandDescription" xml:space="preserve">
+    <value>Праца 💰</value>
+  </data>
+  <data name="PetWorkingAnswerCallback" xml:space="preserve">
+    <value>Золата +{1} 💰
+Гадаванец стаміўся на +{0}% 😓
+Пачакай пакуль гадаванец не скончыць працу</value>
+  </data>
+  <data name="workCommandPCWorking" xml:space="preserve">
+    <value>Гадаванец цяпер на працы👩‍💻</value>
+  </data>
+  <data name="workCommandInlineShowTime" xml:space="preserve">
+    <value>Засталося папрацаваць: {0} ⏱</value>
   </data>
 </root>

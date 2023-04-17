@@ -49,6 +49,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("DicePlayedCounter")]
         public long DicePlayedCounter { get; set; }
 
+        [BsonElement("WorkOnPCCounter")]
+        public long WorkOnPCCounter { get; set; }
+
         [BsonElement("AppleGamePlayedCounter")]
         public long AppleGamePlayedCounter { get; set; }
 
@@ -81,6 +84,9 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("BathroomCommandCounter")]
         public long BathroomCommandCounter { get; set; }
+
+        [BsonElement("WorkCommandCounter")]
+        public long WorkCommandCounter { get; set; }
 
         [BsonElement("MenuCommandCounter")]
         public long MenuCommandCounter { get; set; }

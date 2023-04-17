@@ -142,6 +142,8 @@
 🍕 Сытость: {4}%
 😴 Усталость: {5}
 🎊 Радость: {7}%
+
+💰 Gold: {8} 💴
 ⚡️ Состояние: {6}
 🏅 Опыт: {2} | {3} уровень✨
 
@@ -239,7 +241,7 @@ Wybierz nowy język 🇵🇱
     <value>Детская ⚽️</value>
   </data>
   <data name="PetPlayingAnwserCallback" xml:space="preserve">
-    <value>Усталость питомца увеличилась на {0}%</value>
+    <value>Питомец устал на +{0}%</value>
   </data>
   <data name="denyAccessSleeping" xml:space="preserve">
     <value>Нельзя войти в комнату: питомец спит 🌙</value>
@@ -307,6 +309,7 @@ Wybierz nowy język 🇵🇱
     <value>Что делать с питомцем:
 /pet - состояние питомца 🐱
 /kitchen - кушать тут 🍕
+/work - заработать денюшку (золото) для питомца 💰
 /sleep - спальня 🧸
 /gameroom - развлечения 🎳
 /ranks - лучшие из лучших! 👑
@@ -414,5 +417,25 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="denyAccessWorking" xml:space="preserve">
     <value>Нельзя войти в комнату: питомец на работе 💻</value>
+  </data>
+  <data name="workCommand" xml:space="preserve">
+    <value>Выбери чем будет заниматься твой питомец 💡</value>
+  </data>
+  <data name="workCommandInlinePC" xml:space="preserve">
+    <value>Разрабатывать сайты 💻</value>
+  </data>
+  <data name="workCommandDescription" xml:space="preserve">
+    <value>Работа 💰</value>
+  </data>
+  <data name="PetWorkingAnswerCallback" xml:space="preserve">
+    <value>Золото +{1} 💰
+Питомец устал на +{0}% 😓
+Подожди пока питомец закончит работу</value>
+  </data>
+  <data name="workCommandPCWorking" xml:space="preserve">
+    <value>Питомец сейчас на работе 👩‍💻</value>
+  </data>
+  <data name="workCommandInlineShowTime" xml:space="preserve">
+    <value>Осталось работать: {0} ⏱</value>
   </data>
 </root>

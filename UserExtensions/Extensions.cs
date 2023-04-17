@@ -176,6 +176,12 @@ namespace TamagotchiBot.UserExtensions
 
                 new BotCommand()
                 {
+                    Command = Commands.WorkCommand,
+                    Description = Resources.Resources.workCommandDescription
+                },
+
+                new BotCommand()
+                {
                     Command = Commands.SleepCommand,
                     Description = Resources.Resources.sleepCommandDescription
                 },
@@ -260,7 +266,7 @@ namespace TamagotchiBot.UserExtensions
                 {
                     CurrentStatus.Active => Resources.Resources.CurrentStatusActive,
                     CurrentStatus.Sleeping => Resources.Resources.CurrentStatusSleeping,
-                    CurrentStatus.WorkingOnPC => Resources.Resources.CurrentStatusSleeping,
+                    CurrentStatus.WorkingOnPC => Resources.Resources.CurrentStatusWorkingOnPC,
                     _ => null,
                 };
             }

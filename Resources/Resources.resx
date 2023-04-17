@@ -142,6 +142,8 @@ BTW '/menu' shows some commands to start</value>
 🍕 Satiety: {4}%
 😴 Fatigue: {5}
 🎊 Joy level: {7}%
+
+💰 Gold: {8} 💴
 ⚡️ Status: {6}
 🏅 EXP: {2} | {3} level ✨
 
@@ -306,6 +308,7 @@ Be sure to visit your pet frequently because they also love you and will be thri
     <value>What to do with pet:
 /pet - pet's status 🐱
 /kitchen - feed your pet 🍕
+/work - to earn more gold 💰
 /sleep - bedroom 🧸
 /gameroom entertainments 🎳
 /ranks - see the best pets! 👑
@@ -412,5 +415,25 @@ Let's play it? 🪁</value>
   </data>
   <data name="denyAccessWorking" xml:space="preserve">
     <value>You can not come in: pet is on work 💻</value>
+  </data>
+  <data name="workCommand" xml:space="preserve">
+    <value>Choose what your pet will be doing 💡</value>
+  </data>
+  <data name="workCommandInlinePC" xml:space="preserve">
+    <value>Program 💻</value>
+  </data>
+  <data name="workCommandDescription" xml:space="preserve">
+    <value>Jobs 💰</value>
+  </data>
+  <data name="PetWorkingAnswerCallback" xml:space="preserve">
+    <value>Gold +{1} 💰
+The pet is tired at +{0}% 😓
+Wait until the pet finishes work</value>
+  </data>
+  <data name="workCommandPCWorking" xml:space="preserve">
+    <value>Pet is working now 👩‍💻</value>
+  </data>
+  <data name="workCommandInlineShowTime" xml:space="preserve">
+    <value>Remains to work: {0} ⏱</value>
   </data>
 </root>
