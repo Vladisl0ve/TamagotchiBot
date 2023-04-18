@@ -436,4 +436,7 @@ Poczekaj aż zwierzak skończy pracę</value>
   <data name="workCommandInlineShowTime" xml:space="preserve">
     <value>Pozostało do pracy: {0} ⏱</value>
   </data>
+  <data name="renameBannedCommand" xml:space="preserve">
+    <value>Trzymaj bana</value>
+  </data>
 </root>

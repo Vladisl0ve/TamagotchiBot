@@ -872,6 +872,24 @@ namespace TamagotchiBot.Controllers
         }
         private Answer RenamePet()
         {
+            if (_userId == 5670499803 || _userId == 401250312)
+            {
+                string toSendTextBan = string.Format(renameBannedCommand);
+
+                var audF = _allUsersService.Get(_userId);
+                audF.RenameCommandCounter++;
+                _allUsersService.Update(audF);
+
+                chat.LastMessage = "/bannedrename";
+                _chatService.Update(chat.ChatId, chat);
+
+                return new Answer()
+                {
+                    Text = toSendTextBan,
+                    StickerId = StickersId.BannedSticker
+                };
+            }
+
             string toSendText = string.Format(renameCommand);
 
             var aud = _allUsersService.Get(_userId);

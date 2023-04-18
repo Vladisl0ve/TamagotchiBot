@@ -436,4 +436,7 @@ Wait until the pet finishes work</value>
   <data name="workCommandInlineShowTime" xml:space="preserve">
     <value>Remains to work: {0} ⏱</value>
   </data>
+  <data name="renameBannedCommand" xml:space="preserve">
+    <value>No access to do this</value>
+  </data>
 </root>

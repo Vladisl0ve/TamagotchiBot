@@ -439,4 +439,7 @@ Wybierz nowy język 🇵🇱
   <data name="workCommandInlineShowTime" xml:space="preserve">
     <value>Засталося папрацаваць: {0} ⏱</value>
   </data>
+  <data name="renameBannedCommand" xml:space="preserve">
+    <value>Атрымаў бан, бо вёў сябе дрэнна</value>
+  </data>
 </root>
