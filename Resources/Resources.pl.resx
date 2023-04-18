@@ -407,4 +407,7 @@ Zagrajmy w to? 🪁</value>
 /kitchen karmić 🍩
 /gameroom bawić się 🏓</value>
   </data>
+  <data name="renameBannedCommand" xml:space="preserve">
+    <value>Trzymaj bana</value>
+  </data>
 </root>

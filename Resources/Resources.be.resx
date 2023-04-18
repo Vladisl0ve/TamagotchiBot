@@ -410,4 +410,7 @@ Wybierz nowy język 🇵🇱
 /kitchen пакарміць 🍩
 /gameroom гуляць 🏓</value>
   </data>
+  <data name="renameBannedCommand" xml:space="preserve">
+    <value>Атрымаў бан, бо вёў сябе дрэнна</value>
+  </data>
 </root>

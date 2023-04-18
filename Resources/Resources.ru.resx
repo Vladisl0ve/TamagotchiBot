@@ -409,4 +409,7 @@ Wybierz nowy język 🇵🇱
 /kitchen покормить 🍩
 /gameroom гулять 🏓</value>
   </data>
+  <data name="renameBannedCommand" xml:space="preserve">
+    <value>Плохие дети получают бан</value>
+  </data>
 </root>

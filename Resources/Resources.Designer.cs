@@ -662,6 +662,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No access to do this.
+        /// </summary>
+        public static string renameBannedCommand {
+            get {
+                return ResourceManager.GetString("renameBannedCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Type new name for pet 🗯️.
         /// </summary>
         public static string renameCommand {
