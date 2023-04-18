@@ -791,7 +791,7 @@ namespace TamagotchiBot.Controllers
                 audF.RenameCommandCounter++;
                 _allUsersService.Update(audF);
 
-                chat.LastMessage = "/rename";
+                chat.LastMessage = "/bannedrename";
                 _chatService.Update(chat.ChatId, chat);
 
                 return new Answer()
