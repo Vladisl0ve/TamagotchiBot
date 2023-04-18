@@ -26,6 +26,7 @@ namespace TamagotchiBot.Controllers
         private readonly ChatService _chatService;
         private readonly BotControlService _bcService;
         private readonly AllUsersDataService _allUsersService;
+        private readonly BannedUsersService _bannedService;
         private readonly ITelegramBotClient bot;
         private readonly Message message = null;
         private readonly CallbackQuery callback = null;
@@ -41,6 +42,7 @@ namespace TamagotchiBot.Controllers
                               ChatService chatService,
                               BotControlService botControlService,
                               AllUsersDataService allUsersService,
+                              BannedUsersService bannedService,
                               CallbackQuery callback)
         {
             this.bot = bot;
@@ -50,6 +52,7 @@ namespace TamagotchiBot.Controllers
             _chatService = chatService;
             _bcService = botControlService;
             this._allUsersService = allUsersService;
+            _bannedService = bannedService;
             _userId = callback.From.Id;
 
             GetFromDb();
@@ -64,6 +67,7 @@ namespace TamagotchiBot.Controllers
                               ChatService chatService,
                               BotControlService botControlService,
                               AllUsersDataService allUsersService,
+                              BannedUsersService bannedService,
                               Message message)
         {
             this.bot = bot;
@@ -73,6 +77,7 @@ namespace TamagotchiBot.Controllers
             _chatService = chatService;
             _bcService = botControlService;
             this._allUsersService = allUsersService;
+            _bannedService = bannedService;
             _userId = message.From.Id;
 
             GetFromDb();
@@ -872,7 +877,7 @@ namespace TamagotchiBot.Controllers
         }
         private Answer RenamePet()
         {
-            if (_userId == 5670499803 || _userId == 401250312)
+            if (_bannedService.GetAll().Any(bs => bs.UserId == user.UserId && bs.IsRenameBanned))
             {
                 string toSendTextBan = string.Format(renameBannedCommand);
 

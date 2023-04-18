@@ -26,6 +26,7 @@ namespace TamagotchiBot.Handlers
         private readonly AppleGameDataService appleGameDataService;
         private readonly AllUsersDataService allUsersService;
         private readonly BotControlService bcService;
+        private readonly BannedUsersService bannedService;
 
         public UpdateHandler(UserService userService,
                              PetService petService,
@@ -33,6 +34,7 @@ namespace TamagotchiBot.Handlers
                              SInfoService sinfoService,
                              AppleGameDataService appleGameDataService,
                              AllUsersDataService allUsersService,
+                             BannedUsersService bannedService,
                              BotControlService botControlService)
         {
             this.userService = userService;
@@ -41,6 +43,7 @@ namespace TamagotchiBot.Handlers
             this.sinfoService = sinfoService;
             this.appleGameDataService = appleGameDataService;
             this.allUsersService = allUsersService;
+            this.bannedService = bannedService;
             this.bcService = botControlService;
         }
 
@@ -112,7 +115,7 @@ namespace TamagotchiBot.Handlers
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
-                var menuController = new MenuController(botClient, userService, petService, chatService, bcService, allUsersService, message);
+                var menuController = new MenuController(botClient, userService, petService, chatService, bcService, allUsersService, bannedService, message);
                 var gameController = new AppleGameController(botClient, userService, petService, chatService, appleGameDataService, allUsersService, bcService, message);
                 Answer toSend = null;
 
@@ -204,7 +207,7 @@ namespace TamagotchiBot.Handlers
                     return Task.CompletedTask;
                 }
 
-                var controller = new MenuController(bot, userService, petService, chatService, bcService, allUsersService, callbackQuery);
+                var controller = new MenuController(bot, userService, petService, chatService, bcService, allUsersService, bannedService, callbackQuery);
                 AnswerCallback toSend = controller.CallbackHandler();
 
                 if (toSend == null)

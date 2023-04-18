@@ -11,6 +11,7 @@
         public string DatabaseName { get; set; }
         public string AllUsersDataCollectionName { get; set; }
         public string AppleGameDataCollectionName { get; set; }
+        public string BannedUsersCollectionName { get; set; }
     }
 
 
@@ -25,5 +26,6 @@
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
         string AllUsersDataCollectionName { get; set; }
+        string BannedUsersCollectionName { get; set; }
     }
 }
