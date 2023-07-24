@@ -783,7 +783,7 @@ namespace TamagotchiBot.Controllers
         }
         private Answer RenamePet()
         {
-            if (_userId == 5670499803 || _userId == 401250312)
+            if (_userId == 5670499803 || _userId == 401250312 || _userId == 6162228919)
             {
                 string toSendTextBan = string.Format(renameBannedCommand);
 

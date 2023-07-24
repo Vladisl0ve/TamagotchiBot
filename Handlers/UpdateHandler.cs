@@ -62,7 +62,7 @@ namespace TamagotchiBot.Handlers
                 var processInfo = new ProcessStartInfo()
                 {
                     FileName = "bash",
-                    Arguments = $"-c /home/Vladislove/Tamagotchi/wrapper.sh",
+                    Arguments = $"-c /home/vladislove/Tamagotchi/wrapper.sh",
                     UseShellExecute = true,
                 };
 
@@ -77,6 +77,9 @@ namespace TamagotchiBot.Handlers
         public Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
         {
             var userId = update.Message?.From.Id ?? update.CallbackQuery?.From.Id ?? default;
+
+            if (userId == 1738750324)
+                return Task.CompletedTask;
 
             Task task = update.Type switch
             {
