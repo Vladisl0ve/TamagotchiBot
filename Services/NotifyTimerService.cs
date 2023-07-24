@@ -139,49 +139,59 @@ namespace TamagotchiBot.Services
             _sinfoService.UpdateNextNotify(_nextNotify);
 
             var usersToNotify = GetUserIdToNotify();
-            Log.Information($"Notify timer - {usersToNotify.Count} users");
-            foreach (var userId in usersToNotify)
+            if (usersToNotify != null)
             {
-                var user = _userService.Get(long.Parse(userId));
-                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
-                int rand = new Random().Next(3);
-                var notifyText = new List<string>()
+                Log.Information($"Notify timer - {usersToNotify.Count} users");
+                foreach (var userId in usersToNotify)
+                {
+                    var user = _userService.Get(long.Parse(userId));
+                    Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
+                    int rand = new Random().Next(3);
+                    var notifyText = new List<string>()
                 {
                     Resources.Resources.ReminderNotifyText1,
                     Resources.Resources.ReminderNotifyText2,
                     Resources.Resources.ReminderNotifyText3
                 };
 
-                string toSendText = notifyText.ElementAtOrDefault(rand) ?? Resources.Resources.ReminderNotifyText1;
-                try
-                {
-                    await Task.Delay(5000); //pause between notification to avoid 429 error
-                    await _botClient.SendStickerAsync(userId, Constants.StickersId.PetBored_Cat);
-                    await _botClient.SendTextMessageAsync(userId, toSendText);
-
-                    Log.Information($"Sent reminder to '@{user?.Username ?? userId}'");
-                }
-                catch (ApiRequestException ex)
-                {
-                    if (ex.ErrorCode == 403) //Forbidden by user
+                    string toSendText = notifyText.ElementAtOrDefault(rand) ?? Resources.Resources.ReminderNotifyText1;
+                    try
                     {
-                        Log.Warning($"{ex.Message} @{user?.Username ?? userId}, id: {userId}");
+                        await Task.Delay(5000); //pause between notification to avoid 429 error
+                        await _botClient.SendStickerAsync(userId, Constants.StickersId.PetBored_Cat);
+                        await _botClient.SendTextMessageAsync(userId, toSendText);
 
-                        _chatService.Remove(user.UserId);
-                        _petService.Remove(user.UserId);
-                        _userService.Remove(user.UserId);
+                        Log.Information($"Sent reminder to '@{user?.Username ?? userId}'");
+                    }
+                    catch (ApiRequestException ex)
+                    {
+                        if (ex.ErrorCode == 403) //Forbidden by user
+                        {
+                            Log.Warning($"{ex.Message} @{user?.Username ?? userId}, id: {userId}");
+
+                            _chatService.Remove(user.UserId);
+                            _petService.Remove(user.UserId);
+                            _userService.Remove(user.UserId);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex.Message);
                     }
                 }
-                catch (Exception ex)
-                {
-                    Log.Error(ex.Message);
-                }
             }
-            Log.Information("Notifications completed!");      
+
+            Log.Information("Notifications completed!");
             Log.Information($"Next notification: {_nextNotify} UTC || remaining {_notifyEvery:c}");
         }
         private async void SendDevNotify()
         {
+            if (_envs?.ChatsToDevNotify == null)
+            {
+                Log.Warning("No chats do DEV notify");
+                return;
+            }
+
             var chatsToNotify = new List<string>(_envs.ChatsToDevNotify);
 
             foreach (var chatId in chatsToNotify)
@@ -192,7 +202,7 @@ namespace TamagotchiBot.Services
 
                     var dailyInfoToday = _dailyInfoService.GetToday();
 
-                    if (dailyInfoToday == null || 
+                    if (dailyInfoToday == null ||
                         (dailyInfoToday != null && (DateTime.UtcNow - dailyInfoToday.DateInfo) > _envs.DevExtraNotifyEvery))
                     {
                         Log.Information("Sent extra dev notify");
@@ -251,6 +261,12 @@ namespace TamagotchiBot.Services
                 var spentTime = DateTime.UtcNow - pet.LastUpdateTime;
                 if (spentTime > _envs.AwakeWhenAFKFor)
                     usersToNotify.Add(pet.UserId.ToString());
+            }
+
+            if (_envs.AlwaysNotifyUsers == null)
+            {
+                Log.Warning("No always notify persons");
+                return null;
             }
 
             foreach (var userAlwaysNotify in _envs.AlwaysNotifyUsers)
