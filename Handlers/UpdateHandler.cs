@@ -1,6 +1,9 @@
 ﻿using Serilog;
 using System;
 using System.Diagnostics;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TamagotchiBot.Controllers;
@@ -14,6 +17,7 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using Newtonsoft.Json;
 
 namespace TamagotchiBot.Handlers
 {
@@ -54,13 +58,13 @@ namespace TamagotchiBot.Handlers
             Log.Warning("App restarts in 10 seconds...");
             await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
 
-            if(OperatingSystem.IsWindows())
+            if (OperatingSystem.IsWindows())
             {
                 var startWinExe = AppDomain.CurrentDomain.BaseDirectory + AppDomain.CurrentDomain.FriendlyName + ".exe";
                 // Starts a new instance of the program itself
                 Process.Start(startWinExe);
             }
-            else if(OperatingSystem.IsLinux())
+            else if (OperatingSystem.IsLinux())
             {
                 var processInfo = new ProcessStartInfo()
                 {
@@ -127,7 +131,14 @@ namespace TamagotchiBot.Handlers
                         if (userService.Get(message.From.Id).IsInAppleGame)
                             toSend = gameController.Menu(message);
                         else
+                        {
+                            // call this method wherever you want to show an ad,
+                            // for example your bot just made its job and
+                            // it's a great time to show an ad to a user
+                            await SendPostToChat(message.From.Id);
+
                             toSend = menuController.Process();
+                        }
                     }
                     catch (ApiRequestException apiEx)
                     {
@@ -157,16 +168,16 @@ namespace TamagotchiBot.Handlers
                     await BotOnMessageReceived(botClient, message);
             }
 
-            Task BotOnCallbackQueryReceived(ITelegramBotClient bot, CallbackQuery callbackQuery)
+            async Task BotOnCallbackQueryReceived(ITelegramBotClient bot, CallbackQuery callbackQuery)
             {
-                if(userService.Get(callbackQuery.From.Id) == null || petService.Get(callbackQuery.From.Id) == null)
-                    return Task.CompletedTask;
+                if (userService.Get(callbackQuery.From.Id) == null || petService.Get(callbackQuery.From.Id) == null)
+                    return;
 
                 if (callbackQuery.Data == null)
-                    return Task.CompletedTask;
+                    return;
 
                 if (userService.Get(userId)?.IsInAppleGame ?? false)
-                    return Task.CompletedTask;
+                    return;
 
                 if (callbackQuery.Data == "gameroomCommandInlineCard")
                 {
@@ -179,7 +190,7 @@ namespace TamagotchiBot.Handlers
                                                            anwser,
                                                            true,
                                                            cancellationToken: token);
-                        return Task.CompletedTask;
+                        return;
                     }
 
                     if (petDB?.Gold - 20 < 0)
@@ -190,7 +201,7 @@ namespace TamagotchiBot.Handlers
                                                            anwser,
                                                            true,
                                                            cancellationToken: token);
-                        return Task.CompletedTask;
+                        return;
                     }
 
                     petService.UpdateGold(callbackQuery.From.Id, petService.Get(callbackQuery.From.Id).Gold - 20);
@@ -217,21 +228,26 @@ namespace TamagotchiBot.Handlers
                     Answer toSendAnswer = gameController.StartGame();
 
                     SendMessage(toSendAnswer, callbackQuery.From.Id);
-                    return Task.CompletedTask;
+                    return;
                 }
+
+                // call this method wherever you want to show an ad,
+                // for example your bot just made its job and
+                // it's a great time to show an ad to a user
+
+                await SendPostToChat(callbackQuery.From.Id);
 
                 var controller = new MenuController(bot, userService, petService, chatService, bcService, allUsersService, bannedService, callbackQuery);
                 AnswerCallback toSend = controller.CallbackHandler();
 
                 if (toSend == null)
-                    return Task.CompletedTask;
+                    return;
 
                 bcService.EditMessageTextAsync(callbackQuery.From.Id,
                                                callbackQuery.Message.MessageId,
                                                toSend.Text,
                                                replyMarkup: toSend.InlineKeyboardMarkup,
                                                cancellationToken: token);
-                return Task.CompletedTask;
             }
 
             async void SendMessage(Answer toSend, long userId)
@@ -287,6 +303,29 @@ namespace TamagotchiBot.Handlers
             }
         }
 
+        private async Task SendPostToChat(long chatId)
+        {
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTIiLCJqdGkiOiJkOTYzYTZiYy1mNTc3LTQyZjYtYTkyOS02NzRhZTAwYjRlOWEiLCJuYW1lIjoi8J-QviDQotCw0LzQsNCz0L7Rh9C4IHwgVmlydHVhbCBQZXQg8J-QviIsImJvdGlkIjoiMjQxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxNTIiLCJuYmYiOjE2OTAzMTE5MDAsImV4cCI6MTY5MDUyMDcwMCwiaXNzIjoiU3R1Z25vdiIsImF1ZCI6IlVzZXJzIn0.hByX6S4UoV9J9G559wvvJUrid-_GZe4KLtbog7AV7HU");
 
+            var sendPostDto = new { SendToChatId = chatId };
+            var json = JsonConvert.SerializeObject(sendPostDto);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PostAsync("https://api.gramads.net/ad/SendPost", content);
+
+            // or you can use the extension method "PostAsJson", for example:
+            // var response = await client.PostAsJsonAsync("https://api.gramads.net/ad/SendPost", sendPostDto);
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Log.Warning("Gramads:" + result);
+                return;
+            }
+
+            Log.Information("Gramads: " + result);
+        }
     }
 }
