@@ -496,4 +496,7 @@ Wybierz nowy język 🇵🇱
     <value>🎁 Беги за ежедневным бонусом 🎉
 /reward 🎁</value>
   </data>
+  <data name="rewardCommandDescription" xml:space="preserve">
+    <value>Бонусы 🎁</value>
+  </data>
 </root>

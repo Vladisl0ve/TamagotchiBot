@@ -498,4 +498,7 @@ Wybierz nowy język 🇵🇱
 🎰Новыя міні-гульні
 🏫Дадаць школу</value>
   </data>
+  <data name="rewardCommandDescription" xml:space="preserve">
+    <value>Узнагарода 🎁</value>
+  </data>
 </root>

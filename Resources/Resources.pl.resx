@@ -495,4 +495,7 @@ Plany:
 🎰 Nowe mini-gry
 🏫 Dodanie szkoły</value>
   </data>
+  <data name="rewardCommandDescription" xml:space="preserve">
+    <value>Nagroda 🎁</value>
+  </data>
 </root>

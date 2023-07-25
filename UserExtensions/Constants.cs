@@ -111,6 +111,7 @@ namespace TamagotchiBot.UserExtensions
             public const string RanksCommand = "ranks";
             public const string RenameCommand = "rename";
             public const string HospitalCommand = "hospital";
+            public const string RewardCommand = "reward";
             public const string BathroomCommand = "bathroom";
             public const string HelpCommand = "help";
             public const string MenuCommand = "menu";

@@ -821,6 +821,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reward 🎁.
+        /// </summary>
+        public static string rewardCommandDescription {
+            get {
+                return ResourceManager.GetString("rewardCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Daily 🎉(+100💰).
         /// </summary>
         public static string rewardCommandInlineDailyReward {

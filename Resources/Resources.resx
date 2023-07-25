@@ -494,4 +494,7 @@ Take it soon! 🎁</value>
     <value>🎁 Come on for your daily bonus 🎉
 /reward 🎁</value>
   </data>
+  <data name="rewardCommandDescription" xml:space="preserve">
+    <value>Reward 🎁</value>
+  </data>
 </root>
