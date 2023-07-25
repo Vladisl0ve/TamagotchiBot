@@ -135,7 +135,8 @@ namespace TamagotchiBot.Handlers
                             // call this method wherever you want to show an ad,
                             // for example your bot just made its job and
                             // it's a great time to show an ad to a user
-                            await SendPostToChat(message.From.Id);
+                            if (petService.Get(message.From.Id)?.Name != null)
+                                await SendPostToChat(message.From.Id);
 
                             toSend = menuController.Process();
                         }
