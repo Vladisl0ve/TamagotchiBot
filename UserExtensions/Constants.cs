@@ -136,6 +136,13 @@ namespace TamagotchiBot.UserExtensions
 
             public const string ChangelogSticker = "CAACAgIAAxkBAAIoiWQfmY19TqmIZL38KrfWnSS9frV0AAIrKwACnQhYSBduaR-WJLE7LwQ";
             public const string DailyRewardSticker = "CAACAgIAAxkBAAEJz1Fkv8OAYwKlhmZ7CAvYJkg0EQ7Z-wAClhEAAv5tgEmdX9KNHziRpS8E";
+
+            public const string DailyRewardNotificationSticker_1 = "CAACAgIAAxkBAAEJ0C5kwAtlsmG3MWC5dzWl-t4e3YJjvgACbBYAAnwtgEk-JR1KRey6xy8E";
+            public const string DailyRewardNotificationSticker_2 = "CAACAgIAAxkBAAEJ0DBkwAuwGXbO_cfYuR1mV7Yfqsd6twACfQADjwveESrxHx6BqwesLwQ";
+            public const string DailyRewardNotificationSticker_3 = "CAACAgIAAxkBAAEJ0DJkwAvRzozDjxSn1dbcqprOrrRS1wAC_hYAAuxlgUmSKA23ZDM9xy8E";
+            public const string DailyRewardNotificationSticker_4 = "CAACAgIAAxkBAAEJ0DRkwAv9bEVLiNoW7wUCeTmK9L8GDwACVQADkp8eEe9UptCrIZBuLwQ";
+            public const string DailyRewardNotificationSticker_5 = "CAACAgIAAxkBAAEJ0DZkwAwQiF4RlJusmqRCnKbA4SH7VwACOAEAAhZ8aAP0b0MaIxsr8S8E";
+
             public const string BannedSticker = "CAACAgIAAxkBAAEIn9VkPlGMflkimxiV4BhDptaNOBhgjgACmwUAAlOx9wNCvw--ehyldy8E";
 
             //Cat

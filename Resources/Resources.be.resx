@@ -488,4 +488,8 @@ Wybierz nowy język 🇵🇱
   <data name="ranksCommandInlineLevel" xml:space="preserve">
     <value>🏅Вопыт</value>
   </data>
+  <data name="rewardNotification" xml:space="preserve">
+    <value>🎁 Бягі па штодзённы бонус 🎉
+/reward 🎁</value>
+  </data>
 </root>

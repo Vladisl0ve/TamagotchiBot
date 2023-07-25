@@ -485,4 +485,8 @@ Odbierz ją wkrótce! 🎁</value>
   <data name="ranksCommandInlineLevel" xml:space="preserve">
     <value>🏅Doświadczenie</value>
   </data>
+  <data name="rewardNotification" xml:space="preserve">
+    <value>🎁 Wejdź po bonus codzienny 🎉
+/reward 🎁</value>
+  </data>
 </root>

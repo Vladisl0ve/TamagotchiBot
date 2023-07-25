@@ -17,6 +17,7 @@ namespace TamagotchiBot.Services
     {
         private Timer _notifyTimer;
         private Timer _changelogsTimer;
+        private Timer _dailyRewardTimer;
 
         private readonly ITelegramBotClient _botClient;
         private PetService _petService;
@@ -79,6 +80,52 @@ namespace TamagotchiBot.Services
             _changelogsTimer.Elapsed += OnChangelogsTimedEvent;
             _changelogsTimer.AutoReset = false;
             _changelogsTimer.Enabled = true;
+        }
+
+        public void SetDailyRewardNotificationTimer()
+        {
+            TimeSpan timeToWait = TimeSpan.FromMinutes(3);
+            Log.Information("DailyRewardNotification timer set to wait for " + timeToWait.TotalSeconds + "s");
+            _dailyRewardTimer = new Timer(timeToWait);
+            _dailyRewardTimer.Elapsed += OnDailyRewardTimedEvent;
+            _dailyRewardTimer.AutoReset = true;
+            _dailyRewardTimer.Enabled = true;
+        }
+
+        private async void OnDailyRewardTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            var usersToNotify = GetAllDailyRewardUsersIds();
+            Log.Information($"DailyRewardNotification timer - {usersToNotify.Count} users");
+            foreach (var userId in usersToNotify)
+            {
+                var user = _userService.Get(userId);
+                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
+
+                try
+                {
+                    await _botClient.SendStickerAsync(userId, GetRandomDailyRewardSticker());
+                    await _botClient.SendTextMessageAsync(userId, Resources.Resources.rewardNotification);
+
+                    Log.Information($"Sent DailyRewardNotification to '@{user.Username}'");
+                }
+                catch (ApiRequestException ex)
+                {
+                    if (ex.ErrorCode == 403) //Forbidden by user
+                    {
+                        Log.Warning($"{ex.Message} @{user.Username}, id: {user.UserId}");
+
+                        //remove all data about user
+                        _chatService.Remove(user.UserId);
+                        _petService.Remove(user.UserId);
+                        _userService.Remove(user.UserId);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message);
+                }
+            }
+
         }
         private async void OnChangelogsTimedEvent(object sender, ElapsedEventArgs e)
         {
@@ -275,6 +322,23 @@ namespace TamagotchiBot.Services
 
             return usersToNotify;
         }
+        private List<long> GetAllDailyRewardUsersIds()
+        {
+            List<long> usersToNotify = new();
+            var petsDB = _petService.GetAll();
+
+            foreach (var pet in petsDB)
+            {
+                var user = _userService.Get(pet.UserId);
+
+                if (user.NextDailyRewardNotificationTime < DateTime.UtcNow && pet.GotDailyRewardTime.AddDays(1) < DateTime.UtcNow)
+                {
+                    _userService.UpdateNextDailyRewardNotificationTime(user.UserId, DateTime.UtcNow.AddDays(1));
+                    usersToNotify.Add(user.UserId);
+                }
+            }
+            return usersToNotify;
+        }
         private List<string> GetAllActiveUsersIds()
         {
             List<string> usersToNotify = new();
@@ -284,6 +348,21 @@ namespace TamagotchiBot.Services
                 usersToNotify.Add(pet.UserId.ToString());
 
             return usersToNotify;
+        }
+
+        private string GetRandomDailyRewardSticker()
+        {
+            var random = new Random().Next(0, 6);
+
+            return random switch
+            {
+                1 => Constants.StickersId.DailyRewardNotificationSticker_1,
+                2 => Constants.StickersId.DailyRewardNotificationSticker_2,
+                3 => Constants.StickersId.DailyRewardNotificationSticker_3,
+                4 => Constants.StickersId.DailyRewardNotificationSticker_4,
+                5 => Constants.StickersId.DailyRewardNotificationSticker_5,
+                _ => Constants.StickersId.DailyRewardNotificationSticker_3,
+            };
         }
     }
 }

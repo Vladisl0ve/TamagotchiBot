@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace TamagotchiBot.Models.Mongo
 {
@@ -25,5 +26,7 @@ namespace TamagotchiBot.Models.Mongo
         public bool IsInAppleGame { get; set; }
         [BsonElement("Culture")]
         public string Culture { get; set; }
+        [BsonElement("NextDailyRewardNotificationTime")]
+        public DateTime NextDailyRewardNotificationTime { get; set; }
     }
 }

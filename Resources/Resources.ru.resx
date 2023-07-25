@@ -486,4 +486,8 @@ Wybierz nowy język 🇵🇱
   <data name="ranksCommandInlineGold" xml:space="preserve">
     <value>💰Золото</value>
   </data>
+  <data name="rewardNotification" xml:space="preserve">
+    <value>🎁 Беги за ежедневным бонусом 🎉
+/reward 🎁</value>
+  </data>
 </root>

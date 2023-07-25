@@ -824,6 +824,16 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🎁 Come on for your daily bonus 🎉
+        ////reward 🎁.
+        /// </summary>
+        public static string rewardNotification {
+            get {
+                return ResourceManager.GetString("rewardNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🐱 {0}
         ///😴 Fatigue: {1}%
         ///⚡️ Status: {2}.

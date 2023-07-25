@@ -484,4 +484,8 @@ Take it soon! 🎁</value>
   <data name="ranksCommandInlineLevel" xml:space="preserve">
     <value>🏅Experience</value>
   </data>
+  <data name="rewardNotification" xml:space="preserve">
+    <value>🎁 Come on for your daily bonus 🎉
+/reward 🎁</value>
+  </data>
 </root>
