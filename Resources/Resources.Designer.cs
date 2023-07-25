@@ -161,10 +161,16 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🐱: Goodly-good day!
-        ///They told me in secret that in the gameroom (/gameroom) there was a new toy about apples 👀
-        ///I think you can find it by pressing the button with the joker, only shh! Not a word to anyone 🙊
-        ///Let&apos;s play it? 🪁.
+        ///   Looks up a localized string similar to ⚡️⚡️ A new update has been released ⚡️⚡️
+        ///Added:
+        ///💰Gold
+        ///♟Work (this is where you earn gold)
+        ///🎁 Daily gifts!
+        ///
+        ///Plans:
+        ///🧘‍♂️Добавить bathroom
+        ///🎰 New mini-games.
+        ///🏫 Add a school.
         /// </summary>
         public static string changelog1Text {
             get {
@@ -232,11 +238,38 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to on work 💻.
+        /// </summary>
+        public static string CurrentStatusWorkingOnPC {
+            get {
+                return ResourceManager.GetString("CurrentStatusWorkingOnPC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Congratulations, you got +{0} gold! 🎈.
+        /// </summary>
+        public static string DailyRewardAnwserCallback {
+            get {
+                return ResourceManager.GetString("DailyRewardAnwserCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can not come in: pet is sleeping 🌙.
         /// </summary>
         public static string denyAccessSleeping {
             get {
                 return ResourceManager.GetString("denyAccessSleeping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can not come in: pet is on work 💻.
+        /// </summary>
+        public static string denyAccessWorking {
+            get {
+                return ResourceManager.GetString("denyAccessWorking", resourceCulture);
             }
         }
         
@@ -325,6 +358,10 @@ namespace TamagotchiBot.Resources {
         ///
         ///⚽️ Fatigue: {0}%
         ///🎊 Joy: {1}%
+        ///💰 Gold: {2} 
+        ///
+        ///🍏 Apple Game = +{3}🎊 | -{4}💰
+        ///🎲 Dice Game = +{5}🎊 | -{6}💰
         ///
         ///Do not play so much and safety first! 🧗‍♀️.
         /// </summary>
@@ -340,6 +377,15 @@ namespace TamagotchiBot.Resources {
         public static string gameroomCommandDescription {
             get {
                 return ResourceManager.GetString("gameroomCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Need more gold 💰.
+        /// </summary>
+        public static string goldNotEnough {
+            get {
+                return ResourceManager.GetString("goldNotEnough", resourceCulture);
             }
         }
         
@@ -423,6 +469,12 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to You are in the kitchen 🥦
         ///🍕 Pet&apos;s satiety: {0}%
+        ///💰 Gold: {1}
+        ///
+        ///Bread 🍞 = +50%🍕 |-30💰
+        ///Apple 🍎 = +5%🍕 |-1💰
+        ///Lollipop 🍭 = +1%🍕 |-0 💰
+        ///Chocolate 🍫 = +2%🍕 |-0💰
         ///
         ///Don&apos;t forget feed him 🐣.
         /// </summary>
@@ -454,11 +506,14 @@ namespace TamagotchiBot.Resources {
         ///   Looks up a localized string similar to What to do with pet:
         ////pet - pet&apos;s status 🐱
         ////kitchen - feed your pet 🍕
+        ////work - to earn more gold 💰
+        ////reward - to earn daily bonus 🎁 
         ////sleep - bedroom 🧸
         ////gameroom entertainments 🎳
         ////ranks - see the best pets! 👑
         ////hospital - cure your pet 🏥
         ////bathroom - clean your pet 🛁
+        ////rename - to change name 🌀
         ///
         ///There will be more in future!
         ///Stay tuned! 💝.
@@ -484,6 +539,8 @@ namespace TamagotchiBot.Resources {
         ///🍕 Satiety: {4}%
         ///😴 Fatigue: {5}
         ///🎊 Joy level: {7}%
+        ///
+        ///💰 Gold: {8} 💴
         ///⚡️ Status: {6}
         ///🏅 EXP: {2} | {3} level ✨
         ///
@@ -579,6 +636,17 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gold +{1} 💰
+        ///The pet is tired at +{0}% 😓
+        ///Wait until the pet finishes work.
+        /// </summary>
+        public static string PetWorkingAnswerCallback {
+            get {
+                return ResourceManager.GetString("PetWorkingAnswerCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 📛 Quit Mini-game.
         /// </summary>
         public static string quitCommandDescription {
@@ -597,7 +665,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🌈⭐️ Top 10 Levels ⭐️.
+        ///   Looks up a localized string similar to 🌈⭐️ Top 10 Experience⭐️🌈.
         /// </summary>
         public static string ranksCommand {
             get {
@@ -611,6 +679,33 @@ namespace TamagotchiBot.Resources {
         public static string ranksCommandDescription {
             get {
                 return ResourceManager.GetString("ranksCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💰⭐️ Top 10 in gold ⭐️💰.
+        /// </summary>
+        public static string ranksCommandGold {
+            get {
+                return ResourceManager.GetString("ranksCommandGold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💰 Gold.
+        /// </summary>
+        public static string ranksCommandInlineGold {
+            get {
+                return ResourceManager.GetString("ranksCommandInlineGold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🏅Experience.
+        /// </summary>
+        public static string ranksCommandInlineLevel {
+            get {
+                return ResourceManager.GetString("ranksCommandInlineLevel", resourceCulture);
             }
         }
         
@@ -698,6 +793,62 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There&apos;s a daily reward waiting for you! 💸
+        ///Take it soon! 🎁.
+        /// </summary>
+        public static string rewardCommand {
+            get {
+                return ResourceManager.GetString("rewardCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have already got your daily reward today 🫶🏻.
+        /// </summary>
+        public static string rewardCommandDailyRewardGotten {
+            get {
+                return ResourceManager.GetString("rewardCommandDailyRewardGotten", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Until the next award: {0} ⏱.
+        /// </summary>
+        public static string rewardCommandDailyRewardInlineShowTime {
+            get {
+                return ResourceManager.GetString("rewardCommandDailyRewardInlineShowTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reward 🎁.
+        /// </summary>
+        public static string rewardCommandDescription {
+            get {
+                return ResourceManager.GetString("rewardCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Daily 🎉(+100💰).
+        /// </summary>
+        public static string rewardCommandInlineDailyReward {
+            get {
+                return ResourceManager.GetString("rewardCommandInlineDailyReward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🎁 Come on for your daily bonus 🎉
+        ////reward 🎁.
+        /// </summary>
+        public static string rewardNotification {
+            get {
+                return ResourceManager.GetString("rewardNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🐱 {0}
         ///😴 Fatigue: {1}%
         ///⚡️ Status: {2}.
@@ -754,6 +905,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pet is good now. Enough to eat 🤢.
+        /// </summary>
+        public static string tooManyStarvingCommand {
+            get {
+                return ResourceManager.GetString("tooManyStarvingCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your pet is too tired, he should sleep 💤.
         /// </summary>
         public static string tooTiredText {
@@ -770,6 +930,53 @@ namespace TamagotchiBot.Resources {
         public static string Welcome {
             get {
                 return ResourceManager.GetString("Welcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose what your pet will be doing 💡
+        ///
+        ///Programing 💻 -{0} minutes ⌛️, +{1} golds 💰.
+        /// </summary>
+        public static string workCommand {
+            get {
+                return ResourceManager.GetString("workCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jobs 💰.
+        /// </summary>
+        public static string workCommandDescription {
+            get {
+                return ResourceManager.GetString("workCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Program 💻.
+        /// </summary>
+        public static string workCommandInlinePC {
+            get {
+                return ResourceManager.GetString("workCommandInlinePC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remains to work: {0} ⏱.
+        /// </summary>
+        public static string workCommandInlineShowTime {
+            get {
+                return ResourceManager.GetString("workCommandInlineShowTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet is working now 👩‍💻.
+        /// </summary>
+        public static string workCommandPCWorking {
+            get {
+                return ResourceManager.GetString("workCommandPCWorking", resourceCulture);
             }
         }
     }

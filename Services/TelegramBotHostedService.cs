@@ -30,6 +30,7 @@ namespace TamagotchiBot.Services
 #endif
             _timerService.SetNotifyTimer();
             _timerService.SetChangelogsTimer();
+            _timerService.SetDailyRewardNotificationTimer();
             _client.StartReceiving(
                 updateHandler: _updateHandler,
                 cancellationToken: stoppingToken

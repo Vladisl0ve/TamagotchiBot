@@ -142,6 +142,8 @@
 🍕 Сытость: {4}%
 😴 Усталость: {5}
 🎊 Радость: {7}%
+
+💰 Gold: {8} 💴
 ⚡️ Состояние: {6}
 🏅 Опыт: {2} | {3} уровень✨
 
@@ -171,7 +173,13 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="kitchenCommand" xml:space="preserve">
     <value>Вы в кухне 🥦
-🍕 Сытость: {0}%
+🍕 Сытость питомца: {0}%
+💰 Золото: {1}
+
+Хлеб 🍞 = +50%🍕 |-30💰
+Яблоко 🍎 = +5%🍕 |-1💰
+Леденец 🍭 = +1%🍕 |-0 💰
+Шоколад 🍫 = +2%🍕 |-0💰
 
 Не забывай кормить питомца 🐣</value>
   </data>
@@ -230,8 +238,13 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="gameroomCommand" xml:space="preserve">
     <value>Вы в игровой комнате
+
 ⚽️ Усталость: {0}%
 🎊 Радость: {1}%
+💰 Золото: {2} 
+
+🍏 Яблочная игра = +{3}🎊 | -{4}💰
+🎲 Игра в кости = +{5}🎊 | -{6}💰
 
 Делу время - потехе час 🧗‍♀️</value>
   </data>
@@ -239,13 +252,13 @@ Wybierz nowy język 🇵🇱
     <value>Детская ⚽️</value>
   </data>
   <data name="PetPlayingAnwserCallback" xml:space="preserve">
-    <value>Усталость питомца увеличилась на {0}%</value>
+    <value>Питомец устал на +{0}%</value>
   </data>
   <data name="denyAccessSleeping" xml:space="preserve">
     <value>Нельзя войти в комнату: питомец спит 🌙</value>
   </data>
   <data name="ranksCommand" xml:space="preserve">
-    <value>🌈⭐️ Топ-10 уровней ⭐️</value>
+    <value>🌈⭐️ Топ-10 по опыту ⭐️🌈</value>
   </data>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Рейтинг 🏆</value>
@@ -307,6 +320,8 @@ Wybierz nowy język 🇵🇱
     <value>Что делать с питомцем:
 /pet - состояние питомца 🐱
 /kitchen - кушать тут 🍕
+/work - заработать денюшку (золото) для питомца 💰
+/reward - получить ежедневный бонус 🎁
 /sleep - спальня 🧸
 /gameroom - развлечения 🎳
 /ranks - лучшие из лучших! 👑
@@ -392,10 +407,16 @@ Wybierz nowy język 🇵🇱
     <value>Вы снова в детской ⚽️</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>🐱: Привет-привет!
-Мне по секрету рассказали, что в детской (/gameroom) появилась новая игрушка про яблоки какие-то 👀
-Думаю ты сможешь её найти, нажав на кнопку с джокером, только тссс! Никому ни слова 🙊
-Давай сыграем в неё? 🪁</value>
+    <value>⚡️⚡️ Вышло новое обновление ⚡️⚡️
+Добавлено:
+💰Золото 
+♟Работа (тут как раз и зарабатывается золото)
+🎁Ежедневные подарки!
+
+В планах:
+🧘‍♂️Добавить ванную комнату
+🎰Новые мини-игры
+🏫Добавить школу</value>
   </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
     <value>🐱: Жду тебя тут, возвращайся 
@@ -409,7 +430,73 @@ Wybierz nowy język 🇵🇱
 /kitchen покормить 🍩
 /gameroom гулять 🏓</value>
   </data>
+  <data name="CurrentStatusWorkingOnPC" xml:space="preserve">
+    <value>на работе 💻</value>
+  </data>
+  <data name="denyAccessWorking" xml:space="preserve">
+    <value>Нельзя войти в комнату: питомец на работе 💻</value>
+  </data>
+  <data name="workCommand" xml:space="preserve">
+    <value>Выбери чем будет заниматься твой питомец 💡
+
+Программировать 💻 -{0} минуты ⌛️, +{1} золота 💰</value>
+  </data>
+  <data name="workCommandInlinePC" xml:space="preserve">
+    <value>Разрабатывать сайты 💻</value>
+  </data>
+  <data name="workCommandDescription" xml:space="preserve">
+    <value>Работа 💰</value>
+  </data>
+  <data name="PetWorkingAnswerCallback" xml:space="preserve">
+    <value>Золото +{1} 💰
+Питомец устал на +{0}% 😓
+Подожди пока питомец закончит работу</value>
+  </data>
+  <data name="workCommandPCWorking" xml:space="preserve">
+    <value>Питомец сейчас на работе 👩‍💻</value>
+  </data>
+  <data name="workCommandInlineShowTime" xml:space="preserve">
+    <value>Осталось работать: {0} ⏱</value>
+  </data>
   <data name="renameBannedCommand" xml:space="preserve">
     <value>Плохие дети получают бан</value>
+  </data>
+  <data name="goldNotEnough" xml:space="preserve">
+    <value>Нужно больше золота 💰</value>
+  </data>
+  <data name="tooManyStarvingCommand" xml:space="preserve">
+    <value>Питомец не хочет это сейчас 🤢</value>
+  </data>
+  <data name="rewardCommandDailyRewardGotten" xml:space="preserve">
+    <value>Вы уже получили свою ежедневную награду сегодня🫶🏻</value>
+  </data>
+  <data name="rewardCommandDailyRewardInlineShowTime" xml:space="preserve">
+    <value>До следующей награды: {0} ⏱</value>
+  </data>
+  <data name="rewardCommand" xml:space="preserve">
+    <value>Тебя ждёт ежедневная награда! 💸
+Забирай скорей! 🎁</value>
+  </data>
+  <data name="rewardCommandInlineDailyReward" xml:space="preserve">
+    <value>Ежедневка 🎉(+100💰)</value>
+  </data>
+  <data name="DailyRewardAnwserCallback" xml:space="preserve">
+    <value>Поздравляю, ты получил {0} золота! 🎈</value>
+  </data>
+  <data name="ranksCommandGold" xml:space="preserve">
+    <value>💰⭐️ Топ-10 по золоту ⭐️💰</value>
+  </data>
+  <data name="ranksCommandInlineLevel" xml:space="preserve">
+    <value>🏅Опыт</value>
+  </data>
+  <data name="ranksCommandInlineGold" xml:space="preserve">
+    <value>💰Золото</value>
+  </data>
+  <data name="rewardNotification" xml:space="preserve">
+    <value>🎁 Беги за ежедневным бонусом 🎉
+/reward 🎁</value>
+  </data>
+  <data name="rewardCommandDescription" xml:space="preserve">
+    <value>Бонусы 🎁</value>
   </data>
 </root>

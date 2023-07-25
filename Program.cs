@@ -2,14 +2,17 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using TamagotchiBot.Database;
 using TamagotchiBot.Handlers;
 using TamagotchiBot.Services;
 using TamagotchiBot.Services.Mongo;
+using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 
@@ -20,6 +23,15 @@ namespace Telegram.Bots.Example
         public static void Main(string[] args)
         {
             CreateGlobalLoggerConfiguration();
+            if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "config.json"))
+            {
+                Log.Warning("No config file found. Attempt to create new one...");
+                CreateDefaultConfig();
+                Log.Warning("New config has been created");
+                Log.Fatal("Insert TokenBot and other necessary parametres to the config.json");
+                Log.Warning($"Path to the config is: {AppDomain.CurrentDomain.BaseDirectory}config.json");
+                return;
+            }
             Log.Information("Starting host");
             CreateHostBuilder(args).Build().Run();
         }
@@ -57,6 +69,7 @@ namespace Telegram.Bots.Example
                       services.AddSingleton<BotControlService>();
                       services.AddSingleton<AllUsersDataService>();
                       services.AddSingleton<DailyInfoService>();
+                      services.AddSingleton<BannedUsersService>();
 
 
                       services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -84,6 +97,45 @@ namespace Telegram.Bots.Example
             .CreateLogger();
 
             Log.Warning("Path to logs: " + pathToLog);
+        }
+
+        private static void CreateDefaultConfig()
+        {
+            GlobalConfig globalConfig = new GlobalConfig()
+            {
+                TokenBot = "",
+
+                TamagotchiDatabaseSettings = new TamagotchiDatabaseSettings()
+                {
+                    AllUsersDataCollectionName = "AllUsersData",
+                    AppleGameDataCollectionName = "AppleGame",
+                    ChatsCollectionName = "Chats",
+                    BannedUsersCollectionName = "BannedUsers",
+                    DailyInfoCollectionName = "DailyInfo",
+                    PetsCollectionName = "Pets",
+                    ServiceInfoCollectionName = "ServiceInfo",
+                    UsersCollectionName = "Users",
+
+                    ConnectionString = "",
+                    DatabaseName = "TamagotchiDb"
+                },
+
+                EnvsSettings = new EnvsSettings()
+                {
+                    AlwaysNotifyUsers  = new List<string>(),
+                    ChatsToDevNotify = new List<string>(),
+                    BannedRenamingUsers = new List<string>(),
+                    NotifyEvery = TimeSpan.FromHours(1),
+                    DevNotifyEvery = TimeSpan.FromMinutes(1),
+                    DevExtraNotifyEvery = TimeSpan.FromMinutes(5),
+                    TriggersEvery  = TimeSpan.FromSeconds(20),
+                    AwakeWhenAFKFor = TimeSpan.FromMinutes(30)
+                },
+            };
+
+            var configJSON = JsonConvert.SerializeObject(globalConfig);
+
+            File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "config.json", configJSON);
         }
     }
 }

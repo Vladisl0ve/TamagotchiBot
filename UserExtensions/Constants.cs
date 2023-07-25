@@ -22,7 +22,8 @@ namespace TamagotchiBot.UserExtensions
         public enum CurrentStatus
         {
             Active,
-            Sleeping
+            Sleeping,
+            WorkingOnPC
         }
 
         public enum Fatigue
@@ -42,7 +43,7 @@ namespace TamagotchiBot.UserExtensions
             public const string LanguageEn = "en";
         }
 
-        public struct Factors
+        public struct Factors //per minute
         {
             public const int ExpFactor = 1;
             public const int ExpToLvl = 100;
@@ -56,10 +57,36 @@ namespace TamagotchiBot.UserExtensions
             public const int DiceGameFatigueFactor = 5;
             public const int DiceGameJoyFactor = 10;
 
+            public const int WorkOnPCFatigueFactor = 70;
+
             public const int PillHPFactor = 20;
             public const int PillJoyFactor = -10;
         }
 
+        public struct Rewards //in gold
+        {
+            public const int WorkOnPCGoldReward = 100;
+            public const int DailyGoldReward = 100;
+        }
+
+        public struct Costs //in gold
+        {
+            //Food
+            public const int Bread = 50;
+            public const int Apple = 1;
+            public const int Lollipop = 0;
+            public const int Chocolate = 0;
+
+            //Games
+            public const int AppleGame = 20;
+            public const int DiceGame = 5;
+        }
+
+        public class TimesToWait
+        {
+            public TimeSpan WorkOnPCToWait = new(0, 2, 0);
+            public TimeSpan DailyRewardToWait = new(24, 0, 0);
+        }
 
         public struct Limits
         {
@@ -68,9 +95,9 @@ namespace TamagotchiBot.UserExtensions
 
         public struct FoodFactors
         {
-            public const double BreadHungerFactor = 10; //🍞
+            public const double BreadHungerFactor = 50; //🍞
             public const double RedAppleHungerFactor = 5; //🍎
-            public const double ChocolateHungerFactor = 4; //🍫
+            public const double ChocolateHungerFactor = 2; //🍫
             public const double LollipopHungerFactor = 1; //🍭
         }
 
@@ -84,9 +111,11 @@ namespace TamagotchiBot.UserExtensions
             public const string RanksCommand = "ranks";
             public const string RenameCommand = "rename";
             public const string HospitalCommand = "hospital";
+            public const string RewardCommand = "reward";
             public const string BathroomCommand = "bathroom";
             public const string HelpCommand = "help";
             public const string MenuCommand = "menu";
+            public const string WorkCommand = "work";
             public const string QuitCommand = "quit";
         }
 
@@ -106,6 +135,14 @@ namespace TamagotchiBot.UserExtensions
             public const string BelarussianLanguageSetSticker = "CAACAgIAAxkBAAEDIdJhcyf3ErjEmUZRgDJgMsCtstPpGAACYQIAAladvQq0dN7WdBr5ViEE";
 
             public const string ChangelogSticker = "CAACAgIAAxkBAAIoiWQfmY19TqmIZL38KrfWnSS9frV0AAIrKwACnQhYSBduaR-WJLE7LwQ";
+            public const string DailyRewardSticker = "CAACAgIAAxkBAAEJz1Fkv8OAYwKlhmZ7CAvYJkg0EQ7Z-wAClhEAAv5tgEmdX9KNHziRpS8E";
+
+            public const string DailyRewardNotificationSticker_1 = "CAACAgIAAxkBAAEJ0C5kwAtlsmG3MWC5dzWl-t4e3YJjvgACbBYAAnwtgEk-JR1KRey6xy8E";
+            public const string DailyRewardNotificationSticker_2 = "CAACAgIAAxkBAAEJ0DBkwAuwGXbO_cfYuR1mV7Yfqsd6twACfQADjwveESrxHx6BqwesLwQ";
+            public const string DailyRewardNotificationSticker_3 = "CAACAgIAAxkBAAEJ0DJkwAvRzozDjxSn1dbcqprOrrRS1wAC_hYAAuxlgUmSKA23ZDM9xy8E";
+            public const string DailyRewardNotificationSticker_4 = "CAACAgIAAxkBAAEJ0DRkwAv9bEVLiNoW7wUCeTmK9L8GDwACVQADkp8eEe9UptCrIZBuLwQ";
+            public const string DailyRewardNotificationSticker_5 = "CAACAgIAAxkBAAEJ0DZkwAwQiF4RlJusmqRCnKbA4SH7VwACOAEAAhZ8aAP0b0MaIxsr8S8E";
+
             public const string BannedSticker = "CAACAgIAAxkBAAEIn9VkPlGMflkimxiV4BhDptaNOBhgjgACmwUAAlOx9wNCvw--ehyldy8E";
 
             //Cat
@@ -117,6 +154,7 @@ namespace TamagotchiBot.UserExtensions
             public const string PetGameroom_Cat = "CAACAgIAAxkBAAEDnIhh1LTJGdhUdSU1y0PFrMmr0wJ3EwAC_RIAAjV1SEq7O0eiJ48IqCME";
             public const string PetSleep_Cat = "CAACAgIAAxkBAAEDuq1h6xbXEQHcyTH6hf6bDcluqK2-bgAC4ScAAvVFSEo8b-MRtutFhiME";
             public const string PetBusy_Cat = "CAACAgIAAxkBAAEDLJJherSnCEKTmK9t5i1x9shxgGVzuwACdBIAAuAOQEqBqm_p74rsAAEhBA";
+            public const string PetWork_Cat = "CAACAgIAAxkBAAEIm5BkPBgi8nYhbfCXNX4we5SCqnlT3QAC8RAAAowt_Qf8Tl-qgXK7Oy8E";
             public const string PetRanks_Cat = "CAACAgIAAxkBAAEDuydh6-QrBh7ZWsJ08P5JPbuhEbhIlAAC6hAAAowt_QeFBFvPjWUsjyME";
             public const string PetHospitalLowHP_Cat = "CAACAgIAAxkBAAEIEa1kCkgUfc3lvy1OnyY5LneOAz3tQwAC2hAAAowt_QeJ21KeBteIlS8E";
             public const string PetHospitalMidHP_Cat = "CAACAgIAAxkBAAEIEbFkCkhUqHOSaEfmY85yxF98gaUZhwAC7BAAAowt_QdvxODKmdLpri8E";
@@ -183,6 +221,38 @@ namespace TamagotchiBot.UserExtensions
                         CallbackData = "hospitalCommandCurePills"
                     }
                 };
+            public List<CommandModel> InlineWork = new()
+                {
+                    new CommandModel()
+                    {
+                        Text = Resources.Resources.workCommandInlinePC,
+                        CallbackData = "workCommandInlineWorkOnPC"
+                    }
+                };
+
+            public List<CommandModel> InlineRanks = new()
+                {
+                    new CommandModel()
+                    {
+                        Text = Resources.Resources.ranksCommandInlineGold,
+                        CallbackData = "ranksCommandInlineGold"
+                    },
+                    new CommandModel()
+                    {
+                        Text = Resources.Resources.ranksCommandInlineLevel,
+                        CallbackData = "ranksCommandInlineLevel"
+                    }
+                };
+
+            public List<CommandModel> InlineRewards = new()
+                {
+                    new CommandModel()
+                    {
+                        Text = Resources.Resources.rewardCommandInlineDailyReward,
+                        CallbackData = "rewardCommandInlineDailyReward"
+                    }
+                };
+
             public List<CommandModel> InlinePet = new()
             {
                 new CommandModel()

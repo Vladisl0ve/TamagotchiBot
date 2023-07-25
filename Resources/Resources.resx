@@ -142,6 +142,8 @@ BTW '/menu' shows some commands to start</value>
 🍕 Satiety: {4}%
 😴 Fatigue: {5}
 🎊 Joy level: {7}%
+
+💰 Gold: {8} 💴
 ⚡️ Status: {6}
 🏅 EXP: {2} | {3} level ✨
 
@@ -172,6 +174,12 @@ Wybierz nowy język 🇵🇱
   <data name="kitchenCommand" xml:space="preserve">
     <value>You are in the kitchen 🥦
 🍕 Pet's satiety: {0}%
+💰 Gold: {1}
+
+Bread 🍞 = +50%🍕 |-30💰
+Apple 🍎 = +5%🍕 |-1💰
+Lollipop 🍭 = +1%🍕 |-0 💰
+Chocolate 🍫 = +2%🍕 |-0💰
 
 Don't forget feed him 🐣</value>
   </data>
@@ -233,6 +241,10 @@ Don't forget feed him 🐣</value>
 
 ⚽️ Fatigue: {0}%
 🎊 Joy: {1}%
+💰 Gold: {2} 
+
+🍏 Apple Game = +{3}🎊 | -{4}💰
+🎲 Dice Game = +{5}🎊 | -{6}💰
 
 Do not play so much and safety first! 🧗‍♀️</value>
   </data>
@@ -246,7 +258,7 @@ Do not play so much and safety first! 🧗‍♀️</value>
     <value>You can not come in: pet is sleeping 🌙</value>
   </data>
   <data name="ranksCommand" xml:space="preserve">
-    <value>🌈⭐️ Top 10 Levels ⭐️</value>
+    <value>🌈⭐️ Top 10 Experience⭐️🌈</value>
   </data>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Rating 🏆</value>
@@ -306,11 +318,14 @@ Be sure to visit your pet frequently because they also love you and will be thri
     <value>What to do with pet:
 /pet - pet's status 🐱
 /kitchen - feed your pet 🍕
+/work - to earn more gold 💰
+/reward - to earn daily bonus 🎁 
 /sleep - bedroom 🧸
 /gameroom entertainments 🎳
 /ranks - see the best pets! 👑
 /hospital - cure your pet 🏥
 /bathroom - clean your pet 🛁
+/rename - to change name 🌀
 
 There will be more in future!
 Stay tuned! 💝</value>
@@ -390,10 +405,16 @@ Surrendered: {2}</value>
     <value>You are in the gameroom ⚽️</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>🐱: Goodly-good day!
-They told me in secret that in the gameroom (/gameroom) there was a new toy about apples 👀
-I think you can find it by pressing the button with the joker, only shh! Not a word to anyone 🙊
-Let's play it? 🪁</value>
+    <value>⚡️⚡️ A new update has been released ⚡️⚡️
+Added:
+💰Gold
+♟Work (this is where you earn gold)
+🎁 Daily gifts!
+
+Plans:
+🧘‍♂️Добавить bathroom
+🎰 New mini-games.
+🏫 Add a school</value>
   </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
     <value>🐱: Waiting for you here, come back
@@ -407,7 +428,73 @@ Let's play it? 🪁</value>
 /kitchen to feed 🍩
 /gameroom for games 🏓</value>
   </data>
+  <data name="CurrentStatusWorkingOnPC" xml:space="preserve">
+    <value>on work 💻</value>
+  </data>
+  <data name="denyAccessWorking" xml:space="preserve">
+    <value>You can not come in: pet is on work 💻</value>
+  </data>
+  <data name="workCommand" xml:space="preserve">
+    <value>Choose what your pet will be doing 💡
+
+Programing 💻 -{0} minutes ⌛️, +{1} golds 💰</value>
+  </data>
+  <data name="workCommandInlinePC" xml:space="preserve">
+    <value>Program 💻</value>
+  </data>
+  <data name="workCommandDescription" xml:space="preserve">
+    <value>Jobs 💰</value>
+  </data>
+  <data name="PetWorkingAnswerCallback" xml:space="preserve">
+    <value>Gold +{1} 💰
+The pet is tired at +{0}% 😓
+Wait until the pet finishes work</value>
+  </data>
+  <data name="workCommandPCWorking" xml:space="preserve">
+    <value>Pet is working now 👩‍💻</value>
+  </data>
+  <data name="workCommandInlineShowTime" xml:space="preserve">
+    <value>Remains to work: {0} ⏱</value>
+  </data>
   <data name="renameBannedCommand" xml:space="preserve">
     <value>No access to do this</value>
+  </data>
+  <data name="goldNotEnough" xml:space="preserve">
+    <value>Need more gold 💰</value>
+  </data>
+  <data name="tooManyStarvingCommand" xml:space="preserve">
+    <value>Pet is good now. Enough to eat 🤢</value>
+  </data>
+  <data name="rewardCommandDailyRewardGotten" xml:space="preserve">
+    <value>You have already got your daily reward today 🫶🏻</value>
+  </data>
+  <data name="rewardCommandDailyRewardInlineShowTime" xml:space="preserve">
+    <value>Until the next award: {0} ⏱</value>
+  </data>
+  <data name="rewardCommand" xml:space="preserve">
+    <value>There's a daily reward waiting for you! 💸
+Take it soon! 🎁</value>
+  </data>
+  <data name="rewardCommandInlineDailyReward" xml:space="preserve">
+    <value>Daily 🎉(+100💰)</value>
+  </data>
+  <data name="DailyRewardAnwserCallback" xml:space="preserve">
+    <value>Congratulations, you got +{0} gold! 🎈</value>
+  </data>
+  <data name="ranksCommandGold" xml:space="preserve">
+    <value>💰⭐️ Top 10 in gold ⭐️💰</value>
+  </data>
+  <data name="ranksCommandInlineGold" xml:space="preserve">
+    <value>💰 Gold</value>
+  </data>
+  <data name="ranksCommandInlineLevel" xml:space="preserve">
+    <value>🏅Experience</value>
+  </data>
+  <data name="rewardNotification" xml:space="preserve">
+    <value>🎁 Come on for your daily bonus 🎉
+/reward 🎁</value>
+  </data>
+  <data name="rewardCommandDescription" xml:space="preserve">
+    <value>Reward 🎁</value>
   </data>
 </root>

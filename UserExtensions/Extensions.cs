@@ -176,6 +176,12 @@ namespace TamagotchiBot.UserExtensions
 
                 new BotCommand()
                 {
+                    Command = Commands.WorkCommand,
+                    Description = Resources.Resources.workCommandDescription
+                },
+
+                new BotCommand()
+                {
                     Command = Commands.SleepCommand,
                     Description = Resources.Resources.sleepCommandDescription
                 },
@@ -200,6 +206,12 @@ namespace TamagotchiBot.UserExtensions
 
                 new BotCommand()
                 {
+                    Command = Commands.RewardCommand,
+                    Description = Resources.Resources.rewardCommandDescription
+                },
+
+                new BotCommand()
+                {
                     Command = Commands.BathroomCommand,
                     Description = Resources.Resources.bathroomCommandDescription
                 },
@@ -215,6 +227,7 @@ namespace TamagotchiBot.UserExtensions
 
             return resultExtra;
         }
+
         public static List<BotCommand> GetIngameCommands()
         {
             List<BotCommand> result = new()
@@ -228,7 +241,6 @@ namespace TamagotchiBot.UserExtensions
 
             return result;
         }
-
 
         public static string GetFatigue(int fatigue)
         {
@@ -260,6 +272,7 @@ namespace TamagotchiBot.UserExtensions
                 {
                     CurrentStatus.Active => Resources.Resources.CurrentStatusActive,
                     CurrentStatus.Sleeping => Resources.Resources.CurrentStatusSleeping,
+                    CurrentStatus.WorkingOnPC => Resources.Resources.CurrentStatusWorkingOnPC,
                     _ => null,
                 };
             }

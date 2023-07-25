@@ -34,6 +34,12 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("BreadEatenCounter")]
         public long BreadEatenCounter { get; set; }
 
+        [BsonElement("GoldEarnedCounter")]
+        public long GoldEarnedCounter { get; set; }
+
+        [BsonElement("GoldSpentCounter")]
+        public long GoldSpentCounter { get; set; }
+
         [BsonElement("AppleEatenCounter")]
         public long AppleEatenCounter { get; set; }
 
@@ -48,6 +54,9 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("DicePlayedCounter")]
         public long DicePlayedCounter { get; set; }
+
+        [BsonElement("WorkOnPCCounter")]
+        public long WorkOnPCCounter { get; set; }
 
         [BsonElement("AppleGamePlayedCounter")]
         public long AppleGamePlayedCounter { get; set; }
@@ -81,6 +90,12 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("BathroomCommandCounter")]
         public long BathroomCommandCounter { get; set; }
+
+        [BsonElement("WorkCommandCounter")]
+        public long WorkCommandCounter { get; set; }
+
+        [BsonElement("RewardCommandCounter")]
+        public long RewardCommandCounter { get; set; }
 
         [BsonElement("MenuCommandCounter")]
         public long MenuCommandCounter { get; set; }

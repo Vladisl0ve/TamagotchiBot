@@ -142,6 +142,8 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
 🍕 Sytość: {4}%
 😴 Zmęczenie: {5}
 🎊 Radość: {7}%
+
+💰 Gold: {8} 💴
 ⚡️ Status: {6}
 🏅 Doświadczenie: {2} | {3} poziom✨
 
@@ -171,7 +173,13 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="kitchenCommand" xml:space="preserve">
     <value>Jesteś w kuchni 🥦
-🍕 Sytość{0}%
+🍕 Nasycenie zwierzaka: {0}%
+💰 Zł: {1}
+
+Chleb 🍞 = +50%🍕 |-30💰
+Jabłko 🍎 = +5%🍕 |-1💰
+Lollipop 🍭 = +1%🍕 |-0 💰
+Czekolada 🍫 = +2%🍕 |-0💰
 
 Nie zapominaj karmić zwierzaka 🐣</value>
   </data>
@@ -230,8 +238,13 @@ Nie zapominaj karmić zwierzaka 🐣</value>
   </data>
   <data name="gameroomCommand" xml:space="preserve">
     <value>Jesteście w pokoju dziecięcym
+
 ⚽️ Zmęczenie: {0}%
 🎊 Radość: {1}%
+💰 Złoto: {2} 
+
+🍏 Apple Game = +{3}🎊 | -{4}💰
+🎲 Gra w kości = +{5}🎊 | -{6}💰
 
 Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
   </data>
@@ -245,7 +258,7 @@ Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
     <value>Brak możliwości wejścia do pokoju: zwierzak śpi 🌙</value>
   </data>
   <data name="ranksCommand" xml:space="preserve">
-    <value>🌈⭐️ Top 10 poziomów ⭐️</value>
+    <value>🌈⭐️ Top 10 doświadczenia ⭐️🌈</value>
   </data>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Ranking 🏆</value>
@@ -306,11 +319,14 @@ Upewnij się, że często go odwiedzasz, ponieważ on również Cię kocha i z p
     <value>Akcje ze zwierzakiem:
 /pet - status zwierzaka 🐱
 /kuchnia - nakarm swojego zwierzaka 🍕
+/work - zarabiać kasę 💰
+/reward - dostać codzienny bonus 🎁
 /sleep - sypialnia 🧸
 /gameroom - rozrywka 🎳
 /ranks- zobacz najlepsze zwierzaki! 👑
 /hospital- wylecz swojego zwierzaka 🏥
 /bathroom - posprzątaj swojego zwierzaka 🛁
+/rename - zmień imię 🌀
 
 Będzie więcej w przyszłości!
 Czekaj na dalsze informacje! 💝</value>
@@ -389,12 +405,6 @@ Poddania: {2}</value>
   <data name="backToGameroomText" xml:space="preserve">
     <value>Znowu jesteś w pokoju gier ⚽️</value>
   </data>
-  <data name="changelog1Text" xml:space="preserve">
-    <value>🐱: Cześć, cześć!
-Powiedzieli mi w sekrecie, że w pokoju dziecinnym (/gameroom) pojawiła się nowa zabawka o jakimś jabłku 👀
-Myślę, że możesz go znaleźć, naciskając przycisk z jokerem, tylko ciii! Ani słowa nikomu 🙊
-Zagrajmy w to? 🪁</value>
-  </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
     <value>🐱: Czekam tu na Ciebie, wróć
 
@@ -407,7 +417,85 @@ Zagrajmy w to? 🪁</value>
 /kitchen karmić 🍩
 /gameroom bawić się 🏓</value>
   </data>
+  <data name="CurrentStatusWorkingOnPC" xml:space="preserve">
+    <value>w pracy 💻</value>
+  </data>
+  <data name="denyAccessWorking" xml:space="preserve">
+    <value>Brak możliwości wejścia do pokoju: zwierzak pracuje 💻</value>
+  </data>
+  <data name="workCommand" xml:space="preserve">
+    <value>Wybierz, co zrobi Twój zwierzak 💡
+
+Programowanie 💻 -{0} minuty ⌛️, +{1} zł 💰</value>
+  </data>
+  <data name="workCommandInlinePC" xml:space="preserve">
+    <value>Programowanie 💻</value>
+  </data>
+  <data name="workCommandDescription" xml:space="preserve">
+    <value>Praca 💰</value>
+  </data>
+  <data name="PetWorkingAnswerCallback" xml:space="preserve">
+    <value>Złoto +{1} 💰
+Zwierzę jest zmęczone na +{0}% 😓
+Poczekaj aż zwierzak skończy pracę</value>
+  </data>
+  <data name="workCommandPCWorking" xml:space="preserve">
+    <value>Zwierzak w pracy teraz 👩‍💻</value>
+  </data>
+  <data name="workCommandInlineShowTime" xml:space="preserve">
+    <value>Pozostało do pracy: {0} ⏱</value>
+  </data>
   <data name="renameBannedCommand" xml:space="preserve">
     <value>Trzymaj bana</value>
+  </data>
+  <data name="goldNotEnough" xml:space="preserve">
+    <value>Trzeba więcej zł 💰</value>
+  </data>
+  <data name="tooManyStarvingCommand" xml:space="preserve">
+    <value>Zwierzę nie chce już jeść 🤢</value>
+  </data>
+  <data name="rewardCommandDailyRewardGotten" xml:space="preserve">
+    <value>Otrzymałeś już dzisiaj swoją codzienną nagrodę 🫶🏻</value>
+  </data>
+  <data name="rewardCommandDailyRewardInlineShowTime" xml:space="preserve">
+    <value>Do następnej nagrody: {0} ⏱</value>
+  </data>
+  <data name="rewardCommand" xml:space="preserve">
+    <value>Czeka na ciebie codzienna nagroda! 💸
+Odbierz ją wkrótce! 🎁</value>
+  </data>
+  <data name="rewardCommandInlineDailyReward" xml:space="preserve">
+    <value>Codziennie 🎉(+100💰)</value>
+  </data>
+  <data name="DailyRewardAnwserCallback" xml:space="preserve">
+    <value>Gratulacje, zdobyłeś +{0} złota! 🎈</value>
+  </data>
+  <data name="ranksCommandGold" xml:space="preserve">
+    <value>💰⭐️ Top 10 w złocie ⭐️💰</value>
+  </data>
+  <data name="ranksCommandInlineGold" xml:space="preserve">
+    <value>💰Złoto</value>
+  </data>
+  <data name="ranksCommandInlineLevel" xml:space="preserve">
+    <value>🏅Doświadczenie</value>
+  </data>
+  <data name="rewardNotification" xml:space="preserve">
+    <value>🎁 Wejdź po bonus codzienny 🎉
+/reward 🎁</value>
+  </data>
+  <data name="changelog1Text" xml:space="preserve">
+    <value>⚡️⚡️ Wydano nową aktualizację ⚡️⚡️
+Dodano:
+💰Gold
+♟Praca (tutaj zarabiasz złoto)
+🎁Codzienne prezenty!
+
+Plany:
+🧘‍♂️Dodać łazienkę
+🎰 Nowe mini-gry
+🏫 Dodanie szkoły</value>
+  </data>
+  <data name="rewardCommandDescription" xml:space="preserve">
+    <value>Nagroda 🎁</value>
   </data>
 </root>

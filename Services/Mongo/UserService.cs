@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TamagotchiBot.Database;
@@ -53,6 +54,18 @@ namespace TamagotchiBot.Services.Mongo
             _users.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
+
+        public bool UpdateNextDailyRewardNotificationTime(long userId, DateTime nextNotify)
+        {
+            var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb == null)
+                return false;
+
+            userDb.NextDailyRewardNotificationTime = nextNotify;
+            _users.ReplaceOne(u => u.UserId == userId, userDb);
+            return true;
+        }
+
         public User UpdateLanguage(long userId, string newLanguage)
         {
             var user = _users.Find(p => p.UserId == userId).FirstOrDefault();
