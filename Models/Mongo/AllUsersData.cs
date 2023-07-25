@@ -94,6 +94,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("WorkCommandCounter")]
         public long WorkCommandCounter { get; set; }
 
+        [BsonElement("RewardCommandCounter")]
+        public long RewardCommandCounter { get; set; }
+
         [BsonElement("MenuCommandCounter")]
         public long MenuCommandCounter { get; set; }
 

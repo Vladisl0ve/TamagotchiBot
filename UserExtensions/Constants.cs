@@ -66,6 +66,7 @@ namespace TamagotchiBot.UserExtensions
         public struct Rewards //in gold
         {
             public const int WorkOnPCGoldReward = 100;
+            public const int DailyGoldReward = 100;
         }
 
         public struct Costs //in gold
@@ -85,6 +86,7 @@ namespace TamagotchiBot.UserExtensions
         public class TimesToWait
         {
             public TimeSpan WorkOnPCToWait = new(0, 2, 0);
+            public TimeSpan DailyRewardToWait = new(24, 0, 0);
         }
 
         public struct Limits
@@ -133,6 +135,7 @@ namespace TamagotchiBot.UserExtensions
             public const string BelarussianLanguageSetSticker = "CAACAgIAAxkBAAEDIdJhcyf3ErjEmUZRgDJgMsCtstPpGAACYQIAAladvQq0dN7WdBr5ViEE";
 
             public const string ChangelogSticker = "CAACAgIAAxkBAAIoiWQfmY19TqmIZL38KrfWnSS9frV0AAIrKwACnQhYSBduaR-WJLE7LwQ";
+            public const string DailyRewardSticker = "CAACAgIAAxkBAAEJz1Fkv8OAYwKlhmZ7CAvYJkg0EQ7Z-wAClhEAAv5tgEmdX9KNHziRpS8E";
             public const string BannedSticker = "CAACAgIAAxkBAAEIn9VkPlGMflkimxiV4BhDptaNOBhgjgACmwUAAlOx9wNCvw--ehyldy8E";
 
             //Cat
@@ -217,6 +220,29 @@ namespace TamagotchiBot.UserExtensions
                     {
                         Text = Resources.Resources.workCommandInlinePC,
                         CallbackData = "workCommandInlineWorkOnPC"
+                    }
+                };
+
+            public List<CommandModel> InlineRanks = new()
+                {
+                    new CommandModel()
+                    {
+                        Text = Resources.Resources.ranksCommandInlineGold,
+                        CallbackData = "ranksCommandInlineGold"
+                    },
+                    new CommandModel()
+                    {
+                        Text = Resources.Resources.ranksCommandInlineLevel,
+                        CallbackData = "ranksCommandInlineLevel"
+                    }
+                };
+
+            public List<CommandModel> InlineRewards = new()
+                {
+                    new CommandModel()
+                    {
+                        Text = Resources.Resources.rewardCommandInlineDailyReward,
+                        CallbackData = "rewardCommandInlineDailyReward"
                     }
                 };
 

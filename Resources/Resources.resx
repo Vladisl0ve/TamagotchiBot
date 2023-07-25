@@ -258,7 +258,7 @@ Do not play so much and safety first! 🧗‍♀️</value>
     <value>You can not come in: pet is sleeping 🌙</value>
   </data>
   <data name="ranksCommand" xml:space="preserve">
-    <value>🌈⭐️ Top 10 Levels ⭐️</value>
+    <value>🌈⭐️ Top 10 Experience⭐️🌈</value>
   </data>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Rating 🏆</value>
@@ -319,6 +319,7 @@ Be sure to visit your pet frequently because they also love you and will be thri
 /pet - pet's status 🐱
 /kitchen - feed your pet 🍕
 /work - to earn more gold 💰
+/reward - to earn daily bonus 🎁 
 /sleep - bedroom 🧸
 /gameroom entertainments 🎳
 /ranks - see the best pets! 👑
@@ -457,5 +458,30 @@ Wait until the pet finishes work</value>
   </data>
   <data name="tooManyStarvingCommand" xml:space="preserve">
     <value>Pet is good now. Enough to eat 🤢</value>
+  </data>
+  <data name="rewardCommandDailyRewardGotten" xml:space="preserve">
+    <value>You have already got your daily reward today 🫶🏻</value>
+  </data>
+  <data name="rewardCommandDailyRewardInlineShowTime" xml:space="preserve">
+    <value>Until the next award: {0} ⏱</value>
+  </data>
+  <data name="rewardCommand" xml:space="preserve">
+    <value>There's a daily reward waiting for you! 💸
+Take it soon! 🎁</value>
+  </data>
+  <data name="rewardCommandInlineDailyReward" xml:space="preserve">
+    <value>Daily 🎉(+100💰)</value>
+  </data>
+  <data name="DailyRewardAnwserCallback" xml:space="preserve">
+    <value>Congratulations, you got +{0} gold! 🎈</value>
+  </data>
+  <data name="ranksCommandGold" xml:space="preserve">
+    <value>💰⭐️ Top 10 in gold ⭐️💰</value>
+  </data>
+  <data name="ranksCommandInlineGold" xml:space="preserve">
+    <value>💰 Gold</value>
+  </data>
+  <data name="ranksCommandInlineLevel" xml:space="preserve">
+    <value>🏅Experience</value>
   </data>
 </root>

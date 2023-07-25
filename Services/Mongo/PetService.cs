@@ -65,6 +65,16 @@ namespace TamagotchiBot.Services.Mongo
             }
         }
 
+        public void UpdateDailyRewardTime(long userId, DateTime newStartTime)
+        {
+            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.GotDailyRewardTime = newStartTime;
+                Update(userId, pet);
+            }
+        }
+
         public void UpdateGold(long userId, int newGold)
         {
             var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();

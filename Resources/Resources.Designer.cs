@@ -241,6 +241,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Congratulations, you got +{0} gold! 🎈.
+        /// </summary>
+        public static string DailyRewardAnwserCallback {
+            get {
+                return ResourceManager.GetString("DailyRewardAnwserCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You can not come in: pet is sleeping 🌙.
         /// </summary>
         public static string denyAccessSleeping {
@@ -492,6 +501,7 @@ namespace TamagotchiBot.Resources {
         ////pet - pet&apos;s status 🐱
         ////kitchen - feed your pet 🍕
         ////work - to earn more gold 💰
+        ////reward - to earn daily bonus 🎁 
         ////sleep - bedroom 🧸
         ////gameroom entertainments 🎳
         ////ranks - see the best pets! 👑
@@ -649,7 +659,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🌈⭐️ Top 10 Levels ⭐️.
+        ///   Looks up a localized string similar to 🌈⭐️ Top 10 Experience⭐️🌈.
         /// </summary>
         public static string ranksCommand {
             get {
@@ -663,6 +673,33 @@ namespace TamagotchiBot.Resources {
         public static string ranksCommandDescription {
             get {
                 return ResourceManager.GetString("ranksCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💰⭐️ Top 10 in gold ⭐️💰.
+        /// </summary>
+        public static string ranksCommandGold {
+            get {
+                return ResourceManager.GetString("ranksCommandGold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💰 Gold.
+        /// </summary>
+        public static string ranksCommandInlineGold {
+            get {
+                return ResourceManager.GetString("ranksCommandInlineGold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🏅Experience.
+        /// </summary>
+        public static string ranksCommandInlineLevel {
+            get {
+                return ResourceManager.GetString("ranksCommandInlineLevel", resourceCulture);
             }
         }
         
@@ -746,6 +783,43 @@ namespace TamagotchiBot.Resources {
         public static string restartCommand {
             get {
                 return ResourceManager.GetString("restartCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There&apos;s a daily reward waiting for you! 💸
+        ///Take it soon! 🎁.
+        /// </summary>
+        public static string rewardCommand {
+            get {
+                return ResourceManager.GetString("rewardCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have already got your daily reward today 🫶🏻.
+        /// </summary>
+        public static string rewardCommandDailyRewardGotten {
+            get {
+                return ResourceManager.GetString("rewardCommandDailyRewardGotten", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Until the next award: {0} ⏱.
+        /// </summary>
+        public static string rewardCommandDailyRewardInlineShowTime {
+            get {
+                return ResourceManager.GetString("rewardCommandDailyRewardInlineShowTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Daily 🎉(+100💰).
+        /// </summary>
+        public static string rewardCommandInlineDailyReward {
+            get {
+                return ResourceManager.GetString("rewardCommandInlineDailyReward", resourceCulture);
             }
         }
         

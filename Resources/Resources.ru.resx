@@ -258,7 +258,7 @@ Wybierz nowy język 🇵🇱
     <value>Нельзя войти в комнату: питомец спит 🌙</value>
   </data>
   <data name="ranksCommand" xml:space="preserve">
-    <value>🌈⭐️ Топ-10 уровней ⭐️</value>
+    <value>🌈⭐️ Топ-10 по опыту ⭐️🌈</value>
   </data>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Рейтинг 🏆</value>
@@ -321,6 +321,7 @@ Wybierz nowy język 🇵🇱
 /pet - состояние питомца 🐱
 /kitchen - кушать тут 🍕
 /work - заработать денюшку (золото) для питомца 💰
+/reward - получить ежедневный бонус 🎁
 /sleep - спальня 🧸
 /gameroom - развлечения 🎳
 /ranks - лучшие из лучших! 👑
@@ -459,5 +460,30 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="tooManyStarvingCommand" xml:space="preserve">
     <value>Питомец не хочет это сейчас 🤢</value>
+  </data>
+  <data name="rewardCommandDailyRewardGotten" xml:space="preserve">
+    <value>Вы уже получили свою ежедневную награду сегодня🫶🏻</value>
+  </data>
+  <data name="rewardCommandDailyRewardInlineShowTime" xml:space="preserve">
+    <value>До следующей награды: {0} ⏱</value>
+  </data>
+  <data name="rewardCommand" xml:space="preserve">
+    <value>Тебя ждёт ежедневная награда! 💸
+Забирай скорей! 🎁</value>
+  </data>
+  <data name="rewardCommandInlineDailyReward" xml:space="preserve">
+    <value>Ежедневка 🎉(+100💰)</value>
+  </data>
+  <data name="DailyRewardAnwserCallback" xml:space="preserve">
+    <value>Поздравляю, ты получил {0} золота! 🎈</value>
+  </data>
+  <data name="ranksCommandGold" xml:space="preserve">
+    <value>💰⭐️ Топ-10 по золоту ⭐️💰</value>
+  </data>
+  <data name="ranksCommandInlineLevel" xml:space="preserve">
+    <value>🏅Опыт</value>
+  </data>
+  <data name="ranksCommandInlineGold" xml:space="preserve">
+    <value>💰Золото</value>
   </data>
 </root>

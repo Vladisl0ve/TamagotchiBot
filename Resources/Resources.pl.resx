@@ -258,7 +258,7 @@ Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
     <value>Brak możliwości wejścia do pokoju: zwierzak śpi 🌙</value>
   </data>
   <data name="ranksCommand" xml:space="preserve">
-    <value>🌈⭐️ Top 10 poziomów ⭐️</value>
+    <value>🌈⭐️ Top 10 doświadczenia ⭐️🌈</value>
   </data>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Ranking 🏆</value>
@@ -320,6 +320,7 @@ Upewnij się, że często go odwiedzasz, ponieważ on również Cię kocha i z p
 /pet - status zwierzaka 🐱
 /kuchnia - nakarm swojego zwierzaka 🍕
 /work - zarabiać kasę 💰
+/reward - dostać codzienny bonus 🎁
 /sleep - sypialnia 🧸
 /gameroom - rozrywka 🎳
 /ranks- zobacz najlepsze zwierzaki! 👑
@@ -458,5 +459,30 @@ Poczekaj aż zwierzak skończy pracę</value>
   </data>
   <data name="tooManyStarvingCommand" xml:space="preserve">
     <value>Zwierzę nie chce już jeść 🤢</value>
+  </data>
+  <data name="rewardCommandDailyRewardGotten" xml:space="preserve">
+    <value>Otrzymałeś już dzisiaj swoją codzienną nagrodę 🫶🏻</value>
+  </data>
+  <data name="rewardCommandDailyRewardInlineShowTime" xml:space="preserve">
+    <value>Do następnej nagrody: {0} ⏱</value>
+  </data>
+  <data name="rewardCommand" xml:space="preserve">
+    <value>Czeka na ciebie codzienna nagroda! 💸
+Odbierz ją wkrótce! 🎁</value>
+  </data>
+  <data name="rewardCommandInlineDailyReward" xml:space="preserve">
+    <value>Codziennie 🎉(+100💰)</value>
+  </data>
+  <data name="DailyRewardAnwserCallback" xml:space="preserve">
+    <value>Gratulacje, zdobyłeś +{0} złota! 🎈</value>
+  </data>
+  <data name="ranksCommandGold" xml:space="preserve">
+    <value>💰⭐️ Top 10 w złocie ⭐️💰</value>
+  </data>
+  <data name="ranksCommandInlineGold" xml:space="preserve">
+    <value>💰Złoto</value>
+  </data>
+  <data name="ranksCommandInlineLevel" xml:space="preserve">
+    <value>🏅Doświadczenie</value>
   </data>
 </root>

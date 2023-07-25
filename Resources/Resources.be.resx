@@ -259,7 +259,7 @@ Wybierz nowy język 🇵🇱
     <value>Ты не можаш зайсці да пакою: твой гадаванец спіць 🌙</value>
   </data>
   <data name="ranksCommand" xml:space="preserve">
-    <value>🌈⭐️ Топ-10 узроўняў⭐️</value>
+    <value>🌈⭐️ Топ-10 па вопыту⭐️🌈</value>
   </data>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Рэйтынг 🏆</value>
@@ -322,6 +322,7 @@ Wybierz nowy język 🇵🇱
 /pet - паказльнікі гадаванца 🐱
 /kitchen - есці тут 🍕
 /work - зарабляць грошы 💰
+/reward - атрымаць штодзённы бонус 🎁
 /sleep - спальня 🧸
 /gameroom - забавы 🎳
 /ranks - лепшыя з лепшых! 👑
@@ -461,5 +462,30 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="tooManyStarvingCommand" xml:space="preserve">
     <value>Ён больш не хоча есьці 🤢</value>
+  </data>
+  <data name="rewardCommandDailyRewardGotten" xml:space="preserve">
+    <value>Вы ўжо атрымалі сваю штодзённую ўзнагароду сёння🫶🏻</value>
+  </data>
+  <data name="rewardCommandDailyRewardInlineShowTime" xml:space="preserve">
+    <value>Да наступнай нагроды: {0} ⏱</value>
+  </data>
+  <data name="rewardCommand" xml:space="preserve">
+    <value>Штодзённая ўзнагарода ўжо тут! 💸
+Хутчэй забірай!🎁</value>
+  </data>
+  <data name="rewardCommandInlineDailyReward" xml:space="preserve">
+    <value>Штодня 🎉(+100💰)</value>
+  </data>
+  <data name="DailyRewardAnwserCallback" xml:space="preserve">
+    <value>Віншую, ты атрымаў +{0} золата!🎈</value>
+  </data>
+  <data name="ranksCommandGold" xml:space="preserve">
+    <value>💰⭐️ Топ-10 па золату ⭐️💰</value>
+  </data>
+  <data name="ranksCommandInlineGold" xml:space="preserve">
+    <value>💰Золата</value>
+  </data>
+  <data name="ranksCommandInlineLevel" xml:space="preserve">
+    <value>🏅Вопыт</value>
   </data>
 </root>
