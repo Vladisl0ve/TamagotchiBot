@@ -80,7 +80,6 @@ namespace TamagotchiBot.UserExtensions
             //Games
             public const int AppleGame = 20;
             public const int DiceGame = 5;
-
         }
 
         public class TimesToWait

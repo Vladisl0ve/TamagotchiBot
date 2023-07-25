@@ -125,7 +125,6 @@ namespace TamagotchiBot.Services
                     Log.Error(ex.Message);
                 }
             }
-
         }
         private async void OnChangelogsTimedEvent(object sender, ElapsedEventArgs e)
         {
