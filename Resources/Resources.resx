@@ -147,7 +147,8 @@ BTW '/menu' shows some commands to start</value>
 ⚡️ Status: {6}
 🏅 EXP: {2} | {3} level ✨
 
-/gameroom - new mini-game 🍎</value>
+/reward - Get your daily reward 🎁
+/work - Earn gold here 🛠</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>In developing, wait for next update 👾</value>

@@ -147,7 +147,8 @@
 ⚡️ Состояние: {6}
 🏅 Опыт: {2} | {3} уровень✨
 
-/gameroom - появилась новая мини-игра 🍎</value>
+/reward - ежедневный бонус 🎁
+/work - есть новые вакансии 🛠</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>В разработке, жди обновления 👾</value>
