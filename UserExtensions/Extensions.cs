@@ -207,7 +207,7 @@ namespace TamagotchiBot.UserExtensions
                 new BotCommand()
                 {
                     Command = Commands.RewardCommand,
-                    Description = Resources.Resources.hospitalCommandDescription
+                    Description = Resources.Resources.rewardCommandDescription
                 },
 
                 new BotCommand()

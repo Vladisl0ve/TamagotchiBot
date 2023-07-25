@@ -142,17 +142,34 @@ namespace TamagotchiBot.Services
                 {
                     await _botClient.SendStickerAsync(userId, Constants.StickersId.ChangelogSticker);
                     await _botClient.SendTextMessageAsync(userId, Resources.Resources.changelog1Text);
+                    await Task.Delay(1000);
 
                     usersSuccess++;
                     Log.Information($"Sent changelog to '@{user.Username}'");
                 }
                 catch (ApiRequestException ex)
                 {
+                    if (ex == null)
+                    {
+                        Log.Error("HZ: ApiRequestException is null 0_o");
+                        continue;
+                    }
+
                     if (ex.ErrorCode == 403) //Forbidden by user
                     {
-                        Log.Warning($"{ex.Message} @{user.Username}, id: {user.UserId}");
+                        if (ex == null)
+                        {
+                            Log.Error("HZ: ApiRequestException is null 0_o");
+                            continue;
+                        }
+
+                        Log.Warning($"{ex?.Message} @{user?.Username}, id: {user?.UserId}");
 
                         //remove all data about user
+
+                        if (user == null)
+                            continue;
+
                         _chatService.Remove(user.UserId);
                         _petService.Remove(user.UserId);
                         _userService.Remove(user.UserId);
