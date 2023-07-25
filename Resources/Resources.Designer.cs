@@ -343,6 +343,10 @@ namespace TamagotchiBot.Resources {
         ///
         ///⚽️ Fatigue: {0}%
         ///🎊 Joy: {1}%
+        ///💰 Gold: {2} 
+        ///
+        ///🍏 Apple Game = +{3}🎊 | -{4}💰
+        ///🎲 Dice Game = +{5}🎊 | -{6}💰
         ///
         ///Do not play so much and safety first! 🧗‍♀️.
         /// </summary>
@@ -358,6 +362,15 @@ namespace TamagotchiBot.Resources {
         public static string gameroomCommandDescription {
             get {
                 return ResourceManager.GetString("gameroomCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Need more gold 💰.
+        /// </summary>
+        public static string goldNotEnough {
+            get {
+                return ResourceManager.GetString("goldNotEnough", resourceCulture);
             }
         }
         
@@ -441,6 +454,12 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to You are in the kitchen 🥦
         ///🍕 Pet&apos;s satiety: {0}%
+        ///💰 Gold: {1}
+        ///
+        ///Bread 🍞 = +50%🍕 |-30💰
+        ///Apple 🍎 = +5%🍕 |-1💰
+        ///Lollipop 🍭 = +1%🍕 |-0 💰
+        ///Chocolate 🍫 = +2%🍕 |-0💰
         ///
         ///Don&apos;t forget feed him 🐣.
         /// </summary>
@@ -478,6 +497,7 @@ namespace TamagotchiBot.Resources {
         ////ranks - see the best pets! 👑
         ////hospital - cure your pet 🏥
         ////bathroom - clean your pet 🛁
+        ////rename - to change name 🌀
         ///
         ///There will be more in future!
         ///Stay tuned! 💝.
@@ -786,6 +806,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pet is good now. Enough to eat 🤢.
+        /// </summary>
+        public static string tooManyStarvingCommand {
+            get {
+                return ResourceManager.GetString("tooManyStarvingCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your pet is too tired, he should sleep 💤.
         /// </summary>
         public static string tooTiredText {
@@ -806,7 +835,9 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose what your pet will be doing 💡.
+        ///   Looks up a localized string similar to Choose what your pet will be doing 💡
+        ///
+        ///Programing 💻 -{0} minutes ⌛️, +{1} golds 💰.
         /// </summary>
         public static string workCommand {
             get {

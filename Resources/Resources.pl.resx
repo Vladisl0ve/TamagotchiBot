@@ -173,7 +173,13 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="kitchenCommand" xml:space="preserve">
     <value>Jesteś w kuchni 🥦
-🍕 Sytość{0}%
+🍕 Nasycenie zwierzaka: {0}%
+💰 Zł: {1}
+
+Chleb 🍞 = +50%🍕 |-30💰
+Jabłko 🍎 = +5%🍕 |-1💰
+Lollipop 🍭 = +1%🍕 |-0 💰
+Czekolada 🍫 = +2%🍕 |-0💰
 
 Nie zapominaj karmić zwierzaka 🐣</value>
   </data>
@@ -232,8 +238,13 @@ Nie zapominaj karmić zwierzaka 🐣</value>
   </data>
   <data name="gameroomCommand" xml:space="preserve">
     <value>Jesteście w pokoju dziecięcym
+
 ⚽️ Zmęczenie: {0}%
 🎊 Radość: {1}%
+💰 Złoto: {2} 
+
+🍏 Apple Game = +{3}🎊 | -{4}💰
+🎲 Gra w kości = +{5}🎊 | -{6}💰
 
 Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
   </data>
@@ -314,6 +325,7 @@ Upewnij się, że często go odwiedzasz, ponieważ on również Cię kocha i z p
 /ranks- zobacz najlepsze zwierzaki! 👑
 /hospital- wylecz swojego zwierzaka 🏥
 /bathroom - posprzątaj swojego zwierzaka 🛁
+/rename - zmień imię 🌀
 
 Będzie więcej w przyszłości!
 Czekaj na dalsze informacje! 💝</value>
@@ -417,7 +429,9 @@ Zagrajmy w to? 🪁</value>
     <value>Brak możliwości wejścia do pokoju: zwierzak pracuje 💻</value>
   </data>
   <data name="workCommand" xml:space="preserve">
-    <value>Wybierz, co zrobi Twój zwierzak 💡</value>
+    <value>Wybierz, co zrobi Twój zwierzak 💡
+
+Programowanie 💻 -{0} minuty ⌛️, +{1} zł 💰</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
     <value>Programowanie 💻</value>
@@ -438,5 +452,11 @@ Poczekaj aż zwierzak skończy pracę</value>
   </data>
   <data name="renameBannedCommand" xml:space="preserve">
     <value>Trzymaj bana</value>
+  </data>
+  <data name="goldNotEnough" xml:space="preserve">
+    <value>Trzeba więcej zł 💰</value>
+  </data>
+  <data name="tooManyStarvingCommand" xml:space="preserve">
+    <value>Zwierzę nie chce już jeść 🤢</value>
   </data>
 </root>

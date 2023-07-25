@@ -204,7 +204,7 @@ namespace TamagotchiBot.Controllers
 
                 _userService.UpdateAppleGameStatus(UserId, false);
 
-                string toSendText = string.Format(gameroomCommand, petDB.Fatigue, petDB.Joy);
+                string toSendText = string.Format(gameroomCommand, petDB.Fatigue, petDB.Joy, petDB.Gold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
 
                 List<CommandModel> inlineParts = new InlineItems().InlineGames;
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);

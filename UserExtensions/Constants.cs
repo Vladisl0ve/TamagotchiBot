@@ -68,6 +68,20 @@ namespace TamagotchiBot.UserExtensions
             public const int WorkOnPCGoldReward = 100;
         }
 
+        public struct Costs //in gold
+        {
+            //Food
+            public const int Bread = 50;
+            public const int Apple = 1;
+            public const int Lollipop = 0;
+            public const int Chocolate = 0;
+
+            //Games
+            public const int AppleGame = 20;
+            public const int DiceGame = 5;
+
+        }
+
         public class TimesToWait
         {
             public TimeSpan WorkOnPCToWait = new(0, 2, 0);
@@ -80,9 +94,9 @@ namespace TamagotchiBot.UserExtensions
 
         public struct FoodFactors
         {
-            public const double BreadHungerFactor = 10; //🍞
+            public const double BreadHungerFactor = 50; //🍞
             public const double RedAppleHungerFactor = 5; //🍎
-            public const double ChocolateHungerFactor = 4; //🍫
+            public const double ChocolateHungerFactor = 2; //🍫
             public const double LollipopHungerFactor = 1; //🍭
         }
 

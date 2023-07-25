@@ -70,7 +70,7 @@ namespace TamagotchiBot.Services.Mongo
             var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
-                pet.Gold += newGold;
+                pet.Gold = newGold;
                 Update(userId, pet);
             }
         }

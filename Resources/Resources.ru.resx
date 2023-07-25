@@ -173,7 +173,13 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="kitchenCommand" xml:space="preserve">
     <value>Вы в кухне 🥦
-🍕 Сытость: {0}%
+🍕 Сытость питомца: {0}%
+💰 Золото: {1}
+
+Хлеб 🍞 = +50%🍕 |-30💰
+Яблоко 🍎 = +5%🍕 |-1💰
+Леденец 🍭 = +1%🍕 |-0 💰
+Шоколад 🍫 = +2%🍕 |-0💰
 
 Не забывай кормить питомца 🐣</value>
   </data>
@@ -232,8 +238,13 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="gameroomCommand" xml:space="preserve">
     <value>Вы в игровой комнате
+
 ⚽️ Усталость: {0}%
 🎊 Радость: {1}%
+💰 Золото: {2} 
+
+🍏 Яблочная игра = +{3}🎊 | -{4}💰
+🎲 Игра в кости = +{5}🎊 | -{6}💰
 
 Делу время - потехе час 🧗‍♀️</value>
   </data>
@@ -419,7 +430,9 @@ Wybierz nowy język 🇵🇱
     <value>Нельзя войти в комнату: питомец на работе 💻</value>
   </data>
   <data name="workCommand" xml:space="preserve">
-    <value>Выбери чем будет заниматься твой питомец 💡</value>
+    <value>Выбери чем будет заниматься твой питомец 💡
+
+Программировать 💻 -{0} минуты ⌛️, +{1} золота 💰</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
     <value>Разрабатывать сайты 💻</value>
@@ -440,5 +453,11 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="renameBannedCommand" xml:space="preserve">
     <value>Плохие дети получают бан</value>
+  </data>
+  <data name="goldNotEnough" xml:space="preserve">
+    <value>Нужно больше золота 💰</value>
+  </data>
+  <data name="tooManyStarvingCommand" xml:space="preserve">
+    <value>Питомец не хочет это сейчас 🤢</value>
   </data>
 </root>

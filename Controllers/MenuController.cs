@@ -403,7 +403,7 @@ namespace TamagotchiBot.Controllers
             }
             else
             {
-                toSendText = string.Format(workCommand);
+                toSendText = string.Format(workCommand, new TimesToWait().WorkOnPCToWait.TotalSeconds/60, Rewards.WorkOnPCGoldReward);
 
                 inlineParts = new InlineItems().InlineWork;
                 toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -668,7 +668,7 @@ namespace TamagotchiBot.Controllers
             if (accessCheck != null)
                 return accessCheck;
 
-            string toSendText = string.Format(kitchenCommand, pet.Satiety);
+            string toSendText = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
 
             List<CommandModel> inlineParts = new InlineItems().InlineFood;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -693,7 +693,7 @@ namespace TamagotchiBot.Controllers
             if (accessCheck != null)
                 return accessCheck;
 
-            string toSendText = string.Format(gameroomCommand, pet.Fatigue, pet.Joy);
+            string toSendText = string.Format(gameroomCommand, pet.Fatigue, pet.Joy, pet.Gold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
 
             List<CommandModel> inlineParts = new InlineItems().InlineGames;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -1053,17 +1053,39 @@ namespace TamagotchiBot.Controllers
         {
             var newStarving = Math.Round(pet.Satiety + FoodFactors.BreadHungerFactor, 2);
             if (newStarving > 100)
-                newStarving = 100;
+            {
+                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
 
+                string anwserLocal = string.Format(tooManyStarvingCommand);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
+
+                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
+            }
+
+
+            var newGold = pet.Gold - Constants.Costs.Bread;
+            if (newGold < 0)
+            {
+                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
+
+                string anwserLocal = string.Format(goldNotEnough);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
+
+                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
+            }
+            _petService.UpdateGold(_userId, newGold);
             _petService.UpdateStarving(_userId, newStarving);
             var aud = _allUsersService.Get(_userId);
             aud.BreadEatenCounter++;
+            aud.GoldSpentCounter += Constants.Costs.Bread;
             _allUsersService.Update(aud);
 
             string anwser = string.Format(PetFeedingAnwserCallback, (int)FoodFactors.BreadHungerFactor);
             _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
 
-            string toSendText = string.Format(kitchenCommand, newStarving);
+            string toSendText = string.Format(kitchenCommand, newStarving, newGold);
 
             if (toSendText.IsEqual(callback.Message.Text))
                 return null;
@@ -1076,17 +1098,40 @@ namespace TamagotchiBot.Controllers
         {
             var newStarving = Math.Round(pet.Satiety + FoodFactors.RedAppleHungerFactor, 2);
             if (newStarving > 100)
-                newStarving = 100;
+            {
+                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
 
+                string anwserLocal = string.Format(tooManyStarvingCommand);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
+
+                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
+            }
+
+            var newGold = pet.Gold - Constants.Costs.Apple;
+            if (newGold < 0)
+            {
+                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
+
+                string anwserLocal = string.Format(goldNotEnough);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
+
+                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
+            }
+
+            _petService.UpdateGold(_userId, newGold);
             _petService.UpdateStarving(_userId, newStarving);
+
             var aud = _allUsersService.Get(_userId);
             aud.AppleEatenCounter++;
+            aud.GoldSpentCounter += Constants.Costs.Apple;
             _allUsersService.Update(aud);
 
             string anwser = string.Format(PetFeedingAnwserCallback, (int)FoodFactors.RedAppleHungerFactor);
             _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
 
-            string toSendText = string.Format(kitchenCommand, newStarving);
+            string toSendText = string.Format(kitchenCommand, newStarving, newGold);
 
             if (toSendText.IsEqual(callback.Message.Text))
                 return null;
@@ -1099,17 +1144,39 @@ namespace TamagotchiBot.Controllers
         {
             var newStarving = Math.Round(pet.Satiety + FoodFactors.ChocolateHungerFactor, 2);
             if (newStarving > 100)
-                newStarving = 100;
+            {
+                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
 
+                string anwserLocal = string.Format(tooManyStarvingCommand);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
+
+                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
+            }
+
+            var newGold = pet.Gold - Constants.Costs.Chocolate;
+            if (newGold < 0)
+            {
+                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
+
+                string anwserLocal = string.Format(goldNotEnough);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
+
+                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
+            }
+
+            _petService.UpdateGold(_userId, newGold);
             _petService.UpdateStarving(_userId, newStarving);
             var aud = _allUsersService.Get(_userId);
             aud.ChocolateEatenCounter++;
+            aud.GoldSpentCounter += Constants.Costs.Chocolate;
             _allUsersService.Update(aud);
 
             string anwser = string.Format(PetFeedingAnwserCallback, (int)FoodFactors.ChocolateHungerFactor);
             _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
 
-            string toSendText = string.Format(kitchenCommand, newStarving);
+            string toSendText = string.Format(kitchenCommand, newStarving, newGold);
 
             if (toSendText.IsEqual(callback.Message.Text))
                 return null;
@@ -1122,17 +1189,40 @@ namespace TamagotchiBot.Controllers
         {
             var newStarving = Math.Round(pet.Satiety + FoodFactors.LollipopHungerFactor, 2);
             if (newStarving > 100)
-                newStarving = 100;
+            {
+                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
 
+                string anwserLocal = string.Format(tooManyStarvingCommand);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
+
+                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
+            }
+
+            var newGold = pet.Gold - Constants.Costs.Lollipop;
+            if (newGold < 0)
+            {
+                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
+
+                string anwserLocal = string.Format(goldNotEnough);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
+
+                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
+            }
+
+            _petService.UpdateGold(_userId, newGold);
             _petService.UpdateStarving(_userId, newStarving);
+
             var aud = _allUsersService.Get(_userId);
             aud.LollypopEatenCounter++;
+            aud.GoldSpentCounter += Costs.Lollipop;
             _allUsersService.Update(aud);
 
             string anwser = string.Format(PetFeedingAnwserCallback, (int)FoodFactors.LollipopHungerFactor);
             _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
 
-            string toSendText = string.Format(kitchenCommand, newStarving);
+            string toSendText = string.Format(kitchenCommand, newStarving, newGold);
 
             if (toSendText.IsEqual(callback.Message.Text))
                 return null;
@@ -1229,6 +1319,19 @@ namespace TamagotchiBot.Controllers
             if (newJoy > 100)
                 newJoy = 100;
 
+            var newGold = pet.Gold - Costs.AppleGame;
+            if (newGold < 0)
+            {
+                string toSendTextLocal = string.Format(gameroomCommand, pet.Fatigue, pet.Joy, pet.Gold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
+
+                string anwserLocal = string.Format(goldNotEnough);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
+
+                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineGames, 3);
+                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
+            }
+
+            _petService.UpdateGold(_userId, newGold);
             _petService.UpdateFatigue(_userId, newFatigue);
             _petService.UpdateJoy(_userId, newJoy);
 
@@ -1238,7 +1341,7 @@ namespace TamagotchiBot.Controllers
             aud.CardsPlayedCounter++;
             _allUsersService.Update(aud);
 
-            string toSendText = string.Format(gameroomCommand, newFatigue, newJoy);
+            string toSendText = string.Format(gameroomCommand, newFatigue, newJoy, newGold, Factors.CardGameJoyFactor, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
 
             if (toSendText.IsEqual(callback.Message.Text))
                 return null;
@@ -1257,17 +1360,30 @@ namespace TamagotchiBot.Controllers
             if (newJoy > 100)
                 newJoy = 100;
 
+            var newGold = pet.Gold - Costs.DiceGame;
+            if (newGold < 0)
+            {
+                string toSendTextLocal = string.Format(gameroomCommand, pet.Fatigue, pet.Joy, pet.Gold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
+
+                string anwserLocal = string.Format(goldNotEnough);
+                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
+
+                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineGames, 3);
+                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
+            }
+
+            _petService.UpdateGold(_userId, newGold);
             _petService.UpdateFatigue(_userId, newFatigue);
             _petService.UpdateJoy(_userId, newJoy);
             var aud = _allUsersService.Get(_userId);
             aud.DicePlayedCounter++;
+            aud.GoldSpentCounter += Costs.DiceGame;
             _allUsersService.Update(aud);
 
             string anwser = string.Format(PetPlayingAnwserCallback, Factors.DiceGameFatigueFactor);
             _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
 
-            string toSendText = string.Format(gameroomCommand, newFatigue, newJoy);
-
+            string toSendText = string.Format(gameroomCommand, newFatigue, newJoy, newGold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
             if (toSendText.IsEqual(callback.Message.Text))
                 return null;
 
@@ -1284,7 +1400,7 @@ namespace TamagotchiBot.Controllers
             {
                 if (callback.Data == "workCommandInlineShowTime" || callback.Data == null)
                 {
-                    string toSendTextIfTimeOver = string.Format(workCommand);
+                    string toSendTextIfTimeOver = string.Format(workCommand, new TimesToWait().WorkOnPCToWait.TotalSeconds/60, Rewards.WorkOnPCGoldReward);
 
                     List<CommandModel> inlineParts = new InlineItems().InlineWork;
                     InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -1298,7 +1414,7 @@ namespace TamagotchiBot.Controllers
                     newFatigue = 100;
 
                 _petService.UpdateFatigue(_userId, newFatigue);
-                _petService.UpdateGold(_userId, Rewards.WorkOnPCGoldReward);
+                _petService.UpdateGold(_userId, pet.Gold += Rewards.WorkOnPCGoldReward);
                 _petService.UpdateCurrentStatus(_userId, (int)CurrentStatus.WorkingOnPC);
 
                 var aud = _allUsersService.Get(_userId);
@@ -1338,7 +1454,7 @@ namespace TamagotchiBot.Controllers
                     pet.CurrentStatus = (int)CurrentStatus.Active;
                     _petService.UpdateCurrentStatus(_userId, pet.CurrentStatus);
 
-                    string toSendTextIfTimeOver = string.Format(workCommand);
+                    string toSendTextIfTimeOver = string.Format(workCommand, new TimesToWait().WorkOnPCToWait.TotalSeconds/60, Rewards.WorkOnPCGoldReward);
 
                     List<CommandModel> inlineParts = new InlineItems().InlineWork;
                     InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);

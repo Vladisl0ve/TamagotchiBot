@@ -174,7 +174,13 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="kitchenCommand" xml:space="preserve">
     <value>Вы на кухні 🥦
-🍕 Сытасць: {0}%
+🍕 Сытасць жывёлы: {0}%
+💰 Золата: {1}
+
+Хлеб 🍞 = +50%🍕 |-30💰
+Яблык 🍎 = +5%🍕 |-1💰
+Лядзёнка 🍭 = +1%🍕 |-0 💰
+Шоколадка 🍫 = +2%🍕 |-0💰
 
 Не забывай карміць жывёліну 🐣</value>
   </data>
@@ -233,8 +239,13 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="gameroomCommand" xml:space="preserve">
     <value>Вы ў дзіцячым пакою
+
 ⚽️ Стомленасць: {0}%
 🎊 Радасць: {1}%
+💰 Золата: {2} 
+
+🍏 Яблычная гульня = +{3}🎊 | -{4}💰
+🎲 Гульня ў карты = +{5}🎊 | -{6}💰
 
 Гульня, ды не штодня 🧗‍♀️</value>
   </data>
@@ -316,6 +327,7 @@ Wybierz nowy język 🇵🇱
 /ranks - лепшыя з лепшых! 👑
 /hospital- ветэрынар 🏥
 /bathroom - чысціня гадаванца 🛁
+/rename - змяніць імя 🌀
 
 У будучыні будзе больш!
 Сачыце за абнаўленнямі! 💝</value>
@@ -420,7 +432,9 @@ Wybierz nowy język 🇵🇱
     <value>Ты не можаш зайсці да пакою: твой гадаванец на працы 💻</value>
   </data>
   <data name="workCommand" xml:space="preserve">
-    <value>Выберы чым будзе займацца твой гадаванец 💡</value>
+    <value>Выберы чым будзе займацца твой гадаванец 💡
+
+Праграмаванне 💻 -{0} мінуты ⌛️ , +{1} золата 💰</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
     <value>Кодзіць 💻</value>
@@ -441,5 +455,11 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="renameBannedCommand" xml:space="preserve">
     <value>Атрымаў бан, бо вёў сябе дрэнна</value>
+  </data>
+  <data name="goldNotEnough" xml:space="preserve">
+    <value>Мала грошай 💰</value>
+  </data>
+  <data name="tooManyStarvingCommand" xml:space="preserve">
+    <value>Ён больш не хоча есьці 🤢</value>
   </data>
 </root>

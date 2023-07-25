@@ -139,7 +139,7 @@ namespace TamagotchiBot.Handlers
                     }
                     catch (Exception ex)
                     {
-                        Log.Error(ex.Message, ex.StackTrace);
+                        Log.Error(ex.Message + Environment.NewLine + ex.StackTrace);
                     }
 
                 if (toSend == null)
@@ -181,6 +181,19 @@ namespace TamagotchiBot.Handlers
                                                            cancellationToken: token);
                         return Task.CompletedTask;
                     }
+
+                    if (petDB?.Gold - 20 < 0)
+                    {
+                        string anwser = string.Format(Resources.Resources.goldNotEnough);
+                        bcService.AnswerCallbackQueryAsync(callbackQuery.Id,
+                                                           callbackQuery.From.Id,
+                                                           anwser,
+                                                           true,
+                                                           cancellationToken: token);
+                        return Task.CompletedTask;
+                    }
+
+                    petService.UpdateGold(callbackQuery.From.Id, petService.Get(callbackQuery.From.Id).Gold - 20);
 
                     userService.UpdateAppleGameStatus(callbackQuery.From.Id, true);
                     bcService.SetMyCommandsAsync(callbackQuery.From.Id,
