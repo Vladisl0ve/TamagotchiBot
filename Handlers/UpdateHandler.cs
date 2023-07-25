@@ -69,7 +69,7 @@ namespace TamagotchiBot.Handlers
                 var processInfo = new ProcessStartInfo()
                 {
                     FileName = "bash",
-                    Arguments = $"-c /home/Vladislove/Tamagotchi/wrapper.sh",
+                    Arguments = $"-c /home/vladislove/Tamagotchi/wrapper.sh",
                     UseShellExecute = true,
                 };
 
