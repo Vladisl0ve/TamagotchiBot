@@ -128,9 +128,11 @@ namespace TamagotchiBot.Services
         }
         private async void OnChangelogsTimedEvent(object sender, ElapsedEventArgs e)
         {
-            var usersToNotify = GetAllActiveUsersIds();
+            var usersToNotify = GetAllUsersIds();
             Log.Information($"Changelog timer - {usersToNotify.Count} users");
             _sinfoService.DisableChangelogsSending();
+
+            int usersSuccess = 0;
             foreach (var userId in usersToNotify)
             {
                 var user = _userService.Get(long.Parse(userId));
@@ -141,7 +143,7 @@ namespace TamagotchiBot.Services
                     await _botClient.SendStickerAsync(userId, Constants.StickersId.ChangelogSticker);
                     await _botClient.SendTextMessageAsync(userId, Resources.Resources.changelog1Text);
 
-
+                    usersSuccess++;
                     Log.Information($"Sent changelog to '@{user.Username}'");
                 }
                 catch (ApiRequestException ex)
@@ -162,6 +164,7 @@ namespace TamagotchiBot.Services
                 }
             }
 
+            Log.Information($"Changelogs have been sent - {usersSuccess} success, {usersToNotify.Count - usersSuccess} failed");
         }
         private async void OnNotifyTimedEvent(object sender, ElapsedEventArgs e)
         {
@@ -345,6 +348,16 @@ namespace TamagotchiBot.Services
 
             foreach (var pet in petsDB)
                 usersToNotify.Add(pet.UserId.ToString());
+
+            return usersToNotify;
+        }
+        private List<string> GetAllUsersIds()
+        {
+            List<string> usersToNotify = new();
+            var usersAUDS = _allUsersDataService.GetAll();
+
+            foreach (var user in usersAUDS)
+                usersToNotify.Add(user.UserId.ToString());
 
             return usersToNotify;
         }

@@ -131,7 +131,7 @@
 Проста ўвядзіце яго тут</value>
   </data>
   <data name="ConfirmedName" xml:space="preserve">
-    <value>Цудоўна!
+    <value>🧃 Цудоўна!
 Твой гадаванец ужо чакае 🐱
 Не забывай карміць і мыць яго, гуляць у гульні і проста любіць ☺️
 
@@ -407,12 +407,6 @@ Wybierz nowy język 🇵🇱
   <data name="backToGameroomText" xml:space="preserve">
     <value>Вы зноў у дзіцячай ⚽️</value>
   </data>
-  <data name="changelog1Text" xml:space="preserve">
-    <value>🐱: Дароў-дароў!
-Мне па сакрэце распавялі, што ў дзіцячай (/gameroom) з'явілася новая цацка пра яблыкі нейкія 👀
-Думаю ты зможаш яе знайсці, націснуўшы на кнопку з джокерам, толькі тсс! Нікому ні слова 🙊
-Давай пагуляем у яе? 🪁</value>
-  </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
     <value>🐱: Чакаю цябе тут, вяртайся
 
@@ -491,5 +485,17 @@ Wybierz nowy język 🇵🇱
   <data name="rewardNotification" xml:space="preserve">
     <value>🎁 Бягі па штодзённы бонус 🎉
 /reward 🎁</value>
+  </data>
+  <data name="changelog1Text" xml:space="preserve">
+    <value>⚡️⚡️ Новае абнаўленне было выпушчана ⚡️⚡️
+Дададзена:
+💰Залатая 
+♟праца (золата зарабляецца тут)
+🎁Штодзённыя падарункі!
+
+Планы такія:
+🧘‍♂️Дадаць ванную пакой
+🎰Новыя міні-гульні
+🏫Дадаць школу</value>
   </data>
 </root>

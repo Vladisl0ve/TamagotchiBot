@@ -161,10 +161,16 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🐱: Goodly-good day!
-        ///They told me in secret that in the gameroom (/gameroom) there was a new toy about apples 👀
-        ///I think you can find it by pressing the button with the joker, only shh! Not a word to anyone 🙊
-        ///Let&apos;s play it? 🪁.
+        ///   Looks up a localized string similar to ⚡️⚡️ A new update has been released ⚡️⚡️
+        ///Added:
+        ///💰Gold
+        ///♟Work (this is where you earn gold)
+        ///🎁 Daily gifts!
+        ///
+        ///Plans:
+        ///🧘‍♂️Добавить bathroom
+        ///🎰 New mini-games.
+        ///🏫 Add a school.
         /// </summary>
         public static string changelog1Text {
             get {
