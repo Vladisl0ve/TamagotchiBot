@@ -887,7 +887,7 @@ namespace TamagotchiBot.Controllers
                 if (counter == 1)
                 {
                     var user = _userService.Get(appleUser.UserId);
-                    anwserRating += ranksCommandGold + "\n\n";
+                    anwserRating += ranksCommandApples + "\n\n";
                     anwserRating += "🍏 " + appleUser.TotalWins + " 🐱 " + _petService.Get(user.UserId).Name ?? user.Username ?? user.FirstName + user.LastName;
                     anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
                     counter++;
