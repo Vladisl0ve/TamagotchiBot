@@ -29,6 +29,7 @@ namespace TamagotchiBot.Controllers
         private readonly AllUsersDataService _allUsersService;
         private readonly BannedUsersService _bannedService;
         private readonly AdsProducersService _adsProducersService;
+        private readonly AppleGameDataService _appleGameDataService;
         private readonly ITelegramBotClient bot;
         private readonly Message message = null;
         private readonly CallbackQuery callback = null;
@@ -45,6 +46,7 @@ namespace TamagotchiBot.Controllers
                               BotControlService botControlService,
                               AllUsersDataService allUsersService,
                               BannedUsersService bannedService,
+                              AppleGameDataService appleGameDataService,
                               CallbackQuery callback)
         {
             this.bot = bot;
@@ -55,6 +57,7 @@ namespace TamagotchiBot.Controllers
             _bcService = botControlService;
             this._allUsersService = allUsersService;
             _bannedService = bannedService;
+            _appleGameDataService = appleGameDataService;
             _userId = callback.From.Id;
 
             GetFromDb();
@@ -70,6 +73,7 @@ namespace TamagotchiBot.Controllers
                               BotControlService botControlService,
                               AllUsersDataService allUsersService,
                               BannedUsersService bannedService,
+                              AppleGameDataService appleGameDataService,
                               AdsProducersService adsProducersService,
                               Message message)
         {
@@ -81,6 +85,7 @@ namespace TamagotchiBot.Controllers
             _bcService = botControlService;
             this._allUsersService = allUsersService;
             _bannedService = bannedService;
+            _appleGameDataService = appleGameDataService;
             _adsProducersService = adsProducersService;
             _userId = message.From.Id;
 
@@ -533,6 +538,9 @@ namespace TamagotchiBot.Controllers
             if (callback.Data == "ranksCommandInlineLevel")
                 return ShowRanksLevel();
 
+            if (callback.Data == "ranksCommandInlineApples")
+                return ShowRanksApples();
+
             return null;
         }
         private Answer CreatePet()
@@ -859,6 +867,38 @@ namespace TamagotchiBot.Controllers
                     string name = pet.Name ?? user.Username ?? user.FirstName + user.LastName;
 
                     anwserRating += counter + ". " + pet.Level + " 🐱 " + name;
+                    counter++;
+                }
+            }
+
+            return anwserRating;
+        }
+        private string GetRanksByApples()
+        {
+            var topApples = _appleGameDataService.GetAll()
+                .OrderByDescending(a => a.TotalWins)
+                .Take(10); //First 10 top-apples users
+
+            string anwserRating = "";
+
+            int counter = 1;
+            foreach (var appleUser in topApples)
+            {
+                string name = pet.Name ?? user.Username ?? user.FirstName + user.LastName;
+
+                if (counter == 1)
+                {
+                    var user = _userService.Get(appleUser.UserId);
+                    anwserRating += ranksCommandGold + "\n\n";
+                    anwserRating += "🍏 " + appleUser.TotalWins + " 🐱 " + name;
+                    anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
+                    counter++;
+                }
+                else
+                {
+                    anwserRating += "\n";
+                    var user = _userService.Get(appleUser.UserId);
+                    anwserRating += counter + ". " + appleUser.TotalWins + " 🐱 " + name;
                     counter++;
                 }
             }
@@ -1722,6 +1762,18 @@ namespace TamagotchiBot.Controllers
         private AnswerCallback ShowRanksGold()
         {
             string toSendText = GetRanksByGold();
+
+            if (toSendText.IsEqual(callback.Message.Text))
+                return null;
+
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
+
+            return new AnswerCallback(toSendText, toSendInline);
+        }
+
+        private AnswerCallback ShowRanksApples()
+        {
+            string toSendText = GetRanksByApples();
 
             if (toSendText.IsEqual(callback.Message.Text))
                 return null;

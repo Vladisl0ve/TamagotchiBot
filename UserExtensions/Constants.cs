@@ -234,13 +234,18 @@ namespace TamagotchiBot.UserExtensions
                 {
                     new CommandModel()
                     {
+                        Text = Resources.Resources.ranksCommandInlineLevel,
+                        CallbackData = "ranksCommandInlineLevel"
+                    },
+                    new CommandModel()
+                    {
                         Text = Resources.Resources.ranksCommandInlineGold,
                         CallbackData = "ranksCommandInlineGold"
                     },
                     new CommandModel()
                     {
-                        Text = Resources.Resources.ranksCommandInlineLevel,
-                        CallbackData = "ranksCommandInlineLevel"
+                        Text = Resources.Resources.ranksCommandInlineApples,
+                        CallbackData = "ranksCommandInlineApples"
                     }
                 };
 

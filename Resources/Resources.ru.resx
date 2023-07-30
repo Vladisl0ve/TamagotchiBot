@@ -500,4 +500,10 @@ Wybierz nowy język 🇵🇱
   <data name="rewardCommandDescription" xml:space="preserve">
     <value>Бонусы 🎁</value>
   </data>
+  <data name="ranksCommandInlineApples" xml:space="preserve">
+    <value>🍎Яблоки</value>
+  </data>
+  <data name="ranksCommandApples" xml:space="preserve">
+    <value>🍎⭐️ Топ-10 побед в яблочной игре ⭐️🍎</value>
+  </data>
 </root>

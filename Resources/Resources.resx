@@ -498,4 +498,10 @@ Take it soon! 🎁</value>
   <data name="rewardCommandDescription" xml:space="preserve">
     <value>Reward 🎁</value>
   </data>
+  <data name="ranksCommandInlineApples" xml:space="preserve">
+    <value>🍎Apples</value>
+  </data>
+  <data name="ranksCommandApples" xml:space="preserve">
+    <value>🍎⭐️ Top 10 in apples game ⭐️🍎</value>
+  </data>
 </root>

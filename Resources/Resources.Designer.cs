@@ -675,6 +675,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🍎⭐️ Top 10 in apples game ⭐️🍎.
+        /// </summary>
+        public static string ranksCommandApples {
+            get {
+                return ResourceManager.GetString("ranksCommandApples", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rating 🏆.
         /// </summary>
         public static string ranksCommandDescription {
@@ -689,6 +698,15 @@ namespace TamagotchiBot.Resources {
         public static string ranksCommandGold {
             get {
                 return ResourceManager.GetString("ranksCommandGold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🍎Apples.
+        /// </summary>
+        public static string ranksCommandInlineApples {
+            get {
+                return ResourceManager.GetString("ranksCommandInlineApples", resourceCulture);
             }
         }
         

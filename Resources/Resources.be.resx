@@ -502,4 +502,10 @@ Wybierz nowy język 🇵🇱
   <data name="rewardCommandDescription" xml:space="preserve">
     <value>Узнагарода 🎁</value>
   </data>
+  <data name="ranksCommandInlineApples" xml:space="preserve">
+    <value>🍎Яблыкі</value>
+  </data>
+  <data name="ranksCommandApples" xml:space="preserve">
+    <value>🍎⭐️ Топ-10 перамог у яблыках ⭐️🍎</value>
+  </data>
 </root>

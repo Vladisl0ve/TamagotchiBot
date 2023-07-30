@@ -122,7 +122,7 @@ namespace TamagotchiBot.Handlers
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
-                var menuController = new MenuController(botClient, userService, petService, chatService, bcService, allUsersService, bannedService, adsProducersService, message);
+                var menuController = new MenuController(botClient, userService, petService, chatService, bcService, allUsersService, bannedService, appleGameDataService, adsProducersService, message);
                 var gameController = new AppleGameController(botClient, userService, petService, chatService, appleGameDataService, allUsersService, bcService, message);
                 Answer toSend = null;
 
@@ -241,7 +241,7 @@ namespace TamagotchiBot.Handlers
 
                 await SendPostToChat(callbackQuery.From.Id);
 
-                var controller = new MenuController(bot, userService, petService, chatService, bcService, allUsersService, bannedService, callbackQuery);
+                var controller = new MenuController(bot, userService, petService, chatService, bcService, allUsersService, bannedService, appleGameDataService, callbackQuery);
                 AnswerCallback toSend = controller.CallbackHandler();
 
                 if (toSend == null)

@@ -325,7 +325,7 @@ namespace TamagotchiBot.Services
             foreach (var pet in petsDB)
             {
                 var spentTime = DateTime.UtcNow - pet.LastUpdateTime;
-                if (spentTime > _envs.AwakeWhenAFKFor)
+                if (spentTime > _envs.AwakeWhenAFKFor && spentTime < new TimeSpan(5, 0, 0))
                     usersToNotify.Add(pet.UserId.ToString());
             }
 
