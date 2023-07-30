@@ -894,13 +894,12 @@ namespace TamagotchiBot.Controllers
                         continue;
 
                     anwserRating += ranksCommandApples + "\n\n";
-                    anwserRating += "🍏 " + appleUser.TotalWins + " 🐱 " + _petService.Get(user.UserId).Name ?? user.Username ?? user.FirstName + user.LastName;
+                    anwserRating += "🍏 " + appleUser.TotalWins + " 🐱 " + _petService.Get(user.UserId)?.Name ?? user.Username ?? user.FirstName + user.LastName;
                     anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
                     counter++;
                 }
                 else
                 {
-                    anwserRating += "\n";
                     var user = _userService.Get(appleUser.UserId);
                     if (user == null)
                         continue;
@@ -908,7 +907,8 @@ namespace TamagotchiBot.Controllers
                     if (appleUser?.TotalWins == null)
                         continue;
 
-                    anwserRating += counter + ". " + appleUser.TotalWins + " 🐱 " + _petService.Get(user.UserId).Name ?? user.Username ?? user.FirstName + user.LastName;
+                    anwserRating += "\n";
+                    anwserRating += counter + ". " + appleUser.TotalWins + " 🐱 " + _petService.Get(user.UserId)?.Name ?? user.Username ?? user.FirstName + user.LastName;
                     counter++;
                 }
             }
