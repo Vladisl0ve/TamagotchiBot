@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using TamagotchiBot.Models;
+using TamagotchiBot.Models.Mongo;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.UserExtensions.Constants;
@@ -278,6 +279,22 @@ namespace TamagotchiBot.UserExtensions
             }
             else
                 return null;
+        }
+
+        public static AdsProducers GetAdsProducerFromStart(string command)
+        {
+            var dividedCommand = command.Split(new char[] {'_', ' ' });
+
+            if (dividedCommand.Length > 1 && dividedCommand[0] == "/start")
+            {
+                var pureAds = dividedCommand.Skip(1);
+                return new AdsProducers()
+                {
+                    ProducerName = pureAds.Last(),
+                    CompanyName = string.Join(" ", pureAds.SkipLast(1))
+                };
+            }
+            return null;
         }
 
         public static bool IsEqual(this string telegramString, string defaultString)

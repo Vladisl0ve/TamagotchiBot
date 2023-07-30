@@ -31,6 +31,7 @@ namespace TamagotchiBot.Handlers
         private readonly AllUsersDataService allUsersService;
         private readonly BotControlService bcService;
         private readonly BannedUsersService bannedService;
+        private readonly AdsProducersService adsProducersService;
 
         public UpdateHandler(UserService userService,
                              PetService petService,
@@ -39,6 +40,7 @@ namespace TamagotchiBot.Handlers
                              AppleGameDataService appleGameDataService,
                              AllUsersDataService allUsersService,
                              BannedUsersService bannedService,
+                             AdsProducersService adsProducersService,
                              BotControlService botControlService)
         {
             this.userService = userService;
@@ -48,6 +50,7 @@ namespace TamagotchiBot.Handlers
             this.appleGameDataService = appleGameDataService;
             this.allUsersService = allUsersService;
             this.bannedService = bannedService;
+            this.adsProducersService = adsProducersService;
             this.bcService = botControlService;
         }
 
@@ -119,7 +122,7 @@ namespace TamagotchiBot.Handlers
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
-                var menuController = new MenuController(botClient, userService, petService, chatService, bcService, allUsersService, bannedService, message);
+                var menuController = new MenuController(botClient, userService, petService, chatService, bcService, allUsersService, bannedService, adsProducersService, message);
                 var gameController = new AppleGameController(botClient, userService, petService, chatService, appleGameDataService, allUsersService, bcService, message);
                 Answer toSend = null;
 

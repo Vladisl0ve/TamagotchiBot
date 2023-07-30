@@ -62,6 +62,7 @@ namespace Telegram.Bots.Example
                       services.Configure<EnvsSettings>(context.Configuration.GetSection(nameof(EnvsSettings)));
                       services.AddSingleton<IEnvsSettings>(sp => sp.GetRequiredService<IOptions<EnvsSettings>>().Value);
                       services.AddSingleton<UserService>();
+                      services.AddSingleton<AdsProducersService>();
                       services.AddSingleton<PetService>();
                       services.AddSingleton<ChatService>();
                       services.AddSingleton<SInfoService>();

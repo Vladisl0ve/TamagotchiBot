@@ -28,6 +28,7 @@ namespace TamagotchiBot.Controllers
         private readonly BotControlService _bcService;
         private readonly AllUsersDataService _allUsersService;
         private readonly BannedUsersService _bannedService;
+        private readonly AdsProducersService _adsProducersService;
         private readonly ITelegramBotClient bot;
         private readonly Message message = null;
         private readonly CallbackQuery callback = null;
@@ -69,6 +70,7 @@ namespace TamagotchiBot.Controllers
                               BotControlService botControlService,
                               AllUsersDataService allUsersService,
                               BannedUsersService bannedService,
+                              AdsProducersService adsProducersService,
                               Message message)
         {
             this.bot = bot;
@@ -79,6 +81,7 @@ namespace TamagotchiBot.Controllers
             _bcService = botControlService;
             this._allUsersService = allUsersService;
             _bannedService = bannedService;
+            _adsProducersService = adsProducersService;
             _userId = message.From.Id;
 
             GetFromDb();
@@ -136,6 +139,10 @@ namespace TamagotchiBot.Controllers
         {
             if (message != null)
             {
+                var ads = Extensions.GetAdsProducerFromStart(message.Text);
+                if (ads != null)
+                    _adsProducersService.AddOrInsert(ads);
+
                 _userService.Create(message.From);
                 _chatService.Create(new Chat()
                 {
