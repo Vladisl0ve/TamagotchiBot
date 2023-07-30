@@ -890,7 +890,7 @@ namespace TamagotchiBot.Controllers
                 {
                     var user = _userService.Get(appleUser.UserId);
                     anwserRating += ranksCommandGold + "\n\n";
-                    anwserRating += "🍏 " + appleUser.TotalWins + " 🐱 " + name;
+                    anwserRating += "🍏 " + appleUser.TotalWins + " 🐱 " + _petService.Get(appleUser.UserId).Name;
                     anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
                     counter++;
                 }
@@ -898,7 +898,7 @@ namespace TamagotchiBot.Controllers
                 {
                     anwserRating += "\n";
                     var user = _userService.Get(appleUser.UserId);
-                    anwserRating += counter + ". " + appleUser.TotalWins + " 🐱 " + name;
+                    anwserRating += counter + ". " + appleUser.TotalWins + " 🐱 " + _petService.Get(appleUser.UserId).Name;
                     counter++;
                 }
             }
