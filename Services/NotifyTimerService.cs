@@ -344,7 +344,7 @@ namespace TamagotchiBot.Services
         private List<long> GetAllDailyRewardUsersIds()
         {
             List<long> usersToNotify = new();
-            var petsDB = _petService.GetAll();
+            var petsDB = _petService.GetAll().Where(p => p.Name != null);
 
             foreach (var pet in petsDB)
             {
