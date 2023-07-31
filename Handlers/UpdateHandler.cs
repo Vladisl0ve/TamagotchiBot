@@ -102,6 +102,13 @@ namespace TamagotchiBot.Handlers
                                              cancellationToken: token,
                                              scope: new BotCommandScopeChat() { ChatId = userId });
             }
+            else if (update.Message?.Text == "/quit" || update.Message?.Text == Resources.Resources.quitText)
+            {
+                bcService.SetMyCommandsAsync(userId,
+                                             Extensions.GetCommands(true),
+                                             cancellationToken: token,
+                                             scope: new BotCommandScopeChat() { ChatId = userId });
+            }
             else if (userService.Get(userId)?.IsInAppleGame ?? false)
             {
                 bcService.SetMyCommandsAsync(userId,
@@ -139,9 +146,9 @@ namespace TamagotchiBot.Handlers
 
                         if (userService.Get(message.From.Id).IsInAppleGame)
                             toSend = gameController.Menu(message);
-                        else                        
+                        else
                             toSend = menuController.Process();
-                        
+
                     }
                     catch (ApiRequestException apiEx)
                     {
