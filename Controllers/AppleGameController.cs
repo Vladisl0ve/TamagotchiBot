@@ -204,7 +204,7 @@ namespace TamagotchiBot.Controllers
 
                 _userService.UpdateAppleGameStatus(UserId, false);
 
-                string toSendText = string.Format(gameroomCommand, petDB.Fatigue, petDB.Joy, petDB.Gold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
+                string toSendText = string.Format(gameroomCommand, petDB.Fatigue, petDB.Joy, petDB.Gold, Factors.AppleGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
 
                 List<CommandModel> inlineParts = new InlineItems().InlineGames;
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -291,11 +291,11 @@ namespace TamagotchiBot.Controllers
                     appleDataToUpdate.TotalLoses += 1;
                     appleDataToUpdate.IsGameOvered = true;
 
-                    petDB.Joy += Factors.CardGameJoyFactor;
+                    petDB.Joy += Factors.AppleGameJoyFactor;
                     if (petDB.Joy > 100)
                         petDB.Joy = 100;
 
-                    petDB.Fatigue += Factors.CardGameFatigueFactor;
+                    petDB.Fatigue += Factors.AppleGameFatigueFactor;
                     if (petDB.Fatigue > 100)
                         petDB.Fatigue = 100;
 
@@ -308,11 +308,11 @@ namespace TamagotchiBot.Controllers
                     appleDataToUpdate.TotalWins += 1;
                     appleDataToUpdate.IsGameOvered = true;
 
-                    petDB.Joy += Factors.CardGameJoyFactor;
+                    petDB.Joy += Factors.AppleGameJoyFactor;
                     if (petDB.Joy > 100)
                         petDB.Joy = 100;
 
-                    petDB.Fatigue += Factors.CardGameFatigueFactor;
+                    petDB.Fatigue += Factors.AppleGameFatigueFactor;
                     if (petDB.Fatigue > 100)
                         petDB.Fatigue = 100;
 

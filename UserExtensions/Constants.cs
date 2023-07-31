@@ -52,8 +52,8 @@ namespace TamagotchiBot.UserExtensions
             public const double RestFactor = 10;
             public const double JoyFactor = 0.3;
 
-            public const int CardGameFatigueFactor = 20;
-            public const int CardGameJoyFactor = 20;
+            public const int AppleGameFatigueFactor = 20;
+            public const int AppleGameJoyFactor = 20;
             public const int DiceGameFatigueFactor = 5;
             public const int DiceGameJoyFactor = 10;
 

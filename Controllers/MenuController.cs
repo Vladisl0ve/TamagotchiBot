@@ -761,7 +761,7 @@ namespace TamagotchiBot.Controllers
             if (accessCheck != null)
                 return accessCheck;
 
-            string toSendText = string.Format(gameroomCommand, pet.Fatigue, pet.Joy, pet.Gold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
+            string toSendText = string.Format(gameroomCommand, pet.Fatigue, pet.Joy, pet.Gold, Factors.AppleGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
 
             List<CommandModel> inlineParts = new InlineItems().InlineGames;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -1465,18 +1465,18 @@ namespace TamagotchiBot.Controllers
         }
         private AnswerCallback PlayCardInline()
         {
-            var newFatigue = pet.Fatigue + Factors.CardGameFatigueFactor;
+            var newFatigue = pet.Fatigue + Factors.AppleGameFatigueFactor;
             if (newFatigue > 100)
                 newFatigue = 100;
 
-            var newJoy = pet.Joy + Factors.CardGameJoyFactor;
+            var newJoy = pet.Joy + Factors.AppleGameJoyFactor;
             if (newJoy > 100)
                 newJoy = 100;
 
             var newGold = pet.Gold - Costs.AppleGame;
             if (newGold < 0)
             {
-                string toSendTextLocal = string.Format(gameroomCommand, pet.Fatigue, pet.Joy, pet.Gold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
+                string toSendTextLocal = string.Format(gameroomCommand, pet.Fatigue, pet.Joy, pet.Gold, Factors.AppleGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
 
                 string anwserLocal = string.Format(goldNotEnough);
                 _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
@@ -1489,13 +1489,13 @@ namespace TamagotchiBot.Controllers
             _petService.UpdateFatigue(_userId, newFatigue);
             _petService.UpdateJoy(_userId, newJoy);
 
-            string anwser = string.Format(PetPlayingAnwserCallback, Factors.CardGameFatigueFactor);
+            string anwser = string.Format(PetPlayingAnwserCallback, Factors.AppleGameFatigueFactor);
             _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
             var aud = _allUsersService.Get(_userId);
             aud.CardsPlayedCounter++;
             _allUsersService.Update(aud);
 
-            string toSendText = string.Format(gameroomCommand, newFatigue, newJoy, newGold, Factors.CardGameJoyFactor, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
+            string toSendText = string.Format(gameroomCommand, newFatigue, newJoy, newGold, Factors.AppleGameJoyFactor, Factors.AppleGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
 
             if (toSendText.IsEqual(callback.Message.Text))
                 return null;
@@ -1517,7 +1517,7 @@ namespace TamagotchiBot.Controllers
             var newGold = pet.Gold - Costs.DiceGame;
             if (newGold < 0)
             {
-                string toSendTextLocal = string.Format(gameroomCommand, pet.Fatigue, pet.Joy, pet.Gold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
+                string toSendTextLocal = string.Format(gameroomCommand, pet.Fatigue, pet.Joy, pet.Gold, Factors.AppleGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
 
                 string anwserLocal = string.Format(goldNotEnough);
                 _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
@@ -1537,7 +1537,7 @@ namespace TamagotchiBot.Controllers
             string anwser = string.Format(PetPlayingAnwserCallback, Factors.DiceGameFatigueFactor);
             _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
 
-            string toSendText = string.Format(gameroomCommand, newFatigue, newJoy, newGold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
+            string toSendText = string.Format(gameroomCommand, newFatigue, newJoy, newGold, Factors.AppleGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
             if (toSendText.IsEqual(callback.Message.Text))
                 return null;
 
