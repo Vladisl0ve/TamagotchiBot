@@ -17,24 +17,30 @@ namespace TamagotchiBot.Services
         private UserService _userService;
         private PetService _petService;
         private AllUsersDataService _allUsersDataService;
-        public BotControlService(ITelegramBotClient bot, UserService userService, PetService petService, AllUsersDataService allUsersDataService)
+        private ChatService _chatService;
+        private AppleGameDataService _appleGameDataService;
+        public BotControlService(ITelegramBotClient bot,
+                                 UserService userService,
+                                 PetService petService,
+                                 ChatService chatService,
+                                 AppleGameDataService appleGameDataService,
+                                 AllUsersDataService allUsersDataService)
         {
             _botClient = bot;
             _userService = userService;
             _petService = petService;
+            _chatService = chatService;
+            _appleGameDataService = appleGameDataService;
             _allUsersDataService = allUsersDataService;
         }
 
         public async void SendTextMessageAsync(long userId, string text, IReplyMarkup replyMarkup = default, CancellationToken cancellationToken = default)
         {
-            var userDB = _allUsersDataService.Get(userId);
-            if (userDB == null)
-                Log.Warning("There is no user with id:" + userId);
-
+            var user = _userService.Get(userId);
 
             try
             {
-                Log.Information($"Message sent to @{userDB?.Username ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
+                Log.Information($"Message sent to @{user?.Username ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
                 await _botClient.SendTextMessageAsync(userId,
                                      text,
                                      replyMarkup: replyMarkup,
@@ -42,34 +48,50 @@ namespace TamagotchiBot.Services
             }
             catch (ApiRequestException ex)
             {
-                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB?.Username ?? userId.ToString()}");
+                if (ex.ErrorCode == 403) //Forbidden by user
+                {
+                    Log.Warning($"{ex.Message} @{user?.Username}, id: {userId}");
+
+                    //remove all data about user
+                    _chatService.Remove(userId);
+                    _petService.Remove(userId);
+                    _userService.Remove(userId);
+                    _appleGameDataService.Delete(userId);
+                }
             }
             catch (Exception ex)
             {
-                Log.Error($"{ex.Message}, user: {userDB?.Username ?? userId.ToString()}");
+                Log.Error($"{ex.Message}, user: {user?.Username ?? userId.ToString()}");
             }
         }
 
         public async void SendStickerAsync(long userId, string stickerId, CancellationToken cancellationToken = default)
         {
-            var userDB = _allUsersDataService.Get(userId);
-            if (userDB == null)
-                Log.Warning("There is no user with id:" + userId);
+            var user = _userService.Get(userId);
 
             try
             {
-                Log.Information("Sticker sent for @" + userDB?.Username ?? userId.ToString());
+                Log.Information("Sticker sent for @" + user?.Username ?? userId.ToString());
                 await _botClient.SendStickerAsync(userId,
                                      stickerId,
                                      cancellationToken: cancellationToken);
             }
             catch (ApiRequestException ex)
             {
-                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB?.Username ?? userId.ToString()}");
+                if (ex.ErrorCode == 403) //Forbidden by user
+                {
+                    Log.Warning($"{ex.Message} @{user?.Username}, id: {userId}");
+
+                    //remove all data about user
+                    _chatService.Remove(userId);
+                    _petService.Remove(userId);
+                    _userService.Remove(userId);
+                    _appleGameDataService.Delete(userId);
+                }
             }
             catch (Exception ex)
             {
-                Log.Error($"{ex.Message}, user: {userDB?.Username ?? userId.ToString()}");
+                Log.Error($"{ex.Message}, user: {user?.Username ?? userId.ToString()}");
             }
         }
 
@@ -174,7 +196,7 @@ namespace TamagotchiBot.Services
 
             try
             {
-               await _botClient.SendChatActionAsync(chatId, chatAction, cancellationToken);
+                await _botClient.SendChatActionAsync(chatId, chatAction, cancellationToken);
             }
             catch (ApiRequestException ex)
             {

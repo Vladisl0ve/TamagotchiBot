@@ -666,6 +666,68 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Walking with a pet in the city, you met an old friend of Lionko🦁
+        ///
+        ///+40% to joy 🎊
+        ///+15 gold 💰 (borrowed from a friend).
+        /// </summary>
+        public static string RandomEventFriendMet {
+            get {
+                return ResourceManager.GetString("RandomEventFriendMet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🌭 You were asked to rate a new hot dog recipe 🧑‍🍳
+        ///
+        ///+40 satiety🍕
+        ///+20 gold💰.
+        /// </summary>
+        public static string RandomEventHotdog {
+            get {
+                return ResourceManager.GetString("RandomEventHotdog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🌈 You saw the rainbow after the rain 🌦
+        ///
+        ///+10% joy 🎊.
+        /// </summary>
+        public static string RandomEventRainbow {
+            get {
+                return ResourceManager.GetString("RandomEventRainbow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🧑‍🌾Some passerby stepped on the pet&apos;s foot 🗣
+        ///
+        /// 👺-1% health
+        /// 💊-10% joy🎊.
+        /// </summary>
+        public static string RandomEventStepOnFoot {
+            get {
+                return ResourceManager.GetString("RandomEventStepOnFoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ❤️‍🔥Help your pet urgently!
+        ///😾: my tummy hurts very much...
+        ///
+        ///-20% health 💊
+        ///-30% satiety 🍕
+        ///
+        ////hospital - you have to run to the clinic!.
+        /// </summary>
+        public static string RandomEventStomachache {
+            get {
+                return ResourceManager.GetString("RandomEventStomachache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🌈⭐️ Top 10 Experience⭐️🌈.
         /// </summary>
         public static string ranksCommand {
@@ -949,6 +1011,15 @@ namespace TamagotchiBot.Resources {
         public static string Welcome {
             get {
                 return ResourceManager.GetString("Welcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Let&apos;s go! 😻.
+        /// </summary>
+        public static string WelcomeStatusButton {
+            get {
+                return ResourceManager.GetString("WelcomeStatusButton", resourceCulture);
             }
         }
         

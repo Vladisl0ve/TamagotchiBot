@@ -508,4 +508,40 @@ Wybierz nowy język 🇵🇱
   <data name="ranksCommandApples" xml:space="preserve">
     <value>🍎⭐️ Топ-10 перамог у яблыках ⭐️🍎</value>
   </data>
+  <data name="RandomEventStomachache" xml:space="preserve">
+    <value>❤️‍🔥Дапамажыце неадкладна свайму гадаванцу!
+😾:Мой жывоцік вельмі баліць...
+
+-20% здароўя 💊
+-30% сытасці 🍕
+
+/hospital - трэба ісці ў паліклініку!</value>
+  </data>
+  <data name="RandomEventFriendMet" xml:space="preserve">
+    <value>Гуляючы з гадаванцам па горадзе, вы сустрэлі старога сябра Льва🦁
+
++40% Радасць 🎊
++15 золата 💰 (пазычыў у сябра)</value>
+  </data>
+  <data name="RandomEventHotdog" xml:space="preserve">
+    <value>🌭 Вам было прапанавана ацаніць новы рэцэпт хот-дога 🧑‍🍳
+
++40 насычанасць🍕
++20 золата💰</value>
+  </data>
+  <data name="RandomEventStepOnFoot" xml:space="preserve">
+    <value>🧑‍🌾Нехта наступіў на нагу гадаванцу🗣
+Вось рэптылія 👺 
+
+-1% здароўя 💊
+-10% радасці🎊</value>
+  </data>
+  <data name="RandomEventRainbow" xml:space="preserve">
+    <value>🌈 Вы спаткалі вясёлку пасля дажджу 🌦
+
++ 10% радасці 🎊</value>
+  </data>
+  <data name="WelcomeStatusButton" xml:space="preserve">
+    <value>Пачнем 😻</value>
+  </data>
 </root>

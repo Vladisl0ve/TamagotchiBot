@@ -28,5 +28,7 @@ namespace TamagotchiBot.Models.Mongo
         public string Culture { get; set; }
         [BsonElement("NextDailyRewardNotificationTime")]
         public DateTime NextDailyRewardNotificationTime { get; set; }
+        [BsonElement("NextRandomEventNotificationTime")]
+        public DateTime NextRandomEventNotificationTime { get; set; }
     }
 }

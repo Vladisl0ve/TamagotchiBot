@@ -505,4 +505,40 @@ Plany:
   <data name="ranksCommandApples" xml:space="preserve">
     <value>🍎⭐️ Top 10 w grze w jabłka ⭐️🍎</value>
   </data>
+  <data name="RandomEventStomachache" xml:space="preserve">
+    <value>❤️‍🔥Pomóż pilnie!
+😾: bardzo boli mnie brzuszek...
+
+-20% zdrowia 💊
+-30% sytości 🍕
+
+/hospital - szybko do doktora!</value>
+  </data>
+  <data name="RandomEventFriendMet" xml:space="preserve">
+    <value>Spacerując po mieście ze swoim zwierzakiem spotkałeś starego przyjaciela Lwiątka🦁
+
++40% do radości 🎊
++15 złota 💰 (pożyczone od przyjaciela)</value>
+  </data>
+  <data name="RandomEventHotdog" xml:space="preserve">
+    <value>Zostałeś poproszony o ocenę nowego przepisu na hot doga 🧑‍🍳
+
++40 sytości 🍕
++20 złota 💰</value>
+  </data>
+  <data name="RandomEventStepOnFoot" xml:space="preserve">
+    <value>🧑‍🌾Какой przechodzień nadepnął na łapę swojego zwierzaka 🗣
+Co za drań 👺
+
+-1% zdrowia 💊
+-10% radości 🎊</value>
+  </data>
+  <data name="RandomEventRainbow" xml:space="preserve">
+    <value>🌈 Widziałeś tęczę po deszczu 🌦
+
++10% radości 🎊</value>
+  </data>
+  <data name="WelcomeStatusButton" xml:space="preserve">
+    <value>Do przodu 😻</value>
+  </data>
 </root>

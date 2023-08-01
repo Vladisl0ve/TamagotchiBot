@@ -570,11 +570,13 @@ namespace TamagotchiBot.Controllers
 
                 chat.LastMessage = "/welcome";
                 _chatService.Update(chat.ChatId, chat);
+                var keyboard = new ReplyKeyboardMarkup(new KeyboardButton(WelcomeStatusButton));
+                keyboard.OneTimeKeyboard = true;
                 return new Answer()
                 {
                     Text = Welcome,
                     StickerId = StickersId.WelcomeSticker,
-                    ReplyMarkup = new ReplyKeyboardRemove(),
+                    ReplyMarkup = keyboard,
                     InlineKeyboardMarkup = null
                 };
             }
@@ -587,7 +589,7 @@ namespace TamagotchiBot.Controllers
                 {
                     Text = ChooseName,
                     StickerId = StickersId.PetChooseName_Cat,
-                    ReplyMarkup = null,
+                    ReplyMarkup = new ReplyKeyboardRemove(),
                     InlineKeyboardMarkup = null
                 };
             }
@@ -595,6 +597,8 @@ namespace TamagotchiBot.Controllers
             if (pet.Name == null)
             {
                 _petService.UpdateName(_userId, message.Text);
+                _petService.UpdateGold(_userId, 50);
+                _userService.UpdateNextRandomEventNotificationTime(pet.UserId, DateTime.UtcNow.AddMinutes(25));
                 return new Answer()
                 {
                     Text = ConfirmedName,
@@ -1230,7 +1234,7 @@ namespace TamagotchiBot.Controllers
                 return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
             }
             _petService.UpdateGold(_userId, newGold);
-            _petService.UpdateStarving(_userId, newStarving);
+            _petService.UpdateSatiety(_userId, newStarving);
             var aud = _allUsersService.Get(_userId);
             aud.BreadEatenCounter++;
             aud.GoldSpentCounter += Constants.Costs.Bread;
@@ -1275,7 +1279,7 @@ namespace TamagotchiBot.Controllers
             }
 
             _petService.UpdateGold(_userId, newGold);
-            _petService.UpdateStarving(_userId, newStarving);
+            _petService.UpdateSatiety(_userId, newStarving);
 
             var aud = _allUsersService.Get(_userId);
             aud.AppleEatenCounter++;
@@ -1321,7 +1325,7 @@ namespace TamagotchiBot.Controllers
             }
 
             _petService.UpdateGold(_userId, newGold);
-            _petService.UpdateStarving(_userId, newStarving);
+            _petService.UpdateSatiety(_userId, newStarving);
             var aud = _allUsersService.Get(_userId);
             aud.ChocolateEatenCounter++;
             aud.GoldSpentCounter += Constants.Costs.Chocolate;
@@ -1366,7 +1370,7 @@ namespace TamagotchiBot.Controllers
             }
 
             _petService.UpdateGold(_userId, newGold);
-            _petService.UpdateStarving(_userId, newStarving);
+            _petService.UpdateSatiety(_userId, newStarving);
 
             var aud = _allUsersService.Get(_userId);
             aud.LollypopEatenCounter++;

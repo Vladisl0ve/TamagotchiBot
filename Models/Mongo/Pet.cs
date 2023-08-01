@@ -25,8 +25,13 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("StartWorkingTime")]
         public DateTime StartWorkingTime { get; set; }
 
+
+        [BsonElement("GotRandomEventTime")]
+        public DateTime GotRandomEventTime { get; set; }
+
         [BsonElement("GotDailyRewardTime")]
         public DateTime GotDailyRewardTime { get; set; }
+
 
         [BsonElement("LastUpdateTime")]
         public DateTime LastUpdateTime { get; set; }

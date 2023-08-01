@@ -26,6 +26,8 @@ namespace TamagotchiBot.Services
         private SInfoService _sinfoService;
         private DailyInfoService _dailyInfoService;
         private AllUsersDataService _allUsersDataService;
+        private readonly AppleGameDataService _appleGameService;
+        private readonly BotControlService _botControlService;
         private IEnvsSettings _envs;
 
         private DateTime _nextNotify = DateTime.MaxValue;
@@ -40,6 +42,8 @@ namespace TamagotchiBot.Services
                                   ChatService chatService,
                                   SInfoService sinfoService,
                                   AllUsersDataService allUsersDataService,
+                                  AppleGameDataService appleGameDataService,
+                                  BotControlService botControlService,
                                   DailyInfoService dailyInfoService)
         {
             _botClient = telegramBotClient;
@@ -48,6 +52,8 @@ namespace TamagotchiBot.Services
             _chatService = chatService;
             _sinfoService = sinfoService;
             _allUsersDataService = allUsersDataService;
+            _botControlService = botControlService;
+            this._appleGameService = appleGameDataService;
             _envs = envs;
 
             _nextNotify = _sinfoService.GetNextNotify();
@@ -82,6 +88,33 @@ namespace TamagotchiBot.Services
             _changelogsTimer.Enabled = true;
         }
 
+        public void SetRandomEventNotificationTimer()
+        {
+            TimeSpan timeToWait = TimeSpan.FromSeconds(11);
+            Log.Information("RandomEventNotification timer set to wait for " + timeToWait.TotalSeconds + "s");
+            _dailyRewardTimer = new Timer(timeToWait);
+            _dailyRewardTimer.Elapsed += OnRandomEventTimedEvent;
+            _dailyRewardTimer.AutoReset = true;
+            _dailyRewardTimer.Enabled = true;
+        }
+
+        private void OnRandomEventTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            var usersToNotify = UpdateAllRandomEventUsersIds();
+            Log.Information($"RandomEventNotification - {usersToNotify.Count} users");
+            foreach (var userId in usersToNotify)
+            {
+                var user = _userService.Get(userId);
+                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
+
+                DoRandomEvent(user);
+
+                Log.Information($"Sent RandomEventNotification to '@{user?.Username}'");
+            }
+            if (usersToNotify.Count > 5)
+                Log.Information($"RandomEventNotification timer completed - {usersToNotify.Count} users");
+        }
+
         public void SetDailyRewardNotificationTimer()
         {
             TimeSpan timeToWait = TimeSpan.FromMinutes(3);
@@ -94,7 +127,7 @@ namespace TamagotchiBot.Services
 
         private async void OnDailyRewardTimedEvent(object sender, ElapsedEventArgs e)
         {
-            var usersToNotify = GetAllDailyRewardUsersIds();
+            var usersToNotify = UpdateAllDailyRewardUsersIds();
             Log.Information($"DailyRewardNotification timer - {usersToNotify.Count} users");
             foreach (var userId in usersToNotify)
             {
@@ -341,7 +374,34 @@ namespace TamagotchiBot.Services
 
             return usersToNotify;
         }
-        private List<long> GetAllDailyRewardUsersIds()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>UserId of each updated user</returns>
+        private List<long> UpdateAllRandomEventUsersIds()
+        {
+            List<long> usersToNotify = new();
+            var petsDB = _petService.GetAll().Where(p => p.Name != null);
+
+            foreach (var pet in petsDB)
+            {
+                var user = _userService.Get(pet.UserId);
+
+                if (user.NextRandomEventNotificationTime < DateTime.UtcNow)
+                {
+                    int minutesToAdd = new Random().Next(-15, 30);
+                    _userService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddHours(2).AddMinutes(minutesToAdd));
+                    usersToNotify.Add(user.UserId);
+                }
+            }
+            return usersToNotify;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>UserId of each updated user</returns>
+        private List<long> UpdateAllDailyRewardUsersIds()
         {
             List<long> usersToNotify = new();
             var petsDB = _petService.GetAll().Where(p => p.Name != null);
@@ -393,5 +453,100 @@ namespace TamagotchiBot.Services
                 _ => Constants.StickersId.DailyRewardNotificationSticker_3,
             };
         }
+        private void DoRandomEvent(Models.Mongo.User user)
+        {
+            var random = new Random().Next(6);
+            switch (random)
+            {
+                case 1:
+                    RandomEventStomachache(user);
+                    break;
+                case 2:
+                    RandomEventStepOnFoot(user);
+                    break;
+                case 3:
+                    RandomEventFriendMet(user);
+                    break;
+                case 4:
+                    RandomEventHotdog(user);
+                    break;
+                default:
+                    RandomEventRaindow(user);
+                    break;
+            }
+        }
+
+        private async void SendTextAndSticker(long chatId, string text, string sticker)
+        {
+            _botControlService.SendStickerAsync(chatId, sticker);
+            await Task.Delay(50);
+            _botControlService.SendTextMessageAsync(chatId, text);
+        }
+
+        #region RandomEvents
+        private void RandomEventStomachache(Models.Mongo.User user)
+        {
+            var petDB = _petService.Get(user.UserId);
+            var newSatiety = petDB.Satiety - 30;
+            var newHP = petDB.HP - 20;
+
+            _petService.UpdateSatiety(user.UserId, newSatiety);
+            _petService.UpdateHP(user.UserId, newHP);
+
+            _petService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+            SendTextAndSticker(user.UserId, Resources.Resources.RandomEventStomachache, Constants.StickersId.RandomEventStomachache);
+        }
+
+        private void RandomEventRaindow(Models.Mongo.User user)
+        {
+            var petDB = _petService.Get(user.UserId);
+            int newJoy = petDB.Joy + 10 ;
+            _petService.UpdateJoy(user.UserId, newJoy);
+
+            _petService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+            SendTextAndSticker(user.UserId, Resources.Resources.RandomEventRainbow, Constants.StickersId.RandomEventRainbow);
+        }
+
+        private void RandomEventFriendMet(Models.Mongo.User user)
+        {
+            var petDB = _petService.Get(user.UserId);
+            int newGold = petDB.Gold + 15 ;
+            int newJoy = petDB.Joy + 40 ;
+
+            _petService.UpdateGold(user.UserId, newGold);
+            _petService.UpdateJoy(user.UserId, newJoy);
+
+            _petService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+            SendTextAndSticker(user.UserId, Resources.Resources.RandomEventFriendMet, Constants.StickersId.RandomEventFriendMet);
+        }
+
+        private void RandomEventHotdog(Models.Mongo.User user)
+        {
+            var petDB = _petService.Get(user.UserId);
+            var newSatiety = petDB.Satiety + 40;
+            int newGold = petDB.Gold + 20;
+
+            _petService.UpdateSatiety(user.UserId, newSatiety);
+            _petService.UpdateGold(user.UserId, newGold);
+
+            _petService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+            SendTextAndSticker(user.UserId, Resources.Resources.RandomEventHotdog, Constants.StickersId.RandomEventHotdog);
+        }
+
+        private void RandomEventStepOnFoot(Models.Mongo.User user)
+        {
+            var petDB = _petService.Get(user.UserId);
+            var newSatiety = petDB.Satiety - 10;
+            int newHP = petDB.HP - 1;
+
+            _petService.UpdateSatiety(user.UserId, newSatiety);
+            _petService.UpdateHP(user.UserId, newHP);
+
+            _petService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+            SendTextAndSticker(user.UserId, Resources.Resources.RandomEventStepOnFoot, Constants.StickersId.RandomEventStepOnFoot);
+        }
+
+        #endregion
+
     }
 }

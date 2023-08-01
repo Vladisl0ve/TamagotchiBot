@@ -504,4 +504,39 @@ Take it soon! 🎁</value>
   <data name="ranksCommandApples" xml:space="preserve">
     <value>🍎⭐️ Top 10 in apples game ⭐️🍎</value>
   </data>
+  <data name="RandomEventStomachache" xml:space="preserve">
+    <value>❤️‍🔥Help your pet urgently!
+😾: my tummy hurts very much...
+
+-20% health 💊
+-30% satiety 🍕
+
+/hospital - you have to run to the clinic!</value>
+  </data>
+  <data name="RandomEventFriendMet" xml:space="preserve">
+    <value>Walking with a pet in the city, you met an old friend of Lionko🦁
+
++40% to joy 🎊
++15 gold 💰 (borrowed from a friend)</value>
+  </data>
+  <data name="RandomEventHotdog" xml:space="preserve">
+    <value>🌭 You were asked to rate a new hot dog recipe 🧑‍🍳
+
++40 satiety🍕
++20 gold💰</value>
+  </data>
+  <data name="RandomEventStepOnFoot" xml:space="preserve">
+    <value>🧑‍🌾Some passerby stepped on the pet's foot 🗣
+
+ 👺-1% health
+ 💊-10% joy🎊</value>
+  </data>
+  <data name="RandomEventRainbow" xml:space="preserve">
+    <value>🌈 You saw the rainbow after the rain 🌦
+
++10% joy 🎊</value>
+  </data>
+  <data name="WelcomeStatusButton" xml:space="preserve">
+    <value>Let's go! 😻</value>
+  </data>
 </root>
