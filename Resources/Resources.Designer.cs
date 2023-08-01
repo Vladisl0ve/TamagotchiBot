@@ -544,8 +544,8 @@ namespace TamagotchiBot.Resources {
         ///⚡️ Status: {6}
         ///🏅 EXP: {2} | {3} level ✨
         ///
-        ////reward - Get your daily reward 🎁
-        ////work - Earn gold here 🛠.
+        ////gameroom - Play in Apple🍎
+        ////reward - Get your daily reward 🎁.
         /// </summary>
         public static string petCommand {
             get {
