@@ -112,7 +112,8 @@ namespace TamagotchiBot.Services
             }
             catch (ApiRequestException ex)
             {
-                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB?.Username ?? userId.ToString()}");
+                if (ex.ErrorCode != 400)
+                    Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {userDB?.Username ?? userId.ToString()}");
             }
             catch (Exception ex)
             {

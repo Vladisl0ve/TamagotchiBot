@@ -68,7 +68,6 @@ namespace TamagotchiBot.Services
             _triggerNTEvery = timeToTrigger == default ? _envs.TriggersEvery : timeToTrigger;
             Log.Information("Triggers every " + _triggerNTEvery.TotalSeconds + "s");
             Log.Information("DevNotify timer set to wait for " + _notifyDevEvery.TotalSeconds + "s");
-            Log.Information($"Next 'wake up' notification: {_nextNotify} UTC || remaining {_nextNotify - DateTime.UtcNow:hh\\:mm\\:ss}");
 
             _notifyTimer = new Timer(TimeSpan.FromSeconds(3));
             _notifyTimer.Elapsed += OnNotifyTimedEvent;
@@ -214,7 +213,7 @@ namespace TamagotchiBot.Services
 
             Log.Information($"Changelogs have been sent - {usersSuccess} success, {usersToNotify.Count - usersSuccess} failed");
         }
-        private async void OnNotifyTimedEvent(object sender, ElapsedEventArgs e)
+        private void OnNotifyTimedEvent(object sender, ElapsedEventArgs e)
         {
             _notifyTimer = new Timer(_triggerNTEvery);
 
@@ -226,60 +225,6 @@ namespace TamagotchiBot.Services
                 _nextDevNotify = DateTime.UtcNow + _notifyDevEvery;
                 _sinfoService.UpdateNextDevNotify(_nextDevNotify);
             }
-
-            DateTime nextNotifyDB = _sinfoService.GetNextNotify();
-
-            if (nextNotifyDB > DateTime.UtcNow)
-                return;
-
-            _nextNotify = DateTime.UtcNow + _notifyEvery;
-            _sinfoService.UpdateNextNotify(_nextNotify);
-
-            var usersToNotify = GetUserIdToNotify();
-            if (usersToNotify != null)
-            {
-                Log.Information($"Notify timer - {usersToNotify.Count} users");
-                foreach (var userId in usersToNotify)
-                {
-                    var user = _userService.Get(long.Parse(userId));
-                    Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
-                    int rand = new Random().Next(3);
-                    var notifyText = new List<string>()
-                {
-                    Resources.Resources.ReminderNotifyText1,
-                    Resources.Resources.ReminderNotifyText2,
-                    Resources.Resources.ReminderNotifyText3
-                };
-
-                    string toSendText = notifyText.ElementAtOrDefault(rand) ?? Resources.Resources.ReminderNotifyText1;
-                    try
-                    {
-                        await Task.Delay(5000); //pause between notification to avoid 429 error
-                        await _botClient.SendStickerAsync(userId, Constants.StickersId.PetBored_Cat);
-                        await _botClient.SendTextMessageAsync(userId, toSendText);
-
-                        Log.Information($"Sent reminder to '@{user?.Username ?? userId}'");
-                    }
-                    catch (ApiRequestException ex)
-                    {
-                        if (ex.ErrorCode == 403) //Forbidden by user
-                        {
-                            Log.Warning($"{ex.Message} @{user?.Username ?? userId}, id: {userId}");
-
-                            _chatService.Remove(user.UserId);
-                            _petService.Remove(user.UserId);
-                            _userService.Remove(user.UserId);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex.Message);
-                    }
-                }
-            }
-
-            Log.Information("Notifications completed!");
-            Log.Information($"Next notification: {_nextNotify} UTC || remaining {_notifyEvery:c}");
         }
 
         private async void SendDevNotify()
@@ -366,6 +311,10 @@ namespace TamagotchiBot.Services
                 if (user.NextRandomEventNotificationTime < DateTime.UtcNow)
                 {
                     int minutesToAdd = new Random().Next(-15, 30);
+
+                    //For TEST
+                    //_userService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddSeconds(5));
+                    
                     _userService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddHours(2).AddMinutes(minutesToAdd));
                     usersToNotify.Add(user.UserId);
                 }
@@ -395,40 +344,6 @@ namespace TamagotchiBot.Services
             return usersToNotify;
         }
 
-        private List<string> GetUserIdToNotify()
-        {
-            List<string> usersToNotify = new();
-            var petsDB = _petService.GetAll();
-
-            foreach (var pet in petsDB)
-            {
-                var spentTime = DateTime.UtcNow - pet.LastUpdateTime;
-                if (spentTime > _envs.AwakeWhenAFKFor && spentTime < new TimeSpan(5, 0, 0))
-                    usersToNotify.Add(pet.UserId.ToString());
-            }
-
-            if (_envs.AlwaysNotifyUsers == null)
-            {
-                Log.Warning("No always notify persons");
-                return null;
-            }
-
-            foreach (var userAlwaysNotify in _envs.AlwaysNotifyUsers)
-                if (!usersToNotify.Contains(userAlwaysNotify))
-                    usersToNotify.Add(userAlwaysNotify);
-
-            return usersToNotify;
-        }
-        private List<string> GetAllActiveUsersIds()
-        {
-            List<string> usersToNotify = new();
-            var petsDB = _petService.GetAll();
-
-            foreach (var pet in petsDB)
-                usersToNotify.Add(pet.UserId.ToString());
-
-            return usersToNotify;
-        }
         private List<string> GetAllUsersIds()
         {
             List<string> usersToNotify = new();
@@ -456,9 +371,13 @@ namespace TamagotchiBot.Services
 
         private void DoRandomEvent(Models.Mongo.User user)
         {
-            var random = new Random().Next(6);
+            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
+            var random = new Random().Next(10);
             switch (random)
             {
+                case 0:
+                    RandomEventRaindow(user);
+                    break;
                 case 1:
                     RandomEventStomachache(user);
                     break;
@@ -472,7 +391,7 @@ namespace TamagotchiBot.Services
                     RandomEventHotdog(user);
                     break;
                 default:
-                    RandomEventRaindow(user);
+                    RandomEventNotify(user);
                     break;
             }
         }
@@ -532,6 +451,22 @@ namespace TamagotchiBot.Services
 
             _petService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
             SendTextAndSticker(user.UserId, Resources.Resources.RandomEventHotdog, Constants.StickersId.RandomEventHotdog);
+        }
+
+        private void RandomEventNotify(Models.Mongo.User user)
+        {            
+            int rand = new Random().Next(3);
+            var notifyText = new List<string>()
+                {
+                    Resources.Resources.ReminderNotifyText1,
+                    Resources.Resources.ReminderNotifyText2,
+                    Resources.Resources.ReminderNotifyText3
+                };
+
+            string toSendText = notifyText.ElementAtOrDefault(rand) ?? Resources.Resources.ReminderNotifyText1;
+
+            _petService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+            SendTextAndSticker(user.UserId, toSendText, Constants.StickersId.PetBored_Cat);
         }
 
         private void RandomEventStepOnFoot(Models.Mongo.User user)
