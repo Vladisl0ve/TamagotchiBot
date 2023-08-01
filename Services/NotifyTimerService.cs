@@ -87,7 +87,15 @@ namespace TamagotchiBot.Services
             _changelogsTimer.AutoReset = false;
             _changelogsTimer.Enabled = true;
         }
-
+        public void SetDailyRewardNotificationTimer()
+        {
+            TimeSpan timeToWait = TimeSpan.FromMinutes(3);
+            Log.Information("DailyRewardNotification timer set to wait for " + timeToWait.TotalSeconds + "s");
+            _dailyRewardTimer = new Timer(timeToWait);
+            _dailyRewardTimer.Elapsed += OnDailyRewardTimedEvent;
+            _dailyRewardTimer.AutoReset = true;
+            _dailyRewardTimer.Enabled = true;
+        }
         public void SetRandomEventNotificationTimer()
         {
             TimeSpan timeToWait = TimeSpan.FromSeconds(11);
@@ -97,6 +105,7 @@ namespace TamagotchiBot.Services
             _dailyRewardTimer.AutoReset = true;
             _dailyRewardTimer.Enabled = true;
         }
+
 
         private void OnRandomEventTimedEvent(object sender, ElapsedEventArgs e)
         {
@@ -114,17 +123,6 @@ namespace TamagotchiBot.Services
             if (usersToNotify.Count > 5)
                 Log.Information($"RandomEventNotification timer completed - {usersToNotify.Count} users");
         }
-
-        public void SetDailyRewardNotificationTimer()
-        {
-            TimeSpan timeToWait = TimeSpan.FromMinutes(3);
-            Log.Information("DailyRewardNotification timer set to wait for " + timeToWait.TotalSeconds + "s");
-            _dailyRewardTimer = new Timer(timeToWait);
-            _dailyRewardTimer.Elapsed += OnDailyRewardTimedEvent;
-            _dailyRewardTimer.AutoReset = true;
-            _dailyRewardTimer.Enabled = true;
-        }
-
         private async void OnDailyRewardTimedEvent(object sender, ElapsedEventArgs e)
         {
             var usersToNotify = UpdateAllDailyRewardUsersIds();
@@ -283,6 +281,7 @@ namespace TamagotchiBot.Services
             Log.Information("Notifications completed!");
             Log.Information($"Next notification: {_nextNotify} UTC || remaining {_notifyEvery:c}");
         }
+
         private async void SendDevNotify()
         {
             if (_envs?.ChatsToDevNotify == null)
@@ -350,30 +349,7 @@ namespace TamagotchiBot.Services
 
             return text;
         }
-        private List<string> GetUserIdToNotify()
-        {
-            List<string> usersToNotify = new();
-            var petsDB = _petService.GetAll();
 
-            foreach (var pet in petsDB)
-            {
-                var spentTime = DateTime.UtcNow - pet.LastUpdateTime;
-                if (spentTime > _envs.AwakeWhenAFKFor && spentTime < new TimeSpan(5, 0, 0))
-                    usersToNotify.Add(pet.UserId.ToString());
-            }
-
-            if (_envs.AlwaysNotifyUsers == null)
-            {
-                Log.Warning("No always notify persons");
-                return null;
-            }
-
-            foreach (var userAlwaysNotify in _envs.AlwaysNotifyUsers)
-                if (!usersToNotify.Contains(userAlwaysNotify))
-                    usersToNotify.Add(userAlwaysNotify);
-
-            return usersToNotify;
-        }
         /// <summary>
         /// 
         /// </summary>
@@ -418,6 +394,31 @@ namespace TamagotchiBot.Services
             }
             return usersToNotify;
         }
+
+        private List<string> GetUserIdToNotify()
+        {
+            List<string> usersToNotify = new();
+            var petsDB = _petService.GetAll();
+
+            foreach (var pet in petsDB)
+            {
+                var spentTime = DateTime.UtcNow - pet.LastUpdateTime;
+                if (spentTime > _envs.AwakeWhenAFKFor && spentTime < new TimeSpan(5, 0, 0))
+                    usersToNotify.Add(pet.UserId.ToString());
+            }
+
+            if (_envs.AlwaysNotifyUsers == null)
+            {
+                Log.Warning("No always notify persons");
+                return null;
+            }
+
+            foreach (var userAlwaysNotify in _envs.AlwaysNotifyUsers)
+                if (!usersToNotify.Contains(userAlwaysNotify))
+                    usersToNotify.Add(userAlwaysNotify);
+
+            return usersToNotify;
+        }
         private List<string> GetAllActiveUsersIds()
         {
             List<string> usersToNotify = new();
@@ -438,7 +439,6 @@ namespace TamagotchiBot.Services
 
             return usersToNotify;
         }
-
         private string GetRandomDailyRewardSticker()
         {
             var random = new Random().Next(0, 6);
@@ -453,6 +453,7 @@ namespace TamagotchiBot.Services
                 _ => Constants.StickersId.DailyRewardNotificationSticker_3,
             };
         }
+
         private void DoRandomEvent(Models.Mongo.User user)
         {
             var random = new Random().Next(6);
