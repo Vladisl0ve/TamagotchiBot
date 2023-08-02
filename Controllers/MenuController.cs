@@ -272,6 +272,9 @@ namespace TamagotchiBot.Controllers
             if (pet.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
                 UpdateIndicatorWork();
 
+            //Hygiene
+            UpdateIndicatorHygiene(minuteCounter);
+
             pet.LastUpdateTime = DateTime.UtcNow;
 
             _petService.Update(messageUser.Id, pet);
@@ -356,7 +359,7 @@ namespace TamagotchiBot.Controllers
             if (textReceived == "/language")
                 return ChangeLanguage();
             if (textReceived == "/pet")
-                return CheckPetStatus();
+                return ShowPetInfo();
             if (textReceived == "/bathroom")
                 return GoToBathroom();
             if (textReceived == "/kitchen")
@@ -532,6 +535,12 @@ namespace TamagotchiBot.Controllers
             if (callback.Data == "hospitalCommandCurePills")
                 return CureWithPill();
 
+            if (callback.Data == "bathroomCommandBrushTeeth")
+                return TeethInline();
+
+            if (callback.Data == "bathroomCommandTakeShower")
+                return TakeShowerInline();
+
             if (callback.Data == "ranksCommandInlineGold")
                 return ShowRanksGold();
 
@@ -647,13 +656,14 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup = null
             };
         }
-        private Answer CheckPetStatus()
+        private Answer ShowPetInfo()
         {
             string toSendText = string.Format(petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Satiety,
-                                                  Extensions.GetFatigue(pet.Fatigue),
+                                                  pet.Fatigue,
                                                   Extensions.GetCurrentStatus(pet.CurrentStatus),
                                                   pet.Joy,
-                                                  pet.Gold);
+                                                  pet.Gold,
+                                                  pet.Hygiene);
 
             var aud = _allUsersService.Get(_userId);
             aud.PetCommandCounter++;
@@ -721,6 +731,11 @@ namespace TamagotchiBot.Controllers
             if (accessCheck != null)
                 return accessCheck;
 
+            string toSendText = string.Format(bathroomCommand, pet.Hygiene);
+
+            List<CommandModel> inlineParts = new InlineItems().InlineHygiene;
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+
             var aud = _allUsersService.Get(_userId);
             aud.BathroomCommandCounter++;
             _allUsersService.Update(aud);
@@ -729,10 +744,10 @@ namespace TamagotchiBot.Controllers
             _chatService.Update(chat.ChatId, chat);
             return new Answer()
             {
-                Text = DevelopWarning,
-                StickerId = StickersId.DevelopWarningSticker
+                Text = toSendText,
+                StickerId = StickersId.PetBathroom_Cat,
+                InlineKeyboardMarkup = toSendInline
             };
-
         }
         private Answer GoToKitchen()
         {
@@ -1133,6 +1148,17 @@ namespace TamagotchiBot.Controllers
                     pet.HP = 0;
             }
         }
+        private void UpdateIndicatorHygiene(int minuteCounter)
+        {
+            double toDecreaseHygiene = Math.Round(minuteCounter * Factors.HygieneFactor);
+
+            pet.Hygiene -= (int)toDecreaseHygiene;
+
+            if (pet.Hygiene < 0)
+            {
+                pet.Hygiene = 0;
+            }
+        }
         private void UpdateIndicatorJoy(int minuteCounter)
         {
             double toDecreaseJoy = Math.Round(minuteCounter * Factors.JoyFactor);
@@ -1175,10 +1201,11 @@ namespace TamagotchiBot.Controllers
         private AnswerCallback ShowBasicInfoInline()
         {
             string toSendText = string.Format(petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Satiety,
-                                                  Extensions.GetFatigue(pet.Fatigue),
+                                                  pet.Fatigue,
                                                   Extensions.GetCurrentStatus(pet.CurrentStatus),
                                                   pet.Joy,
-                                                  pet.Gold);
+                                                  pet.Gold,
+                                                  pet.Hygiene);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
                 {
                     new CommandModel()
@@ -1249,6 +1276,40 @@ namespace TamagotchiBot.Controllers
                 return null;
 
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+
+            return new AnswerCallback(toSendText, toSendInline);
+        }
+        private AnswerCallback TakeShowerInline()
+        {
+            var newHygiene = pet.Hygiene + HygieneFactors.ShowerFactor;
+
+            _petService.UpdateHygiene(_userId, newHygiene);
+
+            string anwser = string.Format(PetHygieneAnwserCallback, HygieneFactors.ShowerFactor);
+            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
+
+            pet = _petService.Get(pet.UserId);
+            string toSendText = string.Format(bathroomCommand, pet.Hygiene);
+
+            List<CommandModel> inlineParts = new InlineItems().InlineHygiene;
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+
+            return new AnswerCallback(toSendText, toSendInline);
+        }
+
+        private AnswerCallback TeethInline()
+        {
+            var newHygiene = pet.Hygiene + HygieneFactors.TeethFactor;
+
+            _petService.UpdateHygiene(_userId, newHygiene);
+
+            string anwser = string.Format(PetHygieneAnwserCallback, HygieneFactors.TeethFactor);
+            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
+            pet = _petService.Get(pet.UserId);
+            string toSendText = string.Format(bathroomCommand, pet.Hygiene);
+
+            List<CommandModel> inlineParts = new InlineItems().InlineHygiene;
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             return new AnswerCallback(toSendText, toSendInline);
         }

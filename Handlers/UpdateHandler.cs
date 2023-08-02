@@ -262,6 +262,8 @@ namespace TamagotchiBot.Handlers
                                                toSend.StickerId,
                                                cancellationToken: token);
 
+                    await Task.Delay(50, token);
+
                     if (toSend.ReplyMarkup == null && toSend.InlineKeyboardMarkup == null)
                         bcService.SendTextMessageAsync(userId,
                                                        toSend.Text,

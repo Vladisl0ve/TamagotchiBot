@@ -109,6 +109,20 @@ namespace TamagotchiBot.Services.Mongo
             }
         }
 
+        public void UpdateHygiene(long userId, int newHygiene, bool forcePush = false)
+        {
+            if (newHygiene > 100 && !forcePush)
+                newHygiene = 100;
+            else if (newHygiene < 0 && !forcePush)
+                newHygiene = 0;
+
+            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.Hygiene = newHygiene;
+                Update(userId, pet);
+            }
+        }
         public void UpdateHP(long userId, int newHP, bool forcePush = false)
         {
             if (newHP > 100 && !forcePush)

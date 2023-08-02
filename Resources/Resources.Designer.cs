@@ -140,11 +140,41 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You&apos;re in the bathroom 🛁
+        ///🚿 Hygiene: {0}%
+        ///
+        ///Remember to brush your teeth before going to bed🪥.
+        /// </summary>
+        public static string bathroomCommand {
+            get {
+                return ResourceManager.GetString("bathroomCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🪥 Brush teeth.
+        /// </summary>
+        public static string bathroomCommandBrushTeeth {
+            get {
+                return ResourceManager.GetString("bathroomCommandBrushTeeth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bathroom 🛁.
         /// </summary>
         public static string bathroomCommandDescription {
             get {
                 return ResourceManager.GetString("bathroomCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🛁Shower.
+        /// </summary>
+        public static string bathroomCommandTakeShower {
+            get {
+                return ResourceManager.GetString("bathroomCommandTakeShower", resourceCulture);
             }
         }
         
@@ -537,7 +567,8 @@ namespace TamagotchiBot.Resources {
         ///   Looks up a localized string similar to 🐱 {0}
         ///💊 HP: {1}%
         ///🍕 Satiety: {4}%
-        ///😴 Fatigue: {5}
+        ///🛁 Hygiene: {9}%
+        ///😴 Fatigue: {5}%
         ///🎊 Joy level: {7}%
         ///
         ///💰 Gold: {8} 💴
@@ -610,6 +641,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hygiene +{0}%.
+        /// </summary>
+        public static string PetHygieneAnwserCallback {
+            get {
+                return ResourceManager.GetString("PetHygieneAnwserCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your pet&apos;s fatigue increased in {0}%.
         /// </summary>
         public static string PetPlayingAnwserCallback {
@@ -628,7 +668,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pet doesn&apos;t want to sleep yet.
+        ///   Looks up a localized string similar to Pet doesn&apos;t want to sleep yet 🌞.
         /// </summary>
         public static string PetSleepingDoesntWantYetAnwserCallback {
             get {

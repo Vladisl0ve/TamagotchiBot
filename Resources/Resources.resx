@@ -140,7 +140,8 @@ BTW '/menu' shows some commands to start</value>
     <value>🐱 {0}
 💊 HP: {1}%
 🍕 Satiety: {4}%
-😴 Fatigue: {5}
+🛁 Hygiene: {9}%
+😴 Fatigue: {5}%
 🎊 Joy level: {7}%
 
 💰 Gold: {8} 💴
@@ -232,7 +233,7 @@ Don't forget feed him 🐣</value>
     <value>sleeping 🌙</value>
   </data>
   <data name="PetSleepingDoesntWantYetAnwserCallback" xml:space="preserve">
-    <value>Pet doesn't want to sleep yet</value>
+    <value>Pet doesn't want to sleep yet 🌞</value>
   </data>
   <data name="sleepCommandInlinePutToSleep" xml:space="preserve">
     <value>Put to sleep 🛌</value>
@@ -538,5 +539,20 @@ Take it soon! 🎁</value>
   </data>
   <data name="WelcomeStatusButton" xml:space="preserve">
     <value>Let's go! 😻</value>
+  </data>
+  <data name="bathroomCommand" xml:space="preserve">
+    <value>You're in the bathroom 🛁
+🚿 Hygiene: {0}%
+
+Remember to brush your teeth before going to bed🪥</value>
+  </data>
+  <data name="bathroomCommandTakeShower" xml:space="preserve">
+    <value>🛁Shower</value>
+  </data>
+  <data name="bathroomCommandBrushTeeth" xml:space="preserve">
+    <value>🪥 Brush teeth</value>
+  </data>
+  <data name="PetHygieneAnwserCallback" xml:space="preserve">
+    <value>Hygiene +{0}%</value>
   </data>
 </root>

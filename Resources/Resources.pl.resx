@@ -140,7 +140,8 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
     <value>🐱 {0}
 💊 Zdrowie: {1}%
 🍕 Sytość: {4}%
-😴 Zmęczenie: {5}
+🛁 Higiena: {9}%
+😴 Zmęczenie: {5}%
 🎊 Radość: {7}%
 
 💰 Gold: {8} 💴
@@ -232,7 +233,7 @@ Nie zapominaj karmić zwierzaka 🐣</value>
     <value>śpi 🌙</value>
   </data>
   <data name="PetSleepingDoesntWantYetAnwserCallback" xml:space="preserve">
-    <value>Zwierzak nie chce jeszcze spać</value>
+    <value>Zwierzak nie chce jeszcze spać 🌞</value>
   </data>
   <data name="sleepCommandInlinePutToSleep" xml:space="preserve">
     <value>Położyć spać 🛌</value>
@@ -540,5 +541,20 @@ Co za drań 👺
   </data>
   <data name="WelcomeStatusButton" xml:space="preserve">
     <value>Do przodu 😻</value>
+  </data>
+  <data name="bathroomCommand" xml:space="preserve">
+    <value>Jesteś w łazience 🛁
+🚿 Higiena: {0}%
+
+Pamiętaj, aby umyć zęby przed pójściem spać🪥</value>
+  </data>
+  <data name="bathroomCommandTakeShower" xml:space="preserve">
+    <value>🛁 Prysznic</value>
+  </data>
+  <data name="bathroomCommandBrushTeeth" xml:space="preserve">
+    <value>🪥 Umyć zęby</value>
+  </data>
+  <data name="PetHygieneAnwserCallback" xml:space="preserve">
+    <value>Higiena +{0}%</value>
   </data>
 </root>

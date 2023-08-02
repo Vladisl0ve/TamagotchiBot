@@ -134,14 +134,15 @@
 Твой питомец ждет 🐱
 Не забывай кормить и мыть его, играть в игры и просто любить ☺️
 
-На /pet - состояние питомца
+Нажми /pet - состояние питомца
 Тыкни '/menu' чтобы увидеть больше возможностей</value>
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
 💊 Здоровье: {1}%
 🍕 Сытость: {4}%
-😴 Усталость: {5}
+🛁 Гигена: {9}%
+😴 Усталость: {5}%
 🎊 Радость: {7}%
 
 💰 Gold: {8} 💴
@@ -233,7 +234,7 @@ Wybierz nowy język 🇵🇱
     <value>спит 🌙</value>
   </data>
   <data name="PetSleepingDoesntWantYetAnwserCallback" xml:space="preserve">
-    <value>Питомец еще не хочет спать</value>
+    <value>Питомец еще не хочет спать 🌞</value>
   </data>
   <data name="sleepCommandInlinePutToSleep" xml:space="preserve">
     <value>Уложить спать 🛌</value>
@@ -544,5 +545,20 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="WelcomeStatusButton" xml:space="preserve">
     <value>Поехали 😻</value>
+  </data>
+  <data name="bathroomCommand" xml:space="preserve">
+    <value>Вы в ванной 🛁
+🚿 Гигиена питомца: {0}%
+
+Не забывайте чистить зубы перед сном 🪥</value>
+  </data>
+  <data name="bathroomCommandTakeShower" xml:space="preserve">
+    <value>🛁 Душ</value>
+  </data>
+  <data name="bathroomCommandBrushTeeth" xml:space="preserve">
+    <value>🪥 Почистить зубы</value>
+  </data>
+  <data name="PetHygieneAnwserCallback" xml:space="preserve">
+    <value>Гигиена +{0}%</value>
   </data>
 </root>
