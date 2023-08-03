@@ -195,7 +195,7 @@ namespace TamagotchiBot.Services
                 {
                     await _botClient.SendStickerAsync(userId, Constants.StickersId.ChangelogSticker);
                     await _botClient.SendTextMessageAsync(userId, Resources.Resources.changelog1Text);
-                    await Task.Delay(1000);
+                    await Task.Delay(500);
 
                     usersSuccess++;
                     Log.Information($"Sent changelog to '@{user.Username}'");
