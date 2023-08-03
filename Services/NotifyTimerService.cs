@@ -97,7 +97,7 @@ namespace TamagotchiBot.Services
         }
         public void SetRandomEventNotificationTimer()
         {
-            TimeSpan timeToWait = TimeSpan.FromSeconds(11);
+            TimeSpan timeToWait = TimeSpan.FromSeconds(90);
             Log.Information("RandomEventNotification timer set to wait for " + timeToWait.TotalSeconds + "s");
             _dailyRewardTimer = new Timer(timeToWait);
             _dailyRewardTimer.Elapsed += OnRandomEventTimedEvent;
@@ -198,7 +198,7 @@ namespace TamagotchiBot.Services
                     await Task.Delay(500);
 
                     usersSuccess++;
-                    Log.Information($"Sent changelog to '@{user.Username}'");
+                    Log.Information($"Sent changelog to '@{user?.Username ?? "DELETED"}'");
                 }
                 catch (ApiRequestException ex)
                 {
@@ -423,7 +423,7 @@ namespace TamagotchiBot.Services
         {
             _botControlService.SendStickerAsync(chatId, sticker);
             await Task.Delay(50);
-            _botControlService.SendTextMessageAsync(chatId, text);
+            _botControlService.SendTextMessageAsync(chatId, text, toLog: false);
         }
 
         #region RandomEvents

@@ -35,14 +35,22 @@ namespace TamagotchiBot.Services
             _allUsersDataService = allUsersDataService;
         }
 
-        public async void SendTextMessageAsync(long userId, string text, IReplyMarkup replyMarkup = default, CancellationToken cancellationToken = default, ParseMode? parseMode = null)
+        public async void SendTextMessageAsync(long userId,
+                                               string text,
+                                               IReplyMarkup replyMarkup = default,
+                                               CancellationToken cancellationToken = default,
+                                               ParseMode? parseMode = null,
+                                               bool toLog = true)
         {
             var user = _userService.Get(userId);
             Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
 
             try
             {
-                Log.Information($"Message sent to @{user?.Username ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
+                if (toLog)
+                    Log.Information($"Message sent to @{user?.Username ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
+                else
+                    Log.Information($"Message sent to @{user?.Username ?? userId.ToString()}");
                 await _botClient.SendTextMessageAsync(userId,
                                      text,
                                      replyMarkup: replyMarkup,
@@ -59,7 +67,7 @@ namespace TamagotchiBot.Services
                     _userService.Remove(userId);
                     _appleGameDataService.Delete(userId);
                 }
-                    Log.Warning($"{ex.Message} @{user?.Username}, id: {userId}");
+                Log.Warning($"{ex.Message} @{user?.Username}, id: {userId}");
             }
             catch (Exception ex)
             {

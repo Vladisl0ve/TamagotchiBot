@@ -890,7 +890,7 @@ namespace TamagotchiBot.Controllers
                     anwserRating += "\n";
 
                     if (user.UserId == userDB.UserId)
-                        anwserRating += "<b>" + counter + ". " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                        anwserRating += "\n <b>" + counter + ". " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
                     else
                         anwserRating += counter + ". " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name);
                     counter++;
@@ -902,7 +902,7 @@ namespace TamagotchiBot.Controllers
                 string name = pet.Name ?? user.Username ?? user.FirstName + user.LastName;
 
                 anwserRating += "\n______________________________";
-                anwserRating += "<b>" + _petService.GetAll()
+                anwserRating += "\n <b>" + _petService.GetAll()
                 .OrderByDescending(p => p.Level)
                 .ThenByDescending(p => p.LastUpdateTime)
                 .ToList()
@@ -923,7 +923,7 @@ namespace TamagotchiBot.Controllers
             foreach (var appleUser in topApples)
             {
                 var userDB = _userService.Get(appleUser.UserId);
-                string name = _petService.Get(appleUser.UserId).Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
+                string name = " 🐱 " + _petService.Get(appleUser.UserId)?.Name ?? userDB?.Username ?? userDB?.FirstName + userDB?.LastName ?? "";
                 if (counter == 1)
                 {
                     if (user == null)
@@ -933,10 +933,10 @@ namespace TamagotchiBot.Controllers
                         continue;
 
                     anwserRating += ranksCommandApples + "\n\n";
-                    if (user.UserId == userDB.UserId)
-                        anwserRating += "<b>" + "🍏 " + appleUser.TotalWins + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                    if (user.UserId == userDB?.UserId)
+                        anwserRating += "<b>" + "🍏 " + appleUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
                     else
-                        anwserRating += "🍏 " + appleUser.TotalWins + " 🐱 " + HttpUtility.HtmlEncode(name);
+                        anwserRating += "🍏 " + appleUser.TotalWins + HttpUtility.HtmlEncode(name);
                     anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
                     counter++;
                 }
@@ -950,9 +950,9 @@ namespace TamagotchiBot.Controllers
 
                     anwserRating += "\n";
                     if (user.UserId == userDB.UserId)
-                        anwserRating += "<b>" + counter + ". " + appleUser.TotalWins + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                        anwserRating += "<b>" + counter + ". " + appleUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
                     else
-                        anwserRating += counter + ". " + appleUser.TotalWins + " 🐱 " + HttpUtility.HtmlEncode(name);
+                        anwserRating += counter + ". " + appleUser.TotalWins + HttpUtility.HtmlEncode(name);
                     counter++;
                 }
             }
@@ -962,10 +962,11 @@ namespace TamagotchiBot.Controllers
                 var currentUserApple =_appleGameDataService.Get(user.UserId);
 
                 anwserRating += "\n______________________________";
-                anwserRating += "<b>" + _appleGameDataService.GetAll()
+                var counterN = _appleGameDataService.GetAll()
                 .OrderByDescending(a => a.TotalWins)
                 .ToList()
-                .FindIndex(a => a.UserId == user.UserId) + ". " + currentUserApple.TotalWins + " 🐱 " + HttpUtility.HtmlEncode(pet?.Name ?? user.Username ?? user.FirstName + user.LastName) + "</b>";
+                .FindIndex(a => a.UserId == user.UserId);
+                anwserRating += "\n <b> " + (counterN == -1 ? _appleGameDataService.GetAll()?.Count : counterN) + ". " + (currentUserApple?.TotalWins ?? 0) + HttpUtility.HtmlEncode(" 🐱 " + pet?.Name ?? user.Username ?? user.FirstName + user.LastName) + "</b>";
             }
 
 
@@ -1011,11 +1012,11 @@ namespace TamagotchiBot.Controllers
                 string name = pet.Name ?? user.Username ?? user.FirstName + user.LastName;
 
                 anwserRating += "\n______________________________";
-                anwserRating += "*" + _petService.GetAll()
+                anwserRating += "\n <b>" + _petService.GetAll()
                 .OrderByDescending(p => p.Gold)
                 .ThenByDescending(p => p.LastUpdateTime)
                 .ToList()
-                .FindIndex(a => a.UserId == user.UserId) + ". " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "*";
+                .FindIndex(a => a.UserId == user.UserId) + ". " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
             }
 
             return anwserRating;
