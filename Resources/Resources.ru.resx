@@ -261,7 +261,7 @@ Wybierz nowy język 🇵🇱
     <value>Нельзя войти в комнату: питомец спит 🌙</value>
   </data>
   <data name="ranksCommand" xml:space="preserve">
-    <value>🌈⭐️ Топ-10 по опыту ⭐️🌈</value>
+    <value>🌈⭐️ Топ 10 по опыту ⭐️🌈</value>
   </data>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Рейтинг 🏆</value>

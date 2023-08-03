@@ -18,6 +18,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using Newtonsoft.Json;
+using System.Globalization;
 
 namespace TamagotchiBot.Handlers
 {
@@ -87,6 +88,7 @@ namespace TamagotchiBot.Handlers
         public Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
         {
             var userId = update.Message?.From.Id ?? update.CallbackQuery?.From.Id ?? default;
+            CultureInfo culture = CultureInfo.GetCultureInfo(userService.Get(userId)?.Culture ?? "ru");
 
             Task task = update.Type switch
             {
@@ -251,11 +253,13 @@ namespace TamagotchiBot.Handlers
                                                callbackQuery.Message.MessageId,
                                                toSend.Text,
                                                replyMarkup: toSend.InlineKeyboardMarkup,
-                                               cancellationToken: token);
+                                               cancellationToken: token, 
+                                               parseMode: toSend.ParseMode);
             }
 
             async void SendMessage(Answer toSend, long userId)
             {
+                culture ??= CultureInfo.GetCultureInfo(userService.Get(userId)?.Culture ?? "ru");
                 if (toSend.StickerId != null)
                 {
                     bcService.SendStickerAsync(userId,
@@ -290,19 +294,24 @@ namespace TamagotchiBot.Handlers
                     bcService.SendTextMessageAsync(userId,
                                                    toSend.Text,
                                                    replyMarkup: toSend.InlineKeyboardMarkup,
-                                                   cancellationToken: token);
+                                                   cancellationToken: token,
+                                                   parseMode: toSend.ParseMode);
                 if (toSend.IsPetGoneMessage)
                 {
+                    Resources.Resources.Culture = culture;
                     await Task.Delay(TimeSpan.FromSeconds(1), token);
                     bcService.SendChatActionAsync(userId, ChatAction.Typing, token);
                     await Task.Delay(TimeSpan.FromSeconds(5), token);
+                    Resources.Resources.Culture = culture;
                     bcService.SendStickerAsync(userId,
                                                Constants.StickersId.PetEpilogue_Cat,
                                                cancellationToken: token);
 
+                    Resources.Resources.Culture = culture;
                     bcService.SendTextMessageAsync(userId,
                                                    Resources.Resources.EpilogueText,
-                                                   cancellationToken: token);
+                                                   cancellationToken: token,
+                                                   parseMode: toSend.ParseMode);
                 }
             }
         }

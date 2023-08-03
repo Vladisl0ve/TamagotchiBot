@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using TamagotchiBot.Services.Mongo;
 using Telegram.Bot;
@@ -34,9 +35,10 @@ namespace TamagotchiBot.Services
             _allUsersDataService = allUsersDataService;
         }
 
-        public async void SendTextMessageAsync(long userId, string text, IReplyMarkup replyMarkup = default, CancellationToken cancellationToken = default)
+        public async void SendTextMessageAsync(long userId, string text, IReplyMarkup replyMarkup = default, CancellationToken cancellationToken = default, ParseMode? parseMode = null)
         {
             var user = _userService.Get(userId);
+            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
 
             try
             {
@@ -44,20 +46,20 @@ namespace TamagotchiBot.Services
                 await _botClient.SendTextMessageAsync(userId,
                                      text,
                                      replyMarkup: replyMarkup,
-                                     cancellationToken: cancellationToken);
+                                     cancellationToken: cancellationToken,
+                                     parseMode: parseMode);
             }
             catch (ApiRequestException ex)
             {
                 if (ex.ErrorCode == 403) //Forbidden by user
                 {
-                    Log.Warning($"{ex.Message} @{user?.Username}, id: {userId}");
-
                     //remove all data about user
                     _chatService.Remove(userId);
                     _petService.Remove(userId);
                     _userService.Remove(userId);
                     _appleGameDataService.Delete(userId);
                 }
+                    Log.Warning($"{ex.Message} @{user?.Username}, id: {userId}");
             }
             catch (Exception ex)
             {
@@ -95,7 +97,7 @@ namespace TamagotchiBot.Services
             }
         }
 
-        public async void EditMessageTextAsync(long userId, int messageId, string text, InlineKeyboardMarkup replyMarkup = default, CancellationToken cancellationToken = default)
+        public async void EditMessageTextAsync(long userId, int messageId, string text, InlineKeyboardMarkup replyMarkup = default, CancellationToken cancellationToken = default, ParseMode? parseMode = null)
         {
             var userDB = _allUsersDataService.Get(userId);
             if (userDB == null)
@@ -108,7 +110,8 @@ namespace TamagotchiBot.Services
                                                messageId,
                                                text,
                                                replyMarkup: replyMarkup,
-                                               cancellationToken: cancellationToken);
+                                               cancellationToken: cancellationToken,
+                                               parseMode: parseMode);
             }
             catch (ApiRequestException ex)
             {
