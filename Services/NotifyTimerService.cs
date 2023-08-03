@@ -156,8 +156,31 @@ namespace TamagotchiBot.Services
                 }
             }
         }
+        private void LittileThing()
+        {
+            var counter = 0; 
+            var auid = GetAllUsersIds();
+            Log.Verbose($"Started Little Things");
+            foreach (var userId in auid)
+            {
+                if (!long.TryParse(userId, out long userIdDB))
+                    continue;
+
+                if (_petService.Get(userIdDB) != null)
+                    continue;
+
+                _chatService.Remove(userIdDB);
+                _petService.Remove(userIdDB);
+                _userService.Remove(userIdDB);
+                _appleGameService.Delete(userIdDB);
+                counter++;
+            }
+
+            Log.Verbose($"DB: Removed {counter} users!");
+        }
         private async void OnChangelogsTimedEvent(object sender, ElapsedEventArgs e)
         {
+            LittileThing();
             var usersToNotify = GetAllUsersIds();
             Log.Information($"Changelog timer - {usersToNotify.Count} users");
             _sinfoService.DisableChangelogsSending();
@@ -314,7 +337,7 @@ namespace TamagotchiBot.Services
 
                     //For TEST
                     //_userService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddSeconds(5));
-                    
+
                     _userService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddHours(2).AddMinutes(minutesToAdd));
                     usersToNotify.Add(user.UserId);
                 }
@@ -454,7 +477,7 @@ namespace TamagotchiBot.Services
         }
 
         private void RandomEventNotify(Models.Mongo.User user)
-        {            
+        {
             int rand = new Random().Next(3);
             var notifyText = new List<string>()
                 {
