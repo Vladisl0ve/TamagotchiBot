@@ -485,18 +485,6 @@ Odbierz ją wkrótce! 🎁</value>
     <value>🎁 Wejdź po bonus codzienny 🎉
 /reward 🎁</value>
   </data>
-  <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Wydano nową aktualizację ⚡️⚡️
-Dodano:
-💰Gold
-♟Praca (tutaj zarabiasz złoto)
-🎁Codzienne prezenty!
-
-Plany:
-🧘‍♂️Dodać łazienkę
-🎰 Nowe mini-gry
-🏫 Dodanie szkoły</value>
-  </data>
   <data name="rewardCommandDescription" xml:space="preserve">
     <value>Nagroda 🎁</value>
   </data>
@@ -556,5 +544,22 @@ Pamiętaj, aby umyć zęby przed pójściem spać🪥</value>
   </data>
   <data name="PetHygieneAnwserCallback" xml:space="preserve">
     <value>Higiena +{0}%</value>
+  </data>
+  <data name="changelog1Text" xml:space="preserve">
+    <value>⚡️⚡️ Nowa aktualizacja 1.1 jest już dostępna⚡️⚡️
+Dodany:
+🛁 Higiena to nowy atrybut! Upewnij się, że twoje zwierzę jest zawsze czyste
+🚿 Łazienka - czyste zęby, mój pupilku - /łazienka
+💥 Losowe wydarzenia - teraz różne wydarzenia będą miały miejsce jak w prawdziwym Tamagotchi
+Bądź czujny 🧸
+
+Korekty:
+⭐️ Ocena jest teraz wyświetlana poprawnie
+🛋 Naprawiono nieprawidłowe wyświetlanie listy życzeń zwierzaka
+🎈 Naprawione błędy w grze
+
+W planach:
+🎰Nowe minigry
+🏫 Dodaj szkołę, edukację</value>
   </data>
 </root>

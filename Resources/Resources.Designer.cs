@@ -191,16 +191,21 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ⚡️⚡️ A new update has been released ⚡️⚡️
+        ///   Looks up a localized string similar to ⚡️⚡️ New update 1.1 is out⚡️⚡️
         ///Added:
-        ///💰Gold
-        ///♟Work (this is where you earn gold)
-        ///🎁 Daily gifts!
+        ///🛁 Hygiene is a new attribute! Make sure your pet is always clean
+        ///🚿 Bathroom - clean teeth, my pet - /bathroom
+        ///💥 Random events - now different events will take place like in a real Tamagotchi
+        ///Be on the lookout 🧸
         ///
-        ///Plans:
-        ///🧘‍♂️Добавить bathroom
-        ///🎰 New mini-games.
-        ///🏫 Add a school.
+        ///Corrections:
+        ///⭐️ Rating is displayed correctly now
+        ///🛋 Fixed incorrect display of pet wishlist
+        ///🎈 Game bugs fixed
+        ///
+        ///In the plans:
+        ///🎰New mini-games
+        ///🏫Add school, education.
         /// </summary>
         public static string changelog1Text {
             get {

@@ -407,16 +407,21 @@ Surrendered: {2}</value>
     <value>You are in the gameroom ⚽️</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ A new update has been released ⚡️⚡️
+    <value>⚡️⚡️ New update 1.1 is out⚡️⚡️
 Added:
-💰Gold
-♟Work (this is where you earn gold)
-🎁 Daily gifts!
+🛁 Hygiene is a new attribute! Make sure your pet is always clean
+🚿 Bathroom - clean teeth, my pet - /bathroom
+💥 Random events - now different events will take place like in a real Tamagotchi
+Be on the lookout 🧸
 
-Plans:
-🧘‍♂️Добавить bathroom
-🎰 New mini-games.
-🏫 Add a school</value>
+Corrections:
+⭐️ Rating is displayed correctly now
+🛋 Fixed incorrect display of pet wishlist
+🎈 Game bugs fixed
+
+In the plans:
+🎰New mini-games
+🏫Add school, education</value>
   </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
     <value>🐱: Waiting for you here, come back
