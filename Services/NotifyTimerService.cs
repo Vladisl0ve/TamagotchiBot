@@ -119,7 +119,7 @@ namespace TamagotchiBot.Services
 
                 Log.Information($"Sent RandomEventNotification to '@{user?.Username}'");
             }
-            if (usersToNotify.Count > 5)
+            if (usersToNotify.Count > 1)
                 Log.Information($"RandomEventNotification timer completed - {usersToNotify.Count} users");
         }
         private async void OnDailyRewardTimedEvent(object sender, ElapsedEventArgs e)
@@ -421,7 +421,7 @@ namespace TamagotchiBot.Services
 
         private async void SendTextAndSticker(long chatId, string text, string sticker)
         {
-            _botControlService.SendStickerAsync(chatId, sticker);
+            _botControlService.SendStickerAsync(chatId, sticker, toLog: false);
             await Task.Delay(50);
             _botControlService.SendTextMessageAsync(chatId, text, toLog: false);
         }

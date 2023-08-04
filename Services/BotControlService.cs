@@ -75,13 +75,17 @@ namespace TamagotchiBot.Services
             }
         }
 
-        public async void SendStickerAsync(long userId, string stickerId, CancellationToken cancellationToken = default)
+        public async void SendStickerAsync(long userId,
+                                           string stickerId,
+                                           CancellationToken cancellationToken = default,
+                                           bool toLog = true)
         {
             var user = _userService.Get(userId);
 
             try
             {
-                Log.Information("Sticker sent for @" + user?.Username ?? userId.ToString());
+                if (toLog)
+                    Log.Information("Sticker sent for @" + user?.Username ?? userId.ToString());
                 await _botClient.SendStickerAsync(userId,
                                      stickerId,
                                      cancellationToken: cancellationToken);
