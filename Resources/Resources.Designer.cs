@@ -761,8 +761,8 @@ namespace TamagotchiBot.Resources {
         ///   Looks up a localized string similar to ❤️‍🔥Help your pet urgently!
         ///😾: my tummy hurts very much...
         ///
-        ///-20% health 💊
-        ///-30% satiety 🍕
+        ///-5% health 💊
+        ///-15% satiety 🍕
         ///
         ////hospital - you have to run to the clinic!.
         /// </summary>

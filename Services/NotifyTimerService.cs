@@ -430,8 +430,8 @@ namespace TamagotchiBot.Services
         private void RandomEventStomachache(Models.Mongo.User user)
         {
             var petDB = _petService.Get(user.UserId);
-            var newSatiety = petDB.Satiety - 30;
-            var newHP = petDB.HP - 20;
+            var newSatiety = petDB.Satiety - 15;
+            var newHP = petDB.HP - 5;
 
             _petService.UpdateSatiety(user.UserId, newSatiety);
             _petService.UpdateHP(user.UserId, newHP);
