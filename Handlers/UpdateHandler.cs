@@ -133,18 +133,18 @@ namespace TamagotchiBot.Handlers
                 else
                     try
                     {
+                        // call this method wherever you want to show an ad,
+                        // for example your bot just made its job and
+                        // it's a great time to show an ad to a user
+                        if (petService.Get(message.From.Id)?.Name != null)
+                            await SendPostToChat(message.From.Id);
+
+
                         if (userService.Get(message.From.Id).IsInAppleGame)
                             toSend = gameController.Menu(message);
                         else
-                        {
-                            // call this method wherever you want to show an ad,
-                            // for example your bot just made its job and
-                            // it's a great time to show an ad to a user
-                            if (petService.Get(message.From.Id)?.Name != null)
-                                await SendPostToChat(message.From.Id);
-
                             toSend = menuController.Process();
-                        }
+
                     }
                     catch (ApiRequestException apiEx)
                     {
@@ -253,7 +253,7 @@ namespace TamagotchiBot.Handlers
                                                callbackQuery.Message.MessageId,
                                                toSend.Text,
                                                replyMarkup: toSend.InlineKeyboardMarkup,
-                                               cancellationToken: token, 
+                                               cancellationToken: token,
                                                parseMode: toSend.ParseMode);
             }
 
