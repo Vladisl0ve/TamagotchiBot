@@ -705,6 +705,9 @@ namespace TamagotchiBot.Controllers
 
         private Answer CheckStatusIsInactiveOrNull(bool IsGoToSleepCommand = false, bool IsGoToWorkCommand = false)
         {
+            if (pet == null)
+                return null;
+
             if (pet.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
             {
                 string denyText = string.Format(denyAccessSleeping);
