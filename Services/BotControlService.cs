@@ -49,8 +49,7 @@ namespace TamagotchiBot.Services
             {
                 if (toLog)
                     Log.Information($"Message sent to @{user?.Username ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
-                else
-                    Log.Information($"Message sent to @{user?.Username ?? userId.ToString()}");
+
                 await _botClient.SendTextMessageAsync(userId,
                                      text,
                                      replyMarkup: replyMarkup,
