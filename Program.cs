@@ -87,14 +87,14 @@ namespace Telegram.Bots.Example
                                             $"{DateTime.Now:dd}-.txt");
 
             Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Information()
+            .MinimumLevel.Verbose()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Error)
             .MinimumLevel.Override("System", LogEventLevel.Warning)
             .WriteTo.File(pathToLog,
                           rollingInterval: RollingInterval.Day,
                           retainedFileCountLimit: null,
                           outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-            .WriteTo.Console()
+            .WriteTo.Console(LogEventLevel.Information)
             .CreateLogger();
 
             Log.Warning("Path to logs: " + pathToLog);

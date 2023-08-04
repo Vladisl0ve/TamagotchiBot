@@ -48,8 +48,9 @@ namespace TamagotchiBot.Services
             try
             {
                 if (toLog)
-                    Log.Information($"Message sent to @{user?.Username ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
+                    Log.Information($"Message sent to @{user?.Username ?? userId.ToString()}");
 
+                Log.Verbose($"Message sent to @{user?.Username ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
                 await _botClient.SendTextMessageAsync(userId,
                                      text,
                                      replyMarkup: replyMarkup,
@@ -85,6 +86,8 @@ namespace TamagotchiBot.Services
             {
                 if (toLog)
                     Log.Information("Sticker sent for @" + user?.Username ?? userId.ToString());
+
+                Log.Verbose("Sticker sent for @" + user?.Username ?? userId.ToString());
                 await _botClient.SendStickerAsync(userId,
                                      stickerId,
                                      cancellationToken: cancellationToken);
@@ -116,7 +119,9 @@ namespace TamagotchiBot.Services
 
             try
             {
-                Log.Information($"Message edited for @{userDB?.Username ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
+                Log.Information($"Message edited for @{userDB?.Username ?? userId.ToString()}");
+                Log.Verbose($"Message edited for @{userDB?.Username ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
+
                 await _botClient.EditMessageTextAsync(userId,
                                                messageId,
                                                text,
@@ -163,7 +168,8 @@ namespace TamagotchiBot.Services
 
             try
             {
-                Log.Information($"Answered callback for @{userDB?.Username ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
+                Log.Information($"Answered callback for @{userDB?.Username ?? userId.ToString()}");
+                Log.Verbose($"Answered callback for @{userDB?.Username ?? userId.ToString()}: {text.Replace("\r\n", " ")}");
                 await _botClient.AnswerCallbackQueryAsync(callbackQueryId,
                                                text: text,
                                                showAlert: showAlert,
