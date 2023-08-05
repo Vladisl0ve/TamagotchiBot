@@ -115,6 +115,7 @@ namespace TamagotchiBot.Services
                 var user = _userService.Get(userId);
                 Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
 
+                if (user == null) continue;
                 DoRandomEvent(user);
 
                 Log.Information($"Sent RandomEventNotification to '@{user?.Username}'");
@@ -158,7 +159,7 @@ namespace TamagotchiBot.Services
         }
         private void LittileThing()
         {
-            var counter = 0; 
+            var counter = 0;
             var auid = GetAllUsersIds();
             Log.Verbose($"Started Little Things");
             foreach (var userId in auid)
@@ -443,6 +444,7 @@ namespace TamagotchiBot.Services
         private void RandomEventRaindow(Models.Mongo.User user)
         {
             var petDB = _petService.Get(user.UserId);
+            if (petDB == null) return;
             int newJoy = petDB.Joy + 10 ;
             _petService.UpdateJoy(user.UserId, newJoy);
 

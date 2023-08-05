@@ -360,6 +360,11 @@ namespace TamagotchiBot.Controllers
 
             if (textReceived == "/language")
                 return ChangeLanguage();
+            if (textReceived == "/help")
+                return ShowHelpInfo();
+
+            if (pet == null) return null;
+
             if (textReceived == "/pet")
                 return ShowPetInfo();
             if (textReceived == "/bathroom")
@@ -384,8 +389,6 @@ namespace TamagotchiBot.Controllers
                     InlineKeyboardMarkup = null
                 };
             }
-            if (textReceived == "/help")
-                return ShowHelpInfo();
             if (textReceived == "/menu")
                 return ShowMenuInfo();
             if (textReceived == "/rename")

@@ -283,6 +283,9 @@ namespace TamagotchiBot.UserExtensions
 
         public static AdsProducers GetAdsProducerFromStart(string command)
         {
+            if (command == null)
+                return null;
+
             var dividedCommand = command.Split(new char[] {'_', ' ' });
 
             if (dividedCommand.Length > 1 && dividedCommand[0] == "/start")
