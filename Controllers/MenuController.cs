@@ -918,7 +918,7 @@ namespace TamagotchiBot.Controllers
             return anwserRating;
         }
         private string GetRanksByApples()
-        {
+        {            
             var topApples = _appleGameDataService.GetAll()
                 .OrderByDescending(a => a.TotalWins)
                 .Take(10); //First 10 top-apples users
@@ -1553,7 +1553,6 @@ namespace TamagotchiBot.Controllers
                             }
                         });
 
-                    Log.Warning("SLEEP TEST");
                     return new AnswerCallback(sendTxt, toSendInlineWhileActive);
                 }
 
