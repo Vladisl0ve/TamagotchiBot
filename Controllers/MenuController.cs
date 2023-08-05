@@ -363,44 +363,45 @@ namespace TamagotchiBot.Controllers
             if (textReceived == "/help")
                 return ShowHelpInfo();
 
-            if (pet == null) return null;
-
-            if (textReceived == "/pet")
-                return ShowPetInfo();
-            if (textReceived == "/bathroom")
-                return GoToBathroom();
-            if (textReceived == "/kitchen")
-                return GoToKitchen();
-            if (textReceived == "/gameroom")
-                return GoToGameroom();
-            if (textReceived == "/hospital")
-                return GoToHospital();
-            if (textReceived == "/ranks")
-                return ShowRankingInfo();
-            if (textReceived == "/sleep")
-                return GoToSleep();
-            if (textReceived == "/test")
+            if (pet != null)
             {
-                return new Answer()
+                if (textReceived == "/pet")
+                    return ShowPetInfo();
+                if (textReceived == "/bathroom")
+                    return GoToBathroom();
+                if (textReceived == "/kitchen")
+                    return GoToKitchen();
+                if (textReceived == "/gameroom")
+                    return GoToGameroom();
+                if (textReceived == "/hospital")
+                    return GoToHospital();
+                if (textReceived == "/ranks")
+                    return ShowRankingInfo();
+                if (textReceived == "/sleep")
+                    return GoToSleep();
+                if (textReceived == "/test")
                 {
-                    Text = DevelopWarning,
-                    StickerId = StickersId.DevelopWarningSticker,
-                    ReplyMarkup = null,
-                    InlineKeyboardMarkup = null
-                };
-            }
-            if (textReceived == "/menu")
-                return ShowMenuInfo();
-            if (textReceived == "/rename")
-                return RenamePet();
-            if (textReceived == "/work")
-                return ShowWorkInfo();
-            if (textReceived == "/reward")
-                return ShowRewardInfo();
+                    return new Answer()
+                    {
+                        Text = DevelopWarning,
+                        StickerId = StickersId.DevelopWarningSticker,
+                        ReplyMarkup = null,
+                        InlineKeyboardMarkup = null
+                    };
+                }
+                if (textReceived == "/menu")
+                    return ShowMenuInfo();
+                if (textReceived == "/rename")
+                    return RenamePet();
+                if (textReceived == "/work")
+                    return ShowWorkInfo();
+                if (textReceived == "/reward")
+                    return ShowRewardInfo();
 #if DEBUG //only for debug purpose
-            if (textReceived == "/restart")
-                return RestartPet();
+                if (textReceived == "/restart")
+                    return RestartPet();
 #endif
+            }
 
             return ExtrasHandler();
         }
