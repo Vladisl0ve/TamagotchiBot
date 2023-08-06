@@ -141,15 +141,16 @@
     <value>🐱 {0}
 💊 Здароўе: {1}%
 🍕 Сытасць: {4}%
-😴 Стомленасць: {5}
+🛁 Гігіена: {9}%
+😴 Стомленасць: {5}%
 🎊 Радасць: {7}%
 
-💰 Gold: {8} 💴
+💰 Золата: {8} 💴
 ⚡️ Стан: {6}
 🏅 Досвед: {2} | {3} ўзровень✨
 
-/reward - атрымай штодзённую ўзнагароду 🎁
-/work - зарабляць золата 🛠</value>
+/gameroom - пайдзем гуляць у Яблык🍎
+/reward - атрымай штодзённую ўзнагароду 🎁</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>У распрацоўцы, чакай наступнага абнаўлення 👾</value>
@@ -233,7 +234,7 @@ Wybierz nowy język 🇵🇱
     <value>спіць 🌙</value>
   </data>
   <data name="PetSleepingDoesntWantYetAnwserCallback" xml:space="preserve">
-    <value>Гадаванец яшчэ не хоча спаць</value>
+    <value>Гадаванец яшчэ не хоча спаць 🌞</value>
   </data>
   <data name="sleepCommandInlinePutToSleep" xml:space="preserve">
     <value>Пакласці спаць 🛌</value>
@@ -260,7 +261,7 @@ Wybierz nowy język 🇵🇱
     <value>Ты не можаш зайсці да пакою: твой гадаванец спіць 🌙</value>
   </data>
   <data name="ranksCommand" xml:space="preserve">
-    <value>🌈⭐️ Топ-10 па вопыту⭐️🌈</value>
+    <value>🌈⭐️ Топ 10 па вопыту⭐️🌈</value>
   </data>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Рэйтынг 🏆</value>
@@ -487,18 +488,6 @@ Wybierz nowy język 🇵🇱
     <value>🎁 Бягі па штодзённы бонус 🎉
 /reward 🎁</value>
   </data>
-  <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Новае абнаўленне было выпушчана ⚡️⚡️
-Дададзена:
-💰Залатая 
-♟праца (золата зарабляецца тут)
-🎁Штодзённыя падарункі!
-
-Планы такія:
-🧘‍♂️Дадаць ванную пакой
-🎰Новыя міні-гульні
-🏫Дадаць школу</value>
-  </data>
   <data name="rewardCommandDescription" xml:space="preserve">
     <value>Узнагарода 🎁</value>
   </data>
@@ -507,5 +496,91 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="ranksCommandApples" xml:space="preserve">
     <value>🍎⭐️ Топ-10 перамог у яблыках ⭐️🍎</value>
+  </data>
+  <data name="RandomEventStomachache" xml:space="preserve">
+    <value>❤️‍🔥Дапамажыце неадкладна свайму гадаванцу!
+😾:Мой жывоцік вельмі баліць...
+
+-5% здароўя 💊
+-15% сытасці 🍕
+
+/hospital - трэба ісці ў паліклініку!</value>
+  </data>
+  <data name="RandomEventFriendMet" xml:space="preserve">
+    <value>Гуляючы з гадаванцам па горадзе, вы сустрэлі старога сябра Льва🦁
+
++40% Радасць 🎊
++15 золата 💰 (пазычыў у сябра)
+
+/pet - правер свайго гадаванца</value>
+  </data>
+  <data name="RandomEventHotdog" xml:space="preserve">
+    <value>🌭 Вам было прапанавана ацаніць новы рэцэпт хот-дога 🧑‍🍳
+
++40 насычанасць🍕
++20 золата💰
+
+/pet - правер свайго гадаванца</value>
+  </data>
+  <data name="RandomEventStepOnFoot" xml:space="preserve">
+    <value>🧑‍🌾Нехта наступіў на нагу гадаванцу🗣
+Вось рэптылія 👺 
+
+-1% здароўя 💊
+-10% радасці🎊
+
+/pet - правер свайго гадаванца</value>
+  </data>
+  <data name="RandomEventRainbow" xml:space="preserve">
+    <value>🌈 Вы спаткалі вясёлку пасля дажджу 🌦
+
++ 10% радасці 🎊
+
+/pet - правер свайго гадаванца</value>
+  </data>
+  <data name="WelcomeStatusButton" xml:space="preserve">
+    <value>Пачнем 😻</value>
+  </data>
+  <data name="bathroomCommand" xml:space="preserve">
+    <value>Вы знаходзіцеся ў ваннай 🛁
+🚿 Гігіена гадаванца: {0}%
+
+Не забывайце чысціць зубы перад сном🪥</value>
+  </data>
+  <data name="bathroomCommandBrushTeeth" xml:space="preserve">
+    <value>🪥 Пачысціць зубы</value>
+  </data>
+  <data name="bathroomCommandTakeShower" xml:space="preserve">
+    <value>🛁 Душ</value>
+  </data>
+  <data name="PetHygieneAnwserCallback" xml:space="preserve">
+    <value>Гігіена +{0}%</value>
+  </data>
+  <data name="changelog1Text" xml:space="preserve">
+    <value>⚡️⚡️ Выйшла новае абнаўленне 1.1⚡️⚡️
+Дадзена:
+🛁 Гігіена - новы атрыбут! Сачы, каб твой гадаванец быў заўсёды чыстым
+🚿 Ванная - чысці зубы, мой гадаванца - /bathroom
+💥 Выпадковыя івэнты - зараз як у Тамагочы будуць адбывацца розныя падзеі
+Рыхтуйся 🧸
+
+Выпраўленні:
+⭐️ Рэйтынг паказываецца правільна цяпер
+🛋 Выпраўлена няправільнае адлюстраванне жадалак гадаванца
+🎈 Выпраўленыя памылкі ў гульнях
+
+У планах:
+🎰Новыя міні-гульні
+🏫Дадаць школу, адукацыю</value>
+  </data>
+  <data name="RandomEventFireworks" xml:space="preserve">
+    <value>Вы пайшлі глядзець на феерверк 🎇
+Але гадаванец выпадкова наступіў у лужыну 💦
+
+
++20% радасць 🎊
+-10% гігіены 🛁
+
+/pet - правер свайго гадаванца</value>
   </data>
 </root>

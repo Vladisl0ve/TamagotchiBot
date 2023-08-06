@@ -18,6 +18,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using Newtonsoft.Json;
+using System.Globalization;
 
 namespace TamagotchiBot.Handlers
 {
@@ -87,6 +88,7 @@ namespace TamagotchiBot.Handlers
         public Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
         {
             var userId = update.Message?.From.Id ?? update.CallbackQuery?.From.Id ?? default;
+            CultureInfo culture = CultureInfo.GetCultureInfo(userService.Get(userId)?.Culture ?? "ru");
 
             Task task = update.Type switch
             {
@@ -131,18 +133,18 @@ namespace TamagotchiBot.Handlers
                 else
                     try
                     {
+                        // call this method wherever you want to show an ad,
+                        // for example your bot just made its job and
+                        // it's a great time to show an ad to a user
+                        if (petService.Get(message.From.Id)?.Name != null)
+                            await SendPostToChat(message.From.Id);
+
+
                         if (userService.Get(message.From.Id).IsInAppleGame)
                             toSend = gameController.Menu(message);
                         else
-                        {
-                            // call this method wherever you want to show an ad,
-                            // for example your bot just made its job and
-                            // it's a great time to show an ad to a user
-                            if (petService.Get(message.From.Id)?.Name != null)
-                                await SendPostToChat(message.From.Id);
-
                             toSend = menuController.Process();
-                        }
+
                     }
                     catch (ApiRequestException apiEx)
                     {
@@ -251,16 +253,20 @@ namespace TamagotchiBot.Handlers
                                                callbackQuery.Message.MessageId,
                                                toSend.Text,
                                                replyMarkup: toSend.InlineKeyboardMarkup,
-                                               cancellationToken: token);
+                                               cancellationToken: token,
+                                               parseMode: toSend.ParseMode);
             }
 
             async void SendMessage(Answer toSend, long userId)
             {
+                culture ??= CultureInfo.GetCultureInfo(userService.Get(userId)?.Culture ?? "ru");
                 if (toSend.StickerId != null)
                 {
                     bcService.SendStickerAsync(userId,
                                                toSend.StickerId,
                                                cancellationToken: token);
+
+                    await Task.Delay(50, token);
 
                     if (toSend.ReplyMarkup == null && toSend.InlineKeyboardMarkup == null)
                         bcService.SendTextMessageAsync(userId,
@@ -288,27 +294,34 @@ namespace TamagotchiBot.Handlers
                     bcService.SendTextMessageAsync(userId,
                                                    toSend.Text,
                                                    replyMarkup: toSend.InlineKeyboardMarkup,
-                                                   cancellationToken: token);
+                                                   cancellationToken: token,
+                                                   parseMode: toSend.ParseMode);
                 if (toSend.IsPetGoneMessage)
                 {
+                    Resources.Resources.Culture = culture;
                     await Task.Delay(TimeSpan.FromSeconds(1), token);
                     bcService.SendChatActionAsync(userId, ChatAction.Typing, token);
                     await Task.Delay(TimeSpan.FromSeconds(5), token);
+                    Resources.Resources.Culture = culture;
                     bcService.SendStickerAsync(userId,
                                                Constants.StickersId.PetEpilogue_Cat,
                                                cancellationToken: token);
 
+                    Resources.Resources.Culture = culture;
                     bcService.SendTextMessageAsync(userId,
                                                    Resources.Resources.EpilogueText,
-                                                   cancellationToken: token);
+                                                   cancellationToken: token,
+                                                   parseMode: toSend.ParseMode);
                 }
-
-
             }
         }
 
         private async Task SendPostToChat(long chatId)
         {
+#if DEBUG
+            return;
+#endif
+
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTIiLCJqdGkiOiJkOTYzYTZiYy1mNTc3LTQyZjYtYTkyOS02NzRhZTAwYjRlOWEiLCJuYW1lIjoi8J-QviDQotCw0LzQsNCz0L7Rh9C4IHwgVmlydHVhbCBQZXQg8J-QviIsImJvdGlkIjoiMjQxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxNTIiLCJuYmYiOjE2OTAzMTE5MDAsImV4cCI6MTY5MDUyMDcwMCwiaXNzIjoiU3R1Z25vdiIsImF1ZCI6IlVzZXJzIn0.hByX6S4UoV9J9G559wvvJUrid-_GZe4KLtbog7AV7HU");
 
@@ -325,11 +338,11 @@ namespace TamagotchiBot.Handlers
 
             if (!response.IsSuccessStatusCode)
             {
-                Log.Warning("Gramads:" + result);
+                Log.Warning("==> Gramads:" + result);
                 return;
             }
 
-            Log.Information("Gramads: " + result);
+            Log.Information("==> Gramads: " + result);
         }
     }
 }

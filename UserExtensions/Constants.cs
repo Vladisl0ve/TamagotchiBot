@@ -47,10 +47,12 @@ namespace TamagotchiBot.UserExtensions
         {
             public const int ExpFactor = 1;
             public const int ExpToLvl = 100;
-            public const double StarvingFactor = 0.1;
-            public const double FatigueFactor = 0.083;
+            public const double StarvingFactor = 0.2;
+            public const double FatigueFactor = 0.19;
             public const double RestFactor = 10;
             public const double JoyFactor = 0.3;
+            public const double HygieneFactor = 0.11;
+            //public const double HygieneFactor = 5;
 
             public const int CardGameFatigueFactor = 20;
             public const int CardGameJoyFactor = 20;
@@ -101,6 +103,12 @@ namespace TamagotchiBot.UserExtensions
             public const double LollipopHungerFactor = 1; //🍭
         }
 
+        public struct HygieneFactors
+        {
+            public const int ShowerFactor = 80;
+            public const int TeethFactor = 20;
+        }
+
         public struct Commands
         {
             public const string KitchenCommand = "kitchen";
@@ -143,6 +151,12 @@ namespace TamagotchiBot.UserExtensions
             public const string DailyRewardNotificationSticker_4 = "CAACAgIAAxkBAAEJ0DRkwAv9bEVLiNoW7wUCeTmK9L8GDwACVQADkp8eEe9UptCrIZBuLwQ";
             public const string DailyRewardNotificationSticker_5 = "CAACAgIAAxkBAAEJ0DZkwAwQiF4RlJusmqRCnKbA4SH7VwACOAEAAhZ8aAP0b0MaIxsr8S8E";
 
+            public const string RandomEventFriendMet = "CAACAgIAAxkBAAEJ4aNkyVVxEVb4P2gnkHEOk0v8wCmQFAAC8yIAAiBUaEoXiGadMBWCMi8E";
+            public const string RandomEventHotdog = "CAACAgIAAxkBAAEJ4aVkyVW0iRMNwELIRJro-sZS-VZ6RQACNiIAAhWCIEtQ3d8mDP4l2S8E";
+            public const string RandomEventRainbow = "CAACAgIAAxkBAAEJ4atkyVYlkg62ZFQuhaZmcV80BHO0oAACzF4BAAFji0YMijnpL-ZkBfgvBA";
+            public const string RandomEventStepOnFoot = "CAACAgIAAxkBAAEJ4a1kyVY4a-KjYopDd5RsJ8--GavNKgACbh8AAtZFYUroJ9qKMdWRaC8E";
+            public const string RandomEventStomachache = "CAACAgIAAxkBAAEJ4a9kyVZprtYWi9S4TB_ulxdAV2rA6gACyyQAAmtxYEqsdF5ojjc4_C8E";
+
             public const string BannedSticker = "CAACAgIAAxkBAAEIn9VkPlGMflkimxiV4BhDptaNOBhgjgACmwUAAlOx9wNCvw--ehyldy8E";
 
             //Cat
@@ -151,6 +165,7 @@ namespace TamagotchiBot.UserExtensions
             public const string PetChooseName_Cat = "CAACAgIAAxkBAAEDHwthcG-wxtTfvF_S-6mqam-KwksPnQAC5RAAAowt_QftGb7TeRsiTyEE";
             public const string PetConfirmedName_Cat = "CAACAgIAAxkBAAEDHw1hcHBpvQQti1cmSC1LVKRNOtV3FwACjBIAAtJ0SUqCGw6E9UM1giEE";
             public const string PetKitchen_Cat = "CAACAgIAAxkBAAEDIFVhcfZFjhITgwR6llMbPY-58IL_RAACxA4AA7xBSg8_gz8dIW-OIQQ";
+            public const string PetBathroom_Cat = "CAACAgEAAxkBAAEJ5DhkypVqJ21uFEQqFQABvk3K_ykK7PoAAmcAA6EFDA0eRPMjja-FFS8E";
             public const string PetGameroom_Cat = "CAACAgIAAxkBAAEDnIhh1LTJGdhUdSU1y0PFrMmr0wJ3EwAC_RIAAjV1SEq7O0eiJ48IqCME";
             public const string PetSleep_Cat = "CAACAgIAAxkBAAEDuq1h6xbXEQHcyTH6hf6bDcluqK2-bgAC4ScAAvVFSEo8b-MRtutFhiME";
             public const string PetBusy_Cat = "CAACAgIAAxkBAAEDLJJherSnCEKTmK9t5i1x9shxgGVzuwACdBIAAuAOQEqBqm_p74rsAAEhBA";
@@ -213,6 +228,19 @@ namespace TamagotchiBot.UserExtensions
                     }
                 };
 
+            public List<CommandModel> InlineHygiene = new()
+                {
+                    new CommandModel()
+                    {
+                        Text = Resources.Resources.bathroomCommandBrushTeeth,
+                        CallbackData = "bathroomCommandBrushTeeth"
+                    },
+                    new CommandModel()
+                    {
+                        Text = Resources.Resources.bathroomCommandTakeShower,
+                        CallbackData = "bathroomCommandTakeShower"
+                    },
+                };
             public List<CommandModel> InlineHospital = new()
                 {
                     new CommandModel()

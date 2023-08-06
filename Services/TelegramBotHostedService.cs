@@ -31,6 +31,7 @@ namespace TamagotchiBot.Services
             _timerService.SetNotifyTimer();
             _timerService.SetChangelogsTimer();
             _timerService.SetDailyRewardNotificationTimer();
+            _timerService.SetRandomEventNotificationTimer();
             _client.StartReceiving(
                 updateHandler: _updateHandler,
                 cancellationToken: stoppingToken
@@ -38,7 +39,5 @@ namespace TamagotchiBot.Services
             // Keep hosted service alive while receiving messages
             await Task.Delay(Timeout.Infinite, stoppingToken);
         }
-
-
     }
 }

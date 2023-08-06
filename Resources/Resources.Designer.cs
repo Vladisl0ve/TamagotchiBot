@@ -140,11 +140,41 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You&apos;re in the bathroom 🛁
+        ///🚿 Hygiene: {0}%
+        ///
+        ///Remember to brush your teeth before going to bed🪥.
+        /// </summary>
+        public static string bathroomCommand {
+            get {
+                return ResourceManager.GetString("bathroomCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🪥 Brush teeth.
+        /// </summary>
+        public static string bathroomCommandBrushTeeth {
+            get {
+                return ResourceManager.GetString("bathroomCommandBrushTeeth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bathroom 🛁.
         /// </summary>
         public static string bathroomCommandDescription {
             get {
                 return ResourceManager.GetString("bathroomCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🛁Shower.
+        /// </summary>
+        public static string bathroomCommandTakeShower {
+            get {
+                return ResourceManager.GetString("bathroomCommandTakeShower", resourceCulture);
             }
         }
         
@@ -161,16 +191,21 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ⚡️⚡️ A new update has been released ⚡️⚡️
+        ///   Looks up a localized string similar to ⚡️⚡️ New update 1.1 is out⚡️⚡️
         ///Added:
-        ///💰Gold
-        ///♟Work (this is where you earn gold)
-        ///🎁 Daily gifts!
+        ///🛁 Hygiene is a new attribute! Make sure your pet is always clean
+        ///🚿 Bathroom - clean teeth, my pet - /bathroom
+        ///💥 Random events - now different events will take place like in a real Tamagotchi
+        ///Be on the lookout 🧸
         ///
-        ///Plans:
-        ///🧘‍♂️Добавить bathroom
-        ///🎰 New mini-games.
-        ///🏫 Add a school.
+        ///Corrections:
+        ///⭐️ Rating is displayed correctly now
+        ///🛋 Fixed incorrect display of pet wishlist
+        ///🎈 Game bugs fixed
+        ///
+        ///In the plans:
+        ///🎰New mini-games
+        ///🏫Add school, education.
         /// </summary>
         public static string changelog1Text {
             get {
@@ -537,15 +572,16 @@ namespace TamagotchiBot.Resources {
         ///   Looks up a localized string similar to 🐱 {0}
         ///💊 HP: {1}%
         ///🍕 Satiety: {4}%
-        ///😴 Fatigue: {5}
+        ///🛁 Hygiene: {9}%
+        ///😴 Fatigue: {5}%
         ///🎊 Joy level: {7}%
         ///
         ///💰 Gold: {8} 💴
         ///⚡️ Status: {6}
         ///🏅 EXP: {2} | {3} level ✨
         ///
-        ////reward - Get your daily reward 🎁
-        ////work - Earn gold here 🛠.
+        ////gameroom - Play in Apple🍎
+        ////reward - Get your daily reward 🎁.
         /// </summary>
         public static string petCommand {
             get {
@@ -610,6 +646,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hygiene +{0}%.
+        /// </summary>
+        public static string PetHygieneAnwserCallback {
+            get {
+                return ResourceManager.GetString("PetHygieneAnwserCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your pet&apos;s fatigue increased in {0}%.
         /// </summary>
         public static string PetPlayingAnwserCallback {
@@ -628,7 +673,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pet doesn&apos;t want to sleep yet.
+        ///   Looks up a localized string similar to Pet doesn&apos;t want to sleep yet 🌞.
         /// </summary>
         public static string PetSleepingDoesntWantYetAnwserCallback {
             get {
@@ -662,6 +707,92 @@ namespace TamagotchiBot.Resources {
         public static string quitText {
             get {
                 return ResourceManager.GetString("quitText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You went to watch the fireworks 🎇
+        ///But the pet accidentally stepped into a puddle 💦
+        ///
+        ///
+        ///+20% joy 🎊
+        ///-10% hygiene 🛁
+        ///
+        ////pet - check pet&apos;s status.
+        /// </summary>
+        public static string RandomEventFireworks {
+            get {
+                return ResourceManager.GetString("RandomEventFireworks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Walking with a pet in the city, you met an old friend of Lionko🦁
+        ///
+        ///+40% to joy 🎊
+        ///+15 gold 💰 (borrowed from a friend)
+        ///
+        ////pet - check pet&apos;s status.
+        /// </summary>
+        public static string RandomEventFriendMet {
+            get {
+                return ResourceManager.GetString("RandomEventFriendMet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🌭 You were asked to rate a new hot dog recipe 🧑‍🍳
+        ///
+        ///+40 satiety🍕
+        ///+20 gold💰
+        ///
+        ////pet - check pet&apos;s status.
+        /// </summary>
+        public static string RandomEventHotdog {
+            get {
+                return ResourceManager.GetString("RandomEventHotdog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🌈 You saw the rainbow after the rain 🌦
+        ///
+        ///+10% joy 🎊
+        ///
+        ////pet - check pet&apos;s status.
+        /// </summary>
+        public static string RandomEventRainbow {
+            get {
+                return ResourceManager.GetString("RandomEventRainbow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🧑‍🌾Some passerby stepped on the pet&apos;s foot 🗣
+        ///
+        /// 👺-1% health
+        /// 💊-10% joy🎊
+        ///
+        ////pet - check pet&apos;s status.
+        /// </summary>
+        public static string RandomEventStepOnFoot {
+            get {
+                return ResourceManager.GetString("RandomEventStepOnFoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ❤️‍🔥Help your pet urgently!
+        ///😾: my tummy hurts very much...
+        ///
+        ///-5% health 💊
+        ///-15% satiety 🍕
+        ///
+        ////hospital - you have to run to the clinic!.
+        /// </summary>
+        public static string RandomEventStomachache {
+            get {
+                return ResourceManager.GetString("RandomEventStomachache", resourceCulture);
             }
         }
         
@@ -949,6 +1080,15 @@ namespace TamagotchiBot.Resources {
         public static string Welcome {
             get {
                 return ResourceManager.GetString("Welcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Let&apos;s go! 😻.
+        /// </summary>
+        public static string WelcomeStatusButton {
+            get {
+                return ResourceManager.GetString("WelcomeStatusButton", resourceCulture);
             }
         }
         

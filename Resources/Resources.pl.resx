@@ -140,15 +140,16 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
     <value>🐱 {0}
 💊 Zdrowie: {1}%
 🍕 Sytość: {4}%
-😴 Zmęczenie: {5}
+🛁 Higiena: {9}%
+😴 Zmęczenie: {5}%
 🎊 Radość: {7}%
 
-💰 Gold: {8} 💴
+💰 Złoto: {8} 💴
 ⚡️ Status: {6}
 🏅 Doświadczenie: {2} | {3} poziom✨
 
-/reward - codzienna nagroda 🎁
-/work - dostaj wynagrodzenie tu 🛠</value>
+/gameroom - zagraj w Jabłko🍎
+/reward - codzienna nagroda 🎁</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>W trakcie rozwoju, poczekaj na następną aktualizację 👾</value>
@@ -232,7 +233,7 @@ Nie zapominaj karmić zwierzaka 🐣</value>
     <value>śpi 🌙</value>
   </data>
   <data name="PetSleepingDoesntWantYetAnwserCallback" xml:space="preserve">
-    <value>Zwierzak nie chce jeszcze spać</value>
+    <value>Zwierzak nie chce jeszcze spać 🌞</value>
   </data>
   <data name="sleepCommandInlinePutToSleep" xml:space="preserve">
     <value>Położyć spać 🛌</value>
@@ -484,18 +485,6 @@ Odbierz ją wkrótce! 🎁</value>
     <value>🎁 Wejdź po bonus codzienny 🎉
 /reward 🎁</value>
   </data>
-  <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Wydano nową aktualizację ⚡️⚡️
-Dodano:
-💰Gold
-♟Praca (tutaj zarabiasz złoto)
-🎁Codzienne prezenty!
-
-Plany:
-🧘‍♂️Dodać łazienkę
-🎰 Nowe mini-gry
-🏫 Dodanie szkoły</value>
-  </data>
   <data name="rewardCommandDescription" xml:space="preserve">
     <value>Nagroda 🎁</value>
   </data>
@@ -504,5 +493,91 @@ Plany:
   </data>
   <data name="ranksCommandApples" xml:space="preserve">
     <value>🍎⭐️ Top 10 w grze w jabłka ⭐️🍎</value>
+  </data>
+  <data name="RandomEventStomachache" xml:space="preserve">
+    <value>❤️‍🔥Pomóż pilnie!
+😾: bardzo boli mnie brzuszek...
+
+-5% zdrowia 💊
+-15% sytości 🍕
+
+/hospital - szybko do doktora!</value>
+  </data>
+  <data name="RandomEventFriendMet" xml:space="preserve">
+    <value>Spacerując po mieście ze swoim zwierzakiem spotkałeś starego przyjaciela Lwiątka🦁
+
++40% do radości 🎊
++15 złota 💰 (pożyczone od przyjaciela)
+
+/pet - sprawdź status zwierzaka</value>
+  </data>
+  <data name="RandomEventHotdog" xml:space="preserve">
+    <value>Zostałeś poproszony o ocenę nowego przepisu na hot doga 🧑‍🍳
+
++40 sytości 🍕
++20 złota 💰
+
+/pet - sprawdź status zwierzaka</value>
+  </data>
+  <data name="RandomEventStepOnFoot" xml:space="preserve">
+    <value>🧑‍🌾Jakiś przechodzień nadepnął na łapę swojego zwierzaka 🗣
+Co za drań 👺
+
+-1% zdrowia 💊
+-10% radości 🎊
+
+/pet - sprawdź status zwierzaka</value>
+  </data>
+  <data name="RandomEventRainbow" xml:space="preserve">
+    <value>🌈 Widziałeś tęczę po deszczu 🌦
+
++10% radości 🎊
+
+/pet - sprawdź status zwierzaka</value>
+  </data>
+  <data name="WelcomeStatusButton" xml:space="preserve">
+    <value>Do przodu 😻</value>
+  </data>
+  <data name="bathroomCommand" xml:space="preserve">
+    <value>Jesteś w łazience 🛁
+🚿 Higiena: {0}%
+
+Pamiętaj, aby umyć zęby przed pójściem spać🪥</value>
+  </data>
+  <data name="bathroomCommandTakeShower" xml:space="preserve">
+    <value>🛁 Prysznic</value>
+  </data>
+  <data name="bathroomCommandBrushTeeth" xml:space="preserve">
+    <value>🪥 Umyć zęby</value>
+  </data>
+  <data name="PetHygieneAnwserCallback" xml:space="preserve">
+    <value>Higiena +{0}%</value>
+  </data>
+  <data name="changelog1Text" xml:space="preserve">
+    <value>⚡️⚡️ Nowa aktualizacja 1.1 jest już dostępna⚡️⚡️
+Dodany:
+🛁 Higiena to nowy atrybut! Upewnij się, że twoje zwierzę jest zawsze czyste
+🚿 Łazienka - czyste zęby, mój pupilku - /łazienka
+💥 Losowe wydarzenia - teraz różne wydarzenia będą miały miejsce jak w prawdziwym Tamagotchi
+Bądź czujny 🧸
+
+Korekty:
+⭐️ Ocena jest teraz wyświetlana poprawnie
+🛋 Naprawiono nieprawidłowe wyświetlanie listy życzeń zwierzaka
+🎈 Naprawione błędy w grze
+
+W planach:
+🎰Nowe minigry
+🏫 Dodaj szkołę, edukację</value>
+  </data>
+  <data name="RandomEventFireworks" xml:space="preserve">
+    <value>Poszedłeś oglądać fajerwerki 🎇
+Ale zwierzak przypadkiem wpadł do kałuży 💦
+
+
++20% radości 🎊
+-10% higieny 🛁
+
+/pet - sprawdź status zwierzaka</value>
   </data>
 </root>

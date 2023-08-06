@@ -140,15 +140,16 @@ BTW '/menu' shows some commands to start</value>
     <value>🐱 {0}
 💊 HP: {1}%
 🍕 Satiety: {4}%
-😴 Fatigue: {5}
+🛁 Hygiene: {9}%
+😴 Fatigue: {5}%
 🎊 Joy level: {7}%
 
 💰 Gold: {8} 💴
 ⚡️ Status: {6}
 🏅 EXP: {2} | {3} level ✨
 
-/reward - Get your daily reward 🎁
-/work - Earn gold here 🛠</value>
+/gameroom - Play in Apple🍎
+/reward - Get your daily reward 🎁</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>In developing, wait for next update 👾</value>
@@ -232,7 +233,7 @@ Don't forget feed him 🐣</value>
     <value>sleeping 🌙</value>
   </data>
   <data name="PetSleepingDoesntWantYetAnwserCallback" xml:space="preserve">
-    <value>Pet doesn't want to sleep yet</value>
+    <value>Pet doesn't want to sleep yet 🌞</value>
   </data>
   <data name="sleepCommandInlinePutToSleep" xml:space="preserve">
     <value>Put to sleep 🛌</value>
@@ -406,16 +407,21 @@ Surrendered: {2}</value>
     <value>You are in the gameroom ⚽️</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ A new update has been released ⚡️⚡️
+    <value>⚡️⚡️ New update 1.1 is out⚡️⚡️
 Added:
-💰Gold
-♟Work (this is where you earn gold)
-🎁 Daily gifts!
+🛁 Hygiene is a new attribute! Make sure your pet is always clean
+🚿 Bathroom - clean teeth, my pet - /bathroom
+💥 Random events - now different events will take place like in a real Tamagotchi
+Be on the lookout 🧸
 
-Plans:
-🧘‍♂️Добавить bathroom
-🎰 New mini-games.
-🏫 Add a school</value>
+Corrections:
+⭐️ Rating is displayed correctly now
+🛋 Fixed incorrect display of pet wishlist
+🎈 Game bugs fixed
+
+In the plans:
+🎰New mini-games
+🏫Add school, education</value>
   </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
     <value>🐱: Waiting for you here, come back
@@ -503,5 +509,73 @@ Take it soon! 🎁</value>
   </data>
   <data name="ranksCommandApples" xml:space="preserve">
     <value>🍎⭐️ Top 10 in apples game ⭐️🍎</value>
+  </data>
+  <data name="RandomEventStomachache" xml:space="preserve">
+    <value>❤️‍🔥Help your pet urgently!
+😾: my tummy hurts very much...
+
+-5% health 💊
+-15% satiety 🍕
+
+/hospital - you have to run to the clinic!</value>
+  </data>
+  <data name="RandomEventFriendMet" xml:space="preserve">
+    <value>Walking with a pet in the city, you met an old friend of Lionko🦁
+
++40% to joy 🎊
++15 gold 💰 (borrowed from a friend)
+
+/pet - check pet's status</value>
+  </data>
+  <data name="RandomEventHotdog" xml:space="preserve">
+    <value>🌭 You were asked to rate a new hot dog recipe 🧑‍🍳
+
++40 satiety🍕
++20 gold💰
+
+/pet - check pet's status</value>
+  </data>
+  <data name="RandomEventStepOnFoot" xml:space="preserve">
+    <value>🧑‍🌾Some passerby stepped on the pet's foot 🗣
+
+ 👺-1% health
+ 💊-10% joy🎊
+
+/pet - check pet's status</value>
+  </data>
+  <data name="RandomEventRainbow" xml:space="preserve">
+    <value>🌈 You saw the rainbow after the rain 🌦
+
++10% joy 🎊
+
+/pet - check pet's status</value>
+  </data>
+  <data name="WelcomeStatusButton" xml:space="preserve">
+    <value>Let's go! 😻</value>
+  </data>
+  <data name="bathroomCommand" xml:space="preserve">
+    <value>You're in the bathroom 🛁
+🚿 Hygiene: {0}%
+
+Remember to brush your teeth before going to bed🪥</value>
+  </data>
+  <data name="bathroomCommandTakeShower" xml:space="preserve">
+    <value>🛁Shower</value>
+  </data>
+  <data name="bathroomCommandBrushTeeth" xml:space="preserve">
+    <value>🪥 Brush teeth</value>
+  </data>
+  <data name="PetHygieneAnwserCallback" xml:space="preserve">
+    <value>Hygiene +{0}%</value>
+  </data>
+  <data name="RandomEventFireworks" xml:space="preserve">
+    <value>You went to watch the fireworks 🎇
+But the pet accidentally stepped into a puddle 💦
+
+
++20% joy 🎊
+-10% hygiene 🛁
+
+/pet - check pet's status</value>
   </data>
 </root>

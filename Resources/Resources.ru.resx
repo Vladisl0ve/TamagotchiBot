@@ -134,21 +134,23 @@
 Твой питомец ждет 🐱
 Не забывай кормить и мыть его, играть в игры и просто любить ☺️
 
-Тыкни '/menu' чтобы увидеть больше</value>
+Нажми /pet - состояние питомца
+Тыкни '/menu' чтобы увидеть больше возможностей</value>
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
 💊 Здоровье: {1}%
 🍕 Сытость: {4}%
-😴 Усталость: {5}
+🛁 Гигиена: {9}%
+😴 Усталость: {5}%
 🎊 Радость: {7}%
 
-💰 Gold: {8} 💴
+💰 Золото: {8} 💴
 ⚡️ Состояние: {6}
 🏅 Опыт: {2} | {3} уровень✨
 
-/reward - ежедневный бонус 🎁
-/work - есть новые вакансии 🛠</value>
+/gameroom - попробуй игру Яблоко🍎
+/reward - ежедневный бонус 🎁</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>В разработке, жди обновления 👾</value>
@@ -232,7 +234,7 @@ Wybierz nowy język 🇵🇱
     <value>спит 🌙</value>
   </data>
   <data name="PetSleepingDoesntWantYetAnwserCallback" xml:space="preserve">
-    <value>Питомец еще не хочет спать</value>
+    <value>Питомец еще не хочет спать 🌞</value>
   </data>
   <data name="sleepCommandInlinePutToSleep" xml:space="preserve">
     <value>Уложить спать 🛌</value>
@@ -259,7 +261,7 @@ Wybierz nowy język 🇵🇱
     <value>Нельзя войти в комнату: питомец спит 🌙</value>
   </data>
   <data name="ranksCommand" xml:space="preserve">
-    <value>🌈⭐️ Топ-10 по опыту ⭐️🌈</value>
+    <value>🌈⭐️ Топ 10 по опыту ⭐️🌈</value>
   </data>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Рейтинг 🏆</value>
@@ -312,7 +314,9 @@ Wybierz nowy język 🇵🇱
 ▫️ ухаживай и просто люби 😻
 
 В меню команд ты найдёшь всё, что твоему любимцу надо 🌻
-Почаще навещай его, ведь он тебя тоже любит и будет очень рад погулять с тобой 🤍❤️🤍</value>
+Почаще навещай питомца, ведь он тебя тоже любит и будет очень рад погулять 🤍❤️🤍
+
+/menu - тут почти все возможные команды</value>
   </data>
   <data name="helpCommandDescription" xml:space="preserve">
     <value>Об игре ❓</value>
@@ -408,16 +412,21 @@ Wybierz nowy język 🇵🇱
     <value>Вы снова в детской ⚽️</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Вышло новое обновление ⚡️⚡️
+    <value>⚡️⚡️ Вышло новое обновление 1.1⚡️⚡️
 Добавлено:
-💰Золото 
-♟Работа (тут как раз и зарабатывается золото)
-🎁Ежедневные подарки!
+🛁 Гигиена - новый атрибут! Следи, что твой питомец был всегда чистым
+🚿 Ванная - чисты зубы, мой питомца - /bathroom
+💥 Случайные ивенты - теперь как в настоящем Тамагочи с питомцем будут происходить разные события
+Будь на чеку 🧸
+
+Исправления:
+⭐️ Рейтинг отображается правильно теперь
+🛋 Исправлено неправильное отображение хотелок питомца
+🎈 Исправлены ошибки в играх
 
 В планах:
-🧘‍♂️Добавить ванную комнату
 🎰Новые мини-игры
-🏫Добавить школу</value>
+🏫Добавить школу, образование</value>
   </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
     <value>🐱: Жду тебя тут, возвращайся 
@@ -505,5 +514,74 @@ Wybierz nowy język 🇵🇱
   </data>
   <data name="ranksCommandApples" xml:space="preserve">
     <value>🍎⭐️ Топ-10 побед в яблочной игре ⭐️🍎</value>
+  </data>
+  <data name="RandomEventStomachache" xml:space="preserve">
+    <value>❤️‍🔥Срочно помоги своему питомцу!
+😾: животик очень сильно болит...
+
+-5% здоровья 💊
+-15% сытости 🍕
+
+/hospital - надо бегом в поликлинику!</value>
+  </data>
+  <data name="RandomEventFriendMet" xml:space="preserve">
+    <value>Гуляя с питомцем по городу вы встретили давнего друга Львёнка🦁
+
++40% к радости 🎊
++15 золота 💰 (одолжили у друга)
+
+/pet - проверить состояние питомца</value>
+  </data>
+  <data name="RandomEventHotdog" xml:space="preserve">
+    <value>🌭 Вас попросили оценить новый рецепт хотдога 🧑‍🍳
+
++40 сытость 🍕
++20 золота 💰
+
+/pet - проверить состояние питомца</value>
+  </data>
+  <data name="RandomEventStepOnFoot" xml:space="preserve">
+    <value>🧑‍🌾Какой-то прохожий наступил питомцу на лапку 🗣
+Вот гад 👺
+
+-1% здоровье 💊
+-10% радость 🎊
+
+/pet - проверить состояние питомца</value>
+  </data>
+  <data name="RandomEventRainbow" xml:space="preserve">
+    <value>🌈 Вы увидели радугу после дождя 🌦
+
++10% радость 🎊
+
+/pet - проверить состояние питомца</value>
+  </data>
+  <data name="WelcomeStatusButton" xml:space="preserve">
+    <value>Поехали 😻</value>
+  </data>
+  <data name="bathroomCommand" xml:space="preserve">
+    <value>Вы в ванной 🛁
+🚿 Гигиена питомца: {0}%
+
+Не забывайте чистить зубы перед сном 🪥</value>
+  </data>
+  <data name="bathroomCommandTakeShower" xml:space="preserve">
+    <value>🛁 Душ</value>
+  </data>
+  <data name="bathroomCommandBrushTeeth" xml:space="preserve">
+    <value>🪥 Почистить зубы</value>
+  </data>
+  <data name="PetHygieneAnwserCallback" xml:space="preserve">
+    <value>Гигиена +{0}%</value>
+  </data>
+  <data name="RandomEventFireworks" xml:space="preserve">
+    <value>Вы пошли смотреть на фейерверк 🎇
+Но питомец случайно наступил в лужу 💦
+
+
++20% к радости 🎊
+-10% гигиены 🛁
+
+/pet - проверить состояние питомца</value>
   </data>
 </root>

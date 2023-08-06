@@ -25,6 +25,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("StartWorkingTime")]
         public DateTime StartWorkingTime { get; set; }
 
+        [BsonElement("GotRandomEventTime")]
+        public DateTime GotRandomEventTime { get; set; }
+
         [BsonElement("GotDailyRewardTime")]
         public DateTime GotDailyRewardTime { get; set; }
 
@@ -42,6 +45,9 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("HP")]
         public int HP { get; set; }
+
+        [BsonElement("Hygiene")]
+        public int Hygiene { get; set; }
 
         [BsonElement("Satiety")]
         public double Satiety { get; set; }

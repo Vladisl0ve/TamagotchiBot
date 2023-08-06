@@ -45,12 +45,17 @@ namespace TamagotchiBot.Services.Mongo
             }
         }
 
-        public void UpdateStarving(long userId, double newStarving)
+        public void UpdateSatiety(long userId, double newSatiety, bool forcePush = false)
         {
+            if (newSatiety > 100 && !forcePush)
+                newSatiety = 100;
+            else if (newSatiety < 0 && !forcePush)
+                newSatiety = 0;
+
             var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
-                pet.Satiety = newStarving;
+                pet.Satiety = newSatiety;
                 Update(userId, pet);
             }
         }
@@ -61,6 +66,16 @@ namespace TamagotchiBot.Services.Mongo
             if (pet != null)
             {
                 pet.StartWorkingTime = newStartTime;
+                Update(userId, pet);
+            }
+        }
+
+        public void UpdateGotRandomEventTime(long userId, DateTime newStartTime)
+        {
+            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.GotRandomEventTime = newStartTime;
                 Update(userId, pet);
             }
         }
@@ -94,8 +109,27 @@ namespace TamagotchiBot.Services.Mongo
             }
         }
 
-        public void UpdateHP(long userId, int newHP)
+        public void UpdateHygiene(long userId, int newHygiene, bool forcePush = false)
         {
+            if (newHygiene > 100 && !forcePush)
+                newHygiene = 100;
+            else if (newHygiene < 0 && !forcePush)
+                newHygiene = 0;
+
+            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.Hygiene = newHygiene;
+                Update(userId, pet);
+            }
+        }
+        public void UpdateHP(long userId, int newHP, bool forcePush = false)
+        {
+            if (newHP > 100 && !forcePush)
+                newHP = 100;
+            else if (newHP < 0 && !forcePush)
+                newHP = 0;
+
             var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
@@ -104,8 +138,13 @@ namespace TamagotchiBot.Services.Mongo
             }
         }
 
-        public void UpdateJoy(long userId, int newJoy)
+        public void UpdateJoy(long userId, int newJoy, bool forcePush = false)
         {
+            if (newJoy > 100 && !forcePush)
+                newJoy = 100;
+            else if (newJoy < 0 && !forcePush)
+                newJoy = 0;
+
             var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {

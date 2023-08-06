@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
 using TamagotchiBot.Models;
 using TamagotchiBot.Models.Answers;
 using TamagotchiBot.Models.Mongo;
@@ -16,6 +18,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.Resources.Resources;
 using static TamagotchiBot.UserExtensions.Constants;
 using Chat = TamagotchiBot.Models.Mongo.Chat;
+using Extensions = TamagotchiBot.UserExtensions.Extensions;
 using User = TamagotchiBot.Models.Mongo.User;
 
 namespace TamagotchiBot.Controllers
@@ -272,6 +275,9 @@ namespace TamagotchiBot.Controllers
             if (pet.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
                 UpdateIndicatorWork();
 
+            //Hygiene
+            UpdateIndicatorHygiene(minuteCounter);
+
             pet.LastUpdateTime = DateTime.UtcNow;
 
             _petService.Update(messageUser.Id, pet);
@@ -355,44 +361,48 @@ namespace TamagotchiBot.Controllers
 
             if (textReceived == "/language")
                 return ChangeLanguage();
-            if (textReceived == "/pet")
-                return CheckPetStatus();
-            if (textReceived == "/bathroom")
-                return GoToBathroom();
-            if (textReceived == "/kitchen")
-                return GoToKitchen();
-            if (textReceived == "/gameroom")
-                return GoToGameroom();
-            if (textReceived == "/hospital")
-                return GoToHospital();
-            if (textReceived == "/ranks")
-                return ShowRankingInfo();
-            if (textReceived == "/sleep")
-                return GoToSleep();
-            if (textReceived == "/test")
-            {
-                return new Answer()
-                {
-                    Text = DevelopWarning,
-                    StickerId = StickersId.DevelopWarningSticker,
-                    ReplyMarkup = null,
-                    InlineKeyboardMarkup = null
-                };
-            }
             if (textReceived == "/help")
                 return ShowHelpInfo();
-            if (textReceived == "/menu")
-                return ShowMenuInfo();
-            if (textReceived == "/rename")
-                return RenamePet();
-            if (textReceived == "/work")
-                return ShowWorkInfo();
-            if (textReceived == "/reward")
-                return ShowRewardInfo();
+
+            if (pet != null)
+            {
+                if (textReceived == "/pet")
+                    return ShowPetInfo();
+                if (textReceived == "/bathroom")
+                    return GoToBathroom();
+                if (textReceived == "/kitchen")
+                    return GoToKitchen();
+                if (textReceived == "/gameroom")
+                    return GoToGameroom();
+                if (textReceived == "/hospital")
+                    return GoToHospital();
+                if (textReceived == "/ranks")
+                    return ShowRankingInfo();
+                if (textReceived == "/sleep")
+                    return GoToSleep();
+                if (textReceived == "/test")
+                {
+                    return new Answer()
+                    {
+                        Text = DevelopWarning,
+                        StickerId = StickersId.DevelopWarningSticker,
+                        ReplyMarkup = null,
+                        InlineKeyboardMarkup = null
+                    };
+                }
+                if (textReceived == "/menu")
+                    return ShowMenuInfo();
+                if (textReceived == "/rename")
+                    return RenamePet();
+                if (textReceived == "/work")
+                    return ShowWorkInfo();
+                if (textReceived == "/reward")
+                    return ShowRewardInfo();
 #if DEBUG //only for debug purpose
-            if (textReceived == "/restart")
-                return RestartPet();
+                if (textReceived == "/restart")
+                    return RestartPet();
 #endif
+            }
 
             return ExtrasHandler();
         }
@@ -532,6 +542,12 @@ namespace TamagotchiBot.Controllers
             if (callback.Data == "hospitalCommandCurePills")
                 return CureWithPill();
 
+            if (callback.Data == "bathroomCommandBrushTeeth")
+                return TeethInline();
+
+            if (callback.Data == "bathroomCommandTakeShower")
+                return TakeShowerInline();
+
             if (callback.Data == "ranksCommandInlineGold")
                 return ShowRanksGold();
 
@@ -558,23 +574,26 @@ namespace TamagotchiBot.Controllers
                     LastUpdateTime = DateTime.UtcNow,
                     EXP = 0,
                     HP = 100,
-                    Joy = 100,
+                    Joy = 70,
                     Fatigue = 0,
-                    Satiety = 100,
+                    Satiety = 80,
                     IsWelcomed = true,
                     Type = null,
                     Gold = 0,
                     UserId = _userId
                 });
                 Log.Information($"Pet of {user.Username} has been added to Db");
+                Task.Delay(50);
 
                 chat.LastMessage = "/welcome";
                 _chatService.Update(chat.ChatId, chat);
+                var keyboard = new ReplyKeyboardMarkup(new KeyboardButton(WelcomeStatusButton));
+                keyboard.OneTimeKeyboard = true;
                 return new Answer()
                 {
                     Text = Welcome,
                     StickerId = StickersId.WelcomeSticker,
-                    ReplyMarkup = new ReplyKeyboardRemove(),
+                    ReplyMarkup = keyboard,
                     InlineKeyboardMarkup = null
                 };
             }
@@ -587,7 +606,7 @@ namespace TamagotchiBot.Controllers
                 {
                     Text = ChooseName,
                     StickerId = StickersId.PetChooseName_Cat,
-                    ReplyMarkup = null,
+                    ReplyMarkup = new ReplyKeyboardRemove(),
                     InlineKeyboardMarkup = null
                 };
             }
@@ -595,6 +614,8 @@ namespace TamagotchiBot.Controllers
             if (pet.Name == null)
             {
                 _petService.UpdateName(_userId, message.Text);
+                _petService.UpdateGold(_userId, 50);
+                _userService.UpdateNextRandomEventNotificationTime(pet.UserId, DateTime.UtcNow.AddMinutes(25));
                 return new Answer()
                 {
                     Text = ConfirmedName,
@@ -643,13 +664,14 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup = null
             };
         }
-        private Answer CheckPetStatus()
+        private Answer ShowPetInfo()
         {
             string toSendText = string.Format(petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Satiety,
-                                                  Extensions.GetFatigue(pet.Fatigue),
+                                                  pet.Fatigue,
                                                   Extensions.GetCurrentStatus(pet.CurrentStatus),
                                                   pet.Joy,
-                                                  pet.Gold);
+                                                  pet.Gold,
+                                                  pet.Hygiene);
 
             var aud = _allUsersService.Get(_userId);
             aud.PetCommandCounter++;
@@ -689,6 +711,9 @@ namespace TamagotchiBot.Controllers
 
         private Answer CheckStatusIsInactiveOrNull(bool IsGoToSleepCommand = false, bool IsGoToWorkCommand = false)
         {
+            if (pet == null)
+                return null;
+
             if (pet.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
             {
                 string denyText = string.Format(denyAccessSleeping);
@@ -717,6 +742,11 @@ namespace TamagotchiBot.Controllers
             if (accessCheck != null)
                 return accessCheck;
 
+            string toSendText = string.Format(bathroomCommand, pet.Hygiene);
+
+            List<CommandModel> inlineParts = new InlineItems().InlineHygiene;
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+
             var aud = _allUsersService.Get(_userId);
             aud.BathroomCommandCounter++;
             _allUsersService.Update(aud);
@@ -725,10 +755,10 @@ namespace TamagotchiBot.Controllers
             _chatService.Update(chat.ChatId, chat);
             return new Answer()
             {
-                Text = DevelopWarning,
-                StickerId = StickersId.DevelopWarningSticker
+                Text = toSendText,
+                StickerId = StickersId.PetBathroom_Cat,
+                InlineKeyboardMarkup = toSendInline
             };
-
         }
         private Answer GoToKitchen()
         {
@@ -833,7 +863,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = anwserRating,
                 StickerId = StickersId.PetRanks_Cat,
-                InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks, 3)
+                InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks, 3),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
 
         }
@@ -848,33 +879,49 @@ namespace TamagotchiBot.Controllers
             string anwserRating = "";
 
             int counter = 1;
-            foreach (var pet in topPets)
+            foreach (var petDB in topPets)
             {
+                var userDB = _userService.Get(petDB.UserId);
+                string name = petDB.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
+
                 if (counter == 1)
                 {
-                    var user = _userService.Get(pet.UserId);
-
                     anwserRating += ranksCommand + "\n\n";
-                    anwserRating += "🌟 " + pet.Level + " 🐱 " + pet.Name ?? user.Username ?? user.FirstName + user.LastName;
+                    if (user.UserId == userDB.UserId)
+                        anwserRating += "<b>" + "🌟 " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                    else
+                        anwserRating += "🌟 " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name);
                     anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
                     counter++;
                 }
                 else
                 {
                     anwserRating += "\n";
-                    var user = _userService.Get(pet.UserId);
 
-                    string name = pet.Name ?? user.Username ?? user.FirstName + user.LastName;
-
-                    anwserRating += counter + ". " + pet.Level + " 🐱 " + name;
+                    if (user.UserId == userDB.UserId)
+                        anwserRating += "<b>" + counter + ". " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                    else
+                        anwserRating += counter + ". " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name);
                     counter++;
                 }
+            }
+
+            if (!topPets.Any(a => a.UserId == user.UserId))
+            {
+                string name = pet.Name ?? user.Username ?? user.FirstName + user.LastName;
+
+                anwserRating += "\n______________________________";
+                anwserRating += "\n <b>" + _petService.GetAll()
+                .OrderByDescending(p => p.Level)
+                .ThenByDescending(p => p.LastUpdateTime)
+                .ToList()
+                .FindIndex(a => a.UserId == user.UserId) + ". " + pet.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
             }
 
             return anwserRating;
         }
         private string GetRanksByApples()
-        {
+        {            
             var topApples = _appleGameDataService.GetAll()
                 .OrderByDescending(a => a.TotalWins)
                 .Take(10); //First 10 top-apples users
@@ -884,9 +931,10 @@ namespace TamagotchiBot.Controllers
             int counter = 1;
             foreach (var appleUser in topApples)
             {
+                var userDB = _userService.Get(appleUser.UserId);
+                string name = " 🐱 " + _petService.Get(appleUser.UserId)?.Name ?? userDB?.Username ?? userDB?.FirstName + userDB?.LastName ?? "";
                 if (counter == 1)
                 {
-                    var user = _userService.Get(appleUser.UserId);
                     if (user == null)
                         continue;
 
@@ -894,24 +942,42 @@ namespace TamagotchiBot.Controllers
                         continue;
 
                     anwserRating += ranksCommandApples + "\n\n";
-                    anwserRating += "🍏 " + appleUser.TotalWins + " 🐱 " + _petService.Get(user.UserId)?.Name ?? user.Username ?? user.FirstName + user.LastName;
+                    if (user.UserId == userDB?.UserId)
+                        anwserRating += "<b>" + "🍏 " + appleUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
+                    else
+                        anwserRating += "🍏 " + appleUser.TotalWins + HttpUtility.HtmlEncode(name);
                     anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
                     counter++;
                 }
                 else
                 {
-                    var user = _userService.Get(appleUser.UserId);
-                    if (user == null)
+                    if (userDB == null)
                         continue;
 
                     if (appleUser?.TotalWins == null)
                         continue;
 
                     anwserRating += "\n";
-                    anwserRating += counter + ". " + appleUser.TotalWins + " 🐱 " + _petService.Get(user.UserId)?.Name ?? user.Username ?? user.FirstName + user.LastName;
+                    if (user.UserId == userDB.UserId)
+                        anwserRating += "<b>" + counter + ". " + appleUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
+                    else
+                        anwserRating += counter + ". " + appleUser.TotalWins + HttpUtility.HtmlEncode(name);
                     counter++;
                 }
             }
+
+            if (!topApples.Any(a => a.UserId == user.UserId))
+            {
+                var currentUserApple =_appleGameDataService.Get(user.UserId);
+
+                anwserRating += "\n______________________________";
+                var counterN = _appleGameDataService.GetAll()
+                .OrderByDescending(a => a.TotalWins)
+                .ToList()
+                .FindIndex(a => a.UserId == user.UserId);
+                anwserRating += "\n <b> " + (counterN == -1 ? _appleGameDataService.GetAll()?.Count : counterN) + ". " + (currentUserApple?.TotalWins ?? 0) + HttpUtility.HtmlEncode(" 🐱 " + pet?.Name ?? user.Username ?? user.FirstName + user.LastName) + "</b>";
+            }
+
 
             return anwserRating;
         }
@@ -927,25 +993,39 @@ namespace TamagotchiBot.Controllers
             int counter = 1;
             foreach (var pet in topPets)
             {
+                var userDB = _userService.Get(pet.UserId);
+                string name = pet.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
                 if (counter == 1)
                 {
-                    var user = _userService.Get(pet.UserId);
-
                     anwserRating += ranksCommandGold + "\n\n";
-                    anwserRating += "💎 " + pet.Gold + " 🐱 " + pet.Name ?? user.Username ?? user.FirstName + user.LastName;
+                    if (user.UserId == userDB.UserId)
+                        anwserRating += "<b>" + "💎 " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                    else
+                        anwserRating += "💎 " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name);
                     anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
                     counter++;
                 }
                 else
                 {
                     anwserRating += "\n";
-                    var user = _userService.Get(pet.UserId);
-
-                    string name = pet.Name ?? user.Username ?? user.FirstName + user.LastName;
-
-                    anwserRating += counter + ". " + pet.Gold + " 🐱 " + name;
+                    if (user.UserId == userDB.UserId)
+                        anwserRating += "<b>" + counter + ". " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                    else
+                        anwserRating += counter + ". " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name);
                     counter++;
                 }
+            }
+
+            if (!topPets.Any(a => a.UserId == user.UserId))
+            {
+                string name = pet.Name ?? user.Username ?? user.FirstName + user.LastName;
+
+                anwserRating += "\n______________________________";
+                anwserRating += "\n <b>" + _petService.GetAll()
+                .OrderByDescending(p => p.Gold)
+                .ThenByDescending(p => p.LastUpdateTime)
+                .ToList()
+                .FindIndex(a => a.UserId == user.UserId) + ". " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
             }
 
             return anwserRating;
@@ -1129,6 +1209,17 @@ namespace TamagotchiBot.Controllers
                     pet.HP = 0;
             }
         }
+        private void UpdateIndicatorHygiene(int minuteCounter)
+        {
+            double toDecreaseHygiene = Math.Round(minuteCounter * Factors.HygieneFactor);
+
+            pet.Hygiene -= (int)toDecreaseHygiene;
+
+            if (pet.Hygiene < 0)
+            {
+                pet.Hygiene = 0;
+            }
+        }
         private void UpdateIndicatorJoy(int minuteCounter)
         {
             double toDecreaseJoy = Math.Round(minuteCounter * Factors.JoyFactor);
@@ -1171,10 +1262,11 @@ namespace TamagotchiBot.Controllers
         private AnswerCallback ShowBasicInfoInline()
         {
             string toSendText = string.Format(petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Satiety,
-                                                  Extensions.GetFatigue(pet.Fatigue),
+                                                  pet.Fatigue,
                                                   Extensions.GetCurrentStatus(pet.CurrentStatus),
                                                   pet.Joy,
-                                                  pet.Gold);
+                                                  pet.Gold,
+                                                  pet.Hygiene);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
                 {
                     new CommandModel()
@@ -1230,7 +1322,7 @@ namespace TamagotchiBot.Controllers
                 return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
             }
             _petService.UpdateGold(_userId, newGold);
-            _petService.UpdateStarving(_userId, newStarving);
+            _petService.UpdateSatiety(_userId, newStarving);
             var aud = _allUsersService.Get(_userId);
             aud.BreadEatenCounter++;
             aud.GoldSpentCounter += Constants.Costs.Bread;
@@ -1245,6 +1337,40 @@ namespace TamagotchiBot.Controllers
                 return null;
 
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+
+            return new AnswerCallback(toSendText, toSendInline);
+        }
+        private AnswerCallback TakeShowerInline()
+        {
+            var newHygiene = pet.Hygiene + HygieneFactors.ShowerFactor;
+
+            _petService.UpdateHygiene(_userId, newHygiene);
+
+            string anwser = string.Format(PetHygieneAnwserCallback, HygieneFactors.ShowerFactor);
+            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
+
+            pet = _petService.Get(pet.UserId);
+            string toSendText = string.Format(bathroomCommand, pet.Hygiene);
+
+            List<CommandModel> inlineParts = new InlineItems().InlineHygiene;
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+
+            return new AnswerCallback(toSendText, toSendInline);
+        }
+
+        private AnswerCallback TeethInline()
+        {
+            var newHygiene = pet.Hygiene + HygieneFactors.TeethFactor;
+
+            _petService.UpdateHygiene(_userId, newHygiene);
+
+            string anwser = string.Format(PetHygieneAnwserCallback, HygieneFactors.TeethFactor);
+            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
+            pet = _petService.Get(pet.UserId);
+            string toSendText = string.Format(bathroomCommand, pet.Hygiene);
+
+            List<CommandModel> inlineParts = new InlineItems().InlineHygiene;
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             return new AnswerCallback(toSendText, toSendInline);
         }
@@ -1275,7 +1401,7 @@ namespace TamagotchiBot.Controllers
             }
 
             _petService.UpdateGold(_userId, newGold);
-            _petService.UpdateStarving(_userId, newStarving);
+            _petService.UpdateSatiety(_userId, newStarving);
 
             var aud = _allUsersService.Get(_userId);
             aud.AppleEatenCounter++;
@@ -1321,7 +1447,7 @@ namespace TamagotchiBot.Controllers
             }
 
             _petService.UpdateGold(_userId, newGold);
-            _petService.UpdateStarving(_userId, newStarving);
+            _petService.UpdateSatiety(_userId, newStarving);
             var aud = _allUsersService.Get(_userId);
             aud.ChocolateEatenCounter++;
             aud.GoldSpentCounter += Constants.Costs.Chocolate;
@@ -1366,7 +1492,7 @@ namespace TamagotchiBot.Controllers
             }
 
             _petService.UpdateGold(_userId, newGold);
-            _petService.UpdateStarving(_userId, newStarving);
+            _petService.UpdateSatiety(_userId, newStarving);
 
             var aud = _allUsersService.Get(_userId);
             aud.LollypopEatenCounter++;
@@ -1430,7 +1556,6 @@ namespace TamagotchiBot.Controllers
                             }
                         });
 
-                    Log.Warning("SLEEP TEST");
                     return new AnswerCallback(sendTxt, toSendInlineWhileActive);
                 }
 
@@ -1778,7 +1903,7 @@ namespace TamagotchiBot.Controllers
 
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
 
-            return new AnswerCallback(toSendText, toSendInline);
+            return new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html);
         }
 
         private AnswerCallback ShowRanksApples()
@@ -1790,7 +1915,7 @@ namespace TamagotchiBot.Controllers
 
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
 
-            return new AnswerCallback(toSendText, toSendInline);
+            return new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html);
         }
 
         private AnswerCallback ShowRanksLevel()
@@ -1802,7 +1927,7 @@ namespace TamagotchiBot.Controllers
 
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
 
-            return new AnswerCallback(toSendText, toSendInline);
+            return new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html);
         }
 
         #endregion
