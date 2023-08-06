@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using TamagotchiBot.Models;
 using TamagotchiBot.Models.Answers;
@@ -582,6 +583,7 @@ namespace TamagotchiBot.Controllers
                     UserId = _userId
                 });
                 Log.Information($"Pet of {user.Username} has been added to Db");
+                Task.Delay(50);
 
                 chat.LastMessage = "/welcome";
                 _chatService.Update(chat.ChatId, chat);
@@ -897,7 +899,7 @@ namespace TamagotchiBot.Controllers
                     anwserRating += "\n";
 
                     if (user.UserId == userDB.UserId)
-                        anwserRating += "\n <b>" + counter + ". " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                        anwserRating += "<b>" + counter + ". " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
                     else
                         anwserRating += counter + ". " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name);
                     counter++;
