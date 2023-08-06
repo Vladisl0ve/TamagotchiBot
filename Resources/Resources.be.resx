@@ -510,25 +510,33 @@ Wybierz nowy język 🇵🇱
     <value>Гуляючы з гадаванцам па горадзе, вы сустрэлі старога сябра Льва🦁
 
 +40% Радасць 🎊
-+15 золата 💰 (пазычыў у сябра)</value>
++15 золата 💰 (пазычыў у сябра)
+
+/pet - правер свайго гадаванца</value>
   </data>
   <data name="RandomEventHotdog" xml:space="preserve">
     <value>🌭 Вам было прапанавана ацаніць новы рэцэпт хот-дога 🧑‍🍳
 
 +40 насычанасць🍕
-+20 золата💰</value>
++20 золата💰
+
+/pet - правер свайго гадаванца</value>
   </data>
   <data name="RandomEventStepOnFoot" xml:space="preserve">
     <value>🧑‍🌾Нехта наступіў на нагу гадаванцу🗣
 Вось рэптылія 👺 
 
 -1% здароўя 💊
--10% радасці🎊</value>
+-10% радасці🎊
+
+/pet - правер свайго гадаванца</value>
   </data>
   <data name="RandomEventRainbow" xml:space="preserve">
     <value>🌈 Вы спаткалі вясёлку пасля дажджу 🌦
 
-+ 10% радасці 🎊</value>
++ 10% радасці 🎊
+
+/pet - правер свайго гадаванца</value>
   </data>
   <data name="WelcomeStatusButton" xml:space="preserve">
     <value>Пачнем 😻</value>
@@ -564,5 +572,15 @@ Wybierz nowy język 🇵🇱
 У планах:
 🎰Новыя міні-гульні
 🏫Дадаць школу, адукацыю</value>
+  </data>
+  <data name="RandomEventFireworks" xml:space="preserve">
+    <value>Вы пайшлі глядзець на феерверк 🎇
+Але гадаванец выпадкова наступіў у лужыну 💦
+
+
++20% радасць 🎊
+-10% гігіены 🛁
+
+/pet - правер свайго гадаванца</value>
   </data>
 </root>

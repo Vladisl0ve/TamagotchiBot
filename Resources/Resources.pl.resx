@@ -507,25 +507,33 @@ Odbierz ją wkrótce! 🎁</value>
     <value>Spacerując po mieście ze swoim zwierzakiem spotkałeś starego przyjaciela Lwiątka🦁
 
 +40% do radości 🎊
-+15 złota 💰 (pożyczone od przyjaciela)</value>
++15 złota 💰 (pożyczone od przyjaciela)
+
+/pet - sprawdź status zwierzaka</value>
   </data>
   <data name="RandomEventHotdog" xml:space="preserve">
     <value>Zostałeś poproszony o ocenę nowego przepisu na hot doga 🧑‍🍳
 
 +40 sytości 🍕
-+20 złota 💰</value>
++20 złota 💰
+
+/pet - sprawdź status zwierzaka</value>
   </data>
   <data name="RandomEventStepOnFoot" xml:space="preserve">
-    <value>🧑‍🌾Какой przechodzień nadepnął na łapę swojego zwierzaka 🗣
+    <value>🧑‍🌾Jakiś przechodzień nadepnął na łapę swojego zwierzaka 🗣
 Co za drań 👺
 
 -1% zdrowia 💊
--10% radości 🎊</value>
+-10% radości 🎊
+
+/pet - sprawdź status zwierzaka</value>
   </data>
   <data name="RandomEventRainbow" xml:space="preserve">
     <value>🌈 Widziałeś tęczę po deszczu 🌦
 
-+10% radości 🎊</value>
++10% radości 🎊
+
+/pet - sprawdź status zwierzaka</value>
   </data>
   <data name="WelcomeStatusButton" xml:space="preserve">
     <value>Do przodu 😻</value>
@@ -561,5 +569,15 @@ Korekty:
 W planach:
 🎰Nowe minigry
 🏫 Dodaj szkołę, edukację</value>
+  </data>
+  <data name="RandomEventFireworks" xml:space="preserve">
+    <value>Poszedłeś oglądać fajerwerki 🎇
+Ale zwierzak przypadkiem wpadł do kałuży 💦
+
+
++20% radości 🎊
+-10% higieny 🛁
+
+/pet - sprawdź status zwierzaka</value>
   </data>
 </root>

@@ -711,10 +711,28 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You went to watch the fireworks 🎇
+        ///But the pet accidentally stepped into a puddle 💦
+        ///
+        ///
+        ///+20% joy 🎊
+        ///-10% hygiene 🛁
+        ///
+        ////pet - check pet&apos;s status.
+        /// </summary>
+        public static string RandomEventFireworks {
+            get {
+                return ResourceManager.GetString("RandomEventFireworks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Walking with a pet in the city, you met an old friend of Lionko🦁
         ///
         ///+40% to joy 🎊
-        ///+15 gold 💰 (borrowed from a friend).
+        ///+15 gold 💰 (borrowed from a friend)
+        ///
+        ////pet - check pet&apos;s status.
         /// </summary>
         public static string RandomEventFriendMet {
             get {
@@ -726,7 +744,9 @@ namespace TamagotchiBot.Resources {
         ///   Looks up a localized string similar to 🌭 You were asked to rate a new hot dog recipe 🧑‍🍳
         ///
         ///+40 satiety🍕
-        ///+20 gold💰.
+        ///+20 gold💰
+        ///
+        ////pet - check pet&apos;s status.
         /// </summary>
         public static string RandomEventHotdog {
             get {
@@ -737,7 +757,9 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 🌈 You saw the rainbow after the rain 🌦
         ///
-        ///+10% joy 🎊.
+        ///+10% joy 🎊
+        ///
+        ////pet - check pet&apos;s status.
         /// </summary>
         public static string RandomEventRainbow {
             get {
@@ -749,7 +771,9 @@ namespace TamagotchiBot.Resources {
         ///   Looks up a localized string similar to 🧑‍🌾Some passerby stepped on the pet&apos;s foot 🗣
         ///
         /// 👺-1% health
-        /// 💊-10% joy🎊.
+        /// 💊-10% joy🎊
+        ///
+        ////pet - check pet&apos;s status.
         /// </summary>
         public static string RandomEventStepOnFoot {
             get {
