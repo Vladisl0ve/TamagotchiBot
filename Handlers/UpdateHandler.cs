@@ -338,11 +338,11 @@ namespace TamagotchiBot.Handlers
 
             if (!response.IsSuccessStatusCode)
             {
-                Log.Warning("Gramads:" + result);
+                Log.Warning("==> Gramads:" + result);
                 return;
             }
 
-            Log.Information("Gramads: " + result);
+            Log.Information("==> Gramads: " + result);
         }
     }
 }
