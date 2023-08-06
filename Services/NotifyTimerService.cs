@@ -105,7 +105,6 @@ namespace TamagotchiBot.Services
             _dailyRewardTimer.Enabled = true;
         }
 
-
         private void OnRandomEventTimedEvent(object sender, ElapsedEventArgs e)
         {
             var usersToNotify = UpdateAllRandomEventUsersIds();
@@ -508,6 +507,5 @@ namespace TamagotchiBot.Services
         }
 
         #endregion
-
     }
 }
