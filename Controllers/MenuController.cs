@@ -636,6 +636,7 @@ namespace TamagotchiBot.Controllers
             _petService.Remove(user.UserId);
             _chatService.Remove(user.UserId);
             _userService.Remove(user.UserId);
+            _appleGameDataService.Delete(user.UserId);
         }
         public Answer GetFarewellAnswer(string petName, string username)
         {

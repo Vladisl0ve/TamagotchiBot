@@ -148,6 +148,7 @@ namespace TamagotchiBot.Services
                         _chatService.Remove(user.UserId);
                         _petService.Remove(user.UserId);
                         _userService.Remove(user.UserId);
+                        _appleGameService.Delete(user.UserId);
                     }
                 }
                 catch (Exception ex)
@@ -180,7 +181,7 @@ namespace TamagotchiBot.Services
         }
         private async void OnChangelogsTimedEvent(object sender, ElapsedEventArgs e)
         {
-            LittileThing();
+            //LittileThing();
             var usersToNotify = GetAllUsersIds();
             Log.Information($"Changelog timer - {usersToNotify.Count} users");
             _sinfoService.DisableChangelogsSending();
@@ -226,6 +227,7 @@ namespace TamagotchiBot.Services
                         _chatService.Remove(user.UserId);
                         _petService.Remove(user.UserId);
                         _userService.Remove(user.UserId);
+                        _appleGameService.Delete(user.UserId);
                     }
                 }
                 catch (Exception ex)
