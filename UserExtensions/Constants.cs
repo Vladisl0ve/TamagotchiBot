@@ -210,7 +210,7 @@ namespace TamagotchiBot.UserExtensions
                    new CommandModel()
                    {
                        Text = "🍏",
-                       CallbackData = "gameroomCommandInlineCard"
+                       CallbackData = "gameroomCommandInlineAppleGame"
                    },
                    new CommandModel()
                    {

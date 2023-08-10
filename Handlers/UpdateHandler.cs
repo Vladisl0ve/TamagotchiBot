@@ -174,7 +174,7 @@ namespace TamagotchiBot.Handlers
                 if (userService.Get(userId)?.IsInAppleGame ?? false)
                     return;
 
-                if (callbackQuery.Data == "gameroomCommandInlineCard")
+                if (callbackQuery.Data == "gameroomCommandInlineAppleGame")
                 {
                     var petDB = petService.Get(userId);
                     if (petDB?.Fatigue >= 100)
