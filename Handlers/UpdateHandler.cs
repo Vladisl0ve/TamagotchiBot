@@ -25,7 +25,7 @@ namespace TamagotchiBot.Handlers
 {
     public class UpdateHandler : IUpdateHandler
     {
-        private readonly IApplicationServices appServices;
+        private readonly IApplicationServices _appServices;
         private readonly UserService userService;
         private readonly PetService petService;
         private readonly ChatService chatService;
@@ -35,7 +35,7 @@ namespace TamagotchiBot.Handlers
 
         public UpdateHandler(IApplicationServices services)
         {
-            appServices = services;
+            _appServices = services;
             userService = services.UserService;
             petService = services.PetService;
             chatService = services.ChatService;
@@ -76,7 +76,12 @@ namespace TamagotchiBot.Handlers
 
         public Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
         {
-            var userId = update.Message?.From.Id ?? update.CallbackQuery?.From.Id ?? default;
+            if (!CheckingToContinueHandlingUpdate(update))
+                return Task.CompletedTask;
+
+            var messageFromUser = update.Message;
+            var callbackFromUser = update.CallbackQuery;
+            var userId = messageFromUser?.From.Id ?? callbackFromUser?.From.Id ?? default;
             CultureInfo culture = CultureInfo.GetCultureInfo(userService.Get(userId)?.Culture ?? "ru");
 
             Task task = update.Type switch
@@ -85,6 +90,7 @@ namespace TamagotchiBot.Handlers
                 UpdateType.CallbackQuery => BotOnCallbackQueryReceived(bot, update.CallbackQuery),
                 _ => Task.CompletedTask
             };
+
 
             if (petService.Get(userId) is not null && petService.Get(userId).Name is not null && (!userService.Get(userId)?.IsInAppleGame ?? false))
             {
@@ -113,12 +119,11 @@ namespace TamagotchiBot.Handlers
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
-                var menuController = new MenuController(appServices, botClient, message);
-                var gameController = new AppleGameController(appServices, botClient, message);
+                var menuController = new MenuController(_appServices, botClient, message);
                 Answer toSend = null;
 
-                if (userService.Get(message.From.Id) == null)
-                    toSend = menuController.CreateUser();
+                if (_appServices.UserService.Get(message.From.Id) == null)
+                    toSend = new CreatePetController(_appServices, botClient, message).CreateUser();
                 else
                     try
                     {
@@ -130,7 +135,7 @@ namespace TamagotchiBot.Handlers
 
 
                         if (userService.Get(message.From.Id).IsInAppleGame)
-                            toSend = gameController.Menu();
+                            toSend = new AppleGameController(_appServices, botClient, message).Menu();
                         else
                             toSend = menuController.Process();
 
@@ -219,7 +224,7 @@ namespace TamagotchiBot.Handlers
                             IsGameOvered = false,
                         });
 
-                    var gameController = new AppleGameController(appServices, bot, callbackQuery);
+                    var gameController = new AppleGameController(_appServices, bot, callbackQuery);
                     Answer toSendAnswer = gameController.StartGame();
 
                     SendMessage(toSendAnswer, callbackQuery.From.Id);
@@ -232,7 +237,7 @@ namespace TamagotchiBot.Handlers
 
                 await SendPostToChat(callbackQuery.From.Id);
 
-                var controller = new MenuController(appServices, bot, callbackQuery);
+                var controller = new MenuController(_appServices, bot, callbackQuery);
                 AnswerCallback toSend = controller.CallbackHandler();
 
                 if (toSend == null)
@@ -305,6 +310,23 @@ namespace TamagotchiBot.Handlers
             }
         }
 
+
+        /// <returns>true == handled update is acceptable to continue, otherwise must to stop</returns>
+        private bool CheckingToContinueHandlingUpdate(Update update)
+        {
+            if (update.Type == UpdateType.Message)
+                if (update.Message.Type == MessageType.Text)
+                    if (update.Message.From != null)
+                        if (update.Message.ForwardDate == null)
+                            return true;
+
+            if (update.Type == UpdateType.CallbackQuery)
+                if (update.CallbackQuery.Message != null)
+                    if (update.CallbackQuery.Message.ForwardDate == null)
+                        return true;
+
+            return false;
+        }
         private async Task SendPostToChat(long chatId)
         {
 #if DEBUG
