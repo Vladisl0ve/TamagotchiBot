@@ -11,6 +11,7 @@ using System.IO;
 using TamagotchiBot.Database;
 using TamagotchiBot.Handlers;
 using TamagotchiBot.Services;
+using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
@@ -53,25 +54,25 @@ namespace Telegram.Bots.Example
                   {
                       services.AddHostedService<TelegramBotHostedService>();
                       services.AddTransient<IUpdateHandler, UpdateHandler>();
-                      services.AddSingleton<ITelegramBotClient>(_ => new TelegramBotClient(context.Configuration["TokenBot"]));
+                      services.AddTransient<ITelegramBotClient>(_ => new TelegramBotClient(context.Configuration["TokenBot"]));
 
                       services.Configure<TamagotchiDatabaseSettings>(context.Configuration.GetSection(nameof(TamagotchiDatabaseSettings)));
-                      services.AddSingleton<ITamagotchiDatabaseSettings>(sp => sp.GetRequiredService<IOptions<TamagotchiDatabaseSettings>>().Value);
+                      services.AddTransient<ITamagotchiDatabaseSettings>(sp => sp.GetRequiredService<IOptions<TamagotchiDatabaseSettings>>().Value);
 
-                      services.AddSingleton<NotifyTimerService>();
+                      services.AddTransient<IApplicationServices, ApplicationServices>();
+                      services.AddTransient<NotifyTimerService>();
                       services.Configure<EnvsSettings>(context.Configuration.GetSection(nameof(EnvsSettings)));
-                      services.AddSingleton<IEnvsSettings>(sp => sp.GetRequiredService<IOptions<EnvsSettings>>().Value);
-                      services.AddSingleton<UserService>();
-                      services.AddSingleton<AdsProducersService>();
-                      services.AddSingleton<PetService>();
-                      services.AddSingleton<ChatService>();
-                      services.AddSingleton<SInfoService>();
-                      services.AddSingleton<AppleGameDataService>();
-                      services.AddSingleton<BotControlService>();
-                      services.AddSingleton<AllUsersDataService>();
-                      services.AddSingleton<DailyInfoService>();
-                      services.AddSingleton<BannedUsersService>();
-
+                      services.AddTransient<IEnvsSettings>(sp => sp.GetRequiredService<IOptions<EnvsSettings>>().Value);
+                      services.AddTransient<UserService>();
+                      services.AddTransient<AdsProducersService>();
+                      services.AddTransient<PetService>();
+                      services.AddTransient<ChatService>();
+                      services.AddTransient<SInfoService>();
+                      services.AddTransient<AppleGameDataService>();
+                      services.AddTransient<BotControlService>();
+                      services.AddTransient<AllUsersDataService>();
+                      services.AddTransient<DailyInfoService>();
+                      services.AddTransient<BannedUsersService>();
 
                       services.AddLocalization(options => options.ResourcesPath = "Resources");
                   });

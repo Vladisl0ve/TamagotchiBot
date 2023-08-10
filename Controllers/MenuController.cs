@@ -10,6 +10,7 @@ using TamagotchiBot.Models;
 using TamagotchiBot.Models.Answers;
 using TamagotchiBot.Models.Mongo;
 using TamagotchiBot.Services;
+using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
@@ -38,76 +39,41 @@ namespace TamagotchiBot.Controllers
         private readonly CallbackQuery callback = null;
         private readonly long _userId;
 
-        private User user;
-        private Pet pet;
-        private Chat chat;
+        private readonly User user;
+        private readonly Pet pet;
+        private readonly Chat chat;
 
-        public MenuController(ITelegramBotClient bot,
-                              UserService userService,
-                              PetService petService,
-                              ChatService chatService,
-                              BotControlService botControlService,
-                              AllUsersDataService allUsersService,
-                              BannedUsersService bannedService,
-                              AppleGameDataService appleGameDataService,
-                              CallbackQuery callback)
+        private MenuController(IApplicationServices services, ITelegramBotClient bot, Message message = null, CallbackQuery callback = null)
         {
             this.bot = bot;
-            _userService = userService;
-            _petService = petService;
             this.callback = callback;
-            _chatService = chatService;
-            _bcService = botControlService;
-            this._allUsersService = allUsersService;
-            _bannedService = bannedService;
-            _appleGameDataService = appleGameDataService;
-            _userId = callback.From.Id;
-
-            GetFromDb();
-
-            Culture = new CultureInfo(user?.Culture ?? "ru");
-            UpdateOrCreateAUD(callback.From, message, callback);
-        }
-
-        public MenuController(ITelegramBotClient bot,
-                              UserService userService,
-                              PetService petService,
-                              ChatService chatService,
-                              BotControlService botControlService,
-                              AllUsersDataService allUsersService,
-                              BannedUsersService bannedService,
-                              AppleGameDataService appleGameDataService,
-                              AdsProducersService adsProducersService,
-                              Message message)
-        {
-            this.bot = bot;
-            _userService = userService;
-            _petService = petService;
             this.message = message;
-            _chatService = chatService;
-            _bcService = botControlService;
-            this._allUsersService = allUsersService;
-            _bannedService = bannedService;
-            _appleGameDataService = appleGameDataService;
-            _adsProducersService = adsProducersService;
-            _userId = message.From.Id;
+            _userId = callback?.From.Id ?? message.From.Id;
 
-            GetFromDb();
+            _userService = services.UserService;
+            _petService = services.PetService;
+            _chatService = services.ChatService;
+            _bcService = services.BotControlService;
+            _allUsersService = services.AllUsersDataService;
+            _bannedService = services.BannedUsersService;
+            _appleGameDataService = services.AppleGameDataService;
+            _adsProducersService = services.AdsProducersService;
+
+            user = _userService.Get(_userId);
+            pet = _petService.Get(_userId);
+            chat = _chatService.Get(message?.Chat.Id ?? callback.Message.Chat.Id);
 
             Culture = new CultureInfo(user?.Culture ?? "ru");
-            UpdateOrCreateAUD(message.From, message, callback);
+            UpdateOrCreateAUD(message?.From ?? callback.From, message, callback);
         }
-
-        private void GetFromDb()
+        public MenuController(IApplicationServices services, ITelegramBotClient bot, CallbackQuery callback) : this(services, bot, null, callback)
         {
-            user = _userService.Get(_userId);
-
-            if (user != null)
-            {
-                pet = _petService.Get(user.UserId);
-                chat = _chatService.Get(message?.Chat.Id ?? callback.Message.Chat.Id);
-            }
         }
+
+        public MenuController(IApplicationServices services, ITelegramBotClient bot, Message message) : this(services, bot, message, null)
+        {
+        }
+
         private void UpdateOrCreateAUD(Telegram.Bot.Types.User user, Message message = null, CallbackQuery callback = null)
         {
             if (user == null)
@@ -137,7 +103,7 @@ namespace TamagotchiBot.Controllers
 
             aud.Updated = DateTime.UtcNow;
             aud.Username = user.Username;
-            aud.Culture = _userService.Get(user.Id)?.Culture ?? "en";
+            aud.Culture = _userService.Get(user.Id)?.Culture ?? "ru";
             aud.LastMessage = message?.Text ?? string.Empty;
             aud.MessageCounter = message == null ? aud.MessageCounter : aud.MessageCounter + 1;
             aud.CallbacksCounter = callback == null ? aud.CallbacksCounter : aud.CallbacksCounter + 1;
@@ -922,7 +888,7 @@ namespace TamagotchiBot.Controllers
             return anwserRating;
         }
         private string GetRanksByApples()
-        {            
+        {
             var topApples = _appleGameDataService.GetAll()
                 .OrderByDescending(a => a.TotalWins)
                 .Take(10); //First 10 top-apples users
@@ -1344,14 +1310,14 @@ namespace TamagotchiBot.Controllers
         private AnswerCallback TakeShowerInline()
         {
             var newHygiene = pet.Hygiene + HygieneFactors.ShowerFactor;
+            newHygiene = newHygiene > 100 ? 100 : newHygiene;
 
             _petService.UpdateHygiene(_userId, newHygiene);
 
             string anwser = string.Format(PetHygieneAnwserCallback, HygieneFactors.ShowerFactor);
             _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
 
-            pet = _petService.Get(pet.UserId);
-            string toSendText = string.Format(bathroomCommand, pet.Hygiene);
+            string toSendText = string.Format(bathroomCommand, newHygiene);
 
             List<CommandModel> inlineParts = new InlineItems().InlineHygiene;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -1362,13 +1328,13 @@ namespace TamagotchiBot.Controllers
         private AnswerCallback TeethInline()
         {
             var newHygiene = pet.Hygiene + HygieneFactors.TeethFactor;
+            newHygiene = newHygiene > 100 ? 100 : newHygiene;
 
             _petService.UpdateHygiene(_userId, newHygiene);
 
             string anwser = string.Format(PetHygieneAnwserCallback, HygieneFactors.TeethFactor);
             _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
-            pet = _petService.Get(pet.UserId);
-            string toSendText = string.Format(bathroomCommand, pet.Hygiene);
+            string toSendText = string.Format(bathroomCommand, newHygiene);
 
             List<CommandModel> inlineParts = new InlineItems().InlineHygiene;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);

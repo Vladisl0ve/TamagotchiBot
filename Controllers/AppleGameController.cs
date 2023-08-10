@@ -11,6 +11,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.Resources.Resources;
 using static TamagotchiBot.UserExtensions.Constants;
 using TamagotchiBot.Services.Mongo;
+using TamagotchiBot.Services.Interfaces;
 
 namespace TamagotchiBot.Controllers
 {
@@ -31,54 +32,35 @@ namespace TamagotchiBot.Controllers
 
         private const int APPLE_COUNTER_DEFAULT = 24;
 
-        private AppleGameController(ITelegramBotClient bot,
-                           UserService userService,
-                           PetService petService,
-                           ChatService chatService,
-                           AppleGameDataService appleGameDataService,
-                           AllUsersDataService allUsersService,
-                           BotControlService bcService)
+        private AppleGameController(IApplicationServices services, ITelegramBotClient bot, Message message = null, CallbackQuery callback = null)
         {
             this.bot = bot;
-            _userService = userService;
-            _petService = petService;
-            _chatService = chatService;
-            _appleGameDataService = appleGameDataService;
-            this._allUsersService = allUsersService;
-            Culture = new CultureInfo(_userService.Get(UserId)?.Culture ?? "ru");
-            _bcService = bcService;
-        }
-
-        public AppleGameController(ITelegramBotClient bot,
-                                   UserService userService,
-                                   PetService petService,
-                                   ChatService chatService,
-                                   AppleGameDataService appleGameDataService,
-                                   AllUsersDataService allUsersService,
-                                   BotControlService botControlService,
-                                   CallbackQuery callback) : this(bot, userService, petService, chatService, appleGameDataService, allUsersService, botControlService)
-        {
-
-            AppleCounter = appleGameDataService.Get(callback.From.Id)?.CurrentAppleCounter ?? 1;
             this.callback = callback;
-            UserId = callback.From.Id;
-            Culture = new CultureInfo(_userService.Get(UserId)?.Culture ?? "ru");
-        }
-
-        public AppleGameController(ITelegramBotClient bot,
-                                   UserService userService,
-                                   PetService petService,
-                                   ChatService chatService,
-                                   AppleGameDataService appleGameDataService,
-                                   AllUsersDataService allUsersService, BotControlService botControlService,
-                                   Message message) : this(bot, userService, petService, chatService, appleGameDataService, allUsersService, botControlService)
-        {
-            AppleCounter = appleGameDataService.Get(message.From.Id)?.CurrentAppleCounter ?? 1;
             this.message = message;
-            UserId = message.From.Id;
+            UserId = message?.From.Id ?? callback.From.Id;
+
+            _userService = services.UserService;
+            _petService = services.PetService;
+            _chatService = services.ChatService;
+            _appleGameDataService = services.AppleGameDataService;
+            _allUsersService = services.AllUsersDataService;
+            _bcService = services.BotControlService;
+
             Culture = new CultureInfo(_userService.Get(UserId)?.Culture ?? "ru");
+            AppleCounter = _appleGameDataService.Get(UserId)?.CurrentAppleCounter ?? 1;
         }
 
+        public AppleGameController(IApplicationServices services, 
+                                   ITelegramBotClient bot,
+                                   CallbackQuery callback) : this(services, bot, null, callback)
+        {
+        }
+
+        public AppleGameController(IApplicationServices services,
+                                   ITelegramBotClient bot,
+                                   Message message) : this(services, bot, message, null)
+        {
+        }
 
         public int AppleCounter { get; set; }
         private List<string> MenuCommands => new List<string>() { againText, statisticsText, quitText };
@@ -162,7 +144,7 @@ namespace TamagotchiBot.Controllers
             };
         }
 
-        public Answer Menu(Message message)
+        public Answer Menu()
         {
             var appleDataToUpdate = _appleGameDataService.Get(UserId);
             var petDB = _petService.Get(UserId);

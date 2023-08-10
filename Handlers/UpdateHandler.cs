@@ -19,40 +19,29 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using Newtonsoft.Json;
 using System.Globalization;
+using TamagotchiBot.Services.Interfaces;
 
 namespace TamagotchiBot.Handlers
 {
     public class UpdateHandler : IUpdateHandler
     {
+        private readonly IApplicationServices appServices;
         private readonly UserService userService;
         private readonly PetService petService;
         private readonly ChatService chatService;
         private readonly SInfoService sinfoService;
         private readonly AppleGameDataService appleGameDataService;
-        private readonly AllUsersDataService allUsersService;
         private readonly BotControlService bcService;
-        private readonly BannedUsersService bannedService;
-        private readonly AdsProducersService adsProducersService;
 
-        public UpdateHandler(UserService userService,
-                             PetService petService,
-                             ChatService chatService,
-                             SInfoService sinfoService,
-                             AppleGameDataService appleGameDataService,
-                             AllUsersDataService allUsersService,
-                             BannedUsersService bannedService,
-                             AdsProducersService adsProducersService,
-                             BotControlService botControlService)
+        public UpdateHandler(IApplicationServices services)
         {
-            this.userService = userService;
-            this.petService = petService;
-            this.chatService = chatService;
-            this.sinfoService = sinfoService;
-            this.appleGameDataService = appleGameDataService;
-            this.allUsersService = allUsersService;
-            this.bannedService = bannedService;
-            this.adsProducersService = adsProducersService;
-            this.bcService = botControlService;
+            appServices = services;
+            userService = services.UserService;
+            petService = services.PetService;
+            chatService = services.ChatService;
+            sinfoService = services.SInfoService;
+            appleGameDataService = services.AppleGameDataService;
+            bcService = services.BotControlService;
         }
 
 
@@ -124,8 +113,8 @@ namespace TamagotchiBot.Handlers
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
-                var menuController = new MenuController(botClient, userService, petService, chatService, bcService, allUsersService, bannedService, appleGameDataService, adsProducersService, message);
-                var gameController = new AppleGameController(botClient, userService, petService, chatService, appleGameDataService, allUsersService, bcService, message);
+                var menuController = new MenuController(appServices, botClient, message);
+                var gameController = new AppleGameController(appServices, botClient, message);
                 Answer toSend = null;
 
                 if (userService.Get(message.From.Id) == null)
@@ -141,7 +130,7 @@ namespace TamagotchiBot.Handlers
 
 
                         if (userService.Get(message.From.Id).IsInAppleGame)
-                            toSend = gameController.Menu(message);
+                            toSend = gameController.Menu();
                         else
                             toSend = menuController.Process();
 
@@ -230,7 +219,7 @@ namespace TamagotchiBot.Handlers
                             IsGameOvered = false,
                         });
 
-                    var gameController = new AppleGameController(bot, userService, petService, chatService, appleGameDataService, allUsersService, bcService, callbackQuery);
+                    var gameController = new AppleGameController(appServices, bot, callbackQuery);
                     Answer toSendAnswer = gameController.StartGame();
 
                     SendMessage(toSendAnswer, callbackQuery.From.Id);
@@ -243,7 +232,7 @@ namespace TamagotchiBot.Handlers
 
                 await SendPostToChat(callbackQuery.From.Id);
 
-                var controller = new MenuController(bot, userService, petService, chatService, bcService, allUsersService, bannedService, appleGameDataService, callbackQuery);
+                var controller = new MenuController(appServices, bot, callbackQuery);
                 AnswerCallback toSend = controller.CallbackHandler();
 
                 if (toSend == null)
