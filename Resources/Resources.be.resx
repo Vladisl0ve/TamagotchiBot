@@ -156,10 +156,11 @@
     <value>У распрацоўцы, чакай наступнага абнаўлення 👾</value>
   </data>
   <data name="ChangeLanguage" xml:space="preserve">
-    <value>Choose new language 🇺🇸
-Выберы новую мову 🇨🇷
-Wybierz nowy język 🇵🇱
-Выбери новый язык 🇷🇺</value>
+    <value>Выберы новую мову:
+- Belarusian (беларуская) 🇨🇷
+- Russian (русский) 🇷🇺
+- English 🇺🇸
+- Polish (Polski) 🇵🇱</value>
   </data>
   <data name="ConfirmedLanguage" xml:space="preserve">
     <value>Выбрана беларуская мова 🤍❤️🤍</value>

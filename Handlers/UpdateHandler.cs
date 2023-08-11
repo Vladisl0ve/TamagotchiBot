@@ -119,11 +119,16 @@ namespace TamagotchiBot.Handlers
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
-                var menuController = new MenuController(_appServices, botClient, message);
+                MenuController menuController = new MenuController(_appServices, botClient, message);
+                CreatorController creatorController;
+                AppleGameController appleGameController;
                 Answer toSend = null;
 
                 if (_appServices.UserService.Get(message.From.Id) == null)
-                    toSend = new CreatePetController(_appServices, botClient, message).CreateUser();
+                {
+                    creatorController = new CreatorController(_appServices, botClient, message);
+                    creatorController.CreateUserAndChat();
+                }
                 else
                     try
                     {
@@ -317,8 +322,9 @@ namespace TamagotchiBot.Handlers
             if (update.Type == UpdateType.Message)
                 if (update.Message.Type == MessageType.Text)
                     if (update.Message.From != null)
-                        if (update.Message.ForwardDate == null)
-                            return true;
+                        if (update.Message.Chat.Id == update.Message.From.Id)
+                            if (update.Message.ForwardDate == null)
+                                return true;
 
             if (update.Type == UpdateType.CallbackQuery)
                 if (update.CallbackQuery.Message != null)

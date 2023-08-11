@@ -34,7 +34,8 @@ namespace TamagotchiBot.Services.Mongo
                 LastName = user.LastName,
                 UserId = user.Id,
                 Username = user.Username,
-                //Culture = user.LanguageCode
+                Culture = user.LanguageCode,
+                ChatIds = new List<long>() { user.Id }                
             });
         }
 
@@ -47,7 +48,7 @@ namespace TamagotchiBot.Services.Mongo
         public bool UpdateAppleGameStatus(long userId, bool isInAppleGame)
         {
             var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
-            if(userDb == null)
+            if (userDb == null)
                 return false;
 
             userDb.IsInAppleGame = isInAppleGame;
@@ -55,6 +56,7 @@ namespace TamagotchiBot.Services.Mongo
             return true;
         }
 
+        [Obsolete]
         public bool UpdateNextRandomEventNotificationTime(long userId, DateTime nextNotify)
         {
             var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();

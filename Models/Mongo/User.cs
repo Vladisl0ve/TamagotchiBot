@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
+using System.Collections.Generic;
 
 namespace TamagotchiBot.Models.Mongo
 {
@@ -16,6 +17,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("ChatId")]
         public long ChatId { get; set; }
 
+        [BsonElement("ChatIds")]
+        public List<long> ChatIds { get; set; }
+
         [BsonElement("Username")]
         public string Username { get; set; }
         [BsonElement("FirstName")]
@@ -28,6 +32,7 @@ namespace TamagotchiBot.Models.Mongo
         public string Culture { get; set; }
         [BsonElement("NextDailyRewardNotificationTime")]
         public DateTime NextDailyRewardNotificationTime { get; set; }
+        [Obsolete]
         [BsonElement("NextRandomEventNotificationTime")]
         public DateTime NextRandomEventNotificationTime { get; set; }
     }

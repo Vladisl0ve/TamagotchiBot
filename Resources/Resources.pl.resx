@@ -155,10 +155,11 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
     <value>W trakcie rozwoju, poczekaj na następną aktualizację 👾</value>
   </data>
   <data name="ChangeLanguage" xml:space="preserve">
-    <value>Choose new language 🇺🇸
-Выберы новую мову 🇨🇷
-Wybierz nowy język 🇵🇱
-Выбери новый язык 🇷🇺</value>
+    <value>Wybierz nowy język:
+- Belarusian (беларуская) 🇨🇷
+- Russian (русский) 🇷🇺
+- English 🇺🇸
+- Polish (Polski) 🇵🇱</value>
   </data>
   <data name="ConfirmedLanguage" xml:space="preserve">
     <value>Został wybrany język Polski 🇵🇱</value>

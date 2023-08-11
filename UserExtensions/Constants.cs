@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TamagotchiBot.Models;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -13,10 +10,10 @@ namespace TamagotchiBot.UserExtensions
     {
         public enum Language
         {
-            [Display(ShortName = "🇵🇱", Name = "pl")] Polish,
-            [Display(ShortName = "🇺🇸", Name = "en")] English,
             [Display(ShortName = "🇨🇷", Name = "be")] Belarusian,
-            [Display(ShortName = "🇷🇺", Name = "ru")] Russian
+            [Display(ShortName = "🇷🇺", Name = "ru")] Russian,
+            [Display(ShortName = "🇺🇸", Name = "en")] English,
+            [Display(ShortName = "🇵🇱", Name = "pl")] Polish,
         }
 
         public enum CurrentStatus

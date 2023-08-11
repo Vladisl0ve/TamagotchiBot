@@ -97,7 +97,7 @@ namespace TamagotchiBot.Services
         }
         public void SetRandomEventNotificationTimer()
         {
-            TimeSpan timeToWait = TimeSpan.FromSeconds(90);
+            TimeSpan timeToWait = TimeSpan.FromSeconds(5);
             Log.Information("RandomEventNotification timer set to wait for " + timeToWait.TotalSeconds + "s");
             _dailyRewardTimer = new Timer(timeToWait);
             _dailyRewardTimer.Elapsed += OnRandomEventTimedEvent;
@@ -333,14 +333,25 @@ namespace TamagotchiBot.Services
             {
                 var user = _userService.Get(pet.UserId);
 
-                if (user.NextRandomEventNotificationTime < DateTime.UtcNow)
+                if (user.NextRandomEventNotificationTime != default && user.NextRandomEventNotificationTime < DateTime.UtcNow)
                 {
                     int minutesToAdd = new Random().Next(-15, 30);
 
                     //For TEST
                     //_userService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddSeconds(5));
 
-                    _userService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddHours(2).AddMinutes(minutesToAdd));
+                    _petService.UpdateNextRandomEventNotificationTimeCustom(user.UserId, DateTime.UtcNow.AddHours(2).AddMinutes(minutesToAdd));
+                    usersToNotify.Add(user.UserId);
+                }
+
+                if (pet.NextRandomEventNotificationTime < DateTime.UtcNow)
+                {
+                    int minutesToAdd = new Random().Next(-15, 30);
+
+                    //For TEST
+                    //_userService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddSeconds(5));
+
+                    _petService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddHours(2).AddMinutes(minutesToAdd));
                     usersToNotify.Add(user.UserId);
                 }
             }

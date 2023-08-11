@@ -13,7 +13,7 @@ using Chat = TamagotchiBot.Models.Mongo.Chat;
 
 namespace TamagotchiBot.Controllers
 {
-    public class CreatePetController
+    public class CreatorController
     {
         private IApplicationServices _appServices;
         private readonly ITelegramBotClient bot;
@@ -21,7 +21,7 @@ namespace TamagotchiBot.Controllers
         private readonly CallbackQuery callback = null;
         private readonly long _userId;
 
-        public CreatePetController(IApplicationServices services, ITelegramBotClient bot, Message message = null, CallbackQuery callback = null)
+        public CreatorController(IApplicationServices services, ITelegramBotClient bot, Message message = null, CallbackQuery callback = null)
         {
             this.bot = bot;
             this.callback = callback;
@@ -33,32 +33,19 @@ namespace TamagotchiBot.Controllers
             Culture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
             UpdateOrCreateAUD(message?.From ?? callback.From, message, callback);
         }
-        public Answer CreateUser()
+        public void CreateUserAndChat()
         {
             if (message != null)
                 CreateUserFromMessage(message);
             else if (callback != null)
                 CreateUserFromCallback(callback);
-
-            {
-                _appServices.UserService.Create(callback.From);
-                _appServices.ChatService.Create(new Chat()
-                {
-                    ChatId = callback.Message.Chat.Id,
-                    Name = callback.Message.Chat.Username ?? callback.Message.Chat.Title,
-                    UserId = callback.Message.From.Id,
-                    LastMessage = null
-                });
-
-                Log.Information($"User {callback.Message.From.Username} has been added to Db");
-
-                Culture = new CultureInfo(message.From.LanguageCode);
-            }
-
-            return new Answer(Resources.Resources.ChangeLanguage,
-                               StickersId.ChangeLanguageSticker,
-                               LanguagesMarkup,
-                               null);
+        }
+        public Answer AskALanguage()
+        {
+            return new Answer(ChangeLanguage,
+                StickersId.ChangeLanguageSticker,
+                LanguagesMarkup,
+                null);
         }
 
         private void CreateUserFromMessage(Message msg)

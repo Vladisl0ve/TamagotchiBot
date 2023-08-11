@@ -179,10 +179,11 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose new language 🇺🇸
-        ///Выберы новую мову 🇨🇷
-        ///Wybierz nowy język 🇵🇱
-        ///Выбери новый язык 🇷🇺.
+        ///   Looks up a localized string similar to Choose new language:
+        ///- Belarusian (беларуская) 🇨🇷
+        ///- Russian (русский) 🇷🇺
+        ///- English 🇺🇸
+        ///- Polish (Polski) 🇵🇱.
         /// </summary>
         public static string ChangeLanguage {
             get {

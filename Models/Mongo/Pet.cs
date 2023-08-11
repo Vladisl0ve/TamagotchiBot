@@ -37,6 +37,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("StartSleepingTime")]
         public DateTime StartSleepingTime { get; set; }
 
+        [BsonElement("NextRandomEventNotificationTime")]
+        public DateTime NextRandomEventNotificationTime { get; set; }
+
         [BsonElement("CurrentStatus")]
         public int CurrentStatus { get; set; }
 

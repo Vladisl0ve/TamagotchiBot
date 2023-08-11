@@ -10,9 +10,11 @@ namespace TamagotchiBot.Services.Mongo
     public class PetService : MainConnectService
     {
         private readonly IMongoCollection<Pet> _pets;
-        public PetService(ITamagotchiDatabaseSettings settings) : base(settings)
+        private readonly UserService _userService;
+        public PetService(ITamagotchiDatabaseSettings settings, UserService userService) : base(settings)
         {
             _pets = base.GetCollection<Pet>(settings.PetsCollectionName);
+            _userService = userService;
         }
 
         public List<Pet> GetAll() => _pets.Find(p => true).ToList();
@@ -151,6 +153,35 @@ namespace TamagotchiBot.Services.Mongo
                 pet.Joy = newJoy;
                 Update(userId, pet);
             }
+        }
+        [Obsolete]
+        public bool UpdateNextRandomEventNotificationTimeCustom(long userId, DateTime nextNotify)
+        {
+            var petDb = _pets.Find(u => u.UserId == userId).FirstOrDefault();
+            if (petDb == null)
+                return false;
+
+            petDb.NextRandomEventNotificationTime = petDb.NextRandomEventNotificationTime == default ? LittleThings(userId) : nextNotify;
+            _pets.ReplaceOne(u => u.UserId == userId, petDb);
+            return true;
+        }
+
+        private DateTime LittleThings(long userId)
+        {
+            var result = new DateTime(_userService.Get(userId).NextRandomEventNotificationTime.Ticks);
+            _userService.UpdateNextRandomEventNotificationTime(userId, default);
+
+            return result;
+        }
+        public bool UpdateNextRandomEventNotificationTime(long userId, DateTime nextNotify)
+        {
+            var petDb = _pets.Find(u => u.UserId == userId).FirstOrDefault();
+            if (petDb == null)
+                return false;
+
+            petDb.NextRandomEventNotificationTime = nextNotify;
+            _pets.ReplaceOne(u => u.UserId == userId, petDb);
+            return true;
         }
 
         public void Remove(long userId) => _pets.DeleteOne(p => p.UserId == userId);

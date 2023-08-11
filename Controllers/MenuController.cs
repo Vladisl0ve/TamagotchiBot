@@ -581,7 +581,7 @@ namespace TamagotchiBot.Controllers
             {
                 _petService.UpdateName(_userId, message.Text);
                 _petService.UpdateGold(_userId, 50);
-                _userService.UpdateNextRandomEventNotificationTime(pet.UserId, DateTime.UtcNow.AddMinutes(25));
+                _petService.UpdateNextRandomEventNotificationTime(pet.UserId, DateTime.UtcNow.AddMinutes(25));
                 return new Answer()
                 {
                     Text = ConfirmedName,
