@@ -18,6 +18,7 @@ namespace TamagotchiBot.Services
         private Timer _notifyTimer;
         private Timer _changelogsTimer;
         private Timer _dailyRewardTimer;
+        private Timer _randomEventRewardTimer;
 
         private readonly ITelegramBotClient _botClient;
         private PetService _petService;
@@ -88,7 +89,7 @@ namespace TamagotchiBot.Services
         }
         public void SetDailyRewardNotificationTimer()
         {
-            TimeSpan timeToWait = TimeSpan.FromMinutes(3);
+            TimeSpan timeToWait = TimeSpan.FromMinutes(5);
             Log.Information("DailyRewardNotification timer set to wait for " + timeToWait.TotalSeconds + "s");
             _dailyRewardTimer = new Timer(timeToWait);
             _dailyRewardTimer.Elapsed += OnDailyRewardTimedEvent;
@@ -97,12 +98,12 @@ namespace TamagotchiBot.Services
         }
         public void SetRandomEventNotificationTimer()
         {
-            TimeSpan timeToWait = TimeSpan.FromSeconds(90);
+            TimeSpan timeToWait = TimeSpan.FromSeconds(60);
             Log.Information("RandomEventNotification timer set to wait for " + timeToWait.TotalSeconds + "s");
-            _dailyRewardTimer = new Timer(timeToWait);
-            _dailyRewardTimer.Elapsed += OnRandomEventTimedEvent;
-            _dailyRewardTimer.AutoReset = true;
-            _dailyRewardTimer.Enabled = true;
+            _randomEventRewardTimer = new Timer(timeToWait);
+            _randomEventRewardTimer.Elapsed += OnRandomEventTimedEvent;
+            _randomEventRewardTimer.AutoReset = true;
+            _randomEventRewardTimer.Enabled = true;
         }
 
         private void OnRandomEventTimedEvent(object sender, ElapsedEventArgs e)
