@@ -1,6 +1,5 @@
 ﻿using TamagotchiBot.Services.Interfaces;
 using Telegram.Bot.Types;
-using Telegram.Bot;
 using Serilog;
 
 namespace TamagotchiBot.Controllers
@@ -8,15 +7,13 @@ namespace TamagotchiBot.Controllers
     public class SynchroDBController
     {
         private IApplicationServices _appServices;
-        private readonly ITelegramBotClient _botClient;
         private readonly Message _message = null;
         private readonly CallbackQuery _callback = null;
         private readonly long _userId;
         private readonly Telegram.Bot.Types.User _user;
 
-        public SynchroDBController(IApplicationServices services, ITelegramBotClient bot, Message message = null, CallbackQuery callback = null)
+        public SynchroDBController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
         {
-            _botClient = bot;
             _callback = callback;
             _message = message;
             _userId = callback?.From.Id ?? message.From.Id;

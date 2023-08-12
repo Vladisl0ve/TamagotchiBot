@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using TamagotchiBot.Services.Interfaces;
 using Telegram.Bot.Types;
-using Telegram.Bot;
 using Serilog;
 using System;
 using TamagotchiBot.Models.Mongo;
@@ -17,14 +16,12 @@ namespace TamagotchiBot.Controllers
     public class CreatorController
     {
         private IApplicationServices _appServices;
-        private readonly ITelegramBotClient bot;
         private readonly Message message = null;
         private readonly CallbackQuery callback = null;
         private readonly long _userId;
 
-        public CreatorController(IApplicationServices services, ITelegramBotClient bot, Message message = null, CallbackQuery callback = null)
+        public CreatorController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
         {
-            this.bot = bot;
             this.callback = callback;
             this.message = message;
             _userId = callback?.From.Id ?? message.From.Id;

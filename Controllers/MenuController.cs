@@ -11,7 +11,6 @@ using TamagotchiBot.Services;
 using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.UserExtensions;
-using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.Resources.Resources;
@@ -31,14 +30,12 @@ namespace TamagotchiBot.Controllers
         private readonly BannedUsersService _bannedService;
         private readonly AdsProducersService _adsProducersService;
         private readonly AppleGameDataService _appleGameDataService;
-        private readonly ITelegramBotClient _bot;
         private readonly Message _message = null;
         private readonly CallbackQuery _callback = null;
         private readonly long _userId;
 
-        private MenuController(IApplicationServices services, ITelegramBotClient bot, Message message = null, CallbackQuery callback = null)
+        private MenuController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
         {
-            _bot = bot;
             _callback = callback;
             _message = message;
             _userId = callback?.From.Id ?? message.From.Id;
@@ -55,11 +52,11 @@ namespace TamagotchiBot.Controllers
 
             UpdateOrCreateAUD(message?.From ?? callback.From, message, callback);
         }
-        public MenuController(IApplicationServices services, ITelegramBotClient bot, CallbackQuery callback) : this(services, bot, null, callback)
+        public MenuController(IApplicationServices services, CallbackQuery callback) : this(services, null, callback)
         {
         }
 
-        public MenuController(IApplicationServices services, ITelegramBotClient bot, Message message) : this(services, bot, message, null)
+        public MenuController(IApplicationServices services, Message message) : this(services, message, null)
         {
         }
 

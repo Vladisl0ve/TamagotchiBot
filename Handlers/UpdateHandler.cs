@@ -119,7 +119,7 @@ namespace TamagotchiBot.Handlers
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
-                MenuController menuController = new MenuController(_appServices, botClient, message);
+                MenuController menuController = new MenuController(_appServices, message);
                 AppleGameController appleGameController;
                 Answer toSend = null;
 
@@ -129,7 +129,7 @@ namespace TamagotchiBot.Handlers
                     return;
                 }
 
-                new SynchroDBController(_appServices, bot, message).SynchronizeWithDB(); //update user (username, names etc.) in DB
+                new SynchroDBController(_appServices, message).SynchronizeWithDB(); //update user (username, names etc.) in DB
 
                 try
                 {
@@ -140,7 +140,7 @@ namespace TamagotchiBot.Handlers
                         await SendPostToChat(message.From.Id);
 
                     if (userService.Get(message.From.Id).IsInAppleGame)
-                        toSend = new AppleGameController(_appServices, botClient, message).Menu();
+                        toSend = new AppleGameController(_appServices, message).Menu();
                     else
                         toSend = menuController.ProcessMessage();
 
@@ -229,7 +229,7 @@ namespace TamagotchiBot.Handlers
                             IsGameOvered = false,
                         });
 
-                    var gameController = new AppleGameController(_appServices, bot, callbackQuery);
+                    var gameController = new AppleGameController(_appServices, callbackQuery);
                     Answer toSendAnswer = gameController.StartGame();
 
                     SendMessage(toSendAnswer, callbackQuery.From.Id);
@@ -242,7 +242,7 @@ namespace TamagotchiBot.Handlers
 
                 await SendPostToChat(callbackQuery.From.Id);
 
-                var controller = new MenuController(_appServices, bot, callbackQuery);
+                var controller = new MenuController(_appServices, callbackQuery);
                 AnswerCallback toSend = controller.CallbackHandler();
 
                 if (toSend == null)
@@ -359,13 +359,13 @@ namespace TamagotchiBot.Handlers
             var userDB = _appServices.UserService.Get(userId);
             if (userDB == null)
             {
-                creatorController = new CreatorController(_appServices, botClient, message);
+                creatorController = new CreatorController(_appServices, message);
                 creatorController.CreateUserAndChat();
                 creatorController.AskALanguage();
             }
             else if (userDB.IsLanguageAskedOnCreate)
             {
-                creatorController = new CreatorController(_appServices, botClient, message);
+                creatorController = new CreatorController(_appServices, message);
                 if (!creatorController.ApplyNewLanguage())
                     return;
                 creatorController.SendWelcomeText();
@@ -374,7 +374,7 @@ namespace TamagotchiBot.Handlers
             }
             else if (userDB.IsPetNameAskedOnCreate)
             {
-                creatorController = new CreatorController(_appServices, botClient, message);
+                creatorController = new CreatorController(_appServices, message);
                 if (!creatorController.CreatePet())
                     return;
             }

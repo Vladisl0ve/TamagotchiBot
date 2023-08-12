@@ -5,7 +5,6 @@ using TamagotchiBot.Models;
 using TamagotchiBot.Models.Answers;
 using TamagotchiBot.UserExtensions;
 using TamagotchiBot.Services;
-using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.Resources.Resources;
@@ -24,7 +23,6 @@ namespace TamagotchiBot.Controllers
         private readonly AllUsersDataService _allUsersService;
         private readonly BotControlService _bcService;
 
-        private readonly ITelegramBotClient bot;
         private readonly Message message;
         private readonly CallbackQuery callback;
 
@@ -32,9 +30,8 @@ namespace TamagotchiBot.Controllers
 
         private const int APPLE_COUNTER_DEFAULT = 24;
 
-        private AppleGameController(IApplicationServices services, ITelegramBotClient bot, Message message = null, CallbackQuery callback = null)
+        private AppleGameController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
         {
-            this.bot = bot;
             this.callback = callback;
             this.message = message;
             UserId = message?.From.Id ?? callback.From.Id;
@@ -50,15 +47,13 @@ namespace TamagotchiBot.Controllers
             AppleCounter = _appleGameDataService.Get(UserId)?.CurrentAppleCounter ?? 1;
         }
 
-        public AppleGameController(IApplicationServices services, 
-                                   ITelegramBotClient bot,
-                                   CallbackQuery callback) : this(services, bot, null, callback)
+        public AppleGameController(IApplicationServices services,
+                                   CallbackQuery callback) : this(services, null, callback)
         {
         }
 
         public AppleGameController(IApplicationServices services,
-                                   ITelegramBotClient bot,
-                                   Message message) : this(services, bot, message, null)
+                                   Message message) : this(services, message, null)
         {
         }
 
