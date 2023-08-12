@@ -25,6 +25,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("StartWorkingTime")]
         public DateTime StartWorkingTime { get; set; }
 
+        [BsonElement("ToWakeUpTime")]
+        public DateTime ToWakeUpTime { get; set; }
+
         [BsonElement("GotRandomEventTime")]
         public DateTime GotRandomEventTime { get; set; }
 
@@ -70,5 +73,34 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("Level")]
         public int Level { get; set; }
 
+        public Pet Clone(Pet petToClone)
+        {
+            Pet clone = new Pet()
+            {
+                BirthDateTime                   = petToClone.BirthDateTime,
+                CurrentStatus                   = petToClone.CurrentStatus,
+                EXP                             = petToClone.EXP,
+                Fatigue                         = petToClone.Fatigue,
+                Gold                            = petToClone.Gold,
+                GotDailyRewardTime              = petToClone.GotDailyRewardTime,
+                Level                           = petToClone.Level,
+                GotRandomEventTime              = petToClone.GotRandomEventTime,
+                HP                              = petToClone.HP,
+                Hygiene                         = petToClone.Hygiene,
+                Id                              = petToClone.Id,
+                IsWelcomed                      = petToClone.IsWelcomed,
+                Joy                             = petToClone.Joy,
+                LastUpdateTime                  = petToClone.LastUpdateTime,
+                Name                            = petToClone.Name,
+                NextRandomEventNotificationTime = petToClone.NextRandomEventNotificationTime,
+                Satiety                         = petToClone.Satiety,
+                StartSleepingTime               = petToClone.StartSleepingTime,
+                StartWorkingTime                = petToClone.StartWorkingTime,
+                Type                            = petToClone.Type,
+                UserId                          = petToClone.UserId
+            };
+
+            return clone;
+        }
     }
 }

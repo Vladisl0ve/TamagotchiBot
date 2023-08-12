@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using TamagotchiBot.Services.Interfaces;
+﻿using TamagotchiBot.Services.Interfaces;
 using Telegram.Bot.Types;
 using Telegram.Bot;
-using TamagotchiBot.Models.Mongo;
 using Serilog;
 
 namespace TamagotchiBot.Controllers
@@ -16,17 +8,17 @@ namespace TamagotchiBot.Controllers
     public class SynchroDBController
     {
         private IApplicationServices _appServices;
-        private readonly ITelegramBotClient bot;
-        private readonly Message message = null;
-        private readonly CallbackQuery callback = null;
+        private readonly ITelegramBotClient _botClient;
+        private readonly Message _message = null;
+        private readonly CallbackQuery _callback = null;
         private readonly long _userId;
-        private readonly User _user;
+        private readonly Telegram.Bot.Types.User _user;
 
         public SynchroDBController(IApplicationServices services, ITelegramBotClient bot, Message message = null, CallbackQuery callback = null)
         {
-            this.bot = bot;
-            this.callback = callback;
-            this.message = message;
+            _botClient = bot;
+            _callback = callback;
+            _message = message;
             _userId = callback?.From.Id ?? message.From.Id;
             _user = callback?.From ?? message.From;
 

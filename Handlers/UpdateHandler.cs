@@ -142,7 +142,7 @@ namespace TamagotchiBot.Handlers
                     if (userService.Get(message.From.Id).IsInAppleGame)
                         toSend = new AppleGameController(_appServices, botClient, message).Menu();
                     else
-                        toSend = menuController.Process();
+                        toSend = menuController.ProcessMessage();
 
                 }
                 catch (ApiRequestException apiEx)
