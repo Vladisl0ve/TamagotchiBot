@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
+using System.Threading.Tasks;
+using TamagotchiBot.Models.Answers;
 using TamagotchiBot.Services.Mongo;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
@@ -229,5 +231,34 @@ namespace TamagotchiBot.Services
             }
         }
 
+        public async void SendAnswerAsync(Answer toSend, long userId)
+        {
+            Resources.Resources.Culture = toSend.Culture;
+
+            if (toSend.StickerId != null)
+            {
+                SendStickerAsync(userId,
+                                 toSend.StickerId);
+
+                await Task.Delay(50);
+
+                if (toSend.ReplyMarkup == null && toSend.InlineKeyboardMarkup == null)
+                    SendTextMessageAsync(userId,
+                                         toSend.Text);
+            }
+
+            if (toSend.ReplyMarkup != null)
+            {
+                SendTextMessageAsync(userId,
+                                     toSend.Text,
+                                     replyMarkup: toSend.ReplyMarkup);
+            }
+
+            if (toSend.InlineKeyboardMarkup != null)
+                SendTextMessageAsync(userId,
+                                     toSend.Text,
+                                     replyMarkup: toSend.InlineKeyboardMarkup,
+                                     parseMode: toSend.ParseMode);
+        }
     }
 }

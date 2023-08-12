@@ -1,4 +1,5 @@
-﻿using Telegram.Bot.Types.Enums;
+﻿using System.Globalization;
+using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TamagotchiBot.Models.Answers
@@ -21,5 +22,6 @@ namespace TamagotchiBot.Models.Answers
         public InlineKeyboardMarkup InlineKeyboardMarkup { get; set; }
         public ParseMode? ParseMode { get; set; } = null;
         public bool IsPetGoneMessage { get; set; } = false;
+        public CultureInfo Culture { get; set; } = new CultureInfo("ru");
     }
 }

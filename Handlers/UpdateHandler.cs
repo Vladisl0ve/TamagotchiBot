@@ -76,7 +76,7 @@ namespace TamagotchiBot.Handlers
 
         public Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
         {
-            if (!CheckingToContinueHandlingUpdate(update))
+            if (!ToContinueHandlingUpdateChecking(update))
                 return Task.CompletedTask;
 
             var messageFromUser = update.Message;
@@ -120,43 +120,41 @@ namespace TamagotchiBot.Handlers
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
                 MenuController menuController = new MenuController(_appServices, botClient, message);
-                CreatorController creatorController;
                 AppleGameController appleGameController;
                 Answer toSend = null;
 
-                if (_appServices.UserService.Get(message.From.Id) == null)
+                if (!IsUserAndPetRegisteredChecking(userId))
                 {
-                    creatorController = new CreatorController(_appServices, botClient, message);
-                    creatorController.CreateUserAndChat();
+                    RegisterUserAndPet(botClient, message); //CreatorController
+                    return;
                 }
-                else
-                    try
-                    {
-                        // call this method wherever you want to show an ad,
-                        // for example your bot just made its job and
-                        // it's a great time to show an ad to a user
-                        if (petService.Get(message.From.Id)?.Name != null)
-                            await SendPostToChat(message.From.Id);
 
+                try
+                {
+                    // call this method wherever you want to show an ad,
+                    // for example your bot just made its job and
+                    // it's a great time to show an ad to a user
+                    if (_appServices.PetService.Get(message.From.Id)?.Name != null)
+                        await SendPostToChat(message.From.Id);
 
-                        if (userService.Get(message.From.Id).IsInAppleGame)
-                            toSend = new AppleGameController(_appServices, botClient, message).Menu();
-                        else
-                            toSend = menuController.Process();
+                    if (userService.Get(message.From.Id).IsInAppleGame)
+                        toSend = new AppleGameController(_appServices, botClient, message).Menu();
+                    else
+                        toSend = menuController.Process();
 
-                    }
-                    catch (ApiRequestException apiEx)
-                    {
-                        Log.Error($"{apiEx.ErrorCode}: {apiEx.Message}, user: {message.From.Username ?? message.From.FirstName}");
-                    }
-                    catch (RequestException recEx)
-                    {
-                        Log.Error($"{recEx.Source}: {recEx.Message}, user: {message.From.Username ?? message.From.FirstName}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex.Message + Environment.NewLine + ex.StackTrace);
-                    }
+                }
+                catch (ApiRequestException apiEx)
+                {
+                    Log.Error($"{apiEx.ErrorCode}: {apiEx.Message}, user: {message.From.Username ?? message.From.FirstName}");
+                }
+                catch (RequestException recEx)
+                {
+                    Log.Error($"{recEx.Source}: {recEx.Message}, user: {message.From.Username ?? message.From.FirstName}");
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message + Environment.NewLine + ex.StackTrace);
+                }
 
                 if (toSend == null)
                     return;
@@ -317,7 +315,7 @@ namespace TamagotchiBot.Handlers
 
 
         /// <returns>true == handled update is acceptable to continue, otherwise must to stop</returns>
-        private bool CheckingToContinueHandlingUpdate(Update update)
+        private bool ToContinueHandlingUpdateChecking(Update update)
         {
             if (update.Type == UpdateType.Message)
                 if (update.Message.Type == MessageType.Text)
@@ -332,6 +330,52 @@ namespace TamagotchiBot.Handlers
                         return true;
 
             return false;
+        }
+        private bool IsUserAndPetRegisteredChecking(long userId)
+        {
+            var userDB = _appServices.UserService.Get(userId);
+            var petDB = _appServices.PetService.Get(userId);
+            if (userDB == null)
+                return false;
+
+            if (userDB.IsLanguageAskedOnCreate)
+                return false;
+
+            if (userDB.IsPetNameAskedOnCreate)
+                return false;
+
+            if (petDB == null)
+                return false;
+
+            return true;
+        }
+
+        private async void RegisterUserAndPet(ITelegramBotClient botClient, Message message)
+        {
+            CreatorController creatorController;
+            var userId = message.From.Id;
+            var userDB = _appServices.UserService.Get(userId);
+            if (userDB == null)
+            {
+                creatorController = new CreatorController(_appServices, botClient, message);
+                creatorController.CreateUserAndChat();
+                creatorController.AskALanguage();
+            }
+            else if (userDB.IsLanguageAskedOnCreate)
+            {
+                creatorController = new CreatorController(_appServices, botClient, message);
+                if (!creatorController.ApplyNewLanguage())
+                    return;
+                creatorController.SendWelcomeText();
+                await Task.Delay(100);
+                creatorController.AskForAPetName();
+            }
+            else if (userDB.IsPetNameAskedOnCreate)
+            {
+                creatorController = new CreatorController(_appServices, botClient, message);
+                if (!creatorController.CreatePet())
+                    return;
+            }
         }
         private async Task SendPostToChat(long chatId)
         {

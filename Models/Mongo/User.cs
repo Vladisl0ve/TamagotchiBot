@@ -22,16 +22,28 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("Username")]
         public string Username { get; set; }
+
         [BsonElement("FirstName")]
         public string FirstName { get; set; }
+
         [BsonElement("LastName")]
         public string LastName { get; set; }
+
         [BsonElement("IsInAppleGame")]
         public bool IsInAppleGame { get; set; }
+
+        [BsonElement("IsLanguageAskedOnCreate")]
+        public bool IsLanguageAskedOnCreate { get; set; }
+
+        [BsonElement("IsPetNameAskedOnCreate")]
+        public bool IsPetNameAskedOnCreate { get; set; }
+
         [BsonElement("Culture")]
         public string Culture { get; set; }
+
         [BsonElement("NextDailyRewardNotificationTime")]
         public DateTime NextDailyRewardNotificationTime { get; set; }
+
         [Obsolete]
         [BsonElement("NextRandomEventNotificationTime")]
         public DateTime NextRandomEventNotificationTime { get; set; }

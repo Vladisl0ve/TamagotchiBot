@@ -10,6 +10,7 @@ using static TamagotchiBot.UserExtensions.Constants;
 using TamagotchiBot.Models.Answers;
 using Extensions = TamagotchiBot.UserExtensions.Extensions;
 using Chat = TamagotchiBot.Models.Mongo.Chat;
+using TamagotchiBot.UserExtensions;
 
 namespace TamagotchiBot.Controllers
 {
@@ -42,6 +43,8 @@ namespace TamagotchiBot.Controllers
         }
         public Answer AskALanguage()
         {
+            _appServices.UserService.UpdateIsLanguageAskedOnCreate(_userId, true);
+
             return new Answer(ChangeLanguage,
                 StickersId.ChangeLanguageSticker,
                 LanguagesMarkup,
@@ -128,6 +131,79 @@ namespace TamagotchiBot.Controllers
             aud.MessageCounter = message == null ? aud.MessageCounter : aud.MessageCounter + 1;
             aud.CallbacksCounter = callback == null ? aud.CallbacksCounter : aud.CallbacksCounter + 1;
             _appServices.AllUsersDataService.Update(aud);
+        }
+
+        internal bool CreatePet()
+        {
+            var msgText = message?.Text;
+            if (string.IsNullOrEmpty(msgText))
+                return false;
+
+            _appServices.PetService.Create(new Pet()
+            {
+                UserId = _userId,
+                Name = msgText,
+                Level = 1,
+                BirthDateTime = DateTime.UtcNow,
+                LastUpdateTime = DateTime.UtcNow,
+                NextRandomEventNotificationTime = DateTime.UtcNow.AddMinutes(25),
+                EXP = 0,
+                HP = 100,
+                Joy = 70,
+                Fatigue = 0,
+                Satiety = 80,
+                IsWelcomed = true,
+                Type = null,
+                Gold = 50
+            });
+            Log.Information($"Pet of UserID: {_userId} has been added to Db");
+
+            _appServices.UserService.UpdateIsPetNameAskedOnCreate(_userId, false);
+
+            var toSend = new Answer()
+            {
+                Text = ConfirmedName,
+                StickerId = StickersId.PetConfirmedName_Cat,
+                ReplyMarkup = null,
+                InlineKeyboardMarkup = null
+            };
+
+            _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+            return true;
+        }
+        internal bool ApplyNewLanguage()
+        {
+            var msgText = message?.Text;
+            if (string.IsNullOrEmpty(msgText))
+                return false;
+
+            var newLanguage = msgText.GetCulture();
+            if (string.IsNullOrEmpty(newLanguage))
+                return false;
+
+            _appServices.UserService.UpdateLanguage(_userId, newLanguage);
+            _appServices.UserService.UpdateIsLanguageAskedOnCreate(_userId, false);
+            return true;
+        }
+        internal void SendWelcomeText()
+        {
+            var toSend =  new Answer()
+            {
+                Text = Welcome,
+                StickerId = StickersId.WelcomeSticker
+            };
+            _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+        }
+        internal void AskForAPetName()
+        {
+            var toSend =  new Answer()
+            {
+                Text = ChooseName,
+                StickerId = StickersId.PetChooseName_Cat
+            };
+            _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+
+            _appServices.UserService.UpdateIsPetNameAskedOnCreate(_userId, true);
         }
     }
 }
