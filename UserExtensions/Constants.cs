@@ -85,6 +85,7 @@ namespace TamagotchiBot.UserExtensions
         {
             public TimeSpan WorkOnPCToWait = new(0, 2, 0);
             public TimeSpan DailyRewardToWait = new(24, 0, 0);
+            public TimeSpan SleepToWait = new(0, 10, 0);
         }
 
         public struct Limits

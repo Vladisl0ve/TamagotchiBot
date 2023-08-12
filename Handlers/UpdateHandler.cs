@@ -360,7 +360,7 @@ namespace TamagotchiBot.Handlers
             if (userDB == null)
             {
                 creatorController = new CreatorController(_appServices, message);
-                creatorController.CreateUserAndChat();
+                creatorController.CreateUser();
                 creatorController.AskALanguage();
             }
             else if (userDB.IsLanguageAskedOnCreate)

@@ -97,7 +97,8 @@ namespace TamagotchiBot.Models.Mongo
                 StartSleepingTime               = petToClone.StartSleepingTime,
                 StartWorkingTime                = petToClone.StartWorkingTime,
                 Type                            = petToClone.Type,
-                UserId                          = petToClone.UserId
+                UserId                          = petToClone.UserId,
+                ToWakeUpTime                    = petToClone.ToWakeUpTime
             };
 
             return clone;

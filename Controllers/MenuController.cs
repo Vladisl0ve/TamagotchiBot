@@ -115,8 +115,10 @@ namespace TamagotchiBot.Controllers
             //EXP
             petResult.EXP = UpdateIndicatorEXP(minuteCounter, petDB);
 
-            //Satiety
-            petResult.Satiety = UpdateIndicatorSatiety(minuteCounter, petDB);
+            //Satiety & HP
+            var satietyHp = UpdateIndicatorSatietyAndHP(minuteCounter, petDB);
+            petResult.Satiety = satietyHp.Item1;
+            petResult.HP = satietyHp.Item2;
 
             //Joy
             petResult.Joy = UpdateIndicatorJoy(minuteCounter, petDB);
@@ -297,16 +299,16 @@ namespace TamagotchiBot.Controllers
 
         public AnswerCallback CallbackHandler()
         {
+            if (_callback.Data == null)
+                return null;
+
+            UpdateIndicators();
+
             var userDb = _appServices.UserService.Get(_userId);
             var petDb = _appServices.PetService.Get(_userId);
 
             if (userDb == null || petDb == null)
                 return null;
-
-            if (_callback.Data == null)
-                return null;
-
-            UpdateIndicators();
 
             if (_callback.Data == "petCommandInlineBasicInfo")
                 return ShowBasicInfoInline(petDb);
@@ -368,14 +370,14 @@ namespace TamagotchiBot.Controllers
             return null;
         }
 
-/*        private void DeleteDataOfUser()
-        {
-            _petService.Remove(user.UserId);
-            _chatService.Remove(user.UserId);
-            _userService.Remove(user.UserId);
-            _appleGameDataService.Delete(user.UserId);
-        }
-*/
+        /*        private void DeleteDataOfUser()
+                {
+                    _petService.Remove(user.UserId);
+                    _chatService.Remove(user.UserId);
+                    _userService.Remove(user.UserId);
+                    _appleGameDataService.Delete(user.UserId);
+                }
+        */
 
         public Answer GetFarewellAnswer(string petName, string username)
         {
@@ -780,13 +782,16 @@ namespace TamagotchiBot.Controllers
             if (accessCheck != null)
                 return accessCheck;
 
-            string toSendText = string.Format(sleepCommand, petDB.Name, petDB.Fatigue, Extensions.GetCurrentStatus(petDB.CurrentStatus));
+            string toSendText = string.Format(sleepCommand,
+                                              petDB.Name,
+                                              petDB.Fatigue,
+                                              Extensions.GetCurrentStatus(petDB.CurrentStatus));
 
             InlineKeyboardMarkup toSendInline;
             if (petDB.CurrentStatus == (int)CurrentStatus.Sleeping)
             {
-                var minutesToWait = petDB.Fatigue / Factors.RestFactor;
-                string timeToWaitStr = string.Format(sleepCommandInlineShowTime, new DateTime().AddMinutes(minutesToWait).ToString("HH:mm"));
+                var ticksToWait = (petDB.ToWakeUpTime - DateTime.UtcNow).Ticks;
+                string timeToWaitStr = string.Format(sleepCommandInlineShowTime, new DateTime().AddTicks(ticksToWait).ToString("HH:mm:ss"));
 
                 toSendInline = Extensions.InlineKeyboardOptimizer(
                     new List<CommandModel>()
@@ -910,7 +915,7 @@ namespace TamagotchiBot.Controllers
 
             return petResult.EXP;
         }
-        private double UpdateIndicatorSatiety(int minuteCounter, Pet pet)
+        private (double, int) UpdateIndicatorSatietyAndHP(int minuteCounter, Pet pet)
         {
             var petResult = new Pet().Clone(pet);
 
@@ -929,7 +934,7 @@ namespace TamagotchiBot.Controllers
                     petResult.HP = 0;
             }
 
-            return petResult.Satiety;
+            return (petResult.Satiety, petResult.HP);
         }
         private int UpdateIndicatorHygiene(int minuteCounter, Pet petDB)
         {
@@ -976,7 +981,7 @@ namespace TamagotchiBot.Controllers
         {
             var petResult = new Pet().Clone(petDB);
 
-            var remainsToSleepTime = DateTime.UtcNow - petResult.ToWakeUpTime;
+            var remainsToSleepTime = petResult.ToWakeUpTime - DateTime.UtcNow;
             if (remainsToSleepTime <= TimeSpan.Zero)
             {
                 petResult.CurrentStatus = (int)CurrentStatus.Active;
@@ -1236,78 +1241,101 @@ namespace TamagotchiBot.Controllers
         }
         private AnswerCallback PutToSleepInline(Pet petDB)
         {
-            if (CheckStatusIsInactive(petDB, true))
+            Pet petResult = new Pet().Clone(petDB);
+
+            if (CheckStatusIsInactive(petResult, true))
                 return null;
 
-            if (petDB.CurrentStatus == (int)CurrentStatus.Sleeping)
+            if (petResult.CurrentStatus == (int)CurrentStatus.Sleeping)
             {
-                _bcService.AnswerCallbackQueryAsync(_callback.Id, _userId, PetSleepingAlreadyAnwserCallback);
-
-                string toSendText = string.Format(sleepCommand, petDB.Name, petDB.Fatigue, Extensions.GetCurrentStatus(petDB.CurrentStatus));
-
-                var minutesToWait = petDB.Fatigue / Factors.RestFactor;
-
-                string timeToWaitStr = string.Format(sleepCommandInlineShowTime, new DateTime().AddMinutes(minutesToWait).ToString("HH:mm"));
-
-                if (toSendText.IsEqual(_callback.Message.Text))
-                    return null;
-
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
-                    {
-                        new CommandModel()
-                        {
-                            Text = timeToWaitStr,
-                            CallbackData = "sleepCommandInlinePutToSleep"
-                        }
-                    });
-
-                return new AnswerCallback(toSendText, toSendInline);
+                UpdateSleepingInline(petResult);
+                return null;
             }
-            else
+
+            if (petResult.Fatigue < Limits.ToRestMinLimitOfFatigue)
             {
-                if (petDB.Fatigue < Limits.ToRestMinLimitOfFatigue)
-                {
-                    _bcService.AnswerCallbackQueryAsync(_callback.Id, _userId, PetSleepingDoesntWantYetAnwserCallback);
-                    string sendTxt = string.Format(sleepCommand, petDB.Name, petDB.Fatigue, Extensions.GetCurrentStatus(petDB.CurrentStatus));
-
-                    InlineKeyboardMarkup toSendInlineWhileActive = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
-                        {
-                            new CommandModel()
-                            {
-                                Text = sleepCommandInlinePutToSleep,
-                                CallbackData = "sleepCommandInlinePutToSleep"
-                            }
-                        });
-
-                    return new AnswerCallback(sendTxt, toSendInlineWhileActive);
-                }
-
-                petDB.CurrentStatus = (int)CurrentStatus.Sleeping;
-                petDB.StartSleepingTime = DateTime.UtcNow;
-                _petService.Update(petDB.UserId, petDB);
-
-                var aud = _allUsersService.Get(_userId);
-                aud.SleepenTimesCounter++;
-                _allUsersService.Update(aud);
-
-                string toSendText = string.Format(sleepCommand, petDB.Name, petDB.Fatigue, Extensions.GetCurrentStatus(petDB.CurrentStatus));
-
-                var minutesToWait = petDB.Fatigue / Factors.RestFactor;
-
-                string timeToWaitStr = string.Format(sleepCommandInlineShowTime, new DateTime().AddMinutes(minutesToWait).ToString("HH:mm"));
-
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
-                    {
-                        new CommandModel()
-                        {
-                            Text = timeToWaitStr,
-                            CallbackData = "sleepCommandInlinePutToSleep"
-                        }
-                    });
-
-                return new AnswerCallback(toSendText, toSendInline);
+                DeclineSleepingInline(petResult);
+                return null;
             }
+
+            StartSleepingInline(petResult);
+
+            return null;
         }
+
+        private void StartSleepingInline(Pet petDB)
+        {
+            petDB.CurrentStatus = (int)CurrentStatus.Sleeping;
+            petDB.StartSleepingTime = DateTime.UtcNow;
+            petDB.ToWakeUpTime = DateTime.UtcNow + new TimesToWait().SleepToWait;
+            _appServices.PetService.Update(petDB.UserId, petDB);
+
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.SleepenTimesCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            string toSendText = string.Format(sleepCommand, petDB.Name, petDB.Fatigue, Extensions.GetCurrentStatus(petDB.CurrentStatus));
+
+            var ticksToWait = (petDB.ToWakeUpTime - DateTime.UtcNow).Ticks;
+
+            string timeToWaitStr = string.Format(sleepCommandInlineShowTime, new DateTime().AddTicks(ticksToWait).ToString("HH:mm:ss"));
+
+            InlineKeyboardMarkup toSendInline =
+                Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
+                {
+                    new CommandModel()
+                    {
+                        Text = timeToWaitStr,
+                        CallbackData = "sleepCommandInlinePutToSleep"
+                    }
+                });
+
+            _appServices.BotControlService.EditMessageTextAsync(_userId, _callback.Message.MessageId, toSendText, toSendInline);
+        }
+
+        private void DeclineSleepingInline(Pet petDB)
+        {
+            _bcService.AnswerCallbackQueryAsync(_callback.Id, _userId, PetSleepingDoesntWantYetAnwserCallback);
+            string sendTxt = string.Format(sleepCommand, petDB.Name, petDB.Fatigue, Extensions.GetCurrentStatus(petDB.CurrentStatus));
+
+            InlineKeyboardMarkup toSendInlineWhileActive =
+                Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
+                {
+                    new CommandModel()
+                    {
+                        Text = sleepCommandInlinePutToSleep,
+                        CallbackData = "sleepCommandInlinePutToSleep"
+                    }
+                });
+
+            _appServices.BotControlService.EditMessageTextAsync(_userId, _callback.Message.MessageId, sendTxt, toSendInlineWhileActive);
+        }
+
+
+        private void UpdateSleepingInline(Pet petDB)
+        {
+            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, PetSleepingAlreadyAnwserCallback);
+
+            string toSendText = string.Format(sleepCommand, petDB.Name, petDB.Fatigue, Extensions.GetCurrentStatus(petDB.CurrentStatus));
+
+            var ticksToWait = (petDB.ToWakeUpTime - DateTime.UtcNow).Ticks;
+
+            string timeToWaitStr = string.Format(sleepCommandInlineShowTime, new DateTime().AddTicks(ticksToWait).ToString("HH:mm:ss"));
+
+
+            InlineKeyboardMarkup toSendInline =
+                Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
+                {
+                    new CommandModel()
+                    {
+                        Text = timeToWaitStr,
+                        CallbackData = "sleepCommandInlinePutToSleep"
+                    }
+                });
+
+            _appServices.BotControlService.EditMessageTextAsync(_userId, _callback.Message.MessageId, toSendText, toSendInline);
+        }
+
         private AnswerCallback PlayCardInline(Pet petDB)
         {
             var newFatigue = petDB.Fatigue + Factors.CardGameFatigueFactor;

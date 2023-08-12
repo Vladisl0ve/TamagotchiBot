@@ -8,8 +8,8 @@ using static TamagotchiBot.Resources.Resources;
 using static TamagotchiBot.UserExtensions.Constants;
 using TamagotchiBot.Models.Answers;
 using Extensions = TamagotchiBot.UserExtensions.Extensions;
-using Chat = TamagotchiBot.Models.Mongo.Chat;
 using TamagotchiBot.UserExtensions;
+using System.Linq;
 
 namespace TamagotchiBot.Controllers
 {
@@ -31,21 +31,22 @@ namespace TamagotchiBot.Controllers
             Culture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
             UpdateOrCreateAUD(message?.From ?? callback.From, message, callback);
         }
-        public void CreateUserAndChat()
+        public void CreateUser()
         {
             if (message != null)
                 CreateUserFromMessage(message);
             else if (callback != null)
                 CreateUserFromCallback(callback);
         }
-        public Answer AskALanguage()
+        public void AskALanguage()
         {
-            _appServices.UserService.UpdateIsLanguageAskedOnCreate(_userId, true);
+            var toSend = new Answer(ChangeLanguage,
+                                    StickersId.ChangeLanguageSticker,
+                                    LanguagesMarkup,
+                                    null);
 
-            return new Answer(ChangeLanguage,
-                StickersId.ChangeLanguageSticker,
-                LanguagesMarkup,
-                null);
+            _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+            _appServices.UserService.UpdateIsLanguageAskedOnCreate(_userId, true);
         }
 
         private void CreateUserFromMessage(Message msg)
@@ -58,15 +59,9 @@ namespace TamagotchiBot.Controllers
                 _appServices.AdsProducersService.AddOrInsert(ads);
 
             _appServices.UserService.Create(msg.From);
-            _appServices.ChatService.Create(new Chat()
-            {
-                ChatId = msg.Chat.Id,
-                Name = msg.Chat.Username ?? msg.Chat.Title ?? "ID: " + msg.Chat.Id.ToString(),
-                UserId = _userId,
-                LastMessage = null
-            });
 
-            Log.Information($"User {msg.From.Username ?? msg.From.Id.ToString()}, ChatID: {msg.Chat.Id} has been added to Db");
+
+            Log.Information($"User {msg.From.Username ?? msg.From.Id.ToString()} has been added to Db");
 
             Culture = new CultureInfo(msg.From.LanguageCode ?? "ru");
         }
@@ -82,15 +77,8 @@ namespace TamagotchiBot.Controllers
                 _appServices.AdsProducersService.AddOrInsert(ads);
 
             _appServices.UserService.Create(callback.From);
-            _appServices.ChatService.Create(new Chat()
-            {
-                ChatId = msg.Chat.Id,
-                Name = msg.Chat.Username ?? msg.Chat.Title ?? "ID: " + msg.Chat.Id.ToString(),
-                UserId = _userId,
-                LastMessage = null
-            });
 
-            Log.Information($"User {msg.From.Username ?? msg.From.Id.ToString()}, ChatID: {msg.Chat.Id} has been added to Db");
+            Log.Information($"User {msg.From.Username ?? msg.From.Id.ToString()} has been added to Db");
 
             Culture = new CultureInfo(msg.From.LanguageCode ?? "ru");
         }
@@ -174,7 +162,9 @@ namespace TamagotchiBot.Controllers
             if (string.IsNullOrEmpty(msgText))
                 return false;
 
-            var newLanguage = msgText.GetCulture();
+            var flagFromMsg = msgText.Split(' ').LastOrDefault();
+
+            var newLanguage = flagFromMsg?.GetCulture();
             if (string.IsNullOrEmpty(newLanguage))
                 return false;
 
