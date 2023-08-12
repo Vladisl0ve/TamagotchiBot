@@ -129,6 +129,8 @@ namespace TamagotchiBot.Handlers
                     return;
                 }
 
+                new SynchroDBController(_appServices, bot, message).SynchronizeWithDB(); //update user (username, names etc.) in DB
+
                 try
                 {
                     // call this method wherever you want to show an ad,

@@ -14,6 +14,7 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("UserId")]
         public long UserId { get; set; }
 
+        [Obsolete]
         [BsonElement("ChatId")]
         public long ChatId { get; set; }
 
@@ -47,5 +48,25 @@ namespace TamagotchiBot.Models.Mongo
         [Obsolete]
         [BsonElement("NextRandomEventNotificationTime")]
         public DateTime NextRandomEventNotificationTime { get; set; }
+
+        public User Clone(User userToClone)
+        {
+            var clone = new User()
+            {
+                UserId = userToClone.UserId,
+                LastName = userToClone.LastName,
+                FirstName = userToClone.FirstName,
+                ChatIds = userToClone.ChatIds,
+                Culture = userToClone.Culture,
+                Id = userToClone.Id,
+                IsInAppleGame = userToClone.IsInAppleGame,
+                IsLanguageAskedOnCreate = userToClone.IsLanguageAskedOnCreate,
+                IsPetNameAskedOnCreate = userToClone.IsPetNameAskedOnCreate,
+                NextDailyRewardNotificationTime = userToClone.NextDailyRewardNotificationTime,
+                Username = userToClone.Username,
+            };
+
+            return clone;
+        }
     }
 }
