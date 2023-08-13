@@ -79,6 +79,9 @@ namespace TamagotchiBot.UserExtensions
             //Games
             public const int AppleGame = 20;
             public const int DiceGame = 5;
+
+            //Resurrect
+            public const int ResurrectPet = 1000;
         }
 
         public class TimesToWait
@@ -156,6 +159,8 @@ namespace TamagotchiBot.UserExtensions
             public const string RandomEventStomachache = "CAACAgIAAxkBAAEJ4a9kyVZprtYWi9S4TB_ulxdAV2rA6gACyyQAAmtxYEqsdF5ojjc4_C8E";
 
             public const string BannedSticker = "CAACAgIAAxkBAAEIn9VkPlGMflkimxiV4BhDptaNOBhgjgACmwUAAlOx9wNCvw--ehyldy8E";
+
+            public const string ResurrectedPetSticker = "CAACAgIAAxkBAAEKAqBk2QhbPJzmYZG1tOdSmWvlW5RYNAACpR4AAsL7YUo1ZV8nKeb1XDAE";
 
             //Cat
             public const string PetCreated_Cat = "CAACAgIAAxkBAAEDHvlhcG2oG4rLAAGPvREkKoykMsNnYzsAAlsQAAKlvUhKsth-8cNoWVghBA";

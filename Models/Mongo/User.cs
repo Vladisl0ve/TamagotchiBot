@@ -49,6 +49,12 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("NextRandomEventNotificationTime")]
         public DateTime NextRandomEventNotificationTime { get; set; }
 
+        [BsonElement("GotDailyRewardTime")]
+        public DateTime GotDailyRewardTime { get; set; }
+
+        [BsonElement("Gold")]
+        public int Gold { get; set; }
+
         public User Clone(User userToClone)
         {
             var clone = new User()
@@ -64,6 +70,7 @@ namespace TamagotchiBot.Models.Mongo
                 IsPetNameAskedOnCreate = userToClone.IsPetNameAskedOnCreate,
                 NextDailyRewardNotificationTime = userToClone.NextDailyRewardNotificationTime,
                 Username = userToClone.Username,
+                Gold = userToClone.Gold,
             };
 
             return clone;

@@ -31,6 +31,7 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("GotRandomEventTime")]
         public DateTime GotRandomEventTime { get; set; }
 
+        [Obsolete]
         [BsonElement("GotDailyRewardTime")]
         public DateTime GotDailyRewardTime { get; set; }
 
@@ -46,6 +47,7 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("CurrentStatus")]
         public int CurrentStatus { get; set; }
 
+        [Obsolete]
         [BsonElement("Gold")]
         public int Gold { get; set; }
 
@@ -67,6 +69,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("IsNew")]
         public bool IsNew { get; set; }
 
+        [BsonElement("IsGone")]
+        public bool IsGone { get; set; }
+
         [BsonElement("EXP")]
         public int EXP { get; set; }
 
@@ -81,8 +86,6 @@ namespace TamagotchiBot.Models.Mongo
                 CurrentStatus                   = petToClone.CurrentStatus,
                 EXP                             = petToClone.EXP,
                 Fatigue                         = petToClone.Fatigue,
-                Gold                            = petToClone.Gold,
-                GotDailyRewardTime              = petToClone.GotDailyRewardTime,
                 Level                           = petToClone.Level,
                 GotRandomEventTime              = petToClone.GotRandomEventTime,
                 HP                              = petToClone.HP,
@@ -97,7 +100,8 @@ namespace TamagotchiBot.Models.Mongo
                 StartWorkingTime                = petToClone.StartWorkingTime,
                 Type                            = petToClone.Type,
                 UserId                          = petToClone.UserId,
-                ToWakeUpTime                    = petToClone.ToWakeUpTime
+                ToWakeUpTime                    = petToClone.ToWakeUpTime,
+                IsGone                          = petToClone.IsGone
             };
 
             return clone;

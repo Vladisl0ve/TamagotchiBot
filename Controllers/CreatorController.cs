@@ -11,6 +11,8 @@ using Extensions = TamagotchiBot.UserExtensions.Extensions;
 using TamagotchiBot.UserExtensions;
 using System.Linq;
 using Telegram.Bot.Types.ReplyMarkups;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace TamagotchiBot.Controllers
 {
@@ -50,75 +52,6 @@ namespace TamagotchiBot.Controllers
             _appServices.UserService.UpdateIsLanguageAskedOnCreate(_userId, true);
         }
 
-        private void CreateUserFromMessage(Message msg)
-        {
-            if (msg == null)
-                return;
-
-            var ads = Extensions.GetAdsProducerFromStart(msg.Text);
-            if (ads != null)
-                _appServices.AdsProducersService.AddOrInsert(ads);
-
-            _appServices.UserService.Create(msg.From);
-
-
-            Log.Information($"User {msg.From.Username ?? msg.From.Id.ToString()} has been added to Db");
-
-            Culture = new CultureInfo(msg.From.LanguageCode ?? "ru");
-        }
-        private void CreateUserFromCallback(CallbackQuery callback)
-        {
-            var msg = callback.Message;
-
-            if (msg == null)
-                return;
-
-            var ads = Extensions.GetAdsProducerFromStart(msg.Text);
-            if (ads != null)
-                _appServices.AdsProducersService.AddOrInsert(ads);
-
-            _appServices.UserService.Create(callback.From);
-
-            Log.Information($"User {msg.From.Username ?? msg.From.Id.ToString()} has been added to Db");
-
-            Culture = new CultureInfo(msg.From.LanguageCode ?? "ru");
-        }
-        private void UpdateOrCreateAUD(Telegram.Bot.Types.User user, Message message = null, CallbackQuery callback = null)
-        {
-            if (user == null)
-            {
-                Log.Warning("User is null, can not add to AUD");
-                return;
-            }
-
-            var aud = _appServices.AllUsersDataService.Get(user.Id);
-            if (aud == null) //if new
-            {
-                _appServices.AllUsersDataService.Create(new AllUsersData()
-                {
-                    UserId = user.Id,
-                    ChatId = user.Id,
-                    Created = DateTime.UtcNow,
-                    Culture = Culture.ToString(),
-                    Username = user.Username,
-                    Updated = DateTime.UtcNow,
-                    LastMessage = message?.Text ?? string.Empty,
-                    MessageCounter = message == null ? 0 : 1,
-                    CallbacksCounter = callback == null ? 0 : 1,
-
-                });
-                return;
-            }
-
-            aud.Updated = DateTime.UtcNow;
-            aud.Username = user.Username;
-            aud.Culture = _appServices.UserService.Get(user.Id)?.Culture ?? "ru";
-            aud.LastMessage = message?.Text ?? string.Empty;
-            aud.MessageCounter = message == null ? aud.MessageCounter : aud.MessageCounter + 1;
-            aud.CallbacksCounter = callback == null ? aud.CallbacksCounter : aud.CallbacksCounter + 1;
-            _appServices.AllUsersDataService.Update(aud);
-        }
-
         internal bool CreatePet()
         {
             var msgText = _message?.Text;
@@ -134,12 +67,12 @@ namespace TamagotchiBot.Controllers
                 LastUpdateTime = DateTime.UtcNow,
                 NextRandomEventNotificationTime = DateTime.UtcNow.AddMinutes(25),
                 EXP = 0,
+                Gold = -1,
                 HP = 100,
                 Joy = 70,
                 Fatigue = 0,
                 Satiety = 80,
-                Type = null,
-                Gold = 50
+                Type = null
             });
             Log.Information($"Pet of UserID: {_userId} has been added to Db");
 
@@ -273,6 +206,183 @@ namespace TamagotchiBot.Controllers
 
             petResult.LastUpdateTime = DateTime.UtcNow;
             _appServices.PetService.Update(userFromMsg.Id, petResult);
+        }
+        internal bool CheckIsPetZeroHP() => _appServices.PetService.Get(_userId)?.HP <= 0;
+        internal bool CheckIsPetGone() => _appServices.PetService.Get(_userId)?.IsGone ?? false;
+        internal async void AfterDeath()
+        {
+            var petDB = _appServices.PetService.Get(_userId);
+            var userDB = _appServices.UserService.Get(_userId);
+            Culture = new CultureInfo(userDB.Culture);
+            if (petDB == null)
+                return;
+
+            var petResult = new Pet().Clone(petDB);
+            petResult.IsGone = true;
+
+            string textToSend = string.Format(FarewellText, petResult.Name, userDB.Username);
+
+            var toSend = new Answer()
+            {
+                Text = textToSend,
+                StickerId = StickersId.PetGone_Cat
+            };
+
+            _appServices.PetService.Update(_userId, petResult);
+            _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+            _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
+
+            var toResurrect = new Answer()
+            {
+                Text = ToResurrectQuestion,
+                ReplyMarkup = new ReplyKeyboardMarkup(new List<KeyboardButton>()
+                {
+                    new KeyboardButton(ResurrectYesText),
+                    new KeyboardButton(ResurrectNoText)
+                })
+                {
+                    OneTimeKeyboard = true
+                },
+                Culture = Culture,
+            };
+            await Task.Delay(2500);
+            _appServices.BotControlService.SendAnswerAsync(toResurrect, _userId);
+        }
+        internal async void ToResurrectAnswer()
+        {
+            bool? answerFromUser = _message.Text == ResurrectYesText ? true : _message.Text == ResurrectNoText ? false : null;
+            if (answerFromUser == null)
+                return;
+
+            if (answerFromUser == true)
+            {
+                if (_appServices.UserService.Get(_userId).Gold >= 1000)
+                {
+                    ResurrectPet();
+                    return;
+                }
+                else //not enough gold to buy back
+                {
+                    var toSend = new Answer()
+                    {
+                        Text = NotEnoughGoldToResurrect,
+                        Culture = Culture
+                    };
+
+                    _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+                    await Task.Delay(1000);
+                    answerFromUser = false;
+                }
+            }
+
+            if (answerFromUser == false)
+            {
+                var toSend = new Answer()
+                {
+                    Text = EpilogueText,
+                    StickerId = StickersId.PetEpilogue_Cat,
+                    Culture = Culture
+                };
+                _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+                await Task.Delay(2500);
+                KillThePet();
+                return;
+            }
+        }
+
+        private void CreateUserFromMessage(Message msg)
+        {
+            if (msg == null)
+                return;
+
+            var ads = Extensions.GetAdsProducerFromStart(msg.Text);
+            if (ads != null)
+                _appServices.AdsProducersService.AddOrInsert(ads);
+
+            _appServices.UserService.Create(msg.From);
+
+
+            Log.Information($"User {msg.From.Username ?? msg.From.Id.ToString()} has been added to Db");
+
+            Culture = new CultureInfo(msg.From.LanguageCode ?? "ru");
+        }
+        private void CreateUserFromCallback(CallbackQuery callback)
+        {
+            var msg = callback.Message;
+
+            if (msg == null)
+                return;
+
+            var ads = Extensions.GetAdsProducerFromStart(msg.Text);
+            if (ads != null)
+                _appServices.AdsProducersService.AddOrInsert(ads);
+
+            _appServices.UserService.Create(callback.From);
+
+            Log.Information($"User {msg.From.Username ?? msg.From.Id.ToString()} has been added to Db");
+
+            Culture = new CultureInfo(msg.From.LanguageCode ?? "ru");
+        }
+        private void ResurrectPet()
+        {
+            var petDB = _appServices.PetService.Get(_userId);
+            var userDB = _appServices.UserService.Get(_userId);
+            petDB.IsGone = false;
+            petDB.HP = 100;
+            petDB.Satiety = 100;
+            petDB.Fatigue = 50;
+            userDB.Gold -= Costs.ResurrectPet;
+            _appServices.PetService.Update(_userId, petDB);
+            _appServices.UserService.Update(_userId, userDB);
+
+            var toSend = new Answer()
+            {
+                Text = PetCameBackText,
+                StickerId = StickersId.ResurrectedPetSticker,
+                Culture = Culture
+            };
+
+            _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+        }
+        private void UpdateOrCreateAUD(Telegram.Bot.Types.User user, Message message = null, CallbackQuery callback = null)
+        {
+            if (user == null)
+            {
+                Log.Warning("User is null, can not add to AUD");
+                return;
+            }
+
+            var aud = _appServices.AllUsersDataService.Get(user.Id);
+            if (aud == null) //if new
+            {
+                _appServices.AllUsersDataService.Create(new AllUsersData()
+                {
+                    UserId = user.Id,
+                    ChatId = user.Id,
+                    Created = DateTime.UtcNow,
+                    Culture = Culture.ToString(),
+                    Username = user.Username,
+                    Updated = DateTime.UtcNow,
+                    LastMessage = message?.Text ?? string.Empty,
+                    MessageCounter = message == null ? 0 : 1,
+                    CallbacksCounter = callback == null ? 0 : 1,
+
+                });
+                return;
+            }
+
+            aud.Updated = DateTime.UtcNow;
+            aud.Username = user.Username;
+            aud.Culture = _appServices.UserService.Get(user.Id)?.Culture ?? "ru";
+            aud.LastMessage = message?.Text ?? string.Empty;
+            aud.MessageCounter = message == null ? aud.MessageCounter : aud.MessageCounter + 1;
+            aud.CallbacksCounter = callback == null ? aud.CallbacksCounter : aud.CallbacksCounter + 1;
+            _appServices.AllUsersDataService.Update(aud);
+        }
+        private void KillThePet()
+        {
+            _appServices.PetService.Remove(_userId);
+            AskALanguage();
         }
 
         #region Indicator Updaters

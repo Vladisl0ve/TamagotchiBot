@@ -245,12 +245,8 @@ namespace TamagotchiBot.Services
             {
                 SendStickerAsync(userId,
                                  toSend.StickerId);
-
                 await Task.Delay(50);
-
-                if (toSend.ReplyMarkup == null && toSend.InlineKeyboardMarkup == null)
-                    SendTextMessageAsync(userId,
-                                         toSend.Text);
+                Resources.Resources.Culture = toSend.Culture;
             }
 
             if (toSend.ReplyMarkup != null)
@@ -258,13 +254,26 @@ namespace TamagotchiBot.Services
                 SendTextMessageAsync(userId,
                                      toSend.Text,
                                      replyMarkup: toSend.ReplyMarkup);
+
+                return;
             }
 
             if (toSend.InlineKeyboardMarkup != null)
+            {
                 SendTextMessageAsync(userId,
-                                     toSend.Text,
-                                     replyMarkup: toSend.InlineKeyboardMarkup,
-                                     parseMode: toSend.ParseMode);
+                     toSend.Text,
+                     replyMarkup: toSend.InlineKeyboardMarkup,
+                     parseMode: toSend.ParseMode);
+
+                return;
+            }
+
+
+            if (toSend.ReplyMarkup == null && toSend.InlineKeyboardMarkup == null)
+            {
+                SendTextMessageAsync(userId,
+                                     toSend.Text);
+            }
         }
     }
 }

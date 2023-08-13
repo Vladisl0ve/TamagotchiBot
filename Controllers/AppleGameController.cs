@@ -143,6 +143,7 @@ namespace TamagotchiBot.Controllers
         {
             var appleDataToUpdate = _appleGameDataService.Get(UserId);
             var petDB = _petService.Get(UserId);
+            var userDB = _userService.Get(UserId);
             var chatDB = _chatService.Get(UserId);
 
             if (message.Text == statisticsText && appleDataToUpdate.IsGameOvered)
@@ -181,7 +182,14 @@ namespace TamagotchiBot.Controllers
 
                 _userService.UpdateAppleGameStatus(UserId, false);
 
-                string toSendText = string.Format(gameroomCommand, petDB.Fatigue, petDB.Joy, petDB.Gold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
+                string toSendText = string.Format(gameroomCommand,
+                                                  petDB.Fatigue,
+                                                  petDB.Joy,
+                                                  userDB.Gold,
+                                                  Factors.CardGameJoyFactor,
+                                                  Costs.AppleGame,
+                                                  Factors.DiceGameJoyFactor,
+                                                  Costs.DiceGame);
 
                 List<CommandModel> inlineParts = new InlineItems().InlineGames;
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);

@@ -100,6 +100,7 @@ namespace TamagotchiBot.Controllers
             */
 
             var petDB = _appServices.PetService.Get(_userId);
+            var userDB = _appServices.UserService.Get(_userId);
 
             if (textReceived == "/language")
                 return ChangeLanguage();
@@ -137,7 +138,7 @@ namespace TamagotchiBot.Controllers
             if (textReceived == "/work")
                 return ShowWorkInfo(petDB);
             if (textReceived == "/reward")
-                return ShowRewardInfo(petDB);
+                return ShowRewardInfo(userDB);
 #if DEBUG
             if (textReceived == "/restart")
                 return RestartPet(petDB);
@@ -183,16 +184,16 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup = toSendInline
             };
         }
-        private Answer ShowRewardInfo(Pet petDB)
+        private Answer ShowRewardInfo(Models.Mongo.User userDB)
         {
             string toSendText = string.Empty;
 
             List<CommandModel> inlineParts;
             InlineKeyboardMarkup toSendInline = default;
 
-            if (petDB.GotDailyRewardTime.AddHours(new TimesToWait().DailyRewardToWait.TotalHours) > DateTime.UtcNow)
+            if (userDB.GotDailyRewardTime.AddHours(new TimesToWait().DailyRewardToWait.TotalHours) > DateTime.UtcNow)
             {
-                TimeSpan remainsTime = new TimesToWait().DailyRewardToWait - (DateTime.UtcNow - petDB.GotDailyRewardTime);
+                TimeSpan remainsTime = new TimesToWait().DailyRewardToWait - (DateTime.UtcNow - userDB.GotDailyRewardTime);
 
                 //if _callback handled when pet is working
                 if (remainsTime > TimeSpan.Zero)
@@ -258,10 +259,10 @@ namespace TamagotchiBot.Controllers
                 return WorkOnPCInline(petDb);
 
             if (_callback.Data == "rewardCommandInlineDailyReward")
-                return GetDailyRewardInline(petDb);
+                return GetDailyRewardInline(userDb);
 
             if (_callback.Data == "rewardCommandDailyRewardInlineShowTime")
-                return GetDailyRewardInline(petDb);
+                return GetDailyRewardInline(userDb);
 
             if (_callback.Data == "gameroomCommandInlineCard")
                 return PlayCardInline(petDb);
@@ -290,26 +291,6 @@ namespace TamagotchiBot.Controllers
             return null;
         }
 
-        /*        private void DeleteDataOfUser()
-                {
-                    _petService.Remove(user.UserId);
-                    _chatService.Remove(user.UserId);
-                    _userService.Remove(user.UserId);
-                    _appleGameDataService.Delete(user.UserId);
-                }
-        */
-
-        public Answer GetFarewellAnswer(string petName, string username)
-        {
-            string textToSend = string.Format(FarewellText, petName, username);
-
-            return new Answer()
-            {
-                Text = textToSend,
-                StickerId = StickersId.PetGone_Cat,
-                IsPetGoneMessage = true
-            };
-        }
         private Answer ChangeLanguage()
         {
             _appServices.UserService.UpdateLanguage(_userId, null);
@@ -337,7 +318,7 @@ namespace TamagotchiBot.Controllers
                                               petDB.Fatigue,
                                               Extensions.GetCurrentStatus(petDB.CurrentStatus),
                                               petDB.Joy,
-                                              petDB.Gold,
+                                              _appServices.UserService.Get(_userId).Gold,
                                               petDB.Hygiene);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -426,7 +407,7 @@ namespace TamagotchiBot.Controllers
             if (accessCheck != null)
                 return accessCheck;
 
-            string toSendText = string.Format(kitchenCommand, petDB.Satiety, petDB.Gold);
+            string toSendText = string.Format(kitchenCommand, petDB.Satiety, _appServices.UserService.Get(_userId).Gold);
 
             List<CommandModel> inlineParts = new InlineItems().InlineFood;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -452,7 +433,7 @@ namespace TamagotchiBot.Controllers
             string toSendText = string.Format(gameroomCommand,
                                               petDB.Fatigue,
                                               petDB.Joy,
-                                              petDB.Gold,
+                                              _appServices.UserService.Get(_userId).Gold,
                                               Factors.CardGameJoyFactor,
                                               Costs.AppleGame,
                                               Factors.DiceGameJoyFactor,
@@ -646,7 +627,10 @@ namespace TamagotchiBot.Controllers
         }
         private string GetRanksByGold()
         {
-            var topPets = _appServices.PetService.GetAll()
+            var topPets = _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
+                p => p.UserId,
+                u => u.UserId,
+                (pet, user) => new {user.UserId, user.Gold, pet.Name, pet.LastUpdateTime})
                 .OrderByDescending(p => p.Gold)
                 .ThenByDescending(p => p.LastUpdateTime)
                 .Take(10); //First 10 top-gold pets
@@ -686,11 +670,15 @@ namespace TamagotchiBot.Controllers
                 string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
 
                 anwserRating += "\n______________________________";
-                anwserRating += "\n <b>" + _appServices.PetService.GetAll()
-                .OrderByDescending(p => p.Gold)
-                .ThenByDescending(p => p.LastUpdateTime)
-                .ToList()
-                .FindIndex(a => a.UserId == currentUser.UserId) + ". " + currentPet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                anwserRating += "\n <b>" +
+                    _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
+                    p => p.UserId,
+                    u => u.UserId,
+                    (pet, user) => new { user.UserId, user.Gold, pet.Name, pet.LastUpdateTime })
+                    .OrderByDescending(p => p.Gold)
+                    .ThenByDescending(p => p.LastUpdateTime)
+                    .ToList()
+                    .FindIndex(a => a.UserId == currentUser.UserId) + ". " + currentUser.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
             }
 
             return anwserRating;
@@ -832,7 +820,7 @@ namespace TamagotchiBot.Controllers
                                               petDB.Fatigue,
                                               Extensions.GetCurrentStatus(petDB.CurrentStatus),
                                               petDB.Joy,
-                                              petDB.Gold,
+                                              _appServices.UserService.Get(_userId).Gold,
                                               petDB.Hygiene);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
                 {
@@ -865,9 +853,10 @@ namespace TamagotchiBot.Controllers
         private AnswerCallback FeedWithBreadInline(Pet petDB)
         {
             var newStarving = Math.Round(petDB.Satiety + FoodFactors.BreadHungerFactor, 2);
+            var userDB = _appServices.UserService.Get(_userId);
             if (newStarving > 100)
             {
-                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, petDB.Gold);
+                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, userDB.Gold);
 
                 string answerLocal = string.Format(tooManyStarvingCommand);
                 _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, answerLocal);
@@ -877,10 +866,10 @@ namespace TamagotchiBot.Controllers
             }
 
 
-            var newGold = petDB.Gold - Costs.Bread;
+            var newGold = userDB.Gold - Costs.Bread;
             if (newGold < 0)
             {
-                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, petDB.Gold);
+                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, userDB.Gold);
 
                 string anwserLocal = string.Format(goldNotEnough);
                 _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal);
@@ -888,7 +877,7 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
                 return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
             }
-            _appServices.PetService.UpdateGold(_userId, newGold);
+            _appServices.UserService.UpdateGold(_userId, newGold);
             _appServices.PetService.UpdateSatiety(_userId, newStarving);
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.BreadEatenCounter++;
@@ -940,10 +929,11 @@ namespace TamagotchiBot.Controllers
         }
         private AnswerCallback FeedWithAppleInline(Pet petDB)
         {
+            var userDB = _appServices.UserService.Get(_userId);
             var newStarving = Math.Round(petDB.Satiety + FoodFactors.RedAppleHungerFactor, 2);
             if (newStarving > 100)
             {
-                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, petDB.Gold);
+                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, userDB.Gold);
 
                 string anwserLocal = string.Format(tooManyStarvingCommand);
                 _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal);
@@ -952,10 +942,10 @@ namespace TamagotchiBot.Controllers
                 return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
             }
 
-            var newGold = petDB.Gold - Constants.Costs.Apple;
+            var newGold = userDB.Gold - Constants.Costs.Apple;
             if (newGold < 0)
             {
-                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, petDB.Gold);
+                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, userDB.Gold);
 
                 string anwserLocal = string.Format(goldNotEnough);
                 _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal);
@@ -964,7 +954,7 @@ namespace TamagotchiBot.Controllers
                 return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
             }
 
-            _appServices.PetService.UpdateGold(_userId, newGold);
+            _appServices.UserService.UpdateGold(_userId, newGold);
             _appServices.PetService.UpdateSatiety(_userId, newStarving);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -984,9 +974,11 @@ namespace TamagotchiBot.Controllers
         private AnswerCallback FeedWithChocolateInline(Pet petDB)
         {
             var newStarving = Math.Round(petDB.Satiety + FoodFactors.ChocolateHungerFactor, 2);
+            var userDB = _appServices.UserService.Get(_userId);
+
             if (newStarving > 100)
             {
-                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, petDB.Gold);
+                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, userDB.Gold);
 
                 string anwserLocal = string.Format(tooManyStarvingCommand);
                 _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal);
@@ -995,10 +987,10 @@ namespace TamagotchiBot.Controllers
                 return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
             }
 
-            var newGold = petDB.Gold - Constants.Costs.Chocolate;
+            var newGold = userDB.Gold - Constants.Costs.Chocolate;
             if (newGold < 0)
             {
-                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, petDB.Gold);
+                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, userDB.Gold);
 
                 string anwserLocal = string.Format(goldNotEnough);
                 _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal);
@@ -1007,7 +999,7 @@ namespace TamagotchiBot.Controllers
                 return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
             }
 
-            _appServices.PetService.UpdateGold(_userId, newGold);
+            _appServices.UserService.UpdateGold(_userId, newGold);
             _appServices.PetService.UpdateSatiety(_userId, newStarving);
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.ChocolateEatenCounter++;
@@ -1026,9 +1018,11 @@ namespace TamagotchiBot.Controllers
         private AnswerCallback FeedWithLollipopInline(Pet petDB)
         {
             var newStarving = Math.Round(petDB.Satiety + FoodFactors.LollipopHungerFactor, 2);
+            var userDB = _appServices.UserService.Get(_userId);
+
             if (newStarving > 100)
             {
-                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, petDB.Gold);
+                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, userDB.Gold);
 
                 string anwserLocal = string.Format(tooManyStarvingCommand);
                 _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal);
@@ -1037,10 +1031,10 @@ namespace TamagotchiBot.Controllers
                 return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
             }
 
-            var newGold = petDB.Gold - Constants.Costs.Lollipop;
+            var newGold = userDB.Gold - Constants.Costs.Lollipop;
             if (newGold < 0)
             {
-                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, petDB.Gold);
+                string toSendTextLocal = string.Format(kitchenCommand, petDB.Satiety, userDB.Gold);
 
                 string anwserLocal = string.Format(goldNotEnough);
                 _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal);
@@ -1049,7 +1043,7 @@ namespace TamagotchiBot.Controllers
                 return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
             }
 
-            _appServices.PetService.UpdateGold(_userId, newGold);
+            _appServices.UserService.UpdateGold(_userId, newGold);
             _appServices.PetService.UpdateSatiety(_userId, newStarving);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -1165,6 +1159,8 @@ namespace TamagotchiBot.Controllers
 
         private AnswerCallback PlayCardInline(Pet petDB)
         {
+            var userDB = _appServices.UserService.Get(_userId);
+
             var newFatigue = petDB.Fatigue + Factors.CardGameFatigueFactor;
             if (newFatigue > 100)
                 newFatigue = 100;
@@ -1173,13 +1169,13 @@ namespace TamagotchiBot.Controllers
             if (newJoy > 100)
                 newJoy = 100;
 
-            var newGold = petDB.Gold - Costs.AppleGame;
+            var newGold = userDB.Gold - Costs.AppleGame;
             if (newGold < 0)
             {
                 string toSendTextLocal = string.Format(gameroomCommand,
                                                        petDB.Fatigue,
                                                        petDB.Joy,
-                                                       petDB.Gold,
+                                                       userDB.Gold,
                                                        Factors.CardGameJoyFactor,
                                                        Costs.AppleGame,
                                                        Factors.DiceGameJoyFactor,
@@ -1192,7 +1188,7 @@ namespace TamagotchiBot.Controllers
                 return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
             }
 
-            _appServices.PetService.UpdateGold(_userId, newGold);
+            _appServices.UserService.UpdateGold(_userId, newGold);
             _appServices.PetService.UpdateFatigue(_userId, newFatigue);
             _appServices.PetService.UpdateJoy(_userId, newJoy);
 
@@ -1210,6 +1206,8 @@ namespace TamagotchiBot.Controllers
         }
         private AnswerCallback PlayDiceInline(Pet petDB)
         {
+            var userDB = _appServices.UserService.Get(_userId);
+
             var newFatigue = petDB.Fatigue + Factors.DiceGameFatigueFactor;
             if (newFatigue > 100)
                 newFatigue = 100;
@@ -1218,13 +1216,13 @@ namespace TamagotchiBot.Controllers
             if (newJoy > 100)
                 newJoy = 100;
 
-            var newGold = petDB.Gold - Costs.DiceGame;
+            var newGold = userDB.Gold - Costs.DiceGame;
             if (newGold < 0)
             {
                 string toSendTextLocal = string.Format(gameroomCommand,
                                                        petDB.Fatigue,
                                                        petDB.Joy,
-                                                       petDB.Gold,
+                                                       userDB.Gold,
                                                        Factors.CardGameJoyFactor,
                                                        Costs.AppleGame,
                                                        Factors.DiceGameJoyFactor,
@@ -1237,7 +1235,7 @@ namespace TamagotchiBot.Controllers
                 return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
             }
 
-            _appServices.PetService.UpdateGold(_userId, newGold);
+            _appServices.UserService.UpdateGold(_userId, newGold);
             _appServices.PetService.UpdateFatigue(_userId, newFatigue);
             _appServices.PetService.UpdateJoy(_userId, newJoy);
             var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -1279,7 +1277,7 @@ namespace TamagotchiBot.Controllers
                     newFatigue = 100;
 
                 _appServices.PetService.UpdateFatigue(_userId, newFatigue);
-                _appServices.PetService.UpdateGold(_userId, petDB.Gold += Rewards.WorkOnPCGoldReward);
+                _appServices.UserService.UpdateGold(_userId, _appServices.UserService.Get(_userId).Gold += Rewards.WorkOnPCGoldReward);
                 _appServices.PetService.UpdateCurrentStatus(_userId, (int)CurrentStatus.WorkingOnPC);
 
                 var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -1333,16 +1331,16 @@ namespace TamagotchiBot.Controllers
             else
                 return null;
         }
-        private AnswerCallback GetDailyRewardInline(Pet petDB)
+        private AnswerCallback GetDailyRewardInline(Models.Mongo.User userDB)
         {
-            var dateTimeWhenOver = petDB.GotDailyRewardTime.Add(new TimesToWait().DailyRewardToWait);
+            var dateTimeWhenOver = userDB.GotDailyRewardTime.Add(new TimesToWait().DailyRewardToWait);
             if (dateTimeWhenOver > DateTime.UtcNow)
                 return ShowRemainedTimeDailyRewardCallback(dateTimeWhenOver - DateTime.UtcNow, true);
 
-            var newGold = petDB.Gold + Constants.Rewards.DailyGoldReward;
+            var newGold = userDB.Gold + Constants.Rewards.DailyGoldReward;
 
-            _appServices.PetService.UpdateGold(_userId, newGold);
-            _appServices.PetService.UpdateDailyRewardTime(_userId, DateTime.UtcNow);
+            _appServices.UserService.UpdateGold(_userId, newGold);
+            _appServices.UserService.UpdateDailyRewardTime(_userId, DateTime.UtcNow);
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.GoldEarnedCounter += Constants.Rewards.DailyGoldReward;
             _appServices.AllUsersDataService.Update(aud);

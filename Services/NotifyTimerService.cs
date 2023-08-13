@@ -162,7 +162,7 @@ namespace TamagotchiBot.Services
         {
             var counter = 0;
             var auid = GetAllUsersIds();
-            Log.Verbose($"Started Little Things");
+            Log.Warning($"Started Little Things");
             foreach (var userId in auid)
             {
                 if (!long.TryParse(userId, out long userIdDB))
@@ -177,8 +177,25 @@ namespace TamagotchiBot.Services
                 _appleGameService.Delete(userIdDB);
                 counter++;
             }
+            Log.Warning($"DB: Removed {counter} users!");
 
-            Log.Verbose($"DB: Removed {counter} users!");
+            foreach (var petDB in _petService.GetAll())
+            {
+                var userDB = _userService.Get(petDB.UserId);
+                if (userDB == null)
+                {
+                    _petService.Remove(petDB.UserId);
+                    continue;
+                }
+
+                _petService.UpdateNextRandomEventNotificationTime(petDB.UserId, userDB.NextRandomEventNotificationTime);
+                _userService.UpdateNextRandomEventNotificationTime(petDB.UserId, default);
+
+                _userService.UpdateGold(petDB.UserId, petDB.Gold);
+                _petService.UpdateGold(petDB.UserId, -1);
+
+                Log.Information($"Gold&DTReward updating is done for userID: {petDB.UserId}");
+            }
         }
         private async void OnChangelogsTimedEvent(object sender, ElapsedEventArgs e)
         {
@@ -334,17 +351,6 @@ namespace TamagotchiBot.Services
             {
                 var user = _userService.Get(pet.UserId);
 
-                if (user.NextRandomEventNotificationTime != default && user.NextRandomEventNotificationTime < DateTime.UtcNow)
-                {
-                    int minutesToAdd = new Random().Next(-15, 30);
-
-                    //For TEST
-                    //_userService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddSeconds(5));
-
-                    _petService.UpdateNextRandomEventNotificationTimeCustom(user.UserId, DateTime.UtcNow.AddHours(2).AddMinutes(minutesToAdd));
-                    usersToNotify.Add(user.UserId);
-                }
-
                 if (pet.NextRandomEventNotificationTime < DateTime.UtcNow)
                 {
                     int minutesToAdd = new Random().Next(-15, 30);
@@ -372,7 +378,7 @@ namespace TamagotchiBot.Services
             {
                 var user = _userService.Get(pet.UserId);
 
-                if (user.NextDailyRewardNotificationTime < DateTime.UtcNow && pet.GotDailyRewardTime.AddDays(1) < DateTime.UtcNow)
+                if (user.NextDailyRewardNotificationTime < DateTime.UtcNow && user.GotDailyRewardTime.AddDays(1) < DateTime.UtcNow)
                 {
                     _userService.UpdateNextDailyRewardNotificationTime(user.UserId, DateTime.UtcNow.AddDays(1));
                     usersToNotify.Add(user.UserId);
@@ -468,10 +474,11 @@ namespace TamagotchiBot.Services
         private void RandomEventFriendMet(Models.Mongo.User user)
         {
             var petDB = _petService.Get(user.UserId);
-            int newGold = petDB.Gold + 15 ;
+            var userDB = _userService.Get(user.UserId);
+            int newGold = userDB.Gold + 15 ;
             int newJoy = petDB.Joy + 40 ;
 
-            _petService.UpdateGold(user.UserId, newGold);
+            _userService.UpdateGold(user.UserId, newGold);
             _petService.UpdateJoy(user.UserId, newJoy);
 
             _petService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
@@ -480,12 +487,13 @@ namespace TamagotchiBot.Services
 
         private void RandomEventHotdog(Models.Mongo.User user)
         {
+            var userDB = _userService.Get(user.UserId);
             var petDB = _petService.Get(user.UserId);
             var newSatiety = petDB.Satiety + 40;
-            int newGold = petDB.Gold + 20;
+            int newGold = userDB.Gold + 20;
 
             _petService.UpdateSatiety(user.UserId, newSatiety);
-            _petService.UpdateGold(user.UserId, newGold);
+            _userService.UpdateGold(user.UserId, newGold);
 
             _petService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
             SendTextAndSticker(user.UserId, Resources.Resources.RandomEventHotdog, Constants.StickersId.RandomEventHotdog);

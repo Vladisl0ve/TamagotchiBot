@@ -21,7 +21,6 @@ namespace TamagotchiBot.Models.Answers
         public IReplyMarkup ReplyMarkup { get; set; }
         public InlineKeyboardMarkup InlineKeyboardMarkup { get; set; }
         public ParseMode? ParseMode { get; set; } = null;
-        public bool IsPetGoneMessage { get; set; } = false;
         public CultureInfo Culture { get; set; } = new CultureInfo("ru");
     }
 }

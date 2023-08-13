@@ -134,7 +134,20 @@ namespace TamagotchiBot.Handlers
                 }
 
                 new SynchroDBController(_appServices, message).SynchronizeWithDB(); //update user (username, names etc.) in DB
-                new CreatorController(_appServices, message).UpdateIndicators(); //update all pet's statistics
+                CreatorController creatorController = new CreatorController(_appServices, message);
+                creatorController.UpdateIndicators(); //update all pet's statistics
+
+                if (creatorController.CheckIsPetGone())
+                {
+                    creatorController.ToResurrectAnswer();
+                    return;
+                }
+
+                if (creatorController.CheckIsPetZeroHP())
+                {
+                    creatorController.AfterDeath();
+                    return;
+                }
 
                 try
                 {
@@ -189,6 +202,7 @@ namespace TamagotchiBot.Handlers
                 if (callbackQuery.Data == "gameroomCommandInlineAppleGame")
                 {
                     var petDB = petService.Get(userId);
+                    var userDB = userService.Get(userId);
                     if (petDB?.Fatigue >= 100)
                     {
                         string anwser = string.Format(Resources.Resources.tooTiredText);
@@ -200,7 +214,7 @@ namespace TamagotchiBot.Handlers
                         return;
                     }
 
-                    if (petDB?.Gold - 20 < 0)
+                    if (userDB?.Gold - 20 < 0)
                     {
                         string anwser = string.Format(Resources.Resources.goldNotEnough);
                         bcService.AnswerCallbackQueryAsync(callbackQuery.Id,
@@ -211,7 +225,7 @@ namespace TamagotchiBot.Handlers
                         return;
                     }
 
-                    petService.UpdateGold(callbackQuery.From.Id, petService.Get(callbackQuery.From.Id).Gold - 20);
+                    _appServices.UserService.UpdateGold(callbackQuery.From.Id, _appServices.UserService.Get(callbackQuery.From.Id).Gold - 20);
 
                     userService.UpdateAppleGameStatus(callbackQuery.From.Id, true);
                     bcService.SetMyCommandsAsync(callbackQuery.From.Id,
@@ -324,7 +338,7 @@ namespace TamagotchiBot.Handlers
                 if (!creatorController.ApplyNewLanguage())
                     return;
                 creatorController.SendWelcomeText();
-                await Task.Delay(100);
+                await Task.Delay(1000);
                 creatorController.AskForAPetName();
             }
             else if (userDB.IsPetNameAskedOnCreate)

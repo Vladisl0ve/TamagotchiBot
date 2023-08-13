@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
@@ -35,6 +36,7 @@ namespace TamagotchiBot.Services.Mongo
                 UserId = user.Id,
                 Username = user.Username,
                 Culture = user.LanguageCode,
+                Gold = 50,
                 ChatIds = new List<long>() { user.Id }                
             });
         }
@@ -54,6 +56,26 @@ namespace TamagotchiBot.Services.Mongo
             userDb.IsInAppleGame = isInAppleGame;
             _users.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
+        }
+
+        public void UpdateGold(long userId, int newGold)
+        {
+            var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb != null)
+            {
+                userDb.Gold = newGold;
+                Update(userId, userDb);
+            }
+        }
+
+        public void UpdateDailyRewardTime(long userId, DateTime newStartTime)
+        {
+            var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb != null)
+            {
+                userDb.GotDailyRewardTime = newStartTime;
+                Update(userId, userDb);
+            }
         }
 
         [Obsolete]

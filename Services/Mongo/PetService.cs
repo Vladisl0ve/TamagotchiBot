@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,6 @@ namespace TamagotchiBot.Services.Mongo
                 Update(userId, pet);
             }
         }
-
         public void UpdateSatiety(long userId, double newSatiety, bool forcePush = false)
         {
             if (newSatiety > 100 && !forcePush)
@@ -82,6 +82,7 @@ namespace TamagotchiBot.Services.Mongo
             }
         }
 
+        [Obsolete]
         public void UpdateDailyRewardTime(long userId, DateTime newStartTime)
         {
             var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
@@ -92,6 +93,7 @@ namespace TamagotchiBot.Services.Mongo
             }
         }
 
+        [Obsolete]
         public void UpdateGold(long userId, int newGold)
         {
             var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
@@ -154,25 +156,7 @@ namespace TamagotchiBot.Services.Mongo
                 Update(userId, pet);
             }
         }
-        [Obsolete]
-        public bool UpdateNextRandomEventNotificationTimeCustom(long userId, DateTime nextNotify)
-        {
-            var petDb = _pets.Find(u => u.UserId == userId).FirstOrDefault();
-            if (petDb == null)
-                return false;
 
-            petDb.NextRandomEventNotificationTime = petDb.NextRandomEventNotificationTime == default ? LittleThings(userId) : nextNotify;
-            _pets.ReplaceOne(u => u.UserId == userId, petDb);
-            return true;
-        }
-
-        private DateTime LittleThings(long userId)
-        {
-            var result = new DateTime(_userService.Get(userId).NextRandomEventNotificationTime.Ticks);
-            _userService.UpdateNextRandomEventNotificationTime(userId, default);
-
-            return result;
-        }
         public bool UpdateNextRandomEventNotificationTime(long userId, DateTime nextNotify)
         {
             var petDb = _pets.Find(u => u.UserId == userId).FirstOrDefault();

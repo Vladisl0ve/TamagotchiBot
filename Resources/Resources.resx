@@ -122,8 +122,7 @@
   </data>
   <data name="Welcome" xml:space="preserve">
     <value>🎮 Welcome to Tamagotchi Bot! Here you can raise your own virtual pet, play with him and compete with another players 🎮
-Let's start? 
-/start</value>
+Let's start!</value>
   </data>
   <data name="ChooseName" xml:space="preserve">
     <value>🧸 First of all you need to name your new friend
@@ -347,8 +346,7 @@ Your pet left because he lacked care 💔</value>
   <data name="EpilogueText" xml:space="preserve">
     <value>It happens to everyone, but life goes on!
 Maybe you'll be lucky with a new pet 😼
-Try again? 🫶
-/start</value>
+Try again? 🫶</value>
   </data>
   <data name="ReminderNotifyText1" xml:space="preserve">
     <value>😺: You've come back!
@@ -578,5 +576,24 @@ But the pet accidentally stepped into a puddle 💦
 -10% hygiene 🛁
 
 /pet - check pet's status</value>
+  </data>
+  <data name="ResurrectYesText" xml:space="preserve">
+    <value>Yes (-1000 💰)</value>
+  </data>
+  <data name="ResurrectNoText" xml:space="preserve">
+    <value>No ⁉️</value>
+  </data>
+  <data name="ToResurrectQuestion" xml:space="preserve">
+    <value>To resurrect your pet? 🧬</value>
+  </data>
+  <data name="PetCameBackText" xml:space="preserve">
+    <value>After a long search and a lot of money for detectives, the pet was found! 😺
+You asked for forgiveness for a long time and promised not to forget about your pet again 🐣
+You both reconciled 💕
+
+/pet - check pet status</value>
+  </data>
+  <data name="NotEnoughGoldToResurrect" xml:space="preserve">
+    <value>Unfortunately, you don't have enough money ☠️</value>
   </data>
 </root>
