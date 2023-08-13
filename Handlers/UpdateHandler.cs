@@ -119,17 +119,22 @@ namespace TamagotchiBot.Handlers
 
             async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
             {
-                MenuController menuController = new MenuController(_appServices, message);
-                AppleGameController appleGameController;
                 Answer toSend = null;
 
                 if (!IsUserAndPetRegisteredChecking(userId))
                 {
-                    RegisterUserAndPet(botClient, message); //CreatorController
+                    RegisterUserAndPet(message); //CreatorController
+                    return;
+                }
+
+                if (!DidUserChoseLanguage(userId))
+                {
+                    new CreatorController(_appServices, message).ApplyNewLanguage(true);
                     return;
                 }
 
                 new SynchroDBController(_appServices, message).SynchronizeWithDB(); //update user (username, names etc.) in DB
+                new CreatorController(_appServices, message).UpdateIndicators(); //update all pet's statistics
 
                 try
                 {
@@ -142,7 +147,7 @@ namespace TamagotchiBot.Handlers
                     if (userService.Get(message.From.Id).IsInAppleGame)
                         toSend = new AppleGameController(_appServices, message).Menu();
                     else
-                        toSend = menuController.ProcessMessage();
+                        toSend = new MenuController(_appServices, message).ProcessMessage();
 
                 }
                 catch (ApiRequestException apiEx)
@@ -158,10 +163,7 @@ namespace TamagotchiBot.Handlers
                     Log.Error(ex.Message + Environment.NewLine + ex.StackTrace);
                 }
 
-                if (toSend == null)
-                    return;
-
-                SendMessage(toSend, message.From.Id);
+                _appServices.BotControlService.SendAnswerAsync(toSend, message.From.Id);
 
                 //if new player starts the game
                 if (petService.Get(message.From.Id) == null
@@ -232,7 +234,7 @@ namespace TamagotchiBot.Handlers
                     var gameController = new AppleGameController(_appServices, callbackQuery);
                     Answer toSendAnswer = gameController.StartGame();
 
-                    SendMessage(toSendAnswer, callbackQuery.From.Id);
+                    _appServices.BotControlService.SendAnswerAsync(toSendAnswer, callbackQuery.From.Id);
                     return;
                 }
 
@@ -255,64 +257,6 @@ namespace TamagotchiBot.Handlers
                                                cancellationToken: token,
                                                parseMode: toSend.ParseMode);
             }
-
-            async void SendMessage(Answer toSend, long userId)
-            {
-                culture ??= CultureInfo.GetCultureInfo(userService.Get(userId)?.Culture ?? "ru");
-                if (toSend.StickerId != null)
-                {
-                    bcService.SendStickerAsync(userId,
-                                               toSend.StickerId,
-                                               cancellationToken: token);
-
-                    await Task.Delay(50, token);
-
-                    if (toSend.ReplyMarkup == null && toSend.InlineKeyboardMarkup == null)
-                        bcService.SendTextMessageAsync(userId,
-                                                       toSend.Text,
-                                                       cancellationToken: token);
-                }
-
-                if (toSend.ReplyMarkup != null)
-                {
-                    if (toSend.ReplyMarkup is ReplyKeyboardRemove reply && reply.RemoveKeyboard && chatService.Get(userId)?.LastMessage == "/quitApple")
-                    {
-                        bcService.SendTextMessageAsync(userId,
-                                                       Resources.Resources.backToGameroomText,
-                                                       replyMarkup: toSend.ReplyMarkup,
-                                                       cancellationToken: token);
-                    }
-                    else
-                        bcService.SendTextMessageAsync(userId,
-                                                       toSend.Text,
-                                                       replyMarkup: toSend.ReplyMarkup,
-                                                       cancellationToken: token);
-                }
-
-                if (toSend.InlineKeyboardMarkup != null)
-                    bcService.SendTextMessageAsync(userId,
-                                                   toSend.Text,
-                                                   replyMarkup: toSend.InlineKeyboardMarkup,
-                                                   cancellationToken: token,
-                                                   parseMode: toSend.ParseMode);
-                if (toSend.IsPetGoneMessage)
-                {
-                    Resources.Resources.Culture = culture;
-                    await Task.Delay(TimeSpan.FromSeconds(1), token);
-                    bcService.SendChatActionAsync(userId, ChatAction.Typing, token);
-                    await Task.Delay(TimeSpan.FromSeconds(5), token);
-                    Resources.Resources.Culture = culture;
-                    bcService.SendStickerAsync(userId,
-                                               Constants.StickersId.PetEpilogue_Cat,
-                                               cancellationToken: token);
-
-                    Resources.Resources.Culture = culture;
-                    bcService.SendTextMessageAsync(userId,
-                                                   Resources.Resources.EpilogueText,
-                                                   cancellationToken: token,
-                                                   parseMode: toSend.ParseMode);
-                }
-            }
         }
 
 
@@ -333,6 +277,17 @@ namespace TamagotchiBot.Handlers
 
             return false;
         }
+        private bool DidUserChoseLanguage(long userId)
+        {
+            var userDB = _appServices.UserService.Get(userId);
+            if (userDB == null)
+                return false;
+
+            if (userDB.Culture == null)
+                return false;
+
+            return true;
+        }
         private bool IsUserAndPetRegisteredChecking(long userId)
         {
             var userDB = _appServices.UserService.Get(userId);
@@ -352,7 +307,7 @@ namespace TamagotchiBot.Handlers
             return true;
         }
 
-        private async void RegisterUserAndPet(ITelegramBotClient botClient, Message message)
+        private async void RegisterUserAndPet(Message message)
         {
             CreatorController creatorController;
             var userId = message.From.Id;

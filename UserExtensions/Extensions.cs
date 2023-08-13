@@ -127,17 +127,6 @@ namespace TamagotchiBot.UserExtensions
                 if (l.GetDisplayName() == flag)
                     return l;
 
-            /*            if (flag == "be" || flag == "by")
-                            return Constants.Language.Беларуская;
-
-                        if (flag == "ru")
-                            return Constants.Language.Русский;
-
-
-                        if (flag == "pl")
-                            return Constants.Language.Русский;
-            */
-
             return Constants.Language.English;
         }
 

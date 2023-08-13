@@ -101,64 +101,6 @@ namespace TamagotchiBot.Controllers
             return CommandHandler();
         }
 
-        private void UpdateIndicators()
-        {
-            Telegram.Bot.Types.User userFromMsg = _message?.From ?? _callback?.From;
-            var petDB = _appServices.PetService.Get(_userId);
-            var petResult = new Pet().Clone(petDB);
-
-            if (userFromMsg == null || petDB == null)
-                return;
-
-            int minuteCounter = (int)(DateTime.UtcNow - petDB.LastUpdateTime).TotalMinutes;
-
-            //EXP
-            petResult.EXP = UpdateIndicatorEXP(minuteCounter, petDB);
-
-            //Satiety & HP
-            var satietyHp = UpdateIndicatorSatietyAndHP(minuteCounter, petDB);
-            petResult.Satiety = satietyHp.Item1;
-            petResult.HP = satietyHp.Item2;
-
-            //Joy
-            petResult.Joy = UpdateIndicatorJoy(minuteCounter, petDB);
-
-            //Fatigue
-            petResult.Fatigue = UpdateIndicatorFatigue(minuteCounter, petDB);
-
-            //Hygiene
-            petResult.Hygiene = UpdateIndicatorHygiene(minuteCounter, petDB);
-
-            //Sleeping
-            if (petDB.CurrentStatus == (int)CurrentStatus.Sleeping)
-            {
-                var sleepResult =  UpdateIndicatorSleeping(petDB);
-                var currentStatus = sleepResult.Item1;
-                var currentFatigue = sleepResult.Item2;
-
-                petResult.CurrentStatus = (int)currentStatus;
-                petResult.Fatigue = currentStatus != CurrentStatus.Active ? petResult.Fatigue : currentFatigue;
-            }
-
-            //Work
-            if (petDB.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
-                petResult.CurrentStatus = (int)UpdateIndicatorWork(petDB);
-
-            petResult.LastUpdateTime = DateTime.UtcNow;
-            _appServices.PetService.Update(userFromMsg.Id, petResult);
-        }
-
-        private CurrentStatus UpdateIndicatorWork(Pet petDB)
-        {
-            TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
-
-            //if callback handled when time of work is over
-            if (remainsTime <= TimeSpan.Zero)
-                return CurrentStatus.Active;
-
-            return CurrentStatus.WorkingOnPC;
-        }
-
         public Answer CommandHandler()
         {
             string textReceived = _message.Text;
@@ -167,7 +109,6 @@ namespace TamagotchiBot.Controllers
 
             textReceived = textReceived.ToLower();
 
-            UpdateIndicators();
 
             /*            if (pet != null && IsPetGone())
                         {
@@ -238,7 +179,7 @@ namespace TamagotchiBot.Controllers
             {
                 TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
 
-                //if callback handled when pet is working
+                //if _callback handled when pet is working
                 if (remainsTime > TimeSpan.Zero)
                     return ShowRemainedTimeWork(remainsTime);
             }
@@ -272,7 +213,7 @@ namespace TamagotchiBot.Controllers
             {
                 TimeSpan remainsTime = new TimesToWait().DailyRewardToWait - (DateTime.UtcNow - petDB.GotDailyRewardTime);
 
-                //if callback handled when pet is working
+                //if _callback handled when pet is working
                 if (remainsTime > TimeSpan.Zero)
                     return ShowRemainedTimeDailyReward(remainsTime);
             }
@@ -301,8 +242,6 @@ namespace TamagotchiBot.Controllers
         {
             if (_callback.Data == null)
                 return null;
-
-            UpdateIndicators();
 
             var userDb = _appServices.UserService.Get(_userId);
             var petDb = _appServices.PetService.Get(_userId);
@@ -900,99 +839,6 @@ namespace TamagotchiBot.Controllers
             };
         }
 
-        private int UpdateIndicatorEXP(int minuteCounter, Pet pet)
-        {
-            var petResult = new Pet().Clone(pet);
-
-            int toAddExp = minuteCounter * Factors.ExpFactor;
-            petResult.EXP += toAddExp;
-
-            if (petResult.EXP > 100)
-            {
-                petResult.Level += petResult.EXP / Factors.ExpToLvl;
-                petResult.EXP -= (petResult.EXP / Factors.ExpToLvl) * Factors.ExpToLvl;
-            }
-
-            return petResult.EXP;
-        }
-        private (double, int) UpdateIndicatorSatietyAndHP(int minuteCounter, Pet pet)
-        {
-            var petResult = new Pet().Clone(pet);
-
-            double decreaseSatiety = Math.Round(minuteCounter * Factors.StarvingFactor, 2);
-
-            petResult.Satiety -= decreaseSatiety;
-            petResult.Satiety = Math.Round(petResult.Satiety, 2);
-
-            if (petResult.Satiety < 0)
-            {
-                petResult.Satiety = 0;
-                int tmpSat = (int)decreaseSatiety > 100 ? ((int)decreaseSatiety) - 100 : ((int)decreaseSatiety);
-                petResult.HP -= tmpSat;
-
-                if (petResult.HP < 0)
-                    petResult.HP = 0;
-            }
-
-            return (petResult.Satiety, petResult.HP);
-        }
-        private int UpdateIndicatorHygiene(int minuteCounter, Pet petDB)
-        {
-            var petResult = new Pet().Clone(petDB);
-
-            double toDecreaseHygiene = Math.Round(minuteCounter * Factors.HygieneFactor);
-
-            petResult.Hygiene -= (int)toDecreaseHygiene;
-
-            if (petResult.Hygiene < 0)
-                petResult.Hygiene = 0;
-
-            return petResult.Hygiene;
-        }
-        private int UpdateIndicatorJoy(int minuteCounter, Pet pet)
-        {
-            var petResult = new Pet().Clone(pet);
-
-            double toDecreaseJoy = Math.Round(minuteCounter * Factors.JoyFactor);
-
-            petResult.Joy -= (int)toDecreaseJoy;
-
-            if (petResult.Joy < 0)
-                petResult.Joy = 0;
-
-            return petResult.Joy;
-        }
-        private int UpdateIndicatorFatigue(int minuteCounter, Pet pet)
-        {
-            var petResult = new Pet().Clone(pet);
-
-            if (petResult.CurrentStatus == (int)CurrentStatus.Active)
-            {
-                double toAddFatigue = Math.Round(minuteCounter * Factors.FatigueFactor);
-                petResult.Fatigue += (int)toAddFatigue;
-            }
-
-            if (petResult.Fatigue > 100)
-                petResult.Fatigue = 100;
-
-            return petResult.Fatigue;
-        }
-        private (CurrentStatus, int) UpdateIndicatorSleeping(Pet petDB)
-        {
-            var petResult = new Pet().Clone(petDB);
-
-            var remainsToSleepTime = petResult.ToWakeUpTime - DateTime.UtcNow;
-            if (remainsToSleepTime <= TimeSpan.Zero)
-            {
-                petResult.CurrentStatus = (int)CurrentStatus.Active;
-                petResult.Fatigue = 0;
-
-                return ((CurrentStatus)petResult.CurrentStatus, petResult.Fatigue);
-            }
-
-            return ((CurrentStatus)petResult.CurrentStatus, petResult.Fatigue);
-        }
-
         #region Inline Answers
         private AnswerCallback ShowBasicInfoInline(Pet petDB)
         {
@@ -1486,7 +1332,7 @@ namespace TamagotchiBot.Controllers
             {
                 TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
 
-                //if callback handled when time of work is over
+                //if _callback handled when time of work is over
                 if (remainsTime <= TimeSpan.Zero)
                 {
                     petDB.CurrentStatus = (int)CurrentStatus.Active;
@@ -1500,7 +1346,7 @@ namespace TamagotchiBot.Controllers
                     return new AnswerCallback(toSendTextIfTimeOver, toSendInlineIfTimeOver);
                 }
 
-                //if callback handled when pet is still working
+                //if _callback handled when pet is still working
                 return ShowRemainedTimeWorkCallback(remainsTime);
             }
             else

@@ -233,8 +233,14 @@ namespace TamagotchiBot.Services
 
         public async void SendAnswerAsync(Answer toSend, long userId)
         {
-            Resources.Resources.Culture = toSend.Culture;
 
+            if (toSend == null)
+            {
+                Log.Warning($"Nothing to send (null), userID: {userId}");
+                return;
+            }
+
+            Resources.Resources.Culture = toSend.Culture;
             if (toSend.StickerId != null)
             {
                 SendStickerAsync(userId,

@@ -10,20 +10,21 @@ using TamagotchiBot.Models.Answers;
 using Extensions = TamagotchiBot.UserExtensions.Extensions;
 using TamagotchiBot.UserExtensions;
 using System.Linq;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TamagotchiBot.Controllers
 {
     public class CreatorController
     {
         private IApplicationServices _appServices;
-        private readonly Message message = null;
-        private readonly CallbackQuery callback = null;
+        private readonly Message _message = null;
+        private readonly CallbackQuery _callback = null;
         private readonly long _userId;
 
         public CreatorController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
         {
-            this.callback = callback;
-            this.message = message;
+            _callback = callback;
+            _message = message;
             _userId = callback?.From.Id ?? message.From.Id;
 
             _appServices = services;
@@ -33,10 +34,10 @@ namespace TamagotchiBot.Controllers
         }
         public void CreateUser()
         {
-            if (message != null)
-                CreateUserFromMessage(message);
-            else if (callback != null)
-                CreateUserFromCallback(callback);
+            if (_message != null)
+                CreateUserFromMessage(_message);
+            else if (_callback != null)
+                CreateUserFromCallback(_callback);
         }
         public void AskALanguage()
         {
@@ -120,7 +121,7 @@ namespace TamagotchiBot.Controllers
 
         internal bool CreatePet()
         {
-            var msgText = message?.Text;
+            var msgText = _message?.Text;
             if (string.IsNullOrEmpty(msgText))
                 return false;
 
@@ -137,7 +138,6 @@ namespace TamagotchiBot.Controllers
                 Joy = 70,
                 Fatigue = 0,
                 Satiety = 80,
-                IsWelcomed = true,
                 Type = null,
                 Gold = 50
             });
@@ -156,9 +156,9 @@ namespace TamagotchiBot.Controllers
             _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
             return true;
         }
-        internal bool ApplyNewLanguage()
+        internal bool ApplyNewLanguage(bool isLanguageChanged = false)
         {
-            var msgText = message?.Text;
+            var msgText = _message?.Text;
             if (string.IsNullOrEmpty(msgText))
                 return false;
 
@@ -166,10 +166,45 @@ namespace TamagotchiBot.Controllers
 
             var newLanguage = flagFromMsg?.GetCulture();
             if (string.IsNullOrEmpty(newLanguage))
+            {
+                var toSendLanguagesAgain = new Answer()
+                {
+                    Text = ChangeLanguage,
+                    StickerId = StickersId.ChangeLanguageSticker,
+                    ReplyMarkup = LanguagesMarkup,
+                    InlineKeyboardMarkup = null
+                };
+
+                _appServices.BotControlService.SendAnswerAsync(toSendLanguagesAgain, _userId);
                 return false;
+            }
 
             _appServices.UserService.UpdateLanguage(_userId, newLanguage);
-            _appServices.UserService.UpdateIsLanguageAskedOnCreate(_userId, false);
+            Culture = new CultureInfo(newLanguage);
+
+            if (!isLanguageChanged)
+            {
+                _appServices.UserService.UpdateIsLanguageAskedOnCreate(_userId, false);
+                return true;
+            }
+
+            string stickerToSend = newLanguage.Language() switch
+            {
+                Language.Polish => StickersId.PolishLanguageSetSticker,
+                Language.English => StickersId.EnglishLanguageSetSticker,
+                Language.Belarusian => StickersId.BelarussianLanguageSetSticker,
+                Language.Russian => StickersId.RussianLanguageSetSticker,
+                _ => null,
+            };
+            var toSend = new Answer()
+            {
+                Text = ConfirmedLanguage,
+                StickerId = stickerToSend,
+                ReplyMarkup = new ReplyKeyboardRemove()
+            };
+
+            _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+
             return true;
         }
         internal void SendWelcomeText()
@@ -192,5 +227,160 @@ namespace TamagotchiBot.Controllers
 
             _appServices.UserService.UpdateIsPetNameAskedOnCreate(_userId, true);
         }
+
+        internal void UpdateIndicators()
+        {
+            Telegram.Bot.Types.User userFromMsg = _message?.From ?? _callback?.From;
+            var petDB = _appServices.PetService.Get(_userId);
+            var petResult = new Pet().Clone(petDB);
+
+            if (userFromMsg == null || petDB == null)
+                return;
+
+            int minuteCounter = (int)(DateTime.UtcNow - petDB.LastUpdateTime).TotalMinutes;
+
+            //EXP
+            petResult.EXP = UpdateIndicatorEXP(minuteCounter, petDB);
+
+            //Satiety & HP
+            var satietyHp = UpdateIndicatorSatietyAndHP(minuteCounter, petDB);
+            petResult.Satiety = satietyHp.Item1;
+            petResult.HP = satietyHp.Item2;
+
+            //Joy
+            petResult.Joy = UpdateIndicatorJoy(minuteCounter, petDB);
+
+            //Fatigue
+            petResult.Fatigue = UpdateIndicatorFatigue(minuteCounter, petDB);
+
+            //Hygiene
+            petResult.Hygiene = UpdateIndicatorHygiene(minuteCounter, petDB);
+
+            //Sleeping
+            if (petDB.CurrentStatus == (int)CurrentStatus.Sleeping)
+            {
+                var sleepResult =  UpdateIndicatorSleeping(petDB);
+                var currentStatus = sleepResult.Item1;
+                var currentFatigue = sleepResult.Item2;
+
+                petResult.CurrentStatus = (int)currentStatus;
+                petResult.Fatigue = currentStatus != CurrentStatus.Active ? petResult.Fatigue : currentFatigue;
+            }
+
+            //Work
+            if (petDB.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
+                petResult.CurrentStatus = (int)UpdateIndicatorWork(petDB);
+
+            petResult.LastUpdateTime = DateTime.UtcNow;
+            _appServices.PetService.Update(userFromMsg.Id, petResult);
+        }
+
+        #region Indicator Updaters
+
+        private int UpdateIndicatorEXP(int minuteCounter, Pet pet)
+        {
+            var petResult = new Pet().Clone(pet);
+
+            int toAddExp = minuteCounter * Factors.ExpFactor;
+            petResult.EXP += toAddExp;
+
+            if (petResult.EXP > 100)
+            {
+                petResult.Level += petResult.EXP / Factors.ExpToLvl;
+                petResult.EXP -= (petResult.EXP / Factors.ExpToLvl) * Factors.ExpToLvl;
+            }
+
+            return petResult.EXP;
+        }
+        private (double, int) UpdateIndicatorSatietyAndHP(int minuteCounter, Pet pet)
+        {
+            var petResult = new Pet().Clone(pet);
+
+            double decreaseSatiety = Math.Round(minuteCounter * Factors.StarvingFactor, 2);
+
+            petResult.Satiety -= decreaseSatiety;
+            petResult.Satiety = Math.Round(petResult.Satiety, 2);
+
+            if (petResult.Satiety < 0)
+            {
+                petResult.Satiety = 0;
+                int tmpSat = (int)decreaseSatiety > 100 ? ((int)decreaseSatiety) - 100 : ((int)decreaseSatiety);
+                petResult.HP -= tmpSat;
+
+                if (petResult.HP < 0)
+                    petResult.HP = 0;
+            }
+
+            return (petResult.Satiety, petResult.HP);
+        }
+        private int UpdateIndicatorHygiene(int minuteCounter, Pet petDB)
+        {
+            var petResult = new Pet().Clone(petDB);
+
+            double toDecreaseHygiene = Math.Round(minuteCounter * Factors.HygieneFactor);
+
+            petResult.Hygiene -= (int)toDecreaseHygiene;
+
+            if (petResult.Hygiene < 0)
+                petResult.Hygiene = 0;
+
+            return petResult.Hygiene;
+        }
+        private int UpdateIndicatorJoy(int minuteCounter, Pet pet)
+        {
+            var petResult = new Pet().Clone(pet);
+
+            double toDecreaseJoy = Math.Round(minuteCounter * Factors.JoyFactor);
+
+            petResult.Joy -= (int)toDecreaseJoy;
+
+            if (petResult.Joy < 0)
+                petResult.Joy = 0;
+
+            return petResult.Joy;
+        }
+        private int UpdateIndicatorFatigue(int minuteCounter, Pet pet)
+        {
+            var petResult = new Pet().Clone(pet);
+
+            if (petResult.CurrentStatus == (int)CurrentStatus.Active)
+            {
+                double toAddFatigue = Math.Round(minuteCounter * Factors.FatigueFactor);
+                petResult.Fatigue += (int)toAddFatigue;
+            }
+
+            if (petResult.Fatigue > 100)
+                petResult.Fatigue = 100;
+
+            return petResult.Fatigue;
+        }
+        private (CurrentStatus, int) UpdateIndicatorSleeping(Pet petDB)
+        {
+            var petResult = new Pet().Clone(petDB);
+
+            var remainsToSleepTime = petResult.ToWakeUpTime - DateTime.UtcNow;
+            if (remainsToSleepTime <= TimeSpan.Zero)
+            {
+                petResult.CurrentStatus = (int)CurrentStatus.Active;
+                petResult.Fatigue = 0;
+
+                return ((CurrentStatus)petResult.CurrentStatus, petResult.Fatigue);
+            }
+
+            return ((CurrentStatus)petResult.CurrentStatus, petResult.Fatigue);
+        }
+        private CurrentStatus UpdateIndicatorWork(Pet petDB)
+        {
+            TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
+
+            //if _callback handled when time of work is over
+            if (remainsTime <= TimeSpan.Zero)
+                return CurrentStatus.Active;
+
+            return CurrentStatus.WorkingOnPC;
+        }
+
+        #endregion
+
     }
 }

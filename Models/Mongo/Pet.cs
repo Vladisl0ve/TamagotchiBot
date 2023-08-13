@@ -65,7 +65,7 @@ namespace TamagotchiBot.Models.Mongo
         public int Fatigue { get; set; }
 
         [BsonElement("IsNew")]
-        public bool IsWelcomed { get; set; }
+        public bool IsNew { get; set; }
 
         [BsonElement("EXP")]
         public int EXP { get; set; }
@@ -88,7 +88,6 @@ namespace TamagotchiBot.Models.Mongo
                 HP                              = petToClone.HP,
                 Hygiene                         = petToClone.Hygiene,
                 Id                              = petToClone.Id,
-                IsWelcomed                      = petToClone.IsWelcomed,
                 Joy                             = petToClone.Joy,
                 LastUpdateTime                  = petToClone.LastUpdateTime,
                 Name                            = petToClone.Name,
