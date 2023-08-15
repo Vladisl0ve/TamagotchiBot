@@ -102,7 +102,7 @@ namespace TamagotchiBot.Handlers
             else if (userService.Get(userId)?.IsInAppleGame ?? false)
             {
                 bcService.SetMyCommandsAsync(userId,
-                                             Extensions.GetIngameCommands(),
+                                             Extensions.GetInApplegameCommands(),
                                              cancellationToken: token,
                                              scope: new BotCommandScopeChat() { ChatId = userId });
             }
@@ -229,7 +229,7 @@ namespace TamagotchiBot.Handlers
 
                     userService.UpdateAppleGameStatus(callbackQuery.From.Id, true);
                     bcService.SetMyCommandsAsync(callbackQuery.From.Id,
-                                                 Extensions.GetIngameCommands(),
+                                                 Extensions.GetInApplegameCommands(),
                                                  cancellationToken: token,
                                                  scope: new BotCommandScopeChat() { ChatId = userId });
                     var appleData = appleGameDataService.Get(callbackQuery.From.Id);

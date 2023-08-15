@@ -218,7 +218,7 @@ namespace TamagotchiBot.UserExtensions
             return resultExtra;
         }
 
-        public static List<BotCommand> GetIngameCommands()
+        public static List<BotCommand> GetInApplegameCommands()
         {
             List<BotCommand> result = new()
             {
