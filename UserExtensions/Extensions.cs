@@ -138,12 +138,6 @@ namespace TamagotchiBot.UserExtensions
                 {
                     Command = Commands.LanguageCommand,
                     Description = Resources.Resources.languageCommandDescription
-                },
-
-                new BotCommand()
-                {
-                    Command = Commands.HelpCommand,
-                    Description = Resources.Resources.helpCommandDescription
                 }
             };
 
@@ -210,6 +204,12 @@ namespace TamagotchiBot.UserExtensions
                 {
                     Command = Commands.MenuCommand,
                     Description = Resources.Resources.menuCommandDescription
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.HelpCommand,
+                    Description = Resources.Resources.helpCommandDescription
                 }
             };
 

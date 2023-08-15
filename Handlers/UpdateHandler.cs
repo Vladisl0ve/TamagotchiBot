@@ -91,28 +91,7 @@ namespace TamagotchiBot.Handlers
                 _ => Task.CompletedTask
             };
 
-
-            if (petService.Get(userId) is not null && petService.Get(userId).Name is not null && (!userService.Get(userId)?.IsInAppleGame ?? false))
-            {
-                bcService.SetMyCommandsAsync(userId,
-                                             Extensions.GetCommands(true),
-                                             cancellationToken: token,
-                                             scope: new BotCommandScopeChat() { ChatId = userId });
-            }
-            else if (userService.Get(userId)?.IsInAppleGame ?? false)
-            {
-                bcService.SetMyCommandsAsync(userId,
-                                             Extensions.GetInApplegameCommands(),
-                                             cancellationToken: token,
-                                             scope: new BotCommandScopeChat() { ChatId = userId });
-            }
-            else
-            {
-                bcService.SetMyCommandsAsync(userId,
-                                             Extensions.GetCommands(false),
-                                             cancellationToken: token,
-                                             scope: new BotCommandScopeChat() { ChatId = userId });
-            }
+            new SetCommandController(_appServices, messageFromUser, callbackFromUser).UpdateCommands();
 
             sinfoService.UpdateLastGlobalUpdate();
             return task;
