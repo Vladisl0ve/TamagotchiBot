@@ -225,34 +225,25 @@ namespace TamagotchiBot.Controllers
             var toSend = new Answer()
             {
                 Text = textToSend,
-                StickerId = StickersId.PetGone_Cat
+                StickerId = StickersId.PetGone_Cat,
+                Culture = Culture,
             };
 
             _appServices.PetService.Update(_userId, petResult);
             _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
             _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
 
-            var toResurrect = new Answer()
-            {
-                Text = ToResurrectQuestion,
-                ReplyMarkup = new ReplyKeyboardMarkup(new List<KeyboardButton>()
-                {
-                    new KeyboardButton(ResurrectYesText),
-                    new KeyboardButton(ResurrectNoText)
-                })
-                {
-                    OneTimeKeyboard = true
-                },
-                Culture = Culture,
-            };
             await Task.Delay(2500);
-            _appServices.BotControlService.SendAnswerAsync(toResurrect, _userId);
+            AskForResurrect();
         }
         internal async void ToResurrectAnswer()
         {
             bool? answerFromUser = _message.Text == ResurrectYesText ? true : _message.Text == ResurrectNoText ? false : null;
             if (answerFromUser == null)
+            {
+                AskForResurrect();
                 return;
+            }
 
             if (answerFromUser == true)
             {
@@ -383,6 +374,23 @@ namespace TamagotchiBot.Controllers
         {
             _appServices.PetService.Remove(_userId);
             AskALanguage();
+        }
+        private void AskForResurrect()
+        {
+            var toResurrect = new Answer()
+            {
+                Text = ToResurrectQuestion,
+                ReplyMarkup = new ReplyKeyboardMarkup(new List<KeyboardButton>()
+                {
+                    new KeyboardButton(ResurrectYesText),
+                    new KeyboardButton(ResurrectNoText)
+                })
+                {
+                    OneTimeKeyboard = true
+                },
+                Culture = Culture,
+            };
+            _appServices.BotControlService.SendAnswerAsync(toResurrect, _userId);
         }
 
         #region Indicator Updaters
