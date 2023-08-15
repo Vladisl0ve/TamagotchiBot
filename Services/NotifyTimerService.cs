@@ -70,7 +70,7 @@ namespace TamagotchiBot.Services
             //TEST
             //TimeSpan timeToWait = TimeSpan.FromSeconds(10);
             
-            TimeSpan timeToWait = TimeSpan.FromMinutes(5);
+            TimeSpan timeToWait = TimeSpan.FromSeconds(307);
             Log.Information("DailyRewardNotification timer set to wait for " + timeToWait.TotalSeconds + "s");
             _dailyRewardTimer = new Timer(timeToWait);
             _dailyRewardTimer.Elapsed += OnDailyRewardTimedEvent;
@@ -267,7 +267,7 @@ namespace TamagotchiBot.Services
             }
         }
 
-        private async void SendDevNotify()
+        private void SendDevNotify()
         {
             if (_envs?.ChatsToDevNotify == null)
             {
@@ -284,7 +284,7 @@ namespace TamagotchiBot.Services
 
                 try
                 {
-                    _appServices.BotControlService.SendTextMessageAsync(parsedChatId, $"Tamagotchi is alive! {DateTime.UtcNow:g}UTC");
+                    _appServices.BotControlService.SendTextMessageAsync(parsedChatId, $"Tamagotchi is alive! {DateTime.UtcNow:g}UTC", toLog: false);
 
                     var dailyInfoToday = _appServices.DailyInfoService.GetToday();
 
@@ -292,7 +292,7 @@ namespace TamagotchiBot.Services
                         (dailyInfoToday != null && (DateTime.UtcNow - dailyInfoToday.DateInfo) > _envs.DevExtraNotifyEvery))
                     {
                         Log.Information("Sent extra dev notify");
-                        _appServices.BotControlService.SendTextMessageAsync(parsedChatId, ToSendExtraDevNotify());
+                        _appServices.BotControlService.SendTextMessageAsync(parsedChatId, ToSendExtraDevNotify(), toLog: false);
                     }
                 }
                 catch (ApiRequestException ex)
