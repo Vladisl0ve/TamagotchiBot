@@ -25,8 +25,6 @@ namespace TamagotchiBot.Services
 
         public BotControlService BotControlService { get; }
 
-        public NotifyTimerService NotifyTimerService { get; }
-
         public ApplicationServices(AdsProducersService adsProducersService,
                                    AllUsersDataService allUsersDataService,
                                    AppleGameDataService appleGameDataService,
@@ -36,8 +34,7 @@ namespace TamagotchiBot.Services
                                    PetService petService,
                                    SInfoService sInfoService,
                                    UserService userService,
-                                   BotControlService botControlService,
-                                   NotifyTimerService notifyTimerService)
+                                   BotControlService botControlService)
         {
             AdsProducersService = adsProducersService;
             AllUsersDataService = allUsersDataService;
@@ -49,7 +46,6 @@ namespace TamagotchiBot.Services
             SInfoService = sInfoService;
             UserService = userService;
             BotControlService = botControlService;
-            NotifyTimerService = notifyTimerService;
         }
     }
 }

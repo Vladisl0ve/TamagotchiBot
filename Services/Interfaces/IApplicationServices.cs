@@ -14,6 +14,5 @@ namespace TamagotchiBot.Services.Interfaces
         SInfoService SInfoService { get; }
         UserService UserService { get; }
         BotControlService BotControlService { get; }
-        NotifyTimerService NotifyTimerService { get; }
     }
 }
