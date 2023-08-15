@@ -6,7 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using TamagotchiBot.Database;
-using TamagotchiBot.Services.Mongo;
+using TamagotchiBot.Models.Answers;
+using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
@@ -19,16 +20,8 @@ namespace TamagotchiBot.Services
         private Timer _changelogsTimer;
         private Timer _dailyRewardTimer;
         private Timer _randomEventRewardTimer;
+        private readonly IApplicationServices _appServices;
 
-        private readonly ITelegramBotClient _botClient;
-        private PetService _petService;
-        private UserService _userService;
-        private ChatService _chatService;
-        private SInfoService _sinfoService;
-        private DailyInfoService _dailyInfoService;
-        private AllUsersDataService _allUsersDataService;
-        private readonly AppleGameDataService _appleGameService;
-        private readonly BotControlService _botControlService;
         private IEnvsSettings _envs;
 
         private DateTime _nextNotify = DateTime.MaxValue;
@@ -37,29 +30,14 @@ namespace TamagotchiBot.Services
         private TimeSpan _notifyDevEvery = TimeSpan.MaxValue;
         private TimeSpan _triggerNTEvery = TimeSpan.MaxValue;
         public NotifyTimerService(ITelegramBotClient telegramBotClient,
-                                  IEnvsSettings envs,
-                                  PetService petService,
-                                  UserService userService,
-                                  ChatService chatService,
-                                  SInfoService sinfoService,
-                                  AllUsersDataService allUsersDataService,
-                                  AppleGameDataService appleGameDataService,
-                                  BotControlService botControlService,
-                                  DailyInfoService dailyInfoService)
+                                  IApplicationServices applicationServices,
+                                  IEnvsSettings envs)
         {
-            _botClient = telegramBotClient;
-            _petService = petService;
-            _userService = userService;
-            _chatService = chatService;
-            _sinfoService = sinfoService;
-            _allUsersDataService = allUsersDataService;
-            _botControlService = botControlService;
-            this._appleGameService = appleGameDataService;
+            _appServices = applicationServices;
             _envs = envs;
 
-            _nextNotify = _sinfoService.GetNextNotify();
-            _nextDevNotify = _sinfoService.GetNextDevNotify();
-            _dailyInfoService = dailyInfoService;
+            _nextNotify = _appServices.SInfoService.GetNextNotify();
+            _nextDevNotify = _appServices.SInfoService.GetNextDevNotify();
         }
 
         public void SetNotifyTimer(TimeSpan timeToTrigger = default, TimeSpan timeToNotify = default, TimeSpan timeToDevNotify = default)
@@ -77,7 +55,7 @@ namespace TamagotchiBot.Services
         }
         public void SetChangelogsTimer()
         {
-            if (!_sinfoService.GetDoSendChangelogs())
+            if (!_appServices.SInfoService.GetDoSendChangelogs())
                 return;
 
             TimeSpan timeToWait = TimeSpan.FromSeconds(10);
@@ -112,7 +90,7 @@ namespace TamagotchiBot.Services
             Log.Information($"RandomEventNotification - {usersToNotify.Count} users");
             foreach (var userId in usersToNotify)
             {
-                var user = _userService.Get(userId);
+                var user = _appServices.UserService.Get(userId);
                 Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
 
                 if (user == null) continue;
@@ -123,19 +101,24 @@ namespace TamagotchiBot.Services
             if (usersToNotify.Count > 1)
                 Log.Information($"RandomEventNotification timer completed - {usersToNotify.Count} users");
         }
-        private async void OnDailyRewardTimedEvent(object sender, ElapsedEventArgs e)
+        private void OnDailyRewardTimedEvent(object sender, ElapsedEventArgs e)
         {
             var usersToNotify = UpdateAllDailyRewardUsersIds();
             Log.Information($"DailyRewardNotification timer - {usersToNotify.Count} users");
             foreach (var userId in usersToNotify)
             {
-                var user = _userService.Get(userId);
-                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
+                var user = _appServices.UserService.Get(userId);
 
                 try
                 {
-                    await _botClient.SendStickerAsync(userId, GetRandomDailyRewardSticker());
-                    await _botClient.SendTextMessageAsync(userId, Resources.Resources.rewardNotification);
+                    var toSend = new Answer()
+                    {
+                        Text = Resources.Resources.rewardNotification,
+                        StickerId = GetRandomDailyRewardSticker(),
+                        Culture = new CultureInfo(user.Culture),
+                    };
+
+                    _appServices.BotControlService.SendAnswerAsync(toSend, userId);
 
                     Log.Information($"Sent DailyRewardNotification to '@{user.Username}'");
                 }
@@ -146,10 +129,10 @@ namespace TamagotchiBot.Services
                         Log.Warning($"{ex.Message} @{user.Username}, id: {user.UserId}");
 
                         //remove all data about user
-                        _chatService.Remove(user.UserId);
-                        _petService.Remove(user.UserId);
-                        _userService.Remove(user.UserId);
-                        _appleGameService.Delete(user.UserId);
+                        _appServices.ChatService.Remove(user.UserId);
+                        _appServices.PetService.Remove(user.UserId);
+                        _appServices.UserService.Remove(user.UserId);
+                        _appServices.AppleGameDataService.Delete(user.UserId);
                     }
                 }
                 catch (Exception ex)
@@ -168,31 +151,31 @@ namespace TamagotchiBot.Services
                 if (!long.TryParse(userId, out long userIdDB))
                     continue;
 
-                if (_petService.Get(userIdDB) != null)
+                if (_appServices.PetService.Get(userIdDB) != null)
                     continue;
 
-                _chatService.Remove(userIdDB);
-                _petService.Remove(userIdDB);
-                _userService.Remove(userIdDB);
-                _appleGameService.Delete(userIdDB);
+                _appServices.ChatService.Remove(userIdDB);
+                _appServices.PetService.Remove(userIdDB);
+                _appServices.UserService.Remove(userIdDB);
+                _appServices.AppleGameDataService.Delete(userIdDB);
                 counter++;
             }
             Log.Warning($"DB: Removed {counter} users!");
 
-            foreach (var petDB in _petService.GetAll())
+            foreach (var petDB in _appServices.PetService.GetAll())
             {
-                var userDB = _userService.Get(petDB.UserId);
+                var userDB = _appServices.UserService.Get(petDB.UserId);
                 if (userDB == null)
                 {
-                    _petService.Remove(petDB.UserId);
+                    _appServices.PetService.Remove(petDB.UserId);
                     continue;
                 }
 
-                _petService.UpdateNextRandomEventNotificationTime(petDB.UserId, userDB.NextRandomEventNotificationTime);
-                _userService.UpdateNextRandomEventNotificationTime(petDB.UserId, default);
+                _appServices.PetService.UpdateNextRandomEventNotificationTime(petDB.UserId, userDB.NextRandomEventNotificationTime);
+                _appServices.UserService.UpdateNextRandomEventNotificationTime(petDB.UserId, default);
 
-                _userService.UpdateGold(petDB.UserId, petDB.Gold);
-                _petService.UpdateGold(petDB.UserId, -1);
+                _appServices.UserService.UpdateGold(petDB.UserId, petDB.Gold);
+                _appServices.PetService.UpdateGold(petDB.UserId, -1);
 
                 Log.Information($"Gold&DTReward updating is done for userID: {petDB.UserId}");
             }
@@ -202,19 +185,26 @@ namespace TamagotchiBot.Services
             //LittileThing();
             var usersToNotify = GetAllUsersIds();
             Log.Information($"Changelog timer - {usersToNotify.Count} users");
-            _sinfoService.DisableChangelogsSending();
+            _appServices.SInfoService.DisableChangelogsSending();
 
             int usersSuccess = 0;
             foreach (var userId in usersToNotify)
             {
-                var user = _userService.Get(long.Parse(userId));
+                var user = _appServices.UserService.Get(long.Parse(userId));
                 Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
 
                 try
                 {
-                    await _botClient.SendStickerAsync(userId, Constants.StickersId.ChangelogSticker);
-                    await _botClient.SendTextMessageAsync(userId, Resources.Resources.changelog1Text);
-                    await Task.Delay(500);
+                    var toSend = new Answer()
+                    {
+                        Text = Resources.Resources.changelog1Text,
+                        StickerId = Constants.StickersId.ChangelogSticker,
+                        Culture = new CultureInfo(user.Culture),
+                    };
+
+                    _appServices.BotControlService.SendAnswerAsync(toSend, user.UserId);
+
+                    await Task.Delay(100);
 
                     usersSuccess++;
                     Log.Information($"Sent changelog to '@{user?.Username ?? "DELETED"}'");
@@ -242,10 +232,10 @@ namespace TamagotchiBot.Services
                         if (user == null)
                             continue;
 
-                        _chatService.Remove(user.UserId);
-                        _petService.Remove(user.UserId);
-                        _userService.Remove(user.UserId);
-                        _appleGameService.Delete(user.UserId);
+                        _appServices.ChatService.Remove(user.UserId);
+                        _appServices.PetService.Remove(user.UserId);
+                        _appServices.UserService.Remove(user.UserId);
+                        _appServices.AppleGameDataService.Delete(user.UserId);
                     }
                 }
                 catch (Exception ex)
@@ -260,13 +250,13 @@ namespace TamagotchiBot.Services
         {
             _notifyTimer = new Timer(_triggerNTEvery);
 
-            DateTime nextDevNotifyDB = _sinfoService.GetNextDevNotify();
+            DateTime nextDevNotifyDB = _appServices.SInfoService.GetNextDevNotify();
             if (nextDevNotifyDB < DateTime.UtcNow)
             {
                 SendDevNotify();
 
                 _nextDevNotify = DateTime.UtcNow + _notifyDevEvery;
-                _sinfoService.UpdateNextDevNotify(_nextDevNotify);
+                _appServices.SInfoService.UpdateNextDevNotify(_nextDevNotify);
             }
         }
 
@@ -282,17 +272,20 @@ namespace TamagotchiBot.Services
 
             foreach (var chatId in chatsToNotify)
             {
+                if (!long.TryParse(chatId, out long parsedChatId))
+                    continue;
+
                 try
                 {
-                    await _botClient.SendTextMessageAsync(chatId, $"Tamagotchi is alive! {DateTime.UtcNow:g}UTC");
+                    _appServices.BotControlService.SendTextMessageAsync(parsedChatId, $"Tamagotchi is alive! {DateTime.UtcNow:g}UTC");
 
-                    var dailyInfoToday = _dailyInfoService.GetToday();
+                    var dailyInfoToday = _appServices.DailyInfoService.GetToday();
 
                     if (dailyInfoToday == null ||
                         (dailyInfoToday != null && (DateTime.UtcNow - dailyInfoToday.DateInfo) > _envs.DevExtraNotifyEvery))
                     {
                         Log.Information("Sent extra dev notify");
-                        await _botClient.SendTextMessageAsync(chatId, ToSendExtraDevNotify());
+                        _appServices.BotControlService.SendTextMessageAsync(parsedChatId, ToSendExtraDevNotify());
                     }
                 }
                 catch (ApiRequestException ex)
@@ -311,13 +304,13 @@ namespace TamagotchiBot.Services
         }
         private string ToSendExtraDevNotify()
         {
-            int playedUsersToday = _allUsersDataService.GetAll().Count(p => p.Updated.Date == DateTime.UtcNow.Date);
+            int playedUsersToday = _appServices.AllUsersDataService.GetAll().Count(p => p.Updated.Date == DateTime.UtcNow.Date);
 
-            var dailyInfoDB = _dailyInfoService.GetToday() ?? _dailyInfoService.CreateDefault();
-            long messagesSent = _allUsersDataService.GetAll().Select(u => u.MessageCounter).Sum();
-            long messagesSentToday = messagesSent - (_dailyInfoService.GetAll().Where(u => u.DateInfo.Date <= DateTime.UtcNow.AddDays(-1).Date).OrderByDescending(i => i.DateInfo).FirstOrDefault()?.MessagesSent ?? 0);
-            long callbacksSent = _allUsersDataService.GetAll().Select(u => u.CallbacksCounter).Sum();
-            long callbacksSentToday = callbacksSent - (_dailyInfoService.GetAll().Where(u => u.DateInfo.Date <= DateTime.UtcNow.AddDays(-1).Date).OrderByDescending(i => i.DateInfo).FirstOrDefault()?.CallbacksSent ?? 0);
+            var dailyInfoDB = _appServices.DailyInfoService.GetToday() ?? _appServices.DailyInfoService.CreateDefault();
+            long messagesSent = _appServices.AllUsersDataService.GetAll().Select(u => u.MessageCounter).Sum();
+            long messagesSentToday = messagesSent - (_appServices.DailyInfoService.GetAll().Where(u => u.DateInfo.Date <= DateTime.UtcNow.AddDays(-1).Date).OrderByDescending(i => i.DateInfo).FirstOrDefault()?.MessagesSent ?? 0);
+            long callbacksSent = _appServices.AllUsersDataService.GetAll().Select(u => u.CallbacksCounter).Sum();
+            long callbacksSentToday = callbacksSent - (_appServices.DailyInfoService.GetAll().Where(u => u.DateInfo.Date <= DateTime.UtcNow.AddDays(-1).Date).OrderByDescending(i => i.DateInfo).FirstOrDefault()?.CallbacksSent ?? 0);
 
             dailyInfoDB.UsersPlayed = playedUsersToday;
             dailyInfoDB.MessagesSent = messagesSent;
@@ -326,7 +319,7 @@ namespace TamagotchiBot.Services
             dailyInfoDB.TodayCallbacks = (int)callbacksSentToday;
             dailyInfoDB.TodayMessages = (int)messagesSentToday;
 
-            _dailyInfoService.UpdateOrCreate(dailyInfoDB);
+            _appServices.DailyInfoService.UpdateOrCreate(dailyInfoDB);
             string text = $"{dailyInfoDB.DateInfo:G}" + Environment.NewLine
                         + $"Played   users  : {playedUsersToday}" + Environment.NewLine
                         + $"Messages today: {messagesSentToday}" + Environment.NewLine
@@ -345,20 +338,20 @@ namespace TamagotchiBot.Services
         private List<long> UpdateAllRandomEventUsersIds()
         {
             List<long> usersToNotify = new();
-            var petsDB = _petService.GetAll().Where(p => p.Name != null);
+            var petsDB = _appServices.PetService.GetAll().Where(p => p.Name != null);
 
             foreach (var pet in petsDB)
             {
-                var user = _userService.Get(pet.UserId);
+                var user = _appServices.UserService.Get(pet.UserId);
 
                 if (pet.NextRandomEventNotificationTime < DateTime.UtcNow)
                 {
                     int minutesToAdd = new Random().Next(-15, 30);
 
                     //For TEST
-                    //_userService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddSeconds(5));
+                    //_appServices.UserService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddSeconds(5));
 
-                    _petService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddHours(2).AddMinutes(minutesToAdd));
+                    _appServices.PetService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddHours(2).AddMinutes(minutesToAdd));
                     usersToNotify.Add(user.UserId);
                 }
             }
@@ -372,15 +365,15 @@ namespace TamagotchiBot.Services
         private List<long> UpdateAllDailyRewardUsersIds()
         {
             List<long> usersToNotify = new();
-            var petsDB = _petService.GetAll().Where(p => p.Name != null);
+            var petsDB = _appServices.PetService.GetAll().Where(p => p.Name != null);
 
             foreach (var pet in petsDB)
             {
-                var user = _userService.Get(pet.UserId);
+                var user = _appServices.UserService.Get(pet.UserId);
 
                 if (user.NextDailyRewardNotificationTime < DateTime.UtcNow && user.GotDailyRewardTime.AddDays(1) < DateTime.UtcNow)
                 {
-                    _userService.UpdateNextDailyRewardNotificationTime(user.UserId, DateTime.UtcNow.AddDays(1));
+                    _appServices.UserService.UpdateNextDailyRewardNotificationTime(user.UserId, DateTime.UtcNow.AddDays(1));
                     usersToNotify.Add(user.UserId);
                 }
             }
@@ -390,7 +383,7 @@ namespace TamagotchiBot.Services
         private List<string> GetAllUsersIds()
         {
             List<string> usersToNotify = new();
-            var usersAUDS = _allUsersDataService.GetAll();
+            var usersAUDS = _appServices.AllUsersDataService.GetAll();
 
             foreach (var user in usersAUDS)
                 usersToNotify.Add(user.UserId.ToString());
@@ -441,61 +434,61 @@ namespace TamagotchiBot.Services
 
         private async void SendTextAndSticker(long chatId, string text, string sticker)
         {
-            _botControlService.SendStickerAsync(chatId, sticker, toLog: false);
+            _appServices.BotControlService.SendStickerAsync(chatId, sticker, toLog: false);
             await Task.Delay(50);
-            _botControlService.SendTextMessageAsync(chatId, text, toLog: false);
+            _appServices.BotControlService.SendTextMessageAsync(chatId, text, toLog: false);
         }
 
         #region RandomEvents
         private void RandomEventStomachache(Models.Mongo.User user)
         {
-            var petDB = _petService.Get(user.UserId);
+            var petDB = _appServices.PetService.Get(user.UserId);
             var newSatiety = petDB.Satiety - 15;
             var newHP = petDB.HP - 5;
 
-            _petService.UpdateSatiety(user.UserId, newSatiety);
-            _petService.UpdateHP(user.UserId, newHP);
+            _appServices.PetService.UpdateSatiety(user.UserId, newSatiety);
+            _appServices.PetService.UpdateHP(user.UserId, newHP);
 
-            _petService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
             SendTextAndSticker(user.UserId, Resources.Resources.RandomEventStomachache, Constants.StickersId.RandomEventStomachache);
         }
 
         private void RandomEventRaindow(Models.Mongo.User user)
         {
-            var petDB = _petService.Get(user.UserId);
+            var petDB = _appServices.PetService.Get(user.UserId);
             if (petDB == null) return;
             int newJoy = petDB.Joy + 10 ;
-            _petService.UpdateJoy(user.UserId, newJoy);
+            _appServices.PetService.UpdateJoy(user.UserId, newJoy);
 
-            _petService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
             SendTextAndSticker(user.UserId, Resources.Resources.RandomEventRainbow, Constants.StickersId.RandomEventRainbow);
         }
 
         private void RandomEventFriendMet(Models.Mongo.User user)
         {
-            var petDB = _petService.Get(user.UserId);
-            var userDB = _userService.Get(user.UserId);
+            var petDB = _appServices.PetService.Get(user.UserId);
+            var userDB = _appServices.UserService.Get(user.UserId);
             int newGold = userDB.Gold + 15 ;
             int newJoy = petDB.Joy + 40 ;
 
-            _userService.UpdateGold(user.UserId, newGold);
-            _petService.UpdateJoy(user.UserId, newJoy);
+            _appServices.UserService.UpdateGold(user.UserId, newGold);
+            _appServices.PetService.UpdateJoy(user.UserId, newJoy);
 
-            _petService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
             SendTextAndSticker(user.UserId, Resources.Resources.RandomEventFriendMet, Constants.StickersId.RandomEventFriendMet);
         }
 
         private void RandomEventHotdog(Models.Mongo.User user)
         {
-            var userDB = _userService.Get(user.UserId);
-            var petDB = _petService.Get(user.UserId);
+            var userDB = _appServices.UserService.Get(user.UserId);
+            var petDB = _appServices.PetService.Get(user.UserId);
             var newSatiety = petDB.Satiety + 40;
             int newGold = userDB.Gold + 20;
 
-            _petService.UpdateSatiety(user.UserId, newSatiety);
-            _userService.UpdateGold(user.UserId, newGold);
+            _appServices.PetService.UpdateSatiety(user.UserId, newSatiety);
+            _appServices.UserService.UpdateGold(user.UserId, newGold);
 
-            _petService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
             SendTextAndSticker(user.UserId, Resources.Resources.RandomEventHotdog, Constants.StickersId.RandomEventHotdog);
         }
 
@@ -511,20 +504,20 @@ namespace TamagotchiBot.Services
 
             string toSendText = notifyText.ElementAtOrDefault(rand) ?? Resources.Resources.ReminderNotifyText1;
 
-            _petService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
             SendTextAndSticker(user.UserId, toSendText, Constants.StickersId.PetBored_Cat);
         }
 
         private void RandomEventStepOnFoot(Models.Mongo.User user)
         {
-            var petDB = _petService.Get(user.UserId);
+            var petDB = _appServices.PetService.Get(user.UserId);
             var newSatiety = petDB.Satiety - 10;
             int newHP = petDB.HP - 1;
 
-            _petService.UpdateSatiety(user.UserId, newSatiety);
-            _petService.UpdateHP(user.UserId, newHP);
+            _appServices.PetService.UpdateSatiety(user.UserId, newSatiety);
+            _appServices.PetService.UpdateHP(user.UserId, newHP);
 
-            _petService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
             SendTextAndSticker(user.UserId, Resources.Resources.RandomEventStepOnFoot, Constants.StickersId.RandomEventStepOnFoot);
         }
 

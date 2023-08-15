@@ -145,7 +145,8 @@ namespace TamagotchiBot.Controllers
             var toSend =  new Answer()
             {
                 Text = Welcome,
-                StickerId = StickersId.WelcomeSticker
+                StickerId = StickersId.WelcomeSticker,
+                ReplyMarkup = new ReplyKeyboardRemove()
             };
             _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
         }
