@@ -67,10 +67,12 @@ namespace TamagotchiBot.Services
         }
         public void SetDailyRewardNotificationTimer()
         {
-            //TEST
-            //TimeSpan timeToWait = TimeSpan.FromSeconds(10);
-            
+#if DEBUG_NOTIFY
+            TimeSpan timeToWait = TimeSpan.FromSeconds(10);
+#else
+
             TimeSpan timeToWait = TimeSpan.FromSeconds(307);
+#endif
             Log.Information("DailyRewardNotification timer set to wait for " + timeToWait.TotalSeconds + "s");
             _dailyRewardTimer = new Timer(timeToWait);
             _dailyRewardTimer.Elapsed += OnDailyRewardTimedEvent;
@@ -79,10 +81,11 @@ namespace TamagotchiBot.Services
         }
         public void SetRandomEventNotificationTimer()
         {
-            //TEST
-            //TimeSpan timeToWait = TimeSpan.FromSeconds(7);
-
+#if DEBUG_NOTIFY
+            TimeSpan timeToWait = TimeSpan.FromSeconds(7);
+#else
             TimeSpan timeToWait = TimeSpan.FromSeconds(60);
+#endif
             Log.Information("RandomEventNotification timer set to wait for " + timeToWait.TotalSeconds + "s");
             _randomEventRewardTimer = new Timer(timeToWait);
             _randomEventRewardTimer.Elapsed += OnRandomEventTimedEvent;
@@ -355,10 +358,11 @@ namespace TamagotchiBot.Services
                 {
                     int minutesToAdd = new Random().Next(-15, 30);
 
-                    //For TEST
-                   // _appServices.PetService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddSeconds(1));
-
-                     _appServices.PetService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddHours(2).AddMinutes(minutesToAdd));
+#if DEBUG_NOTIFY
+                    _appServices.PetService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddSeconds(1));
+#else
+                    _appServices.PetService.UpdateNextRandomEventNotificationTime(user.UserId, DateTime.UtcNow.AddHours(2).AddMinutes(minutesToAdd));
+#endif
                     usersToNotify.Add(user.UserId);
                 }
             }
@@ -378,18 +382,20 @@ namespace TamagotchiBot.Services
             {
                 var user = _appServices.UserService.Get(pet.UserId);
 
-                //TEST
-                //  if (user.NextDailyRewardNotificationTime < DateTime.UtcNow && user.GotDailyRewardTime.AddSeconds(1) < DateTime.UtcNow)
-                // {
-                //    _appServices.UserService.UpdateNextDailyRewardNotificationTime(user.UserId, DateTime.UtcNow.AddSeconds(1));
-                //    usersToNotify.Add(user.UserId);
-                //}
+#if DEBUG_NOTIFY
+                if (user.NextDailyRewardNotificationTime < DateTime.UtcNow && user.GotDailyRewardTime.AddSeconds(1) < DateTime.UtcNow)
+                {
+                    _appServices.UserService.UpdateNextDailyRewardNotificationTime(user.UserId, DateTime.UtcNow.AddSeconds(1));
+                    usersToNotify.Add(user.UserId);
+                }
+#else
 
                 if (user.NextDailyRewardNotificationTime < DateTime.UtcNow && user.GotDailyRewardTime.AddDays(1) < DateTime.UtcNow)
                 {
                     _appServices.UserService.UpdateNextDailyRewardNotificationTime(user.UserId, DateTime.UtcNow.AddDays(1));
                     usersToNotify.Add(user.UserId);
                 }
+#endif
             }
             return usersToNotify;
         }
