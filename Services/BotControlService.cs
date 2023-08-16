@@ -271,6 +271,10 @@ namespace TamagotchiBot.Services
 
             if (toSend.ReplyMarkup == null && toSend.InlineKeyboardMarkup == null)
             {
+                Log.Warning($"Culture 274: {Resources.Resources.Culture}");
+                Log.Warning($"toSend  274: {toSend.Text}");
+                Log.Warning($"toSend.Cult: {toSend.Culture}");
+
                 SendTextMessageAsync(userId,
                                      toSend.Text);
             }

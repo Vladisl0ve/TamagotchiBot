@@ -90,15 +90,6 @@ namespace TamagotchiBot.Controllers
 
             textReceived = textReceived.ToLower();
 
-
-            /*            if (pet != null && IsPetGone())
-                        {
-                            DeleteDataOfUser();
-                            bot.SendChatActionAsync(user.UserId, Telegram.Bot.Types.Enums.ChatAction.Typing);
-                            return GetFarewellAnswer(pet.Name, user.FirstName ?? user.Username);
-                        }
-            */
-
             var petDB = _appServices.PetService.Get(_userId);
             var userDB = _appServices.UserService.Get(_userId);
 
@@ -142,6 +133,8 @@ namespace TamagotchiBot.Controllers
 #if DEBUG
             if (textReceived == "/restart")
                 return RestartPet(petDB);
+            if (textReceived == "/kill")
+                return TestKillPet(petDB);
 #endif
             return null;
         }
@@ -792,6 +785,18 @@ namespace TamagotchiBot.Controllers
                 StickerId = StickersId.RenamePetSticker
             };
 
+        }
+        private Answer TestKillPet(Pet petDB)
+        {
+            string toSendText = string.Format("HP is zero (0) for {0}", petDB.Name);
+
+            _appServices.PetService.UpdateHP(_userId, 0);
+
+            return new Answer()
+            {
+                Text = toSendText,
+                StickerId = StickersId.BannedSticker
+            };
         }
         private Answer RestartPet(Pet petDB)
         {
