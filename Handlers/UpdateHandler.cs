@@ -83,8 +83,8 @@ namespace TamagotchiBot.Handlers
 
             Task task = update.Type switch
             {
-                UpdateType.Message => BotOnMessageReceived(bot, update.Message),
-                UpdateType.CallbackQuery => BotOnCallbackQueryReceived(bot, update.CallbackQuery),
+                UpdateType.Message => OnMessagePrivate(bot, update.Message),
+                UpdateType.CallbackQuery => OnCallbackPrivate(bot, update.CallbackQuery),
                 _ => Task.CompletedTask
             };
 
@@ -93,9 +93,9 @@ namespace TamagotchiBot.Handlers
             sinfoService.UpdateLastGlobalUpdate();
             return task;
 
-            async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
+            async Task OnMessagePrivate(ITelegramBotClient botClient, Message message)
             {
-                Answer toSend = null;
+                AnswerMessage toSend = null;
 
                 if (!IsUserAndPetRegisteredChecking(userId))
                 {
@@ -152,10 +152,10 @@ namespace TamagotchiBot.Handlers
                     Log.Error(ex.Message + Environment.NewLine + ex.StackTrace);
                 }
 
-                _appServices.BotControlService.SendAnswerAsync(toSend, message.From.Id);
+                _appServices.BotControlService.SendAnswerMessageAsync(toSend, message.From.Id);
             }
 
-            async Task BotOnCallbackQueryReceived(ITelegramBotClient bot, CallbackQuery callbackQuery)
+            async Task OnCallbackPrivate(ITelegramBotClient bot, CallbackQuery callbackQuery)
             {
                 if (userService.Get(callbackQuery.From.Id) == null || petService.Get(callbackQuery.From.Id) == null)
                     return;
@@ -173,6 +173,16 @@ namespace TamagotchiBot.Handlers
                     if (petDB?.Fatigue >= 100)
                     {
                         string anwser = string.Format(Resources.Resources.tooTiredText);
+                        bcService.AnswerCallbackQueryAsync(callbackQuery.Id,
+                                                           callbackQuery.From.Id,
+                                                           anwser,
+                                                           true,
+                                                           cancellationToken: token);
+                        return;
+                    }
+                    if (petDB?.Joy >= 100)
+                    {
+                        string anwser = string.Format(Resources.Resources.PetIsFullOfJoyText);
                         bcService.AnswerCallbackQueryAsync(callbackQuery.Id,
                                                            callbackQuery.From.Id,
                                                            anwser,
@@ -213,9 +223,9 @@ namespace TamagotchiBot.Handlers
                         });
 
                     var gameController = new AppleGameController(_appServices, callbackQuery);
-                    Answer toSendAnswer = gameController.StartGame();
+                    AnswerMessage toSendAnswer = gameController.StartGame();
 
-                    _appServices.BotControlService.SendAnswerAsync(toSendAnswer, callbackQuery.From.Id);
+                    _appServices.BotControlService.SendAnswerMessageAsync(toSendAnswer, callbackQuery.From.Id);
                     return;
                 }
 
@@ -226,17 +236,7 @@ namespace TamagotchiBot.Handlers
                 await SendPostToChat(callbackQuery.From.Id);
 
                 var controller = new MenuController(_appServices, callbackQuery);
-                AnswerCallback toSend = controller.CallbackHandler();
-
-                if (toSend == null)
-                    return;
-
-                bcService.EditMessageTextAsync(callbackQuery.From.Id,
-                                               callbackQuery.Message.MessageId,
-                                               toSend.Text,
-                                               replyMarkup: toSend.InlineKeyboardMarkup,
-                                               cancellationToken: token,
-                                               parseMode: toSend.ParseMode);
+                controller.CallbackHandler();
             }
         }
 

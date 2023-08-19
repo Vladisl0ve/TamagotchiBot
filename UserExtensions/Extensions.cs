@@ -43,7 +43,7 @@ namespace TamagotchiBot.UserExtensions
             return new ReplyKeyboardMarkup(keyboard) { ResizeKeyboard = true, OneTimeKeyboard = isOneTimeKeyboard };
         }
 
-        public static InlineKeyboardMarkup InlineKeyboardOptimizer(List<CommandModel> names, int columnCounter = 2)
+        public static InlineKeyboardMarkup InlineKeyboardOptimizer(List<CallbackModel> names, int columnCounter = 2)
         {
             int x = columnCounter < 2 ? 2 : columnCounter;
             int y = (int)Math.Ceiling((double)(names.Count) / x);

@@ -121,14 +121,14 @@ namespace TamagotchiBot.Services
 
                 try
                 {
-                    var toSend = new Answer()
+                    var toSend = new AnswerMessage()
                     {
                         Text = Resources.Resources.rewardNotification,
                         StickerId = GetRandomDailyRewardSticker(),
                         Culture = new CultureInfo(user.Culture),
                     };
 
-                    _appServices.BotControlService.SendAnswerAsync(toSend, userId);
+                    _appServices.BotControlService.SendAnswerMessageAsync(toSend, userId);
 
                     Log.Information($"Sent DailyRewardNotification to '@{user.Username}'");
                 }
@@ -205,14 +205,14 @@ namespace TamagotchiBot.Services
 
                 try
                 {
-                    var toSend = new Answer()
+                    var toSend = new AnswerMessage()
                     {
                         Text = Resources.Resources.changelog1Text,
                         StickerId = Constants.StickersId.ChangelogSticker,
                         Culture = new CultureInfo(user.Culture),
                     };
 
-                    _appServices.BotControlService.SendAnswerAsync(toSend, user.UserId);
+                    _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId);
 
                     await Task.Delay(100);
 
@@ -464,13 +464,13 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
-            var toSend = new Answer()
+            var toSend = new AnswerMessage()
             {
                 Culture = new CultureInfo(user.Culture),
                 StickerId = Constants.StickersId.RandomEventStomachache,
                 Text = Resources.Resources.RandomEventStomachache
             };
-            _appServices.BotControlService.SendAnswerAsync(toSend, user.UserId);
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
         private void RandomEventRaindow(Models.Mongo.User user)
@@ -482,13 +482,13 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
-            var toSend = new Answer()
+            var toSend = new AnswerMessage()
             {
                 Culture = new CultureInfo(user.Culture),
                 StickerId = Constants.StickersId.RandomEventRainbow,
                 Text = Resources.Resources.RandomEventRainbow
             };
-            _appServices.BotControlService.SendAnswerAsync(toSend, user.UserId);
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
         private void RandomEventFriendMet(Models.Mongo.User user)
@@ -503,13 +503,13 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
-            var toSend = new Answer()
+            var toSend = new AnswerMessage()
             {
                 Culture = new CultureInfo(user.Culture),
                 StickerId = Constants.StickersId.RandomEventFriendMet,
                 Text = Resources.Resources.RandomEventFriendMet
             };
-            _appServices.BotControlService.SendAnswerAsync(toSend, user.UserId);
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
         private void RandomEventHotdog(Models.Mongo.User user)
@@ -524,13 +524,13 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
-            var toSend = new Answer()
+            var toSend = new AnswerMessage()
             {
                 Culture = new CultureInfo(user.Culture),
                 StickerId = Constants.StickersId.RandomEventHotdog,
                 Text = Resources.Resources.RandomEventHotdog
             };
-            _appServices.BotControlService.SendAnswerAsync(toSend, user.UserId);
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
         private void RandomEventNotify(Models.Mongo.User user)
@@ -547,13 +547,13 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
-            var toSend = new Answer()
+            var toSend = new AnswerMessage()
             {
                 Culture = new CultureInfo(user.Culture),
                 StickerId = Constants.StickersId.PetBored_Cat,
                 Text = toSendText
             };
-            _appServices.BotControlService.SendAnswerAsync(toSend, user.UserId);
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
         private void RandomEventStepOnFoot(Models.Mongo.User user)
@@ -567,13 +567,13 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
-            var toSend = new Answer()
+            var toSend = new AnswerMessage()
             {
                 Culture = new CultureInfo(user.Culture),
                 StickerId = Constants.StickersId.RandomEventStepOnFoot,
                 Text = Resources.Resources.RandomEventStepOnFoot
             };
-            _appServices.BotControlService.SendAnswerAsync(toSend, user.UserId);
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
         #endregion

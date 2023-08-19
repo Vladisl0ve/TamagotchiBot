@@ -43,12 +43,12 @@ namespace TamagotchiBot.Controllers
         }
         public void AskALanguage()
         {
-            var toSend = new Answer(ChangeLanguage,
+            var toSend = new AnswerMessage(ChangeLanguage,
                                     StickersId.ChangeLanguageSticker,
                                     LanguagesMarkup,
                                     null);
 
-            _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
             _appServices.UserService.UpdateIsLanguageAskedOnCreate(_userId, true);
         }
 
@@ -78,7 +78,7 @@ namespace TamagotchiBot.Controllers
 
             _appServices.UserService.UpdateIsPetNameAskedOnCreate(_userId, false);
 
-            var toSend = new Answer()
+            var toSend = new AnswerMessage()
             {
                 Text = ConfirmedName,
                 StickerId = StickersId.PetConfirmedName_Cat,
@@ -86,7 +86,7 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup = null
             };
 
-            _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
             return true;
         }
         internal bool ApplyNewLanguage(bool isLanguageChanged = false)
@@ -100,7 +100,7 @@ namespace TamagotchiBot.Controllers
             var newLanguage = flagFromMsg?.GetCulture();
             if (string.IsNullOrEmpty(newLanguage))
             {
-                var toSendLanguagesAgain = new Answer()
+                var toSendLanguagesAgain = new AnswerMessage()
                 {
                     Text = ChangeLanguage,
                     StickerId = StickersId.ChangeLanguageSticker,
@@ -108,7 +108,7 @@ namespace TamagotchiBot.Controllers
                     InlineKeyboardMarkup = null
                 };
 
-                _appServices.BotControlService.SendAnswerAsync(toSendLanguagesAgain, _userId);
+                _appServices.BotControlService.SendAnswerMessageAsync(toSendLanguagesAgain, _userId);
                 return false;
             }
 
@@ -129,35 +129,35 @@ namespace TamagotchiBot.Controllers
                 Language.Russian => StickersId.RussianLanguageSetSticker,
                 _ => null,
             };
-            var toSend = new Answer()
+            var toSend = new AnswerMessage()
             {
                 Text = ConfirmedLanguage,
                 StickerId = stickerToSend,
                 ReplyMarkup = new ReplyKeyboardRemove()
             };
 
-            _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
 
             return true;
         }
         internal void SendWelcomeText()
         {
-            var toSend =  new Answer()
+            var toSend =  new AnswerMessage()
             {
                 Text = Welcome,
                 StickerId = StickersId.WelcomeSticker,
                 ReplyMarkup = new ReplyKeyboardRemove()
             };
-            _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
         internal void AskForAPetName()
         {
-            var toSend =  new Answer()
+            var toSend =  new AnswerMessage()
             {
                 Text = ChooseName,
                 StickerId = StickersId.PetChooseName_Cat
             };
-            _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
 
             _appServices.UserService.UpdateIsPetNameAskedOnCreate(_userId, true);
         }
@@ -223,7 +223,7 @@ namespace TamagotchiBot.Controllers
 
             string textToSend = string.Format(FarewellText, petResult.Name, userDB.Username);
 
-            var toSend = new Answer()
+            var toSend = new AnswerMessage()
             {
                 Text = textToSend,
                 StickerId = StickersId.PetGone_Cat,
@@ -231,7 +231,7 @@ namespace TamagotchiBot.Controllers
             };
 
             _appServices.PetService.Update(_userId, petResult);
-            _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
             _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
 
             await Task.Delay(2500);
@@ -255,13 +255,13 @@ namespace TamagotchiBot.Controllers
                 }
                 else //not enough gold to buy back
                 {
-                    var toSend = new Answer()
+                    var toSend = new AnswerMessage()
                     {
                         Text = NotEnoughGoldToResurrect,
                         Culture = Culture
                     };
 
-                    _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+                    _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
                     await Task.Delay(1000);
                     answerFromUser = false;
                 }
@@ -269,13 +269,13 @@ namespace TamagotchiBot.Controllers
 
             if (answerFromUser == false)
             {
-                var toSend = new Answer()
+                var toSend = new AnswerMessage()
                 {
                     Text = EpilogueText,
                     StickerId = StickersId.PetEpilogue_Cat,
                     Culture = Culture
                 };
-                _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+                _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
                 await Task.Delay(2500);
                 KillThePet();
                 return;
@@ -327,14 +327,14 @@ namespace TamagotchiBot.Controllers
             _appServices.PetService.Update(_userId, petDB);
             _appServices.UserService.Update(_userId, userDB);
 
-            var toSend = new Answer()
+            var toSend = new AnswerMessage()
             {
                 Text = PetCameBackText,
                 StickerId = StickersId.ResurrectedPetSticker,
                 Culture = Culture
             };
 
-            _appServices.BotControlService.SendAnswerAsync(toSend, _userId);
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
         private void UpdateOrCreateAUD(Telegram.Bot.Types.User user, Message message = null, CallbackQuery callback = null)
         {
@@ -378,7 +378,7 @@ namespace TamagotchiBot.Controllers
         }
         private void AskForResurrect()
         {
-            var toResurrect = new Answer()
+            var toResurrect = new AnswerMessage()
             {
                 Text = ToResurrectQuestion,
                 ReplyMarkup = new ReplyKeyboardMarkup(new List<KeyboardButton>()
@@ -391,7 +391,7 @@ namespace TamagotchiBot.Controllers
                 },
                 Culture = Culture,
             };
-            _appServices.BotControlService.SendAnswerAsync(toResurrect, _userId);
+            _appServices.BotControlService.SendAnswerMessageAsync(toResurrect, _userId);
         }
 
         #region Indicator Updaters

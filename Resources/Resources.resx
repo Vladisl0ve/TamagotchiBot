@@ -254,7 +254,7 @@ Do not play so much and safety first! 🧗‍♀️</value>
     <value>Gameroom ⚽️</value>
   </data>
   <data name="PetPlayingAnwserCallback" xml:space="preserve">
-    <value>Your pet's fatigue increased in {0}%</value>
+    <value>Joy increased by {0}% 🎊</value>
   </data>
   <data name="denyAccessSleeping" xml:space="preserve">
     <value>You can not come in: pet is sleeping 🌙</value>
@@ -595,5 +595,11 @@ You both reconciled 💕
   </data>
   <data name="NotEnoughGoldToResurrect" xml:space="preserve">
     <value>Unfortunately, you don't have enough money ☠️</value>
+  </data>
+  <data name="PetIsCleanEnoughAlert" xml:space="preserve">
+    <value>The pet is clean enough 💦</value>
+  </data>
+  <data name="PetIsFullOfJoyText" xml:space="preserve">
+    <value>The pet has already played enough ⛹️‍♀️</value>
   </data>
 </root>

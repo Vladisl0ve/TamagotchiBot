@@ -79,6 +79,7 @@ namespace TamagotchiBot.Services
 
         public async void SendStickerAsync(long userId,
                                            string stickerId,
+                                           bool toRemoveKeyboard = false,
                                            CancellationToken cancellationToken = default,
                                            bool toLog = true)
         {
@@ -90,9 +91,17 @@ namespace TamagotchiBot.Services
                     Log.Information("Sticker sent for @" + user?.Username ?? userId.ToString());
 
                 Log.Verbose("Sticker sent for @" + user?.Username ?? userId.ToString());
-                await _botClient.SendStickerAsync(userId,
-                                     stickerId,
-                                     cancellationToken: cancellationToken);
+                if (toRemoveKeyboard)
+                {
+                    await _botClient.SendStickerAsync(userId,
+                     stickerId,
+                     replyMarkup: new ReplyKeyboardRemove(),
+                     cancellationToken: cancellationToken);
+                }
+                else
+                    await _botClient.SendStickerAsync(userId,
+                                         stickerId,
+                                         cancellationToken: cancellationToken);
             }
             catch (ApiRequestException ex)
             {
@@ -168,6 +177,12 @@ namespace TamagotchiBot.Services
             if (userDB == null)
                 Log.Warning("There is no user with id:" + userId);
 
+            if (string.IsNullOrEmpty(callbackQueryId))
+            {
+                Log.Error($"No callbackQueryId for answer. UserId: {userId}");
+                return;
+            }
+
             try
             {
                 Log.Information($"Answered callback for @{userDB?.Username ?? userId.ToString()}");
@@ -231,29 +246,29 @@ namespace TamagotchiBot.Services
             }
         }
 
-        public async void SendAnswerAsync(Answer toSend, long userId)
+        public async void SendAnswerMessageAsync(AnswerMessage toSend, long userId, bool toLog = true)
         {
-
             if (toSend == null)
             {
                 Log.Warning($"Nothing to send (null), userID: {userId}");
                 return;
             }
 
-            Resources.Resources.Culture = toSend.Culture;
             if (toSend.StickerId != null)
             {
                 SendStickerAsync(userId,
-                                 toSend.StickerId);
+                                 toSend.StickerId,
+                                 toSend.ReplyMarkup?.GetType() == typeof(ReplyKeyboardRemove),
+                                 toLog: toLog);
                 await Task.Delay(50);
-                Resources.Resources.Culture = toSend.Culture;
             }
 
-            if (toSend.ReplyMarkup != null)
+            if (toSend.ReplyMarkup != null && toSend.ReplyMarkup?.GetType() != typeof(ReplyKeyboardRemove))
             {
                 SendTextMessageAsync(userId,
                                      toSend.Text,
-                                     replyMarkup: toSend.ReplyMarkup);
+                                     replyMarkup: toSend.ReplyMarkup,
+                                     toLog: toLog);
 
                 return;
             }
@@ -263,17 +278,19 @@ namespace TamagotchiBot.Services
                 SendTextMessageAsync(userId,
                      toSend.Text,
                      replyMarkup: toSend.InlineKeyboardMarkup,
-                     parseMode: toSend.ParseMode);
-
+                     parseMode: toSend.ParseMode,
+                     toLog: toLog);
                 return;
             }
-
 
             if (toSend.ReplyMarkup == null && toSend.InlineKeyboardMarkup == null)
             {
                 SendTextMessageAsync(userId,
-                                     toSend.Text);
+                                     toSend.Text,
+                                     toLog: toLog);
             }
         }
+        public void SendAnswerCallback(long userId, int messageToAnswerId, AnswerCallback toSend)
+            => EditMessageTextAsync(userId, messageToAnswerId, toSend.Text, toSend.InlineKeyboardMarkup, parseMode: toSend.ParseMode);
     }
 }

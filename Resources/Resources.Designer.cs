@@ -677,7 +677,25 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your pet&apos;s fatigue increased in {0}%.
+        ///   Looks up a localized string similar to The pet is clean enough 💦.
+        /// </summary>
+        public static string PetIsCleanEnoughAlert {
+            get {
+                return ResourceManager.GetString("PetIsCleanEnoughAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The pet has already played enough ⛹️‍♀️.
+        /// </summary>
+        public static string PetIsFullOfJoyText {
+            get {
+                return ResourceManager.GetString("PetIsFullOfJoyText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Joy increased by {0}% 🎊.
         /// </summary>
         public static string PetPlayingAnwserCallback {
             get {

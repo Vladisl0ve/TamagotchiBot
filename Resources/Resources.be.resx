@@ -254,9 +254,6 @@
   <data name="gameroomCommandDescription" xml:space="preserve">
     <value>Дзіцячая ⚽️</value>
   </data>
-  <data name="PetPlayingAnwserCallback" xml:space="preserve">
-    <value>Стомленасць вашага гадаванца павялічылася на {0}%</value>
-  </data>
   <data name="denyAccessSleeping" xml:space="preserve">
     <value>Ты не можаш зайсці да пакою: твой гадаванец спіць 🌙</value>
   </data>
@@ -600,5 +597,14 @@
   </data>
   <data name="NotEnoughGoldToResurrect" xml:space="preserve">
     <value>На жаль, у цябе занадта мала грошай ☠️</value>
+  </data>
+  <data name="PetIsCleanEnoughAlert" xml:space="preserve">
+    <value>Гадаванец дастаткова чысты 💦</value>
+  </data>
+  <data name="PetIsFullOfJoyText" xml:space="preserve">
+    <value>Гадаванец ужо найграўся ⛹️‍♀️</value>
+  </data>
+  <data name="PetPlayingAnwserCallback" xml:space="preserve">
+    <value>Радасць павялічылася на {0}% 🎊</value>
   </data>
 </root>

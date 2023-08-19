@@ -118,7 +118,7 @@ namespace TamagotchiBot.Controllers
             return new ReplyKeyboardMarkup(keyboard) { ResizeKeyboard = true, OneTimeKeyboard = true };
         }
 
-        public Answer StartGame()
+        public AnswerMessage StartGame()
         {
             var appleDataToUpdate = _appleGameDataService.Get(UserId);
             appleDataToUpdate.CurrentAppleCounter =
@@ -127,14 +127,14 @@ namespace TamagotchiBot.Controllers
 
             string text = $"{appleGameHelpText}\n\n{string.Format(remainingApplesText, AppleCounter)}\n{ApplesIcons}";
             var keyboard = KeyboardOptimizer(ApplesToChoose);
-            return new Answer()
+            return new AnswerMessage()
             {
                 Text = text,
                 ReplyMarkup = keyboard
             };
         }
 
-        public Answer Menu()
+        public AnswerMessage Menu()
         {
             var appleDataToUpdate = _appleGameDataService.Get(UserId);
             var petDB = _petService.Get(UserId);
@@ -144,7 +144,7 @@ namespace TamagotchiBot.Controllers
             {
                 var toSendText = string.Format(appleGameStatisticsCommand, appleDataToUpdate.TotalWins, appleDataToUpdate.TotalLoses, appleDataToUpdate.TotalDraws);
 
-                return new Answer()
+                return new AnswerMessage()
                 {
                     Text = toSendText,
                     ReplyMarkup = KeyboardOptimizer(MenuCommands)
@@ -159,7 +159,7 @@ namespace TamagotchiBot.Controllers
 
                 string toSendText = $"{appleGameHelpText}";
 
-                return new Answer()
+                return new AnswerMessage()
                 {
                     Text = toSendText,
                     ReplyMarkup = KeyboardOptimizer(MenuCommands)
@@ -183,10 +183,10 @@ namespace TamagotchiBot.Controllers
                                                   Factors.DiceGameJoyFactor,
                                                   Costs.DiceGame);
 
-                List<CommandModel> inlineParts = new InlineItems().InlineGames;
+                List<CallbackModel> inlineParts = new InlineItems().InlineGames;
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
-                return new Answer()
+                return new AnswerMessage()
                 {
                     Text = toSendText,
                     StickerId = StickersId.PetGameroom_Cat,
@@ -201,12 +201,12 @@ namespace TamagotchiBot.Controllers
             }
 
             if (message.Text != "🍎" && message.Text != "🍎🍎" && message.Text != "🍎🍎🍎")
-                return new Answer() { Text = appleGameUndefiendText, ReplyMarkup = KeyboardOptimizer(ApplesToChoose) };
+                return new AnswerMessage() { Text = appleGameUndefiendText, ReplyMarkup = KeyboardOptimizer(ApplesToChoose) };
 
             return MakeMove(message);
         }
 
-        public Answer MakeMove(Message message)
+        public AnswerMessage MakeMove(Message message)
         {
             var appleDataToUpdate = _appleGameDataService.Get(UserId);
             var petDB = _petService.Get(UserId);
@@ -303,7 +303,7 @@ namespace TamagotchiBot.Controllers
 
             _appleGameDataService.Update(appleDataToUpdate);
             _petService.Update(UserId, petDB);
-            return new Answer()
+            return new AnswerMessage()
             {
                 Text = textToSay,
                 ReplyMarkup = KeyboardOptimizer(ApplesToChoose)

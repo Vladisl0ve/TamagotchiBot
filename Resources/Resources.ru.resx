@@ -255,7 +255,7 @@
     <value>Детская ⚽️</value>
   </data>
   <data name="PetPlayingAnwserCallback" xml:space="preserve">
-    <value>Питомец устал на +{0}%</value>
+    <value>Радость увеличилась на {0}% 🎊</value>
   </data>
   <data name="denyAccessSleeping" xml:space="preserve">
     <value>Нельзя войти в комнату: питомец спит 🌙</value>
@@ -601,5 +601,11 @@
   </data>
   <data name="NotEnoughGoldToResurrect" xml:space="preserve">
     <value>К сожалению у тебя слишком мало денег ☠️</value>
+  </data>
+  <data name="PetIsCleanEnoughAlert" xml:space="preserve">
+    <value>Питомец достаточно чистый 💦</value>
+  </data>
+  <data name="PetIsFullOfJoyText" xml:space="preserve">
+    <value>Питомец уже наигрался ⛹️‍♀️</value>
   </data>
 </root>
