@@ -1,15 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using TamagotchiBot.Models.Mongo;
+﻿using System.Globalization;
 using TamagotchiBot.Services.Interfaces;
-using TamagotchiBot.Services.Mongo;
-using TamagotchiBot.UserExtensions;
 using Telegram.Bot.Types;
 using Extensions = TamagotchiBot.UserExtensions.Extensions;
 
@@ -39,7 +29,7 @@ namespace TamagotchiBot.Controllers
             var petDB = _appServices.PetService.Get(_userId);
 
 
-            Resources.Resources.Culture = new CultureInfo(userDB.Culture ?? "ru");
+            Resources.Resources.Culture = new CultureInfo(userDB?.Culture ?? "ru");
             if (petDB is not null && !userDB.IsInAppleGame)
             {
                 _appServices.BotControlService.SetMyCommandsAsync(_userId,

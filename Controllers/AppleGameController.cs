@@ -4,7 +4,6 @@ using System.Globalization;
 using TamagotchiBot.Models;
 using TamagotchiBot.Models.Answers;
 using TamagotchiBot.UserExtensions;
-using TamagotchiBot.Services;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.Resources.Resources;
@@ -18,10 +17,8 @@ namespace TamagotchiBot.Controllers
     {
         private readonly UserService _userService;
         private readonly PetService _petService;
-        private readonly ChatService _chatService;
         private readonly AppleGameDataService _appleGameDataService;
         private readonly AllUsersDataService _allUsersService;
-        private readonly BotControlService _bcService;
 
         private readonly Message message;
         private readonly CallbackQuery callback;
@@ -38,10 +35,8 @@ namespace TamagotchiBot.Controllers
 
             _userService = services.UserService;
             _petService = services.PetService;
-            _chatService = services.ChatService;
             _appleGameDataService = services.AppleGameDataService;
             _allUsersService = services.AllUsersDataService;
-            _bcService = services.BotControlService;
 
             Culture = new CultureInfo(_userService.Get(UserId)?.Culture ?? "ru");
             AppleCounter = _appleGameDataService.Get(UserId)?.CurrentAppleCounter ?? 1;
@@ -144,14 +139,11 @@ namespace TamagotchiBot.Controllers
             var appleDataToUpdate = _appleGameDataService.Get(UserId);
             var petDB = _petService.Get(UserId);
             var userDB = _userService.Get(UserId);
-            var chatDB = _chatService.Get(UserId);
 
             if (message.Text == statisticsText && appleDataToUpdate.IsGameOvered)
             {
                 var toSendText = string.Format(appleGameStatisticsCommand, appleDataToUpdate.TotalWins, appleDataToUpdate.TotalLoses, appleDataToUpdate.TotalDraws);
 
-                chatDB.LastMessage = "/statsApple";
-                _chatService.Update(chatDB.ChatId, chatDB);
                 return new Answer()
                 {
                     Text = toSendText,
@@ -194,8 +186,6 @@ namespace TamagotchiBot.Controllers
                 List<CommandModel> inlineParts = new InlineItems().InlineGames;
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
-                chatDB.LastMessage = "/quitApple";
-                _chatService.Update(chatDB.ChatId, chatDB);
                 return new Answer()
                 {
                     Text = toSendText,

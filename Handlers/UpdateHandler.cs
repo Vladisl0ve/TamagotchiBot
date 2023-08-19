@@ -16,9 +16,7 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 using Newtonsoft.Json;
-using System.Globalization;
 using TamagotchiBot.Services.Interfaces;
 
 namespace TamagotchiBot.Handlers
@@ -82,7 +80,6 @@ namespace TamagotchiBot.Handlers
             var messageFromUser = update.Message;
             var callbackFromUser = update.CallbackQuery;
             var userId = messageFromUser?.From.Id ?? callbackFromUser?.From.Id ?? default;
-            CultureInfo culture = CultureInfo.GetCultureInfo(userService.Get(userId)?.Culture ?? "ru");
 
             Task task = update.Type switch
             {
@@ -156,15 +153,6 @@ namespace TamagotchiBot.Handlers
                 }
 
                 _appServices.BotControlService.SendAnswerAsync(toSend, message.From.Id);
-
-                //if new player starts the game
-                if (petService.Get(message.From.Id) == null
-                    && (chatService.Get(message.Chat.Id)?.LastMessage == null)
-                    && toSend.StickerId != null
-                    && toSend.StickerId != Constants.StickersId.ChangeLanguageSticker
-                    && toSend.StickerId != Constants.StickersId.PetGone_Cat
-                    && toSend.StickerId != Constants.StickersId.HelpCommandSticker)
-                    await BotOnMessageReceived(botClient, message);
             }
 
             async Task BotOnCallbackQueryReceived(ITelegramBotClient bot, CallbackQuery callbackQuery)
