@@ -22,6 +22,7 @@ namespace TamagotchiBot.Controllers
         private readonly Message _message = null;
         private readonly CallbackQuery _callback = null;
         private readonly long _userId;
+        private readonly CultureInfo _userCulture;
 
         public CreatorController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
         {
@@ -31,7 +32,7 @@ namespace TamagotchiBot.Controllers
 
             _appServices = services;
 
-            Culture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
+            Culture = _userCulture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
             UpdateOrCreateAUD(message?.From ?? callback.From, message, callback);
         }
         public void CreateUser()
@@ -214,20 +215,19 @@ namespace TamagotchiBot.Controllers
         {
             var petDB = _appServices.PetService.Get(_userId);
             var userDB = _appServices.UserService.Get(_userId);
-            Culture = new CultureInfo(userDB.Culture);
             if (petDB == null)
                 return;
 
             var petResult = new Pet().Clone(petDB);
             petResult.IsGone = true;
 
+            Culture = new CultureInfo(userDB.Culture);
             string textToSend = string.Format(FarewellText, petResult.Name, userDB.Username);
 
             var toSend = new AnswerMessage()
             {
                 Text = textToSend,
                 StickerId = StickersId.PetGone_Cat,
-                Culture = Culture,
             };
 
             _appServices.PetService.Update(_userId, petResult);
@@ -255,10 +255,10 @@ namespace TamagotchiBot.Controllers
                 }
                 else //not enough gold to buy back
                 {
+                    Culture = _userCulture;
                     var toSend = new AnswerMessage()
                     {
-                        Text = NotEnoughGoldToResurrect,
-                        Culture = Culture
+                        Text = NotEnoughGoldToResurrect
                     };
 
                     _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
@@ -269,11 +269,11 @@ namespace TamagotchiBot.Controllers
 
             if (answerFromUser == false)
             {
+                Culture = _userCulture;
                 var toSend = new AnswerMessage()
                 {
                     Text = EpilogueText,
-                    StickerId = StickersId.PetEpilogue_Cat,
-                    Culture = Culture
+                    StickerId = StickersId.PetEpilogue_Cat
                 };
                 _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
                 await Task.Delay(2500);
@@ -327,11 +327,11 @@ namespace TamagotchiBot.Controllers
             _appServices.PetService.Update(_userId, petDB);
             _appServices.UserService.Update(_userId, userDB);
 
+            Culture = _userCulture;
             var toSend = new AnswerMessage()
             {
                 Text = PetCameBackText,
-                StickerId = StickersId.ResurrectedPetSticker,
-                Culture = Culture
+                StickerId = StickersId.ResurrectedPetSticker
             };
 
             _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
@@ -378,6 +378,7 @@ namespace TamagotchiBot.Controllers
         }
         private void AskForResurrect()
         {
+            Culture = _userCulture;
             var toResurrect = new AnswerMessage()
             {
                 Text = ToResurrectQuestion,
@@ -388,8 +389,7 @@ namespace TamagotchiBot.Controllers
                 })
                 {
                     OneTimeKeyboard = true
-                },
-                Culture = Culture,
+                }
             };
             _appServices.BotControlService.SendAnswerMessageAsync(toResurrect, _userId);
         }

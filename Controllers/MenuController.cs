@@ -148,67 +148,67 @@ namespace TamagotchiBot.Controllers
             if (userDb == null || petDb == null)
                 return;
 
-            if (_callback.Data == CallbackButtons.PetCommand.PetCommandInlineBasicInfo.CallbackData)
+            if (_callback.Data == new CallbackButtons.PetCommand().PetCommandInlineBasicInfo.CallbackData)
             {
                 ShowBasicInfoInline(petDb);
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.PetCommand.PetCommandInlineExtraInfo.CallbackData)
+            if (_callback.Data == new CallbackButtons.PetCommand().PetCommandInlineExtraInfo.CallbackData)
             {
                 ShowExtraInfoInline(petDb);
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.KitchenCommand.KitchenCommandInlineBread.CallbackData)
+            if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineBread.CallbackData)
             {
                 FeedWithBreadInline(petDb);
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.KitchenCommand.KitchenCommandInlineRedApple.CallbackData)
+            if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineRedApple.CallbackData)
             {
                 FeedWithAppleInline(petDb);
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.KitchenCommand.KitchenCommandInlineChocolate.CallbackData)
+            if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineChocolate.CallbackData)
             {
                 FeedWithChocolateInline(petDb);
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.KitchenCommand.KitchenCommandInlineLollipop.CallbackData)
+            if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineLollipop.CallbackData)
             {
                 FeedWithLollipopInline(petDb);
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.SleepCommand.SleepCommandInlinePutToSleep(default).CallbackData)
+            if (_callback.Data == new CallbackButtons.SleepCommand().SleepCommandInlinePutToSleep(default).CallbackData)
             {
                 PutToSleepInline(petDb);
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineWorkOnPC.CallbackData)
+            if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineWorkOnPC.CallbackData)
             {
                 WorkOnPCInline(petDb);
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineShowTime(default).CallbackData)
+            if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(default).CallbackData)
             {
                 WorkOnPCInline(petDb);
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.RewardsCommand.RewardCommandInlineDailyReward.CallbackData)
+            if (_callback.Data == new CallbackButtons.RewardsCommand().RewardCommandInlineDailyReward.CallbackData)
             {
                 GetDailyRewardInline(userDb);
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.RewardsCommand.RewardCommandDailyRewardInlineShowTime(default).CallbackData)
+            if (_callback.Data == new CallbackButtons.RewardsCommand().RewardCommandDailyRewardInlineShowTime(default).CallbackData)
             {
                 GetDailyRewardInline(userDb);
                 return;
@@ -220,43 +220,43 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.GameroomCommand.GameroomCommandInlineDice.CallbackData)
+            if (_callback.Data == new CallbackButtons.GameroomCommand().GameroomCommandInlineDice.CallbackData)
             {
                 PlayDiceInline(petDb);
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.HospitalCommand.HospitalCommandCurePills.CallbackData)
+            if (_callback.Data == new CallbackButtons.HospitalCommand().HospitalCommandCurePills.CallbackData)
             {
                 CureWithPill(petDb);
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.BathroomCommand.BathroomCommandBrushTeeth.CallbackData)
+            if (_callback.Data == new CallbackButtons.BathroomCommand().BathroomCommandBrushTeeth.CallbackData)
             {
                 TeethInline(petDb);
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.BathroomCommand.BathroomCommandTakeShower.CallbackData)
+            if (_callback.Data == new CallbackButtons.BathroomCommand().BathroomCommandTakeShower.CallbackData)
             {
                 TakeShowerInline(petDb);
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.RanksCommand.RanksCommandInlineGold.CallbackData)
+            if (_callback.Data == new CallbackButtons.RanksCommand().RanksCommandInlineGold.CallbackData)
             {
                 ShowRanksGold();
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.RanksCommand.RanksCommandInlineLevel.CallbackData)
+            if (_callback.Data == new CallbackButtons.RanksCommand().RanksCommandInlineLevel.CallbackData)
             {
                 ShowRanksLevel();
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.RanksCommand.RanksCommandInlineApples.CallbackData)
+            if (_callback.Data == new CallbackButtons.RanksCommand().RanksCommandInlineApples.CallbackData)
             {
                 ShowRanksApples();
                 return;
@@ -566,7 +566,7 @@ namespace TamagotchiBot.Controllers
                         new CallbackModel()
                         {
                             Text = sleepCommandInlinePutToSleep,
-                            CallbackData = CallbackButtons.SleepCommand.SleepCommandInlinePutToSleep(default).CallbackData
+                            CallbackData = new CallbackButtons.SleepCommand().SleepCommandInlinePutToSleep(default).CallbackData
                         }
                     });
 
@@ -688,7 +688,7 @@ namespace TamagotchiBot.Controllers
 
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {
-                CallbackButtons.PetCommand.PetCommandInlineExtraInfo
+                new CallbackButtons.PetCommand().PetCommandInlineExtraInfo
             });
 
             _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
@@ -698,7 +698,7 @@ namespace TamagotchiBot.Controllers
             string toSendText = string.Format(petCommandMoreInfo1, petDB.Name, petDB.BirthDateTime);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {
-                CallbackButtons.PetCommand.PetCommandInlineBasicInfo
+                new CallbackButtons.PetCommand().PetCommandInlineBasicInfo
             });
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -936,7 +936,7 @@ namespace TamagotchiBot.Controllers
             InlineKeyboardMarkup toSendInline =
                 Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
                 {
-                    CallbackButtons.SleepCommand.SleepCommandInlinePutToSleep(timeToWait)
+                    new CallbackButtons.SleepCommand().SleepCommandInlinePutToSleep(timeToWait)
                 });
 
             _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
@@ -969,7 +969,7 @@ namespace TamagotchiBot.Controllers
             InlineKeyboardMarkup toSendInline =
                 Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
                 {
-                    CallbackButtons.SleepCommand.SleepCommandInlinePutToSleep(timeToWait)
+                    new CallbackButtons.SleepCommand().SleepCommandInlinePutToSleep(timeToWait)
                 });
 
             _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
@@ -1081,7 +1081,7 @@ namespace TamagotchiBot.Controllers
 
             if (petDB.CurrentStatus == (int)CurrentStatus.Active)
             {
-                if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineShowTime(default).CallbackData)
+                if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(default).CallbackData)
                 {
                     UpdateWorkOnPCButtonToDefault();
                     return;
@@ -1115,7 +1115,7 @@ namespace TamagotchiBot.Controllers
 
                 toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
                 {
-                    CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainsTime)
+                    new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(remainsTime)
                 });
 
                 _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
@@ -1176,7 +1176,7 @@ namespace TamagotchiBot.Controllers
 
             toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {
-                CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainedTime)
+                new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(remainedTime)
             });
 
             return new AnswerMessage() { InlineKeyboardMarkup = toSendInline, Text = toSendText, StickerId = StickersId.PetWork_Cat };
@@ -1195,7 +1195,7 @@ namespace TamagotchiBot.Controllers
             toSendText = string.Format(workCommandPCWorking);
             toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {
-                CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainedTime)
+                new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(remainedTime)
             });
 
             return new AnswerCallback(toSendText, toSendInline);
@@ -1238,7 +1238,7 @@ namespace TamagotchiBot.Controllers
 
             toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {
-                CallbackButtons.RewardsCommand.RewardCommandDailyRewardInlineShowTime(remainedTime)
+                new CallbackButtons.RewardsCommand().RewardCommandDailyRewardInlineShowTime(remainedTime)
             });
 
             return new AnswerCallback(toSendText, toSendInline);

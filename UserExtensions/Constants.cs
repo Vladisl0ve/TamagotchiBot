@@ -186,50 +186,50 @@ namespace TamagotchiBot.UserExtensions
         {
             public List<CallbackModel> InlineFood = new()
             {
-                CallbackButtons.KitchenCommand.KitchenCommandInlineBread,
-                CallbackButtons.KitchenCommand.KitchenCommandInlineRedApple,
-                CallbackButtons.KitchenCommand.KitchenCommandInlineChocolate,
-                CallbackButtons.KitchenCommand.KitchenCommandInlineLollipop
+                new CallbackButtons.KitchenCommand().KitchenCommandInlineBread,
+                new CallbackButtons.KitchenCommand().KitchenCommandInlineRedApple,
+                new CallbackButtons.KitchenCommand().KitchenCommandInlineChocolate,
+                new CallbackButtons.KitchenCommand().KitchenCommandInlineLollipop
             };
 
             public List<CallbackModel> InlineGames = new()
             {
-                CallbackButtons.GameroomCommand.GameroomCommandInlineAppleGame,
-                CallbackButtons.GameroomCommand.GameroomCommandInlineDice
+                new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame,
+                new CallbackButtons.GameroomCommand().GameroomCommandInlineDice
             };
 
 
             public List<CallbackModel> InlineHygiene = new()
             {
-                CallbackButtons.BathroomCommand.BathroomCommandBrushTeeth,
-                CallbackButtons.BathroomCommand.BathroomCommandTakeShower
+                new CallbackButtons.BathroomCommand().BathroomCommandBrushTeeth,
+                new CallbackButtons.BathroomCommand().BathroomCommandTakeShower
             };
 
             public List<CallbackModel> InlineHospital = new()
             {
-                CallbackButtons.HospitalCommand.HospitalCommandCurePills
+                new CallbackButtons.HospitalCommand().HospitalCommandCurePills
             };
 
             public List<CallbackModel> InlineWork = new()
             {
-                CallbackButtons.WorkCommand.WorkCommandInlineWorkOnPC
+                new CallbackButtons.WorkCommand().WorkCommandInlineWorkOnPC
             };
 
             public List<CallbackModel> InlineRanks = new()
             {
-                CallbackButtons.RanksCommand.RanksCommandInlineLevel,
-                CallbackButtons.RanksCommand.RanksCommandInlineGold,
-                CallbackButtons.RanksCommand.RanksCommandInlineApples,
+                new CallbackButtons.RanksCommand().RanksCommandInlineLevel,
+                new CallbackButtons.RanksCommand().RanksCommandInlineGold,
+                new CallbackButtons.RanksCommand().RanksCommandInlineApples,
             };
 
             public List<CallbackModel> InlineRewards = new()
             {
-                CallbackButtons.RewardsCommand.RewardCommandInlineDailyReward
+                new CallbackButtons.RewardsCommand().RewardCommandInlineDailyReward
             };
 
             public List<CallbackModel> InlinePet = new()
             {
-                CallbackButtons.PetCommand.PetCommandInlineExtraInfo
+                new CallbackButtons.PetCommand().PetCommandInlineExtraInfo
             };
         }
 

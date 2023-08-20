@@ -117,15 +117,14 @@ namespace TamagotchiBot.Services
             foreach (var userId in usersToNotify)
             {
                 var user = _appServices.UserService.Get(userId);
-                Resources.Resources.Culture = new CultureInfo(user.Culture);
 
                 try
                 {
+                    Resources.Resources.Culture = new CultureInfo(user.Culture);
                     var toSend = new AnswerMessage()
                     {
                         Text = Resources.Resources.rewardNotification,
                         StickerId = GetRandomDailyRewardSticker(),
-                        Culture = new CultureInfo(user.Culture),
                     };
 
                     _appServices.BotControlService.SendAnswerMessageAsync(toSend, userId);
@@ -201,15 +200,14 @@ namespace TamagotchiBot.Services
             foreach (var userId in usersToNotify)
             {
                 var user = _appServices.UserService.Get(long.Parse(userId));
-                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
 
                 try
                 {
+                    Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
                     var toSend = new AnswerMessage()
                     {
                         Text = Resources.Resources.changelog1Text,
-                        StickerId = Constants.StickersId.ChangelogSticker,
-                        Culture = new CultureInfo(user.Culture),
+                        StickerId = Constants.StickersId.ChangelogSticker
                     };
 
                     _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId);
@@ -464,9 +462,9 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
+            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var toSend = new AnswerMessage()
             {
-                Culture = new CultureInfo(user.Culture),
                 StickerId = Constants.StickersId.RandomEventStomachache,
                 Text = Resources.Resources.RandomEventStomachache
             };
@@ -482,9 +480,9 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
+            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var toSend = new AnswerMessage()
             {
-                Culture = new CultureInfo(user.Culture),
                 StickerId = Constants.StickersId.RandomEventRainbow,
                 Text = Resources.Resources.RandomEventRainbow
             };
@@ -503,9 +501,9 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
+            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var toSend = new AnswerMessage()
             {
-                Culture = new CultureInfo(user.Culture),
                 StickerId = Constants.StickersId.RandomEventFriendMet,
                 Text = Resources.Resources.RandomEventFriendMet
             };
@@ -524,9 +522,9 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
+            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var toSend = new AnswerMessage()
             {
-                Culture = new CultureInfo(user.Culture),
                 StickerId = Constants.StickersId.RandomEventHotdog,
                 Text = Resources.Resources.RandomEventHotdog
             };
@@ -547,9 +545,9 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
+            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var toSend = new AnswerMessage()
             {
-                Culture = new CultureInfo(user.Culture),
                 StickerId = Constants.StickersId.PetBored_Cat,
                 Text = toSendText
             };
@@ -567,9 +565,9 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
+            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var toSend = new AnswerMessage()
             {
-                Culture = new CultureInfo(user.Culture),
                 StickerId = Constants.StickersId.RandomEventStepOnFoot,
                 Text = Resources.Resources.RandomEventStepOnFoot
             };

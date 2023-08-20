@@ -283,7 +283,7 @@ namespace TamagotchiBot.Services
                 return;
             }
 
-            if (toSend.ReplyMarkup == null && toSend.InlineKeyboardMarkup == null)
+            if (!string.IsNullOrEmpty(toSend.Text))
             {
                 SendTextMessageAsync(userId,
                                      toSend.Text,

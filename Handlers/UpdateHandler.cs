@@ -80,7 +80,9 @@ namespace TamagotchiBot.Handlers
             var messageFromUser = update.Message;
             var callbackFromUser = update.CallbackQuery;
             var userId = messageFromUser?.From.Id ?? callbackFromUser?.From.Id ?? default;
-
+/*            CultureInfo.DefaultThreadCurrentCulture =
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(_appServices.UserService.Get(userId).Culture ?? "ru");
+*/
             Task task = update.Type switch
             {
                 UpdateType.Message => OnMessagePrivate(bot, update.Message),
