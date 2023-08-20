@@ -5,7 +5,6 @@ namespace TamagotchiBot.Models.Answers
 {
     public class AnswerCallback
     {
-
         public AnswerCallback(string textToSend, InlineKeyboardMarkup keyboardMarkup, ParseMode? parseMode = null)
         {
             Text = textToSend;

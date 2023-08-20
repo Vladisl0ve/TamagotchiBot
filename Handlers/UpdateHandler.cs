@@ -16,43 +16,30 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
 using Newtonsoft.Json;
-using System.Globalization;
+using TamagotchiBot.Services.Interfaces;
 
 namespace TamagotchiBot.Handlers
 {
     public class UpdateHandler : IUpdateHandler
     {
+        private readonly IApplicationServices _appServices;
         private readonly UserService userService;
         private readonly PetService petService;
         private readonly ChatService chatService;
         private readonly SInfoService sinfoService;
         private readonly AppleGameDataService appleGameDataService;
-        private readonly AllUsersDataService allUsersService;
         private readonly BotControlService bcService;
-        private readonly BannedUsersService bannedService;
-        private readonly AdsProducersService adsProducersService;
 
-        public UpdateHandler(UserService userService,
-                             PetService petService,
-                             ChatService chatService,
-                             SInfoService sinfoService,
-                             AppleGameDataService appleGameDataService,
-                             AllUsersDataService allUsersService,
-                             BannedUsersService bannedService,
-                             AdsProducersService adsProducersService,
-                             BotControlService botControlService)
+        public UpdateHandler(IApplicationServices services)
         {
-            this.userService = userService;
-            this.petService = petService;
-            this.chatService = chatService;
-            this.sinfoService = sinfoService;
-            this.appleGameDataService = appleGameDataService;
-            this.allUsersService = allUsersService;
-            this.bannedService = bannedService;
-            this.adsProducersService = adsProducersService;
-            this.bcService = botControlService;
+            _appServices = services;
+            userService = services.UserService;
+            petService = services.PetService;
+            chatService = services.ChatService;
+            sinfoService = services.SInfoService;
+            appleGameDataService = services.AppleGameDataService;
+            bcService = services.BotControlService;
         }
 
 
@@ -87,94 +74,90 @@ namespace TamagotchiBot.Handlers
 
         public Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
         {
-            var userId = update.Message?.From.Id ?? update.CallbackQuery?.From.Id ?? default;
-            CultureInfo culture = CultureInfo.GetCultureInfo(userService.Get(userId)?.Culture ?? "ru");
+            if (!ToContinueHandlingUpdateChecking(update))
+                return Task.CompletedTask;
 
+            var messageFromUser = update.Message;
+            var callbackFromUser = update.CallbackQuery;
+            var userId = messageFromUser?.From.Id ?? callbackFromUser?.From.Id ?? default;
+/*            CultureInfo.DefaultThreadCurrentCulture =
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(_appServices.UserService.Get(userId).Culture ?? "ru");
+*/
             Task task = update.Type switch
             {
-                UpdateType.Message => BotOnMessageReceived(bot, update.Message),
-                UpdateType.CallbackQuery => BotOnCallbackQueryReceived(bot, update.CallbackQuery),
+                UpdateType.Message => OnMessagePrivate(bot, update.Message),
+                UpdateType.CallbackQuery => OnCallbackPrivate(bot, update.CallbackQuery),
                 _ => Task.CompletedTask
             };
 
-            if (petService.Get(userId) is not null && petService.Get(userId).Name is not null && (!userService.Get(userId)?.IsInAppleGame ?? false))
-            {
-                bcService.SetMyCommandsAsync(userId,
-                                             Extensions.GetCommands(true),
-                                             cancellationToken: token,
-                                             scope: new BotCommandScopeChat() { ChatId = userId });
-            }
-            else if (userService.Get(userId)?.IsInAppleGame ?? false)
-            {
-                bcService.SetMyCommandsAsync(userId,
-                                             Extensions.GetIngameCommands(),
-                                             cancellationToken: token,
-                                             scope: new BotCommandScopeChat() { ChatId = userId });
-            }
-            else
-            {
-                bcService.SetMyCommandsAsync(userId,
-                                             Extensions.GetCommands(false),
-                                             cancellationToken: token,
-                                             scope: new BotCommandScopeChat() { ChatId = userId });
-            }
+            new SetCommandController(_appServices, messageFromUser, callbackFromUser).UpdateCommands();
 
             sinfoService.UpdateLastGlobalUpdate();
             return task;
 
-            async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
+            async Task OnMessagePrivate(ITelegramBotClient botClient, Message message)
             {
-                var menuController = new MenuController(botClient, userService, petService, chatService, bcService, allUsersService, bannedService, appleGameDataService, adsProducersService, message);
-                var gameController = new AppleGameController(botClient, userService, petService, chatService, appleGameDataService, allUsersService, bcService, message);
-                Answer toSend = null;
+                AnswerMessage toSend = null;
 
-                if (userService.Get(message.From.Id) == null)
-                    toSend = menuController.CreateUser();
-                else
-                    try
-                    {
-                        // call this method wherever you want to show an ad,
-                        // for example your bot just made its job and
-                        // it's a great time to show an ad to a user
-                        if (petService.Get(message.From.Id)?.Name != null)
-                            await SendPostToChat(message.From.Id);
-
-
-                        if (userService.Get(message.From.Id).IsInAppleGame)
-                            toSend = gameController.Menu(message);
-                        else
-                            toSend = menuController.Process();
-
-                    }
-                    catch (ApiRequestException apiEx)
-                    {
-                        Log.Error($"{apiEx.ErrorCode}: {apiEx.Message}, user: {message.From.Username ?? message.From.FirstName}");
-                    }
-                    catch (RequestException recEx)
-                    {
-                        Log.Error($"{recEx.Source}: {recEx.Message}, user: {message.From.Username ?? message.From.FirstName}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex.Message + Environment.NewLine + ex.StackTrace);
-                    }
-
-                if (toSend == null)
+                if (!IsUserAndPetRegisteredChecking(userId))
+                {
+                    RegisterUserAndPet(message); //CreatorController
                     return;
+                }
 
-                SendMessage(toSend, message.From.Id);
+                if (!DidUserChoseLanguage(userId))
+                {
+                    new CreatorController(_appServices, message).ApplyNewLanguage(true);
+                    return;
+                }
 
-                //if new player starts the game
-                if (petService.Get(message.From.Id) == null
-                    && (chatService.Get(message.Chat.Id)?.LastMessage == null)
-                    && toSend.StickerId != null
-                    && toSend.StickerId != Constants.StickersId.ChangeLanguageSticker
-                    && toSend.StickerId != Constants.StickersId.PetGone_Cat
-                    && toSend.StickerId != Constants.StickersId.HelpCommandSticker)
-                    await BotOnMessageReceived(botClient, message);
+                new SynchroDBController(_appServices, message).SynchronizeWithDB(); //update user (username, names etc.) in DB
+                CreatorController creatorController = new CreatorController(_appServices, message);
+                creatorController.UpdateIndicators(); //update all pet's statistics
+
+                if (creatorController.CheckIsPetGone())
+                {
+                    creatorController.ToResurrectAnswer();
+                    return;
+                }
+
+                if (creatorController.CheckIsPetZeroHP())
+                {
+                    creatorController.AfterDeath();
+                    return;
+                }
+
+                try
+                {
+                    // call this method wherever you want to show an ad,
+                    // for example your bot just made its job and
+                    // it's a great time to show an ad to a user
+                    if (_appServices.PetService.Get(message.From.Id)?.Name != null)
+                        await SendPostToChat(message.From.Id);
+
+                    if (userService.Get(message.From.Id).IsInAppleGame)
+                        toSend = new AppleGameController(_appServices, message).Menu();
+                    else
+                        toSend = new MenuController(_appServices, message).ProcessMessage();
+
+                }
+                catch (ApiRequestException apiEx)
+                {
+                    Log.Error($"{apiEx.ErrorCode}: {apiEx.Message}, user: {message.From.Username ?? message.From.FirstName}");
+                }
+                catch (RequestException recEx)
+                {
+                    Log.Error($"{recEx.Source}: {recEx.Message}, user: {message.From.Username ?? message.From.FirstName}");
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex.Message + Environment.NewLine + ex.StackTrace);
+                }
+
+                _appServices.BotControlService.SendAnswerMessageAsync(toSend, message.From.Id);
             }
 
-            async Task BotOnCallbackQueryReceived(ITelegramBotClient bot, CallbackQuery callbackQuery)
+            async Task OnCallbackPrivate(ITelegramBotClient bot, CallbackQuery callbackQuery)
             {
                 if (userService.Get(callbackQuery.From.Id) == null || petService.Get(callbackQuery.From.Id) == null)
                     return;
@@ -185,9 +168,10 @@ namespace TamagotchiBot.Handlers
                 if (userService.Get(userId)?.IsInAppleGame ?? false)
                     return;
 
-                if (callbackQuery.Data == "gameroomCommandInlineCard")
+                if (callbackQuery.Data == "gameroomCommandInlineAppleGame")
                 {
                     var petDB = petService.Get(userId);
+                    var userDB = userService.Get(userId);
                     if (petDB?.Fatigue >= 100)
                     {
                         string anwser = string.Format(Resources.Resources.tooTiredText);
@@ -198,8 +182,18 @@ namespace TamagotchiBot.Handlers
                                                            cancellationToken: token);
                         return;
                     }
+                    if (petDB?.Joy >= 100)
+                    {
+                        string anwser = string.Format(Resources.Resources.PetIsFullOfJoyText);
+                        bcService.AnswerCallbackQueryAsync(callbackQuery.Id,
+                                                           callbackQuery.From.Id,
+                                                           anwser,
+                                                           true,
+                                                           cancellationToken: token);
+                        return;
+                    }
 
-                    if (petDB?.Gold - 20 < 0)
+                    if (userDB?.Gold - 20 < 0)
                     {
                         string anwser = string.Format(Resources.Resources.goldNotEnough);
                         bcService.AnswerCallbackQueryAsync(callbackQuery.Id,
@@ -210,11 +204,11 @@ namespace TamagotchiBot.Handlers
                         return;
                     }
 
-                    petService.UpdateGold(callbackQuery.From.Id, petService.Get(callbackQuery.From.Id).Gold - 20);
+                    _appServices.UserService.UpdateGold(callbackQuery.From.Id, _appServices.UserService.Get(callbackQuery.From.Id).Gold - 20);
 
                     userService.UpdateAppleGameStatus(callbackQuery.From.Id, true);
                     bcService.SetMyCommandsAsync(callbackQuery.From.Id,
-                                                 Extensions.GetIngameCommands(),
+                                                 Extensions.GetInApplegameCommands(),
                                                  cancellationToken: token,
                                                  scope: new BotCommandScopeChat() { ChatId = userId });
                     var appleData = appleGameDataService.Get(callbackQuery.From.Id);
@@ -230,10 +224,10 @@ namespace TamagotchiBot.Handlers
                             IsGameOvered = false,
                         });
 
-                    var gameController = new AppleGameController(bot, userService, petService, chatService, appleGameDataService, allUsersService, bcService, callbackQuery);
-                    Answer toSendAnswer = gameController.StartGame();
+                    var gameController = new AppleGameController(_appServices, callbackQuery);
+                    AnswerMessage toSendAnswer = gameController.StartGame();
 
-                    SendMessage(toSendAnswer, callbackQuery.From.Id);
+                    _appServices.BotControlService.SendAnswerMessageAsync(toSendAnswer, callbackQuery.From.Id);
                     return;
                 }
 
@@ -243,79 +237,90 @@ namespace TamagotchiBot.Handlers
 
                 await SendPostToChat(callbackQuery.From.Id);
 
-                var controller = new MenuController(bot, userService, petService, chatService, bcService, allUsersService, bannedService, appleGameDataService, callbackQuery);
-                AnswerCallback toSend = controller.CallbackHandler();
+                new SynchroDBController(_appServices, callback: callbackQuery).SynchronizeWithDB(); //update user (username, names etc.) in DB
+                CreatorController creatorController = new CreatorController(_appServices, callback: callbackQuery);
+                creatorController.UpdateIndicators(); //update all pet's statistics
 
-                if (toSend == null)
-                    return;
-
-                bcService.EditMessageTextAsync(callbackQuery.From.Id,
-                                               callbackQuery.Message.MessageId,
-                                               toSend.Text,
-                                               replyMarkup: toSend.InlineKeyboardMarkup,
-                                               cancellationToken: token,
-                                               parseMode: toSend.ParseMode);
-            }
-
-            async void SendMessage(Answer toSend, long userId)
-            {
-                culture ??= CultureInfo.GetCultureInfo(userService.Get(userId)?.Culture ?? "ru");
-                if (toSend.StickerId != null)
-                {
-                    bcService.SendStickerAsync(userId,
-                                               toSend.StickerId,
-                                               cancellationToken: token);
-
-                    await Task.Delay(50, token);
-
-                    if (toSend.ReplyMarkup == null && toSend.InlineKeyboardMarkup == null)
-                        bcService.SendTextMessageAsync(userId,
-                                                       toSend.Text,
-                                                       cancellationToken: token);
-                }
-
-                if (toSend.ReplyMarkup != null)
-                {
-                    if (toSend.ReplyMarkup is ReplyKeyboardRemove reply && reply.RemoveKeyboard && chatService.Get(userId)?.LastMessage == "/quitApple")
-                    {
-                        bcService.SendTextMessageAsync(userId,
-                                                       Resources.Resources.backToGameroomText,
-                                                       replyMarkup: toSend.ReplyMarkup,
-                                                       cancellationToken: token);
-                    }
-                    else
-                        bcService.SendTextMessageAsync(userId,
-                                                       toSend.Text,
-                                                       replyMarkup: toSend.ReplyMarkup,
-                                                       cancellationToken: token);
-                }
-
-                if (toSend.InlineKeyboardMarkup != null)
-                    bcService.SendTextMessageAsync(userId,
-                                                   toSend.Text,
-                                                   replyMarkup: toSend.InlineKeyboardMarkup,
-                                                   cancellationToken: token,
-                                                   parseMode: toSend.ParseMode);
-                if (toSend.IsPetGoneMessage)
-                {
-                    Resources.Resources.Culture = culture;
-                    await Task.Delay(TimeSpan.FromSeconds(1), token);
-                    bcService.SendChatActionAsync(userId, ChatAction.Typing, token);
-                    await Task.Delay(TimeSpan.FromSeconds(5), token);
-                    Resources.Resources.Culture = culture;
-                    bcService.SendStickerAsync(userId,
-                                               Constants.StickersId.PetEpilogue_Cat,
-                                               cancellationToken: token);
-
-                    Resources.Resources.Culture = culture;
-                    bcService.SendTextMessageAsync(userId,
-                                                   Resources.Resources.EpilogueText,
-                                                   cancellationToken: token,
-                                                   parseMode: toSend.ParseMode);
-                }
+                var controller = new MenuController(_appServices, callbackQuery);
+                controller.CallbackHandler();
             }
         }
 
+
+        /// <returns>true == handled update is acceptable to continue, otherwise must to stop</returns>
+        private bool ToContinueHandlingUpdateChecking(Update update)
+        {
+            if (update.Type == UpdateType.Message)
+                if (update.Message.Type == MessageType.Text)
+                    if (update.Message.From != null)
+                        if (update.Message.Chat.Id == update.Message.From.Id)
+                            if (update.Message.ForwardDate == null)
+                                return true;
+
+            if (update.Type == UpdateType.CallbackQuery)
+                if (update.CallbackQuery.Message != null)
+                    if (update.CallbackQuery.Message.ForwardDate == null)
+                        return true;
+
+            return false;
+        }
+        private bool DidUserChoseLanguage(long userId)
+        {
+            var userDB = _appServices.UserService.Get(userId);
+            if (userDB == null)
+                return false;
+
+            if (userDB.Culture == null)
+                return false;
+
+            return true;
+        }
+        private bool IsUserAndPetRegisteredChecking(long userId)
+        {
+            var userDB = _appServices.UserService.Get(userId);
+            var petDB = _appServices.PetService.Get(userId);
+            if (userDB == null)
+                return false;
+
+            if (userDB.IsLanguageAskedOnCreate)
+                return false;
+
+            if (userDB.IsPetNameAskedOnCreate)
+                return false;
+
+            if (petDB == null)
+                return false;
+
+            return true;
+        }
+
+        private async void RegisterUserAndPet(Message message)
+        {
+            CreatorController creatorController;
+            var userId = message.From.Id;
+            var userDB = _appServices.UserService.Get(userId);
+            if (userDB == null)
+            {
+                creatorController = new CreatorController(_appServices, message);
+                creatorController.CreateUser();
+                creatorController.AskALanguage();
+            }
+            else if (userDB.IsLanguageAskedOnCreate)
+            {
+                creatorController = new CreatorController(_appServices, message);
+                if (!creatorController.ApplyNewLanguage())
+                    return;
+                creatorController.SendWelcomeText();
+                await Task.Delay(1000);
+                creatorController.AskForAPetName();
+            }
+            else if (userDB.IsPetNameAskedOnCreate)
+            {
+                creatorController = new CreatorController(_appServices, message);
+                if (!creatorController.CreatePet())
+                    return;
+            }
+        }
         private async Task SendPostToChat(long chatId)
         {
 #if DEBUG

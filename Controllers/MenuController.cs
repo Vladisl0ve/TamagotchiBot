@@ -2,22 +2,17 @@
 using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using TamagotchiBot.Models;
 using TamagotchiBot.Models.Answers;
 using TamagotchiBot.Models.Mongo;
-using TamagotchiBot.Services;
-using TamagotchiBot.Services.Mongo;
+using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.UserExtensions;
-using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.Resources.Resources;
 using static TamagotchiBot.UserExtensions.Constants;
-using Chat = TamagotchiBot.Models.Mongo.Chat;
 using Extensions = TamagotchiBot.UserExtensions.Extensions;
 using User = TamagotchiBot.Models.Mongo.User;
 
@@ -25,89 +20,28 @@ namespace TamagotchiBot.Controllers
 {
     public class MenuController
     {
-        private readonly UserService _userService;
-        private readonly PetService _petService;
-        private readonly ChatService _chatService;
-        private readonly BotControlService _bcService;
-        private readonly AllUsersDataService _allUsersService;
-        private readonly BannedUsersService _bannedService;
-        private readonly AdsProducersService _adsProducersService;
-        private readonly AppleGameDataService _appleGameDataService;
-        private readonly ITelegramBotClient bot;
-        private readonly Message message = null;
-        private readonly CallbackQuery callback = null;
+        private readonly IApplicationServices _appServices;
+        private readonly Message _message = null;
+        private readonly CallbackQuery _callback = null;
         private readonly long _userId;
 
-        private User user;
-        private Pet pet;
-        private Chat chat;
-
-        public MenuController(ITelegramBotClient bot,
-                              UserService userService,
-                              PetService petService,
-                              ChatService chatService,
-                              BotControlService botControlService,
-                              AllUsersDataService allUsersService,
-                              BannedUsersService bannedService,
-                              AppleGameDataService appleGameDataService,
-                              CallbackQuery callback)
+        private MenuController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
         {
-            this.bot = bot;
-            _userService = userService;
-            _petService = petService;
-            this.callback = callback;
-            _chatService = chatService;
-            _bcService = botControlService;
-            this._allUsersService = allUsersService;
-            _bannedService = bannedService;
-            _appleGameDataService = appleGameDataService;
-            _userId = callback.From.Id;
+            _callback = callback;
+            _message = message;
+            _userId = callback?.From.Id ?? message.From.Id;
 
-            GetFromDb();
-
-            Culture = new CultureInfo(user?.Culture ?? "ru");
-            UpdateOrCreateAUD(callback.From, message, callback);
+            _appServices = services;
+            UpdateOrCreateAUD(message?.From ?? callback.From, message, callback);
+        }
+        public MenuController(IApplicationServices services, CallbackQuery callback) : this(services, null, callback)
+        {
         }
 
-        public MenuController(ITelegramBotClient bot,
-                              UserService userService,
-                              PetService petService,
-                              ChatService chatService,
-                              BotControlService botControlService,
-                              AllUsersDataService allUsersService,
-                              BannedUsersService bannedService,
-                              AppleGameDataService appleGameDataService,
-                              AdsProducersService adsProducersService,
-                              Message message)
+        public MenuController(IApplicationServices services, Message message) : this(services, message, null)
         {
-            this.bot = bot;
-            _userService = userService;
-            _petService = petService;
-            this.message = message;
-            _chatService = chatService;
-            _bcService = botControlService;
-            this._allUsersService = allUsersService;
-            _bannedService = bannedService;
-            _appleGameDataService = appleGameDataService;
-            _adsProducersService = adsProducersService;
-            _userId = message.From.Id;
-
-            GetFromDb();
-
-            Culture = new CultureInfo(user?.Culture ?? "ru");
-            UpdateOrCreateAUD(message.From, message, callback);
         }
 
-        private void GetFromDb()
-        {
-            user = _userService.Get(_userId);
-
-            if (user != null)
-            {
-                pet = _petService.Get(user.UserId);
-                chat = _chatService.Get(message?.Chat.Id ?? callback.Message.Chat.Id);
-            }
-        }
         private void UpdateOrCreateAUD(Telegram.Bot.Types.User user, Message message = null, CallbackQuery callback = null)
         {
             if (user == null)
@@ -116,10 +50,10 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            var aud = _allUsersService.Get(user.Id);
+            var aud = _appServices.AllUsersDataService.Get(user.Id);
             if (aud == null) //if new
             {
-                _allUsersService.Create(new AllUsersData()
+                _appServices.AllUsersDataService.Create(new AllUsersData()
                 {
                     UserId = user.Id,
                     ChatId = user.Id,
@@ -137,292 +71,215 @@ namespace TamagotchiBot.Controllers
 
             aud.Updated = DateTime.UtcNow;
             aud.Username = user.Username;
-            aud.Culture = _userService.Get(user.Id)?.Culture ?? "en";
+            aud.Culture = _appServices.UserService.Get(user.Id)?.Culture ?? "ru";
             aud.LastMessage = message?.Text ?? string.Empty;
             aud.MessageCounter = message == null ? aud.MessageCounter : aud.MessageCounter + 1;
             aud.CallbacksCounter = callback == null ? aud.CallbacksCounter : aud.CallbacksCounter + 1;
-            _allUsersService.Update(aud);
-        }
-        public Answer CreateUser()
-        {
-            if (message != null)
-            {
-                var ads = Extensions.GetAdsProducerFromStart(message.Text);
-                if (ads != null)
-                    _adsProducersService.AddOrInsert(ads);
-
-                _userService.Create(message.From);
-                _chatService.Create(new Chat()
-                {
-                    ChatId = message.Chat.Id,
-                    Name = message.Chat.Username ?? message.Chat.Title,
-                    UserId = _userId,
-                    LastMessage = null
-                });
-
-                Log.Information($"User {message.From.Username} has been added to Db");
-
-                Culture = new CultureInfo(message.From.LanguageCode);
-            }
-            else if (callback != null)
-            {
-                _userService.Create(callback.From);
-                _chatService.Create(new Chat()
-                {
-                    ChatId = callback.Message.Chat.Id,
-                    Name = callback.Message.Chat.Username ?? callback.Message.Chat.Title,
-                    UserId = callback.Message.From.Id,
-                    LastMessage = null
-                });
-
-                Log.Information($"User {callback.Message.From.Username} has been added to Db");
-
-                Culture = new CultureInfo(message.From.LanguageCode);
-            }
-
-            return new Answer(Resources.Resources.ChangeLanguage,
-                               StickersId.ChangeLanguageSticker,
-                               LanguagesMarkup,
-                               null);
+            _appServices.AllUsersDataService.Update(aud);
         }
 
-        public Answer Process()
+        public AnswerMessage ProcessMessage()
         {
-            var userMessage = message.From;
-            User userDb = user;
-            Chat chatDb = chat;
-
-            if (userDb.Culture != null)
-            {
-                Culture = new CultureInfo(userDb.Culture);
-            }
-
-            if (userMessage.Username != userDb.Username
-                || userMessage.LastName != userDb.LastName
-                || userMessage.FirstName != userDb.FirstName)
-                UpdateUser(userDb.UserId);
-
-            chatDb ??= UpdateChat(message);
-
-            if (message.Chat.Username != null && chatDb.Name != message.Chat.Username)
-            {
-                _chatService.Update(message.Chat.Id, new Chat()
-                {
-                    Id = chatDb.Id,
-                    Name = message.Chat.Username,
-                    ChatId = chatDb.ChatId,
-                    UserId = _userId
-                });
-                Log.Information($"Chat username {message.Chat.Username} has been updated in Db");
-            }
-            else if (message.Chat.Title != null && chatDb.Name != message.Chat.Title)
-            {
-                _chatService.Update(message.Chat.Id, new Chat()
-                {
-                    Id = chatDb.Id,
-                    Name = message.Chat.Title,
-                    ChatId = chatDb.ChatId,
-                    UserId = _userId
-                });
-                Log.Information($"Chat title {message.Chat.Title} has been updated in Db");
-            }
-
-            if (message.Text != null && message.Text == "/language")
-                return CommandHandler();
-
-            if (userDb.Culture == null && message.Text != null)
-                return CommandHandler();
-
-            if (pet == null || pet.Name == null)
-                return CreatePet();
-            else
-                return CommandHandler();
-
+            return CommandHandler();
         }
 
-        private void UpdateIndicators()
+        public AnswerMessage CommandHandler()
         {
-            Telegram.Bot.Types.User messageUser = message?.From ?? callback?.From;
-
-            if (messageUser == null || pet == null)
-                return;
-
-            //avoid nullPointerExeption
-            if (pet.LastUpdateTime.Year == 1)
-                pet.LastUpdateTime = DateTime.UtcNow;
-
-            if (pet.StartSleepingTime.Year == 1)
-                pet.StartSleepingTime = DateTime.UtcNow;
-
-            int minuteCounter = (int)(DateTime.UtcNow - pet.LastUpdateTime).TotalMinutes;
-            //EXP
-            UpdateIndicatorEXP(minuteCounter);
-
-            //Satiety
-            UpdateIndicatorSatiety(minuteCounter);
-
-            //Joy
-            UpdateIndicatorJoy(minuteCounter);
-
-            //Fatigue
-            UpdateIndicatorFatigue(minuteCounter);
-
-            //Sleeping
-            if (pet.CurrentStatus == (int)CurrentStatus.Sleeping)
-                UpdateIndicatorSleeping();
-
-            //Work
-            if (pet.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
-                UpdateIndicatorWork();
-
-            //Hygiene
-            UpdateIndicatorHygiene(minuteCounter);
-
-            pet.LastUpdateTime = DateTime.UtcNow;
-
-            _petService.Update(messageUser.Id, pet);
-        }
-
-        private void UpdateIndicatorWork()
-        {
-            TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - pet.StartWorkingTime);
-
-            //if callback handled when time of work is over
-            if (remainsTime <= TimeSpan.Zero)
-            {
-                pet.CurrentStatus = (int)CurrentStatus.Active;
-                _petService.UpdateCurrentStatus(_userId, pet.CurrentStatus);
-            }
-
-        }
-
-        public Answer ExtrasHandler() //catching exceptional situations (but not exceptions!)
-        {
-            if (user.Culture == null)
-            {
-                if (message.Text == null)
-                    return null;
-
-                string last = message.Text.Split(' ').Last();
-                string culture = last.GetCulture();
-
-                if (culture == null)
-                    return null;
-
-                Culture = new CultureInfo(culture);
-
-                _userService.UpdateLanguage(user.UserId, culture);
-                string stickerToSend = culture.Language() switch
-                {
-                    Language.Polish => StickersId.PolishLanguageSetSticker,
-                    Language.English => StickersId.EnglishLanguageSetSticker,
-                    Language.Belarusian => StickersId.BelarussianLanguageSetSticker,
-                    Language.Russian => StickersId.RussianLanguageSetSticker,
-                    _ => null,
-                };
-                return new Answer()
-                {
-                    Text = ConfirmedLanguage,
-                    StickerId = stickerToSend,
-                    ReplyMarkup = new ReplyKeyboardRemove()
-                };
-            }
-            else if (chat.LastMessage == "/rename")
-            {
-                _petService.UpdateName(user.UserId, message.Text);
-
-                return new Answer()
-                {
-                    Text = ConfirmedName,
-                    StickerId = StickersId.WelcomeSticker,
-                    ReplyMarkup = new ReplyKeyboardRemove()
-                };
-            }
-
-            return null;
-        }
-
-        public Answer CommandHandler()
-        {
-            string textReceived = message.Text;
+            string textReceived = _message.Text;
             if (textReceived == null)
                 return null;
 
             textReceived = textReceived.ToLower();
 
-            UpdateIndicators();
-
-            if (pet != null && IsPetGone())
-            {
-                DeleteDataOfUser();
-                bot.SendChatActionAsync(user.UserId, Telegram.Bot.Types.Enums.ChatAction.Typing);
-                return GetFarewellAnswer(pet.Name, user.FirstName ?? user.Username);
-            }
+            var petDB = _appServices.PetService.Get(_userId);
+            var userDB = _appServices.UserService.Get(_userId);
 
             if (textReceived == "/language")
                 return ChangeLanguage();
             if (textReceived == "/help")
                 return ShowHelpInfo();
 
-            if (pet != null)
+            if (textReceived == "/pet")
+                return ShowPetInfo(petDB);
+            if (textReceived == "/bathroom")
+                return GoToBathroom(petDB);
+            if (textReceived == "/kitchen")
+                return GoToKitchen(petDB);
+            if (textReceived == "/gameroom")
+                return GoToGameroom(petDB);
+            if (textReceived == "/hospital")
+                return GoToHospital(petDB);
+            if (textReceived == "/ranks")
+                return ShowRankingInfo();
+            if (textReceived == "/sleep")
+                return GoToSleep(petDB);
+            if (textReceived == "/test")
             {
-                if (textReceived == "/pet")
-                    return ShowPetInfo();
-                if (textReceived == "/bathroom")
-                    return GoToBathroom();
-                if (textReceived == "/kitchen")
-                    return GoToKitchen();
-                if (textReceived == "/gameroom")
-                    return GoToGameroom();
-                if (textReceived == "/hospital")
-                    return GoToHospital();
-                if (textReceived == "/ranks")
-                    return ShowRankingInfo();
-                if (textReceived == "/sleep")
-                    return GoToSleep();
-                if (textReceived == "/test")
+                return new AnswerMessage()
                 {
-                    return new Answer()
-                    {
-                        Text = DevelopWarning,
-                        StickerId = StickersId.DevelopWarningSticker,
-                        ReplyMarkup = null,
-                        InlineKeyboardMarkup = null
-                    };
-                }
-                if (textReceived == "/menu")
-                    return ShowMenuInfo();
-                if (textReceived == "/rename")
-                    return RenamePet();
-                if (textReceived == "/work")
-                    return ShowWorkInfo();
-                if (textReceived == "/reward")
-                    return ShowRewardInfo();
-#if DEBUG //only for debug purpose
-                if (textReceived == "/restart")
-                    return RestartPet();
-#endif
+                    Text = DevelopWarning,
+                    StickerId = StickersId.DevelopWarningSticker,
+                    ReplyMarkup = null,
+                    InlineKeyboardMarkup = null
+                };
             }
-
-            return ExtrasHandler();
+            if (textReceived == "/menu")
+                return ShowMenuInfo();
+            if (textReceived == "/rename")
+                return RenamePet(petDB);
+            if (textReceived == "/work")
+                return ShowWorkInfo(petDB);
+            if (textReceived == "/reward")
+                return ShowRewardInfo(userDB);
+#if DEBUG
+            if (textReceived == "/restart")
+                return RestartPet(petDB);
+            if (textReceived == "/kill")
+                return TestKillPet(petDB);
+#endif
+            return null;
         }
 
-        private Answer ShowWorkInfo()
+        public void CallbackHandler()
         {
-            var accessCheck = CheckStatusIsInactiveOrNull(IsGoToWorkCommand: true);
+            var userDb = _appServices.UserService.Get(_userId);
+            var petDb = _appServices.PetService.Get(_userId);
+
+            if (userDb == null || petDb == null)
+                return;
+
+            if (_callback.Data == new CallbackButtons.PetCommand().PetCommandInlineBasicInfo.CallbackData)
+            {
+                ShowBasicInfoInline(petDb);
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.PetCommand().PetCommandInlineExtraInfo.CallbackData)
+            {
+                ShowExtraInfoInline(petDb);
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineBread.CallbackData)
+            {
+                FeedWithBreadInline(petDb);
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineRedApple.CallbackData)
+            {
+                FeedWithAppleInline(petDb);
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineChocolate.CallbackData)
+            {
+                FeedWithChocolateInline(petDb);
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineLollipop.CallbackData)
+            {
+                FeedWithLollipopInline(petDb);
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.SleepCommand().SleepCommandInlinePutToSleep(default).CallbackData)
+            {
+                PutToSleepInline(petDb);
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineWorkOnPC.CallbackData)
+            {
+                WorkOnPCInline(petDb);
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(default).CallbackData)
+            {
+                WorkOnPCInline(petDb);
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.RewardsCommand().RewardCommandInlineDailyReward.CallbackData)
+            {
+                GetDailyRewardInline(userDb);
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.RewardsCommand().RewardCommandDailyRewardInlineShowTime(default).CallbackData)
+            {
+                GetDailyRewardInline(userDb);
+                return;
+            }
+
+            if (_callback.Data == "gameroomCommandInlineCard")
+            {
+                PlayCardInline(petDb);
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.GameroomCommand().GameroomCommandInlineDice.CallbackData)
+            {
+                PlayDiceInline(petDb);
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.HospitalCommand().HospitalCommandCurePills.CallbackData)
+            {
+                CureWithPill(petDb);
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.BathroomCommand().BathroomCommandBrushTeeth.CallbackData)
+            {
+                TeethInline(petDb);
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.BathroomCommand().BathroomCommandTakeShower.CallbackData)
+            {
+                TakeShowerInline(petDb);
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.RanksCommand().RanksCommandInlineGold.CallbackData)
+            {
+                ShowRanksGold();
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.RanksCommand().RanksCommandInlineLevel.CallbackData)
+            {
+                ShowRanksLevel();
+                return;
+            }
+
+            if (_callback.Data == new CallbackButtons.RanksCommand().RanksCommandInlineApples.CallbackData)
+            {
+                ShowRanksApples();
+                return;
+            }
+        }
+
+        #region Message Answers
+        private AnswerMessage ShowWorkInfo(Pet petDB)
+        {
+            var accessCheck = CheckStatusIsInactiveOrNull(petDB, IsGoToWorkCommand: true);
             if (accessCheck != null)
                 return accessCheck;
 
             string toSendText = string.Empty;
 
-            List<CommandModel> inlineParts;
+            List<CallbackModel> inlineParts;
             InlineKeyboardMarkup toSendInline = default;
 
-            if (pet.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
+            if (petDB.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
             {
-                TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - pet.StartWorkingTime);
+                TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
 
-                //if callback handled when pet is working
+                //if _callback handled when pet is working
                 if (remainsTime > TimeSpan.Zero)
                     return ShowRemainedTimeWork(remainsTime);
             }
@@ -433,33 +290,30 @@ namespace TamagotchiBot.Controllers
                 inlineParts = new InlineItems().InlineWork;
                 toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
-                var aud = _allUsersService.Get(_userId);
+                var aud = _appServices.AllUsersDataService.Get(_userId);
                 aud.WorkCommandCounter++;
-                _allUsersService.Update(aud);
-
-                chat.LastMessage = "/work";
-                _chatService.Update(chat.ChatId, chat);
+                _appServices.AllUsersDataService.Update(aud);
             }
 
-            return new Answer()
+            return new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.PetWork_Cat,
                 InlineKeyboardMarkup = toSendInline
             };
         }
-        private Answer ShowRewardInfo()
+        private AnswerMessage ShowRewardInfo(Models.Mongo.User userDB)
         {
             string toSendText = string.Empty;
 
-            List<CommandModel> inlineParts;
+            List<CallbackModel> inlineParts;
             InlineKeyboardMarkup toSendInline = default;
 
-            if (pet.GotDailyRewardTime.AddHours(new TimesToWait().DailyRewardToWait.TotalHours) > DateTime.UtcNow)
+            if (userDB.GotDailyRewardTime.AddHours(new TimesToWait().DailyRewardToWait.TotalHours) > DateTime.UtcNow)
             {
-                TimeSpan remainsTime = new TimesToWait().DailyRewardToWait - (DateTime.UtcNow - pet.GotDailyRewardTime);
+                TimeSpan remainsTime = new TimesToWait().DailyRewardToWait - (DateTime.UtcNow - userDB.GotDailyRewardTime);
 
-                //if callback handled when pet is working
+                //if _callback handled when pet is working
                 if (remainsTime > TimeSpan.Zero)
                     return ShowRemainedTimeDailyReward(remainsTime);
             }
@@ -470,194 +324,27 @@ namespace TamagotchiBot.Controllers
                 inlineParts = new InlineItems().InlineRewards;
                 toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
-                var aud = _allUsersService.Get(_userId);
+                var aud = _appServices.AllUsersDataService.Get(_userId);
                 aud.RewardCommandCounter++;
-                _allUsersService.Update(aud);
-
-                chat.LastMessage = "/reward";
-                _chatService.Update(chat.ChatId, chat);
+                _appServices.AllUsersDataService.Update(aud);
             }
 
-            return new Answer()
+            return new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.DailyRewardSticker,
                 InlineKeyboardMarkup = toSendInline
             };
         }
-
-
-        public AnswerCallback CallbackHandler()
+        private AnswerMessage ChangeLanguage()
         {
-            var userDb = user;
-            var petDb = pet;
+            _appServices.UserService.UpdateLanguage(_userId, null);
 
-            if (userDb == null || petDb == null)
-                return null;
-
-            if (callback.Data == null)
-                return null;
-
-            UpdateIndicators();
-
-            if (callback.Data == "petCommandInlineBasicInfo")
-                return ShowBasicInfoInline();
-
-            if (callback.Data == "petCommandInlineExtraInfo")
-                return ShowExtraInfoInline();
-
-            if (callback.Data == "kitchenCommandInlineBread") //56.379999999999995
-                return FeedWithBreadInline();
-
-            if (callback.Data == "kitchenCommandInlineRedApple")
-                return FeedWithAppleInline();
-
-            if (callback.Data == "kitchenCommandInlineChocolate")
-                return FeedWithChocolateInline();
-
-            if (callback.Data == "kitchenCommandInlineLollipop")
-                return FeedWithLollipopInline();
-
-            if (callback.Data == "sleepCommandInlinePutToSleep")
-                return PutToSleepInline();
-
-            if (callback.Data == "workCommandInlineWorkOnPC")
-                return WorkOnPCInline();
-
-            if (callback.Data == "workCommandInlineShowTime")
-                return WorkOnPCInline();
-
-            if (callback.Data == "rewardCommandInlineDailyReward")
-                return GetDailyRewardInline();
-
-            if (callback.Data == "rewardCommandDailyRewardInlineShowTime")
-                return GetDailyRewardInline();
-
-            if (callback.Data == "gameroomCommandInlineCard")
-                return PlayCardInline();
-
-            if (callback.Data == "gameroomCommandInlineDice")
-                return PlayDiceInline();
-
-            if (callback.Data == "hospitalCommandCurePills")
-                return CureWithPill();
-
-            if (callback.Data == "bathroomCommandBrushTeeth")
-                return TeethInline();
-
-            if (callback.Data == "bathroomCommandTakeShower")
-                return TakeShowerInline();
-
-            if (callback.Data == "ranksCommandInlineGold")
-                return ShowRanksGold();
-
-            if (callback.Data == "ranksCommandInlineLevel")
-                return ShowRanksLevel();
-
-            if (callback.Data == "ranksCommandInlineApples")
-                return ShowRanksApples();
-
-            return null;
-        }
-        private Answer CreatePet()
-        {
-            if (message.Text == null)
-                return null;
-
-            if (pet == null)
-            {
-                _petService.Create(new Pet()
-                {
-                    Name = null,
-                    Level = 1,
-                    BirthDateTime = DateTime.UtcNow,
-                    LastUpdateTime = DateTime.UtcNow,
-                    EXP = 0,
-                    HP = 100,
-                    Joy = 70,
-                    Fatigue = 0,
-                    Satiety = 80,
-                    IsWelcomed = true,
-                    Type = null,
-                    Gold = 0,
-                    UserId = _userId
-                });
-                Log.Information($"Pet of {user.Username} has been added to Db");
-                Task.Delay(50);
-
-                chat.LastMessage = "/welcome";
-                _chatService.Update(chat.ChatId, chat);
-                var keyboard = new ReplyKeyboardMarkup(new KeyboardButton(WelcomeStatusButton));
-                keyboard.OneTimeKeyboard = true;
-                return new Answer()
-                {
-                    Text = Welcome,
-                    StickerId = StickersId.WelcomeSticker,
-                    ReplyMarkup = keyboard,
-                    InlineKeyboardMarkup = null
-                };
-            }
-
-            if (pet.IsWelcomed)
-            {
-                pet.IsWelcomed = false;
-                _petService.Update(_userId, pet);
-                return new Answer()
-                {
-                    Text = ChooseName,
-                    StickerId = StickersId.PetChooseName_Cat,
-                    ReplyMarkup = new ReplyKeyboardRemove(),
-                    InlineKeyboardMarkup = null
-                };
-            }
-
-            if (pet.Name == null)
-            {
-                _petService.UpdateName(_userId, message.Text);
-                _petService.UpdateGold(_userId, 50);
-                _userService.UpdateNextRandomEventNotificationTime(pet.UserId, DateTime.UtcNow.AddMinutes(25));
-                return new Answer()
-                {
-                    Text = ConfirmedName,
-                    StickerId = StickersId.PetConfirmedName_Cat,
-                    ReplyMarkup = null,
-                    InlineKeyboardMarkup = null
-                };
-            }
-
-            return null;
-        }
-        private bool IsPetGone()
-        {
-            return pet.HP <= 0;
-        }
-        private void DeleteDataOfUser()
-        {
-            _petService.Remove(user.UserId);
-            _chatService.Remove(user.UserId);
-            _userService.Remove(user.UserId);
-            _appleGameDataService.Delete(user.UserId);
-        }
-        public Answer GetFarewellAnswer(string petName, string username)
-        {
-            string textToSend = string.Format(FarewellText, petName, username);
-
-            return new Answer()
-            {
-                Text = textToSend,
-                StickerId = StickersId.PetGone_Cat,
-                IsPetGoneMessage = true
-            };
-        }
-        private Answer ChangeLanguage()
-        {
-            _ = _userService.UpdateLanguage(_userId, null);
-
-            var aud = _allUsersService.Get(_userId);
+            var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.LanguageCommandCounter++;
-            _allUsersService.Update(aud);
+            _appServices.AllUsersDataService.Update(aud);
 
-            return new Answer()
+            return new AnswerMessage()
             {
                 Text = Resources.Resources.ChangeLanguage,
                 StickerId = StickersId.ChangeLanguageSticker,
@@ -665,22 +352,25 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup = null
             };
         }
-        private Answer ShowPetInfo()
+        private AnswerMessage ShowPetInfo(Pet petDB)
         {
-            string toSendText = string.Format(petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Satiety,
-                                                  pet.Fatigue,
-                                                  Extensions.GetCurrentStatus(pet.CurrentStatus),
-                                                  pet.Joy,
-                                                  pet.Gold,
-                                                  pet.Hygiene);
+            string toSendText = string.Format(petCommand,
+                                              petDB.Name,
+                                              petDB.HP,
+                                              petDB.EXP,
+                                              petDB.Level,
+                                              petDB.Satiety,
+                                              petDB.Fatigue,
+                                              Extensions.GetCurrentStatus(petDB.CurrentStatus),
+                                              petDB.Joy,
+                                              _appServices.UserService.Get(_userId).Gold,
+                                              petDB.Hygiene);
 
-            var aud = _allUsersService.Get(_userId);
+            var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.PetCommandCounter++;
-            _allUsersService.Update(aud);
+            _appServices.AllUsersDataService.Update(aud);
 
-            chat.LastMessage = "/pet";
-            _chatService.Update(chat.ChatId, chat);
-            return new Answer()
+            return new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.PetInfo_Cat,
@@ -689,46 +379,22 @@ namespace TamagotchiBot.Controllers
             };
 
         }
-        private bool CheckStatusIsInactive(bool IsGoToSleepCommand = false)
+        private AnswerMessage CheckStatusIsInactiveOrNull(Pet petDB, bool IsGoToSleepCommand = false, bool IsGoToWorkCommand = false)
         {
-            if (pet.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
+            if (petDB.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
             {
                 string denyText = string.Format(denyAccessSleeping);
-                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, denyText, true);
-
-                return true;
-            }
-
-            if (pet.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
-            {
-                string denyText = string.Format(denyAccessWorking);
-                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, denyText, true);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private Answer CheckStatusIsInactiveOrNull(bool IsGoToSleepCommand = false, bool IsGoToWorkCommand = false)
-        {
-            if (pet == null)
-                return null;
-
-            if (pet.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
-            {
-                string denyText = string.Format(denyAccessSleeping);
-                return new Answer()
+                return new AnswerMessage()
                 {
                     Text = denyText,
                     StickerId = StickersId.PetBusy_Cat
                 };
             }
 
-            if (pet.CurrentStatus == (int)CurrentStatus.WorkingOnPC && !IsGoToWorkCommand)
+            if (petDB.CurrentStatus == (int)CurrentStatus.WorkingOnPC && !IsGoToWorkCommand)
             {
                 string denyText = string.Format(denyAccessWorking);
-                return new Answer()
+                return new AnswerMessage()
                 {
                     Text = denyText,
                     StickerId = StickersId.PetBusy_Cat
@@ -737,48 +403,44 @@ namespace TamagotchiBot.Controllers
 
             return null;
         }
-        private Answer GoToBathroom()
+        private AnswerMessage GoToBathroom(Pet petDB)
         {
-            var accessCheck = CheckStatusIsInactiveOrNull();
+            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
             if (accessCheck != null)
                 return accessCheck;
 
-            string toSendText = string.Format(bathroomCommand, pet.Hygiene);
+            string toSendText = string.Format(bathroomCommand, petDB.Hygiene);
 
-            List<CommandModel> inlineParts = new InlineItems().InlineHygiene;
+            List<CallbackModel> inlineParts = new InlineItems().InlineHygiene;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
-            var aud = _allUsersService.Get(_userId);
+            var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.BathroomCommandCounter++;
-            _allUsersService.Update(aud);
+            _appServices.AllUsersDataService.Update(aud);
 
-            chat.LastMessage = "/bathroom";
-            _chatService.Update(chat.ChatId, chat);
-            return new Answer()
+            return new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.PetBathroom_Cat,
                 InlineKeyboardMarkup = toSendInline
             };
         }
-        private Answer GoToKitchen()
+        private AnswerMessage GoToKitchen(Pet petDB)
         {
-            var accessCheck = CheckStatusIsInactiveOrNull();
+            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
             if (accessCheck != null)
                 return accessCheck;
 
-            string toSendText = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
+            string toSendText = string.Format(kitchenCommand, petDB.Satiety, _appServices.UserService.Get(_userId).Gold);
 
-            List<CommandModel> inlineParts = new InlineItems().InlineFood;
+            List<CallbackModel> inlineParts = new InlineItems().InlineFood;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
-            var aud = _allUsersService.Get(_userId);
+            var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.KitchenCommandCounter++;
-            _allUsersService.Update(aud);
+            _appServices.AllUsersDataService.Update(aud);
 
-            chat.LastMessage = "/kitchen";
-            _chatService.Update(chat.ChatId, chat);
-            return new Answer()
+            return new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.PetKitchen_Cat,
@@ -786,24 +448,29 @@ namespace TamagotchiBot.Controllers
             };
 
         }
-        private Answer GoToGameroom()
+        private AnswerMessage GoToGameroom(Pet petDB)
         {
-            var accessCheck = CheckStatusIsInactiveOrNull();
+            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
             if (accessCheck != null)
                 return accessCheck;
 
-            string toSendText = string.Format(gameroomCommand, pet.Fatigue, pet.Joy, pet.Gold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
+            string toSendText = string.Format(gameroomCommand,
+                                              petDB.Fatigue,
+                                              petDB.Joy,
+                                              _appServices.UserService.Get(_userId).Gold,
+                                              Factors.CardGameJoyFactor,
+                                              Costs.AppleGame,
+                                              Factors.DiceGameJoyFactor,
+                                              Costs.DiceGame);
 
-            List<CommandModel> inlineParts = new InlineItems().InlineGames;
+            List<CallbackModel> inlineParts = new InlineItems().InlineGames;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
-            var aud = _allUsersService.Get(_userId);
+            var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.GameroomCommandCounter++;
-            _allUsersService.Update(aud);
+            _appServices.AllUsersDataService.Update(aud);
 
-            chat.LastMessage = "/gameroom";
-            _chatService.Update(chat.ChatId, chat);
-            return new Answer()
+            return new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.PetGameroom_Cat,
@@ -811,38 +478,36 @@ namespace TamagotchiBot.Controllers
             };
 
         }
-        private Answer GoToHospital()
+        private AnswerMessage GoToHospital(Pet petDB)
         {
-            var accessCheck = CheckStatusIsInactiveOrNull();
+            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
             if (accessCheck != null)
                 return accessCheck;
 
-            string commandHospital =  pet.HP switch
+            string commandHospital =  petDB.HP switch
             {
                 >= 80 => hospitalCommandHighHp,
                 >20 and < 80 => hospitalCommandMidHp,
                 _ => hospitalCommandLowHp
             };
 
-            string stickerHospital =  pet.HP switch
+            string stickerHospital =  petDB.HP switch
             {
                 >= 80 => StickersId.PetHospitalHighHP_Cat,
                 >20 and < 80 => StickersId.PetHospitalMidHP_Cat,
                 _ => StickersId.PetHospitalLowHP_Cat
             };
 
-            string toSendText = string.Format(commandHospital, pet.HP);
+            string toSendText = string.Format(commandHospital, petDB.HP);
 
-            List<CommandModel> inlineParts = new InlineItems().InlineHospital;
+            List<CallbackModel> inlineParts = new InlineItems().InlineHospital;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts);
 
-            var aud = _allUsersService.Get(_userId);
+            var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.HospitalCommandCounter++;
-            _allUsersService.Update(aud);
+            _appServices.AllUsersDataService.Update(aud);
 
-            chat.LastMessage = "/hospital";
-            _chatService.Update(chat.ChatId, chat);
-            return new Answer()
+            return new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = stickerHospital,
@@ -850,17 +515,15 @@ namespace TamagotchiBot.Controllers
             };
 
         }
-        private Answer ShowRankingInfo()
+        private AnswerMessage ShowRankingInfo()
         {
             var anwserRating = GetRanksByLevel();
 
-            var aud = _allUsersService.Get(_userId);
+            var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.RanksCommandCounter++;
-            _allUsersService.Update(aud);
+            _appServices.AllUsersDataService.Update(aud);
 
-            chat.LastMessage = "/ranks";
-            _chatService.Update(chat.ChatId, chat);
-            return new Answer()
+            return new AnswerMessage()
             {
                 Text = anwserRating,
                 StickerId = StickersId.PetRanks_Cat,
@@ -869,26 +532,796 @@ namespace TamagotchiBot.Controllers
             };
 
         }
+        private AnswerMessage GoToSleep(Pet petDB)
+        {
+            var accessCheck = CheckStatusIsInactiveOrNull(petDB, true);
+            if (accessCheck != null)
+                return accessCheck;
+
+            string toSendText = string.Format(sleepCommand,
+                                              petDB.Name,
+                                              petDB.Fatigue,
+                                              Extensions.GetCurrentStatus(petDB.CurrentStatus));
+
+            InlineKeyboardMarkup toSendInline;
+            if (petDB.CurrentStatus == (int)CurrentStatus.Sleeping)
+            {
+                var ticksToWait = (petDB.ToWakeUpTime - DateTime.UtcNow).Ticks;
+                string timeToWaitStr = string.Format(sleepCommandInlineShowTime, new DateTime().AddTicks(ticksToWait).ToString("HH:mm:ss"));
+
+                toSendInline = Extensions.InlineKeyboardOptimizer(
+                    new List<CallbackModel>()
+                    {
+                        new CallbackModel()
+                        {
+                            Text = timeToWaitStr,
+                            CallbackData = "sleepCommandInlinePutToSleep"
+                        }
+                    });
+            }
+            else
+                toSendInline = Extensions.InlineKeyboardOptimizer(
+                    new List<CallbackModel>()
+                    {
+                        new CallbackModel()
+                        {
+                            Text = sleepCommandInlinePutToSleep,
+                            CallbackData = new CallbackButtons.SleepCommand().SleepCommandInlinePutToSleep(default).CallbackData
+                        }
+                    });
+
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.SleepCommandCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            return new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = StickersId.PetSleep_Cat,
+                InlineKeyboardMarkup = toSendInline
+            };
+
+        }
+        private AnswerMessage ShowHelpInfo()
+        {
+            string toSendText = string.Format(helpCommand);
+
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.HelpCommandCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            return new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = StickersId.HelpCommandSticker
+            };
+
+        }
+        private AnswerMessage ShowMenuInfo()
+        {
+            string toSendText = string.Format(menuCommand);
+
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.MenuCommandCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            return new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = StickersId.MenuCommandSticker
+            };
+        }
+        private AnswerMessage RenamePet(Pet petDB)
+        {
+            if (_appServices.BannedUsersService.GetAll().Any(bs => bs.UserId == _userId && bs.IsRenameBanned))
+            {
+                string toSendTextBan = string.Format(renameBannedCommand);
+
+                var audF = _appServices.AllUsersDataService.Get(_userId);
+                audF.RenameCommandCounter++;
+                _appServices.AllUsersDataService.Update(audF);
+
+                return new AnswerMessage()
+                {
+                    Text = toSendTextBan,
+                    StickerId = StickersId.BannedSticker
+                };
+            }
+
+            string toSendText = string.Format(renameCommand);
+
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.RenameCommandCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            return new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = StickersId.RenamePetSticker
+            };
+
+        }
+        private AnswerMessage TestKillPet(Pet petDB)
+        {
+            string toSendText = string.Format("HP is zero (0) for {0}", petDB.Name);
+
+            _appServices.PetService.UpdateHP(_userId, 0);
+
+            return new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = StickersId.BannedSticker
+            };
+        }
+        private AnswerMessage RestartPet(Pet petDB)
+        {
+            string toSendText = string.Format(restartCommand, petDB.Name);
+
+            _appServices.PetService.Remove(_userId);
+            _appServices.UserService.Remove(_userId);
+            _appServices.ChatService.Remove(_userId);
+
+            return new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = StickersId.DroppedPetSticker
+            };
+        }
+        #endregion
+
+        #region Inline Answers
+        private void ShowBasicInfoInline(Pet petDB)
+        {
+            var userDB = _appServices.UserService.Get(_userId);
+            Culture = new System.Globalization.CultureInfo(userDB.Culture);
+            string toSendText = string.Format(petCommand,
+                                              petDB.Name,
+                                              petDB.HP,
+                                              petDB.EXP,
+                                              petDB.Level,
+                                              petDB.Satiety,
+                                              petDB.Fatigue,
+                                              Extensions.GetCurrentStatus(petDB.CurrentStatus),
+                                              petDB.Joy,
+                                              userDB.Gold,
+                                              petDB.Hygiene);
+
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
+            {
+                new CallbackButtons.PetCommand().PetCommandInlineExtraInfo
+            });
+
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
+        }
+        private void ShowExtraInfoInline(Pet petDB)
+        {
+            string toSendText = string.Format(petCommandMoreInfo1, petDB.Name, petDB.BirthDateTime);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
+            {
+                new CallbackButtons.PetCommand().PetCommandInlineBasicInfo
+            });
+
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.ExtraInfoShowedTimesCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
+        }
+
+        private void PetIsNotHungry()
+        {
+            string answerLocal = string.Format(tooManyStarvingCommand);
+            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, answerLocal, true);
+        }
+        private void NotEnoughGold()
+        {
+            string anwserLocal = string.Format(goldNotEnough);
+            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal, true);
+        }
+
+        private void PetIsTooTired()
+        {
+            string anwserLocal = string.Format(tooTiredText);
+            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal, true);
+        }
+
+        private void PetIsFullOfJoy()
+        {
+            string anwserLocal = string.Format(PetIsFullOfJoyText);
+            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal, true);
+        }
+
+        private void TakeShowerInline(Pet petDB)
+        {
+            if (petDB.Hygiene >= 100)
+            {
+                SendAlertToUser(PetIsCleanEnoughAlert, true);
+                return;
+            }
+
+            var newHygiene = petDB.Hygiene + HygieneFactors.ShowerFactor;
+            newHygiene = newHygiene > 100 ? 100 : newHygiene;
+
+            _appServices.PetService.UpdateHygiene(_userId, newHygiene);
+
+            string anwser = string.Format(PetHygieneAnwserCallback, HygieneFactors.ShowerFactor);
+            SendAlertToUser(anwser);
+
+            string toSendText = string.Format(bathroomCommand, newHygiene);
+            List<CallbackModel> inlineParts = new InlineItems().InlineHygiene;
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
+        }
+        private void TeethInline(Pet petDB)
+        {
+            if (petDB.Hygiene >= 100)
+            {
+                SendAlertToUser(PetIsCleanEnoughAlert, true);
+                return;
+            }
+
+            var newHygiene = petDB.Hygiene + HygieneFactors.TeethFactor;
+            newHygiene = newHygiene > 100 ? 100 : newHygiene;
+
+            _appServices.PetService.UpdateHygiene(_userId, newHygiene);
+
+            string anwser = string.Format(PetHygieneAnwserCallback, HygieneFactors.TeethFactor);
+            SendAlertToUser(anwser);
+
+            string toSendText = string.Format(bathroomCommand, newHygiene);
+            List<CallbackModel> inlineParts = new InlineItems().InlineHygiene;
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
+        }
+
+        private bool ToContinueFeedingPet(Pet petDB, User userDB, int foodPrice)
+        {
+            if (petDB.Satiety >= 100)
+            {
+                PetIsNotHungry();
+                return false;
+            }
+
+            var newGold = userDB.Gold - foodPrice;
+            if (newGold < 0)
+            {
+                NotEnoughGold();
+                return false;
+            }
+
+            return true;
+        }
+        private void FeedWithBreadInline(Pet petDB)
+        {
+            var userDB = _appServices.UserService.Get(_userId);
+
+            if (!ToContinueFeedingPet(petDB, userDB, Costs.Bread))
+                return;
+
+            var newGold = userDB.Gold - Costs.Bread;
+            var newSatiety = Math.Round(petDB.Satiety + FoodFactors.BreadHungerFactor, 2);
+            newSatiety = newSatiety > 100 ? 100 : newSatiety;
+
+            _appServices.UserService.UpdateGold(_userId, newGold);
+            _appServices.PetService.UpdateSatiety(_userId, newSatiety);
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+
+            aud.BreadEatenCounter++;
+            aud.GoldSpentCounter += Costs.Bread;
+            _appServices.AllUsersDataService.Update(aud);
+
+            string anwser = string.Format(PetFeedingAnwserCallback, (int)FoodFactors.BreadHungerFactor);
+            SendAlertToUser(anwser);
+
+            string toSendText = string.Format(kitchenCommand, newSatiety, newGold);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
+        }
+        private void FeedWithAppleInline(Pet petDB)
+        {
+            var userDB = _appServices.UserService.Get(_userId);
+
+            if (!ToContinueFeedingPet(petDB, userDB, Costs.Apple))
+                return;
+
+            var newGold = userDB.Gold - Constants.Costs.Apple;
+            var newSatiety = Math.Round(petDB.Satiety + FoodFactors.RedAppleHungerFactor, 2);
+            newSatiety = newSatiety > 100 ? 100 : newSatiety;
+
+            _appServices.UserService.UpdateGold(_userId, newGold);
+            _appServices.PetService.UpdateSatiety(_userId, newSatiety);
+
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.AppleEatenCounter++;
+            aud.GoldSpentCounter += Costs.Apple;
+            _appServices.AllUsersDataService.Update(aud);
+
+            SendAlertToUser(string.Format(PetFeedingAnwserCallback, (int)FoodFactors.RedAppleHungerFactor));
+
+            string toSendText = string.Format(kitchenCommand, newSatiety, newGold);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
+        }
+        private void FeedWithChocolateInline(Pet petDB)
+        {
+            var userDB = _appServices.UserService.Get(_userId);
+
+            if (!ToContinueFeedingPet(petDB, userDB, Costs.Chocolate))
+                return;
+
+            var newGold = userDB.Gold - Constants.Costs.Chocolate;
+            var newSatiety = Math.Round(petDB.Satiety + FoodFactors.ChocolateHungerFactor, 2);
+            newSatiety = newSatiety > 100 ? 100 : newSatiety;
+
+            _appServices.UserService.UpdateGold(_userId, newGold);
+            _appServices.PetService.UpdateSatiety(_userId, newSatiety);
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.ChocolateEatenCounter++;
+            aud.GoldSpentCounter += Constants.Costs.Chocolate;
+            _appServices.AllUsersDataService.Update(aud);
+
+            string anwser = string.Format(PetFeedingAnwserCallback, (int)FoodFactors.ChocolateHungerFactor);
+            SendAlertToUser(anwser);
+
+            string toSendText = string.Format(kitchenCommand, newSatiety, newGold);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
+        }
+        private void FeedWithLollipopInline(Pet petDB)
+        {
+            var userDB = _appServices.UserService.Get(_userId);
+
+            if (!ToContinueFeedingPet(petDB, userDB, Costs.Lollipop))
+                return;
+
+            var newGold = userDB.Gold - Constants.Costs.Lollipop;
+            var newSatiety = Math.Round(petDB.Satiety + FoodFactors.LollipopHungerFactor, 2);
+            newSatiety = newSatiety > 100 ? 100 : newSatiety;
+
+            _appServices.UserService.UpdateGold(_userId, newGold);
+            _appServices.PetService.UpdateSatiety(_userId, newSatiety);
+
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.LollypopEatenCounter++;
+            aud.GoldSpentCounter += Costs.Lollipop;
+            _appServices.AllUsersDataService.Update(aud);
+
+            string anwser = string.Format(PetFeedingAnwserCallback, (int)FoodFactors.LollipopHungerFactor);
+            SendAlertToUser(anwser);
+
+            string toSendText = string.Format(kitchenCommand, newSatiety, newGold);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
+        }
+
+        private void PutToSleepInline(Pet petDB)
+        {
+            Pet petResult = new Pet().Clone(petDB);
+
+            if (CheckStatusIsInactive(petResult, true))
+                return;
+
+            if (petResult.CurrentStatus == (int)CurrentStatus.Sleeping)
+            {
+                UpdateSleepingInline(petResult);
+                return;
+            }
+
+            if (petResult.Fatigue < Limits.ToRestMinLimitOfFatigue)
+            {
+                DeclineSleepingInline(petResult);
+                return;
+            }
+
+            StartSleepingInline(petResult);
+        }
+        private void StartSleepingInline(Pet petDB)
+        {
+            petDB.CurrentStatus = (int)CurrentStatus.Sleeping;
+            petDB.StartSleepingTime = DateTime.UtcNow;
+            petDB.ToWakeUpTime = DateTime.UtcNow + new TimesToWait().SleepToWait;
+            _appServices.PetService.Update(petDB.UserId, petDB);
+
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.SleepenTimesCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+
+            var timeToWait = petDB.ToWakeUpTime - DateTime.UtcNow;
+            string toSendText = string.Format(sleepCommand, petDB.Name, petDB.Fatigue, Extensions.GetCurrentStatus(petDB.CurrentStatus));
+            InlineKeyboardMarkup toSendInline =
+                Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
+                {
+                    new CallbackButtons.SleepCommand().SleepCommandInlinePutToSleep(timeToWait)
+                });
+
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
+        }
+        private void DeclineSleepingInline(Pet petDB)
+        {
+            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, PetSleepingDoesntWantYetAnwserCallback);
+            string sendTxt = string.Format(sleepCommand, petDB.Name, petDB.Fatigue, Extensions.GetCurrentStatus(petDB.CurrentStatus));
+
+            InlineKeyboardMarkup toSendInlineWhileActive =
+                Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
+                {
+                    new CallbackModel()
+                    {
+                        Text = sleepCommandInlinePutToSleep,
+                        CallbackData = "sleepCommandInlinePutToSleep"
+                    }
+                });
+
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(sendTxt, toSendInlineWhileActive));
+        }
+        private void UpdateSleepingInline(Pet petDB)
+        {
+            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, PetSleepingAlreadyAnwserCallback);
+
+            string toSendText = string.Format(sleepCommand, petDB.Name, petDB.Fatigue, Extensions.GetCurrentStatus(petDB.CurrentStatus));
+
+            var timeToWait = petDB.ToWakeUpTime - DateTime.UtcNow;
+            timeToWait = timeToWait < TimeSpan.Zero ? default : timeToWait;
+
+            InlineKeyboardMarkup toSendInline =
+                Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
+                {
+                    new CallbackButtons.SleepCommand().SleepCommandInlinePutToSleep(timeToWait)
+                });
+
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
+        }
+
+        private void PlayCardInline(Pet petDB)
+        {
+            var userDB = _appServices.UserService.Get(_userId);
+
+            var newGold = userDB.Gold - Costs.AppleGame;
+            if (newGold < 0)
+            {
+                NotEnoughGold();
+                return;
+            }
+
+            var newFatigue = petDB.Fatigue + Factors.CardGameFatigueFactor;
+            if (newFatigue > 100)
+            {
+                PetIsTooTired();
+                return;
+            }
+
+            if (petDB.Joy >= 100)
+            {
+                PetIsFullOfJoy();
+                return;
+            }
+            var newJoy = petDB.Joy + Factors.CardGameJoyFactor;
+            newJoy = newJoy > 100 ? 100 : newJoy;
+
+            _appServices.UserService.UpdateGold(_userId, newGold);
+            _appServices.PetService.UpdateFatigue(_userId, newFatigue);
+            _appServices.PetService.UpdateJoy(_userId, newJoy);
+
+            string anwser = string.Format(PetPlayingAnwserCallback, Factors.CardGameFatigueFactor);
+            SendAlertToUser(anwser);
+
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.CardsPlayedCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            string toSendText = string.Format(gameroomCommand,
+                                              newFatigue,
+                                              newJoy,
+                                              newGold,
+                                              Factors.CardGameJoyFactor,
+                                              Factors.CardGameJoyFactor,
+                                              Costs.AppleGame,
+                                              Factors.DiceGameJoyFactor,
+                                              Costs.DiceGame);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineGames, 3);
+
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
+        }
+        private void PlayDiceInline(Pet petDB)
+        {
+            var userDB = _appServices.UserService.Get(_userId);
+
+            var newGold = userDB.Gold - Costs.DiceGame;
+            if (newGold < 0)
+            {
+                NotEnoughGold();
+                return;
+            }
+
+            var newFatigue = petDB.Fatigue + Factors.DiceGameFatigueFactor;
+            if (newFatigue > 100)
+            {
+                PetIsTooTired();
+                return;
+            }
+
+            if (petDB.Joy >= 100)
+            {
+                PetIsFullOfJoy();
+                return;
+            }
+            var newJoy = petDB.Joy + Factors.DiceGameJoyFactor;
+            newJoy = newJoy > 100 ? 100 : newJoy;
+
+            _appServices.UserService.UpdateGold(_userId, newGold);
+            _appServices.PetService.UpdateFatigue(_userId, newFatigue);
+            _appServices.PetService.UpdateJoy(_userId, newJoy);
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.DicePlayedCounter++;
+            aud.GoldSpentCounter += Costs.DiceGame;
+            _appServices.AllUsersDataService.Update(aud);
+
+            string anwser = string.Format(PetPlayingAnwserCallback, Factors.DiceGameJoyFactor);
+            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser);
+
+            string toSendText = string.Format(gameroomCommand,
+                                              newFatigue,
+                                              newJoy,
+                                              newGold,
+                                              Factors.CardGameJoyFactor,
+                                              Costs.AppleGame,
+                                              Factors.DiceGameJoyFactor,
+                                              Costs.DiceGame);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineGames, 3);
+
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
+        }
+        private void WorkOnPCInline(Pet petDB)
+        {
+            InlineKeyboardMarkup toSendInline;
+            string toSendText;
+
+            if (petDB.CurrentStatus == (int)CurrentStatus.Active)
+            {
+                if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(default).CallbackData)
+                {
+                    UpdateWorkOnPCButtonToDefault();
+                    return;
+                }
+
+                var newFatigue = petDB.Fatigue + Factors.WorkOnPCFatigueFactor;
+                if (newFatigue > 100)
+                {
+                    PetIsTooTired();
+                    return;
+                }
+
+                _appServices.PetService.UpdateFatigue(_userId, newFatigue);
+                _appServices.UserService.UpdateGold(_userId, _appServices.UserService.Get(_userId).Gold += Rewards.WorkOnPCGoldReward);
+                _appServices.PetService.UpdateCurrentStatus(_userId, (int)CurrentStatus.WorkingOnPC);
+
+                var aud = _appServices.AllUsersDataService.Get(_userId);
+                aud.GoldEarnedCounter += Rewards.WorkOnPCGoldReward;
+                aud.WorkOnPCCounter++;
+                _appServices.AllUsersDataService.Update(aud);
+
+                var startWorkingTime = DateTime.UtcNow;
+                _appServices.PetService.UpdateStartWorkingTime(_userId, startWorkingTime);
+
+                string anwser = string.Format(PetWorkingAnswerCallback, Factors.WorkOnPCFatigueFactor, Rewards.WorkOnPCGoldReward);
+                SendAlertToUser(anwser, true);
+
+                toSendText = string.Format(workCommandPCWorking);
+
+                TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - startWorkingTime);
+
+                toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
+                {
+                    new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(remainsTime)
+                });
+
+                _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
+            }
+            else if (petDB.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
+            {
+                TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
+
+                //if _callback handled when time of work is over
+                if (remainsTime <= TimeSpan.Zero)
+                {
+                    petDB.CurrentStatus = (int)CurrentStatus.Active;
+                    _appServices.PetService.UpdateCurrentStatus(_userId, petDB.CurrentStatus);
+
+                    string toSendTextIfTimeOver = string.Format(workCommand, new TimesToWait().WorkOnPCToWait.TotalMinutes, Rewards.WorkOnPCGoldReward);
+                    List<CallbackModel> inlineParts = new InlineItems().InlineWork;
+                    InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+
+                    _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendTextIfTimeOver, toSendInlineIfTimeOver));
+                    return;
+                }
+
+                //if _callback handled when pet is still working
+                _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, ShowRemainedTimeWorkCallback(remainsTime));
+            }
+        }
+
+        private void GetDailyRewardInline(User userDB)
+        {
+            var dateTimeWhenOver = userDB.GotDailyRewardTime.Add(new TimesToWait().DailyRewardToWait);
+            if (dateTimeWhenOver > DateTime.UtcNow)
+            {
+                _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, ShowRemainedTimeDailyRewardCallback(dateTimeWhenOver - DateTime.UtcNow, true));
+                return;
+            }
+
+            var newGold = userDB.Gold + Constants.Rewards.DailyGoldReward;
+
+            _appServices.UserService.UpdateGold(_userId, newGold);
+            _appServices.UserService.UpdateDailyRewardTime(_userId, DateTime.UtcNow);
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.GoldEarnedCounter += Constants.Rewards.DailyGoldReward;
+            _appServices.AllUsersDataService.Update(aud);
+
+            string anwser = string.Format(DailyRewardAnwserCallback, Rewards.DailyGoldReward);
+            SendAlertToUser(anwser, true);
+
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, ShowRemainedTimeDailyRewardCallback(new TimeSpan(23, 59, 59), false));
+            return;
+        }
+
+        private AnswerMessage ShowRemainedTimeWork(TimeSpan remainedTime)
+        {
+            InlineKeyboardMarkup toSendInline;
+            string toSendText;
+
+            toSendText = string.Format(workCommandPCWorking);
+
+            toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
+            {
+                new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(remainedTime)
+            });
+
+            return new AnswerMessage() { InlineKeyboardMarkup = toSendInline, Text = toSendText, StickerId = StickersId.PetWork_Cat };
+        }
+        private AnswerCallback ShowRemainedTimeWorkCallback(TimeSpan remainedTime = default)
+        {
+            InlineKeyboardMarkup toSendInline;
+            string toSendText;
+
+            if (remainedTime == default)
+                remainedTime = new TimeSpan(0);
+
+            string anwser = string.Format(workCommandPCWorking);
+            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser);
+
+            toSendText = string.Format(workCommandPCWorking);
+            toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
+            {
+                new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(remainedTime)
+            });
+
+            return new AnswerCallback(toSendText, toSendInline);
+        }
+
+        private AnswerMessage ShowRemainedTimeDailyReward(TimeSpan remainedTime)
+        {
+            InlineKeyboardMarkup toSendInline;
+            string toSendText;
+
+            toSendText = string.Format(rewardCommandDailyRewardGotten);
+            string inlineStr = string.Format(rewardCommandDailyRewardInlineShowTime, new DateTime(remainedTime.Ticks).ToString("HH:mm:ss"));
+
+            toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
+                    {
+                        new CallbackModel()
+                        {
+                            Text = inlineStr,
+                            CallbackData = "rewardCommandDailyRewardInlineShowTime"
+                        }
+                    });
+
+            return new AnswerMessage() { InlineKeyboardMarkup = toSendInline, Text = toSendText, StickerId = StickersId.DailyRewardSticker };
+        }
+        private AnswerCallback ShowRemainedTimeDailyRewardCallback(TimeSpan remainedTime = default, bool isAlert = false)
+        {
+            InlineKeyboardMarkup toSendInline;
+            string toSendText;
+
+            if (remainedTime == default)
+                remainedTime = new TimeSpan(0);
+
+            if (isAlert)
+            {
+                string anwser = string.Format(rewardCommandDailyRewardGotten);
+                SendAlertToUser(anwser, isAlert);
+            }
+
+            toSendText = string.Format(rewardCommandDailyRewardGotten);
+
+            toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
+            {
+                new CallbackButtons.RewardsCommand().RewardCommandDailyRewardInlineShowTime(remainedTime)
+            });
+
+            return new AnswerCallback(toSendText, toSendInline);
+        }
+
+        private void CureWithPill(Pet petDB)
+        {
+            var newHP = petDB.HP + Factors.PillHPFactor;
+            if (newHP > 100)
+                newHP = 100;
+
+            var newJoy = petDB.Joy + Factors.PillJoyFactor;
+            if (newJoy < 0)
+                newJoy = 0;
+
+            _appServices.PetService.UpdateHP(_userId, newHP);
+            _appServices.PetService.UpdateJoy(_userId, newJoy);
+
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.PillEatenCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            string anwser = string.Format(PetCuringAnwserCallback, Factors.PillHPFactor, Factors.PillJoyFactor);
+            SendAlertToUser(anwser, true);
+
+            string commandHospital =  newHP switch
+            {
+                >= 80 => hospitalCommandHighHp,
+                >20 and < 80 => hospitalCommandMidHp,
+                _ => hospitalCommandLowHp
+            };
+
+            string toSendText = string.Format(commandHospital, newHP);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineHospital);
+
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline));
+        }
+
+        private void ShowRanksGold()
+        {
+            string toSendText = GetRanksByGold();
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html));
+        }
+        private void ShowRanksApples()
+        {
+            string toSendText = GetRanksByApples();
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
+
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html));
+        }
+        private void ShowRanksLevel()
+        {
+            string toSendText = GetRanksByLevel();
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
+
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html));
+        }
+
+        #endregion
 
         private string GetRanksByLevel()
         {
-            var topPets = _petService.GetAll()
+            var topPets = _appServices.PetService.GetAll()
                 .OrderByDescending(p => p.Level)
                 .ThenByDescending(p => p.LastUpdateTime)
                 .Take(10); //First 10 top-level pets
 
             string anwserRating = "";
+            var currentUser = _appServices.UserService.Get(_userId);
+            var currentPet = _appServices.PetService.Get(_userId);
 
             int counter = 1;
             foreach (var petDB in topPets)
             {
-                var userDB = _userService.Get(petDB.UserId);
+                var userDB = _appServices.UserService.Get(petDB.UserId);
                 string name = petDB.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
 
                 if (counter == 1)
                 {
                     anwserRating += ranksCommand + "\n\n";
-                    if (user.UserId == userDB.UserId)
+                    if (currentUser.UserId == userDB.UserId)
                         anwserRating += "<b>" + "🌟 " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
                     else
                         anwserRating += "🌟 " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name);
@@ -899,7 +1332,7 @@ namespace TamagotchiBot.Controllers
                 {
                     anwserRating += "\n";
 
-                    if (user.UserId == userDB.UserId)
+                    if (currentUser.UserId == userDB.UserId)
                         anwserRating += "<b>" + counter + ". " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
                     else
                         anwserRating += counter + ". " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name);
@@ -907,43 +1340,45 @@ namespace TamagotchiBot.Controllers
                 }
             }
 
-            if (!topPets.Any(a => a.UserId == user.UserId))
+            if (!topPets.Any(a => a.UserId == currentUser.UserId))
             {
-                string name = pet.Name ?? user.Username ?? user.FirstName + user.LastName;
+                string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
 
                 anwserRating += "\n______________________________";
-                anwserRating += "\n <b>" + _petService.GetAll()
+                anwserRating += "\n <b>" + _appServices.PetService.GetAll()
                 .OrderByDescending(p => p.Level)
                 .ThenByDescending(p => p.LastUpdateTime)
                 .ToList()
-                .FindIndex(a => a.UserId == user.UserId) + ". " + pet.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                .FindIndex(a => a.UserId == currentUser.UserId) + ". " + currentPet.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
             }
 
             return anwserRating;
         }
         private string GetRanksByApples()
-        {            
-            var topApples = _appleGameDataService.GetAll()
+        {
+            var topApples = _appServices.AppleGameDataService.GetAll()
                 .OrderByDescending(a => a.TotalWins)
                 .Take(10); //First 10 top-apples users
 
             string anwserRating = "";
+            var currentUser = _appServices.UserService.Get(_userId);
+            var currentPet = _appServices.PetService.Get(_userId);
 
             int counter = 1;
             foreach (var appleUser in topApples)
             {
-                var userDB = _userService.Get(appleUser.UserId);
-                string name = " 🐱 " + _petService.Get(appleUser.UserId)?.Name ?? userDB?.Username ?? userDB?.FirstName + userDB?.LastName ?? "";
+                var userDB = _appServices.UserService.Get(appleUser.UserId);
+                string name = " 🐱 " + _appServices.PetService.Get(appleUser.UserId)?.Name ?? userDB?.Username ?? userDB?.FirstName + userDB?.LastName ?? "";
                 if (counter == 1)
                 {
-                    if (user == null)
+                    if (currentUser == null)
                         continue;
 
                     if (appleUser?.TotalWins == null)
                         continue;
 
                     anwserRating += ranksCommandApples + "\n\n";
-                    if (user.UserId == userDB?.UserId)
+                    if (currentUser.UserId == userDB?.UserId)
                         anwserRating += "<b>" + "🍏 " + appleUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
                     else
                         anwserRating += "🍏 " + appleUser.TotalWins + HttpUtility.HtmlEncode(name);
@@ -959,7 +1394,7 @@ namespace TamagotchiBot.Controllers
                         continue;
 
                     anwserRating += "\n";
-                    if (user.UserId == userDB.UserId)
+                    if (currentUser.UserId == userDB.UserId)
                         anwserRating += "<b>" + counter + ". " + appleUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
                     else
                         anwserRating += counter + ". " + appleUser.TotalWins + HttpUtility.HtmlEncode(name);
@@ -967,16 +1402,16 @@ namespace TamagotchiBot.Controllers
                 }
             }
 
-            if (!topApples.Any(a => a.UserId == user.UserId))
+            if (!topApples.Any(a => a.UserId == _userId))
             {
-                var currentUserApple =_appleGameDataService.Get(user.UserId);
+                var currentUserApple =_appServices.AppleGameDataService.Get(_userId);
 
                 anwserRating += "\n______________________________";
-                var counterN = _appleGameDataService.GetAll()
+                var counterN = _appServices.AppleGameDataService.GetAll()
                 .OrderByDescending(a => a.TotalWins)
                 .ToList()
-                .FindIndex(a => a.UserId == user.UserId);
-                anwserRating += "\n <b> " + (counterN == -1 ? _appleGameDataService.GetAll()?.Count : counterN) + ". " + (currentUserApple?.TotalWins ?? 0) + HttpUtility.HtmlEncode(" 🐱 " + pet?.Name ?? user.Username ?? user.FirstName + user.LastName) + "</b>";
+                .FindIndex(a => a.UserId == _userId);
+                anwserRating += "\n <b> " + (counterN == -1 ? _appServices.AppleGameDataService.GetAll()?.Count : counterN) + ". " + (currentUserApple?.TotalWins ?? 0) + HttpUtility.HtmlEncode(" 🐱 " + currentPet?.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName) + "</b>";
             }
 
 
@@ -984,22 +1419,27 @@ namespace TamagotchiBot.Controllers
         }
         private string GetRanksByGold()
         {
-            var topPets = _petService.GetAll()
+            var topPets = _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
+                p => p.UserId,
+                u => u.UserId,
+                (pet, user) => new {user.UserId, user.Gold, pet.Name, pet.LastUpdateTime})
                 .OrderByDescending(p => p.Gold)
                 .ThenByDescending(p => p.LastUpdateTime)
                 .Take(10); //First 10 top-gold pets
 
             string anwserRating = "";
+            var currentUser = _appServices.UserService.Get(_userId);
+            var currentPet = _appServices.PetService.Get(_userId);
 
             int counter = 1;
             foreach (var pet in topPets)
             {
-                var userDB = _userService.Get(pet.UserId);
+                var userDB = _appServices.UserService.Get(pet.UserId);
                 string name = pet.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
                 if (counter == 1)
                 {
                     anwserRating += ranksCommandGold + "\n\n";
-                    if (user.UserId == userDB.UserId)
+                    if (currentUser.UserId == userDB.UserId)
                         anwserRating += "<b>" + "💎 " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
                     else
                         anwserRating += "💎 " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name);
@@ -1009,7 +1449,7 @@ namespace TamagotchiBot.Controllers
                 else
                 {
                     anwserRating += "\n";
-                    if (user.UserId == userDB.UserId)
+                    if (currentUser.UserId == userDB.UserId)
                         anwserRating += "<b>" + counter + ". " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
                     else
                         anwserRating += counter + ". " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name);
@@ -1017,921 +1457,61 @@ namespace TamagotchiBot.Controllers
                 }
             }
 
-            if (!topPets.Any(a => a.UserId == user.UserId))
+            if (!topPets.Any(a => a.UserId == currentUser.UserId))
             {
-                string name = pet.Name ?? user.Username ?? user.FirstName + user.LastName;
+                string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
 
                 anwserRating += "\n______________________________";
-                anwserRating += "\n <b>" + _petService.GetAll()
-                .OrderByDescending(p => p.Gold)
-                .ThenByDescending(p => p.LastUpdateTime)
-                .ToList()
-                .FindIndex(a => a.UserId == user.UserId) + ". " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                anwserRating += "\n <b>" +
+                    _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
+                    p => p.UserId,
+                    u => u.UserId,
+                    (pet, user) => new { user.UserId, user.Gold, pet.Name, pet.LastUpdateTime })
+                    .OrderByDescending(p => p.Gold)
+                    .ThenByDescending(p => p.LastUpdateTime)
+                    .ToList()
+                    .FindIndex(a => a.UserId == currentUser.UserId) + ". " + currentUser.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
             }
 
             return anwserRating;
         }
 
-        private Answer GoToSleep()
+        private void UpdateWorkOnPCButtonToDefault()
         {
-            var accessCheck = CheckStatusIsInactiveOrNull(true);
-            if (accessCheck != null)
-                return accessCheck;
+            string toSendTextIfTimeOver = string.Format(workCommand,
+                                                        new TimesToWait().WorkOnPCToWait.TotalMinutes,
+                                                        Rewards.WorkOnPCGoldReward);
 
-            string toSendText = string.Format(sleepCommand, pet.Name, pet.Fatigue, Extensions.GetCurrentStatus(pet.CurrentStatus));
+            List<CallbackModel> inlineParts = new InlineItems().InlineWork;
+            InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
-            InlineKeyboardMarkup toSendInline;
-            if (pet.CurrentStatus == (int)CurrentStatus.Sleeping)
-            {
-                var minutesToWait = pet.Fatigue / Factors.RestFactor;
-                string timeToWaitStr = string.Format(sleepCommandInlineShowTime, new DateTime().AddMinutes(minutesToWait).ToString("HH:mm"));
-
-                toSendInline = Extensions.InlineKeyboardOptimizer(
-                    new List<CommandModel>()
-                    {
-                        new CommandModel()
-                        {
-                            Text = timeToWaitStr,
-                            CallbackData = "sleepCommandInlinePutToSleep"
-                        }
-                    });
-            }
-            else
-                toSendInline = Extensions.InlineKeyboardOptimizer(
-                    new List<CommandModel>()
-                    {
-                        new CommandModel()
-                        {
-                            Text = sleepCommandInlinePutToSleep,
-                            CallbackData = "sleepCommandInlinePutToSleep"
-                        }
-                    });
-
-            var aud = _allUsersService.Get(_userId);
-            aud.SleepCommandCounter++;
-            _allUsersService.Update(aud);
-
-            chat.LastMessage = "/sleep";
-            _chatService.Update(chat.ChatId, chat);
-            return new Answer()
-            {
-                Text = toSendText,
-                StickerId = StickersId.PetSleep_Cat,
-                InlineKeyboardMarkup = toSendInline
-            };
-
+            _appServices.BotControlService.SendAnswerCallback(_userId, _callback?.Message?.MessageId ?? 0, new AnswerCallback(toSendTextIfTimeOver, toSendInlineIfTimeOver));
         }
-        private Answer ShowHelpInfo()
+
+        private bool CheckStatusIsInactive(Pet petDB, bool IsGoToSleepCommand = false)
         {
-            string toSendText = string.Format(helpCommand);
-
-            var aud = _allUsersService.Get(_userId);
-            aud.HelpCommandCounter++;
-            _allUsersService.Update(aud);
-
-            return new Answer()
+            if (petDB.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
             {
-                Text = toSendText,
-                StickerId = StickersId.HelpCommandSticker
-            };
+                string denyText = string.Format(denyAccessSleeping);
+                _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, denyText, true);
 
-        }
-        private Answer ShowMenuInfo()
-        {
-            string toSendText = string.Format(menuCommand);
-
-            var aud = _allUsersService.Get(_userId);
-            aud.MenuCommandCounter++;
-            _allUsersService.Update(aud);
-
-            return new Answer()
-            {
-                Text = toSendText,
-                StickerId = StickersId.MenuCommandSticker
-            };
-        }
-        private Answer RenamePet()
-        {
-            if (_bannedService.GetAll().Any(bs => bs.UserId == user.UserId && bs.IsRenameBanned))
-            {
-                string toSendTextBan = string.Format(renameBannedCommand);
-
-                var audF = _allUsersService.Get(_userId);
-                audF.RenameCommandCounter++;
-                _allUsersService.Update(audF);
-
-                chat.LastMessage = "/bannedrename";
-                _chatService.Update(chat.ChatId, chat);
-
-                return new Answer()
-                {
-                    Text = toSendTextBan,
-                    StickerId = StickersId.BannedSticker
-                };
+                return true;
             }
 
-            string toSendText = string.Format(renameCommand);
-
-            var aud = _allUsersService.Get(_userId);
-            aud.RenameCommandCounter++;
-            _allUsersService.Update(aud);
-
-            chat.LastMessage = "/rename";
-            _chatService.Update(chat.ChatId, chat);
-
-            return new Answer()
+            if (petDB.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
             {
-                Text = toSendText,
-                StickerId = StickersId.RenamePetSticker
-            };
+                string denyText = string.Format(denyAccessWorking);
+                _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, denyText, true);
 
-        }
-        private Answer RestartPet()
-        {
-            string toSendText = string.Format(restartCommand, pet.Name);
-
-            chat.LastMessage = "/restart";
-            _chatService.Update(chat.ChatId, chat);
-
-            _petService.Remove(user.UserId);
-            _userService.Remove(user.UserId);
-            _chatService.Remove(user.UserId);
-
-            return new Answer()
-            {
-                Text = toSendText,
-                StickerId = StickersId.DroppedPetSticker
-            };
-        }
-
-        private void UpdateUser(long userId)
-        {
-            _userService.Update(userId, message.From);
-            Log.Information($"User {message.From.Username} has been updated in Db");
-        }
-        private Chat UpdateChat(Message message)
-        {
-            var chatDb = _chatService.Create(new Chat()
-            {
-                ChatId = message.Chat.Id,
-                Name = message.Chat.Username ?? message.Chat.Title,
-                UserId = message.From.Id,
-                LastMessage = null
-            });
-            Log.Information($"Chat {message.Chat.Username ?? message.Chat.Title} has been overadded in Db");
-            return chatDb;
-        }
-
-        private void UpdateIndicatorEXP(int minuteCounter)
-        {
-            int toAddExp = minuteCounter * Factors.ExpFactor;
-
-            pet.EXP += toAddExp;
-
-            if (pet.EXP > 100)
-            {
-                pet.Level += pet.EXP / Factors.ExpToLvl;
-                pet.EXP -= (pet.EXP / Factors.ExpToLvl) * Factors.ExpToLvl;
-            }
-        }
-        private void UpdateIndicatorSatiety(int minuteCounter)
-        {
-            double decreaseSatiety = Math.Round(minuteCounter * Factors.StarvingFactor, 2);
-            pet.Satiety -= decreaseSatiety;
-            pet.Satiety = Math.Round(pet.Satiety, 2);
-
-            if (pet.Satiety < 0)
-            {
-                pet.Satiety = 0;
-                int tmpSat = (int)decreaseSatiety > 100 ? ((int)decreaseSatiety) - 100 : ((int)decreaseSatiety);
-                pet.HP -= tmpSat;
-
-                if (pet.HP < 0)
-                    pet.HP = 0;
-            }
-        }
-        private void UpdateIndicatorHygiene(int minuteCounter)
-        {
-            double toDecreaseHygiene = Math.Round(minuteCounter * Factors.HygieneFactor);
-
-            pet.Hygiene -= (int)toDecreaseHygiene;
-
-            if (pet.Hygiene < 0)
-            {
-                pet.Hygiene = 0;
-            }
-        }
-        private void UpdateIndicatorJoy(int minuteCounter)
-        {
-            double toDecreaseJoy = Math.Round(minuteCounter * Factors.JoyFactor);
-
-            pet.Joy -= (int)toDecreaseJoy;
-
-            if (pet.Joy < 0)
-            {
-                pet.Joy = 0;
+                return true;
             }
 
-
+            return false;
         }
-        private void UpdateIndicatorFatigue(int minuteCounter)
+
+        private void SendAlertToUser(string textInAlert, bool isWarning = false)
         {
-            if (pet.CurrentStatus == (int)CurrentStatus.Active)
-            {
-                double toAddFatigue = Math.Round(minuteCounter * Factors.FatigueFactor);
-                pet.Fatigue += (int)toAddFatigue;
-            }
-            if (pet.Fatigue > 100)
-                pet.Fatigue = 100;
+            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback?.Id, _userId, textInAlert, isWarning);
         }
-        private void UpdateIndicatorSleeping()
-        {
-            int minuteSleepingCounter = (int)(DateTime.UtcNow - pet.StartSleepingTime).TotalMinutes;
-            double toDecreaseFatigue = Math.Round(minuteSleepingCounter * Factors.RestFactor);
-            pet.StartSleepingTime = DateTime.UtcNow;
-
-            pet.Fatigue -= (int)toDecreaseFatigue;
-
-            if (pet.Fatigue <= 0)
-            {
-                pet.CurrentStatus = (int)CurrentStatus.Active;
-                pet.Fatigue = 0;
-            }
-        }
-
-        #region Inline Answers
-        private AnswerCallback ShowBasicInfoInline()
-        {
-            string toSendText = string.Format(petCommand, pet.Name, pet.HP, pet.EXP, pet.Level, pet.Satiety,
-                                                  pet.Fatigue,
-                                                  Extensions.GetCurrentStatus(pet.CurrentStatus),
-                                                  pet.Joy,
-                                                  pet.Gold,
-                                                  pet.Hygiene);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
-                {
-                    new CommandModel()
-                    {
-                        Text = petCommandInlineExtraInfo,
-                        CallbackData = "petCommandInlineExtraInfo"
-                    }
-                });
-
-            return new AnswerCallback(toSendText, toSendInline);
-        }
-        private AnswerCallback ShowExtraInfoInline()
-        {
-            string toSendText = string.Format(petCommandMoreInfo1, pet.Name, pet.BirthDateTime);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
-                {
-                    new CommandModel()
-                    {
-                        Text = petCommandInlineBasicInfo,
-                        CallbackData = "petCommandInlineBasicInfo"
-                    }
-                });
-
-            var aud = _allUsersService.Get(_userId);
-            aud.ExtraInfoShowedTimesCounter++;
-            _allUsersService.Update(aud);
-            return new AnswerCallback(toSendText, toSendInline);
-        }
-        private AnswerCallback FeedWithBreadInline()
-        {
-            var newStarving = Math.Round(pet.Satiety + FoodFactors.BreadHungerFactor, 2);
-            if (newStarving > 100)
-            {
-                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
-
-                string anwserLocal = string.Format(tooManyStarvingCommand);
-                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
-
-                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
-                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
-            }
-
-
-            var newGold = pet.Gold - Constants.Costs.Bread;
-            if (newGold < 0)
-            {
-                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
-
-                string anwserLocal = string.Format(goldNotEnough);
-                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
-
-                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
-                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
-            }
-            _petService.UpdateGold(_userId, newGold);
-            _petService.UpdateSatiety(_userId, newStarving);
-            var aud = _allUsersService.Get(_userId);
-            aud.BreadEatenCounter++;
-            aud.GoldSpentCounter += Constants.Costs.Bread;
-            _allUsersService.Update(aud);
-
-            string anwser = string.Format(PetFeedingAnwserCallback, (int)FoodFactors.BreadHungerFactor);
-            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
-
-            string toSendText = string.Format(kitchenCommand, newStarving, newGold);
-
-            if (toSendText.IsEqual(callback.Message.Text))
-                return null;
-
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
-
-            return new AnswerCallback(toSendText, toSendInline);
-        }
-        private AnswerCallback TakeShowerInline()
-        {
-            var newHygiene = pet.Hygiene + HygieneFactors.ShowerFactor;
-
-            _petService.UpdateHygiene(_userId, newHygiene);
-
-            string anwser = string.Format(PetHygieneAnwserCallback, HygieneFactors.ShowerFactor);
-            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
-
-            pet = _petService.Get(pet.UserId);
-            string toSendText = string.Format(bathroomCommand, pet.Hygiene);
-
-            List<CommandModel> inlineParts = new InlineItems().InlineHygiene;
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
-
-            return new AnswerCallback(toSendText, toSendInline);
-        }
-
-        private AnswerCallback TeethInline()
-        {
-            var newHygiene = pet.Hygiene + HygieneFactors.TeethFactor;
-
-            _petService.UpdateHygiene(_userId, newHygiene);
-
-            string anwser = string.Format(PetHygieneAnwserCallback, HygieneFactors.TeethFactor);
-            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
-            pet = _petService.Get(pet.UserId);
-            string toSendText = string.Format(bathroomCommand, pet.Hygiene);
-
-            List<CommandModel> inlineParts = new InlineItems().InlineHygiene;
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
-
-            return new AnswerCallback(toSendText, toSendInline);
-        }
-        private AnswerCallback FeedWithAppleInline()
-        {
-            var newStarving = Math.Round(pet.Satiety + FoodFactors.RedAppleHungerFactor, 2);
-            if (newStarving > 100)
-            {
-                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
-
-                string anwserLocal = string.Format(tooManyStarvingCommand);
-                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
-
-                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
-                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
-            }
-
-            var newGold = pet.Gold - Constants.Costs.Apple;
-            if (newGold < 0)
-            {
-                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
-
-                string anwserLocal = string.Format(goldNotEnough);
-                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
-
-                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
-                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
-            }
-
-            _petService.UpdateGold(_userId, newGold);
-            _petService.UpdateSatiety(_userId, newStarving);
-
-            var aud = _allUsersService.Get(_userId);
-            aud.AppleEatenCounter++;
-            aud.GoldSpentCounter += Constants.Costs.Apple;
-            _allUsersService.Update(aud);
-
-            string anwser = string.Format(PetFeedingAnwserCallback, (int)FoodFactors.RedAppleHungerFactor);
-            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
-
-            string toSendText = string.Format(kitchenCommand, newStarving, newGold);
-
-            if (toSendText.IsEqual(callback.Message.Text))
-                return null;
-
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
-
-            return new AnswerCallback(toSendText, toSendInline);
-        }
-        private AnswerCallback FeedWithChocolateInline()
-        {
-            var newStarving = Math.Round(pet.Satiety + FoodFactors.ChocolateHungerFactor, 2);
-            if (newStarving > 100)
-            {
-                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
-
-                string anwserLocal = string.Format(tooManyStarvingCommand);
-                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
-
-                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
-                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
-            }
-
-            var newGold = pet.Gold - Constants.Costs.Chocolate;
-            if (newGold < 0)
-            {
-                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
-
-                string anwserLocal = string.Format(goldNotEnough);
-                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
-
-                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
-                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
-            }
-
-            _petService.UpdateGold(_userId, newGold);
-            _petService.UpdateSatiety(_userId, newStarving);
-            var aud = _allUsersService.Get(_userId);
-            aud.ChocolateEatenCounter++;
-            aud.GoldSpentCounter += Constants.Costs.Chocolate;
-            _allUsersService.Update(aud);
-
-            string anwser = string.Format(PetFeedingAnwserCallback, (int)FoodFactors.ChocolateHungerFactor);
-            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
-
-            string toSendText = string.Format(kitchenCommand, newStarving, newGold);
-
-            if (toSendText.IsEqual(callback.Message.Text))
-                return null;
-
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
-
-            return new AnswerCallback(toSendText, toSendInline);
-        }
-        private AnswerCallback FeedWithLollipopInline()
-        {
-            var newStarving = Math.Round(pet.Satiety + FoodFactors.LollipopHungerFactor, 2);
-            if (newStarving > 100)
-            {
-                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
-
-                string anwserLocal = string.Format(tooManyStarvingCommand);
-                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
-
-                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
-                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
-            }
-
-            var newGold = pet.Gold - Constants.Costs.Lollipop;
-            if (newGold < 0)
-            {
-                string toSendTextLocal = string.Format(kitchenCommand, pet.Satiety, pet.Gold);
-
-                string anwserLocal = string.Format(goldNotEnough);
-                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
-
-                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
-                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
-            }
-
-            _petService.UpdateGold(_userId, newGold);
-            _petService.UpdateSatiety(_userId, newStarving);
-
-            var aud = _allUsersService.Get(_userId);
-            aud.LollypopEatenCounter++;
-            aud.GoldSpentCounter += Costs.Lollipop;
-            _allUsersService.Update(aud);
-
-            string anwser = string.Format(PetFeedingAnwserCallback, (int)FoodFactors.LollipopHungerFactor);
-            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
-
-            string toSendText = string.Format(kitchenCommand, newStarving, newGold);
-
-            if (toSendText.IsEqual(callback.Message.Text))
-                return null;
-
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
-
-            return new AnswerCallback(toSendText, toSendInline);
-        }
-        private AnswerCallback PutToSleepInline()
-        {
-            if (CheckStatusIsInactive(true))
-                return null;
-
-            if (pet.CurrentStatus == (int)CurrentStatus.Sleeping)
-            {
-                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, PetSleepingAlreadyAnwserCallback);
-
-                string toSendText = string.Format(sleepCommand, pet.Name, pet.Fatigue, Extensions.GetCurrentStatus(pet.CurrentStatus));
-
-                var minutesToWait = pet.Fatigue / Factors.RestFactor;
-
-                string timeToWaitStr = string.Format(sleepCommandInlineShowTime, new DateTime().AddMinutes(minutesToWait).ToString("HH:mm"));
-
-                if (toSendText.IsEqual(callback.Message.Text))
-                    return null;
-
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
-                    {
-                        new CommandModel()
-                        {
-                            Text = timeToWaitStr,
-                            CallbackData = "sleepCommandInlinePutToSleep"
-                        }
-                    });
-
-                return new AnswerCallback(toSendText, toSendInline);
-            }
-            else
-            {
-                if (pet.Fatigue < Limits.ToRestMinLimitOfFatigue)
-                {
-                    _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, PetSleepingDoesntWantYetAnwserCallback);
-                    string sendTxt = string.Format(sleepCommand, pet.Name, pet.Fatigue, Extensions.GetCurrentStatus(pet.CurrentStatus));
-
-                    InlineKeyboardMarkup toSendInlineWhileActive = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
-                        {
-                            new CommandModel()
-                            {
-                                Text = sleepCommandInlinePutToSleep,
-                                CallbackData = "sleepCommandInlinePutToSleep"
-                            }
-                        });
-
-                    return new AnswerCallback(sendTxt, toSendInlineWhileActive);
-                }
-
-                pet.CurrentStatus = (int)CurrentStatus.Sleeping;
-                pet.StartSleepingTime = DateTime.UtcNow;
-                _petService.Update(pet.UserId, pet);
-
-                var aud = _allUsersService.Get(_userId);
-                aud.SleepenTimesCounter++;
-                _allUsersService.Update(aud);
-
-                string toSendText = string.Format(sleepCommand, pet.Name, pet.Fatigue, Extensions.GetCurrentStatus(pet.CurrentStatus));
-
-                var minutesToWait = pet.Fatigue / Factors.RestFactor;
-
-                string timeToWaitStr = string.Format(sleepCommandInlineShowTime, new DateTime().AddMinutes(minutesToWait).ToString("HH:mm"));
-
-                if (toSendText.IsEqual(callback.Message.Text))
-                    return null;
-
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
-                    {
-                        new CommandModel()
-                        {
-                            Text = timeToWaitStr,
-                            CallbackData = "sleepCommandInlinePutToSleep"
-                        }
-                    });
-
-                return new AnswerCallback(toSendText, toSendInline);
-            }
-        }
-        private AnswerCallback PlayCardInline()
-        {
-            var newFatigue = pet.Fatigue + Factors.CardGameFatigueFactor;
-            if (newFatigue > 100)
-                newFatigue = 100;
-
-            var newJoy = pet.Joy + Factors.CardGameJoyFactor;
-            if (newJoy > 100)
-                newJoy = 100;
-
-            var newGold = pet.Gold - Costs.AppleGame;
-            if (newGold < 0)
-            {
-                string toSendTextLocal = string.Format(gameroomCommand, pet.Fatigue, pet.Joy, pet.Gold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
-
-                string anwserLocal = string.Format(goldNotEnough);
-                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
-
-                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineGames, 3);
-                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
-            }
-
-            _petService.UpdateGold(_userId, newGold);
-            _petService.UpdateFatigue(_userId, newFatigue);
-            _petService.UpdateJoy(_userId, newJoy);
-
-            string anwser = string.Format(PetPlayingAnwserCallback, Factors.CardGameFatigueFactor);
-            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
-            var aud = _allUsersService.Get(_userId);
-            aud.CardsPlayedCounter++;
-            _allUsersService.Update(aud);
-
-            string toSendText = string.Format(gameroomCommand, newFatigue, newJoy, newGold, Factors.CardGameJoyFactor, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
-
-            if (toSendText.IsEqual(callback.Message.Text))
-                return null;
-
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineGames, 3);
-
-            return new AnswerCallback(toSendText, toSendInline);
-        }
-        private AnswerCallback PlayDiceInline()
-        {
-            var newFatigue = pet.Fatigue + Factors.DiceGameFatigueFactor;
-            if (newFatigue > 100)
-                newFatigue = 100;
-
-            var newJoy = pet.Joy + Factors.DiceGameJoyFactor;
-            if (newJoy > 100)
-                newJoy = 100;
-
-            var newGold = pet.Gold - Costs.DiceGame;
-            if (newGold < 0)
-            {
-                string toSendTextLocal = string.Format(gameroomCommand, pet.Fatigue, pet.Joy, pet.Gold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
-
-                string anwserLocal = string.Format(goldNotEnough);
-                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwserLocal);
-
-                InlineKeyboardMarkup toSendInlineLocal = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineGames, 3);
-                return new AnswerCallback(toSendTextLocal, toSendInlineLocal);
-            }
-
-            _petService.UpdateGold(_userId, newGold);
-            _petService.UpdateFatigue(_userId, newFatigue);
-            _petService.UpdateJoy(_userId, newJoy);
-            var aud = _allUsersService.Get(_userId);
-            aud.DicePlayedCounter++;
-            aud.GoldSpentCounter += Costs.DiceGame;
-            _allUsersService.Update(aud);
-
-            string anwser = string.Format(PetPlayingAnwserCallback, Factors.DiceGameFatigueFactor);
-            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
-
-            string toSendText = string.Format(gameroomCommand, newFatigue, newJoy, newGold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
-            if (toSendText.IsEqual(callback.Message.Text))
-                return null;
-
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineGames, 3);
-
-            return new AnswerCallback(toSendText, toSendInline);
-        }
-        private AnswerCallback WorkOnPCInline()
-        {
-            InlineKeyboardMarkup toSendInline;
-            string toSendText;
-
-            if (pet.CurrentStatus == (int)CurrentStatus.Active)
-            {
-                if (callback.Data == "workCommandInlineShowTime" || callback.Data == null)
-                {
-                    string toSendTextIfTimeOver = string.Format(workCommand, new TimesToWait().WorkOnPCToWait.TotalSeconds/60, Rewards.WorkOnPCGoldReward);
-
-                    List<CommandModel> inlineParts = new InlineItems().InlineWork;
-                    InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
-
-                    return new AnswerCallback(toSendTextIfTimeOver, toSendInlineIfTimeOver);
-                }
-
-
-                var newFatigue = pet.Fatigue + Factors.WorkOnPCFatigueFactor;
-                if (newFatigue > 100)
-                    newFatigue = 100;
-
-                _petService.UpdateFatigue(_userId, newFatigue);
-                _petService.UpdateGold(_userId, pet.Gold += Rewards.WorkOnPCGoldReward);
-                _petService.UpdateCurrentStatus(_userId, (int)CurrentStatus.WorkingOnPC);
-
-                var aud = _allUsersService.Get(_userId);
-                aud.GoldEarnedCounter += Rewards.WorkOnPCGoldReward;
-                aud.WorkOnPCCounter++;
-                _allUsersService.Update(aud);
-
-                var startWorkingTime = DateTime.UtcNow;
-                _petService.UpdateStartWorkingTime(_userId, startWorkingTime);
-
-                string anwser = string.Format(PetWorkingAnswerCallback, Factors.WorkOnPCFatigueFactor, Rewards.WorkOnPCGoldReward);
-                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser, true);
-
-                toSendText = string.Format(workCommandPCWorking);
-
-                TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - startWorkingTime);
-                string inlineStr = string.Format(workCommandInlineShowTime, new DateTime(remainsTime.Ticks).ToString("HH:mm:ss"));
-
-                toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
-                    {
-                        new CommandModel()
-                        {
-                            Text = inlineStr,
-                            CallbackData = "workCommandInlineShowTime"
-                        }
-                    });
-
-                return new AnswerCallback(toSendText, toSendInline);
-            }
-            else if (pet.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
-            {
-                TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - pet.StartWorkingTime);
-
-                //if callback handled when time of work is over
-                if (remainsTime <= TimeSpan.Zero)
-                {
-                    pet.CurrentStatus = (int)CurrentStatus.Active;
-                    _petService.UpdateCurrentStatus(_userId, pet.CurrentStatus);
-
-                    string toSendTextIfTimeOver = string.Format(workCommand, new TimesToWait().WorkOnPCToWait.TotalSeconds/60, Rewards.WorkOnPCGoldReward);
-
-                    List<CommandModel> inlineParts = new InlineItems().InlineWork;
-                    InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
-
-                    return new AnswerCallback(toSendTextIfTimeOver, toSendInlineIfTimeOver);
-                }
-
-                //if callback handled when pet is still working
-                return ShowRemainedTimeWorkCallback(remainsTime);
-            }
-            else
-                return null;
-        }
-        private AnswerCallback GetDailyRewardInline()
-        {
-            var dateTimeWhenOver = pet.GotDailyRewardTime.Add(new TimesToWait().DailyRewardToWait);
-            if (dateTimeWhenOver > DateTime.UtcNow)
-                return ShowRemainedTimeDailyRewardCallback(dateTimeWhenOver - DateTime.UtcNow, true);
-
-            var newGold = pet.Gold + Constants.Rewards.DailyGoldReward;
-
-            _petService.UpdateGold(_userId, newGold);
-            _petService.UpdateDailyRewardTime(_userId, DateTime.UtcNow);
-            var aud = _allUsersService.Get(_userId);
-            aud.GoldEarnedCounter += Constants.Rewards.DailyGoldReward;
-            _allUsersService.Update(aud);
-
-            string anwser = string.Format(DailyRewardAnwserCallback, Rewards.DailyGoldReward);
-            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
-
-            return ShowRemainedTimeDailyRewardCallback(new TimeSpan(23, 59, 59), false);
-        }
-
-        private Answer ShowRemainedTimeWork(TimeSpan remainedTime)
-        {
-            InlineKeyboardMarkup toSendInline;
-            string toSendText;
-
-            toSendText = string.Format(workCommandPCWorking);
-            string inlineStr = string.Format(workCommandInlineShowTime, new DateTime(remainedTime.Ticks).ToString("HH:mm:ss"));
-
-            toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
-                    {
-                        new CommandModel()
-                        {
-                            Text = inlineStr,
-                            CallbackData = "workCommandInlineShowTime"
-                        }
-                    });
-
-            return new Answer() { InlineKeyboardMarkup = toSendInline, Text = toSendText, StickerId = StickersId.PetWork_Cat };
-        }
-        private AnswerCallback ShowRemainedTimeWorkCallback(TimeSpan remainedTime = default)
-        {
-            InlineKeyboardMarkup toSendInline;
-            string toSendText;
-
-            if (remainedTime == default)
-                remainedTime = new TimeSpan(0);
-
-            string anwser = string.Format(workCommandPCWorking);
-            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
-
-            toSendText = string.Format(workCommandPCWorking);
-            string inlineStr = string.Format(workCommandInlineShowTime, new DateTime(remainedTime.Ticks).ToString("HH:mm:ss"));
-
-            toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
-                    {
-                        new CommandModel()
-                        {
-                            Text = inlineStr,
-                            CallbackData = "workCommandInlineShowTime"
-                        }
-                    });
-
-            return new AnswerCallback(toSendText, toSendInline);
-        }
-
-        private Answer ShowRemainedTimeDailyReward(TimeSpan remainedTime)
-        {
-            InlineKeyboardMarkup toSendInline;
-            string toSendText;
-
-            toSendText = string.Format(rewardCommandDailyRewardGotten);
-            string inlineStr = string.Format(rewardCommandDailyRewardInlineShowTime, new DateTime(remainedTime.Ticks).ToString("HH:mm:ss"));
-
-            toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
-                    {
-                        new CommandModel()
-                        {
-                            Text = inlineStr,
-                            CallbackData = "rewardCommandDailyRewardInlineShowTime"
-                        }
-                    });
-
-            return new Answer() { InlineKeyboardMarkup = toSendInline, Text = toSendText, StickerId = StickersId.DailyRewardSticker };
-        }
-        private AnswerCallback ShowRemainedTimeDailyRewardCallback(TimeSpan remainedTime = default, bool isAlert = false)
-        {
-            InlineKeyboardMarkup toSendInline;
-            string toSendText;
-
-            if (remainedTime == default)
-                remainedTime = new TimeSpan(0);
-
-            if (isAlert)
-            {
-                string anwser = string.Format(rewardCommandDailyRewardGotten);
-                _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser);
-            }
-
-            toSendText = string.Format(rewardCommandDailyRewardGotten);
-            string inlineStr = string.Format(rewardCommandDailyRewardInlineShowTime, new DateTime(remainedTime.Ticks).ToString("HH:mm:ss"));
-
-            toSendInline = Extensions.InlineKeyboardOptimizer(new List<CommandModel>()
-                    {
-                        new CommandModel()
-                        {
-                            Text = inlineStr,
-                            CallbackData = "rewardCommandDailyRewardInlineShowTime"
-                        }
-                    });
-            return new AnswerCallback(toSendText, toSendInline);
-        }
-        private AnswerCallback CureWithPill()
-        {
-            var newHP = pet.HP + Factors.PillHPFactor;
-            if (newHP > 100)
-                newHP = 100;
-
-            var newJoy = pet.Joy + Factors.PillJoyFactor;
-            if (newJoy < 0)
-                newJoy = 0;
-
-            _petService.UpdateHP(_userId, newHP);
-            _petService.UpdateJoy(_userId, newJoy);
-
-            var aud = _allUsersService.Get(_userId);
-            aud.PillEatenCounter++;
-            _allUsersService.Update(aud);
-
-            string anwser = string.Format(PetCuringAnwserCallback, Factors.PillHPFactor, Factors.PillJoyFactor);
-            _bcService.AnswerCallbackQueryAsync(callback.Id, user.UserId, anwser, true);
-
-            string commandHospital =  newHP switch
-            {
-                >= 80 => hospitalCommandHighHp,
-                >20 and < 80 => hospitalCommandMidHp,
-                _ => hospitalCommandLowHp
-            };
-
-            string toSendText = string.Format(commandHospital, newHP);
-
-            if (toSendText.IsEqual(callback.Message.Text))
-                return null;
-
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineHospital);
-
-            return new AnswerCallback(toSendText, toSendInline);
-        }
-        private AnswerCallback ShowRanksGold()
-        {
-            string toSendText = GetRanksByGold();
-
-            if (toSendText.IsEqual(callback.Message.Text))
-                return null;
-
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
-
-            return new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html);
-        }
-
-        private AnswerCallback ShowRanksApples()
-        {
-            string toSendText = GetRanksByApples();
-
-            if (toSendText.IsEqual(callback.Message.Text))
-                return null;
-
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
-
-            return new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html);
-        }
-
-        private AnswerCallback ShowRanksLevel()
-        {
-            string toSendText = GetRanksByLevel();
-
-            if (toSendText.IsEqual(callback.Message.Text))
-                return null;
-
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
-
-            return new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html);
-        }
-
-        #endregion
-
     }
 }

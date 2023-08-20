@@ -122,8 +122,7 @@
   </data>
   <data name="Welcome" xml:space="preserve">
     <value>🎮 Witamy w Tamagotchi Bot! Tutaj możesz wychowywać własnego wirtualnego zwierzaka, bawić się z nim i rywalizować z innymi graczami 🎮
-Startujemy?
-/start</value>
+Startujemy!</value>
   </data>
   <data name="ChooseName" xml:space="preserve">
     <value>🧸 Przede wszystkim musisz nazwać swojego nowego przyjaciela
@@ -155,10 +154,11 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
     <value>W trakcie rozwoju, poczekaj na następną aktualizację 👾</value>
   </data>
   <data name="ChangeLanguage" xml:space="preserve">
-    <value>Choose new language 🇺🇸
-Выберы новую мову 🇨🇷
-Wybierz nowy język 🇵🇱
-Выбери новый язык 🇷🇺</value>
+    <value>Wybierz nowy język:
+- Belarusian (беларуская) 🇨🇷
+- Russian (русский) 🇷🇺
+- English 🇺🇸
+- Polish (Polski) 🇵🇱</value>
   </data>
   <data name="ConfirmedLanguage" xml:space="preserve">
     <value>Został wybrany język Polski 🇵🇱</value>
@@ -253,9 +253,6 @@ Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
   <data name="gameroomCommandDescription" xml:space="preserve">
     <value>Pokój gier ⚽️</value>
   </data>
-  <data name="PetPlayingAnwserCallback" xml:space="preserve">
-    <value>Zmęczenie Twojego zwierzaka wzrosło o {0}%</value>
-  </data>
   <data name="denyAccessSleeping" xml:space="preserve">
     <value>Brak możliwości wejścia do pokoju: zwierzak śpi 🌙</value>
   </data>
@@ -347,8 +344,7 @@ Twój pupil odszedł, bo brakowało mu opieki💔</value>
   <data name="EpilogueText" xml:space="preserve">
     <value>Każdemu się to zdarza, ale życie toczy się dalej!
 Może Ci się poszczęści z nowym zwierzakiem 😼
-Od początku? 🫶
-/start</value>
+Od początku? 🫶</value>
   </data>
   <data name="ReminderNotifyText1" xml:space="preserve">
     <value>😺: Wróciłeś!
@@ -579,5 +575,33 @@ Ale zwierzak przypadkiem wpadł do kałuży 💦
 -10% higieny 🛁
 
 /pet - sprawdź status zwierzaka</value>
+  </data>
+  <data name="ResurrectYesText" xml:space="preserve">
+    <value>Tak (-1000 💰)</value>
+  </data>
+  <data name="ResurrectNoText" xml:space="preserve">
+    <value>Nie ⁉️</value>
+  </data>
+  <data name="ToResurrectQuestion" xml:space="preserve">
+    <value>Chcesz wskrzesić swojego zwierzaka? 🧬</value>
+  </data>
+  <data name="PetCameBackText" xml:space="preserve">
+    <value>Po długich poszukiwaniach i dużych wydatkach na detektywów zwierzak został odnaleziony! 😺
+Długo prosiłeś o przebaczenie i obiecałeś, że już nigdy nie zapomnisz o swoim pupilu 🐣
+Pogodziliście się 💕
+
+/pet - sprawdza status zwierzaka</value>
+  </data>
+  <data name="NotEnoughGoldToResurrect" xml:space="preserve">
+    <value>Niestety nie masz wystarczająco dużo pieniędzy ☠️</value>
+  </data>
+  <data name="PetIsCleanEnoughAlert" xml:space="preserve">
+    <value>Zwierzę jest wystarczająco czyste 💦</value>
+  </data>
+  <data name="PetIsFullOfJoyText" xml:space="preserve">
+    <value>Zwierzak już się wystarczająco pobawił ⛹️‍♀️</value>
+  </data>
+  <data name="PetPlayingAnwserCallback" xml:space="preserve">
+    <value>Radość wzrosła o {0}% 🎊</value>
   </data>
 </root>

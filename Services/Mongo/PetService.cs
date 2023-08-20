@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,11 @@ namespace TamagotchiBot.Services.Mongo
     public class PetService : MainConnectService
     {
         private readonly IMongoCollection<Pet> _pets;
-        public PetService(ITamagotchiDatabaseSettings settings) : base(settings)
+        private readonly UserService _userService;
+        public PetService(ITamagotchiDatabaseSettings settings, UserService userService) : base(settings)
         {
             _pets = base.GetCollection<Pet>(settings.PetsCollectionName);
+            _userService = userService;
         }
 
         public List<Pet> GetAll() => _pets.Find(p => true).ToList();
@@ -44,7 +47,6 @@ namespace TamagotchiBot.Services.Mongo
                 Update(userId, pet);
             }
         }
-
         public void UpdateSatiety(long userId, double newSatiety, bool forcePush = false)
         {
             if (newSatiety > 100 && !forcePush)
@@ -80,6 +82,7 @@ namespace TamagotchiBot.Services.Mongo
             }
         }
 
+        [Obsolete]
         public void UpdateDailyRewardTime(long userId, DateTime newStartTime)
         {
             var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
@@ -90,6 +93,7 @@ namespace TamagotchiBot.Services.Mongo
             }
         }
 
+        [Obsolete]
         public void UpdateGold(long userId, int newGold)
         {
             var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
@@ -151,6 +155,17 @@ namespace TamagotchiBot.Services.Mongo
                 pet.Joy = newJoy;
                 Update(userId, pet);
             }
+        }
+
+        public bool UpdateNextRandomEventNotificationTime(long userId, DateTime nextNotify)
+        {
+            var petDb = _pets.Find(u => u.UserId == userId).FirstOrDefault();
+            if (petDb == null)
+                return false;
+
+            petDb.NextRandomEventNotificationTime = nextNotify;
+            _pets.ReplaceOne(u => u.UserId == userId, petDb);
+            return true;
         }
 
         public void Remove(long userId) => _pets.DeleteOne(p => p.UserId == userId);

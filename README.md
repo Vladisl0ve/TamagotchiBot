@@ -11,7 +11,7 @@ You can test it here: https://t.me/VirtualPetBot
 🌈 Welcome to the world of Tamagotchi! 🌈   
 Here, you can create your own virtual pet friend 🐩🐈🐈‍⬛🐕   
 
-Make sure to keep track of your pet's progress:
+Make sure to keep track of your pets' progress:
 - Play different games with them ⚽️
 - Feed them delicious treats 🍕🍳🍫
 - Take care of their needs 🍼

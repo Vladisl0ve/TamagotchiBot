@@ -179,10 +179,11 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Choose new language 🇺🇸
-        ///Выберы новую мову 🇨🇷
-        ///Wybierz nowy język 🇵🇱
-        ///Выбери новый язык 🇷🇺.
+        ///   Looks up a localized string similar to Choose new language:
+        ///- Belarusian (беларуская) 🇨🇷
+        ///- Russian (русский) 🇷🇺
+        ///- English 🇺🇸
+        ///- Polish (Polski) 🇵🇱.
         /// </summary>
         public static string ChangeLanguage {
             get {
@@ -320,8 +321,7 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to It happens to everyone, but life goes on!
         ///Maybe you&apos;ll be lucky with a new pet 😼
-        ///Try again? 🫶
-        ////start.
+        ///Try again? 🫶.
         /// </summary>
         public static string EpilogueText {
             get {
@@ -569,6 +569,28 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unfortunately, you don&apos;t have enough money ☠️.
+        /// </summary>
+        public static string NotEnoughGoldToResurrect {
+            get {
+                return ResourceManager.GetString("NotEnoughGoldToResurrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to After a long search and a lot of money for detectives, the pet was found! 😺
+        ///You asked for forgiveness for a long time and promised not to forget about your pet again 🐣
+        ///You both reconciled 💕
+        ///
+        ////pet - check pet status.
+        /// </summary>
+        public static string PetCameBackText {
+            get {
+                return ResourceManager.GetString("PetCameBackText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🐱 {0}
         ///💊 HP: {1}%
         ///🍕 Satiety: {4}%
@@ -655,7 +677,25 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your pet&apos;s fatigue increased in {0}%.
+        ///   Looks up a localized string similar to The pet is clean enough 💦.
+        /// </summary>
+        public static string PetIsCleanEnoughAlert {
+            get {
+                return ResourceManager.GetString("PetIsCleanEnoughAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The pet has already played enough ⛹️‍♀️.
+        /// </summary>
+        public static string PetIsFullOfJoyText {
+            get {
+                return ResourceManager.GetString("PetIsFullOfJoyText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Joy increased by {0}% 🎊.
         /// </summary>
         public static string PetPlayingAnwserCallback {
             get {
@@ -943,6 +983,24 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No ⁉️.
+        /// </summary>
+        public static string ResurrectNoText {
+            get {
+                return ResourceManager.GetString("ResurrectNoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes (-1000 💰).
+        /// </summary>
+        public static string ResurrectYesText {
+            get {
+                return ResourceManager.GetString("ResurrectYesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There&apos;s a daily reward waiting for you! 💸
         ///Take it soon! 🎁.
         /// </summary>
@@ -1073,9 +1131,17 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To resurrect your pet? 🧬.
+        /// </summary>
+        public static string ToResurrectQuestion {
+            get {
+                return ResourceManager.GetString("ToResurrectQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🎮 Welcome to Tamagotchi Bot! Here you can raise your own virtual pet, play with him and compete with another players 🎮
-        ///Let&apos;s start? 
-        ////start.
+        ///Let&apos;s start!.
         /// </summary>
         public static string Welcome {
             get {

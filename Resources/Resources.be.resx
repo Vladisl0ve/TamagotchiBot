@@ -123,8 +123,7 @@
   </data>
   <data name="Welcome" xml:space="preserve">
     <value>🎮 Вітаю ў Tamagotchi Bot! Тут можаш вырасціць свайго віртуальнага гадаванца, гуляць з ім, а таксама паспаборнічаць з іншымі гульцамі 🎮
-Пачнем?
-/start</value>
+Пачнем!</value>
   </data>
   <data name="ChooseName" xml:space="preserve">
     <value>🧸 Спачатку вам трэба даць імя новаму сябру
@@ -156,10 +155,11 @@
     <value>У распрацоўцы, чакай наступнага абнаўлення 👾</value>
   </data>
   <data name="ChangeLanguage" xml:space="preserve">
-    <value>Choose new language 🇺🇸
-Выберы новую мову 🇨🇷
-Wybierz nowy język 🇵🇱
-Выбери новый язык 🇷🇺</value>
+    <value>Выберы новую мову:
+- Belarusian (беларуская) 🇨🇷
+- Russian (русский) 🇷🇺
+- English 🇺🇸
+- Polish (Polski) 🇵🇱</value>
   </data>
   <data name="ConfirmedLanguage" xml:space="preserve">
     <value>Выбрана беларуская мова 🤍❤️🤍</value>
@@ -254,9 +254,6 @@ Wybierz nowy język 🇵🇱
   <data name="gameroomCommandDescription" xml:space="preserve">
     <value>Дзіцячая ⚽️</value>
   </data>
-  <data name="PetPlayingAnwserCallback" xml:space="preserve">
-    <value>Стомленасць вашага гадаванца павялічылася на {0}%</value>
-  </data>
   <data name="denyAccessSleeping" xml:space="preserve">
     <value>Ты не можаш зайсці да пакою: твой гадаванец спіць 🌙</value>
   </data>
@@ -349,8 +346,7 @@ Wybierz nowy język 🇵🇱
   <data name="EpilogueText" xml:space="preserve">
     <value>Бывае з кожным, але жыццё працягваецца!
 Можа з новым гадаванцам табе павязе 😼
-Давай спачатку? 🫶
-/start</value>
+Давай спачатку? 🫶</value>
   </data>
   <data name="ReminderNotifyText1" xml:space="preserve">
     <value>😺: Ты вярнуўся!
@@ -582,5 +578,33 @@ Wybierz nowy język 🇵🇱
 -10% гігіены 🛁
 
 /pet - правер свайго гадаванца</value>
+  </data>
+  <data name="ResurrectYesText" xml:space="preserve">
+    <value>Так (-1000 💰)</value>
+  </data>
+  <data name="ResurrectNoText" xml:space="preserve">
+    <value>Не ⁉️</value>
+  </data>
+  <data name="ToResurrectQuestion" xml:space="preserve">
+    <value>Вярнуць гадаванца? 🧬</value>
+  </data>
+  <data name="PetCameBackText" xml:space="preserve">
+    <value>Пасля доўгіх пошукаў і кучы грошай на дэтэктываў гадаванец знайшоўся! 😺
+Ты доўга прасіў прабачэння і абяцаў больш не забываць пра свайго гадаванца 🐣
+Вы абодва памірыліся 💕
+
+/pet - праверыць стан гадаванца</value>
+  </data>
+  <data name="NotEnoughGoldToResurrect" xml:space="preserve">
+    <value>На жаль, у цябе занадта мала грошай ☠️</value>
+  </data>
+  <data name="PetIsCleanEnoughAlert" xml:space="preserve">
+    <value>Гадаванец дастаткова чысты 💦</value>
+  </data>
+  <data name="PetIsFullOfJoyText" xml:space="preserve">
+    <value>Гадаванец ужо найграўся ⛹️‍♀️</value>
+  </data>
+  <data name="PetPlayingAnwserCallback" xml:space="preserve">
+    <value>Радасць павялічылася на {0}% 🎊</value>
   </data>
 </root>

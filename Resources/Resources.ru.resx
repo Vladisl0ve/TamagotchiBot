@@ -122,8 +122,7 @@
   </data>
   <data name="Welcome" xml:space="preserve">
     <value>🎮 Добро пожаловать в Tamagotchi Bot! Здесь ты можешь вырастить собственного виртуального питомца, играть с ним и соревноваться с другими игроками 🎮
-Поехали?
-/start</value>
+Поехали!</value>
   </data>
   <data name="ChooseName" xml:space="preserve">
     <value>🧸 Для начала назови своего нового друга
@@ -156,10 +155,11 @@
     <value>В разработке, жди обновления 👾</value>
   </data>
   <data name="ChangeLanguage" xml:space="preserve">
-    <value>Choose new language 🇺🇸
-Выберы новую мову 🇨🇷
-Wybierz nowy język 🇵🇱
-Выбери новый язык 🇷🇺</value>
+    <value>Выбери язык для игры:
+- Belarusian (беларуская) 🇨🇷
+- Russian (русский) 🇷🇺
+- English 🇺🇸
+- Polish (Polski) 🇵🇱</value>
   </data>
   <data name="ConfirmedLanguage" xml:space="preserve">
     <value>Выбран русский язык 🇷🇺</value>
@@ -255,7 +255,7 @@ Wybierz nowy język 🇵🇱
     <value>Детская ⚽️</value>
   </data>
   <data name="PetPlayingAnwserCallback" xml:space="preserve">
-    <value>Питомец устал на +{0}%</value>
+    <value>Радость увеличилась на {0}% 🎊</value>
   </data>
   <data name="denyAccessSleeping" xml:space="preserve">
     <value>Нельзя войти в комнату: питомец спит 🌙</value>
@@ -351,8 +351,7 @@ Wybierz nowy język 🇵🇱
   <data name="EpilogueText" xml:space="preserve">
     <value>Бывает с каждым, но жизнь продолжается!
 Может с новым питомцем тебе повезёт 😼
-Давай сначала? 🫶
-/start</value>
+Давай сначала? 🫶</value>
   </data>
   <data name="ReminderNotifyText1" xml:space="preserve">
     <value>😺: Ты вернулся!
@@ -583,5 +582,30 @@ Wybierz nowy język 🇵🇱
 -10% гигиены 🛁
 
 /pet - проверить состояние питомца</value>
+  </data>
+  <data name="ResurrectYesText" xml:space="preserve">
+    <value>Да (-1000 💰)</value>
+  </data>
+  <data name="ResurrectNoText" xml:space="preserve">
+    <value>Нет ⁉️</value>
+  </data>
+  <data name="ToResurrectQuestion" xml:space="preserve">
+    <value>Воскресить питомца? 🧬</value>
+  </data>
+  <data name="PetCameBackText" xml:space="preserve">
+    <value>После долгих поисков и кучи денег на детективов питомец нашёлся! 😺
+Ты долго просил прощения и обещал больше не забывать про своего питомца 🐣
+Вы оба помирились 💕
+
+/pet - проверить состояние питомца</value>
+  </data>
+  <data name="NotEnoughGoldToResurrect" xml:space="preserve">
+    <value>К сожалению у тебя слишком мало денег ☠️</value>
+  </data>
+  <data name="PetIsCleanEnoughAlert" xml:space="preserve">
+    <value>Питомец достаточно чистый 💦</value>
+  </data>
+  <data name="PetIsFullOfJoyText" xml:space="preserve">
+    <value>Питомец уже наигрался ⛹️‍♀️</value>
   </data>
 </root>

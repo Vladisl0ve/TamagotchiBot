@@ -28,6 +28,7 @@ namespace TamagotchiBot.Services
 #else
             Log.Information("RELEASE: Telegram Bot Hosted Service started");
 #endif
+            _timerService.SetMaintainActions();
             _timerService.SetNotifyTimer();
             _timerService.SetChangelogsTimer();
             _timerService.SetDailyRewardNotificationTimer();

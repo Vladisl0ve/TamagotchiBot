@@ -43,7 +43,7 @@ namespace TamagotchiBot.UserExtensions
             return new ReplyKeyboardMarkup(keyboard) { ResizeKeyboard = true, OneTimeKeyboard = isOneTimeKeyboard };
         }
 
-        public static InlineKeyboardMarkup InlineKeyboardOptimizer(List<CommandModel> names, int columnCounter = 2)
+        public static InlineKeyboardMarkup InlineKeyboardOptimizer(List<CallbackModel> names, int columnCounter = 2)
         {
             int x = columnCounter < 2 ? 2 : columnCounter;
             int y = (int)Math.Ceiling((double)(names.Count) / x);
@@ -127,17 +127,6 @@ namespace TamagotchiBot.UserExtensions
                 if (l.GetDisplayName() == flag)
                     return l;
 
-            /*            if (flag == "be" || flag == "by")
-                            return Constants.Language.Беларуская;
-
-                        if (flag == "ru")
-                            return Constants.Language.Русский;
-
-
-                        if (flag == "pl")
-                            return Constants.Language.Русский;
-            */
-
             return Constants.Language.English;
         }
 
@@ -149,12 +138,6 @@ namespace TamagotchiBot.UserExtensions
                 {
                     Command = Commands.LanguageCommand,
                     Description = Resources.Resources.languageCommandDescription
-                },
-
-                new BotCommand()
-                {
-                    Command = Commands.HelpCommand,
-                    Description = Resources.Resources.helpCommandDescription
                 }
             };
 
@@ -221,6 +204,12 @@ namespace TamagotchiBot.UserExtensions
                 {
                     Command = Commands.MenuCommand,
                     Description = Resources.Resources.menuCommandDescription
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.HelpCommand,
+                    Description = Resources.Resources.helpCommandDescription
                 }
             };
 
@@ -229,7 +218,7 @@ namespace TamagotchiBot.UserExtensions
             return resultExtra;
         }
 
-        public static List<BotCommand> GetIngameCommands()
+        public static List<BotCommand> GetInApplegameCommands()
         {
             List<BotCommand> result = new()
             {

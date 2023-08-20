@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
@@ -34,7 +35,9 @@ namespace TamagotchiBot.Services.Mongo
                 LastName = user.LastName,
                 UserId = user.Id,
                 Username = user.Username,
-                //Culture = user.LanguageCode
+                Culture = user.LanguageCode,
+                Gold = 50,
+                ChatIds = new List<long>() { user.Id }                
             });
         }
 
@@ -47,7 +50,7 @@ namespace TamagotchiBot.Services.Mongo
         public bool UpdateAppleGameStatus(long userId, bool isInAppleGame)
         {
             var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
-            if(userDb == null)
+            if (userDb == null)
                 return false;
 
             userDb.IsInAppleGame = isInAppleGame;
@@ -55,6 +58,27 @@ namespace TamagotchiBot.Services.Mongo
             return true;
         }
 
+        public void UpdateGold(long userId, int newGold)
+        {
+            var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb != null)
+            {
+                userDb.Gold = newGold;
+                Update(userId, userDb);
+            }
+        }
+
+        public void UpdateDailyRewardTime(long userId, DateTime newStartTime)
+        {
+            var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb != null)
+            {
+                userDb.GotDailyRewardTime = newStartTime;
+                Update(userId, userDb);
+            }
+        }
+
+        [Obsolete]
         public bool UpdateNextRandomEventNotificationTime(long userId, DateTime nextNotify)
         {
             var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
@@ -87,6 +111,31 @@ namespace TamagotchiBot.Services.Mongo
             }
 
             return user;
+        }
+
+        public bool UpdateIsPetNameAskedOnCreate(long userId, bool isAsked)
+        {
+            var user = _users.Find(p => p.UserId == userId).FirstOrDefault();
+            if (user != null)
+            {
+                user.IsPetNameAskedOnCreate = isAsked;
+                Update(userId, user);
+                return true;
+            }
+
+            return false;
+        }
+        public bool UpdateIsLanguageAskedOnCreate(long userId, bool isAsked)
+        {
+            var user = _users.Find(p => p.UserId == userId).FirstOrDefault();
+            if (user != null)
+            {
+                user.IsLanguageAskedOnCreate = isAsked;
+                Update(userId, user);
+                return true;
+            }
+
+            return false;
         }
 
         public User Update(long userId, Telegram.Bot.Types.User userIn)

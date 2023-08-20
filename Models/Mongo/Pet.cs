@@ -25,9 +25,13 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("StartWorkingTime")]
         public DateTime StartWorkingTime { get; set; }
 
+        [BsonElement("ToWakeUpTime")]
+        public DateTime ToWakeUpTime { get; set; }
+
         [BsonElement("GotRandomEventTime")]
         public DateTime GotRandomEventTime { get; set; }
 
+        [Obsolete]
         [BsonElement("GotDailyRewardTime")]
         public DateTime GotDailyRewardTime { get; set; }
 
@@ -37,9 +41,13 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("StartSleepingTime")]
         public DateTime StartSleepingTime { get; set; }
 
+        [BsonElement("NextRandomEventNotificationTime")]
+        public DateTime NextRandomEventNotificationTime { get; set; }
+
         [BsonElement("CurrentStatus")]
         public int CurrentStatus { get; set; }
 
+        [Obsolete]
         [BsonElement("Gold")]
         public int Gold { get; set; }
 
@@ -59,7 +67,10 @@ namespace TamagotchiBot.Models.Mongo
         public int Fatigue { get; set; }
 
         [BsonElement("IsNew")]
-        public bool IsWelcomed { get; set; }
+        public bool IsNew { get; set; }
+
+        [BsonElement("IsGone")]
+        public bool IsGone { get; set; }
 
         [BsonElement("EXP")]
         public int EXP { get; set; }
@@ -67,5 +78,33 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("Level")]
         public int Level { get; set; }
 
+        public Pet Clone(Pet petToClone)
+        {
+            Pet clone = new Pet()
+            {
+                BirthDateTime                   = petToClone.BirthDateTime,
+                CurrentStatus                   = petToClone.CurrentStatus,
+                EXP                             = petToClone.EXP,
+                Fatigue                         = petToClone.Fatigue,
+                Level                           = petToClone.Level,
+                GotRandomEventTime              = petToClone.GotRandomEventTime,
+                HP                              = petToClone.HP,
+                Hygiene                         = petToClone.Hygiene,
+                Id                              = petToClone.Id,
+                Joy                             = petToClone.Joy,
+                LastUpdateTime                  = petToClone.LastUpdateTime,
+                Name                            = petToClone.Name,
+                NextRandomEventNotificationTime = petToClone.NextRandomEventNotificationTime,
+                Satiety                         = petToClone.Satiety,
+                StartSleepingTime               = petToClone.StartSleepingTime,
+                StartWorkingTime                = petToClone.StartWorkingTime,
+                Type                            = petToClone.Type,
+                UserId                          = petToClone.UserId,
+                ToWakeUpTime                    = petToClone.ToWakeUpTime,
+                IsGone                          = petToClone.IsGone
+            };
+
+            return clone;
+        }
     }
 }

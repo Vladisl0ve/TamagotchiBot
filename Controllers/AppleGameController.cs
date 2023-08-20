@@ -4,13 +4,12 @@ using System.Globalization;
 using TamagotchiBot.Models;
 using TamagotchiBot.Models.Answers;
 using TamagotchiBot.UserExtensions;
-using TamagotchiBot.Services;
-using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.Resources.Resources;
 using static TamagotchiBot.UserExtensions.Constants;
 using TamagotchiBot.Services.Mongo;
+using TamagotchiBot.Services.Interfaces;
 
 namespace TamagotchiBot.Controllers
 {
@@ -18,12 +17,9 @@ namespace TamagotchiBot.Controllers
     {
         private readonly UserService _userService;
         private readonly PetService _petService;
-        private readonly ChatService _chatService;
         private readonly AppleGameDataService _appleGameDataService;
         private readonly AllUsersDataService _allUsersService;
-        private readonly BotControlService _bcService;
 
-        private readonly ITelegramBotClient bot;
         private readonly Message message;
         private readonly CallbackQuery callback;
 
@@ -31,54 +27,30 @@ namespace TamagotchiBot.Controllers
 
         private const int APPLE_COUNTER_DEFAULT = 24;
 
-        private AppleGameController(ITelegramBotClient bot,
-                           UserService userService,
-                           PetService petService,
-                           ChatService chatService,
-                           AppleGameDataService appleGameDataService,
-                           AllUsersDataService allUsersService,
-                           BotControlService bcService)
+        private AppleGameController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
         {
-            this.bot = bot;
-            _userService = userService;
-            _petService = petService;
-            _chatService = chatService;
-            _appleGameDataService = appleGameDataService;
-            this._allUsersService = allUsersService;
-            Culture = new CultureInfo(_userService.Get(UserId)?.Culture ?? "ru");
-            _bcService = bcService;
-        }
-
-        public AppleGameController(ITelegramBotClient bot,
-                                   UserService userService,
-                                   PetService petService,
-                                   ChatService chatService,
-                                   AppleGameDataService appleGameDataService,
-                                   AllUsersDataService allUsersService,
-                                   BotControlService botControlService,
-                                   CallbackQuery callback) : this(bot, userService, petService, chatService, appleGameDataService, allUsersService, botControlService)
-        {
-
-            AppleCounter = appleGameDataService.Get(callback.From.Id)?.CurrentAppleCounter ?? 1;
             this.callback = callback;
-            UserId = callback.From.Id;
-            Culture = new CultureInfo(_userService.Get(UserId)?.Culture ?? "ru");
-        }
-
-        public AppleGameController(ITelegramBotClient bot,
-                                   UserService userService,
-                                   PetService petService,
-                                   ChatService chatService,
-                                   AppleGameDataService appleGameDataService,
-                                   AllUsersDataService allUsersService, BotControlService botControlService,
-                                   Message message) : this(bot, userService, petService, chatService, appleGameDataService, allUsersService, botControlService)
-        {
-            AppleCounter = appleGameDataService.Get(message.From.Id)?.CurrentAppleCounter ?? 1;
             this.message = message;
-            UserId = message.From.Id;
+            UserId = message?.From.Id ?? callback.From.Id;
+
+            _userService = services.UserService;
+            _petService = services.PetService;
+            _appleGameDataService = services.AppleGameDataService;
+            _allUsersService = services.AllUsersDataService;
+
             Culture = new CultureInfo(_userService.Get(UserId)?.Culture ?? "ru");
+            AppleCounter = _appleGameDataService.Get(UserId)?.CurrentAppleCounter ?? 1;
         }
 
+        public AppleGameController(IApplicationServices services,
+                                   CallbackQuery callback) : this(services, null, callback)
+        {
+        }
+
+        public AppleGameController(IApplicationServices services,
+                                   Message message) : this(services, message, null)
+        {
+        }
 
         public int AppleCounter { get; set; }
         private List<string> MenuCommands => new List<string>() { againText, statisticsText, quitText };
@@ -146,7 +118,7 @@ namespace TamagotchiBot.Controllers
             return new ReplyKeyboardMarkup(keyboard) { ResizeKeyboard = true, OneTimeKeyboard = true };
         }
 
-        public Answer StartGame()
+        public AnswerMessage StartGame()
         {
             var appleDataToUpdate = _appleGameDataService.Get(UserId);
             appleDataToUpdate.CurrentAppleCounter =
@@ -155,26 +127,24 @@ namespace TamagotchiBot.Controllers
 
             string text = $"{appleGameHelpText}\n\n{string.Format(remainingApplesText, AppleCounter)}\n{ApplesIcons}";
             var keyboard = KeyboardOptimizer(ApplesToChoose);
-            return new Answer()
+            return new AnswerMessage()
             {
                 Text = text,
                 ReplyMarkup = keyboard
             };
         }
 
-        public Answer Menu(Message message)
+        public AnswerMessage Menu()
         {
             var appleDataToUpdate = _appleGameDataService.Get(UserId);
             var petDB = _petService.Get(UserId);
-            var chatDB = _chatService.Get(UserId);
+            var userDB = _userService.Get(UserId);
 
             if (message.Text == statisticsText && appleDataToUpdate.IsGameOvered)
             {
                 var toSendText = string.Format(appleGameStatisticsCommand, appleDataToUpdate.TotalWins, appleDataToUpdate.TotalLoses, appleDataToUpdate.TotalDraws);
 
-                chatDB.LastMessage = "/statsApple";
-                _chatService.Update(chatDB.ChatId, chatDB);
-                return new Answer()
+                return new AnswerMessage()
                 {
                     Text = toSendText,
                     ReplyMarkup = KeyboardOptimizer(MenuCommands)
@@ -189,7 +159,7 @@ namespace TamagotchiBot.Controllers
 
                 string toSendText = $"{appleGameHelpText}";
 
-                return new Answer()
+                return new AnswerMessage()
                 {
                     Text = toSendText,
                     ReplyMarkup = KeyboardOptimizer(MenuCommands)
@@ -204,14 +174,19 @@ namespace TamagotchiBot.Controllers
 
                 _userService.UpdateAppleGameStatus(UserId, false);
 
-                string toSendText = string.Format(gameroomCommand, petDB.Fatigue, petDB.Joy, petDB.Gold, Factors.CardGameJoyFactor, Costs.AppleGame, Factors.DiceGameJoyFactor, Costs.DiceGame);
+                string toSendText = string.Format(gameroomCommand,
+                                                  petDB.Fatigue,
+                                                  petDB.Joy,
+                                                  userDB.Gold,
+                                                  Factors.CardGameJoyFactor,
+                                                  Costs.AppleGame,
+                                                  Factors.DiceGameJoyFactor,
+                                                  Costs.DiceGame);
 
-                List<CommandModel> inlineParts = new InlineItems().InlineGames;
+                List<CallbackModel> inlineParts = new InlineItems().InlineGames;
                 InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
-                chatDB.LastMessage = "/quitApple";
-                _chatService.Update(chatDB.ChatId, chatDB);
-                return new Answer()
+                return new AnswerMessage()
                 {
                     Text = toSendText,
                     StickerId = StickersId.PetGameroom_Cat,
@@ -226,12 +201,12 @@ namespace TamagotchiBot.Controllers
             }
 
             if (message.Text != "🍎" && message.Text != "🍎🍎" && message.Text != "🍎🍎🍎")
-                return new Answer() { Text = appleGameUndefiendText, ReplyMarkup = KeyboardOptimizer(ApplesToChoose) };
+                return new AnswerMessage() { Text = appleGameUndefiendText, ReplyMarkup = KeyboardOptimizer(ApplesToChoose) };
 
             return MakeMove(message);
         }
 
-        public Answer MakeMove(Message message)
+        public AnswerMessage MakeMove(Message message)
         {
             var appleDataToUpdate = _appleGameDataService.Get(UserId);
             var petDB = _petService.Get(UserId);
@@ -328,7 +303,7 @@ namespace TamagotchiBot.Controllers
 
             _appleGameDataService.Update(appleDataToUpdate);
             _petService.Update(UserId, petDB);
-            return new Answer()
+            return new AnswerMessage()
             {
                 Text = textToSay,
                 ReplyMarkup = KeyboardOptimizer(ApplesToChoose)

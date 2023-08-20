@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TamagotchiBot.Models;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -13,10 +10,10 @@ namespace TamagotchiBot.UserExtensions
     {
         public enum Language
         {
-            [Display(ShortName = "🇵🇱", Name = "pl")] Polish,
-            [Display(ShortName = "🇺🇸", Name = "en")] English,
             [Display(ShortName = "🇨🇷", Name = "be")] Belarusian,
-            [Display(ShortName = "🇷🇺", Name = "ru")] Russian
+            [Display(ShortName = "🇷🇺", Name = "ru")] Russian,
+            [Display(ShortName = "🇺🇸", Name = "en")] English,
+            [Display(ShortName = "🇵🇱", Name = "pl")] Polish,
         }
 
         public enum CurrentStatus
@@ -82,12 +79,16 @@ namespace TamagotchiBot.UserExtensions
             //Games
             public const int AppleGame = 20;
             public const int DiceGame = 5;
+
+            //Resurrect
+            public const int ResurrectPet = 1000;
         }
 
         public class TimesToWait
         {
             public TimeSpan WorkOnPCToWait = new(0, 2, 0);
             public TimeSpan DailyRewardToWait = new(24, 0, 0);
+            public TimeSpan SleepToWait = new(0, 10, 0);
         }
 
         public struct Limits
@@ -159,6 +160,8 @@ namespace TamagotchiBot.UserExtensions
 
             public const string BannedSticker = "CAACAgIAAxkBAAEIn9VkPlGMflkimxiV4BhDptaNOBhgjgACmwUAAlOx9wNCvw--ehyldy8E";
 
+            public const string ResurrectedPetSticker = "CAACAgIAAxkBAAEKAqBk2QhbPJzmYZG1tOdSmWvlW5RYNAACpR4AAsL7YUo1ZV8nKeb1XDAE";
+
             //Cat
             public const string PetCreated_Cat = "CAACAgIAAxkBAAEDHvlhcG2oG4rLAAGPvREkKoykMsNnYzsAAlsQAAKlvUhKsth-8cNoWVghBA";
             public const string PetInfo_Cat = "CAACAgIAAxkBAAEDHwFhcG3C-_owIcuMOR9GTlE4MeoTOAACvRIAAhxUSUo2xUCLEnwQHiEE";
@@ -181,120 +184,53 @@ namespace TamagotchiBot.UserExtensions
 
         public class InlineItems
         {
-            public List<CommandModel> InlineFood = new()
-                {
-                    new CommandModel ()
-                    {
-                        Text = "🍞",
-                        CallbackData = "kitchenCommandInlineBread"
-                    },
-                    new CommandModel ()
-                    {
-                        Text = "🍎",
-                        CallbackData = "kitchenCommandInlineRedApple"
-                    },
-                    new CommandModel ()
-                    {
-                        Text = "🍫",
-                        CallbackData = "kitchenCommandInlineChocolate"
-                    },
-                    new CommandModel ()
-                    {
-                        Text = "🍭",
-                        CallbackData = "kitchenCommandInlineLollipop"
-                    }
-                };
-
-            public List<CommandModel> InlineGames = new()
-                {
-                   new CommandModel()
-                   {
-                       Text = "🍏",
-                       CallbackData = "gameroomCommandInlineCard"
-                   },
-                   new CommandModel()
-                   {
-                       Text = "🎲",
-                       CallbackData = "gameroomCommandInlineDice"
-                   }
-                };
-
-            public List<CommandModel> InlineSleep = new()
-                {
-                    new CommandModel()
-                    {
-                        Text = Resources.Resources.sleepCommandInlinePutToSleep,
-                        CallbackData = "sleepCommandInlinePutToSleep"
-                    }
-                };
-
-            public List<CommandModel> InlineHygiene = new()
-                {
-                    new CommandModel()
-                    {
-                        Text = Resources.Resources.bathroomCommandBrushTeeth,
-                        CallbackData = "bathroomCommandBrushTeeth"
-                    },
-                    new CommandModel()
-                    {
-                        Text = Resources.Resources.bathroomCommandTakeShower,
-                        CallbackData = "bathroomCommandTakeShower"
-                    },
-                };
-            public List<CommandModel> InlineHospital = new()
-                {
-                    new CommandModel()
-                    {
-                        Text = Resources.Resources.hospitalCommandCurePills,
-                        CallbackData = "hospitalCommandCurePills"
-                    }
-                };
-            public List<CommandModel> InlineWork = new()
-                {
-                    new CommandModel()
-                    {
-                        Text = Resources.Resources.workCommandInlinePC,
-                        CallbackData = "workCommandInlineWorkOnPC"
-                    }
-                };
-
-            public List<CommandModel> InlineRanks = new()
-                {
-                    new CommandModel()
-                    {
-                        Text = Resources.Resources.ranksCommandInlineLevel,
-                        CallbackData = "ranksCommandInlineLevel"
-                    },
-                    new CommandModel()
-                    {
-                        Text = Resources.Resources.ranksCommandInlineGold,
-                        CallbackData = "ranksCommandInlineGold"
-                    },
-                    new CommandModel()
-                    {
-                        Text = Resources.Resources.ranksCommandInlineApples,
-                        CallbackData = "ranksCommandInlineApples"
-                    }
-                };
-
-            public List<CommandModel> InlineRewards = new()
-                {
-                    new CommandModel()
-                    {
-                        Text = Resources.Resources.rewardCommandInlineDailyReward,
-                        CallbackData = "rewardCommandInlineDailyReward"
-                    }
-                };
-
-            public List<CommandModel> InlinePet = new()
+            public List<CallbackModel> InlineFood = new()
             {
-                new CommandModel()
-                {
-                    Text = Resources.Resources.petCommandInlineExtraInfo,
-                    CallbackData = "petCommandInlineExtraInfo"
-                }
+                new CallbackButtons.KitchenCommand().KitchenCommandInlineBread,
+                new CallbackButtons.KitchenCommand().KitchenCommandInlineRedApple,
+                new CallbackButtons.KitchenCommand().KitchenCommandInlineChocolate,
+                new CallbackButtons.KitchenCommand().KitchenCommandInlineLollipop
             };
 
+            public List<CallbackModel> InlineGames = new()
+            {
+                new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame,
+                new CallbackButtons.GameroomCommand().GameroomCommandInlineDice
+            };
+
+
+            public List<CallbackModel> InlineHygiene = new()
+            {
+                new CallbackButtons.BathroomCommand().BathroomCommandBrushTeeth,
+                new CallbackButtons.BathroomCommand().BathroomCommandTakeShower
+            };
+
+            public List<CallbackModel> InlineHospital = new()
+            {
+                new CallbackButtons.HospitalCommand().HospitalCommandCurePills
+            };
+
+            public List<CallbackModel> InlineWork = new()
+            {
+                new CallbackButtons.WorkCommand().WorkCommandInlineWorkOnPC
+            };
+
+            public List<CallbackModel> InlineRanks = new()
+            {
+                new CallbackButtons.RanksCommand().RanksCommandInlineLevel,
+                new CallbackButtons.RanksCommand().RanksCommandInlineGold,
+                new CallbackButtons.RanksCommand().RanksCommandInlineApples,
+            };
+
+            public List<CallbackModel> InlineRewards = new()
+            {
+                new CallbackButtons.RewardsCommand().RewardCommandInlineDailyReward
+            };
+
+            public List<CallbackModel> InlinePet = new()
+            {
+                new CallbackButtons.PetCommand().PetCommandInlineExtraInfo
+            };
         }
 
         public static ReplyKeyboardMarkup LanguagesMarkup = Extensions.ReplyKeyboardOptimizer(Extensions.LanguagesWithFlags(), isOneTimeKeyboard: true);
