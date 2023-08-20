@@ -965,6 +965,7 @@ namespace TamagotchiBot.Controllers
             string toSendText = string.Format(sleepCommand, petDB.Name, petDB.Fatigue, Extensions.GetCurrentStatus(petDB.CurrentStatus));
 
             var timeToWait = petDB.ToWakeUpTime - DateTime.UtcNow;
+            timeToWait = timeToWait < TimeSpan.Zero ? default : timeToWait;
 
             InlineKeyboardMarkup toSendInline =
                 Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()

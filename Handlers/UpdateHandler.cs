@@ -237,6 +237,10 @@ namespace TamagotchiBot.Handlers
 
                 await SendPostToChat(callbackQuery.From.Id);
 
+                new SynchroDBController(_appServices, callback: callbackQuery).SynchronizeWithDB(); //update user (username, names etc.) in DB
+                CreatorController creatorController = new CreatorController(_appServices, callback: callbackQuery);
+                creatorController.UpdateIndicators(); //update all pet's statistics
+
                 var controller = new MenuController(_appServices, callbackQuery);
                 controller.CallbackHandler();
             }

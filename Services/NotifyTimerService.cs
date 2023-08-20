@@ -140,7 +140,7 @@ namespace TamagotchiBot.Services
                         StickerId = GetRandomDailyRewardSticker(),
                     };
 
-                    _appServices.BotControlService.SendAnswerMessageAsync(toSend, userId);
+                    _appServices.BotControlService.SendAnswerMessageAsync(toSend, userId, false);
 
                     Log.Information($"Sent DailyRewardNotification to '@{user.Username}'");
                 }
@@ -165,30 +165,20 @@ namespace TamagotchiBot.Services
         }
         private void LittileThing()
         {
+
+            var petsDB = _appServices.PetService.GetAll();
+            var applesDB = _appServices.AppleGameDataService.GetAll();
             var counter = 0;
-            var counter2 = 0;
-            Log.Warning($"Started Little Things");
-
-            foreach (var petDB in _appServices.PetService.GetAll())
+            foreach (var appleGame in applesDB)
             {
-                var userDB = _appServices.UserService.Get(petDB.UserId);
-                if (userDB == null)
-                {
-                    _appServices.PetService.Remove(petDB.UserId);
-                    counter2++;
+                if (petsDB.Any(a => a.UserId == appleGame.UserId))
                     continue;
-                }
 
-                _appServices.PetService.UpdateNextRandomEventNotificationTime(petDB.UserId, userDB.NextRandomEventNotificationTime);
-                _appServices.UserService.UpdateNextRandomEventNotificationTime(petDB.UserId, default);
-
-                _appServices.UserService.UpdateGold(petDB.UserId, petDB.Gold);
-                _appServices.PetService.UpdateGold(petDB.UserId, -1);
-
+                _appServices.AppleGameDataService.Delete(appleGame.UserId);
                 counter++;
-                Log.Information($"Gold&DTReward updating is done for userID: {petDB.UserId}");
             }
-            Log.Information($"Update for {counter} users. Deleted {counter2} users.");
+            Log.Information($"Removed {counter} users in apple games");
+
         }
         private async void OnMaintainEvent(object sender, ElapsedEventArgs e)
         {
