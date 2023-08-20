@@ -19,6 +19,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public DateTime GetLastGlobalUpdate() => _sinfo.Find(si => true).FirstOrDefault()?.LastGlobalUpdate ?? DateTime.MinValue;
         public bool GetDoSendChangelogs() => _sinfo.Find(si => true).FirstOrDefault()?.DoSendChangelogs ?? false;
+        public bool GetDoMaintainWorks() => _sinfo.Find(si => true).FirstOrDefault()?.DoMaintainWorks ?? false;
         public DateTime GetNextNotify()
         {
             bool isMongoAlive;
@@ -83,6 +84,17 @@ namespace TamagotchiBot.Services.Mongo
             _sinfo.ReplaceOne(i => i._id == unn._id, unn);
         }
 
+        public void DisableMaintainWorks() //you can enable manually in database
+        {
+            var lgu = Get();
+            if (lgu == null)
+            {
+                CreateDefault();
+                return;
+            }
+            lgu.DoMaintainWorks = false;
+            _sinfo.ReplaceOne(i => i._id == lgu._id, lgu);
+        }
         public void DisableChangelogsSending() //you can enable manually in database
         {
             var lgu = Get();

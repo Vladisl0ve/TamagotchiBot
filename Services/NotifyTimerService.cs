@@ -18,6 +18,7 @@ namespace TamagotchiBot.Services
     {
         private Timer _notifyTimer;
         private Timer _changelogsTimer;
+        private Timer _MaintainWorkTimer;
         private Timer _dailyRewardTimer;
         private Timer _randomEventRewardTimer;
         private readonly IApplicationServices _appServices;
@@ -52,6 +53,18 @@ namespace TamagotchiBot.Services
             _notifyTimer.Elapsed += OnNotifyTimedEvent;
             _notifyTimer.AutoReset = true;
             _notifyTimer.Enabled = true;
+        }
+        public void SetMaintainActions()
+        {
+            if (!_appServices.SInfoService.GetDoMaintainWorks())
+                return;
+
+            TimeSpan timeToWait = TimeSpan.FromSeconds(5);
+            Log.Information("MAINTAIN IN SECONDS: " + timeToWait.TotalSeconds);
+            _MaintainWorkTimer = new Timer(timeToWait);
+            _MaintainWorkTimer.Elapsed += OnMaintainEvent;
+            _MaintainWorkTimer.AutoReset = false;
+            _MaintainWorkTimer.Enabled = true;
         }
         public void SetChangelogsTimer()
         {
@@ -153,23 +166,8 @@ namespace TamagotchiBot.Services
         private void LittileThing()
         {
             var counter = 0;
-            var auid = GetAllUsersIds();
+            var counter2 = 0;
             Log.Warning($"Started Little Things");
-            foreach (var userId in auid)
-            {
-                if (!long.TryParse(userId, out long userIdDB))
-                    continue;
-
-                if (_appServices.PetService.Get(userIdDB) != null)
-                    continue;
-
-                _appServices.ChatService.Remove(userIdDB);
-                _appServices.PetService.Remove(userIdDB);
-                _appServices.UserService.Remove(userIdDB);
-                _appServices.AppleGameDataService.Delete(userIdDB);
-                counter++;
-            }
-            Log.Warning($"DB: Removed {counter} users!");
 
             foreach (var petDB in _appServices.PetService.GetAll())
             {
@@ -177,6 +175,7 @@ namespace TamagotchiBot.Services
                 if (userDB == null)
                 {
                     _appServices.PetService.Remove(petDB.UserId);
+                    counter2++;
                     continue;
                 }
 
@@ -186,8 +185,18 @@ namespace TamagotchiBot.Services
                 _appServices.UserService.UpdateGold(petDB.UserId, petDB.Gold);
                 _appServices.PetService.UpdateGold(petDB.UserId, -1);
 
+                counter++;
                 Log.Information($"Gold&DTReward updating is done for userID: {petDB.UserId}");
             }
+            Log.Information($"Update for {counter} users. Deleted {counter2} users.");
+        }
+        private async void OnMaintainEvent(object sender, ElapsedEventArgs e)
+        {
+            var usersToNotify = GetAllUsersIds();
+            Log.Information($"MAINTAINS - {usersToNotify.Count} users");
+            _appServices.SInfoService.DisableMaintainWorks();
+
+            LittileThing();
         }
         private async void OnChangelogsTimedEvent(object sender, ElapsedEventArgs e)
         {
