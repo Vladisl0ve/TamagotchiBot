@@ -192,21 +192,21 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ⚡️⚡️ New update 1.1 is out⚡️⚡️
+        ///   Looks up a localized string similar to ⚡️⚡️ New update 1.2 is out⚡️⚡️
         ///Added:
-        ///🛁 Hygiene is a new attribute! Make sure your pet is always clean
-        ///🚿 Bathroom - clean teeth, my pet - /bathroom
-        ///💥 Random events - now different events will take place like in a real Tamagotchi
-        ///Be on the lookout 🧸
+        ///🎠 You can resurrect a pet for 1000 gold (so collect coins, they will come in handy)
+        ///🚦Redesigned start for beginners
         ///
         ///Corrections:
-        ///⭐️ Rating is displayed correctly now
-        ///🛋 Fixed incorrect display of pet wishlist
-        ///🎈 Game bugs fixed
+        ///🩼 Improved bot stability
+        ///🛋 Lots of bugs fixed
+        ///🍫 You can now feed any food up to 100% satiety
+        ///🚚 You can now go to work only if the pet is rested (has less fatigue than required at work)
+        ///🎗 Hidden gags added :)
         ///
         ///In the plans:
-        ///🎰New mini-games
-        ///🏫Add school, education.
+        ///🤼‍♀️ Multiplayer - soon you can add a bot to chat with friends to play mini-games with other users
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string changelog1Text {
             get {

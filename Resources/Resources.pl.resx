@@ -549,23 +549,6 @@ Pamiętaj, aby umyć zęby przed pójściem spać🪥</value>
   <data name="PetHygieneAnwserCallback" xml:space="preserve">
     <value>Higiena +{0}%</value>
   </data>
-  <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Nowa aktualizacja 1.1 jest już dostępna⚡️⚡️
-Dodany:
-🛁 Higiena to nowy atrybut! Upewnij się, że twoje zwierzę jest zawsze czyste
-🚿 Łazienka - czyste zęby, mój pupilku - /łazienka
-💥 Losowe wydarzenia - teraz różne wydarzenia będą miały miejsce jak w prawdziwym Tamagotchi
-Bądź czujny 🧸
-
-Korekty:
-⭐️ Ocena jest teraz wyświetlana poprawnie
-🛋 Naprawiono nieprawidłowe wyświetlanie listy życzeń zwierzaka
-🎈 Naprawione błędy w grze
-
-W planach:
-🎰Nowe minigry
-🏫 Dodaj szkołę, edukację</value>
-  </data>
   <data name="RandomEventFireworks" xml:space="preserve">
     <value>Poszedłeś oglądać fajerwerki 🎇
 Ale zwierzak przypadkiem wpadł do kałuży 💦
@@ -603,5 +586,24 @@ Pogodziliście się 💕
   </data>
   <data name="PetPlayingAnwserCallback" xml:space="preserve">
     <value>Radość wzrosła o {0}% 🎊</value>
+  </data>
+  <data name="changelog1Text" xml:space="preserve">
+    <value>⚡️⚡️ Nowa aktualizacja 1.2 jest już dostępna⚡️⚡️
+Dodany:
+🎠 Możesz wskrzesić zwierzaka za 1000 sztuk złota (więc zbieraj monety, przydadzą się)
+🚦Przeprojektowany start dla początkujących
+
+Korekty:
+🩼 Poprawiona stabilność bota
+🛋 Naprawiono wiele błędów
+🍫 Możesz teraz podawać dowolne jedzenie aż do 100% sytości
+🚚 Możesz teraz iść do pracy tylko wtedy, gdy zwierzak jest wypoczęty (ma mniejsze zmęczenie niż wymagane w pracy)
+🎗 Dodano ukryte gagi :)
+
+W planach:
+🤼‍♀️ Multiplayer - wkrótce możesz dodać bota do czatowania ze znajomymi i grania w minigry z innymi użytkownikami
+🐿 Nowe typy zwierzaków
+🎰 Nowe minigry
+🏫 Dodaj szkołę, edukację</value>
   </data>
 </root>
