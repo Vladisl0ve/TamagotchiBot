@@ -288,6 +288,22 @@ namespace TamagotchiBot.UserExtensions
             }
             return null;
         }
+        public static string GetLogUser(Models.Mongo.User user)
+        {
+            if (user == null)
+                return "DELETED";
+
+            if (user.Username != null)
+                return $"|@{user.Username}, ID: {user.UserId}|";
+
+            if (user.FirstName != null & user.LastName != null)
+                return $"|{user.FirstName} {user.LastName}, ID: {user.UserId}|";
+
+            if (user.FirstName != null)
+                return $"|{user.FirstName}, ID: {user.UserId}|";
+
+            return $"|ID: {user.UserId}|";
+        }
 
         public static bool IsEqual(this string telegramString, string defaultString)
         {

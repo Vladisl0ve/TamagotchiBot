@@ -118,7 +118,7 @@ namespace TamagotchiBot.Services
                 if (user == null) continue;
                 DoRandomEvent(user);
 
-                Log.Information($"Sent RandomEventNotification to '@{user?.Username}'");
+                Log.Information($"Sent RandomEventNotification to {Extensions.GetLogUser(user)}");
             }
             if (usersToNotify.Count > 1)
                 Log.Information($"RandomEventNotification timer completed - {usersToNotify.Count} users");
@@ -142,13 +142,13 @@ namespace TamagotchiBot.Services
 
                     _appServices.BotControlService.SendAnswerMessageAsync(toSend, userId, false);
 
-                    Log.Information($"Sent DailyRewardNotification to '@{user.Username}'");
+                    Log.Information($"Sent DailyRewardNotification to {Extensions.GetLogUser(user)}");
                 }
                 catch (ApiRequestException ex)
                 {
                     if (ex.ErrorCode == 403) //Forbidden by user
                     {
-                        Log.Warning($"{ex.Message} @{user.Username}, id: {user.UserId}");
+                        Log.Warning($"{ex.Message} {Extensions.GetLogUser(user)}");
 
                         //remove all data about user
                         _appServices.ChatService.Remove(user.UserId);
@@ -182,39 +182,54 @@ namespace TamagotchiBot.Services
         }
         private async void OnMaintainEvent(object sender, ElapsedEventArgs e)
         {
-            var usersToNotify = GetAllUsersIds();
-            Log.Information($"MAINTAINS - {usersToNotify.Count} users");
+           // var usersToNotify = GetAllUsersIds();
+           // Log.Information($"MAINTAINS - {usersToNotify.Count} users");
             _appServices.SInfoService.DisableMaintainWorks();
 
-            LittileThing();
+           // LittileThing();
         }
         private async void OnChangelogsTimedEvent(object sender, ElapsedEventArgs e)
         {
-            //LittileThing();
-            var usersToNotify = GetAllUsersIds();
+            var usersToNotify = GetAllActiveUsersIds();
             Log.Information($"Changelog timer - {usersToNotify.Count} users");
             _appServices.SInfoService.DisableChangelogsSending();
 
+            Log.Warning($"BD CLEANING ON CHANGELOGS STARTED");
+
             int usersSuccess = 0;
-            foreach (var userId in usersToNotify)
+            int usersDeleted = 0;
+            int usersForbidden = 0;
+            foreach (var userDB in usersToNotify)
             {
-                var user = _appServices.UserService.Get(long.Parse(userId));
+                var petDB = _appServices.PetService.Get(userDB.UserId);
+
+                if (petDB == null)
+                {
+                    _appServices.ChatService.Remove(userDB.UserId);
+                    _appServices.PetService.Remove(userDB.UserId);
+                    _appServices.UserService.Remove(userDB.UserId);
+                    _appServices.AppleGameDataService.Delete(userDB.UserId);
+
+                    Log.Information($"DELETED {Extensions.GetLogUser(userDB)}");
+                    usersDeleted++;
+                    continue;
+                }
 
                 try
                 {
-                    Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
+                    Resources.Resources.Culture = new CultureInfo(userDB?.Culture ?? "ru");
                     var toSend = new AnswerMessage()
                     {
                         Text = Resources.Resources.changelog1Text,
                         StickerId = Constants.StickersId.ChangelogSticker
                     };
 
-                    _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId);
+                    _appServices.BotControlService.SendAnswerMessageAsync(toSend, userDB.UserId, false);
 
                     await Task.Delay(100);
 
                     usersSuccess++;
-                    Log.Information($"Sent changelog to '@{user?.Username ?? "DELETED"}'");
+                    Log.Information($"Sent changelog to {Extensions.GetLogUser(userDB)}");
                 }
                 catch (ApiRequestException ex)
                 {
@@ -232,17 +247,13 @@ namespace TamagotchiBot.Services
                             continue;
                         }
 
-                        Log.Warning($"{ex?.Message} @{user?.Username}, id: {user?.UserId}");
+                        Log.Warning($"{ex?.Message} {Extensions.GetLogUser(userDB)}");
 
-                        //remove all data about user
-
-                        if (user == null)
-                            continue;
-
-                        _appServices.ChatService.Remove(user.UserId);
-                        _appServices.PetService.Remove(user.UserId);
-                        _appServices.UserService.Remove(user.UserId);
-                        _appServices.AppleGameDataService.Delete(user.UserId);
+                        _appServices.ChatService.Remove(userDB.UserId);
+                        _appServices.PetService.Remove(userDB.UserId);
+                        _appServices.UserService.Remove(userDB.UserId);
+                        _appServices.AppleGameDataService.Delete(userDB.UserId);
+                        usersForbidden++;
                     }
                 }
                 catch (Exception ex)
@@ -251,6 +262,10 @@ namespace TamagotchiBot.Services
                 }
             }
 
+            Log.Warning($"DELETED USERS:   {usersDeleted}");
+            Log.Warning($"SUCESS SENT:     {usersSuccess}");
+            Log.Warning($"FORBIDDEN USERS: {usersForbidden}");
+            Log.Warning($"BD CLEANING IS OVER...");
             Log.Information($"Changelogs have been sent - {usersSuccess} success, {usersToNotify.Count - usersSuccess} failed");
         }
         private void OnNotifyTimedEvent(object sender, ElapsedEventArgs e)
@@ -397,16 +412,7 @@ namespace TamagotchiBot.Services
             return usersToNotify;
         }
 
-        private List<string> GetAllUsersIds()
-        {
-            List<string> usersToNotify = new();
-            var usersAUDS = _appServices.AllUsersDataService.GetAll();
-
-            foreach (var user in usersAUDS)
-                usersToNotify.Add(user.UserId.ToString());
-
-            return usersToNotify;
-        }
+        private List<Models.Mongo.User> GetAllActiveUsersIds() => _appServices.UserService.GetAll().ToList();
         private string GetRandomDailyRewardSticker()
         {
             var random = new Random().Next(0, 6);
