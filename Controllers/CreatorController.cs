@@ -374,6 +374,7 @@ namespace TamagotchiBot.Controllers
         private void KillThePet()
         {
             _appServices.PetService.Remove(_userId);
+            _appServices.AppleGameDataService.Delete(_userId);
             AskALanguage();
         }
         private void AskForResurrect()
