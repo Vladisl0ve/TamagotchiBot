@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Answers;
+using TamagotchiBot.Models.Mongo;
 using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
@@ -163,30 +164,24 @@ namespace TamagotchiBot.Services
                 }
             }
         }
-        private void LittileThing()
+        private void LittileThing(List<Pet> pets)
         {
-
-            var petsDB = _appServices.PetService.GetAll();
-            var applesDB = _appServices.AppleGameDataService.GetAll();
             var counter = 0;
-            foreach (var appleGame in applesDB)
+            foreach(var pet in pets)
             {
-                if (petsDB.Any(a => a.UserId == appleGame.UserId))
-                    continue;
-
-                _appServices.AppleGameDataService.Delete(appleGame.UserId);
+                _appServices.UserService.Remove(pet.UserId);
+                _appServices.PetService.Remove(pet.UserId);
                 counter++;
             }
-            Log.Information($"Removed {counter} users in apple games");
-
+            Log.Information($"Removed {counter} users");
         }
-        private async void OnMaintainEvent(object sender, ElapsedEventArgs e)
+        private void OnMaintainEvent(object sender, ElapsedEventArgs e)
         {
-           // var usersToNotify = GetAllUsersIds();
-           // Log.Information($"MAINTAINS - {usersToNotify.Count} users");
+            var petsWithoutName = GetAllPetsWithoutName();
+            Log.Information($"MAINTAINS - {petsWithoutName.Count} users");
             _appServices.SInfoService.DisableMaintainWorks();
 
-           // LittileThing();
+            LittileThing(petsWithoutName);
         }
         private async void OnChangelogsTimedEvent(object sender, ElapsedEventArgs e)
         {
@@ -413,6 +408,7 @@ namespace TamagotchiBot.Services
         }
 
         private List<Models.Mongo.User> GetAllActiveUsersIds() => _appServices.UserService.GetAll().ToList();
+        private List<Models.Mongo.Pet> GetAllPetsWithoutName() => _appServices.PetService.GetAll().Where(p => p.Name == null).ToList();
         private string GetRandomDailyRewardSticker()
         {
             var random = new Random().Next(0, 6);
