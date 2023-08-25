@@ -109,6 +109,12 @@ namespace TamagotchiBot.Handlers
                 {
                     new CreatorController(_appServices, message).ApplyNewLanguage(true);
                     return;
+                } 
+                
+                if (!DidUserChoseNewPetName(userId))
+                {
+                    new CreatorController(_appServices, message).ApplyNewLanguage(true);
+                    return;
                 }
 
                 new SynchroDBController(_appServices, message).SynchronizeWithDB(); //update user (username, names etc.) in DB
@@ -271,6 +277,17 @@ namespace TamagotchiBot.Handlers
                 return false;
 
             if (userDB.Culture == null)
+                return false;
+
+            return true;
+        }
+        private bool DidUserChoseNewPetName(long userId)
+        {
+            var userDB = _appServices.UserService.Get(userId);
+            if (userDB == null)
+                return false;
+
+            if (userDB.IsPetNameAskedOnRename)
                 return false;
 
             return true;

@@ -90,6 +90,54 @@ namespace TamagotchiBot.Controllers
             _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
             return true;
         }
+        internal bool ApplyNewName()
+        {
+            var msgText = _message?.Text;
+            if (string.IsNullOrEmpty(msgText))
+                return false;
+
+            if (string.IsNullOrEmpty(newLanguage))
+            {
+                var toSendLanguagesAgain = new AnswerMessage()
+                {
+                    Text = ChangeLanguage,
+                    StickerId = StickersId.ChangeLanguageSticker,
+                    ReplyMarkup = LanguagesMarkup,
+                    InlineKeyboardMarkup = null
+                };
+
+                _appServices.BotControlService.SendAnswerMessageAsync(toSendLanguagesAgain, _userId);
+                return false;
+            }
+
+            _appServices.UserService.UpdateLanguage(_userId, newLanguage);
+            Culture = new CultureInfo(newLanguage);
+
+            if (!isLanguageChanged)
+            {
+                _appServices.UserService.UpdateIsLanguageAskedOnCreate(_userId, false);
+                return true;
+            }
+
+            string stickerToSend = newLanguage.Language() switch
+            {
+                Language.Polish => StickersId.PolishLanguageSetSticker,
+                Language.English => StickersId.EnglishLanguageSetSticker,
+                Language.Belarusian => StickersId.BelarussianLanguageSetSticker,
+                Language.Russian => StickersId.RussianLanguageSetSticker,
+                _ => null,
+            };
+            var toSend = new AnswerMessage()
+            {
+                Text = ConfirmedLanguage,
+                StickerId = stickerToSend,
+                ReplyMarkup = new ReplyKeyboardRemove()
+            };
+
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
+
+            return true;
+        }
         internal bool ApplyNewLanguage(bool isLanguageChanged = false)
         {
             var msgText = _message?.Text;

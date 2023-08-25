@@ -82,6 +82,9 @@ namespace TamagotchiBot.UserExtensions
 
             //Resurrect
             public const int ResurrectPet = 1000;
+
+            //Rename
+            public const int RenamePet = 500;
         }
 
         public class TimesToWait
