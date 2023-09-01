@@ -107,17 +107,30 @@ namespace TamagotchiBot.Services
             _randomEventRewardTimer.Enabled = true;
         }
 
-        private void OnRandomEventTimedEvent(object sender, ElapsedEventArgs e)
+        private async void OnRandomEventTimedEvent(object sender, ElapsedEventArgs e)
         {
+            if (DateTime.UtcNow.Hour < 4 || DateTime.UtcNow.Hour > 20)
+            {
+                Log.Information($"RandomEventNotification - Sleep time for [20:00 - 04:00] UTC");
+                return;
+            }
+
             var usersToNotify = UpdateAllRandomEventUsersIds();
+            var counter = 0;
             Log.Information($"RandomEventNotification - {usersToNotify.Count} users");
             foreach (var userId in usersToNotify)
             {
                 var user = _appServices.UserService.Get(userId);
                 Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
 
-                if (user == null) continue;
+                if (user == null)
+                    continue;
+
                 DoRandomEvent(user);
+
+                counter++;
+                if (counter % 50 == 0)
+                    await Task.Delay(1000);
 
                 Log.Information($"Sent RandomEventNotification to {Extensions.GetLogUser(user)}");
             }
@@ -167,7 +180,7 @@ namespace TamagotchiBot.Services
         private void LittileThing(List<Pet> pets)
         {
             var counter = 0;
-            foreach(var pet in pets)
+            foreach (var pet in pets)
             {
                 _appServices.UserService.Remove(pet.UserId);
                 _appServices.PetService.Remove(pet.UserId);
