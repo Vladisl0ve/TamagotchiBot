@@ -126,14 +126,7 @@ namespace TamagotchiBot.Controllers
             if (textReceived == "/menu")
                 return ShowMenuInfo();
             if (textReceived == "/rename")
-                //return RenamePet(petDB); TODO: fix this
-                return new AnswerMessage()
-                {
-                    Text = DevelopWarning,
-                    StickerId = StickersId.DevelopWarningSticker,
-                    ReplyMarkup = null,
-                    InlineKeyboardMarkup = null
-                };
+                return RenamePet(petDB);
             if (textReceived == "/work")
                 return ShowWorkInfo(petDB);
             if (textReceived == "/reward")
