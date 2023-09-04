@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Answers;
+using TamagotchiBot.Models.Mongo;
 using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
@@ -106,17 +107,30 @@ namespace TamagotchiBot.Services
             _randomEventRewardTimer.Enabled = true;
         }
 
-        private void OnRandomEventTimedEvent(object sender, ElapsedEventArgs e)
+        private async void OnRandomEventTimedEvent(object sender, ElapsedEventArgs e)
         {
+            if (DateTime.UtcNow.Hour < 4 || DateTime.UtcNow.Hour > 20)
+            {
+                Log.Information($"RandomEventNotification - Sleep time for [20:00 - 04:00] UTC");
+                return;
+            }
+
             var usersToNotify = UpdateAllRandomEventUsersIds();
+            var counter = 0;
             Log.Information($"RandomEventNotification - {usersToNotify.Count} users");
             foreach (var userId in usersToNotify)
             {
                 var user = _appServices.UserService.Get(userId);
                 Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
 
-                if (user == null) continue;
+                if (user == null)
+                    continue;
+
                 DoRandomEvent(user);
+
+                counter++;
+                if (counter % 50 == 0)
+                    await Task.Delay(1000);
 
                 Log.Information($"Sent RandomEventNotification to {Extensions.GetLogUser(user)}");
             }
@@ -163,30 +177,24 @@ namespace TamagotchiBot.Services
                 }
             }
         }
-        private void LittileThing()
+        private void LittileThing(List<Pet> pets)
         {
-
-            var petsDB = _appServices.PetService.GetAll();
-            var applesDB = _appServices.AppleGameDataService.GetAll();
             var counter = 0;
-            foreach (var appleGame in applesDB)
+            foreach (var pet in pets)
             {
-                if (petsDB.Any(a => a.UserId == appleGame.UserId))
-                    continue;
-
-                _appServices.AppleGameDataService.Delete(appleGame.UserId);
+                _appServices.UserService.Remove(pet.UserId);
+                _appServices.PetService.Remove(pet.UserId);
                 counter++;
             }
-            Log.Information($"Removed {counter} users in apple games");
-
+            Log.Information($"Removed {counter} users");
         }
-        private async void OnMaintainEvent(object sender, ElapsedEventArgs e)
+        private void OnMaintainEvent(object sender, ElapsedEventArgs e)
         {
-           // var usersToNotify = GetAllUsersIds();
-           // Log.Information($"MAINTAINS - {usersToNotify.Count} users");
+            var petsWithoutName = GetAllPetsWithoutName();
+            Log.Information($"MAINTAINS - {petsWithoutName.Count} users");
             _appServices.SInfoService.DisableMaintainWorks();
 
-           // LittileThing();
+            LittileThing(petsWithoutName);
         }
         private async void OnChangelogsTimedEvent(object sender, ElapsedEventArgs e)
         {
@@ -413,6 +421,7 @@ namespace TamagotchiBot.Services
         }
 
         private List<Models.Mongo.User> GetAllActiveUsersIds() => _appServices.UserService.GetAll().ToList();
+        private List<Models.Mongo.Pet> GetAllPetsWithoutName() => _appServices.PetService.GetAll().Where(p => p.Name == null).ToList();
         private string GetRandomDailyRewardSticker()
         {
             var random = new Random().Next(0, 6);
