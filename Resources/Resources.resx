@@ -130,8 +130,8 @@ Just type it here</value>
   </data>
   <data name="ConfirmedName" xml:space="preserve">
     <value>🧃 Nice!
-Your pet is waiting for you 🐱
-Do not forget feed and wash him, play a games and just love ☺️
+Your pet {0} is waiting for you 🐱
+Do not forget feed and wash him, play the games and just love ☺️
 
 BTW '/menu' shows some commands to start</value>
   </data>
@@ -603,5 +603,21 @@ You both reconciled 💕
   </data>
   <data name="PetIsFullOfJoyText" xml:space="preserve">
     <value>The pet has already played enough ⛹️‍♀️</value>
+  </data>
+  <data name="AskToConfirmRenamingPet" xml:space="preserve">
+    <value>Are you sure you want to change your pet's name from {0} to {1}? 🗃
+Price: {2} gold 💰</value>
+  </data>
+  <data name="YesText" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="NoText" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="YesTextEmoji" xml:space="preserve">
+    <value>Yes ✅</value>
+  </data>
+  <data name="NoTextEmoji" xml:space="preserve">
+    <value>No ❌</value>
   </data>
 </root>

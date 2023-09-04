@@ -130,7 +130,7 @@
   </data>
   <data name="ConfirmedName" xml:space="preserve">
     <value>🧃 Классно!
-Твой питомец ждет 🐱
+Твой питомец {0} ждет 🐱
 Не забывай кормить и мыть его, играть в игры и просто любить ☺️
 
 Нажми /pet - состояние питомца
@@ -609,5 +609,21 @@
   </data>
   <data name="PetIsFullOfJoyText" xml:space="preserve">
     <value>Питомец уже наигрался ⛹️‍♀️</value>
+  </data>
+  <data name="AskToConfirmRenamingPet" xml:space="preserve">
+    <value>Ты действительно хочешь поменять имя питомца с {0} на {1}? 🗃
+Цена: {2} золота 💰</value>
+  </data>
+  <data name="YesText" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="NoText" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="NoTextEmoji" xml:space="preserve">
+    <value>Нет ❌</value>
+  </data>
+  <data name="YesTextEmoji" xml:space="preserve">
+    <value>Да ✅</value>
   </data>
 </root>

@@ -73,6 +73,7 @@ namespace Telegram.Bots.Example
                       services.AddTransient<AllUsersDataService>();
                       services.AddTransient<DailyInfoService>();
                       services.AddTransient<BannedUsersService>();
+                      services.AddTransient<MetaUserService>();
 
                       services.AddLocalization(options => options.ResourcesPath = "Resources");
                   });

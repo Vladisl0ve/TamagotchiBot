@@ -109,11 +109,17 @@ namespace TamagotchiBot.Handlers
                 {
                     new CreatorController(_appServices, message).ApplyNewLanguage(true);
                     return;
-                } 
-                
-                if (!DidUserChoseNewPetName(userId))
+                }
+
+                if (DidUserConfirmNewPetName(userId) ?? false)
                 {
-                    new CreatorController(_appServices, message).ApplyNewLanguage(true);
+                    new CreatorController(_appServices, message).ToRenamingAnswer();
+                    return;
+                }
+
+                if (DidUserChoseNewPetName(userId) ?? false)
+                { 
+                    new CreatorController(_appServices, message).AskToConfirmNewName();
                     return;
                 }
 
@@ -281,16 +287,21 @@ namespace TamagotchiBot.Handlers
 
             return true;
         }
-        private bool DidUserChoseNewPetName(long userId)
+        private bool? DidUserConfirmNewPetName(long userId)
         {
-            var userDB = _appServices.UserService.Get(userId);
-            if (userDB == null)
-                return false;
+            var metauserDB = _appServices.MetaUserService.Get(userId);
+            if (metauserDB == null)
+                return null;
 
-            if (userDB.IsPetNameAskedOnRename)
-                return false;
+            return metauserDB.IsAskedToConfirmRenaming;
+        }
+        private bool? DidUserChoseNewPetName(long userId)
+        {
+            var metauserDB = _appServices.MetaUserService.Get(userId);
+            if (metauserDB == null)
+                return null;
 
-            return true;
+            return metauserDB.IsPetNameAskedOnRename;
         }
         private bool IsUserAndPetRegisteredChecking(long userId)
         {

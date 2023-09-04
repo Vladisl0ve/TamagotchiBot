@@ -130,7 +130,7 @@ Po prostu wpisz to tutaj</value>
   </data>
   <data name="ConfirmedName" xml:space="preserve">
     <value>🧃 Fajnie!
-Twój zwierzak czeka na Ciebie 🐱
+Twój zwierzak {0} czeka na Ciebie 🐱
 Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
 
 '/menu' pokaże więcej</value>
@@ -605,5 +605,21 @@ W planach:
 🐿 Nowe typy zwierzaków
 🎰 Nowe minigry
 🏫 Dodaj szkołę, edukację</value>
+  </data>
+  <data name="YesText" xml:space="preserve">
+    <value>Tak</value>
+  </data>
+  <data name="NoText" xml:space="preserve">
+    <value>Nie</value>
+  </data>
+  <data name="YesTextEmoji" xml:space="preserve">
+    <value>Tak ✅</value>
+  </data>
+  <data name="NoTextEmoji" xml:space="preserve">
+    <value>Nie ❌</value>
+  </data>
+  <data name="AskToConfirmRenamingPet" xml:space="preserve">
+    <value>Czy na pewno chcesz zmienić imię swojego zwierzaka z {0} na {1}? 🗃
+Cena: {2} złota 💰</value>
   </data>
 </root>

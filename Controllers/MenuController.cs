@@ -78,14 +78,14 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
         }
 
-        public AnswerMessage ProcessMessage()
+        public AnswerMessage ProcessMessage(string customText = null)
         {
-            return CommandHandler();
+            return CommandHandler(customText);
         }
 
-        public AnswerMessage CommandHandler()
+        public AnswerMessage CommandHandler(string customText = null)
         {
-            string textReceived = _message.Text;
+            string textReceived = customText ?? _message.Text;
             if (textReceived == null)
                 return null;
 
@@ -629,6 +629,8 @@ namespace TamagotchiBot.Controllers
             }
 
             string toSendText = string.Format(renameCommand);
+
+            _appServices.MetaUserService.UpdateIsPetNameAskedOnRename(_userId, true);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.RenameCommandCounter++;

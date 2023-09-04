@@ -131,7 +131,7 @@
   </data>
   <data name="ConfirmedName" xml:space="preserve">
     <value>🧃 Цудоўна!
-Твой гадаванец ужо чакае 🐱
+Твой гадаванец {0} ужо чакае 🐱
 Не забывай карміць і мыць яго, гуляць у гульні і проста любіць ☺️
 
 '/menu' пакажа больш</value>
@@ -608,5 +608,21 @@
 🐿 Новыя віды гадаванцаў
 🎰 Новыя міні-гульні
 🏫 Дадаць школу, адукацыю</value>
+  </data>
+  <data name="YesText" xml:space="preserve">
+    <value>Так</value>
+  </data>
+  <data name="NoText" xml:space="preserve">
+    <value>Не</value>
+  </data>
+  <data name="YesTextEmoji" xml:space="preserve">
+    <value>Так ✅</value>
+  </data>
+  <data name="NoTextEmoji" xml:space="preserve">
+    <value>Не ❌</value>
+  </data>
+  <data name="AskToConfirmRenamingPet" xml:space="preserve">
+    <value>Ты сапраўды хочаш памяняць імя гадаванца з {0} на {1}? 🗃
+Кошт: {2} золата 💰</value>
   </data>
 </root>

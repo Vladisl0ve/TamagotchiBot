@@ -23,6 +23,8 @@ namespace TamagotchiBot.Services
 
         public UserService UserService { get; }
 
+        public MetaUserService MetaUserService { get; }
+
         public BotControlService BotControlService { get; }
 
         public ApplicationServices(AdsProducersService adsProducersService,
@@ -34,6 +36,7 @@ namespace TamagotchiBot.Services
                                    PetService petService,
                                    SInfoService sInfoService,
                                    UserService userService,
+                                   MetaUserService metaUserService,
                                    BotControlService botControlService)
         {
             AdsProducersService = adsProducersService;
@@ -45,6 +48,7 @@ namespace TamagotchiBot.Services
             PetService = petService;
             SInfoService = sInfoService;
             UserService = userService;
+            MetaUserService = metaUserService;
             BotControlService = botControlService;
         }
     }

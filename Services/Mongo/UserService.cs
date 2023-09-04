@@ -113,18 +113,6 @@ namespace TamagotchiBot.Services.Mongo
             return user;
         }
 
-        public bool UpdateIsPetNameAskedOnRename(long userId, bool isAsked)
-        {
-            var user = _users.Find(p => p.UserId == userId).FirstOrDefault();
-            if (user != null)
-            {
-                user.IsPetNameAskedOnRename = isAsked;
-                Update(userId, user);
-                return true;
-            }
-
-            return false;
-        }
         public bool UpdateIsPetNameAskedOnCreate(long userId, bool isAsked)
         {
             var user = _users.Find(p => p.UserId == userId).FirstOrDefault();

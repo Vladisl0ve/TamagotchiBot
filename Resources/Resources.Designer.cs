@@ -131,6 +131,16 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to change your pet&apos;s name from {0} to {1}? 🗃
+        ///Price: {2} gold 💰.
+        /// </summary>
+        public static string AskToConfirmRenamingPet {
+            get {
+                return ResourceManager.GetString("AskToConfirmRenamingPet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are in the gameroom ⚽️.
         /// </summary>
         public static string backToGameroomText {
@@ -244,8 +254,8 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 🧃 Nice!
-        ///Your pet is waiting for you 🐱
-        ///Do not forget feed and wash him, play a games and just love ☺️
+        ///Your pet {0} is waiting for you 🐱
+        ///Do not forget feed and wash him, play the games and just love ☺️
         ///
         ///BTW &apos;/menu&apos; shows some commands to start.
         /// </summary>
@@ -574,6 +584,24 @@ namespace TamagotchiBot.Resources {
         public static string NotEnoughGoldToResurrect {
             get {
                 return ResourceManager.GetString("NotEnoughGoldToResurrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string NoText {
+            get {
+                return ResourceManager.GetString("NoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ❌.
+        /// </summary>
+        public static string NoTextEmoji {
+            get {
+                return ResourceManager.GetString("NoTextEmoji", resourceCulture);
             }
         }
         
@@ -1202,6 +1230,24 @@ namespace TamagotchiBot.Resources {
         public static string workCommandPCWorking {
             get {
                 return ResourceManager.GetString("workCommandPCWorking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string YesText {
+            get {
+                return ResourceManager.GetString("YesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes ✅.
+        /// </summary>
+        public static string YesTextEmoji {
+            get {
+                return ResourceManager.GetString("YesTextEmoji", resourceCulture);
             }
         }
     }

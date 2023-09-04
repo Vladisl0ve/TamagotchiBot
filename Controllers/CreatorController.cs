@@ -81,7 +81,7 @@ namespace TamagotchiBot.Controllers
 
             var toSend = new AnswerMessage()
             {
-                Text = ConfirmedName,
+                Text = string.Format(ConfirmedName, msgText),
                 StickerId = StickersId.PetConfirmedName_Cat,
                 ReplyMarkup = null,
                 InlineKeyboardMarkup = null
@@ -90,48 +90,38 @@ namespace TamagotchiBot.Controllers
             _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
             return true;
         }
-        internal bool ApplyNewName()
+        internal bool AskToConfirmNewName()
         {
             var msgText = _message?.Text;
-            if (string.IsNullOrEmpty(msgText))
-                return false;
 
-            if (string.IsNullOrEmpty(newLanguage))
+            if (string.IsNullOrEmpty(msgText))
             {
-                var toSendLanguagesAgain = new AnswerMessage()
+                var toSendRenameInfoAgain = new AnswerMessage()
                 {
-                    Text = ChangeLanguage,
-                    StickerId = StickersId.ChangeLanguageSticker,
-                    ReplyMarkup = LanguagesMarkup,
-                    InlineKeyboardMarkup = null
+                    Text = renameCommand,
+                    StickerId = StickersId.RenamePetSticker,
+                    ReplyMarkup = new ReplyKeyboardRemove()
                 };
 
-                _appServices.BotControlService.SendAnswerMessageAsync(toSendLanguagesAgain, _userId);
+                _appServices.BotControlService.SendAnswerMessageAsync(toSendRenameInfoAgain, _userId);
                 return false;
             }
 
-            _appServices.UserService.UpdateLanguage(_userId, newLanguage);
-            Culture = new CultureInfo(newLanguage);
+            _appServices.MetaUserService.UpdateIsAskedToConfirmRenaming(_userId, true);
+            _appServices.MetaUserService.UpdateTmpPetName(_userId, msgText);
 
-            if (!isLanguageChanged)
-            {
-                _appServices.UserService.UpdateIsLanguageAskedOnCreate(_userId, false);
-                return true;
-            }
-
-            string stickerToSend = newLanguage.Language() switch
-            {
-                Language.Polish => StickersId.PolishLanguageSetSticker,
-                Language.English => StickersId.EnglishLanguageSetSticker,
-                Language.Belarusian => StickersId.BelarussianLanguageSetSticker,
-                Language.Russian => StickersId.RussianLanguageSetSticker,
-                _ => null,
-            };
             var toSend = new AnswerMessage()
             {
-                Text = ConfirmedLanguage,
-                StickerId = stickerToSend,
-                ReplyMarkup = new ReplyKeyboardRemove()
+                Text = string.Format(AskToConfirmRenamingPet, _appServices.PetService.Get(_userId).Name, msgText, Constants.Costs.RenamePet),
+                StickerId = StickersId.PetAskForConfirmName_Cat,
+                ReplyMarkup = new ReplyKeyboardMarkup(new List<KeyboardButton>()
+                {
+                    new KeyboardButton(YesTextEmoji),
+                    new KeyboardButton(NoTextEmoji)
+                })
+                {
+                    OneTimeKeyboard = true
+                }
             };
 
             _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
@@ -285,6 +275,46 @@ namespace TamagotchiBot.Controllers
             await Task.Delay(2500);
             AskForResurrect();
         }
+        internal async void ToRenamingAnswer()
+        {
+            bool? answerFromUser = _message.Text == YesTextEmoji ? true : _message.Text == NoTextEmoji ? false : null;
+            if (answerFromUser == null)
+            {
+                AskToConfirmNewName();
+                return;
+            }
+
+            if (answerFromUser == true)
+            {
+                if (_appServices.UserService.Get(_userId).Gold >= Constants.Costs.RenamePet)
+                {
+                    _appServices.MetaUserService.UpdateIsPetNameAskedOnRename(_userId, false);
+                    _appServices.MetaUserService.UpdateIsAskedToConfirmRenaming(_userId, false);
+                    RenamePet();
+                    return;
+                }
+                else //not enough gold to rename
+                {
+                    Culture = _userCulture;
+                    var toSend = new AnswerMessage()
+                    {
+                        Text = NotEnoughGoldToResurrect
+                    };
+
+                    _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
+                    await Task.Delay(1000);
+                    answerFromUser = false;
+                }
+            }
+
+            if (answerFromUser == false)
+            {
+                _appServices.MetaUserService.UpdateIsPetNameAskedOnRename(_userId, false);
+                _appServices.MetaUserService.UpdateIsAskedToConfirmRenaming(_userId, false);
+                _appServices.BotControlService.SendAnswerMessageAsync(new MenuController(_appServices, _message).ProcessMessage("/pet"), _userId);
+                return;
+            }
+        }
         internal async void ToResurrectAnswer()
         {
             bool? answerFromUser = _message.Text == ResurrectYesText ? true : _message.Text == ResurrectNoText ? false : null;
@@ -296,7 +326,7 @@ namespace TamagotchiBot.Controllers
 
             if (answerFromUser == true)
             {
-                if (_appServices.UserService.Get(_userId).Gold >= 1000)
+                if (_appServices.UserService.Get(_userId).Gold >= Constants.Costs.ResurrectPet)
                 {
                     ResurrectPet();
                     return;
@@ -362,6 +392,24 @@ namespace TamagotchiBot.Controllers
             Log.Information($"User {msg.From.Username ?? msg.From.Id.ToString()} has been added to Db");
 
             Culture = new CultureInfo(msg.From.LanguageCode ?? "ru");
+        }
+        private void RenamePet()
+        {
+            var metaUser = _appServices.MetaUserService.Get(_userId);
+            var userDB = _appServices.UserService.Get(_userId);
+            userDB.Gold -= Costs.RenamePet;
+
+            _appServices.PetService.UpdateName(_userId, metaUser.TmpPetName);
+            _appServices.UserService.Update(_userId, userDB);
+
+            Culture = _userCulture;
+            var toSend = new AnswerMessage()
+            {
+                Text = string.Format(ConfirmedName, metaUser.TmpPetName),
+                StickerId = StickersId.PetConfirmedName_Cat
+            };
+
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
         private void ResurrectPet()
         {
