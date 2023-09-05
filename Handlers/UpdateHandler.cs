@@ -85,7 +85,7 @@ namespace TamagotchiBot.Handlers
                 }
 
                 if (DidUserChoseNewPetName(userId) ?? false)
-                { 
+                {
                     new CreatorController(_appServices, message).AskToConfirmNewName();
                     return;
                 }
@@ -115,9 +115,15 @@ namespace TamagotchiBot.Handlers
                         await SendPostToChat(message.From.Id);
 
                     if (userService.Get(message.From.Id).IsInAppleGame)
-                        toSend = new AppleGameController(_appServices, message).Menu();
+                        new AppleGameController(_appServices, message).Menu();
                     else
+                    {
                         toSend = new MenuController(_appServices, message).ProcessMessage();
+                        if (toSend != null)
+                        {
+                            Log.Warning($"Something to send! {Environment.NewLine}Msg: {message.Text}, {Environment.NewLine}Answer: {toSend.Text}, {Environment.NewLine}UserID: {message.From.Id}");
+                        }
+                    }
 
                 }
                 catch (ApiRequestException apiEx)
@@ -147,7 +153,7 @@ namespace TamagotchiBot.Handlers
                 if (userService.Get(userId)?.IsInAppleGame ?? false)
                     return;
 
-                if (callbackQuery.Data == new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame.CallbackData) 
+                if (callbackQuery.Data == new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame.CallbackData)
                 {
                     new AppleGameController(_appServices, callbackQuery).PreStart();
                     return;

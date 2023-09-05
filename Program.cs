@@ -96,7 +96,7 @@ namespace Telegram.Bots.Example
                           rollingInterval: RollingInterval.Day,
                           retainedFileCountLimit: null,
                           outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-            .WriteTo.Console(LogEventLevel.Information)
+            .WriteTo.Console(LogEventLevel.Debug)
             .CreateLogger();
 
             Log.Warning("Path to logs: " + pathToLog);

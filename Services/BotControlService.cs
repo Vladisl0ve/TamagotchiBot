@@ -123,7 +123,7 @@ namespace TamagotchiBot.Services
             }
         }
 
-        public async void EditMessageTextAsync(long userId, int messageId, string text, InlineKeyboardMarkup replyMarkup = default, CancellationToken cancellationToken = default, ParseMode? parseMode = null)
+        public async void EditMessageTextAsync(long userId, int messageId, string text, InlineKeyboardMarkup replyMarkup = default, CancellationToken cancellationToken = default, ParseMode? parseMode = null, bool toLog = true)
         {
             var userDB = _userService.Get(userId);
             if (userDB == null)
@@ -131,7 +131,9 @@ namespace TamagotchiBot.Services
 
             try
             {
-                Log.Information($"Message edited for {Extensions.GetLogUser(userDB)}");
+                if (toLog)
+                    Log.Information($"Message edited for {Extensions.GetLogUser(userDB)}");
+
                 Log.Verbose($"Message edited for {Extensions.GetLogUser(userDB)}: {text.Replace("\r\n", " ")}");
 
                 await _botClient.EditMessageTextAsync(userId,
@@ -186,7 +188,6 @@ namespace TamagotchiBot.Services
 
             try
             {
-                Log.Information($"Answered callback for {Extensions.GetLogUser(userDB)}");
                 Log.Verbose($"Answered callback for {Extensions.GetLogUser(userDB)}: {text.Replace("\r\n", " ")}");
                 await _botClient.AnswerCallbackQueryAsync(callbackQueryId,
                                                text: text,
@@ -251,7 +252,7 @@ namespace TamagotchiBot.Services
         {
             if (toSend == null)
             {
-                Log.Warning($"Nothing to send (null), userID: {userId}");
+                //Log.Warning($"Nothing to send (null), userID: {userId}");
                 return;
             }
 
@@ -291,7 +292,7 @@ namespace TamagotchiBot.Services
                                      toLog: toLog);
             }
         }
-        public void SendAnswerCallback(long userId, int messageToAnswerId, AnswerCallback toSend)
-            => EditMessageTextAsync(userId, messageToAnswerId, toSend.Text, toSend.InlineKeyboardMarkup, parseMode: toSend.ParseMode);
+        public void SendAnswerCallback(long userId, int messageToAnswerId, AnswerCallback toSend, bool toLog = true)
+            => EditMessageTextAsync(userId, messageToAnswerId, toSend.Text, toSend.InlineKeyboardMarkup, parseMode: toSend.ParseMode, toLog: toLog);
     }
 }

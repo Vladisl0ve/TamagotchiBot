@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using TamagotchiBot.Models;
 using TamagotchiBot.Models.Answers;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot.Types;
@@ -10,6 +9,7 @@ using static TamagotchiBot.Resources.Resources;
 using static TamagotchiBot.UserExtensions.Constants;
 using TamagotchiBot.Services.Interfaces;
 using Extensions = TamagotchiBot.UserExtensions.Extensions;
+using Serilog;
 
 namespace TamagotchiBot.Controllers
 {
@@ -24,12 +24,16 @@ namespace TamagotchiBot.Controllers
 
         private const int APPLE_COUNTER_DEFAULT = 24;
 
+        private string _userInfo;
+
         private AppleGameController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
         {
             _callback = callback;
             _message = message;
             _userId = message?.From?.Id ?? callback.From.Id;
             _appServices = services;
+
+            _userInfo = Extensions.GetLogUser(_appServices.UserService.Get(_userId));
 
             Culture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
             AppleCounter = _appServices.AppleGameDataService.Get(_userId)?.CurrentAppleCounter ?? 1;
@@ -127,17 +131,15 @@ namespace TamagotchiBot.Controllers
             };
         }
 
-        public AnswerMessage Menu()
+        public void Menu()
         {
             var appleDataToUpdate = _appServices.AppleGameDataService.Get(_userId);
-            var petDB = _appServices.PetService.Get(_userId);
-            var userDB = _appServices.UserService.Get(_userId);
 
             if (appleDataToUpdate == null)
             {
                 _appServices.UserService.UpdateAppleGameStatus(_userId, false);
                 new MenuController(_appServices, _message).ProcessMessage("/pet");
-                return null;
+                return;
             }
 
             if (_message.Text == statisticsText && appleDataToUpdate.IsGameOvered)
@@ -147,11 +149,16 @@ namespace TamagotchiBot.Controllers
                                                appleDataToUpdate.TotalLoses,
                                                appleDataToUpdate.TotalDraws);
 
-                return new AnswerMessage()
+                var toSend = new AnswerMessage()
                 {
                     Text = toSendText,
                     ReplyMarkup = KeyboardOptimizer(MenuCommands)
                 };
+
+                Log.Debug($"Ending AppleGame {_userInfo}");
+
+                _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                return;
             }
 
             if (_message.Text == ConcedeText)
@@ -162,11 +169,16 @@ namespace TamagotchiBot.Controllers
 
                 string toSendText = $"{appleGameHelpText}";
 
-                return new AnswerMessage()
+                var toSend = new AnswerMessage()
                 {
                     Text = toSendText,
                     ReplyMarkup = KeyboardOptimizer(MenuCommands)
                 };
+
+                Log.Debug($"Conceded AppleGame {_userInfo}");
+
+                _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                return;
             }
 
             if (_message.Text == quitText || _message.Text == "/quit")
@@ -177,36 +189,31 @@ namespace TamagotchiBot.Controllers
 
                 _appServices.UserService.UpdateAppleGameStatus(_userId, false);
 
-                string toSendText = string.Format(gameroomCommand,
-                                                  petDB.Fatigue,
-                                                  petDB.Joy,
-                                                  userDB.Gold,
-                                                  Factors.CardGameJoyFactor,
-                                                  Costs.AppleGame,
-                                                  Factors.DiceGameJoyFactor,
-                                                  Costs.DiceGame);
+                Log.Debug($"Quit AppleGame {_userInfo}");
 
-                List<CallbackModel> inlineParts = new InlineItems().InlineGames;
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
-
-                return new AnswerMessage()
-                {
-                    Text = toSendText,
-                    StickerId = StickersId.PetGameroom_Cat,
-                    InlineKeyboardMarkup = toSendInline,
-                    ReplyMarkup = new ReplyKeyboardRemove()
-                };
+                new MenuController(_appServices, _message).ProcessMessage("/gameroom");
+                return;
             }
 
             if (_message.Text == againText)
             {
-                return StartGame();
+                Log.Debug($"Play again AppleGame {_userInfo}");
+
+                _appServices.BotControlService.SendAnswerMessageAsync(StartGame(), _userId, false);
+                return;
             }
 
             if (_message.Text != "🍎" && _message.Text != "🍎🍎" && _message.Text != "🍎🍎🍎")
-                return new AnswerMessage() { Text = appleGameUndefiendText, ReplyMarkup = KeyboardOptimizer(ApplesToChoose) };
+            {
+                var toSend = new AnswerMessage() { Text = appleGameUndefiendText, ReplyMarkup = KeyboardOptimizer(ApplesToChoose) };
+                Log.Debug($"Wrong message {_message.Text} in AppleGame {_userInfo}");
 
-            return MakeMove(_message);
+                _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                return;
+            }
+
+            Log.Debug($"Make move in AppleGame {_userInfo}");
+            _appServices.BotControlService.SendAnswerMessageAsync(MakeMove(_message), _userId, false);
         }
 
         public AnswerMessage MakeMove(Message message)
@@ -370,7 +377,10 @@ namespace TamagotchiBot.Controllers
                 });
 
             var toSendAnswer = StartGame();
-            _appServices.BotControlService.SendAnswerMessageAsync(toSendAnswer, _userId);
+
+            Log.Debug($"Started AppleGame {_userInfo}");
+
+            _appServices.BotControlService.SendAnswerMessageAsync(toSendAnswer, _userId, false);
             return;
         }
     }
