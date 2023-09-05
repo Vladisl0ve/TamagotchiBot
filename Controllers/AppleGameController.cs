@@ -8,38 +8,31 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.Resources.Resources;
 using static TamagotchiBot.UserExtensions.Constants;
-using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.Services.Interfaces;
+using Extensions = TamagotchiBot.UserExtensions.Extensions;
 
 namespace TamagotchiBot.Controllers
 {
     public class AppleGameController
     {
-        private readonly UserService _userService;
-        private readonly PetService _petService;
-        private readonly AppleGameDataService _appleGameDataService;
-        private readonly AllUsersDataService _allUsersService;
+        private readonly IApplicationServices _appServices;
 
-        private readonly Message message;
-        private readonly CallbackQuery callback;
+        private readonly Message _message;
+        private readonly CallbackQuery _callback;
 
-        private readonly long UserId = 0;
+        private readonly long _userId = 0;
 
         private const int APPLE_COUNTER_DEFAULT = 24;
 
         private AppleGameController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
         {
-            this.callback = callback;
-            this.message = message;
-            UserId = message?.From.Id ?? callback.From.Id;
+            _callback = callback;
+            _message = message;
+            _userId = message?.From?.Id ?? callback.From.Id;
+            _appServices = services;
 
-            _userService = services.UserService;
-            _petService = services.PetService;
-            _appleGameDataService = services.AppleGameDataService;
-            _allUsersService = services.AllUsersDataService;
-
-            Culture = new CultureInfo(_userService.Get(UserId)?.Culture ?? "ru");
-            AppleCounter = _appleGameDataService.Get(UserId)?.CurrentAppleCounter ?? 1;
+            Culture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
+            AppleCounter = _appServices.AppleGameDataService.Get(_userId)?.CurrentAppleCounter ?? 1;
         }
 
         public AppleGameController(IApplicationServices services,
@@ -120,10 +113,10 @@ namespace TamagotchiBot.Controllers
 
         public AnswerMessage StartGame()
         {
-            var appleDataToUpdate = _appleGameDataService.Get(UserId);
+            var appleDataToUpdate = _appServices.AppleGameDataService.Get(_userId);
             appleDataToUpdate.CurrentAppleCounter =
             AppleCounter = APPLE_COUNTER_DEFAULT;
-            _appleGameDataService.Update(appleDataToUpdate);
+            _appServices.AppleGameDataService.Update(appleDataToUpdate);
 
             string text = $"{appleGameHelpText}\n\n{string.Format(remainingApplesText, AppleCounter)}\n{ApplesIcons}";
             var keyboard = KeyboardOptimizer(ApplesToChoose);
@@ -136,13 +129,23 @@ namespace TamagotchiBot.Controllers
 
         public AnswerMessage Menu()
         {
-            var appleDataToUpdate = _appleGameDataService.Get(UserId);
-            var petDB = _petService.Get(UserId);
-            var userDB = _userService.Get(UserId);
+            var appleDataToUpdate = _appServices.AppleGameDataService.Get(_userId);
+            var petDB = _appServices.PetService.Get(_userId);
+            var userDB = _appServices.UserService.Get(_userId);
 
-            if (message.Text == statisticsText && appleDataToUpdate.IsGameOvered)
+            if (appleDataToUpdate == null)
             {
-                var toSendText = string.Format(appleGameStatisticsCommand, appleDataToUpdate.TotalWins, appleDataToUpdate.TotalLoses, appleDataToUpdate.TotalDraws);
+                _appServices.UserService.UpdateAppleGameStatus(_userId, false);
+                new MenuController(_appServices, _message).ProcessMessage("/pet");
+                return null;
+            }
+
+            if (_message.Text == statisticsText && appleDataToUpdate.IsGameOvered)
+            {
+                var toSendText = string.Format(appleGameStatisticsCommand,
+                                               appleDataToUpdate.TotalWins,
+                                               appleDataToUpdate.TotalLoses,
+                                               appleDataToUpdate.TotalDraws);
 
                 return new AnswerMessage()
                 {
@@ -151,11 +154,11 @@ namespace TamagotchiBot.Controllers
                 };
             }
 
-            if (message.Text == ConcedeText)
+            if (_message.Text == ConcedeText)
             {
                 appleDataToUpdate.TotalDraws += 1;
                 appleDataToUpdate.IsGameOvered = true;
-                _appleGameDataService.Update(appleDataToUpdate);
+                _appServices.AppleGameDataService.Update(appleDataToUpdate);
 
                 string toSendText = $"{appleGameHelpText}";
 
@@ -166,13 +169,13 @@ namespace TamagotchiBot.Controllers
                 };
             }
 
-            if (message.Text == quitText || message.Text == "/quit")
+            if (_message.Text == quitText || _message.Text == "/quit")
             {
                 appleDataToUpdate.TotalLoses += 1;
                 appleDataToUpdate.IsGameOvered = true;
-                _appleGameDataService.Update(appleDataToUpdate);
+                _appServices.AppleGameDataService.Update(appleDataToUpdate);
 
-                _userService.UpdateAppleGameStatus(UserId, false);
+                _appServices.UserService.UpdateAppleGameStatus(_userId, false);
 
                 string toSendText = string.Format(gameroomCommand,
                                                   petDB.Fatigue,
@@ -195,22 +198,22 @@ namespace TamagotchiBot.Controllers
                 };
             }
 
-            if (message.Text == againText)
+            if (_message.Text == againText)
             {
                 return StartGame();
             }
 
-            if (message.Text != "🍎" && message.Text != "🍎🍎" && message.Text != "🍎🍎🍎")
+            if (_message.Text != "🍎" && _message.Text != "🍎🍎" && _message.Text != "🍎🍎🍎")
                 return new AnswerMessage() { Text = appleGameUndefiendText, ReplyMarkup = KeyboardOptimizer(ApplesToChoose) };
 
-            return MakeMove(message);
+            return MakeMove(_message);
         }
 
         public AnswerMessage MakeMove(Message message)
         {
-            var appleDataToUpdate = _appleGameDataService.Get(UserId);
-            var petDB = _petService.Get(UserId);
-            var aud = _allUsersService.Get(UserId);
+            var appleDataToUpdate = _appServices.AppleGameDataService.Get(_userId);
+            var petDB = _appServices.PetService.Get(_userId);
+            var aud = _appServices.AllUsersDataService.Get(_userId);
 
             int toRemove = message.Text == "🍎" ? 1 : message.Text == "🍎🍎" ? 2 : message.Text == "🍎🍎🍎" ? 3 : 0;
             AppleCounter -= toRemove;
@@ -275,7 +278,7 @@ namespace TamagotchiBot.Controllers
                         petDB.Fatigue = 100;
 
                     aud.AppleGamePlayedCounter++;
-                    _allUsersService.Update(aud);
+                    _appServices.AllUsersDataService.Update(aud);
 
                     break;
                 case 1 when systemRemove == 0:
@@ -292,7 +295,7 @@ namespace TamagotchiBot.Controllers
                         petDB.Fatigue = 100;
 
                     aud.AppleGamePlayedCounter++;
-                    _allUsersService.Update(aud);
+                    _appServices.AllUsersDataService.Update(aud);
 
                     break;
                 default:
@@ -301,8 +304,8 @@ namespace TamagotchiBot.Controllers
                     break;
             }
 
-            _appleGameDataService.Update(appleDataToUpdate);
-            _petService.Update(UserId, petDB);
+            _appServices.AppleGameDataService.Update(appleDataToUpdate);
+            _appServices.PetService.Update(_userId, petDB);
             return new AnswerMessage()
             {
                 Text = textToSay,
@@ -310,5 +313,65 @@ namespace TamagotchiBot.Controllers
             };
         }
 
+        public void PreStart()
+        {
+            var petDB = _appServices.PetService.Get(_userId);
+            var userDB = _appServices.UserService.Get(_userId);
+
+            if (petDB == null || userDB == null)
+                return;
+
+            if (petDB?.Fatigue >= 100)
+            {
+                string anwser = string.Format(Resources.Resources.tooTiredText);
+                _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
+                                                                        _userId,
+                                                                        anwser,
+                                                                        true);
+                return;
+            }
+            if (petDB?.Joy >= 100)
+            {
+                string anwser = string.Format(Resources.Resources.PetIsFullOfJoyText);
+                _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
+                                                                        _userId,
+                                                                        anwser,
+                                                                        true);
+                return;
+            }
+
+            if (userDB?.Gold <= Constants.Costs.AppleGame)
+            {
+                string anwser = string.Format(Resources.Resources.goldNotEnough);
+                _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
+                                                                        _userId,
+                                                                        anwser,
+                                                                        true);
+                return;
+            }
+
+            _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.AppleGame);
+
+            _appServices.UserService.UpdateAppleGameStatus(_userId, true);
+            _appServices.BotControlService.SetMyCommandsAsync(_userId,
+                                                              Extensions.GetInApplegameCommands(),
+                                                              scope: new BotCommandScopeChat() { ChatId = _userId });
+            var appleData = _appServices.AppleGameDataService.Get(_userId);
+
+            if (appleData == null)
+                _appServices.AppleGameDataService.Create(new Models.Mongo.Games.AppleGameData()
+                {
+                    UserId = _userId,
+                    CurrentAppleCounter = 24,
+                    TotalDraws = 0,
+                    TotalLoses = 0,
+                    TotalWins = 0,
+                    IsGameOvered = false,
+                });
+
+            var toSendAnswer = StartGame();
+            _appServices.BotControlService.SendAnswerMessageAsync(toSendAnswer, _userId);
+            return;
+        }
     }
 }

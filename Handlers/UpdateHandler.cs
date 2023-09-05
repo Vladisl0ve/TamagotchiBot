@@ -42,36 +42,6 @@ namespace TamagotchiBot.Handlers
             bcService = services.BotControlService;
         }
 
-
-        public async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
-        {
-            Log.Error(exception, exception.Message);
-            Log.Warning("App restarts in 10 seconds...");
-            await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
-
-            if (OperatingSystem.IsWindows())
-            {
-                var startWinExe = AppDomain.CurrentDomain.BaseDirectory + AppDomain.CurrentDomain.FriendlyName + ".exe";
-                // Starts a new instance of the program itself
-                Process.Start(startWinExe);
-            }
-            else if (OperatingSystem.IsLinux())
-            {
-                var processInfo = new ProcessStartInfo()
-                {
-                    FileName = "bash",
-                    Arguments = $"-c /home/vladislove/Tamagotchi/wrapper.sh",
-                    UseShellExecute = true,
-                };
-
-                // Starts a new instance of the program itself
-                Process.Start(processInfo);
-            }
-
-            // Closes the current process
-            Environment.Exit(-1);
-        }
-
         public Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
         {
             if (!ToContinueHandlingUpdateChecking(update))
@@ -80,13 +50,10 @@ namespace TamagotchiBot.Handlers
             var messageFromUser = update.Message;
             var callbackFromUser = update.CallbackQuery;
             var userId = messageFromUser?.From.Id ?? callbackFromUser?.From.Id ?? default;
-/*            CultureInfo.DefaultThreadCurrentCulture =
-            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo(_appServices.UserService.Get(userId).Culture ?? "ru");
-*/
             Task task = update.Type switch
             {
-                UpdateType.Message => OnMessagePrivate(bot, update.Message),
-                UpdateType.CallbackQuery => OnCallbackPrivate(bot, update.CallbackQuery),
+                UpdateType.Message => OnMessagePrivate(update.Message),
+                UpdateType.CallbackQuery => OnCallbackPrivate(update.CallbackQuery),
                 _ => Task.CompletedTask
             };
 
@@ -95,7 +62,7 @@ namespace TamagotchiBot.Handlers
             sinfoService.UpdateLastGlobalUpdate();
             return task;
 
-            async Task OnMessagePrivate(ITelegramBotClient botClient, Message message)
+            async Task OnMessagePrivate(Message message)
             {
                 AnswerMessage toSend = null;
 
@@ -169,7 +136,7 @@ namespace TamagotchiBot.Handlers
                 _appServices.BotControlService.SendAnswerMessageAsync(toSend, message.From.Id);
             }
 
-            async Task OnCallbackPrivate(ITelegramBotClient bot, CallbackQuery callbackQuery)
+            async Task OnCallbackPrivate(CallbackQuery callbackQuery)
             {
                 if (userService.Get(callbackQuery.From.Id) == null || petService.Get(callbackQuery.From.Id) == null)
                     return;
@@ -180,66 +147,9 @@ namespace TamagotchiBot.Handlers
                 if (userService.Get(userId)?.IsInAppleGame ?? false)
                     return;
 
-                if (callbackQuery.Data == "gameroomCommandInlineAppleGame")
+                if (callbackQuery.Data == new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame.CallbackData) 
                 {
-                    var petDB = petService.Get(userId);
-                    var userDB = userService.Get(userId);
-                    if (petDB?.Fatigue >= 100)
-                    {
-                        string anwser = string.Format(Resources.Resources.tooTiredText);
-                        bcService.AnswerCallbackQueryAsync(callbackQuery.Id,
-                                                           callbackQuery.From.Id,
-                                                           anwser,
-                                                           true,
-                                                           cancellationToken: token);
-                        return;
-                    }
-                    if (petDB?.Joy >= 100)
-                    {
-                        string anwser = string.Format(Resources.Resources.PetIsFullOfJoyText);
-                        bcService.AnswerCallbackQueryAsync(callbackQuery.Id,
-                                                           callbackQuery.From.Id,
-                                                           anwser,
-                                                           true,
-                                                           cancellationToken: token);
-                        return;
-                    }
-
-                    if (userDB?.Gold - 20 < 0)
-                    {
-                        string anwser = string.Format(Resources.Resources.goldNotEnough);
-                        bcService.AnswerCallbackQueryAsync(callbackQuery.Id,
-                                                           callbackQuery.From.Id,
-                                                           anwser,
-                                                           true,
-                                                           cancellationToken: token);
-                        return;
-                    }
-
-                    _appServices.UserService.UpdateGold(callbackQuery.From.Id, _appServices.UserService.Get(callbackQuery.From.Id).Gold - 20);
-
-                    userService.UpdateAppleGameStatus(callbackQuery.From.Id, true);
-                    bcService.SetMyCommandsAsync(callbackQuery.From.Id,
-                                                 Extensions.GetInApplegameCommands(),
-                                                 cancellationToken: token,
-                                                 scope: new BotCommandScopeChat() { ChatId = userId });
-                    var appleData = appleGameDataService.Get(callbackQuery.From.Id);
-
-                    if (appleData == null)
-                        appleGameDataService.Create(new Models.Mongo.Games.AppleGameData()
-                        {
-                            UserId = callbackQuery.From.Id,
-                            CurrentAppleCounter = 24,
-                            TotalDraws = 0,
-                            TotalLoses = 0,
-                            TotalWins = 0,
-                            IsGameOvered = false,
-                        });
-
-                    var gameController = new AppleGameController(_appServices, callbackQuery);
-                    AnswerMessage toSendAnswer = gameController.StartGame();
-
-                    _appServices.BotControlService.SendAnswerMessageAsync(toSendAnswer, callbackQuery.From.Id);
+                    new AppleGameController(_appServices, callbackQuery).PreStart();
                     return;
                 }
 
@@ -376,6 +286,35 @@ namespace TamagotchiBot.Handlers
             }
 
             Log.Information("==> Gramads: " + result);
+        }
+
+        public async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+        {
+            Log.Error(exception, exception.Message);
+            Log.Warning("App restarts in 10 seconds...");
+            await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
+
+            if (OperatingSystem.IsWindows())
+            {
+                var startWinExe = AppDomain.CurrentDomain.BaseDirectory + AppDomain.CurrentDomain.FriendlyName + ".exe";
+                // Starts a new instance of the program itself
+                Process.Start(startWinExe);
+            }
+            else if (OperatingSystem.IsLinux())
+            {
+                var processInfo = new ProcessStartInfo()
+                {
+                    FileName = "bash",
+                    Arguments = $"-c /home/vladislove/Tamagotchi/wrapper.sh",
+                    UseShellExecute = true,
+                };
+
+                // Starts a new instance of the program itself
+                Process.Start(processInfo);
+            }
+
+            // Closes the current process
+            Environment.Exit(-1);
         }
     }
 }

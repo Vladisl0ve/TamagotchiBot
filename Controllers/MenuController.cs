@@ -83,7 +83,7 @@ namespace TamagotchiBot.Controllers
             return CommandHandler(customText);
         }
 
-        public AnswerMessage CommandHandler(string customText = null)
+        private AnswerMessage CommandHandler(string customText = null)
         {
             string textReceived = customText ?? _message.Text;
             if (textReceived == null)
@@ -95,47 +95,48 @@ namespace TamagotchiBot.Controllers
             var userDB = _appServices.UserService.Get(_userId);
 
             if (textReceived == "/language")
-                return ChangeLanguage();
+                ChangeLanguage();
             if (textReceived == "/help")
-                return ShowHelpInfo();
+                ShowHelpInfo();
 
             if (textReceived == "/pet")
-                return ShowPetInfo(petDB);
+                ShowPetInfo(petDB);
             if (textReceived == "/bathroom")
-                return GoToBathroom(petDB);
+                GoToBathroom(petDB);
             if (textReceived == "/kitchen")
-                return GoToKitchen(petDB);
+                GoToKitchen(petDB);
             if (textReceived == "/gameroom")
-                return GoToGameroom(petDB);
+                GoToGameroom(petDB);
             if (textReceived == "/hospital")
-                return GoToHospital(petDB);
+                GoToHospital(petDB);
             if (textReceived == "/ranks")
-                return ShowRankingInfo();
+                ShowRankingInfo();
             if (textReceived == "/sleep")
-                return GoToSleep(petDB);
+                GoToSleep(petDB);
             if (textReceived == "/test")
             {
-                return new AnswerMessage()
+                var toSend = new AnswerMessage()
                 {
                     Text = DevelopWarning,
                     StickerId = StickersId.DevelopWarningSticker,
                     ReplyMarkup = null,
                     InlineKeyboardMarkup = null
                 };
+                _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
             }
             if (textReceived == "/menu")
-                return ShowMenuInfo();
+                ShowMenuInfo();
             if (textReceived == "/rename")
-                return RenamePet(petDB);
+                RenamePet(petDB);
             if (textReceived == "/work")
-                return ShowWorkInfo(petDB);
+                ShowWorkInfo(petDB);
             if (textReceived == "/reward")
-                return ShowRewardInfo(userDB);
+                ShowRewardInfo(userDB);
 #if DEBUG
             if (textReceived == "/restart")
-                return RestartPet(petDB);
+                RestartPet(petDB);
             if (textReceived == "/kill")
-                return TestKillPet(petDB);
+                TestKillPet(petDB);
 #endif
             return null;
         }
@@ -264,11 +265,14 @@ namespace TamagotchiBot.Controllers
         }
 
         #region Message Answers
-        private AnswerMessage ShowWorkInfo(Pet petDB)
+        private void ShowWorkInfo(Pet petDB)
         {
             var accessCheck = CheckStatusIsInactiveOrNull(petDB, IsGoToWorkCommand: true);
             if (accessCheck != null)
-                return accessCheck;
+            {
+                _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId);
+                return;
+            }
 
             string toSendText = string.Empty;
 
@@ -281,7 +285,10 @@ namespace TamagotchiBot.Controllers
 
                 //if _callback handled when pet is working
                 if (remainsTime > TimeSpan.Zero)
-                    return ShowRemainedTimeWork(remainsTime);
+                {
+                    _appServices.BotControlService.SendAnswerMessageAsync(GetRemainedTimeWork(remainsTime), _userId);
+                    return;
+                }
             }
             else
             {
@@ -295,14 +302,16 @@ namespace TamagotchiBot.Controllers
                 _appServices.AllUsersDataService.Update(aud);
             }
 
-            return new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.PetWork_Cat,
                 InlineKeyboardMarkup = toSendInline
             };
+
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
-        private AnswerMessage ShowRewardInfo(Models.Mongo.User userDB)
+        private void ShowRewardInfo(User userDB)
         {
             string toSendText = string.Empty;
 
@@ -315,7 +324,10 @@ namespace TamagotchiBot.Controllers
 
                 //if _callback handled when pet is working
                 if (remainsTime > TimeSpan.Zero)
-                    return ShowRemainedTimeDailyReward(remainsTime);
+                {
+                    _appServices.BotControlService.SendAnswerMessageAsync(GetRemainedTimeDailyReward(remainsTime), _userId);
+                    return;
+                }
             }
             else
             {
@@ -329,14 +341,16 @@ namespace TamagotchiBot.Controllers
                 _appServices.AllUsersDataService.Update(aud);
             }
 
-            return new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.DailyRewardSticker,
                 InlineKeyboardMarkup = toSendInline
             };
+
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
-        private AnswerMessage ChangeLanguage()
+        private void ChangeLanguage()
         {
             _appServices.UserService.UpdateLanguage(_userId, null);
 
@@ -344,15 +358,17 @@ namespace TamagotchiBot.Controllers
             aud.LanguageCommandCounter++;
             _appServices.AllUsersDataService.Update(aud);
 
-            return new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = Resources.Resources.ChangeLanguage,
                 StickerId = StickersId.ChangeLanguageSticker,
                 ReplyMarkup = LanguagesMarkup,
                 InlineKeyboardMarkup = null
             };
+
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
-        private AnswerMessage ShowPetInfo(Pet petDB)
+        private void ShowPetInfo(Pet petDB)
         {
             string toSendText = string.Format(petCommand,
                                               petDB.Name,
@@ -370,7 +386,7 @@ namespace TamagotchiBot.Controllers
             aud.PetCommandCounter++;
             _appServices.AllUsersDataService.Update(aud);
 
-            return new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.PetInfo_Cat,
@@ -378,6 +394,7 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new InlineItems().InlinePet)
             };
 
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
         private AnswerMessage CheckStatusIsInactiveOrNull(Pet petDB, bool IsGoToSleepCommand = false, bool IsGoToWorkCommand = false)
         {
@@ -403,11 +420,14 @@ namespace TamagotchiBot.Controllers
 
             return null;
         }
-        private AnswerMessage GoToBathroom(Pet petDB)
+        private void GoToBathroom(Pet petDB)
         {
             var accessCheck = CheckStatusIsInactiveOrNull(petDB);
             if (accessCheck != null)
-                return accessCheck;
+            {
+                _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId);
+                return;
+            }
 
             string toSendText = string.Format(bathroomCommand, petDB.Hygiene);
 
@@ -418,18 +438,22 @@ namespace TamagotchiBot.Controllers
             aud.BathroomCommandCounter++;
             _appServices.AllUsersDataService.Update(aud);
 
-            return new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.PetBathroom_Cat,
                 InlineKeyboardMarkup = toSendInline
             };
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
-        private AnswerMessage GoToKitchen(Pet petDB)
+        private void GoToKitchen(Pet petDB)
         {
             var accessCheck = CheckStatusIsInactiveOrNull(petDB);
             if (accessCheck != null)
-                return accessCheck;
+            {
+                _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId);
+                return;
+            }
 
             string toSendText = string.Format(kitchenCommand, petDB.Satiety, _appServices.UserService.Get(_userId).Gold);
 
@@ -440,19 +464,22 @@ namespace TamagotchiBot.Controllers
             aud.KitchenCommandCounter++;
             _appServices.AllUsersDataService.Update(aud);
 
-            return new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.PetKitchen_Cat,
                 InlineKeyboardMarkup = toSendInline
             };
-
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
-        private AnswerMessage GoToGameroom(Pet petDB)
+        private void GoToGameroom(Pet petDB)
         {
             var accessCheck = CheckStatusIsInactiveOrNull(petDB);
             if (accessCheck != null)
-                return accessCheck;
+            {
+                _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId);
+                return;
+            }
 
             string toSendText = string.Format(gameroomCommand,
                                               petDB.Fatigue,
@@ -470,19 +497,22 @@ namespace TamagotchiBot.Controllers
             aud.GameroomCommandCounter++;
             _appServices.AllUsersDataService.Update(aud);
 
-            return new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.PetGameroom_Cat,
                 InlineKeyboardMarkup = toSendInline
             };
-
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
-        private AnswerMessage GoToHospital(Pet petDB)
+        private void GoToHospital(Pet petDB)
         {
             var accessCheck = CheckStatusIsInactiveOrNull(petDB);
             if (accessCheck != null)
-                return accessCheck;
+            {
+                _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId);
+                return;
+            }
 
             string commandHospital =  petDB.HP switch
             {
@@ -507,15 +537,16 @@ namespace TamagotchiBot.Controllers
             aud.HospitalCommandCounter++;
             _appServices.AllUsersDataService.Update(aud);
 
-            return new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = stickerHospital,
                 InlineKeyboardMarkup = toSendInline
             };
 
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
-        private AnswerMessage ShowRankingInfo()
+        private void ShowRankingInfo()
         {
             var anwserRating = GetRanksByLevel();
 
@@ -523,7 +554,7 @@ namespace TamagotchiBot.Controllers
             aud.RanksCommandCounter++;
             _appServices.AllUsersDataService.Update(aud);
 
-            return new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = anwserRating,
                 StickerId = StickersId.PetRanks_Cat,
@@ -531,12 +562,16 @@ namespace TamagotchiBot.Controllers
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
 
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
-        private AnswerMessage GoToSleep(Pet petDB)
+        private void GoToSleep(Pet petDB)
         {
             var accessCheck = CheckStatusIsInactiveOrNull(petDB, true);
             if (accessCheck != null)
-                return accessCheck;
+            {
+                _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId);
+                return;
+            }
 
             string toSendText = string.Format(sleepCommand,
                                               petDB.Name,
@@ -574,15 +609,16 @@ namespace TamagotchiBot.Controllers
             aud.SleepCommandCounter++;
             _appServices.AllUsersDataService.Update(aud);
 
-            return new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.PetSleep_Cat,
                 InlineKeyboardMarkup = toSendInline
             };
 
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
-        private AnswerMessage ShowHelpInfo()
+        private void ShowHelpInfo()
         {
             string toSendText = string.Format(helpCommand);
 
@@ -590,14 +626,15 @@ namespace TamagotchiBot.Controllers
             aud.HelpCommandCounter++;
             _appServices.AllUsersDataService.Update(aud);
 
-            return new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.HelpCommandSticker
             };
 
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
-        private AnswerMessage ShowMenuInfo()
+        private void ShowMenuInfo()
         {
             string toSendText = string.Format(menuCommand);
 
@@ -605,13 +642,14 @@ namespace TamagotchiBot.Controllers
             aud.MenuCommandCounter++;
             _appServices.AllUsersDataService.Update(aud);
 
-            return new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.MenuCommandSticker
             };
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
-        private AnswerMessage RenamePet(Pet petDB)
+        private void RenamePet(Pet petDB)
         {
             if (_appServices.BannedUsersService.GetAll().Any(bs => bs.UserId == _userId && bs.IsRenameBanned))
             {
@@ -621,11 +659,8 @@ namespace TamagotchiBot.Controllers
                 audF.RenameCommandCounter++;
                 _appServices.AllUsersDataService.Update(audF);
 
-                return new AnswerMessage()
-                {
-                    Text = toSendTextBan,
-                    StickerId = StickersId.BannedSticker
-                };
+                var toSend = new AnswerMessage() { Text = toSendTextBan, StickerId = StickersId.BannedSticker };
+                _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
             }
 
             string toSendText = string.Format(renameCommand);
@@ -636,26 +671,29 @@ namespace TamagotchiBot.Controllers
             aud.RenameCommandCounter++;
             _appServices.AllUsersDataService.Update(aud);
 
-            return new AnswerMessage()
+            var toSendFinal = new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.RenamePetSticker
             };
 
+            _appServices.BotControlService.SendAnswerMessageAsync(toSendFinal, _userId);
         }
-        private AnswerMessage TestKillPet(Pet petDB)
+        private void TestKillPet(Pet petDB)
         {
             string toSendText = string.Format("HP is zero (0) for {0}", petDB.Name);
 
             _appServices.PetService.UpdateHP(_userId, 0);
 
-            return new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.BannedSticker
             };
+
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
-        private AnswerMessage RestartPet(Pet petDB)
+        private void RestartPet(Pet petDB)
         {
             string toSendText = string.Format(restartCommand, petDB.Name);
 
@@ -663,11 +701,13 @@ namespace TamagotchiBot.Controllers
             _appServices.UserService.Remove(_userId);
             _appServices.ChatService.Remove(_userId);
 
-            return new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.DroppedPetSticker
             };
+
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
         #endregion
 
@@ -1170,7 +1210,7 @@ namespace TamagotchiBot.Controllers
             return;
         }
 
-        private AnswerMessage ShowRemainedTimeWork(TimeSpan remainedTime)
+        private AnswerMessage GetRemainedTimeWork(TimeSpan remainedTime)
         {
             InlineKeyboardMarkup toSendInline;
             string toSendText;
@@ -1204,7 +1244,7 @@ namespace TamagotchiBot.Controllers
             return new AnswerCallback(toSendText, toSendInline);
         }
 
-        private AnswerMessage ShowRemainedTimeDailyReward(TimeSpan remainedTime)
+        private AnswerMessage GetRemainedTimeDailyReward(TimeSpan remainedTime)
         {
             InlineKeyboardMarkup toSendInline;
             string toSendText;

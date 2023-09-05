@@ -211,7 +211,7 @@ namespace TamagotchiBot.Services
             {
                 var petDB = _appServices.PetService.Get(userDB.UserId);
 
-                if (petDB == null)
+                if (petDB == null || petDB.Name == null)
                 {
                     _appServices.ChatService.Remove(userDB.UserId);
                     _appServices.PetService.Remove(userDB.UserId);
