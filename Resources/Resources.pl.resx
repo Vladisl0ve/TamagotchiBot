@@ -130,7 +130,7 @@ Po prostu wpisz to tutaj</value>
   </data>
   <data name="ConfirmedName" xml:space="preserve">
     <value>🧃 Fajnie!
-Twój zwierzak czeka na Ciebie 🐱
+Twój zwierzak {0} czeka na Ciebie 🐱
 Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
 
 '/menu' pokaże więcej</value>
@@ -587,23 +587,36 @@ Pogodziliście się 💕
   <data name="PetPlayingAnwserCallback" xml:space="preserve">
     <value>Radość wzrosła o {0}% 🎊</value>
   </data>
+  <data name="YesText" xml:space="preserve">
+    <value>Tak</value>
+  </data>
+  <data name="NoText" xml:space="preserve">
+    <value>Nie</value>
+  </data>
+  <data name="YesTextEmoji" xml:space="preserve">
+    <value>Tak ✅</value>
+  </data>
+  <data name="NoTextEmoji" xml:space="preserve">
+    <value>Nie ❌</value>
+  </data>
+  <data name="AskToConfirmRenamingPet" xml:space="preserve">
+    <value>Czy na pewno chcesz zmienić imię swojego zwierzaka z {0} na {1}? 🗃
+Cena: {2} złota 💰</value>
+  </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Nowa aktualizacja 1.2 jest już dostępna⚡️⚡️
+    <value>⚡️⚡️ Mini aktualizacja 1.2.1 jest już dostępna⚡️⚡️
 Dodany:
-🎠 Możesz wskrzesić zwierzaka za 1000 sztuk złota (więc zbieraj monety, przydadzą się)
-🚦Przeprojektowany start dla początkujących
+💼 Możesz zmienić imię zwierzaka za pomocą polecenia /rename
 
-Korekty:
-🩼 Poprawiona stabilność bota
-🛋 Naprawiono wiele błędów
-🍫 Możesz teraz podawać dowolne jedzenie aż do 100% sytości
-🚚 Możesz teraz iść do pracy tylko wtedy, gdy zwierzak jest wypoczęty (ma mniejsze zmęczenie niż wymagane w pracy)
-🎗 Dodano ukryte gagi :)
+Poprawki:
+🛋 Poprawiona stabilność bota
+🚧 Przepisano 3 tys. linii kodu!
+🚝 Teraz bot stał się bardziej responsywny, zmniejszono opóźnienie między wiadomościami
 
 W planach:
-🤼‍♀️ Multiplayer - wkrótce możesz dodać bota do czatowania ze znajomymi i grania w minigry z innymi użytkownikami
-🐿 Nowe typy zwierzaków
-🎰 Nowe minigry
+🤼‍♀️ Tryb wieloosobowy - wkrótce możesz dodać bota, aby rozmawiać ze znajomymi i grać w mini-gry z innymi użytkownikami
+🐿 Nowe rodzaje zwierząt domowych
+🎰 Nowe mini-gry (w tym do gry wieloosobowej ze znajomymi)
 🏫 Dodaj szkołę, edukację</value>
   </data>
 </root>

@@ -131,6 +131,16 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to change your pet&apos;s name from {0} to {1}? 🗃
+        ///Price: {2} gold 💰.
+        /// </summary>
+        public static string AskToConfirmRenamingPet {
+            get {
+                return ResourceManager.GetString("AskToConfirmRenamingPet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are in the gameroom ⚽️.
         /// </summary>
         public static string backToGameroomText {
@@ -192,21 +202,20 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ⚡️⚡️ New update 1.2 is out⚡️⚡️
+        ///   Looks up a localized string similar to ⚡️⚡️ Mini update 1.2.1 is out⚡️⚡️
         ///Added:
-        ///🎠 You can resurrect a pet for 1000 gold (so collect coins, they will come in handy)
-        ///🚦Redesigned start for beginners
+        ///💼 You can change the pet&apos;s name with the /rename command
         ///
         ///Corrections:
-        ///🩼 Improved bot stability
-        ///🛋 Lots of bugs fixed
-        ///🍫 You can now feed any food up to 100% satiety
-        ///🚚 You can now go to work only if the pet is rested (has less fatigue than required at work)
-        ///🎗 Hidden gags added :)
+        ///🛋 Improved bot stability
+        ///🚧 Rewritten 3k lines of code!
+        ///🚝 Now the bot has become more responsive, the delay between messages has been reduced
         ///
         ///In the plans:
         ///🤼‍♀️ Multiplayer - soon you can add a bot to chat with friends to play mini-games with other users
-        /// [rest of string was truncated]&quot;;.
+        ///🐿 New types of pets
+        ///🎰 New mini-games (including for multiplayer with friends)
+        ///🏫 Add school, education.
         /// </summary>
         public static string changelog1Text {
             get {
@@ -244,8 +253,8 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 🧃 Nice!
-        ///Your pet is waiting for you 🐱
-        ///Do not forget feed and wash him, play a games and just love ☺️
+        ///Your pet {0} is waiting for you 🐱
+        ///Do not forget feed and wash him, play the games and just love ☺️
         ///
         ///BTW &apos;/menu&apos; shows some commands to start.
         /// </summary>
@@ -574,6 +583,24 @@ namespace TamagotchiBot.Resources {
         public static string NotEnoughGoldToResurrect {
             get {
                 return ResourceManager.GetString("NotEnoughGoldToResurrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string NoText {
+            get {
+                return ResourceManager.GetString("NoText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No ❌.
+        /// </summary>
+        public static string NoTextEmoji {
+            get {
+                return ResourceManager.GetString("NoTextEmoji", resourceCulture);
             }
         }
         
@@ -1202,6 +1229,24 @@ namespace TamagotchiBot.Resources {
         public static string workCommandPCWorking {
             get {
                 return ResourceManager.GetString("workCommandPCWorking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string YesText {
+            get {
+                return ResourceManager.GetString("YesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes ✅.
+        /// </summary>
+        public static string YesTextEmoji {
+            get {
+                return ResourceManager.GetString("YesTextEmoji", resourceCulture);
             }
         }
     }

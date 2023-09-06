@@ -130,8 +130,8 @@ Just type it here</value>
   </data>
   <data name="ConfirmedName" xml:space="preserve">
     <value>🧃 Nice!
-Your pet is waiting for you 🐱
-Do not forget feed and wash him, play a games and just love ☺️
+Your pet {0} is waiting for you 🐱
+Do not forget feed and wash him, play the games and just love ☺️
 
 BTW '/menu' shows some commands to start</value>
   </data>
@@ -406,22 +406,19 @@ Surrendered: {2}</value>
     <value>You are in the gameroom ⚽️</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ New update 1.2 is out⚡️⚡️
+    <value>⚡️⚡️ Mini update 1.2.1 is out⚡️⚡️
 Added:
-🎠 You can resurrect a pet for 1000 gold (so collect coins, they will come in handy)
-🚦Redesigned start for beginners
+💼 You can change the pet's name with the /rename command
 
 Corrections:
-🩼 Improved bot stability
-🛋 Lots of bugs fixed
-🍫 You can now feed any food up to 100% satiety
-🚚 You can now go to work only if the pet is rested (has less fatigue than required at work)
-🎗 Hidden gags added :)
+🛋 Improved bot stability
+🚧 Rewritten 3k lines of code!
+🚝 Now the bot has become more responsive, the delay between messages has been reduced
 
 In the plans:
 🤼‍♀️ Multiplayer - soon you can add a bot to chat with friends to play mini-games with other users
 🐿 New types of pets
-🎰 New mini games
+🎰 New mini-games (including for multiplayer with friends)
 🏫 Add school, education</value>
   </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
@@ -603,5 +600,21 @@ You both reconciled 💕
   </data>
   <data name="PetIsFullOfJoyText" xml:space="preserve">
     <value>The pet has already played enough ⛹️‍♀️</value>
+  </data>
+  <data name="AskToConfirmRenamingPet" xml:space="preserve">
+    <value>Are you sure you want to change your pet's name from {0} to {1}? 🗃
+Price: {2} gold 💰</value>
+  </data>
+  <data name="YesText" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="NoText" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="YesTextEmoji" xml:space="preserve">
+    <value>Yes ✅</value>
+  </data>
+  <data name="NoTextEmoji" xml:space="preserve">
+    <value>No ❌</value>
   </data>
 </root>

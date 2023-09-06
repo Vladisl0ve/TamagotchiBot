@@ -82,6 +82,9 @@ namespace TamagotchiBot.UserExtensions
 
             //Resurrect
             public const int ResurrectPet = 1000;
+
+            //Rename
+            public const int RenamePet = 500;
         }
 
         public class TimesToWait
@@ -167,6 +170,7 @@ namespace TamagotchiBot.UserExtensions
             public const string PetInfo_Cat = "CAACAgIAAxkBAAEDHwFhcG3C-_owIcuMOR9GTlE4MeoTOAACvRIAAhxUSUo2xUCLEnwQHiEE";
             public const string PetChooseName_Cat = "CAACAgIAAxkBAAEDHwthcG-wxtTfvF_S-6mqam-KwksPnQAC5RAAAowt_QftGb7TeRsiTyEE";
             public const string PetConfirmedName_Cat = "CAACAgIAAxkBAAEDHw1hcHBpvQQti1cmSC1LVKRNOtV3FwACjBIAAtJ0SUqCGw6E9UM1giEE";
+            public const string PetAskForConfirmName_Cat = "CAACAgIAAxkBAAEKOGJk9hzg8ZHelRKjXjRGuFAvNp3BOQACVBgAAsk7iUnMmgikdCwdijAE";
             public const string PetKitchen_Cat = "CAACAgIAAxkBAAEDIFVhcfZFjhITgwR6llMbPY-58IL_RAACxA4AA7xBSg8_gz8dIW-OIQQ";
             public const string PetBathroom_Cat = "CAACAgEAAxkBAAEJ5DhkypVqJ21uFEQqFQABvk3K_ykK7PoAAmcAA6EFDA0eRPMjja-FFS8E";
             public const string PetGameroom_Cat = "CAACAgIAAxkBAAEDnIhh1LTJGdhUdSU1y0PFrMmr0wJ3EwAC_RIAAjV1SEq7O0eiJ48IqCME";

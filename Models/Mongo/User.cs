@@ -37,7 +37,7 @@ namespace TamagotchiBot.Models.Mongo
         public bool IsLanguageAskedOnCreate { get; set; }
 
         [BsonElement("IsPetNameAskedOnCreate")]
-        public bool IsPetNameAskedOnCreate { get; set; }
+        public bool IsPetNameAskedOnCreate { get; set; }      
 
         [BsonElement("Culture")]
         public string Culture { get; set; }
