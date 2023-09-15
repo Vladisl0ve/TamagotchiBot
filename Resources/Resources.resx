@@ -406,17 +406,14 @@ Surrendered: {2}</value>
     <value>You are in the gameroom ⚽️</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Mini update 1.2.1 is out⚡️⚡️
-Added:
-💼 You can change the pet's name with the /rename command
+    <value>⚡️⚡️ Mini-update 1.2.2 has been released⚡️⚡️
 
 Corrections:
-🛋 Improved bot stability
-🚧 Rewritten 3k lines of code!
-🚝 Now the bot has become more responsive, the delay between messages has been reduced
+🐛 Fixed a global bug when the pet’s level did not increase ✨ (thanks to @glitchpavel for the tip)
+🐥 Improved table of records (/ranks)
 
 In the plans:
-🤼‍♀️ Multiplayer - soon you can add a bot to chat with friends to play mini-games with other users
+🤼‍♀️ Multiplayer - soon it will be possible to add a bot to chat with friends to play mini-games with other users
 🐿 New types of pets
 🎰 New mini-games (including for multiplayer with friends)
 🏫 Add school, education</value>

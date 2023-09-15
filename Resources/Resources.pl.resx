@@ -604,19 +604,16 @@ Pogodziliście się 💕
 Cena: {2} złota 💰</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Mini aktualizacja 1.2.1 jest już dostępna⚡️⚡️
-Dodany:
-💼 Możesz zmienić imię zwierzaka za pomocą polecenia /rename
+    <value>⚡️⚡️ Wydano mini-aktualizację 1.2.2⚡️⚡️
 
 Poprawki:
-🛋 Poprawiona stabilność bota
-🚧 Przepisano 3 tys. linii kodu!
-🚝 Teraz bot stał się bardziej responsywny, zmniejszono opóźnienie między wiadomościami
+🐛 Naprawiono globalny błąd powodujący, że poziom zwierzaka nie wzrastał ✨ (dzięki @glitchpavel za wskazówkę)
+🐥 Ulepszona tabela rekordów (/ranks)
 
 W planach:
-🤼‍♀️ Tryb wieloosobowy - wkrótce możesz dodać bota, aby rozmawiać ze znajomymi i grać w mini-gry z innymi użytkownikami
+🤼‍♀️ Tryb wieloosobowy - wkrótce będzie można dodać bota do czatowania ze znajomymi i grania w mini-gry z innymi użytkownikami
 🐿 Nowe rodzaje zwierząt domowych
 🎰 Nowe mini-gry (w tym do gry wieloosobowej ze znajomymi)
-🏫 Dodaj szkołę, edukację</value>
+🏫 Dodać szkołę, edukację</value>
   </data>
 </root>
