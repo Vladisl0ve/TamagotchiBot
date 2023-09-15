@@ -226,8 +226,10 @@ namespace TamagotchiBot.Controllers
 
             int minuteCounter = (int)(DateTime.UtcNow - petDB.LastUpdateTime).TotalMinutes;
 
-            //EXP
-            petResult.EXP = UpdateIndicatorEXP(minuteCounter, petDB);
+            //EXP & Level
+            var expLevel = UpdateIndicatorEXP(minuteCounter, petDB);
+            petResult.EXP = expLevel.Item1;
+            petResult.Level = expLevel.Item2;
 
             //Satiety & HP
             var satietyHp = UpdateIndicatorSatietyAndHP(minuteCounter, petDB);
@@ -516,20 +518,20 @@ namespace TamagotchiBot.Controllers
 
         #region Indicator Updaters
 
-        private int UpdateIndicatorEXP(int minuteCounter, Pet pet)
+        private (int, int) UpdateIndicatorEXP(int minuteCounter, Pet pet)
         {
             var petResult = new Pet().Clone(pet);
 
             int toAddExp = minuteCounter * Factors.ExpFactor;
             petResult.EXP += toAddExp;
 
-            if (petResult.EXP > 100)
+            if (petResult.EXP > Factors.ExpToLvl)
             {
                 petResult.Level += petResult.EXP / Factors.ExpToLvl;
-                petResult.EXP -= (petResult.EXP / Factors.ExpToLvl) * Factors.ExpToLvl;
+                petResult.EXP %= Factors.ExpToLvl;
             }
 
-            return petResult.EXP;
+            return (petResult.EXP, petResult.Level);
         }
         private (double, int) UpdateIndicatorSatietyAndHP(int minuteCounter, Pet pet)
         {
