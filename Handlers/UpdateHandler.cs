@@ -296,9 +296,24 @@ namespace TamagotchiBot.Handlers
 
         public async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
+            var ErrorMessage = exception switch
+            {
+                ApiRequestException apiRequestException
+                  => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
+                _ => exception.ToString()
+            };
+
+            Log.Error(ErrorMessage);
+            await Task.Delay(1000, cancellationToken);
+
+            if (exception is ApiRequestException apiEx)
+            {
+                if (apiEx.ErrorCode == 409)
+                    Environment.Exit(-1);
+            }
+
             int msToWait = 10000;
-            Log.Error(exception, exception.Message);
-            Log.Warning($"Waiting {msToWait/1000}s before next attempt...");
+            Log.Warning($"Waiting {msToWait / 1000}s before next attempt...");
             await Task.Delay(msToWait, cancellationToken);
         }
     }
