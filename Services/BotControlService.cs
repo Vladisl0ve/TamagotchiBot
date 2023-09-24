@@ -74,7 +74,7 @@ namespace TamagotchiBot.Services
             }
             catch (Exception ex)
             {
-                Log.Error($"MSG: {ex.Message}, ST: {ex.StackTrace}, Source: {ex.Source}, InnerExeption: {ex.InnerException}, USER: {Extensions.GetLogUser(user)}");
+                Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException.Message}, USER: {Extensions.GetLogUser(user)}");
             }
         }
 
@@ -119,7 +119,7 @@ namespace TamagotchiBot.Services
             }
             catch (Exception ex)
             {
-                Log.Error($"MSG: {ex.Message}, ST: {ex.StackTrace}, Source: {ex.Source}, InnerExeption: {ex.InnerException}, USER: {Extensions.GetLogUser(user)}");
+                Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException.Message}, USER: {Extensions.GetLogUser(user)}");
             }
         }
 
@@ -146,11 +146,11 @@ namespace TamagotchiBot.Services
             catch (ApiRequestException ex)
             {
                 if (ex.ErrorCode != 400)
-                    Log.Error($"MSG: {ex.Message}, ST: {ex.StackTrace}, Source: {ex.Source}, InnerExeption: {ex.InnerException}, USER: {Extensions.GetLogUser(userDB)}");
+                    Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException.Message}, USER: {Extensions.GetLogUser(userDB)}");
             }
             catch (Exception ex)
             {
-                Log.Error($"MSG: {ex.Message}, ST: {ex.StackTrace}, Source: {ex.Source}, InnerExeption: {ex.InnerException}, USER: {Extensions.GetLogUser(userDB)}");
+                Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException.Message}, USER: {Extensions.GetLogUser(userDB)}");
             }
         }
         public async void EditMessageReplyMarkupAsync(ChatId chatId, long userId, int messageId, InlineKeyboardMarkup replyMarkup = default, CancellationToken cancellationToken = default)
@@ -164,13 +164,9 @@ namespace TamagotchiBot.Services
                 Log.Information($"Message reply edited for {Extensions.GetLogUser(userDB)}");
                 await _botClient.EditMessageReplyMarkupAsync(chatId, messageId, replyMarkup: replyMarkup, cancellationToken: cancellationToken);
             }
-            catch (ApiRequestException ex)
-            {
-                Log.Error($"{ex.ErrorCode}: {ex.Message}, user: {Extensions.GetLogUser(userDB)}");
-            }
             catch (Exception ex)
             {
-                Log.Error($"MSG: {ex.Message}, ST: {ex.StackTrace}, Source: {ex.Source}, InnerExeption: {ex.InnerException}, USER: {Extensions.GetLogUser(userDB)}");
+                Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException.Message}, USER: {Extensions.GetLogUser(userDB)}");
             }
         }
 
@@ -195,13 +191,9 @@ namespace TamagotchiBot.Services
                                                cancellationToken: cancellationToken);
 
             }
-            catch (ApiRequestException ex)
-            {
-                Log.Error($"MSG: {ex.Message}, ST: {ex.StackTrace}, Source: {ex.Source}, InnerExeption: {ex.InnerException}, USER: {Extensions.GetLogUser(userDB)}");
-            }
             catch (Exception ex)
             {
-                Log.Error($"MSG: {ex.Message}, ST: {ex.StackTrace}, Source: {ex.Source}, InnerExeption: {ex.InnerException}, USER: {Extensions.GetLogUser(userDB)}");
+                Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException.Message}, USER: {Extensions.GetLogUser(userDB)}");
             }
         }
 
@@ -217,13 +209,9 @@ namespace TamagotchiBot.Services
                                                     scope: scope,
                                                     cancellationToken: cancellationToken);
             }
-            catch (ApiRequestException ex)
-            {
-                Log.Error($"MSG: {ex.Message}, ST: {ex.StackTrace}, Source: {ex.Source}, InnerExeption: {ex.InnerException}, USER: {Extensions.GetLogUser(userDB)}");
-            }
             catch (Exception ex)
             {
-                Log.Error($"MSG: {ex.Message}, ST: {ex.StackTrace}, Source: {ex.Source}, InnerExeption: {ex.InnerException}, USER: {Extensions.GetLogUser(userDB)}");
+                Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException.Message}, USER: {Extensions.GetLogUser(userDB)}");
             }
         }
 

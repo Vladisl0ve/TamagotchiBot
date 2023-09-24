@@ -296,31 +296,10 @@ namespace TamagotchiBot.Handlers
 
         public async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
+            int msToWait = 10000;
             Log.Error(exception, exception.Message);
-            Log.Warning("App restarts in 10 seconds...");
-            await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
-
-            if (OperatingSystem.IsWindows())
-            {
-                var startWinExe = AppDomain.CurrentDomain.BaseDirectory + AppDomain.CurrentDomain.FriendlyName + ".exe";
-                // Starts a new instance of the program itself
-                Process.Start(startWinExe);
-            }
-            else if (OperatingSystem.IsLinux())
-            {
-                var processInfo = new ProcessStartInfo()
-                {
-                    FileName = "bash",
-                    Arguments = $"-c /home/vladislove/Tamagotchi/wrapper.sh",
-                    UseShellExecute = true,
-                };
-
-                // Starts a new instance of the program itself
-                Process.Start(processInfo);
-            }
-
-            // Closes the current process
-            Environment.Exit(-1);
+            Log.Warning($"Waiting {msToWait/1000}s before next attempt...");
+            await Task.Delay(msToWait, cancellationToken);
         }
     }
 }
