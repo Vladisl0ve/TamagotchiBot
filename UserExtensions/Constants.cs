@@ -73,6 +73,9 @@ namespace TamagotchiBot.UserExtensions
         {
             public const int WorkOnPCGoldReward = 100;
             public const int DailyGoldReward = 100;
+
+            //Referal
+            public const int ReferalAdded = 500;
         }
 
         public struct Costs //in gold
@@ -131,6 +134,7 @@ namespace TamagotchiBot.UserExtensions
             public const string RenameCommand = "rename";
             public const string HospitalCommand = "hospital";
             public const string RewardCommand = "reward";
+            public const string ReferalCommand = "referal";
             public const string BathroomCommand = "bathroom";
             public const string HelpCommand = "help";
             public const string MenuCommand = "menu";
@@ -149,7 +153,8 @@ namespace TamagotchiBot.UserExtensions
             //Common
             public const string WelcomeSticker = "CAACAgIAAxkBAAEDHvdhcG0r5WOkfladhV2zTUYwN6LyOQACUwADr8ZRGjkySUcbM1VLIQQ";
             public const string HelpCommandSticker = "CAACAgIAAxkBAAEIEd9kCluWEaE86RH_SAr0tnJcJf_A4AACiXAAAp7OCwAB00mUUVh4ERkvBA";
-            public const string MenuCommandSticker = "CAACAgIAAxkBAAEIMmVkFxFa_IOB62mjlU6QjY8xAfFC8gACZxcAAqLdcElp3-Tq2zyHiS8E";
+            public const string ReferalCommandSticker = "CAACAgIAAxkBAAEIMmVkFxFa_IOB62mjlU6QjY8xAfFC8gACZxcAAqLdcElp3-Tq2zyHiS8E";
+            public const string MenuCommandSticker = "CAACAgIAAxkBAAEKaWZlFgnHbAsn58aipIdHeZIzAZz5UQAC9C0AAnsrwEmLPHbDg_W8YTAE";
             public const string ChangeLanguageSticker = "CAACAgIAAxkBAAEDIdRhcygJqmnt4ibdxEVejHOQ4Ya7pwACbAIAAladvQoqGV6cxNDenyEE";
             public const string DevelopWarningSticker = "CAACAgIAAxkBAAEDHxNhcHJP59QL8Fe9GaY3POWBIeII6QACUQADLMqqByX_VpH__oXBIQQ";
             public const string DroppedPetSticker = "CAACAgIAAxkBAAEIDftkCODBW8d3hT4S-iBjBJnpuSbGjwACcBIAAt6p8Et8ICHIsOd3qy4E";

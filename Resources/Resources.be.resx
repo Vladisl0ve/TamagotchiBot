@@ -643,4 +643,19 @@
   <data name="ShowPetMPCommand" xml:space="preserve">
     <value>🦁 Паказаць свайго гадаванца</value>
   </data>
+  <data name="referalCommandDescription" xml:space="preserve">
+    <value>👬 Прызы за сябра</value>
+  </data>
+  <data name="referalCommand" xml:space="preserve">
+    <value>Разам гуляць нашмат весялей, так? 👯‍♀️
+Запрашай сяброў пагуляць з дапамогай сваёй Рэферальнага спасылкі і атрымлівай за гэта прызы! 🎁
+
+🚦Сябар павінен стварыць уласнага Тамагочы, каб прызы прыйшлі да цябе на акаўнт 🚦
+
+🤼‍♀️ У цябе рэфералаў: {0}
+Зароблена золата з дапамогай рефералкі: {1}💰
+
+Твая реферальная спасылка:
+{2}</value>
+  </data>
 </root>

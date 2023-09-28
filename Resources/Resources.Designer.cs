@@ -969,6 +969,33 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Walking together is much more fun, right? 👯‍♀️
+        ///Invite your friends to hang out using your referral link and get prizes for it! 🎁
+        ///
+        ///🚦A friend must create his own Tamagotchi for the prizes to come to your account 🚦
+        ///
+        ///🤼‍♀️ You have referrals: {0}
+        ///Gold earned via referral: {1}💰
+        ///
+        ///Your referral link:
+        ///{2}.
+        /// </summary>
+        public static string referalCommand {
+            get {
+                return ResourceManager.GetString("referalCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 👬 Prizes for a friend.
+        /// </summary>
+        public static string referalCommandDescription {
+            get {
+                return ResourceManager.GetString("referalCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} apples left.
         /// </summary>
         public static string remainingApplesText {

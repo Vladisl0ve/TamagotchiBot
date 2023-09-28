@@ -638,4 +638,19 @@ Price: {2} gold 💰</value>
   <data name="ShowPetMPCommand" xml:space="preserve">
     <value>🦁 Show your pet</value>
   </data>
+  <data name="referalCommandDescription" xml:space="preserve">
+    <value>👬 Prizes for a friend</value>
+  </data>
+  <data name="referalCommand" xml:space="preserve">
+    <value>Walking together is much more fun, right? 👯‍♀️
+Invite your friends to hang out using your referral link and get prizes for it! 🎁
+
+🚦A friend must create his own Tamagotchi for the prizes to come to your account 🚦
+
+🤼‍♀️ You have referrals: {0}
+Gold earned via referral: {1}💰
+
+Your referral link:
+{2}</value>
+  </data>
 </root>

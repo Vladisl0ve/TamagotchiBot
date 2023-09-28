@@ -640,4 +640,19 @@ W planach:
   <data name="ShowPetMPCommand" xml:space="preserve">
     <value>🦁 Pokaż swojego zwierzaka</value>
   </data>
+  <data name="referalCommandDescription" xml:space="preserve">
+    <value>👬 Nagrody dla przyjaciela</value>
+  </data>
+  <data name="referalCommand" xml:space="preserve">
+    <value>Wspólne spacery są o wiele przyjemniejsze, prawda? 👯‍♀️
+Zaproś znajomych do wspólnego spędzania czasu, korzystając z linku polecającego i zdobądź za to nagrody! 🎁
+
+🚦Znajomy musi stworzyć własne Tamagotchi, aby nagrody trafiły na Twoje konto 🚦
+
+🤼‍♀️ Masz polecenia: {0}
+Złoto zdobyte dzięki poleceniu: {1}💰
+
+Twój link referencyjny:
+{2}</value>
+  </data>
 </root>

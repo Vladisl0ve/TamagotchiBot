@@ -53,7 +53,10 @@ namespace TamagotchiBot.Models.Mongo
         public DateTime GotDailyRewardTime { get; set; }
 
         [BsonElement("Gold")]
-        public int Gold { get; set; }
+        public int Gold { get; set; } 
+        
+        [BsonElement("ReferaledBy")]
+        public long ReferaledBy { get; set; }
 
         public User Clone(User userToClone)
         {

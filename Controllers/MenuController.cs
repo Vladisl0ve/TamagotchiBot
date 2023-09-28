@@ -135,6 +135,8 @@ namespace TamagotchiBot.Controllers
                 ShowWorkInfo(petDB);
             if (textReceived == "/reward")
                 ShowRewardInfo(userDB);
+            if (textReceived == "/referal")
+                ShowReferalInfo();
 #if DEBUG
             if (textReceived == "/restart")
                 RestartPet(petDB);
@@ -653,6 +655,27 @@ namespace TamagotchiBot.Controllers
                 StickerId = StickersId.HelpCommandSticker
             };
             Log.Debug($"Called /ShowHelpInfo for {_userInfo}");
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
+        private void ShowReferalInfo()
+        {
+            Log.Debug($"Called /ShowReferalInfo for {_userInfo}");
+
+            var refAmounts = _appServices.ReferalInfoService.GetDoneRefsAmount(_userId);
+            var goldByRef = Rewards.ReferalAdded * refAmounts;
+            var refLink = Extensions.GetReferalLink(_userId);
+            string toSendText = string.Format(referalCommand, refAmounts, goldByRef, refLink);
+
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.MenuCommandCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            var toSend = new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = StickersId.ReferalCommandSticker,
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+            };
             _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
         private void ShowMenuInfo()

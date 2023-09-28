@@ -178,6 +178,12 @@ namespace TamagotchiBot.UserExtensions
 
                 new BotCommand()
                 {
+                    Command = Commands.BathroomCommand,
+                    Description = Resources.Resources.bathroomCommandDescription
+                },
+
+                new BotCommand()
+                {
                     Command = Commands.RanksCommand,
                     Description = Resources.Resources.ranksCommandDescription
                 },
@@ -193,11 +199,11 @@ namespace TamagotchiBot.UserExtensions
                     Command = Commands.RewardCommand,
                     Description = Resources.Resources.rewardCommandDescription
                 },
-
+                
                 new BotCommand()
                 {
-                    Command = Commands.BathroomCommand,
-                    Description = Resources.Resources.bathroomCommandDescription
+                    Command = Commands.ReferalCommand,
+                    Description = Resources.Resources.referalCommandDescription
                 },
 
                 new BotCommand()
@@ -296,7 +302,7 @@ namespace TamagotchiBot.UserExtensions
                 return new AdsProducers()
                 {
                     ProducerName = pureAds,
-                    CompanyName = "myref_1"
+                    CompanyName = "GramadsNet"
                 };
             }
             return null;

@@ -29,6 +29,8 @@ namespace TamagotchiBot.Services
 
         public BotControlService BotControlService { get; }
 
+        public ReferalInfoService ReferalInfoService { get; }
+
         public ApplicationServices(AdsProducersService adsProducersService,
                                    AllUsersDataService allUsersDataService,
                                    AppleGameDataService appleGameDataService,
@@ -40,6 +42,7 @@ namespace TamagotchiBot.Services
                                    UserService userService,
                                    MetaUserService metaUserService,
                                    ChatsMPService chatsMPService,
+                                   ReferalInfoService referalInfoService,
                                    BotControlService botControlService)
         {
             AdsProducersService = adsProducersService;
@@ -54,6 +57,7 @@ namespace TamagotchiBot.Services
             MetaUserService = metaUserService;
             BotControlService = botControlService;
             ChatsMPService = chatsMPService;
+            ReferalInfoService = referalInfoService;
         }
     }
 }
