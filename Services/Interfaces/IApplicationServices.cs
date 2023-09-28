@@ -1,4 +1,5 @@
-﻿using TamagotchiBot.Services.Mongo;
+﻿using System;
+using TamagotchiBot.Services.Mongo;
 
 namespace TamagotchiBot.Services.Interfaces
 {
@@ -8,7 +9,11 @@ namespace TamagotchiBot.Services.Interfaces
         AllUsersDataService AllUsersDataService { get; }
         AppleGameDataService AppleGameDataService { get; }
         BannedUsersService BannedUsersService { get; }
+
+        [Obsolete]
         ChatService ChatService { get; }
+
+        ChatsMPService ChatsMPService { get; }
         DailyInfoService DailyInfoService { get; }
         PetService PetService { get; }
         SInfoService SInfoService { get; }

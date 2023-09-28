@@ -508,6 +508,33 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 😺 Get your own Tamagotchi.
+        /// </summary>
+        public static string InviteGlobalMultiplayerButton {
+            get {
+                return ResourceManager.GetString("InviteGlobalMultiplayerButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}, you don’t have your Tamagotchi yet 🐧.
+        /// </summary>
+        public static string InviteGlobalMultiplayerText {
+            get {
+                return ResourceManager.GetString("InviteGlobalMultiplayerText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🐣 Become a friend for {0}.
+        /// </summary>
+        public static string InviteReferalMultiplayerButton {
+            get {
+                return ResourceManager.GetString("InviteReferalMultiplayerButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are in the kitchen 🥦
         ///🍕 Pet&apos;s satiety: {0}%
         ///💰 Gold: {1}
@@ -571,6 +598,24 @@ namespace TamagotchiBot.Resources {
         public static string menuCommandDescription {
             get {
                 return ResourceManager.GetString("menuCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {8}, here is your pet
+        ///🐱 {0}
+        ///💊 Health: {1}%
+        ///🍕 Satiety: {2}%
+        ///🛁 Hygiene: {3}%
+        ///😴 Fatigue: {4}%
+        ///🎊 Joy: {5}%
+        ///
+        ///🏅 {6} level
+        ///💰 Gold: {7} 💴.
+        /// </summary>
+        public static string MultiplayerShowPet {
+            get {
+                return ResourceManager.GetString("MultiplayerShowPet", resourceCulture);
             }
         }
         
@@ -1077,6 +1122,15 @@ namespace TamagotchiBot.Resources {
         public static string rewardNotification {
             get {
                 return ResourceManager.GetString("rewardNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🦁 Show your pet.
+        /// </summary>
+        public static string ShowPetMPCommand {
+            get {
+                return ResourceManager.GetString("ShowPetMPCommand", resourceCulture);
             }
         }
         

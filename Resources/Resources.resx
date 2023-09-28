@@ -614,4 +614,28 @@ Price: {2} gold 💰</value>
   <data name="NoTextEmoji" xml:space="preserve">
     <value>No ❌</value>
   </data>
+  <data name="InviteGlobalMultiplayerButton" xml:space="preserve">
+    <value>😺 Get your own Tamagotchi</value>
+  </data>
+  <data name="InviteReferalMultiplayerButton" xml:space="preserve">
+    <value>🐣 Become a friend for {0}</value>
+  </data>
+  <data name="InviteGlobalMultiplayerText" xml:space="preserve">
+    <value>{0}, you don’t have your Tamagotchi yet 🐧</value>
+  </data>
+  <data name="MultiplayerShowPet" xml:space="preserve">
+    <value>{8}, here is your pet
+🐱 {0}
+💊 Health: {1}%
+🍕 Satiety: {2}%
+🛁 Hygiene: {3}%
+😴 Fatigue: {4}%
+🎊 Joy: {5}%
+
+🏅 {6} level
+💰 Gold: {7} 💴</value>
+  </data>
+  <data name="ShowPetMPCommand" xml:space="preserve">
+    <value>🦁 Show your pet</value>
+  </data>
 </root>

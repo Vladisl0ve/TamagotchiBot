@@ -389,6 +389,14 @@ namespace TamagotchiBot.Controllers
             var ads = Extensions.GetAdsProducerFromStart(msg.Text);
             if (ads != null)
                 _appServices.AdsProducersService.AddOrInsert(ads);
+            else
+            {
+                var refAds = Extensions.GetReferalProducerFromStart(msg.Text);
+                if (refAds != -1)
+                {
+                    //TODO: insert to ref service
+                }
+            }
 
             var userTMP = _appServices.UserService.Create(msg.From);
             _userInfo = Extensions.GetLogUser(userTMP);

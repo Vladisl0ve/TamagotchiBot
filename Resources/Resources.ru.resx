@@ -620,4 +620,28 @@
   <data name="YesTextEmoji" xml:space="preserve">
     <value>Да ✅</value>
   </data>
+  <data name="InviteGlobalMultiplayerButton" xml:space="preserve">
+    <value>😺 Завести своего Тамагочи</value>
+  </data>
+  <data name="InviteReferalMultiplayerButton" xml:space="preserve">
+    <value>🐣 Стать другом для {0}</value>
+  </data>
+  <data name="InviteGlobalMultiplayerText" xml:space="preserve">
+    <value>{0}, у тебя ещё нет своего Тамагочи 🐧</value>
+  </data>
+  <data name="MultiplayerShowPet" xml:space="preserve">
+    <value>{8}, вот твой питомец
+🐱 {0}
+💊 Здоровье: {1}%
+🍕 Сытость: {2}%
+🛁 Гигиена: {3}%
+😴 Усталость: {4}%
+🎊 Радость: {5}%
+
+🏅 {6} уровень
+💰 Золото: {7} 💴</value>
+  </data>
+  <data name="ShowPetMPCommand" xml:space="preserve">
+    <value>🦁 Показать своего питомца</value>
+  </data>
 </root>

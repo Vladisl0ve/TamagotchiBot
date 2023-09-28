@@ -15,6 +15,8 @@ namespace TamagotchiBot.Services
 
         public ChatService ChatService { get; }
 
+        public ChatsMPService ChatsMPService { get; }
+
         public DailyInfoService DailyInfoService { get; }
 
         public PetService PetService { get; }
@@ -37,6 +39,7 @@ namespace TamagotchiBot.Services
                                    SInfoService sInfoService,
                                    UserService userService,
                                    MetaUserService metaUserService,
+                                   ChatsMPService chatsMPService,
                                    BotControlService botControlService)
         {
             AdsProducersService = adsProducersService;
@@ -50,6 +53,7 @@ namespace TamagotchiBot.Services
             UserService = userService;
             MetaUserService = metaUserService;
             BotControlService = botControlService;
+            ChatsMPService = chatsMPService;
         }
     }
 }

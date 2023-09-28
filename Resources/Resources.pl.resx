@@ -616,4 +616,28 @@ W planach:
 🎰 Nowe mini-gry (w tym do gry wieloosobowej ze znajomymi)
 🏫 Dodać szkołę, edukację</value>
   </data>
+  <data name="InviteGlobalMultiplayerButton" xml:space="preserve">
+    <value>😺 Zdobądź własne Tamagotchi</value>
+  </data>
+  <data name="InviteReferalMultiplayerButton" xml:space="preserve">
+    <value>🐣 Zostań przyjacielem dla {0}</value>
+  </data>
+  <data name="InviteGlobalMultiplayerText" xml:space="preserve">
+    <value>{0}, nie masz jeszcze swojego Tamagotchi 🐧</value>
+  </data>
+  <data name="MultiplayerShowPet" xml:space="preserve">
+    <value>{8}, oto twoje zwierzątko
+🐱 {0}
+💊 Zdrowie: {1}%
+🍕 Sytość: {2}%
+🛁 Higiena: {3}%
+😴 Zmęczenie: {4}%
+🎊 Radość: {5}%
+
+🏅 {6} poziom
+💰 Złoto: {7} 💴</value>
+  </data>
+  <data name="ShowPetMPCommand" xml:space="preserve">
+    <value>🦁 Pokaż swojego zwierzaka</value>
+  </data>
 </root>

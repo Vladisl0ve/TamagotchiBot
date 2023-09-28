@@ -32,6 +32,13 @@ namespace TamagotchiBot.UserExtensions
             Sleepy
         }
 
+        public enum MessageAudience
+        {
+            Unknown,
+            Private,
+            Group
+        }
+
         public struct Languages
         {
             public const string LanguageBe = "be";
@@ -129,6 +136,12 @@ namespace TamagotchiBot.UserExtensions
             public const string MenuCommand = "menu";
             public const string WorkCommand = "work";
             public const string QuitCommand = "quit";
+        }
+
+        public struct CommandsMP
+        {
+            public const string ShowPetCommand = "show_pet";
+
         }
 
         public struct StickersId
@@ -232,6 +245,11 @@ namespace TamagotchiBot.UserExtensions
             };
 
             public List<CallbackModel> InlinePet = new()
+            {
+                new CallbackButtons.PetCommand().PetCommandInlineExtraInfo
+            };
+
+            public List<CallbackModel> InlineShowInviteMP = new()
             {
                 new CallbackButtons.PetCommand().PetCommandInlineExtraInfo
             };

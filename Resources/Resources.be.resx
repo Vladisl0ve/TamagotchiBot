@@ -619,4 +619,28 @@
 🎰 Новыя міні-гульні (у тым ліку для мультыплэера з сябрамі)
 🏫 Дадаць школу, адукацыю</value>
   </data>
+  <data name="InviteGlobalMultiplayerButton" xml:space="preserve">
+    <value>😺 Завесці свайго Тамагочы</value>
+  </data>
+  <data name="InviteReferalMultiplayerButton" xml:space="preserve">
+    <value>🐣 Стаць сябрам для {0}</value>
+  </data>
+  <data name="InviteGlobalMultiplayerText" xml:space="preserve">
+    <value>{0}, у цябе яшчэ няма свайго Тамагочы 🐧</value>
+  </data>
+  <data name="MultiplayerShowPet" xml:space="preserve">
+    <value>{8}, вось твой гадаванец
+🐱 {0}
+💊 Здароўе: {1}%
+🍕 Сытасць: {2}%
+🛁 Гігіена: {3}%
+😴 Стомленасць: {4}%
+🎊 Радасць: {5}%
+
+🏅 {6} ўзровень
+💰 Золата: {7} 💴</value>
+  </data>
+  <data name="ShowPetMPCommand" xml:space="preserve">
+    <value>🦁 Паказаць свайго гадаванца</value>
+  </data>
 </root>

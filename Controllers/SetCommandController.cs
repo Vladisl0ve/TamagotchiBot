@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using TamagotchiBot.Services.Interfaces;
 using Telegram.Bot.Types;
+using static TamagotchiBot.UserExtensions.Constants;
 using Extensions = TamagotchiBot.UserExtensions.Extensions;
 
 namespace TamagotchiBot.Controllers
@@ -23,26 +24,46 @@ namespace TamagotchiBot.Controllers
 
             Resources.Resources.Culture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
         }
-        public void UpdateCommands()
+        public void UpdateCommands(MessageAudience messageAudience)
         {
             var userDB = _appServices.UserService.Get(_userId);
             var petDB = _appServices.PetService.Get(_userId);
 
 
             Resources.Resources.Culture = new CultureInfo(userDB?.Culture ?? "ru");
-            if (petDB is not null && !userDB.IsInAppleGame)
+
+            switch (messageAudience)
             {
-                _appServices.BotControlService.SetMyCommandsAsync(_userId,
-                                                                  Extensions.GetCommands(true),
-                                                                  scope: new BotCommandScopeChat() { ChatId = _userId });
-            }
-            else if (userDB?.IsInAppleGame ?? false)
-            {
-                _appServices.BotControlService.SetMyCommandsAsync(_userId,
-                                                                  Extensions.GetInApplegameCommands(),
-                                                                  scope: new BotCommandScopeChat() { ChatId = _userId });
+                case MessageAudience.Private:
+                    {
+                        UpdateCommandsForPrivate(userDB, petDB);
+                        break;
+                    }
+                case MessageAudience.Group:
+                    {
+                        UpdateCommandsForGroup();
+                        break;
+                    }
             }
 
+            void UpdateCommandsForPrivate(Models.Mongo.User userDB, Models.Mongo.Pet petDB)
+            {
+                if (petDB is not null && !userDB.IsInAppleGame)
+                {
+                    _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetCommands(true),
+                                                                      scope: new BotCommandScopeChat() { ChatId = _userId });
+                }
+                else if (userDB?.IsInAppleGame ?? false)
+                {
+                    _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetInApplegameCommands(),
+                                                                      scope: new BotCommandScopeChat() { ChatId = _userId });
+                }
+            }
+            void UpdateCommandsForGroup()
+            {
+                _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetMultiplayerCommands(),
+                                                                  scope: new BotCommandScopeAllGroupChats() { });
+            }
         }
     }
 }
