@@ -13,12 +13,14 @@ namespace TamagotchiBot.Controllers
         private readonly Message _message = null;
         private readonly CallbackQuery _callback = null;
         private readonly long _userId;
+        private readonly long _chatId;
 
         public SetCommandController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
         {
             _callback = callback;
             _message = message;
             _userId = callback?.From.Id ?? message.From.Id;
+            _chatId = callback?.Message?.Chat.Id ?? message.Chat.Id;
 
             _appServices = services;
 
@@ -62,7 +64,7 @@ namespace TamagotchiBot.Controllers
             void UpdateCommandsForGroup()
             {
                 _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetMultiplayerCommands(),
-                                                                  scope: new BotCommandScopeAllGroupChats() { });
+                                                                  scope: new BotCommandScopeChatMember() {ChatId = _chatId, UserId = _userId });
             }
         }
     }
