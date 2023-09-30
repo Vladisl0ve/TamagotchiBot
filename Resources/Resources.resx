@@ -137,6 +137,7 @@ BTW '/menu' shows some commands to start</value>
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
+
 💊 HP: {1}%
 🍕 Satiety: {4}%
 🛁 Hygiene: {9}%
@@ -145,7 +146,8 @@ BTW '/menu' shows some commands to start</value>
 
 💰 Gold: {8} 💴
 ⚡️ Status: {6}
-🏅 EXP: {2} | {3} level ✨
+🏅 &lt;b&gt;{3} level &lt;/b&gt;
+✨ &lt;i&gt;EXP: {2}/100&lt;/i&gt;
 
 /gameroom - Play in Apple🍎
 /reward - Get your daily reward 🎁</value>
@@ -165,7 +167,9 @@ BTW '/menu' shows some commands to start</value>
   </data>
   <data name="petCommandMoreInfo1" xml:space="preserve">
     <value>🐱 {0}
-🎂 Birth date: {1}</value>
+
+🎂 Date of birth: {1}
+👫 Referrals: {2}</value>
   </data>
   <data name="petCommandInlineBasicInfo" xml:space="preserve">
     <value>Basic info 📋</value>
@@ -327,6 +331,7 @@ Be sure to visit your pet frequently because they also love you and will be thri
 /ranks - see the best pets! 👑
 /hospital - cure your pet 🏥
 /bathroom - clean your pet 🛁
+/referal - referral program 👩‍👩‍👧‍👦
 /rename - to change name 🌀
 
 There will be more in future!
@@ -438,6 +443,8 @@ In the plans:
   </data>
   <data name="workCommand" xml:space="preserve">
     <value>Choose what your pet will be doing 💡
+
+😴 Fatigue: {2}%
 
 Programing 💻 -{0} minutes ⌛️, +{1} golds 💰</value>
   </data>
@@ -625,7 +632,8 @@ Price: {2} gold 💰</value>
   </data>
   <data name="MultiplayerShowPet" xml:space="preserve">
     <value>{8}, here is your pet
-🐱 {0}
+
+🐱 &lt;b&gt;{0}&lt;/b&gt;
 💊 Health: {1}%
 🍕 Satiety: {2}%
 🛁 Hygiene: {3}%

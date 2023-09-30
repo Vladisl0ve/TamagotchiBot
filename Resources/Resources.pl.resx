@@ -137,6 +137,7 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
+
 💊 Zdrowie: {1}%
 🍕 Sytość: {4}%
 🛁 Higiena: {9}%
@@ -145,7 +146,8 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
 
 💰 Złoto: {8} 💴
 ⚡️ Status: {6}
-🏅 Doświadczenie: {2} | {3} poziom✨
+🏅 &lt;b&gt;Pioziom: {3} &lt;/b&gt;
+✨ &lt;i&gt;Doświadczenie {2}/100&lt;/i&gt;
 
 /gameroom - zagraj w Jabłko🍎
 /reward - codzienna nagroda 🎁</value>
@@ -162,10 +164,6 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
   </data>
   <data name="ConfirmedLanguage" xml:space="preserve">
     <value>Został wybrany język Polski 🇵🇱</value>
-  </data>
-  <data name="petCommandMoreInfo1" xml:space="preserve">
-    <value>🐱 {0}
-🎂 Urodzony: {1}</value>
   </data>
   <data name="petCommandInlineBasicInfo" xml:space="preserve">
     <value>Informacja podstawowa 📋</value>
@@ -325,6 +323,7 @@ Upewnij się, że często go odwiedzasz, ponieważ on również Cię kocha i z p
 /ranks- zobacz najlepsze zwierzaki! 👑
 /hospital- wylecz swojego zwierzaka 🏥
 /bathroom - posprzątaj swojego zwierzaka 🛁
+/referal - program referancyjny  👩‍👩‍👧‍👦
 /rename - zmień imię 🌀
 
 Będzie więcej w przyszłości!
@@ -423,6 +422,8 @@ Poddania: {2}</value>
   </data>
   <data name="workCommand" xml:space="preserve">
     <value>Wybierz, co zrobi Twój zwierzak 💡
+
+😴 Zmęczenie: {2}%
 
 Programowanie 💻 -{0} minuty ⌛️, +{1} zł 💰</value>
   </data>
@@ -627,7 +628,8 @@ W planach:
   </data>
   <data name="MultiplayerShowPet" xml:space="preserve">
     <value>{8}, oto twoje zwierzątko
-🐱 {0}
+
+🐱 &lt;b&gt;{0}&lt;/b&gt;
 💊 Zdrowie: {1}%
 🍕 Sytość: {2}%
 🛁 Higiena: {3}%
@@ -667,5 +669,11 @@ Bot 🐾 Tamagotchi | Wirtualny zwierzak 🐾 zapewnia możliwość posiadania w
 
 Dostępne polecenia na czacie:
 /show_pet - pokaż swojego zwierzaka</value>
+  </data>
+  <data name="petCommandMoreInfo1" xml:space="preserve">
+    <value>🐱{0}
+
+🎂 Data urodzenia: {1}
+👫 Polecenia: {2}</value>
   </data>
 </root>

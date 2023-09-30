@@ -581,6 +581,7 @@ namespace TamagotchiBot.Resources {
         ////ranks - see the best pets! 👑
         ////hospital - cure your pet 🏥
         ////bathroom - clean your pet 🛁
+        ////referal - referral program 👩‍👩‍👧‍👦
         ////rename - to change name 🌀
         ///
         ///There will be more in future!
@@ -603,7 +604,8 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to {8}, here is your pet
-        ///🐱 {0}
+        ///
+        ///🐱 &lt;b&gt;{0}&lt;/b&gt;
         ///💊 Health: {1}%
         ///🍕 Satiety: {2}%
         ///🛁 Hygiene: {3}%
@@ -661,6 +663,7 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 🐱 {0}
+        ///
         ///💊 HP: {1}%
         ///🍕 Satiety: {4}%
         ///🛁 Hygiene: {9}%
@@ -669,7 +672,8 @@ namespace TamagotchiBot.Resources {
         ///
         ///💰 Gold: {8} 💴
         ///⚡️ Status: {6}
-        ///🏅 EXP: {2} | {3} level ✨
+        ///🏅 &lt;b&gt;{3} level &lt;/b&gt;
+        ///✨ &lt;i&gt;EXP: {2}/100&lt;/i&gt;
         ///
         ////gameroom - Play in Apple🍎
         ////reward - Get your daily reward 🎁.
@@ -709,7 +713,9 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 🐱 {0}
-        ///🎂 Birth date: {1}.
+        ///
+        ///🎂 Date of birth: {1}
+        ///👫 Referrals: {2}.
         /// </summary>
         public static string petCommandMoreInfo1 {
             get {
@@ -1296,6 +1302,8 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Choose what your pet will be doing 💡
+        ///
+        ///😴 Fatigue: {2}%
         ///
         ///Programing 💻 -{0} minutes ⌛️, +{1} golds 💰.
         /// </summary>

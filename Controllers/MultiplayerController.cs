@@ -63,8 +63,9 @@ namespace TamagotchiBot.Controllers
             async void ShowPetMP(Models.Mongo.Pet petDB, Models.Mongo.User userDB)
             {
                 var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+                var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
                 string toSendText = string.Format(MultiplayerShowPet,
-                                                  petDB.Name,
+                                                  encodedPetName,
                                                   petDB.HP,
                                                   petDB.Satiety,
                                                   petDB.Hygiene,
@@ -74,7 +75,6 @@ namespace TamagotchiBot.Controllers
                                                   userDB.Gold,
                                                   "`personalLink`");
 
-                toSendText = HttpUtility.HtmlEncode(toSendText);
                 toSendText = toSendText.Replace("`personalLink`", Extensions.GetPersonalLink(_userId, _userName));
 
                 AnswerMessage answerMessage = new AnswerMessage()

@@ -138,6 +138,7 @@
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
+
 💊 Здароўе: {1}%
 🍕 Сытасць: {4}%
 🛁 Гігіена: {9}%
@@ -146,7 +147,9 @@
 
 💰 Золата: {8} 💴
 ⚡️ Стан: {6}
-🏅 Досвед: {2} | {3} ўзровень✨
+🏅 &lt;b&gt;{3} ўзровень&lt;/b&gt;
+✨ &lt;i&gt;Вопыт {2}/100&lt;/i&gt;
+
 
 /gameroom - пайдзем гуляць у Яблык🍎
 /reward - атрымай штодзённую ўзнагароду 🎁</value>
@@ -163,10 +166,6 @@
   </data>
   <data name="ConfirmedLanguage" xml:space="preserve">
     <value>Выбрана беларуская мова 🤍❤️🤍</value>
-  </data>
-  <data name="petCommandMoreInfo1" xml:space="preserve">
-    <value>🐱 {0}
-🎂 Дата нараджэння: {1}</value>
   </data>
   <data name="petCommandInlineBasicInfo" xml:space="preserve">
     <value>Асноўныя звесткі 📋</value>
@@ -327,6 +326,7 @@
 /ranks - лепшыя з лепшых! 👑
 /hospital- ветэрынар 🏥
 /bathroom - чысціня гадаванца 🛁
+/referal - бонусы за сяброў 👩‍👩‍👧‍👦
 /rename - змяніць імя 🌀
 
 У будучыні будзе больш!
@@ -426,6 +426,8 @@
   </data>
   <data name="workCommand" xml:space="preserve">
     <value>Выберы чым будзе займацца твой гадаванец 💡
+
+😴 Стомленасць: {2}%
 
 Праграмаванне 💻 -{0} мінуты ⌛️ , +{1} золата 💰</value>
   </data>
@@ -630,7 +632,8 @@
   </data>
   <data name="MultiplayerShowPet" xml:space="preserve">
     <value>{8}, вось твой гадаванец
-🐱 {0}
+
+🐱 &lt;b&gt;{0}&lt;/b&gt;
 💊 Здароўе: {1}%
 🍕 Сытасць: {2}%
 🛁 Гігіена: {3}%
@@ -670,5 +673,11 @@
 
 Даступныя каманды ў чаце:
 /show_pet - паказаць свайго гадаванца</value>
+  </data>
+  <data name="petCommandMoreInfo1" xml:space="preserve">
+    <value>🐱 {0}
+
+🎂 Дата нараджэння: {1}
+👫 Рэфералаў: {2}</value>
   </data>
 </root>

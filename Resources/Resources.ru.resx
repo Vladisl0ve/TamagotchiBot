@@ -138,6 +138,7 @@
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
+
 💊 Здоровье: {1}%
 🍕 Сытость: {4}%
 🛁 Гигиена: {9}%
@@ -146,7 +147,8 @@
 
 💰 Золото: {8} 💴
 ⚡️ Состояние: {6}
-🏅 Опыт: {2} | {3} уровень✨
+🏅 &lt;b&gt;{3} уровень&lt;/b&gt; 
+✨ &lt;i&gt;Опыт: {2}/100&lt;/i&gt;
 
 /gameroom - попробуй игру Яблоко🍎
 /reward - ежедневный бонус 🎁</value>
@@ -166,7 +168,9 @@
   </data>
   <data name="petCommandMoreInfo1" xml:space="preserve">
     <value>🐱 {0}
-🎂 Дата рождения: {1}</value>
+
+🎂 Дата рождения: {1}
+👫 Рефералов: {2}</value>
   </data>
   <data name="petCommandInlineBasicInfo" xml:space="preserve">
     <value>Основная информация 📋</value>
@@ -332,6 +336,7 @@
 /ranks - лучшие из лучших! 👑
 /hospital- ветеринар 🏥
 /bathroom - водные процедуры 🛁
+/referal - бонусы за друзей 👩‍👩‍👧‍👦
 /rename - сменить имя питомца 🌀
 
 В будущем будет больше!
@@ -443,6 +448,8 @@
   </data>
   <data name="workCommand" xml:space="preserve">
     <value>Выбери чем будет заниматься твой питомец 💡
+
+😴 Усталость: {2}%
 
 Программировать 💻 -{0} минуты ⌛️, +{1} золота 💰</value>
   </data>
@@ -631,7 +638,8 @@
   </data>
   <data name="MultiplayerShowPet" xml:space="preserve">
     <value>{8}, вот твой питомец
-🐱 {0}
+
+🐱 &lt;b&gt;{0}&lt;/b&gt;
 💊 Здоровье: {1}%
 🍕 Сытость: {2}%
 🛁 Гигиена: {3}%

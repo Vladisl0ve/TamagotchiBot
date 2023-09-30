@@ -302,7 +302,7 @@ namespace TamagotchiBot.Controllers
             }
             else
             {
-                toSendText = string.Format(workCommand, new TimesToWait().WorkOnPCToWait.TotalSeconds / 60, Rewards.WorkOnPCGoldReward);
+                toSendText = string.Format(workCommand, new TimesToWait().WorkOnPCToWait.TotalMinutes, Rewards.WorkOnPCGoldReward, petDB.Fatigue);
 
                 inlineParts = new InlineItems().InlineWork;
                 toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -381,8 +381,11 @@ namespace TamagotchiBot.Controllers
         }
         private void ShowPetInfo(Pet petDB)
         {
+            var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
+            encodedPetName = "<b>" + encodedPetName + "</b>";
+
             string toSendText = string.Format(petCommand,
-                                              petDB.Name,
+                                              encodedPetName,
                                               petDB.HP,
                                               petDB.EXP,
                                               petDB.Level,
@@ -402,7 +405,8 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.PetInfo_Cat,
                 ReplyMarkup = null,
-                InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new InlineItems().InlinePet)
+                InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new InlineItems().InlinePet),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             Log.Debug($"Called /ShowPetInfo for {_userInfo}");
             _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -777,10 +781,12 @@ namespace TamagotchiBot.Controllers
         #region Inline Answers
         private void ShowBasicInfoInline(Pet petDB)
         {
+            var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
+            encodedPetName = "<b>" + encodedPetName + "</b>";
             var userDB = _appServices.UserService.Get(_userId);
             Culture = new System.Globalization.CultureInfo(userDB.Culture);
             string toSendText = string.Format(petCommand,
-                                              petDB.Name,
+                                              encodedPetName,
                                               petDB.HP,
                                               petDB.EXP,
                                               petDB.Level,
@@ -799,12 +805,14 @@ namespace TamagotchiBot.Controllers
             Log.Debug($"Callbacked ShowBasicInfoInline for {_userInfo}");
             _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
-                                                              new AnswerCallback(toSendText, toSendInline),
+                                                              new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
                                                               false);
         }
         private void ShowExtraInfoInline(Pet petDB)
         {
-            string toSendText = string.Format(petCommandMoreInfo1, petDB.Name, petDB.BirthDateTime);
+            var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
+            encodedPetName = "<b>" + encodedPetName + "</b>";
+            string toSendText = string.Format(petCommandMoreInfo1, encodedPetName, petDB.BirthDateTime, _appServices.ReferalInfoService.GetDoneRefsAmount(_userId));
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {
                 new CallbackButtons.PetCommand().PetCommandInlineBasicInfo
@@ -817,7 +825,7 @@ namespace TamagotchiBot.Controllers
             Log.Debug($"Callbacked ShowExtraInfoInline for {_userInfo}");
             _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
-                                                              new AnswerCallback(toSendText, toSendInline),
+                                                              new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
                                                               false);
         }
 
