@@ -404,7 +404,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.PetInfo_Cat,
-                ReplyMarkup = null,
+                ReplyMarkup = new ReplyKeyboardRemove(),
                 InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new InlineItems().InlinePet),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
@@ -728,6 +728,7 @@ namespace TamagotchiBot.Controllers
 
                 var toSend = new AnswerMessage() { Text = toSendTextBan, StickerId = StickersId.BannedSticker };
                 _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                return;
             }
 
             string toSendText = string.Format(renameCommand);

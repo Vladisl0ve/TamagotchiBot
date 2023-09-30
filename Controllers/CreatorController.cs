@@ -305,7 +305,7 @@ namespace TamagotchiBot.Controllers
 
             if (answerFromUser == true)
             {
-                if (_appServices.UserService.Get(_userId).Gold >= Constants.Costs.RenamePet)
+                if (_appServices.UserService.Get(_userId).Gold >= Costs.RenamePet)
                 {
                     _appServices.MetaUserService.UpdateIsPetNameAskedOnRename(_userId, false);
                     _appServices.MetaUserService.UpdateIsAskedToConfirmRenaming(_userId, false);
@@ -317,7 +317,8 @@ namespace TamagotchiBot.Controllers
                     Culture = _userCulture;
                     var toSend = new AnswerMessage()
                     {
-                        Text = NotEnoughGoldToResurrect
+                        Text = NotEnoughGoldToResurrect,
+                        ReplyMarkup = new ReplyKeyboardRemove()
                     };
 
                     Log.Debug($"Not enough gold for rename for {_userInfo}");
@@ -442,7 +443,8 @@ namespace TamagotchiBot.Controllers
             var toSend = new AnswerMessage()
             {
                 Text = string.Format(ConfirmedName, metaUser.TmpPetName),
-                StickerId = StickersId.PetConfirmedName_Cat
+                StickerId = StickersId.PetConfirmedName_Cat,
+                ReplyMarkup = new ReplyKeyboardRemove()
             };
 
             Log.Debug($"Confirmed name by {_userInfo}");
