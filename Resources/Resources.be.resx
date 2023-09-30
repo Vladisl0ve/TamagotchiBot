@@ -138,6 +138,7 @@
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
+
 💊 Здароўе: {1}%
 🍕 Сытасць: {4}%
 🛁 Гігіена: {9}%
@@ -146,7 +147,9 @@
 
 💰 Золата: {8} 💴
 ⚡️ Стан: {6}
-🏅 Досвед: {2} | {3} ўзровень✨
+🏅 &lt;b&gt;{3} ўзровень&lt;/b&gt;
+✨ &lt;i&gt;Вопыт {2}/100&lt;/i&gt;
+
 
 /gameroom - пайдзем гуляць у Яблык🍎
 /reward - атрымай штодзённую ўзнагароду 🎁</value>
@@ -163,10 +166,6 @@
   </data>
   <data name="ConfirmedLanguage" xml:space="preserve">
     <value>Выбрана беларуская мова 🤍❤️🤍</value>
-  </data>
-  <data name="petCommandMoreInfo1" xml:space="preserve">
-    <value>🐱 {0}
-🎂 Дата нараджэння: {1}</value>
   </data>
   <data name="petCommandInlineBasicInfo" xml:space="preserve">
     <value>Асноўныя звесткі 📋</value>
@@ -301,18 +300,6 @@
   <data name="bathroomCommandDescription" xml:space="preserve">
     <value>Ванная 🛁</value>
   </data>
-  <data name="helpCommand" xml:space="preserve">
-    <value>🌈 Сардэчна запрашаем у свет тамагочы! 🌈
-Тут ты можаш завесці сабе новага віртуальнага сябра 🐩🐈🐈‍⬛🐕
-Абавязкова сачы за прагрэсам твайго гадаванца :
-▫️ гуляй з ім у розныя гульні ⚽️
-▫️ кармі смачненькім 🍕🍳🍫
-▫️ беражы яго ад хвароб 🍼
-▫️ развлякайся і проста любі 😻
-
-У меню каманд знойдзеш усё, што трэба гадаванцу 🌻
-Наведвай яго часцей, таму што ён таксама любіць цябе і будзе вельмі рады правесці час разам з табою 🤍❤️🤍</value>
-  </data>
   <data name="helpCommandDescription" xml:space="preserve">
     <value>Даведка ❓</value>
   </data>
@@ -327,6 +314,7 @@
 /ranks - лепшыя з лепшых! 👑
 /hospital- ветэрынар 🏥
 /bathroom - чысціня гадаванца 🛁
+/referal - бонусы за сяброў 👩‍👩‍👧‍👦
 /rename - змяніць імя 🌀
 
 У будучыні будзе больш!
@@ -426,6 +414,8 @@
   </data>
   <data name="workCommand" xml:space="preserve">
     <value>Выберы чым будзе займацца твой гадаванец 💡
+
+😴 Стомленасць: {2}%
 
 Праграмаванне 💻 -{0} мінуты ⌛️ , +{1} золата 💰</value>
   </data>
@@ -618,5 +608,99 @@
 🐿 Новыя віды гадаванцаў
 🎰 Новыя міні-гульні (у тым ліку для мультыплэера з сябрамі)
 🏫 Дадаць школу, адукацыю</value>
+  </data>
+  <data name="InviteGlobalMultiplayerButton" xml:space="preserve">
+    <value>😺 Завесці свайго Тамагочы</value>
+  </data>
+  <data name="InviteReferalMultiplayerButton" xml:space="preserve">
+    <value>🐣 Стаць сябрам для {0}</value>
+  </data>
+  <data name="InviteGlobalMultiplayerText" xml:space="preserve">
+    <value>{0}, у цябе яшчэ няма свайго Тамагочы 🐧</value>
+  </data>
+  <data name="MultiplayerShowPet" xml:space="preserve">
+    <value>{8}, вось твой гадаванец
+
+🐱 &lt;b&gt;{0}&lt;/b&gt;
+💊 Здароўе: {1}%
+🍕 Сытасць: {2}%
+🛁 Гігіена: {3}%
+😴 Стомленасць: {4}%
+🎊 Радасць: {5}%
+
+🏅 {6} ўзровень
+💰 Золата: {7} 💴</value>
+  </data>
+  <data name="ShowPetMPCommand" xml:space="preserve">
+    <value>🦁 Паказаць свайго гадаванца</value>
+  </data>
+  <data name="referalCommandDescription" xml:space="preserve">
+    <value>👬 Прызы за сябра</value>
+  </data>
+  <data name="referalCommand" xml:space="preserve">
+    <value>Разам гуляць нашмат весялей, так? 👯‍♀️
+Запрашай сяброў пагуляць з дапамогай сваёй Рэферальнага спасылкі і атрымлівай за гэта прызы! 🎁
+
+🚦Сябар павінен стварыць уласнага Тамагочы, каб прызы прыйшлі да цябе на акаўнт 🚦
+
+🤼‍♀️ У цябе рэфералаў: {0}
+Зароблена золата з дапамогай рефералкі: {1}💰
+
+Твая реферальная спасылка:
+{2}</value>
+  </data>
+  <data name="ToShareReferalCommand" xml:space="preserve">
+    <value>📩 Падзяліцца спасылкай</value>
+  </data>
+  <data name="ToAddToNewGroupReferalCommand" xml:space="preserve">
+    <value>🚀 Дадаць у новы чат</value>
+  </data>
+  <data name="ShowWelcomeMessageMultiplayer" xml:space="preserve">
+    <value>Прывітанне ўсім у чаце {0}!
+Бот 🐾 Тамагочы | Virtual Pet 🐾 дае магчымасць завесці свайго гадаванца прама ў Тэлеграме
+
+Даступныя каманды ў чаце:
+/show_pet - паказаць свайго гадаванца</value>
+  </data>
+  <data name="petCommandMoreInfo1" xml:space="preserve">
+    <value>🐱 {0}
+
+🎂 Дата нараджэння: {1}
+👫 Рэфералаў: {2}</value>
+  </data>
+  <data name="changelogCommand" xml:space="preserve">
+    <value>📢💬 Паглядзець і пагаварыць аб абнаўленнях бота можна тут:
+{0}</value>
+  </data>
+  <data name="ChangelogGoToDicussChannelButton" xml:space="preserve">
+    <value>🗳 Канал з абнаўленнямі</value>
+  </data>
+  <data name="changelogCommandDescription" xml:space="preserve">
+    <value>📲 Абнаўленні</value>
+  </data>
+  <data name="helpCommand" xml:space="preserve">
+    <value>🌈 Сардэчна запрашаем у свет Тамагочы! 🌈
+Тут ты можаш завесці сабе новага віртуальнага сябра 🐩🐈🐈‍⬛🐕
+Абавязкова сачы за поспехамі свайго гадаванца:
+▫️ гуляй з ім у розныя гульні ⚽️
+▫️ кармі смачнай 🍕🍳🍫
+▫️ клапаціся пра яго 🍼
+▫️ даглядай і проста любі 😻
+
+У меню каманд ты знойдзеш усё, што твайму ўлюбёнцу трэба 🌻
+Часцей наведвай гадаванца, бо ён цябе таксама кахае і будзе вельмі рады пагуляць 🤍❤️🤍
+
+FAQ:
+1. Як назапашваецца ўзровень 🏅?
+- 100 вопыту = 1 ўзровень. Вопыт атрымліваецца па ходзе гульні - дастаткова правільна даглядаць гадаванца.
+
+2. Як зарабляць грошы 💰?
+- Золата зарабляецца на працы (/work)
+
+3. Ці можа гадаванец памерці 💀?
+- Нажаль як у жыцці, так і ў Тамагочы гадаванец можа вельмі моцна пакрыўдзіцца і сысці ад цябе 💔
+Таму часцей наведвай свайго віртуальнага сябра 🧸
+
+/menu - тут амаль усе магчымыя каманды</value>
   </data>
 </root>

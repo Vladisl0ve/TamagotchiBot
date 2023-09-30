@@ -32,6 +32,13 @@ namespace TamagotchiBot.UserExtensions
             Sleepy
         }
 
+        public enum MessageAudience
+        {
+            Unknown,
+            Private,
+            Group
+        }
+
         public struct Languages
         {
             public const string LanguageBe = "be";
@@ -66,6 +73,9 @@ namespace TamagotchiBot.UserExtensions
         {
             public const int WorkOnPCGoldReward = 100;
             public const int DailyGoldReward = 100;
+
+            //Referal
+            public const int ReferalAdded = 500;
         }
 
         public struct Costs //in gold
@@ -124,11 +134,19 @@ namespace TamagotchiBot.UserExtensions
             public const string RenameCommand = "rename";
             public const string HospitalCommand = "hospital";
             public const string RewardCommand = "reward";
+            public const string ReferalCommand = "referal";
             public const string BathroomCommand = "bathroom";
             public const string HelpCommand = "help";
             public const string MenuCommand = "menu";
             public const string WorkCommand = "work";
             public const string QuitCommand = "quit";
+            public const string ChangelogCommand = "changelog";
+        }
+
+        public struct CommandsMP
+        {
+            public const string ShowPetCommand = "show_pet";
+
         }
 
         public struct StickersId
@@ -136,7 +154,9 @@ namespace TamagotchiBot.UserExtensions
             //Common
             public const string WelcomeSticker = "CAACAgIAAxkBAAEDHvdhcG0r5WOkfladhV2zTUYwN6LyOQACUwADr8ZRGjkySUcbM1VLIQQ";
             public const string HelpCommandSticker = "CAACAgIAAxkBAAEIEd9kCluWEaE86RH_SAr0tnJcJf_A4AACiXAAAp7OCwAB00mUUVh4ERkvBA";
-            public const string MenuCommandSticker = "CAACAgIAAxkBAAEIMmVkFxFa_IOB62mjlU6QjY8xAfFC8gACZxcAAqLdcElp3-Tq2zyHiS8E";
+            public const string ChangelogCommandSticker = "CAACAgIAAxkBAAEKbMBlGKE7cGtOkD35P_1Qf3dm0XVQKQACcR8AAvMoYEpm_8ahsriuMzAE";
+            public const string ReferalCommandSticker = "CAACAgIAAxkBAAEIMmVkFxFa_IOB62mjlU6QjY8xAfFC8gACZxcAAqLdcElp3-Tq2zyHiS8E";
+            public const string MenuCommandSticker = "CAACAgIAAxkBAAEKaWZlFgnHbAsn58aipIdHeZIzAZz5UQAC9C0AAnsrwEmLPHbDg_W8YTAE";
             public const string ChangeLanguageSticker = "CAACAgIAAxkBAAEDIdRhcygJqmnt4ibdxEVejHOQ4Ya7pwACbAIAAladvQoqGV6cxNDenyEE";
             public const string DevelopWarningSticker = "CAACAgIAAxkBAAEDHxNhcHJP59QL8Fe9GaY3POWBIeII6QACUQADLMqqByX_VpH__oXBIQQ";
             public const string DroppedPetSticker = "CAACAgIAAxkBAAEIDftkCODBW8d3hT4S-iBjBJnpuSbGjwACcBIAAt6p8Et8ICHIsOd3qy4E";
@@ -196,6 +216,12 @@ namespace TamagotchiBot.UserExtensions
                 new CallbackButtons.KitchenCommand().KitchenCommandInlineLollipop
             };
 
+            public List<CallbackModel> InlineReferal = new()
+            {
+                new CallbackButtons.ReferalCommand().ToAddToNewGroupReferalCommand,
+                new CallbackButtons.ReferalCommand().ToShareReferalCommand
+            };
+
             public List<CallbackModel> InlineGames = new()
             {
                 new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame,
@@ -232,6 +258,11 @@ namespace TamagotchiBot.UserExtensions
             };
 
             public List<CallbackModel> InlinePet = new()
+            {
+                new CallbackButtons.PetCommand().PetCommandInlineExtraInfo
+            };
+
+            public List<CallbackModel> InlineShowInviteMP = new()
             {
                 new CallbackButtons.PetCommand().PetCommandInlineExtraInfo
             };

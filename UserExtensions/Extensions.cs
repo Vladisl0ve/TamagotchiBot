@@ -178,6 +178,12 @@ namespace TamagotchiBot.UserExtensions
 
                 new BotCommand()
                 {
+                    Command = Commands.BathroomCommand,
+                    Description = Resources.Resources.bathroomCommandDescription
+                },
+
+                new BotCommand()
+                {
                     Command = Commands.RanksCommand,
                     Description = Resources.Resources.ranksCommandDescription
                 },
@@ -193,11 +199,11 @@ namespace TamagotchiBot.UserExtensions
                     Command = Commands.RewardCommand,
                     Description = Resources.Resources.rewardCommandDescription
                 },
-
+                
                 new BotCommand()
                 {
-                    Command = Commands.BathroomCommand,
-                    Description = Resources.Resources.bathroomCommandDescription
+                    Command = Commands.ReferalCommand,
+                    Description = Resources.Resources.referalCommandDescription
                 },
 
                 new BotCommand()
@@ -210,6 +216,12 @@ namespace TamagotchiBot.UserExtensions
                 {
                     Command = Commands.HelpCommand,
                     Description = Resources.Resources.helpCommandDescription
+                },
+                
+                new BotCommand()
+                {
+                    Command = Commands.ChangelogCommand,
+                    Description = Resources.Resources.changelogCommandDescription
                 }
             };
 
@@ -218,6 +230,19 @@ namespace TamagotchiBot.UserExtensions
             return resultExtra;
         }
 
+        public static List<BotCommand> GetMultiplayerCommands()
+        {
+            List<BotCommand> result = new()
+            {
+                new BotCommand()
+                {
+                    Command = CommandsMP.ShowPetCommand,
+                    Description = Resources.Resources.ShowPetMPCommand
+                }
+            };
+
+            return result;
+        }
         public static List<BotCommand> GetInApplegameCommands()
         {
             List<BotCommand> result = new()
@@ -272,21 +297,36 @@ namespace TamagotchiBot.UserExtensions
 
         public static AdsProducers GetAdsProducerFromStart(string command)
         {
-            if (command == null)
+            if (command == null || !command.Contains(" myref_1_"))
                 return null;
 
-            var dividedCommand = command.Split(new char[] {'_', ' ' });
+            var dividedCommand = command.Split(" myref_1_");
 
             if (dividedCommand.Length > 1 && dividedCommand[0] == "/start")
             {
-                var pureAds = dividedCommand.Skip(1);
+                var pureAds = dividedCommand[1];
                 return new AdsProducers()
                 {
-                    ProducerName = pureAds.Last(),
-                    CompanyName = string.Join(" ", pureAds.SkipLast(1))
+                    ProducerName = pureAds,
+                    CompanyName = "GramadsNet"
                 };
             }
             return null;
+        }
+        public static long GetReferalProducerFromStart(string command)
+        {
+            if (command == null || !command.Contains(" kotik_"))
+                return -1;
+
+            var dividedCommand = command.Split(" kotik_");
+
+            if (dividedCommand.Length > 1 && dividedCommand[0] == "/start")
+            {
+                var pureAds = dividedCommand[1];
+                if (long.TryParse(pureAds, out var result))
+                    return result;
+            }
+            return -1;
         }
         public static string GetLogUser(Models.Mongo.User user)
         {
@@ -302,9 +342,24 @@ namespace TamagotchiBot.UserExtensions
             if (user.FirstName != null)
                 return $"|{user.FirstName}, ID: {user.UserId}|";
 
+            if (user.UserId != 0 && user.Id == default)
+                return $"|ID: {user.UserId} MP|";
+
             return $"|ID: {user.UserId}|";
         }
 
+        public static string GetPersonalLink(long userId, string userName)
+        {
+            string personalLink = "<a href=\"tg://user?id=`userId`\">`username`</a>";
+            personalLink = personalLink.Replace("`userId`", $"{userId}");
+            personalLink = personalLink.Replace("`username`", $"{userName}");
+
+            return personalLink;
+        }
+        public static string GetReferalLink(long userId, string botUsername)
+        {
+            return $"https://t.me/{botUsername}?start=kotik_" + $"{userId}";
+        }
         public static bool IsEqual(this string telegramString, string defaultString)
         {
 

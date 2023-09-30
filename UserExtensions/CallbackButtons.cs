@@ -136,5 +136,32 @@ namespace TamagotchiBot.UserExtensions
                 CallbackData = "petCommandInlineExtraInfo"
             };
         }
+        public class ReferalCommand
+        {
+            public CallbackModel ToAddToNewGroupReferalCommand = new CallbackModel ()
+            {
+                Text = Resources.Resources.ToAddToNewGroupReferalCommand,
+                CallbackData = "ToAddToNewGroupReferalCommand"
+            };
+            
+            public CallbackModel ToShareReferalCommand = new CallbackModel ()
+            {
+                Text = Resources.Resources.ToShareReferalCommand,
+                CallbackData = "ToShareReferalCommand"
+            };
+        }
+        public class InviteMuliplayerCommand
+        {
+            public CallbackModel InviteGlobalMultiplayerButton = new CallbackModel ()
+            {
+                Text = Resources.Resources.InviteGlobalMultiplayerButton,
+                CallbackData = "InviteGlobalMultiplayerButton"
+            };
+            public CallbackModel InviteReferalMultiplayerButton(string refName) => new CallbackModel ()
+            {
+                Text = string.Format(Resources.Resources.InviteReferalMultiplayerButton, refName),
+                CallbackData = "InviteReferalMultiplayerButton"
+            };
+        }
     }
 }

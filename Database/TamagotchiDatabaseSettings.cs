@@ -3,6 +3,7 @@
     public class TamagotchiDatabaseSettings : ITamagotchiDatabaseSettings
     {
         public string ChatsCollectionName { get; set; }
+        public string ChatsMPCollectionName { get; set; }
         public string PetsCollectionName { get; set; }
         public string UsersCollectionName { get; set; }
         public string ServiceInfoCollectionName { get; set; }
@@ -18,6 +19,7 @@
     public interface ITamagotchiDatabaseSettings
     {
         string ChatsCollectionName { get; set; }
+        string ChatsMPCollectionName { get; set; }
         string DailyInfoCollectionName { get; set; }
         string AppleGameDataCollectionName { get; set; }
         string PetsCollectionName { get; set; }

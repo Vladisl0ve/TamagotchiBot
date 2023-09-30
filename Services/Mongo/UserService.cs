@@ -41,6 +41,17 @@ namespace TamagotchiBot.Services.Mongo
             });
         }
 
+        public bool UpdateReferaledBy(long userId, long referaledByUserId)
+        {
+            var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb == null)
+                return false;
+
+            userDb.ReferaledBy = referaledByUserId;
+            _users.ReplaceOne(u => u.UserId == userId, userDb);
+            return true;
+        }
+
         public User Update(long userId, User userIn)
         {
             _users.ReplaceOne(u => u.UserId == userId, userIn);

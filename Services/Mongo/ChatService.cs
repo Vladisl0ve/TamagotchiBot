@@ -1,11 +1,8 @@
 ﻿using MongoDB.Driver;
-using Serilog;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
-using TamagotchiBot.Models.Mongo.Games;
 
 namespace TamagotchiBot.Services.Mongo
 {

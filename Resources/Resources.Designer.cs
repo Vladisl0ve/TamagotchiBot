@@ -221,6 +221,34 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 📢💬 You can view and discuss bot updates here:
+        ///{0}.
+        /// </summary>
+        public static string changelogCommand {
+            get {
+                return ResourceManager.GetString("changelogCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📲 Updates.
+        /// </summary>
+        public static string changelogCommandDescription {
+            get {
+                return ResourceManager.GetString("changelogCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🗳 Channel with updates.
+        /// </summary>
+        public static string ChangelogGoToDicussChannelButton {
+            get {
+                return ResourceManager.GetString("ChangelogGoToDicussChannelButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🧸 First of all you need to name your new friend
         ///Just type it here.
         /// </summary>
@@ -432,15 +460,19 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 🌈 Welcome to the world of Tamagotchi! 🌈
-        ///Here, you can create your own virtual pet friend 🐩🐈🐈‍⬛🐕
-        ///Make sure to keep track of your pet&apos;s progress:
-        ///▫️ Play different games with them ⚽️
-        ///▫️ Feed them delicious treats 🍕🍳🍫
-        ///▫️ Take care of their needs 🍼
-        ///▫️ Encourage them to exercise and show love 😻
+        ///Here you can make yourself a new virtual friend 🐩🐈🐈‍⬛🐕
+        ///Be sure to keep track of your pet&apos;s progress:
+        ///▫️ play different games with him ⚽️
+        ///▫️feed yummy 🍕🍳🍫
+        ///▫️ take care of him 🍼
+        ///▫️ take care and just love 😻
         ///
-        ///In the command menu, you will find everything your pet needs 🌻. 
-        ///Be sure to visit your pet frequently because they also love you and will be thrilled to play with you 🤍❤️🤍.
+        ///In the command menu you will find everything your pet needs 🌻
+        ///Visit your pet more often, because he loves you too and will be very happy to take you for a walk 🤍❤️🤍
+        ///
+        ///FAQ:
+        ///1. How does the 🏅 level accumulate?
+        ///- 100 experience = 1 level. Exp [rest of string was truncated]&quot;;.
         /// </summary>
         public static string helpCommand {
             get {
@@ -508,6 +540,33 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 😺 Get your own Tamagotchi.
+        /// </summary>
+        public static string InviteGlobalMultiplayerButton {
+            get {
+                return ResourceManager.GetString("InviteGlobalMultiplayerButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}, you don’t have your Tamagotchi yet 🐧.
+        /// </summary>
+        public static string InviteGlobalMultiplayerText {
+            get {
+                return ResourceManager.GetString("InviteGlobalMultiplayerText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🐣 Become a friend for {0}.
+        /// </summary>
+        public static string InviteReferalMultiplayerButton {
+            get {
+                return ResourceManager.GetString("InviteReferalMultiplayerButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are in the kitchen 🥦
         ///🍕 Pet&apos;s satiety: {0}%
         ///💰 Gold: {1}
@@ -554,6 +613,7 @@ namespace TamagotchiBot.Resources {
         ////ranks - see the best pets! 👑
         ////hospital - cure your pet 🏥
         ////bathroom - clean your pet 🛁
+        ////referal - referral program 👩‍👩‍👧‍👦
         ////rename - to change name 🌀
         ///
         ///There will be more in future!
@@ -571,6 +631,25 @@ namespace TamagotchiBot.Resources {
         public static string menuCommandDescription {
             get {
                 return ResourceManager.GetString("menuCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {8}, here is your pet
+        ///
+        ///🐱 &lt;b&gt;{0}&lt;/b&gt;
+        ///💊 Health: {1}%
+        ///🍕 Satiety: {2}%
+        ///🛁 Hygiene: {3}%
+        ///😴 Fatigue: {4}%
+        ///🎊 Joy: {5}%
+        ///
+        ///🏅 {6} level
+        ///💰 Gold: {7} 💴.
+        /// </summary>
+        public static string MultiplayerShowPet {
+            get {
+                return ResourceManager.GetString("MultiplayerShowPet", resourceCulture);
             }
         }
         
@@ -616,6 +695,7 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 🐱 {0}
+        ///
         ///💊 HP: {1}%
         ///🍕 Satiety: {4}%
         ///🛁 Hygiene: {9}%
@@ -624,7 +704,8 @@ namespace TamagotchiBot.Resources {
         ///
         ///💰 Gold: {8} 💴
         ///⚡️ Status: {6}
-        ///🏅 EXP: {2} | {3} level ✨
+        ///🏅 &lt;b&gt;{3} level &lt;/b&gt;
+        ///✨ &lt;i&gt;EXP: {2}/100&lt;/i&gt;
         ///
         ////gameroom - Play in Apple🍎
         ////reward - Get your daily reward 🎁.
@@ -664,7 +745,9 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 🐱 {0}
-        ///🎂 Birth date: {1}.
+        ///
+        ///🎂 Date of birth: {1}
+        ///👫 Referrals: {2}.
         /// </summary>
         public static string petCommandMoreInfo1 {
             get {
@@ -924,6 +1007,33 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Walking together is much more fun, right? 👯‍♀️
+        ///Invite your friends to hang out using your referral link and get prizes for it! 🎁
+        ///
+        ///🚦A friend must create his own Tamagotchi for the prizes to come to your account 🚦
+        ///
+        ///🤼‍♀️ You have referrals: {0}
+        ///Gold earned via referral: {1}💰
+        ///
+        ///Your referral link:
+        ///{2}.
+        /// </summary>
+        public static string referalCommand {
+            get {
+                return ResourceManager.GetString("referalCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 👬 Prizes for a friend.
+        /// </summary>
+        public static string referalCommandDescription {
+            get {
+                return ResourceManager.GetString("referalCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} apples left.
         /// </summary>
         public static string remainingApplesText {
@@ -1081,6 +1191,28 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🦁 Show your pet.
+        /// </summary>
+        public static string ShowPetMPCommand {
+            get {
+                return ResourceManager.GetString("ShowPetMPCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hello everyone in the {0} chat!
+        ///Bot 🐾 Tamagotchi | Virtual Pet 🐾 provides the opportunity to have your own pet directly in Telegram
+        ///
+        ///Available commands in chat:
+        ////show_pet - show your pet.
+        /// </summary>
+        public static string ShowWelcomeMessageMultiplayer {
+            get {
+                return ResourceManager.GetString("ShowWelcomeMessageMultiplayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🐱 {0}
         ///😴 Fatigue: {1}%
         ///⚡️ Status: {2}.
@@ -1137,6 +1269,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🚀 Add to new chat.
+        /// </summary>
+        public static string ToAddToNewGroupReferalCommand {
+            get {
+                return ResourceManager.GetString("ToAddToNewGroupReferalCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pet is good now. Enough to eat 🤢.
         /// </summary>
         public static string tooManyStarvingCommand {
@@ -1164,6 +1305,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 📩 Share link.
+        /// </summary>
+        public static string ToShareReferalCommand {
+            get {
+                return ResourceManager.GetString("ToShareReferalCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🎮 Welcome to Tamagotchi Bot! Here you can raise your own virtual pet, play with him and compete with another players 🎮
         ///Let&apos;s start!.
         /// </summary>
@@ -1184,6 +1334,8 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Choose what your pet will be doing 💡
+        ///
+        ///😴 Fatigue: {2}%
         ///
         ///Programing 💻 -{0} minutes ⌛️, +{1} golds 💰.
         /// </summary>

@@ -74,6 +74,8 @@ namespace Telegram.Bots.Example
                       services.AddTransient<DailyInfoService>();
                       services.AddTransient<BannedUsersService>();
                       services.AddTransient<MetaUserService>();
+                      services.AddTransient<ChatsMPService>();
+                      services.AddTransient<ReferalInfoService>();
 
                       services.AddLocalization(options => options.ResourcesPath = "Resources");
                   });
@@ -113,6 +115,7 @@ namespace Telegram.Bots.Example
                     AllUsersDataCollectionName = "AllUsersData",
                     AppleGameDataCollectionName = "AppleGame",
                     ChatsCollectionName = "Chats",
+                    ChatsMPCollectionName = "ChatsMP",
                     BannedUsersCollectionName = "BannedUsers",
                     DailyInfoCollectionName = "DailyInfo",
                     PetsCollectionName = "Pets",
