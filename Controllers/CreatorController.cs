@@ -356,7 +356,8 @@ namespace TamagotchiBot.Controllers
                     Culture = _userCulture;
                     var toSend = new AnswerMessage()
                     {
-                        Text = NotEnoughGoldToResurrect
+                        Text = NotEnoughGoldToResurrect,
+                        ReplyMarkup = new ReplyKeyboardRemove()
                     };
                     Log.Debug($"Sent NotEnoughGoldToResurrect for {_userInfo}");
                     _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -463,7 +464,8 @@ namespace TamagotchiBot.Controllers
             var toSend = new AnswerMessage()
             {
                 Text = PetCameBackText,
-                StickerId = StickersId.ResurrectedPetSticker
+                StickerId = StickersId.ResurrectedPetSticker,
+                ReplyMarkup = new ReplyKeyboardRemove()
             };
 
             Log.Debug($"Pet came back after resurrect {_userInfo}");
