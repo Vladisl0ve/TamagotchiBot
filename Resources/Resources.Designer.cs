@@ -1162,6 +1162,19 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hello everyone in the {0} chat!
+        ///Bot 🐾 Tamagotchi | Virtual Pet 🐾 provides the opportunity to have your own pet directly in Telegram
+        ///
+        ///Available commands in chat:
+        ////show_pet - show your pet.
+        /// </summary>
+        public static string ShowWelcomeMessageMultiplayer {
+            get {
+                return ResourceManager.GetString("ShowWelcomeMessageMultiplayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🐱 {0}
         ///😴 Fatigue: {1}%
         ///⚡️ Status: {2}.
@@ -1218,6 +1231,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🚀 Add to new chat.
+        /// </summary>
+        public static string ToAddToNewGroupReferalCommand {
+            get {
+                return ResourceManager.GetString("ToAddToNewGroupReferalCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pet is good now. Enough to eat 🤢.
         /// </summary>
         public static string tooManyStarvingCommand {
@@ -1241,6 +1263,15 @@ namespace TamagotchiBot.Resources {
         public static string ToResurrectQuestion {
             get {
                 return ResourceManager.GetString("ToResurrectQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📩 Share link.
+        /// </summary>
+        public static string ToShareReferalCommand {
+            get {
+                return ResourceManager.GetString("ToShareReferalCommand", resourceCulture);
             }
         }
         

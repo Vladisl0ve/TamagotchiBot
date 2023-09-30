@@ -15,5 +15,8 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("Name")]
         public string Name { get; set; }
 
+        [BsonElement("Culture")]
+        public string Culture { get; set; }
+
     }
 }

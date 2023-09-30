@@ -214,6 +214,12 @@ namespace TamagotchiBot.UserExtensions
                 new CallbackButtons.KitchenCommand().KitchenCommandInlineLollipop
             };
 
+            public List<CallbackModel> InlineReferal = new()
+            {
+                new CallbackButtons.ReferalCommand().ToAddToNewGroupReferalCommand,
+                new CallbackButtons.ReferalCommand().ToShareReferalCommand
+            };
+
             public List<CallbackModel> InlineGames = new()
             {
                 new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame,

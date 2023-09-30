@@ -22,6 +22,7 @@ namespace TamagotchiBot.Controllers
         private readonly long _chatId;
         private readonly CultureInfo _userCulture;
 
+        private readonly string _chatName;
         private readonly string _userName;
         private readonly string _userLogInfo;
 
@@ -34,6 +35,7 @@ namespace TamagotchiBot.Controllers
             _appServices = services;
 
             _userName = message?.From?.FirstName ?? callback?.From?.FirstName;
+            _chatName = message?.Chat?.Title ?? callback?.Message.Chat.Title;
             _userLogInfo = Extensions.GetLogUser(_appServices.UserService.Get(_userId) ?? new Models.Mongo.User() { UserId = _userId });
 
             Culture = _userCulture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
@@ -58,8 +60,9 @@ namespace TamagotchiBot.Controllers
 
             return Task.CompletedTask;
 
-            void ShowPetMP(Models.Mongo.Pet petDB, Models.Mongo.User userDB)
+            async void ShowPetMP(Models.Mongo.Pet petDB, Models.Mongo.User userDB)
             {
+                var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
                 string toSendText = string.Format(MultiplayerShowPet,
                                                   petDB.Name,
                                                   petDB.HP,
@@ -79,7 +82,7 @@ namespace TamagotchiBot.Controllers
                     InlineKeyboardMarkup = new (
                         InlineKeyboardButton.WithUrl(
                             new InviteMuliplayerCommand().InviteReferalMultiplayerButton(userDB.FirstName).Text,
-                            Extensions.GetReferalLink(_userId)
+                            Extensions.GetReferalLink(_userId, botUsername)
                             )),
                     ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
                     Text = toSendText
@@ -90,21 +93,38 @@ namespace TamagotchiBot.Controllers
             }
         }
 
-        public void SendInviteForUnregistered()
+        public async void SendInviteForUnregistered()
         {
             string toSendText = string.Format(InviteGlobalMultiplayerText, "`personalLink`");
             toSendText = HttpUtility.HtmlEncode(toSendText);
             toSendText = toSendText.Replace("`personalLink`", Extensions.GetPersonalLink(_userId, _userName));
+            var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
 
             AnswerMessage answerMessage = new AnswerMessage()
             {
-                InlineKeyboardMarkup = new ( InlineKeyboardButton.WithUrl(new InviteMuliplayerCommand().InviteGlobalMultiplayerButton.Text, "https://t.me/VirtualPetBot")),
+                InlineKeyboardMarkup = new ( InlineKeyboardButton.WithUrl(new InviteMuliplayerCommand().InviteGlobalMultiplayerButton.Text, $"https://t.me/{botUsername}")),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
                 Text = toSendText
             };
 
             _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
             Log.Debug($"MP: called SendInviteForUnregistered by unregistered ID: {_userId}");
+        }
+        public async void SendWelcomeMessageOnStart()
+        {
+            var encodedChatName = HttpUtility.HtmlEncode(_chatName);
+            string toSendText = string.Format(ShowWelcomeMessageMultiplayer, encodedChatName);
+            var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+
+            AnswerMessage answerMessage = new AnswerMessage()
+            {
+                InlineKeyboardMarkup = new ( InlineKeyboardButton.WithUrl(new InviteMuliplayerCommand().InviteGlobalMultiplayerButton.Text, Extensions.GetReferalLink(_userId, botUsername))),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                Text = toSendText
+            };
+
+            _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
+            Log.Debug($"MP: called SendWelcomeMessageOnStart, invited by ID: {_userId}");
         }
     }
 }

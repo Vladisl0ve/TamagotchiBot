@@ -350,9 +350,9 @@ namespace TamagotchiBot.UserExtensions
 
             return personalLink;
         }
-        public static string GetReferalLink(long userId)
+        public static string GetReferalLink(long userId, string botUsername)
         {
-            return "https://t.me/VirtualPetBot?start=kotik_" + $"{userId}";
+            return $"https://t.me/{botUsername}?start=kotik_" + $"{userId}";
         }
         public static bool IsEqual(this string telegramString, string defaultString)
         {

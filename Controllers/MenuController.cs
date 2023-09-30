@@ -3,6 +3,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using TamagotchiBot.Models;
 using TamagotchiBot.Models.Answers;
@@ -657,13 +658,14 @@ namespace TamagotchiBot.Controllers
             Log.Debug($"Called /ShowHelpInfo for {_userInfo}");
             _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private void ShowReferalInfo()
+        private async Task ShowReferalInfo()
         {
             Log.Debug($"Called /ShowReferalInfo for {_userInfo}");
+            var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
 
             var refAmounts = _appServices.ReferalInfoService.GetDoneRefsAmount(_userId);
             var goldByRef = Rewards.ReferalAdded * refAmounts;
-            var refLink = Extensions.GetReferalLink(_userId);
+            var refLink = Extensions.GetReferalLink(_userId, botUsername);
             string toSendText = string.Format(referalCommand, refAmounts, goldByRef, refLink);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -674,6 +676,17 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.ReferalCommandSticker,
+                InlineKeyboardMarkup = new InlineKeyboardMarkup(new List<InlineKeyboardButton>()
+                {
+                    new InlineKeyboardButton(new CallbackButtons.ReferalCommand().ToAddToNewGroupReferalCommand.Text)
+                    {
+                        Url = $"http://t.me/{botUsername}?startgroup=start"
+                    },
+                    new InlineKeyboardButton(new CallbackButtons.ReferalCommand().ToShareReferalCommand.Text)
+                    {
+                        Url = $"https://t.me/share/url?url={Extensions.GetReferalLink(_userId, botUsername)}"
+                    }
+                }),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);

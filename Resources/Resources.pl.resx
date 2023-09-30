@@ -655,4 +655,17 @@ Złoto zdobyte dzięki poleceniu: {1}💰
 Twój link referencyjny:
 {2}</value>
   </data>
+  <data name="ToShareReferalCommand" xml:space="preserve">
+    <value>📩 Udostępnij link</value>
+  </data>
+  <data name="ToAddToNewGroupReferalCommand" xml:space="preserve">
+    <value>🚀 Dodaj do nowego czatu</value>
+  </data>
+  <data name="ShowWelcomeMessageMultiplayer" xml:space="preserve">
+    <value>Witam wszystkich na czacie {0}!
+Bot 🐾 Tamagotchi | Wirtualny zwierzak 🐾 zapewnia możliwość posiadania własnego zwierzaka bezpośrednio w Telegramie
+
+Dostępne polecenia na czacie:
+/show_pet - pokaż swojego zwierzaka</value>
+  </data>
 </root>

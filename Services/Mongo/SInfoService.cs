@@ -3,18 +3,22 @@ using MongoDB.Driver;
 using Serilog;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
+using Telegram.Bot;
 
 namespace TamagotchiBot.Services.Mongo
 {
     public class SInfoService : MainConnectService
     {
         private readonly IMongoCollection<ServiceInfo> _sinfo;
+        private readonly ITelegramBotClient _botClient;
 
-        public SInfoService(ITamagotchiDatabaseSettings settings) : base(settings)
+        public SInfoService(ITamagotchiDatabaseSettings settings, ITelegramBotClient bot) : base(settings)
         {
             _sinfo = base.GetCollection<ServiceInfo>(settings.ServiceInfoCollectionName);
+            _botClient = bot;
         }
 
         public DateTime GetLastGlobalUpdate() => _sinfo.Find(si => true).FirstOrDefault()?.LastGlobalUpdate ?? DateTime.MinValue;
@@ -128,5 +132,7 @@ namespace TamagotchiBot.Services.Mongo
 
             _sinfo.ReplaceOne(s => s._id == sinfoDB._id, info);
         }
+        public async Task<Telegram.Bot.Types.User> GetBotUserInfo() => await _botClient.GetMeAsync();          
+        
     }
 }

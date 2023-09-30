@@ -64,8 +64,13 @@ namespace TamagotchiBot.Controllers
             void UpdateCommandsForGroup()
             {
                 _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetMultiplayerCommands(),
-                                                                  scope: new BotCommandScopeChatMember() {ChatId = _chatId, UserId = _userId });
+                                                  scope: new BotCommandScopeChatMember() { ChatId = _chatId, UserId = _userId });
             }
+        }
+        public void UpdateCommandsForThisChat()
+        {
+            _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetMultiplayerCommands(),
+                                  scope: new BotCommandScopeChat() { ChatId = _chatId });
         }
     }
 }

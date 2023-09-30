@@ -82,6 +82,10 @@ namespace TamagotchiBot.Handlers
                             Name = message.Chat.Title
                         });
 
+                        MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
+                        multiplayerController.SendWelcomeMessageOnStart();
+
+                        new SetCommandController(_appServices, messageFromUser, callbackFromUser).UpdateCommandsForThisChat();
                         Log.Information($"Bot has been added to new chat #{message.Chat.Title}, ID:{message.Chat.Id} #");
                     }
 
@@ -117,6 +121,37 @@ namespace TamagotchiBot.Handlers
                     return Task.CompletedTask;
                 }
             }
+            async Task OnCallbackGroup(CallbackQuery callbackQuery)
+            {
+                if (userService.Get(callbackQuery.From.Id) == null || petService.Get(callbackQuery.From.Id) == null)
+                    return;
+
+                if (callbackQuery.Data == null)
+                    return;
+
+                if (userService.Get(userId)?.IsInAppleGame ?? false)
+                    return;
+
+                if (callbackQuery.Data == new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame.CallbackData)
+                {
+                    new AppleGameController(_appServices, callbackQuery).PreStart();
+                    return;
+                }
+
+                // call this method wherever you want to show an ad,
+                // for example your bot just made its job and
+                // it's a great time to show an ad to a user
+
+                await SendPostToChat(callbackQuery.From.Id);
+
+                new SynchroDBController(_appServices, callback: callbackQuery).SynchronizeWithDB(); //update user (username, names etc.) in DB
+                CreatorController creatorController = new CreatorController(_appServices, callback: callbackQuery);
+                creatorController.UpdateIndicators(); //update all pet's statistics
+
+                var controller = new MenuController(_appServices, callbackQuery);
+                controller.CallbackHandler();
+            }
+
             async Task OnMessagePrivate(Message message)
             {
                 AnswerMessage toSend = null;

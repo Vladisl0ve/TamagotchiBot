@@ -51,9 +51,9 @@ namespace TamagotchiBot.Services.Mongo
                     IsTaskDone = false
                 });
                 Update(creatorUserId, refInfoDB);
+                _userService.UpdateReferaledBy(newRefUserId, creatorUserId);
             }
 
-            _userService.UpdateReferaledBy(newRefUserId, creatorUserId);
             return refInfoDB;
         }
 

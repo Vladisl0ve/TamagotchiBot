@@ -659,4 +659,17 @@
 Твоя реферальная ссылка: 
 {2}</value>
   </data>
+  <data name="ToShareReferalCommand" xml:space="preserve">
+    <value>📩 Поделиться ссылкой</value>
+  </data>
+  <data name="ToAddToNewGroupReferalCommand" xml:space="preserve">
+    <value>🚀 Добавить в новый чат</value>
+  </data>
+  <data name="ShowWelcomeMessageMultiplayer" xml:space="preserve">
+    <value>Привет всем в чате {0}!
+Бот 🐾 Тамагочи | Virtual Pet 🐾 предоставляет возможность завести своего питомца прямо в Телеграме 
+
+Доступные команды в чате:
+/show_pet - показать своего питомца</value>
+  </data>
 </root>

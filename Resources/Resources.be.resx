@@ -658,4 +658,17 @@
 Твая реферальная спасылка:
 {2}</value>
   </data>
+  <data name="ToShareReferalCommand" xml:space="preserve">
+    <value>📩 Падзяліцца спасылкай</value>
+  </data>
+  <data name="ToAddToNewGroupReferalCommand" xml:space="preserve">
+    <value>🚀 Дадаць у новы чат</value>
+  </data>
+  <data name="ShowWelcomeMessageMultiplayer" xml:space="preserve">
+    <value>Прывітанне ўсім у чаце {0}!
+Бот 🐾 Тамагочы | Virtual Pet 🐾 дае магчымасць завесці свайго гадаванца прама ў Тэлеграме
+
+Даступныя каманды ў чаце:
+/show_pet - паказаць свайго гадаванца</value>
+  </data>
 </root>
