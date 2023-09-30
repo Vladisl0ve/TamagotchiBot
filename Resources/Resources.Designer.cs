@@ -221,6 +221,34 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 📢💬 You can view and discuss bot updates here:
+        ///{0}.
+        /// </summary>
+        public static string changelogCommand {
+            get {
+                return ResourceManager.GetString("changelogCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📲 Updates.
+        /// </summary>
+        public static string changelogCommandDescription {
+            get {
+                return ResourceManager.GetString("changelogCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🗳 Channel with updates.
+        /// </summary>
+        public static string ChangelogGoToDicussChannelButton {
+            get {
+                return ResourceManager.GetString("ChangelogGoToDicussChannelButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🧸 First of all you need to name your new friend
         ///Just type it here.
         /// </summary>
@@ -432,15 +460,19 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 🌈 Welcome to the world of Tamagotchi! 🌈
-        ///Here, you can create your own virtual pet friend 🐩🐈🐈‍⬛🐕
-        ///Make sure to keep track of your pet&apos;s progress:
-        ///▫️ Play different games with them ⚽️
-        ///▫️ Feed them delicious treats 🍕🍳🍫
-        ///▫️ Take care of their needs 🍼
-        ///▫️ Encourage them to exercise and show love 😻
+        ///Here you can make yourself a new virtual friend 🐩🐈🐈‍⬛🐕
+        ///Be sure to keep track of your pet&apos;s progress:
+        ///▫️ play different games with him ⚽️
+        ///▫️feed yummy 🍕🍳🍫
+        ///▫️ take care of him 🍼
+        ///▫️ take care and just love 😻
         ///
-        ///In the command menu, you will find everything your pet needs 🌻. 
-        ///Be sure to visit your pet frequently because they also love you and will be thrilled to play with you 🤍❤️🤍.
+        ///In the command menu you will find everything your pet needs 🌻
+        ///Visit your pet more often, because he loves you too and will be very happy to take you for a walk 🤍❤️🤍
+        ///
+        ///FAQ:
+        ///1. How does the 🏅 level accumulate?
+        ///- 100 experience = 1 level. Exp [rest of string was truncated]&quot;;.
         /// </summary>
         public static string helpCommand {
             get {

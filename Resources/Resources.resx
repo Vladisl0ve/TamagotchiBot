@@ -307,15 +307,28 @@ But joy decreased on {1}%</value>
   </data>
   <data name="helpCommand" xml:space="preserve">
     <value>🌈 Welcome to the world of Tamagotchi! 🌈
-Here, you can create your own virtual pet friend 🐩🐈🐈‍⬛🐕
-Make sure to keep track of your pet's progress:
-▫️ Play different games with them ⚽️
-▫️ Feed them delicious treats 🍕🍳🍫
-▫️ Take care of their needs 🍼
-▫️ Encourage them to exercise and show love 😻
+Here you can make yourself a new virtual friend 🐩🐈🐈‍⬛🐕
+Be sure to keep track of your pet's progress:
+▫️ play different games with him ⚽️
+▫️feed yummy 🍕🍳🍫
+▫️ take care of him 🍼
+▫️ take care and just love 😻
 
-In the command menu, you will find everything your pet needs 🌻. 
-Be sure to visit your pet frequently because they also love you and will be thrilled to play with you 🤍❤️🤍</value>
+In the command menu you will find everything your pet needs 🌻
+Visit your pet more often, because he loves you too and will be very happy to take you for a walk 🤍❤️🤍
+
+FAQ:
+1. How does the 🏅 level accumulate?
+- 100 experience = 1 level. Experience is gained as the game progresses - it is enough to properly care for your pet.
+
+2. How to make money 💰?
+- Gold is earned at work (/work)
+
+3. Can a pet die 💀?
+- Unfortunately, both in life and in Tamagotchi, a pet can be very offended and leave you 💔
+Therefore, visit your virtual friend more often 🧸
+
+/menu - almost all possible commands are here</value>
   </data>
   <data name="helpCommandDescription" xml:space="preserve">
     <value>About the game ❓</value>
@@ -673,5 +686,15 @@ Bot 🐾 Tamagotchi | Virtual Pet 🐾 provides the opportunity to have your own
 
 Available commands in chat:
 /show_pet - show your pet</value>
+  </data>
+  <data name="changelogCommand" xml:space="preserve">
+    <value>📢💬 You can view and discuss bot updates here:
+{0}</value>
+  </data>
+  <data name="ChangelogGoToDicussChannelButton" xml:space="preserve">
+    <value>🗳 Channel with updates</value>
+  </data>
+  <data name="changelogCommandDescription" xml:space="preserve">
+    <value>📲 Updates</value>
   </data>
 </root>

@@ -115,7 +115,9 @@ namespace TamagotchiBot.Controllers
             if (textReceived == "/ranks")
                 ShowRankingInfo();
             if (textReceived == "/sleep")
-                GoToSleep(petDB);
+                GoToSleep(petDB);  
+            if (textReceived == "/changelog")
+                ShowChangelogsInfo();
             if (textReceived == "/test")
             {
                 Log.Debug($"Called /test for {_userInfo}");
@@ -644,6 +646,23 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup = toSendInline
             };
 
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
+        private void ShowChangelogsInfo()
+        {
+            string linkToDiscussChat = "https://t.me/news_virtualpetbot";
+            string toSendText = string.Format(changelogCommand, linkToDiscussChat);
+
+            var toSend = new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = StickersId.ChangelogCommandSticker,
+                InlineKeyboardMarkup = new InlineKeyboardButton(ChangelogGoToDicussChannelButton)
+                {
+                    Url = linkToDiscussChat
+                }
+            };
+            Log.Debug($"Called /ShowChangelogsInfo for {_userInfo}");
             _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
         private void ShowHelpInfo()

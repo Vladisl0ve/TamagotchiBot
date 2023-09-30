@@ -216,6 +216,12 @@ namespace TamagotchiBot.UserExtensions
                 {
                     Command = Commands.HelpCommand,
                     Description = Resources.Resources.helpCommandDescription
+                },
+                
+                new BotCommand()
+                {
+                    Command = Commands.ChangelogCommand,
+                    Description = Resources.Resources.changelogCommandDescription
                 }
             };
 

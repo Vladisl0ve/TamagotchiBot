@@ -297,18 +297,6 @@ Ale radość spadła o {1}%</value>
   <data name="bathroomCommandDescription" xml:space="preserve">
     <value>Łazienka 🛁</value>
   </data>
-  <data name="helpCommand" xml:space="preserve">
-    <value>🌈 Witaj w świecie Tamagotchi! 🌈
-Tutaj możesz stworzyć swojego wirtualnego przyjaciela 🐩🐈🐈‍⬛🐕
- Pamiętaj, aby śledzić postępy twojego pupila:
-▫️ Graj z nim w różne gry ⚽️
-▫️ Karm go pysznymi przysmakami 🍕🍳🍫
-▫️ Dbaj o jego potrzeby 🍼
-▫️ Motywuj do aktywności fizycznej i okazuj miłość 😻
-
-W menu komend znajdziesz wszystko, czego potrzebuje twój pupil 🌻. 
-Upewnij się, że często go odwiedzasz, ponieważ on również Cię kocha i z przyjemnością będzie z tobą grał 🤍❤️🤍</value>
-  </data>
   <data name="helpCommandDescription" xml:space="preserve">
     <value>Pomoc ❓</value>
   </data>
@@ -675,5 +663,40 @@ Dostępne polecenia na czacie:
 
 🎂 Data urodzenia: {1}
 👫 Polecenia: {2}</value>
+  </data>
+  <data name="changelogCommand" xml:space="preserve">
+    <value>📢💬 Tutaj możesz przeglądać i omawiać aktualizacje botów:
+{0}</value>
+  </data>
+  <data name="ChangelogGoToDicussChannelButton" xml:space="preserve">
+    <value>🗳 Kanał z aktualizacjami</value>
+  </data>
+  <data name="changelogCommandDescription" xml:space="preserve">
+    <value>📲 Aktualizacje</value>
+  </data>
+  <data name="helpCommand" xml:space="preserve">
+    <value>🌈 Witamy w świecie Tamagotchi! 🌈
+Tutaj możesz zyskać nowego wirtualnego przyjaciela 🐩🐈🐈‍⬛🐕
+Pamiętaj, aby śledzić postępy swojego zwierzaka:
+▫️graj z nim w różne gry ⚽️
+▫️karm pyszne 🍕🍳🍫
+▫️zaopiekuj się nim 🍼
+▫️ dbaj i po prostu kochaj 😻
+
+W menu poleceń znajdziesz wszystko, czego potrzebuje Twój pupil 🌻
+Odwiedzaj częściej swojego zwierzaka, bo on też Cię kocha i bardzo chętnie zabierze Cię na spacer 🤍❤️🤍
+
+Często zadawane pytania:
+1. Jak gromadzi się poziom 🏅?
+- 100 doświadczenia = 1 poziom. Doświadczenie zdobywa się wraz z postępami w grze - wystarczy odpowiednio zaopiekować się swoim pupilem.
+
+2. Jak zarabiać pieniądze 💰?
+- Złoto zdobywa się w pracy (/work)
+
+3. Czy zwierzę może umrzeć 💀?
+- Niestety zarówno w życiu jak i w Tamagotchi zwierzak może się bardzo obrazić i zostawić 💔
+Dlatego częściej odwiedzaj swojego wirtualnego przyjaciela 🧸
+
+/menu - znajdują się tu prawie wszystkie możliwe polecenia</value>
   </data>
 </root>

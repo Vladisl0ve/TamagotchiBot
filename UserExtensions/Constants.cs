@@ -140,6 +140,7 @@ namespace TamagotchiBot.UserExtensions
             public const string MenuCommand = "menu";
             public const string WorkCommand = "work";
             public const string QuitCommand = "quit";
+            public const string ChangelogCommand = "changelog";
         }
 
         public struct CommandsMP
@@ -153,6 +154,7 @@ namespace TamagotchiBot.UserExtensions
             //Common
             public const string WelcomeSticker = "CAACAgIAAxkBAAEDHvdhcG0r5WOkfladhV2zTUYwN6LyOQACUwADr8ZRGjkySUcbM1VLIQQ";
             public const string HelpCommandSticker = "CAACAgIAAxkBAAEIEd9kCluWEaE86RH_SAr0tnJcJf_A4AACiXAAAp7OCwAB00mUUVh4ERkvBA";
+            public const string ChangelogCommandSticker = "CAACAgIAAxkBAAEKbMBlGKE7cGtOkD35P_1Qf3dm0XVQKQACcR8AAvMoYEpm_8ahsriuMzAE";
             public const string ReferalCommandSticker = "CAACAgIAAxkBAAEIMmVkFxFa_IOB62mjlU6QjY8xAfFC8gACZxcAAqLdcElp3-Tq2zyHiS8E";
             public const string MenuCommandSticker = "CAACAgIAAxkBAAEKaWZlFgnHbAsn58aipIdHeZIzAZz5UQAC9C0AAnsrwEmLPHbDg_W8YTAE";
             public const string ChangeLanguageSticker = "CAACAgIAAxkBAAEDIdRhcygJqmnt4ibdxEVejHOQ4Ya7pwACbAIAAladvQoqGV6cxNDenyEE";
