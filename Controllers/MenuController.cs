@@ -688,6 +688,7 @@ namespace TamagotchiBot.Controllers
 
                 var toSend = new AnswerMessage() { Text = toSendTextBan, StickerId = StickersId.BannedSticker };
                 _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                return;
             }
 
             string toSendText = string.Format(renameCommand);
