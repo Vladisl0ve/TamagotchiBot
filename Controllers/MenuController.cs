@@ -398,7 +398,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.PetInfo_Cat,
-                ReplyMarkup = null,
+                ReplyMarkup = new ReplyKeyboardRemove(),
                 InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new InlineItems().InlinePet)
             };
             Log.Debug($"Called /ShowPetInfo for {_userInfo}");
