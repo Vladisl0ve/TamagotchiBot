@@ -699,4 +699,26 @@ Dlatego częściej odwiedzaj swojego wirtualnego przyjaciela 🧸
 
 /menu - znajdują się tu prawie wszystkie możliwe polecenia</value>
   </data>
+  <data name="RandomEventNiceFlower" xml:space="preserve">
+    <value>Wybraliście się na spacer po ogrodzie botanicznym 🌷🌷🌷
+🐱 Bardzo mi się podobało, na pewno tu wrócimy!
+
++10% radości 🎊
+
+/pet - sprawdza status zwierzaka</value>
+  </data>
+  <data name="RandomEventWatermelon" xml:space="preserve">
+    <value>🐱: Pyszny arbuz, chcę więcej 🍉
+
++15% sytości 🍕
+
+/pet - sprawdza status zwierzaka</value>
+  </data>
+  <data name="RandomEventPlayComputerGames" xml:space="preserve">
+    <value>🎮 Ty i Twój zwierzak świetnie się bawiliście grając na komputerze
+
++30% radości 🎊
+
+/pet - sprawdza status zwierzaka</value>
+  </data>
 </root>

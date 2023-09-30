@@ -180,6 +180,9 @@ namespace TamagotchiBot.UserExtensions
             public const string RandomEventRainbow = "CAACAgIAAxkBAAEJ4atkyVYlkg62ZFQuhaZmcV80BHO0oAACzF4BAAFji0YMijnpL-ZkBfgvBA";
             public const string RandomEventStepOnFoot = "CAACAgIAAxkBAAEJ4a1kyVY4a-KjYopDd5RsJ8--GavNKgACbh8AAtZFYUroJ9qKMdWRaC8E";
             public const string RandomEventStomachache = "CAACAgIAAxkBAAEJ4a9kyVZprtYWi9S4TB_ulxdAV2rA6gACyyQAAmtxYEqsdF5ojjc4_C8E";
+            public const string RandomEventWatermelon = "CAACAgIAAxkBAAEKbMVlGLDT9J9Ql-yGfYpyq5C-P7AgMwAC8iIAAs8xYEq2fxKZoAABMy4wBA";
+            public const string RandomEventNiceFlower = "CAACAgIAAxkBAAEKbNBlGLEocjOzKAxImeZMs-6ZFPBMVwAC2h8AArbUIEvaRpkVMvRVkzAE";
+            public const string RandomEventPlayComputerGames = "CAACAgIAAxkBAAEKbMdlGLDluFHYtgK0ETXFm_3aV1YDBAACWCMAAlDEYUoc38PCUwS5CDAE";
 
             public const string BannedSticker = "CAACAgIAAxkBAAEIn9VkPlGMflkimxiV4BhDptaNOBhgjgACmwUAAlOx9wNCvw--ehyldy8E";
 

@@ -697,4 +697,26 @@ Available commands in chat:
   <data name="changelogCommandDescription" xml:space="preserve">
     <value>📲 Updates</value>
   </data>
+  <data name="RandomEventNiceFlower" xml:space="preserve">
+    <value>You took a walk through the botanical garden 🌷🌷🌷
+🐱 I liked it very much, we will definitely come back here!
+
++10% joy 🎊
+
+/pet - check the status of the pet</value>
+  </data>
+  <data name="RandomEventWatermelon" xml:space="preserve">
+    <value>🐱: Delicious watermelon, I want more 🍉
+
++15% satiety 🍕
+
+/pet - check the status of the pet</value>
+  </data>
+  <data name="RandomEventPlayComputerGames" xml:space="preserve">
+    <value>🎮 You and your pet had a great time playing on the computer
+
++30% joy 🎊
+
+/pet - check the status of the pet</value>
+  </data>
 </root>

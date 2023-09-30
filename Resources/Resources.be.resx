@@ -703,4 +703,26 @@ FAQ:
 
 /menu - тут амаль усе магчымыя каманды</value>
   </data>
+  <data name="RandomEventNiceFlower" xml:space="preserve">
+    <value>Вы пагулялі па батанічным садзе 🌷🌷🌷
+🐱 Вельмі спадабалася, абавязкова яшчэ сюды вернемся!
+
++10% радасць 🎊
+
+/pet - праверыць стан гадаванца</value>
+  </data>
+  <data name="RandomEventWatermelon" xml:space="preserve">
+    <value>🐱: Смачны кавун, хачу яшчэ 🍉
+
++15% сытасці 🍕
+
+/pet - праверыць стан гадаванца</value>
+  </data>
+  <data name="RandomEventPlayComputerGames" xml:space="preserve">
+    <value>🎮 Вы разам з гадаванцам выдатна правялі час, гуляючы ў кампутар
+
++30% радасць 🎊
+
+/pet - праверыць стан гадаванца</value>
+  </data>
 </root>

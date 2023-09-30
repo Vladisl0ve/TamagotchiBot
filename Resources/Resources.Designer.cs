@@ -902,6 +902,33 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You took a walk through the botanical garden 🌷🌷🌷
+        ///🐱 I liked it very much, we will definitely come back here!
+        ///
+        ///+10% joy 🎊
+        ///
+        ////pet - check the status of the pet.
+        /// </summary>
+        public static string RandomEventNiceFlower {
+            get {
+                return ResourceManager.GetString("RandomEventNiceFlower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🎮 You and your pet had a great time playing on the computer
+        ///
+        ///+30% joy 🎊
+        ///
+        ////pet - check the status of the pet.
+        /// </summary>
+        public static string RandomEventPlayComputerGames {
+            get {
+                return ResourceManager.GetString("RandomEventPlayComputerGames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🌈 You saw the rainbow after the rain 🌦
         ///
         ///+10% joy 🎊
@@ -940,6 +967,19 @@ namespace TamagotchiBot.Resources {
         public static string RandomEventStomachache {
             get {
                 return ResourceManager.GetString("RandomEventStomachache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🐱: Delicious watermelon, I want more 🍉
+        ///
+        ///+15% satiety 🍕
+        ///
+        ////pet - check the status of the pet.
+        /// </summary>
+        public static string RandomEventWatermelon {
+            get {
+                return ResourceManager.GetString("RandomEventWatermelon", resourceCulture);
             }
         }
         
