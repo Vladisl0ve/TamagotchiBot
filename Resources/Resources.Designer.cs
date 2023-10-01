@@ -202,17 +202,17 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ⚡️⚡️ Mini-update 1.2.2 has been released⚡️⚡️
+        ///   Looks up a localized string similar to ⚡️⚡️ Update 1.3 has been released⚡️⚡️
+        ///
+        ///Added:
+        ///👨‍👦‍👦Multiplayer - the bot can already be added to the group chat!
+        ///Now you can show off your pet to your friends 😈
+        ///🥂New random pet-related events
+        ///🦥Referral program - you invite friends and get bonuses for it 💰 (command /referal)
+        ///🧩The /changelog command has been added - here is a link to a channel about our Tamagotchi bot, where you can discuss the latest updates and suggest something new
         ///
         ///Corrections:
-        ///🐛 Fixed a global bug when the pet’s level did not increase ✨ (thanks to @glitchpavel for the tip)
-        ///🐥 Improved table of records (/ranks)
-        ///
-        ///In the plans:
-        ///🤼‍♀️ Multiplayer - soon it will be possible to add a bot to chat with friends to play mini-games with other users
-        ///🐿 New types of pets
-        ///🎰 New mini-games (including for multiplayer with friends)
-        ///🏫 Add school, education.
+        ///🐛 The keyboard was often not hidden after  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string changelog1Text {
             get {

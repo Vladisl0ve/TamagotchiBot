@@ -592,19 +592,6 @@ Pogodziliście się 💕
     <value>Czy na pewno chcesz zmienić imię swojego zwierzaka z {0} na {1}? 🗃
 Cena: {2} złota 💰</value>
   </data>
-  <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Wydano mini-aktualizację 1.2.2⚡️⚡️
-
-Poprawki:
-🐛 Naprawiono globalny błąd powodujący, że poziom zwierzaka nie wzrastał ✨ (dzięki @glitchpavel za wskazówkę)
-🐥 Ulepszona tabela rekordów (/ranks)
-
-W planach:
-🤼‍♀️ Tryb wieloosobowy - wkrótce będzie można dodać bota do czatowania ze znajomymi i grania w mini-gry z innymi użytkownikami
-🐿 Nowe rodzaje zwierząt domowych
-🎰 Nowe mini-gry (w tym do gry wieloosobowej ze znajomymi)
-🏫 Dodać szkołę, edukację</value>
-  </data>
   <data name="InviteGlobalMultiplayerButton" xml:space="preserve">
     <value>😺 Zdobądź własne Tamagotchi</value>
   </data>
@@ -720,5 +707,31 @@ Dlatego częściej odwiedzaj swojego wirtualnego przyjaciela 🧸
 +30% radości 🎊
 
 /pet - sprawdza status zwierzaka</value>
+  </data>
+  <data name="changelog1Text" xml:space="preserve">
+    <value>⚡️⚡️ Została wydana aktualizacja 1.3⚡️⚡️
+
+Dodany:
+👨‍👦‍👦Multiplayer - bota można już dodać do czatu grupowego!
+Teraz możesz pochwalić się swoim pupilem znajomym 😈
+🥂Nowe losowe wydarzenia związane ze zwierzętami
+🦥Program polecający - zapraszasz znajomych i dostajesz za to bonusy 💰 (polecenie/polecenie)
+🧩Dodano polecenie /changelog - tutaj znajduje się link do kanału o naszym bocie Tamagotchi, na którym możesz omówić najnowsze aktualizacje i zaproponować coś nowego
+
+Poprawki:
+🐛 Klawiatura często nie była ukrywana po wybraniu języka/wskrzeszeniu zwierzaka - NAPRAWIONO
+🚀 Praca wielu poleceń bota została przyspieszona dzięki optymalizacji kodu
+
+W planach:
+🐿 Nowe rodzaje zwierząt domowych
+🎰 Nowe mini-gry (w tym do gry wieloosobowej ze znajomymi)
+🏫 Dodaj szkołę, edukację, wiek zwierzaka (jak w nowych wersjach Tamagotchi👾)
+
+Dziękuję wszystkim bardzo za wsparcie ❤️
+Pracuję nad botem samodzielnie, równolegle z pracą. Nie zawsze da się publikować aktualizacje na bieżąco, ale Wasze słowa wdzięczności dla bota bardzo mnie motywują ☺️
+Dziękuję, stały graczu 🫶
+
+Subskrybuj nasz kanał, na którym wszystko jest o bocie:
+https://t.me/news_virtualpetbot</value>
   </data>
 </root>
