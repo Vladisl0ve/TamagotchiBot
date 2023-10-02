@@ -67,7 +67,6 @@ namespace TamagotchiBot.Handlers
 
             Task OnMessageGroup(Message message)
             {
-
                 return message.Type switch
                 {
                     MessageType.ChatMembersAdded => OnChatMemberAdded(),
@@ -105,7 +104,6 @@ namespace TamagotchiBot.Handlers
 
                     return Task.CompletedTask;
                 }
-
                 Task OnTextMessageGroup(Message message, long userId)
                 {
                     MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
