@@ -97,55 +97,77 @@ namespace TamagotchiBot.Controllers
             var petDB = _appServices.PetService.Get(_userId);
             var userDB = _appServices.UserService.Get(_userId);
 
-            if (textReceived == "/language")
-                ChangeLanguage();
-            if (textReceived == "/help")
-                ShowHelpInfo();
-
-            if (textReceived == "/pet")
-                ShowPetInfo(petDB);
-            if (textReceived == "/bathroom")
-                GoToBathroom(petDB);
-            if (textReceived == "/kitchen")
-                GoToKitchen(petDB);
-            if (textReceived == "/gameroom")
-                GoToGameroom(petDB);
-            if (textReceived == "/hospital")
-                GoToHospital(petDB);
-            if (textReceived == "/ranks")
-                ShowRankingInfo();
-            if (textReceived == "/sleep")
-                GoToSleep(petDB);  
-            if (textReceived == "/changelog")
-                ShowChangelogsInfo();
-            if (textReceived == "/test")
+            switch (textReceived)
             {
-                Log.Debug($"Called /test for {_userInfo}");
-                var toSend = new AnswerMessage()
-                {
-                    Text = DevelopWarning,
-                    StickerId = StickersId.DevelopWarningSticker,
-                    ReplyMarkup = null,
-                    InlineKeyboardMarkup = null
-                };
-                _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
-            }
-            if (textReceived == "/menu")
-                ShowMenuInfo();
-            if (textReceived == "/rename")
-                RenamePet(petDB);
-            if (textReceived == "/work")
-                ShowWorkInfo(petDB);
-            if (textReceived == "/reward")
-                ShowRewardInfo(userDB);
-            if (textReceived == "/referal")
-                ShowReferalInfo();
+                case "/language":
+                    ChangeLanguage();
+                    break;
+                case "/help":
+                    ShowHelpInfo();
+                    break;
+                case "/pet":
+                    ShowPetInfo(petDB);
+                    break;
+                case "/bathroom":
+                    GoToBathroom(petDB);
+                    break;
+                case "/kitchen":
+                    GoToKitchen(petDB);
+                    break;
+                case "/gameroom":
+                    GoToGameroom(petDB);
+                    break;
+                case "/hospital":
+                    GoToHospital(petDB);
+                    break;
+                case "/ranks":
+                    ShowRankingInfo();
+                    break;
+                case "/sleep":
+                    GoToSleep(petDB);
+                    break;
+                case "/changelog":
+                    ShowChangelogsInfo();
+                    break;
+                case "/test":
+                    Log.Debug($"Called /test for {_userInfo}");
+                    var toSend = new AnswerMessage()
+                    {
+                        Text = DevelopWarning,
+                        StickerId = StickersId.DevelopWarningSticker,
+                        ReplyMarkup = null,
+                        InlineKeyboardMarkup = null
+                    };
+                    _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                    break;
+                case "/menu":
+                    ShowMenuInfo();
+                    break;
+                case "/rename":
+                    RenamePet(petDB);
+                    break;
+                case "/work":
+                    ShowWorkInfo(petDB);
+                    break;
+                case "/reward":
+                    ShowRewardInfo(userDB);
+                    break;
+                case "/referal":
+                    ShowReferalInfo();
+                    break;
+                default:
+                    Log.Debug($"[MESSAGE] '{customText ?? _message.Text}' FROM {_userInfo}");
+                    break;
 #if DEBUG
-            if (textReceived == "/restart")
-                RestartPet(petDB);
-            if (textReceived == "/kill")
-                TestKillPet(petDB);
+                case "/restart":
+                    RestartPet(petDB);
+                    break;
+                case "/kill":
+                    TestKillPet(petDB);
+                    break;
 #endif
+            }
+
             return null;
         }
 
@@ -1279,7 +1301,7 @@ namespace TamagotchiBot.Controllers
             {
                 if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(default).CallbackData)
                 {
-                    UpdateWorkOnPCButtonToDefault();
+                    UpdateWorkOnPCButtonToDefault(petDB);
                     return;
                 }
 
@@ -1709,11 +1731,12 @@ namespace TamagotchiBot.Controllers
             return anwserRating;
         }
 
-        private void UpdateWorkOnPCButtonToDefault()
+        private void UpdateWorkOnPCButtonToDefault(Pet petDB)
         {
             string toSendTextIfTimeOver = string.Format(workCommand,
                                                         new TimesToWait().WorkOnPCToWait.TotalMinutes,
-                                                        Rewards.WorkOnPCGoldReward);
+                                                        Rewards.WorkOnPCGoldReward,
+                                                        petDB.Fatigue);
 
             List<CallbackModel> inlineParts = new InlineItems().InlineWork;
             InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);

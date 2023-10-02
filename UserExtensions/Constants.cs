@@ -146,7 +146,6 @@ namespace TamagotchiBot.UserExtensions
         public struct CommandsMP
         {
             public const string ShowPetCommand = "show_pet";
-
         }
 
         public struct StickersId
