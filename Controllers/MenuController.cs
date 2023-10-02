@@ -546,7 +546,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.PetGameroom_Cat,
-                InlineKeyboardMarkup = toSendInline
+                InlineKeyboardMarkup = toSendInline,
+                ReplyMarkup = new ReplyKeyboardRemove()
             };
             _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
