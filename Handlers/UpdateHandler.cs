@@ -1,6 +1,5 @@
 ﻿using Serilog;
 using System;
-using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Net.Http;
 using System.Text;
@@ -18,6 +17,9 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Newtonsoft.Json;
 using TamagotchiBot.Services.Interfaces;
+using static TamagotchiBot.UserExtensions.Constants;
+using System.Linq;
+using TamagotchiBot.Database;
 
 namespace TamagotchiBot.Handlers
 {
@@ -30,8 +32,10 @@ namespace TamagotchiBot.Handlers
         private readonly SInfoService sinfoService;
         private readonly AppleGameDataService appleGameDataService;
         private readonly BotControlService bcService;
+        private readonly IEnvsSettings _envs;
 
-        public UpdateHandler(IApplicationServices services)
+
+        public UpdateHandler(IApplicationServices services, IEnvsSettings envs)
         {
             _appServices = services;
             userService = services.UserService;
@@ -40,6 +44,7 @@ namespace TamagotchiBot.Handlers
             sinfoService = services.SInfoService;
             appleGameDataService = services.AppleGameDataService;
             bcService = services.BotControlService;
+            _envs = envs;
         }
 
         public Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
@@ -50,17 +55,103 @@ namespace TamagotchiBot.Handlers
             var messageFromUser = update.Message;
             var callbackFromUser = update.CallbackQuery;
             var userId = messageFromUser?.From.Id ?? callbackFromUser?.From.Id ?? default;
-            Task task = update.Type switch
-            {
-                UpdateType.Message => OnMessagePrivate(update.Message),
-                UpdateType.CallbackQuery => OnCallbackPrivate(update.CallbackQuery),
-                _ => Task.CompletedTask
-            };
+            var chatId = messageFromUser?.Chat.Id ?? callbackFromUser?.Message.Chat.Id ?? default;
+            var msgAudience = chatId > 0 ? MessageAudience.Private : MessageAudience.Group;
 
-            new SetCommandController(_appServices, messageFromUser, callbackFromUser).UpdateCommands();
+            Task task = HandleUpdate(update, msgAudience);
+
+            new SetCommandController(_appServices, messageFromUser, callbackFromUser).UpdateCommands(msgAudience);
 
             sinfoService.UpdateLastGlobalUpdate();
             return task;
+
+            Task OnMessageGroup(Message message)
+            {
+                return message.Type switch
+                {
+                    MessageType.ChatMembersAdded => OnChatMemberAdded(),
+                    MessageType.ChatMemberLeft => OnChatMemberLeft(),
+                    _ => OnTextMessageGroup(message, userId)
+                };
+
+                Task OnChatMemberAdded()
+                {
+                    if (message.NewChatMembers.Any(u => u.Id == bot.BotId))
+                    {
+                        _appServices.ChatsMPService.Create(new Models.Mongo.ChatsMP()
+                        {
+                            ChatId = message.Chat.Id,
+                            Name = message.Chat.Title
+                        });
+
+                        MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
+                        multiplayerController.SendWelcomeMessageOnStart();
+
+                        new SetCommandController(_appServices, messageFromUser, callbackFromUser).UpdateCommandsForThisChat();
+                        Log.Information($"Bot has been added to new chat #{message.Chat.Title}, ID:{message.Chat.Id} #");
+                    }
+
+                    return Task.CompletedTask;
+                }
+                Task OnChatMemberLeft()
+                {
+                    if (message.LeftChatMember.Id == bot.BotId)
+                    {
+                        _appServices.ChatsMPService.Remove(message.Chat.Id);
+
+                        Log.Information($"Bot has been deleted from chat #{message.Chat.Title}, ID:{message.Chat.Id} #");
+                    }
+
+                    return Task.CompletedTask;
+                }
+                Task OnTextMessageGroup(Message message, long userId)
+                {
+                    MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
+
+                    if (!IsUserAndPetRegisteredChecking(userId))
+                    {
+                        multiplayerController.SendInviteForUnregistered();
+                        return Task.CompletedTask;
+                    }
+
+                    new SynchroDBController(_appServices, message).SynchronizeWithDB(); //update user (username, names etc.) in DB
+                    new SynchroDBController(_appServices, message).SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
+
+                    multiplayerController.CommandHandler();
+
+                    return Task.CompletedTask;
+                }
+            }
+            async Task OnCallbackGroup(CallbackQuery callbackQuery)
+            {
+                if (userService.Get(callbackQuery.From.Id) == null || petService.Get(callbackQuery.From.Id) == null)
+                    return;
+
+                if (callbackQuery.Data == null)
+                    return;
+
+                if (userService.Get(userId)?.IsInAppleGame ?? false)
+                    return;
+
+                if (callbackQuery.Data == new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame.CallbackData)
+                {
+                    new AppleGameController(_appServices, callbackQuery).PreStart();
+                    return;
+                }
+
+                // call this method wherever you want to show an ad,
+                // for example your bot just made its job and
+                // it's a great time to show an ad to a user
+
+                await SendPostToChat(callbackQuery.From.Id);
+
+                new SynchroDBController(_appServices, callback: callbackQuery).SynchronizeWithDB(); //update user (username, names etc.) in DB
+                CreatorController creatorController = new CreatorController(_appServices, callback: callbackQuery);
+                creatorController.UpdateIndicators(); //update all pet's statistics
+
+                var controller = new MenuController(_appServices, callbackQuery);
+                controller.CallbackHandler();
+            }
 
             async Task OnMessagePrivate(Message message)
             {
@@ -172,23 +263,51 @@ namespace TamagotchiBot.Handlers
                 var controller = new MenuController(_appServices, callbackQuery);
                 controller.CallbackHandler();
             }
-        }
 
+            Task HandleUpdate(Update update, MessageAudience messageAudience)
+            {
+                switch (messageAudience)
+                {
+                    case MessageAudience.Private:
+                        {
+                            return update.Type switch
+                            {
+                                UpdateType.Message => OnMessagePrivate(update.Message),
+                                UpdateType.CallbackQuery => OnCallbackPrivate(update.CallbackQuery),
+                                _ => Task.CompletedTask
+                            };
+                        }
+                    case MessageAudience.Group:
+                        {
+                            return update.Type switch
+                            {
+                                UpdateType.Message => OnMessageGroup(update.Message),
+                                //UpdateType.CallbackQuery => OnCallbackGroup(update.CallbackQuery),
+                                _ => Task.CompletedTask
+                            };
+                        }
+
+                    default:
+                        return Task.CompletedTask;
+                }
+            }
+        }
 
         /// <returns>true == handled update is acceptable to continue, otherwise must to stop</returns>
         private bool ToContinueHandlingUpdateChecking(Update update)
         {
             if (update.Type == UpdateType.Message)
-                if (update.Message.Type == MessageType.Text)
+                if (update.Message.Type == MessageType.Text || update.Message.Type == MessageType.ChatMembersAdded || update.Message.Type == MessageType.ChatMemberLeft)
                     if (update.Message.From != null)
-                        if (update.Message.Chat.Id == update.Message.From.Id)
+                        if (update.Message.Chat?.Id != null && !_envs.ChatsToDevNotify.Any(c => update.Message.Chat.Id.ToString() == c))
                             if (update.Message.ForwardDate == null)
                                 return true;
 
             if (update.Type == UpdateType.CallbackQuery)
                 if (update.CallbackQuery.Message != null)
-                    if (update.CallbackQuery.Message.ForwardDate == null)
-                        return true;
+                    if (update.CallbackQuery.Message.Chat?.Id != null && !_envs.ChatsToDevNotify.Any(c => update.CallbackQuery.Message.Chat.Id.ToString() == c))
+                        if (update.CallbackQuery.Message.ForwardDate == null)
+                            return true;
 
             return false;
         }

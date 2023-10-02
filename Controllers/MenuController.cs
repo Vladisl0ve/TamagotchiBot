@@ -3,6 +3,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using TamagotchiBot.Models;
 using TamagotchiBot.Models.Answers;
@@ -96,51 +97,77 @@ namespace TamagotchiBot.Controllers
             var petDB = _appServices.PetService.Get(_userId);
             var userDB = _appServices.UserService.Get(_userId);
 
-            if (textReceived == "/language")
-                ChangeLanguage();
-            if (textReceived == "/help")
-                ShowHelpInfo();
-
-            if (textReceived == "/pet")
-                ShowPetInfo(petDB);
-            if (textReceived == "/bathroom")
-                GoToBathroom(petDB);
-            if (textReceived == "/kitchen")
-                GoToKitchen(petDB);
-            if (textReceived == "/gameroom")
-                GoToGameroom(petDB);
-            if (textReceived == "/hospital")
-                GoToHospital(petDB);
-            if (textReceived == "/ranks")
-                ShowRankingInfo();
-            if (textReceived == "/sleep")
-                GoToSleep(petDB);
-            if (textReceived == "/test")
+            switch (textReceived)
             {
-                Log.Debug($"Called /test for {_userInfo}");
-                var toSend = new AnswerMessage()
-                {
-                    Text = DevelopWarning,
-                    StickerId = StickersId.DevelopWarningSticker,
-                    ReplyMarkup = null,
-                    InlineKeyboardMarkup = null
-                };
-                _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
-            }
-            if (textReceived == "/menu")
-                ShowMenuInfo();
-            if (textReceived == "/rename")
-                RenamePet(petDB);
-            if (textReceived == "/work")
-                ShowWorkInfo(petDB);
-            if (textReceived == "/reward")
-                ShowRewardInfo(userDB);
+                case "/language":
+                    ChangeLanguage();
+                    break;
+                case "/help":
+                    ShowHelpInfo();
+                    break;
+                case "/pet":
+                    ShowPetInfo(petDB);
+                    break;
+                case "/bathroom":
+                    GoToBathroom(petDB);
+                    break;
+                case "/kitchen":
+                    GoToKitchen(petDB);
+                    break;
+                case "/gameroom":
+                    GoToGameroom(petDB);
+                    break;
+                case "/hospital":
+                    GoToHospital(petDB);
+                    break;
+                case "/ranks":
+                    ShowRankingInfo();
+                    break;
+                case "/sleep":
+                    GoToSleep(petDB);
+                    break;
+                case "/changelog":
+                    ShowChangelogsInfo();
+                    break;
+                case "/test":
+                    Log.Debug($"Called /test for {_userInfo}");
+                    var toSend = new AnswerMessage()
+                    {
+                        Text = DevelopWarning,
+                        StickerId = StickersId.DevelopWarningSticker,
+                        ReplyMarkup = null,
+                        InlineKeyboardMarkup = null
+                    };
+                    _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                    break;
+                case "/menu":
+                    ShowMenuInfo();
+                    break;
+                case "/rename":
+                    RenamePet(petDB);
+                    break;
+                case "/work":
+                    ShowWorkInfo(petDB);
+                    break;
+                case "/reward":
+                    ShowRewardInfo(userDB);
+                    break;
+                case "/referal":
+                    ShowReferalInfo();
+                    break;
+                default:
+                    Log.Debug($"[MESSAGE] '{customText ?? _message.Text}' FROM {_userInfo}");
+                    break;
 #if DEBUG
-            if (textReceived == "/restart")
-                RestartPet(petDB);
-            if (textReceived == "/kill")
-                TestKillPet(petDB);
+                case "/restart":
+                    RestartPet(petDB);
+                    break;
+                case "/kill":
+                    TestKillPet(petDB);
+                    break;
 #endif
+            }
+
             return null;
         }
 
@@ -299,7 +326,7 @@ namespace TamagotchiBot.Controllers
             }
             else
             {
-                toSendText = string.Format(workCommand, new TimesToWait().WorkOnPCToWait.TotalSeconds / 60, Rewards.WorkOnPCGoldReward);
+                toSendText = string.Format(workCommand, new TimesToWait().WorkOnPCToWait.TotalMinutes, Rewards.WorkOnPCGoldReward, petDB.Fatigue);
 
                 inlineParts = new InlineItems().InlineWork;
                 toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -378,8 +405,11 @@ namespace TamagotchiBot.Controllers
         }
         private void ShowPetInfo(Pet petDB)
         {
+            var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
+            encodedPetName = "<b>" + encodedPetName + "</b>";
+
             string toSendText = string.Format(petCommand,
-                                              petDB.Name,
+                                              encodedPetName,
                                               petDB.HP,
                                               petDB.EXP,
                                               petDB.Level,
@@ -399,7 +429,8 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.PetInfo_Cat,
                 ReplyMarkup = new ReplyKeyboardRemove(),
-                InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new InlineItems().InlinePet)
+                InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new InlineItems().InlinePet),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             Log.Debug($"Called /ShowPetInfo for {_userInfo}");
             _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -515,7 +546,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.PetGameroom_Cat,
-                InlineKeyboardMarkup = toSendInline
+                InlineKeyboardMarkup = toSendInline,
+                ReplyMarkup = new ReplyKeyboardRemove()
             };
             _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
@@ -639,6 +671,23 @@ namespace TamagotchiBot.Controllers
 
             _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
+        private void ShowChangelogsInfo()
+        {
+            string linkToDiscussChat = "https://t.me/news_virtualpetbot";
+            string toSendText = string.Format(changelogCommand, linkToDiscussChat);
+
+            var toSend = new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = StickersId.ChangelogCommandSticker,
+                InlineKeyboardMarkup = new InlineKeyboardButton(ChangelogGoToDicussChannelButton)
+                {
+                    Url = linkToDiscussChat
+                }
+            };
+            Log.Debug($"Called /ShowChangelogsInfo for {_userInfo}");
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
         private void ShowHelpInfo()
         {
             string toSendText = string.Format(helpCommand);
@@ -653,6 +702,39 @@ namespace TamagotchiBot.Controllers
                 StickerId = StickersId.HelpCommandSticker
             };
             Log.Debug($"Called /ShowHelpInfo for {_userInfo}");
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
+        private async Task ShowReferalInfo()
+        {
+            Log.Debug($"Called /ShowReferalInfo for {_userInfo}");
+            var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+
+            var refAmounts = _appServices.ReferalInfoService.GetDoneRefsAmount(_userId);
+            var goldByRef = Rewards.ReferalAdded * refAmounts;
+            var refLink = Extensions.GetReferalLink(_userId, botUsername);
+            string toSendText = string.Format(referalCommand, refAmounts, goldByRef, refLink);
+
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.MenuCommandCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            var toSend = new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = StickersId.ReferalCommandSticker,
+                InlineKeyboardMarkup = new InlineKeyboardMarkup(new List<InlineKeyboardButton>()
+                {
+                    new InlineKeyboardButton(new CallbackButtons.ReferalCommand().ToAddToNewGroupReferalCommand.Text)
+                    {
+                        Url = $"http://t.me/{botUsername}?startgroup=start"
+                    },
+                    new InlineKeyboardButton(new CallbackButtons.ReferalCommand().ToShareReferalCommand.Text)
+                    {
+                        Url = $"https://t.me/share/url?url={Extensions.GetReferalLink(_userId, botUsername)}"
+                    }
+                }),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+            };
             _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
         private void ShowMenuInfo()
@@ -742,10 +824,12 @@ namespace TamagotchiBot.Controllers
         #region Inline Answers
         private void ShowBasicInfoInline(Pet petDB)
         {
+            var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
+            encodedPetName = "<b>" + encodedPetName + "</b>";
             var userDB = _appServices.UserService.Get(_userId);
             Culture = new System.Globalization.CultureInfo(userDB.Culture);
             string toSendText = string.Format(petCommand,
-                                              petDB.Name,
+                                              encodedPetName,
                                               petDB.HP,
                                               petDB.EXP,
                                               petDB.Level,
@@ -764,12 +848,14 @@ namespace TamagotchiBot.Controllers
             Log.Debug($"Callbacked ShowBasicInfoInline for {_userInfo}");
             _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
-                                                              new AnswerCallback(toSendText, toSendInline),
+                                                              new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
                                                               false);
         }
         private void ShowExtraInfoInline(Pet petDB)
         {
-            string toSendText = string.Format(petCommandMoreInfo1, petDB.Name, petDB.BirthDateTime);
+            var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
+            encodedPetName = "<b>" + encodedPetName + "</b>";
+            string toSendText = string.Format(petCommandMoreInfo1, encodedPetName, petDB.BirthDateTime, _appServices.ReferalInfoService.GetDoneRefsAmount(_userId));
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {
                 new CallbackButtons.PetCommand().PetCommandInlineBasicInfo
@@ -782,7 +868,7 @@ namespace TamagotchiBot.Controllers
             Log.Debug($"Callbacked ShowExtraInfoInline for {_userInfo}");
             _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
-                                                              new AnswerCallback(toSendText, toSendInline),
+                                                              new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
                                                               false);
         }
 
@@ -1216,7 +1302,7 @@ namespace TamagotchiBot.Controllers
             {
                 if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(default).CallbackData)
                 {
-                    UpdateWorkOnPCButtonToDefault();
+                    UpdateWorkOnPCButtonToDefault(petDB);
                     return;
                 }
 
@@ -1646,11 +1732,12 @@ namespace TamagotchiBot.Controllers
             return anwserRating;
         }
 
-        private void UpdateWorkOnPCButtonToDefault()
+        private void UpdateWorkOnPCButtonToDefault(Pet petDB)
         {
             string toSendTextIfTimeOver = string.Format(workCommand,
                                                         new TimesToWait().WorkOnPCToWait.TotalMinutes,
-                                                        Rewards.WorkOnPCGoldReward);
+                                                        Rewards.WorkOnPCGoldReward,
+                                                        petDB.Fatigue);
 
             List<CallbackModel> inlineParts = new InlineItems().InlineWork;
             InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);

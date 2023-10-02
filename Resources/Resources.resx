@@ -137,6 +137,7 @@ BTW '/menu' shows some commands to start</value>
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
+
 💊 HP: {1}%
 🍕 Satiety: {4}%
 🛁 Hygiene: {9}%
@@ -145,7 +146,8 @@ BTW '/menu' shows some commands to start</value>
 
 💰 Gold: {8} 💴
 ⚡️ Status: {6}
-🏅 EXP: {2} | {3} level ✨
+🏅 &lt;b&gt;{3} level &lt;/b&gt;
+✨ &lt;i&gt;EXP: {2}/100&lt;/i&gt;
 
 /gameroom - Play in Apple🍎
 /reward - Get your daily reward 🎁</value>
@@ -165,7 +167,9 @@ BTW '/menu' shows some commands to start</value>
   </data>
   <data name="petCommandMoreInfo1" xml:space="preserve">
     <value>🐱 {0}
-🎂 Birth date: {1}</value>
+
+🎂 Date of birth: {1}
+👫 Referrals: {2}</value>
   </data>
   <data name="petCommandInlineBasicInfo" xml:space="preserve">
     <value>Basic info 📋</value>
@@ -303,15 +307,28 @@ But joy decreased on {1}%</value>
   </data>
   <data name="helpCommand" xml:space="preserve">
     <value>🌈 Welcome to the world of Tamagotchi! 🌈
-Here, you can create your own virtual pet friend 🐩🐈🐈‍⬛🐕
-Make sure to keep track of your pet's progress:
-▫️ Play different games with them ⚽️
-▫️ Feed them delicious treats 🍕🍳🍫
-▫️ Take care of their needs 🍼
-▫️ Encourage them to exercise and show love 😻
+Here you can make yourself a new virtual friend 🐩🐈🐈‍⬛🐕
+Be sure to keep track of your pet's progress:
+▫️ play different games with him ⚽️
+▫️feed yummy 🍕🍳🍫
+▫️ take care of him 🍼
+▫️ take care and just love 😻
 
-In the command menu, you will find everything your pet needs 🌻. 
-Be sure to visit your pet frequently because they also love you and will be thrilled to play with you 🤍❤️🤍</value>
+In the command menu you will find everything your pet needs 🌻
+Visit your pet more often, because he loves you too and will be very happy to take you for a walk 🤍❤️🤍
+
+FAQ:
+1. How does the 🏅 level accumulate?
+- 100 experience = 1 level. Experience is gained as the game progresses - it is enough to properly care for your pet.
+
+2. How to make money 💰?
+- Gold is earned at work (/work)
+
+3. Can a pet die 💀?
+- Unfortunately, both in life and in Tamagotchi, a pet can be very offended and leave you 💔
+Therefore, visit your virtual friend more often 🧸
+
+/menu - almost all possible commands are here</value>
   </data>
   <data name="helpCommandDescription" xml:space="preserve">
     <value>About the game ❓</value>
@@ -327,6 +344,7 @@ Be sure to visit your pet frequently because they also love you and will be thri
 /ranks - see the best pets! 👑
 /hospital - cure your pet 🏥
 /bathroom - clean your pet 🛁
+/referal - referral program 👩‍👩‍👧‍👦
 /rename - to change name 🌀
 
 There will be more in future!
@@ -406,17 +424,30 @@ Surrendered: {2}</value>
     <value>You are in the gameroom ⚽️</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Mini-update 1.2.2 has been released⚡️⚡️
+    <value>⚡️⚡️ Update 1.3 has been released⚡️⚡️
+
+Added:
+👨‍👦‍👦Multiplayer - the bot can already be added to the group chat!
+Now you can show off your pet to your friends 😈
+🥂New random pet-related events
+🦥Referral program - you invite friends and get bonuses for it 💰 (command /referal)
+🧩The /changelog command has been added - here is a link to a channel about our Tamagotchi bot, where you can discuss the latest updates and suggest something new
 
 Corrections:
-🐛 Fixed a global bug when the pet’s level did not increase ✨ (thanks to @glitchpavel for the tip)
-🐥 Improved table of records (/ranks)
+🐛 The keyboard was often not hidden after selecting a language/resurrecting a pet - FIXED
+🚀 The work of many bot commands has been accelerated due to code optimization
 
 In the plans:
-🤼‍♀️ Multiplayer - soon it will be possible to add a bot to chat with friends to play mini-games with other users
 🐿 New types of pets
 🎰 New mini-games (including for multiplayer with friends)
-🏫 Add school, education</value>
+🏫 Add school, education, pet age (as in new versions of Tamagotchi👾)
+
+Thank you all so much for your support ❤️
+I’m working on the bot alone, in parallel with my work. It’s not always possible to release updates constantly, but your words of gratitude for the bot motivate me very much ☺️
+Thank you, regular player 🫶
+
+Subscribe to our channel, where everything is about the bot:
+https://t.me/news_virtualpetbot</value>
   </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
     <value>🐱: Waiting for you here, come back
@@ -438,6 +469,8 @@ In the plans:
   </data>
   <data name="workCommand" xml:space="preserve">
     <value>Choose what your pet will be doing 💡
+
+😴 Fatigue: {2}%
 
 Programing 💻 -{0} minutes ⌛️, +{1} golds 💰</value>
   </data>
@@ -613,5 +646,90 @@ Price: {2} gold 💰</value>
   </data>
   <data name="NoTextEmoji" xml:space="preserve">
     <value>No ❌</value>
+  </data>
+  <data name="InviteGlobalMultiplayerButton" xml:space="preserve">
+    <value>😺 Get your own Tamagotchi</value>
+  </data>
+  <data name="InviteReferalMultiplayerButton" xml:space="preserve">
+    <value>🐣 Become a friend for {0}</value>
+  </data>
+  <data name="InviteGlobalMultiplayerText" xml:space="preserve">
+    <value>{0}, you don’t have your Tamagotchi yet 🐧</value>
+  </data>
+  <data name="MultiplayerShowPet" xml:space="preserve">
+    <value>{8}, here is your pet
+
+🐱 &lt;b&gt;{0}&lt;/b&gt;
+💊 Health: {1}%
+🍕 Satiety: {2}%
+🛁 Hygiene: {3}%
+😴 Fatigue: {4}%
+🎊 Joy: {5}%
+
+🏅 {6} level
+💰 Gold: {7} 💴</value>
+  </data>
+  <data name="ShowPetMPCommand" xml:space="preserve">
+    <value>🦁 Show your pet</value>
+  </data>
+  <data name="referalCommandDescription" xml:space="preserve">
+    <value>👬 Prizes for a friend</value>
+  </data>
+  <data name="referalCommand" xml:space="preserve">
+    <value>Walking together is much more fun, right? 👯‍♀️
+Invite your friends to hang out using your referral link and get prizes for it! 🎁
+
+🚦A friend must create his own Tamagotchi for the prizes to come to your account 🚦
+
+🤼‍♀️ You have referrals: {0}
+Gold earned via referral: {1}💰
+
+Your referral link:
+{2}</value>
+  </data>
+  <data name="ToShareReferalCommand" xml:space="preserve">
+    <value>📩 Share link</value>
+  </data>
+  <data name="ToAddToNewGroupReferalCommand" xml:space="preserve">
+    <value>🚀 Add to new chat</value>
+  </data>
+  <data name="ShowWelcomeMessageMultiplayer" xml:space="preserve">
+    <value>Hello everyone in the {0} chat!
+Bot 🐾 Tamagotchi | Virtual Pet 🐾 provides the opportunity to have your own pet directly in Telegram
+
+Available commands in chat:
+/show_pet - show your pet</value>
+  </data>
+  <data name="changelogCommand" xml:space="preserve">
+    <value>📢💬 You can view and discuss bot updates here:
+{0}</value>
+  </data>
+  <data name="ChangelogGoToDicussChannelButton" xml:space="preserve">
+    <value>🗳 Channel with updates</value>
+  </data>
+  <data name="changelogCommandDescription" xml:space="preserve">
+    <value>📲 Updates</value>
+  </data>
+  <data name="RandomEventNiceFlower" xml:space="preserve">
+    <value>You took a walk through the botanical garden 🌷🌷🌷
+🐱 I liked it very much, we will definitely come back here!
+
++10% joy 🎊
+
+/pet - check the status of the pet</value>
+  </data>
+  <data name="RandomEventWatermelon" xml:space="preserve">
+    <value>🐱: Delicious watermelon, I want more 🍉
+
++15% satiety 🍕
+
+/pet - check the status of the pet</value>
+  </data>
+  <data name="RandomEventPlayComputerGames" xml:space="preserve">
+    <value>🎮 You and your pet had a great time playing on the computer
+
++30% joy 🎊
+
+/pet - check the status of the pet</value>
   </data>
 </root>

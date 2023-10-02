@@ -109,12 +109,13 @@ namespace TamagotchiBot.Services
 
         private async void OnRandomEventTimedEvent(object sender, ElapsedEventArgs e)
         {
+#if !DEBUG_NOTIFY
             if (DateTime.UtcNow.Hour < 4 || DateTime.UtcNow.Hour > 20)
             {
                 Log.Information($"RandomEventNotification - Sleep time for [20:00 - 04:00] UTC");
                 return;
             }
-
+#endif
             var usersToNotify = UpdateAllRandomEventUsersIds();
             var counter = 0;
             Log.Information($"RandomEventNotification - {usersToNotify.Count} users");
@@ -458,6 +459,15 @@ namespace TamagotchiBot.Services
                 case 4:
                     RandomEventHotdog(user);
                     break;
+                case 5:
+                    RandomEventNiceFlower(user);
+                    break;
+                case 6:
+                    RandomEventWatermelon(user);
+                    break;
+                case 7:
+                    RandomEventPlayComputerGames(user);
+                    break;
                 default:
                     RandomEventNotify(user);
                     break;
@@ -574,7 +584,7 @@ namespace TamagotchiBot.Services
             var newSatiety = petDB.Satiety - 10;
             int newHP = petDB.HP - 1;
 
-            _appServices.PetService.UpdateSatiety(user.UserId, newSatiety);
+            _appServices.PetService.UpdateSatiety(user.UserId, newSatiety, true);
             _appServices.PetService.UpdateHP(user.UserId, newHP);
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
@@ -584,6 +594,57 @@ namespace TamagotchiBot.Services
             {
                 StickerId = Constants.StickersId.RandomEventStepOnFoot,
                 Text = Resources.Resources.RandomEventStepOnFoot
+            };
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+        }
+        private void RandomEventNiceFlower(Models.Mongo.User user)
+        {
+            var petDB = _appServices.PetService.Get(user.UserId);
+            var newJoy = petDB.Joy + 10;
+
+            _appServices.PetService.UpdateJoy(user.UserId, newJoy, true);
+
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+
+            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
+            var toSend = new AnswerMessage()
+            {
+                StickerId = Constants.StickersId.RandomEventNiceFlower,
+                Text = Resources.Resources.RandomEventNiceFlower
+            };
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+        }
+        private void RandomEventWatermelon(Models.Mongo.User user)
+        {
+            var petDB = _appServices.PetService.Get(user.UserId);
+            var newSatiety = petDB.Satiety + 15;
+
+            _appServices.PetService.UpdateSatiety(user.UserId, newSatiety, true);
+
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+
+            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
+            var toSend = new AnswerMessage()
+            {
+                StickerId = Constants.StickersId.RandomEventWatermelon,
+                Text = Resources.Resources.RandomEventWatermelon
+            };
+            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+        }
+        private void RandomEventPlayComputerGames(Models.Mongo.User user)
+        {
+            var petDB = _appServices.PetService.Get(user.UserId);
+            var newJoy = petDB.Joy + 30;
+
+            _appServices.PetService.UpdateJoy(user.UserId, newJoy, true);
+
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+
+            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
+            var toSend = new AnswerMessage()
+            {
+                StickerId = Constants.StickersId.RandomEventPlayComputerGames,
+                Text = Resources.Resources.RandomEventPlayComputerGames
             };
             _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }

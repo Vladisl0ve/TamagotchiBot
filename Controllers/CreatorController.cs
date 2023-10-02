@@ -82,6 +82,7 @@ namespace TamagotchiBot.Controllers
             Log.Information($"Pet of UserID: {_userId} has been added to Db");
 
             _appServices.UserService.UpdateIsPetNameAskedOnCreate(_userId, false);
+            _appServices.ReferalInfoService.UpdateTaskDone(_userId, true);
 
             var toSend = new AnswerMessage()
             {
@@ -356,7 +357,8 @@ namespace TamagotchiBot.Controllers
                     Culture = _userCulture;
                     var toSend = new AnswerMessage()
                     {
-                        Text = NotEnoughGoldToResurrect
+                        Text = NotEnoughGoldToResurrect,
+                        ReplyMarkup = new ReplyKeyboardRemove()
                     };
                     Log.Debug($"Sent NotEnoughGoldToResurrect for {_userInfo}");
                     _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -387,15 +389,29 @@ namespace TamagotchiBot.Controllers
             if (msg == null)
                 return;
 
-            var ads = Extensions.GetAdsProducerFromStart(msg.Text);
-            if (ads != null)
-                _appServices.AdsProducersService.AddOrInsert(ads);
 
             var userTMP = _appServices.UserService.Create(msg.From);
             _userInfo = Extensions.GetLogUser(userTMP);
             Log.Information($"{_userInfo} has been added to Db");
 
+            AdsAndRefChecks(msg);
             Culture = new CultureInfo(msg.From.LanguageCode ?? "ru");
+
+            void AdsAndRefChecks(Message msg)
+            {
+                var ads = Extensions.GetAdsProducerFromStart(msg.Text);
+                if (ads != null)
+                    _appServices.AdsProducersService.AddOrInsert(ads);
+                else
+                {
+                    var refAds = Extensions.GetReferalProducerFromStart(msg.Text);
+                    if (refAds != -1)
+                    {
+                        _appServices.ReferalInfoService.AddNewReferal(refAds, _userId);
+                        Log.Information($"Added new referal for {refAds} with ID:{_userId}");
+                    }
+                }
+            }
         }
         private void CreateUserFromCallback(CallbackQuery callback)
         {
@@ -450,7 +466,8 @@ namespace TamagotchiBot.Controllers
             var toSend = new AnswerMessage()
             {
                 Text = PetCameBackText,
-                StickerId = StickersId.ResurrectedPetSticker
+                StickerId = StickersId.ResurrectedPetSticker,
+                ReplyMarkup = new ReplyKeyboardRemove()
             };
 
             Log.Debug($"Pet came back after resurrect {_userInfo}");

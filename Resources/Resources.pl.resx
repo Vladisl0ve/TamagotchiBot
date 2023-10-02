@@ -137,6 +137,7 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
+
 💊 Zdrowie: {1}%
 🍕 Sytość: {4}%
 🛁 Higiena: {9}%
@@ -145,7 +146,8 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
 
 💰 Złoto: {8} 💴
 ⚡️ Status: {6}
-🏅 Doświadczenie: {2} | {3} poziom✨
+🏅 &lt;b&gt;Pioziom: {3} &lt;/b&gt;
+✨ &lt;i&gt;Doświadczenie {2}/100&lt;/i&gt;
 
 /gameroom - zagraj w Jabłko🍎
 /reward - codzienna nagroda 🎁</value>
@@ -162,10 +164,6 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
   </data>
   <data name="ConfirmedLanguage" xml:space="preserve">
     <value>Został wybrany język Polski 🇵🇱</value>
-  </data>
-  <data name="petCommandMoreInfo1" xml:space="preserve">
-    <value>🐱 {0}
-🎂 Urodzony: {1}</value>
   </data>
   <data name="petCommandInlineBasicInfo" xml:space="preserve">
     <value>Informacja podstawowa 📋</value>
@@ -299,18 +297,6 @@ Ale radość spadła o {1}%</value>
   <data name="bathroomCommandDescription" xml:space="preserve">
     <value>Łazienka 🛁</value>
   </data>
-  <data name="helpCommand" xml:space="preserve">
-    <value>🌈 Witaj w świecie Tamagotchi! 🌈
-Tutaj możesz stworzyć swojego wirtualnego przyjaciela 🐩🐈🐈‍⬛🐕
- Pamiętaj, aby śledzić postępy twojego pupila:
-▫️ Graj z nim w różne gry ⚽️
-▫️ Karm go pysznymi przysmakami 🍕🍳🍫
-▫️ Dbaj o jego potrzeby 🍼
-▫️ Motywuj do aktywności fizycznej i okazuj miłość 😻
-
-W menu komend znajdziesz wszystko, czego potrzebuje twój pupil 🌻. 
-Upewnij się, że często go odwiedzasz, ponieważ on również Cię kocha i z przyjemnością będzie z tobą grał 🤍❤️🤍</value>
-  </data>
   <data name="helpCommandDescription" xml:space="preserve">
     <value>Pomoc ❓</value>
   </data>
@@ -325,6 +311,7 @@ Upewnij się, że często go odwiedzasz, ponieważ on również Cię kocha i z p
 /ranks- zobacz najlepsze zwierzaki! 👑
 /hospital- wylecz swojego zwierzaka 🏥
 /bathroom - posprzątaj swojego zwierzaka 🛁
+/referal - program referancyjny  👩‍👩‍👧‍👦
 /rename - zmień imię 🌀
 
 Będzie więcej w przyszłości!
@@ -423,6 +410,8 @@ Poddania: {2}</value>
   </data>
   <data name="workCommand" xml:space="preserve">
     <value>Wybierz, co zrobi Twój zwierzak 💡
+
+😴 Zmęczenie: {2}%
 
 Programowanie 💻 -{0} minuty ⌛️, +{1} zł 💰</value>
   </data>
@@ -603,17 +592,146 @@ Pogodziliście się 💕
     <value>Czy na pewno chcesz zmienić imię swojego zwierzaka z {0} na {1}? 🗃
 Cena: {2} złota 💰</value>
   </data>
+  <data name="InviteGlobalMultiplayerButton" xml:space="preserve">
+    <value>😺 Zdobądź własne Tamagotchi</value>
+  </data>
+  <data name="InviteReferalMultiplayerButton" xml:space="preserve">
+    <value>🐣 Zostań przyjacielem dla {0}</value>
+  </data>
+  <data name="InviteGlobalMultiplayerText" xml:space="preserve">
+    <value>{0}, nie masz jeszcze swojego Tamagotchi 🐧</value>
+  </data>
+  <data name="MultiplayerShowPet" xml:space="preserve">
+    <value>{8}, oto twoje zwierzątko
+
+🐱 &lt;b&gt;{0}&lt;/b&gt;
+💊 Zdrowie: {1}%
+🍕 Sytość: {2}%
+🛁 Higiena: {3}%
+😴 Zmęczenie: {4}%
+🎊 Radość: {5}%
+
+🏅 {6} poziom
+💰 Złoto: {7} 💴</value>
+  </data>
+  <data name="ShowPetMPCommand" xml:space="preserve">
+    <value>🦁 Pokaż swojego zwierzaka</value>
+  </data>
+  <data name="referalCommandDescription" xml:space="preserve">
+    <value>👬 Nagrody dla przyjaciela</value>
+  </data>
+  <data name="referalCommand" xml:space="preserve">
+    <value>Wspólne spacery są o wiele przyjemniejsze, prawda? 👯‍♀️
+Zaproś znajomych do wspólnego spędzania czasu, korzystając z linku polecającego i zdobądź za to nagrody! 🎁
+
+🚦Znajomy musi stworzyć własne Tamagotchi, aby nagrody trafiły na Twoje konto 🚦
+
+🤼‍♀️ Masz polecenia: {0}
+Złoto zdobyte dzięki poleceniu: {1}💰
+
+Twój link referencyjny:
+{2}</value>
+  </data>
+  <data name="ToShareReferalCommand" xml:space="preserve">
+    <value>📩 Udostępnij link</value>
+  </data>
+  <data name="ToAddToNewGroupReferalCommand" xml:space="preserve">
+    <value>🚀 Dodaj do nowego czatu</value>
+  </data>
+  <data name="ShowWelcomeMessageMultiplayer" xml:space="preserve">
+    <value>Witam wszystkich na czacie {0}!
+Bot 🐾 Tamagotchi | Wirtualny zwierzak 🐾 zapewnia możliwość posiadania własnego zwierzaka bezpośrednio w Telegramie
+
+Dostępne polecenia na czacie:
+/show_pet - pokaż swojego zwierzaka</value>
+  </data>
+  <data name="petCommandMoreInfo1" xml:space="preserve">
+    <value>🐱{0}
+
+🎂 Data urodzenia: {1}
+👫 Polecenia: {2}</value>
+  </data>
+  <data name="changelogCommand" xml:space="preserve">
+    <value>📢💬 Tutaj możesz przeglądać i omawiać aktualizacje botów:
+{0}</value>
+  </data>
+  <data name="ChangelogGoToDicussChannelButton" xml:space="preserve">
+    <value>🗳 Kanał z aktualizacjami</value>
+  </data>
+  <data name="changelogCommandDescription" xml:space="preserve">
+    <value>📲 Aktualizacje</value>
+  </data>
+  <data name="helpCommand" xml:space="preserve">
+    <value>🌈 Witamy w świecie Tamagotchi! 🌈
+Tutaj możesz zyskać nowego wirtualnego przyjaciela 🐩🐈🐈‍⬛🐕
+Pamiętaj, aby śledzić postępy swojego zwierzaka:
+▫️graj z nim w różne gry ⚽️
+▫️karm pyszne 🍕🍳🍫
+▫️zaopiekuj się nim 🍼
+▫️ dbaj i po prostu kochaj 😻
+
+W menu poleceń znajdziesz wszystko, czego potrzebuje Twój pupil 🌻
+Odwiedzaj częściej swojego zwierzaka, bo on też Cię kocha i bardzo chętnie zabierze Cię na spacer 🤍❤️🤍
+
+Często zadawane pytania:
+1. Jak gromadzi się poziom 🏅?
+- 100 doświadczenia = 1 poziom. Doświadczenie zdobywa się wraz z postępami w grze - wystarczy odpowiednio zaopiekować się swoim pupilem.
+
+2. Jak zarabiać pieniądze 💰?
+- Złoto zdobywa się w pracy (/work)
+
+3. Czy zwierzę może umrzeć 💀?
+- Niestety zarówno w życiu jak i w Tamagotchi zwierzak może się bardzo obrazić i zostawić 💔
+Dlatego częściej odwiedzaj swojego wirtualnego przyjaciela 🧸
+
+/menu - znajdują się tu prawie wszystkie możliwe polecenia</value>
+  </data>
+  <data name="RandomEventNiceFlower" xml:space="preserve">
+    <value>Wybraliście się na spacer po ogrodzie botanicznym 🌷🌷🌷
+🐱 Bardzo mi się podobało, na pewno tu wrócimy!
+
++10% radości 🎊
+
+/pet - sprawdza status zwierzaka</value>
+  </data>
+  <data name="RandomEventWatermelon" xml:space="preserve">
+    <value>🐱: Pyszny arbuz, chcę więcej 🍉
+
++15% sytości 🍕
+
+/pet - sprawdza status zwierzaka</value>
+  </data>
+  <data name="RandomEventPlayComputerGames" xml:space="preserve">
+    <value>🎮 Ty i Twój zwierzak świetnie się bawiliście grając na komputerze
+
++30% radości 🎊
+
+/pet - sprawdza status zwierzaka</value>
+  </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Wydano mini-aktualizację 1.2.2⚡️⚡️
+    <value>⚡️⚡️ Została wydana aktualizacja 1.3⚡️⚡️
+
+Dodany:
+👨‍👦‍👦Multiplayer - bota można już dodać do czatu grupowego!
+Teraz możesz pochwalić się swoim pupilem znajomym 😈
+🥂Nowe losowe wydarzenia związane ze zwierzętami
+🦥Program polecający - zapraszasz znajomych i dostajesz za to bonusy 💰 (polecenie/polecenie)
+🧩Dodano polecenie /changelog - tutaj znajduje się link do kanału o naszym bocie Tamagotchi, na którym możesz omówić najnowsze aktualizacje i zaproponować coś nowego
 
 Poprawki:
-🐛 Naprawiono globalny błąd powodujący, że poziom zwierzaka nie wzrastał ✨ (dzięki @glitchpavel za wskazówkę)
-🐥 Ulepszona tabela rekordów (/ranks)
+🐛 Klawiatura często nie była ukrywana po wybraniu języka/wskrzeszeniu zwierzaka - NAPRAWIONO
+🚀 Praca wielu poleceń bota została przyspieszona dzięki optymalizacji kodu
 
 W planach:
-🤼‍♀️ Tryb wieloosobowy - wkrótce będzie można dodać bota do czatowania ze znajomymi i grania w mini-gry z innymi użytkownikami
 🐿 Nowe rodzaje zwierząt domowych
 🎰 Nowe mini-gry (w tym do gry wieloosobowej ze znajomymi)
-🏫 Dodać szkołę, edukację</value>
+🏫 Dodaj szkołę, edukację, wiek zwierzaka (jak w nowych wersjach Tamagotchi👾)
+
+Dziękuję wszystkim bardzo za wsparcie ❤️
+Pracuję nad botem samodzielnie, równolegle z pracą. Nie zawsze da się publikować aktualizacje na bieżąco, ale Wasze słowa wdzięczności dla bota bardzo mnie motywują ☺️
+Dziękuję, stały graczu 🫶
+
+Subskrybuj nasz kanał, na którym wszystko jest o bocie:
+https://t.me/news_virtualpetbot</value>
   </data>
 </root>
