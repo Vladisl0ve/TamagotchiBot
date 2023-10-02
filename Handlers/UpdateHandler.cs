@@ -1,6 +1,5 @@
 ﻿using Serilog;
 using System;
-using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Net.Http;
 using System.Text;
@@ -20,6 +19,7 @@ using Newtonsoft.Json;
 using TamagotchiBot.Services.Interfaces;
 using static TamagotchiBot.UserExtensions.Constants;
 using System.Linq;
+using TamagotchiBot.Database;
 
 namespace TamagotchiBot.Handlers
 {
@@ -32,8 +32,10 @@ namespace TamagotchiBot.Handlers
         private readonly SInfoService sinfoService;
         private readonly AppleGameDataService appleGameDataService;
         private readonly BotControlService bcService;
+        private readonly IEnvsSettings _envs;
 
-        public UpdateHandler(IApplicationServices services)
+
+        public UpdateHandler(IApplicationServices services, IEnvsSettings envs)
         {
             _appServices = services;
             userService = services.UserService;
@@ -42,6 +44,7 @@ namespace TamagotchiBot.Handlers
             sinfoService = services.SInfoService;
             appleGameDataService = services.AppleGameDataService;
             bcService = services.BotControlService;
+            _envs = envs;
         }
 
         public Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
@@ -298,13 +301,15 @@ namespace TamagotchiBot.Handlers
             if (update.Type == UpdateType.Message)
                 if (update.Message.Type == MessageType.Text || update.Message.Type == MessageType.ChatMembersAdded || update.Message.Type == MessageType.ChatMemberLeft)
                     if (update.Message.From != null)
-                        if (update.Message.ForwardDate == null)
-                            return true;
+                        if (update.Message.Chat?.Id != null && !_envs.ChatsToDevNotify.Any(c => update.Message.Chat.Id.ToString() == c))
+                            if (update.Message.ForwardDate == null)
+                                return true;
 
             if (update.Type == UpdateType.CallbackQuery)
                 if (update.CallbackQuery.Message != null)
-                    if (update.CallbackQuery.Message.ForwardDate == null)
-                        return true;
+                    if (update.CallbackQuery.Message.Chat?.Id != null && !_envs.ChatsToDevNotify.Any(c => update.CallbackQuery.Message.Chat.Id.ToString() == c))
+                        if (update.CallbackQuery.Message.ForwardDate == null)
+                            return true;
 
             return false;
         }
