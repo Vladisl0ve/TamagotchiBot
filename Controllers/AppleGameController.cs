@@ -10,6 +10,7 @@ using static TamagotchiBot.UserExtensions.Constants;
 using TamagotchiBot.Services.Interfaces;
 using Extensions = TamagotchiBot.UserExtensions.Extensions;
 using Serilog;
+using System.Threading.Tasks;
 
 namespace TamagotchiBot.Controllers
 {
@@ -131,13 +132,13 @@ namespace TamagotchiBot.Controllers
             };
         }
 
-        public void Menu()
+        public async Task Menu()
         {
             var appleDataToUpdate = _appServices.AppleGameDataService.Get(_userId);
 
             if (appleDataToUpdate == null)
             {
-                _appServices.UserService.UpdateAppleGameStatus(_userId, false);
+                await _appServices.UserService.UpdateAppleGameStatus(_userId, false);
                 new MenuController(_appServices, _message).ProcessMessage("/pet");
                 return;
             }
@@ -187,7 +188,7 @@ namespace TamagotchiBot.Controllers
                 appleDataToUpdate.IsGameOvered = true;
                 _appServices.AppleGameDataService.Update(appleDataToUpdate);
 
-                _appServices.UserService.UpdateAppleGameStatus(_userId, false);
+                await _appServices.UserService.UpdateAppleGameStatus(_userId, false);
 
                 Log.Debug($"Quit AppleGame {_userInfo}");
 
@@ -320,7 +321,7 @@ namespace TamagotchiBot.Controllers
             };
         }
 
-        public void PreStart()
+        public async Task PreStart()
         {
             var petDB = _appServices.PetService.Get(_userId);
             var userDB = _appServices.UserService.Get(_userId);
@@ -359,7 +360,7 @@ namespace TamagotchiBot.Controllers
 
             _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.AppleGame);
 
-            _appServices.UserService.UpdateAppleGameStatus(_userId, true);
+            await _appServices.UserService.UpdateAppleGameStatus(_userId, true);
             _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetInApplegameCommands(),
                                                               scope: new BotCommandScopeChat() { ChatId = _userId });
             var appleData = _appServices.AppleGameDataService.Get(_userId);
