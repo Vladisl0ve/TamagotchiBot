@@ -47,10 +47,10 @@ namespace TamagotchiBot.Handlers
             _envs = envs;
         }
 
-        public Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
+        public async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
         {
             if (!ToContinueHandlingUpdateChecking(update))
-                return Task.CompletedTask;
+                return;
 
             var messageFromUser = update.Message;
             var callbackFromUser = update.CallbackQuery;
@@ -58,12 +58,12 @@ namespace TamagotchiBot.Handlers
             var chatId = messageFromUser?.Chat.Id ?? callbackFromUser?.Message.Chat.Id ?? default;
             var msgAudience = chatId > 0 ? MessageAudience.Private : MessageAudience.Group;
 
-            Task task = HandleUpdate(update, msgAudience);
+            await HandleUpdate(update, msgAudience);
 
             new SetCommandController(_appServices, messageFromUser, callbackFromUser).UpdateCommands(msgAudience);
 
             sinfoService.UpdateLastGlobalUpdate();
-            return task;
+            return;
 
             Task OnMessageGroup(Message message)
             {
@@ -135,7 +135,7 @@ namespace TamagotchiBot.Handlers
 
                 if (callbackQuery.Data == new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame.CallbackData)
                 {
-                    new AppleGameController(_appServices, callbackQuery).PreStart();
+                    await new AppleGameController(_appServices, callbackQuery).PreStart();
                     return;
                 }
 
@@ -206,7 +206,7 @@ namespace TamagotchiBot.Handlers
                         await SendPostToChat(message.From.Id);
 
                     if (userService.Get(message.From.Id).IsInAppleGame)
-                        new AppleGameController(_appServices, message).Menu();
+                        await new AppleGameController(_appServices, message).Menu();
                     else
                     {
                         toSend = new MenuController(_appServices, message).ProcessMessage();
@@ -246,7 +246,7 @@ namespace TamagotchiBot.Handlers
 
                 if (callbackQuery.Data == new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame.CallbackData)
                 {
-                    new AppleGameController(_appServices, callbackQuery).PreStart();
+                    await new AppleGameController(_appServices, callbackQuery).PreStart();
                     return;
                 }
 
@@ -264,31 +264,40 @@ namespace TamagotchiBot.Handlers
                 controller.CallbackHandler();
             }
 
-            Task HandleUpdate(Update update, MessageAudience messageAudience)
+            async Task HandleUpdate(Update update, MessageAudience messageAudience)
             {
                 switch (messageAudience)
                 {
                     case MessageAudience.Private:
                         {
-                            return update.Type switch
+                            switch (update.Type)
                             {
-                                UpdateType.Message => OnMessagePrivate(update.Message),
-                                UpdateType.CallbackQuery => OnCallbackPrivate(update.CallbackQuery),
-                                _ => Task.CompletedTask
+                                case UpdateType.Message:
+                                    await OnMessagePrivate(update.Message);
+                                    return;
+                                case UpdateType.CallbackQuery:
+                                    await OnCallbackPrivate(update.CallbackQuery);
+                                    return;
+                                default:
+                                    return;
                             };
                         }
                     case MessageAudience.Group:
                         {
-                            return update.Type switch
+                            switch (update.Type)
                             {
-                                UpdateType.Message => OnMessageGroup(update.Message),
-                                //UpdateType.CallbackQuery => OnCallbackGroup(update.CallbackQuery),
-                                _ => Task.CompletedTask
+                                case UpdateType.Message:
+                                    await OnMessageGroup(update.Message);
+                                    return;
+                                case UpdateType.CallbackQuery:
+                                    //OnCallbackGroup(update.CallbackQuery);
+                                    return;
+                                default:
+                                    return;
                             };
                         }
-
                     default:
-                        return Task.CompletedTask;
+                        return;
                 }
             }
         }

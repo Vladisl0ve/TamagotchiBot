@@ -1,8 +1,8 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
 
@@ -37,7 +37,7 @@ namespace TamagotchiBot.Services.Mongo
                 Username = user.Username,
                 Culture = user.LanguageCode,
                 Gold = 50,
-                ChatIds = new List<long>() { user.Id }                
+                ChatIds = new List<long>() { user.Id }
             });
         }
 
@@ -58,15 +58,15 @@ namespace TamagotchiBot.Services.Mongo
             return userIn;
         }
 
-        public bool UpdateAppleGameStatus(long userId, bool isInAppleGame)
+        public async Task UpdateAppleGameStatus(long userId, bool isInAppleGame)
         {
             var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
             if (userDb == null)
-                return false;
+                return;
 
             userDb.IsInAppleGame = isInAppleGame;
-            _users.ReplaceOne(u => u.UserId == userId, userDb);
-            return true;
+            await _users.ReplaceOneAsync(u => u.UserId == userId, userDb);
+            return;
         }
 
         public void UpdateGold(long userId, int newGold)
