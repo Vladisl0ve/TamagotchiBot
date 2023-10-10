@@ -369,7 +369,7 @@ namespace TamagotchiBot.Services
         private List<long> UpdateAllRandomEventUsersIds()
         {
             List<long> usersToNotify = new();
-            var petsDB = _appServices.PetService.GetAll().Where(p => p.Name != null);
+            var petsDB = _appServices.PetService.GetAll().Where(p => p.Name != null && !p.IsGone);
 
             foreach (var pet in petsDB)
             {
