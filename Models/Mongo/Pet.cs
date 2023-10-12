@@ -78,7 +78,7 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("Level")]
         public int Level { get; set; }
 
-        public Pet Clone(Pet petToClone)
+        public static Pet Clone(Pet petToClone)
         {
             Pet clone = new Pet()
             {

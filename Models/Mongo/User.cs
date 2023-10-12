@@ -58,7 +58,7 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("ReferaledBy")]
         public long ReferaledBy { get; set; }
 
-        public User Clone(User userToClone)
+        public static User Clone(User userToClone)
         {
             var clone = new User()
             {

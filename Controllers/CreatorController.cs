@@ -220,7 +220,7 @@ namespace TamagotchiBot.Controllers
         {
             Telegram.Bot.Types.User userFromMsg = _message?.From ?? _callback?.From;
             var petDB = _appServices.PetService.Get(_userId);
-            var petResult = new Pet().Clone(petDB);
+            var petResult =  Pet.Clone(petDB);
 
             if (userFromMsg == null || petDB == null)
                 return;
@@ -273,7 +273,7 @@ namespace TamagotchiBot.Controllers
             if (petDB == null)
                 return;
 
-            var petResult = new Pet().Clone(petDB);
+            var petResult = Pet.Clone(petDB);
             petResult.IsGone = true;
 
             Culture = new CultureInfo(userDB.Culture);
@@ -538,7 +538,7 @@ namespace TamagotchiBot.Controllers
 
         private (int, int) UpdateIndicatorEXP(int minuteCounter, Pet pet)
         {
-            var petResult = new Pet().Clone(pet);
+            var petResult = Pet.Clone(pet);
 
             int toAddExp = minuteCounter * Factors.ExpFactor;
             petResult.EXP += toAddExp;
@@ -553,7 +553,7 @@ namespace TamagotchiBot.Controllers
         }
         private (double, int) UpdateIndicatorSatietyAndHP(int minuteCounter, Pet pet)
         {
-            var petResult = new Pet().Clone(pet);
+            var petResult = Pet.Clone(pet);
 
             double decreaseSatiety = Math.Round(minuteCounter * Factors.StarvingFactor, 2);
 
@@ -574,7 +574,7 @@ namespace TamagotchiBot.Controllers
         }
         private int UpdateIndicatorHygiene(int minuteCounter, Pet petDB)
         {
-            var petResult = new Pet().Clone(petDB);
+            var petResult = Pet.Clone(petDB);
 
             double toDecreaseHygiene = Math.Round(minuteCounter * Factors.HygieneFactor);
 
@@ -587,7 +587,7 @@ namespace TamagotchiBot.Controllers
         }
         private int UpdateIndicatorJoy(int minuteCounter, Pet pet)
         {
-            var petResult = new Pet().Clone(pet);
+            var petResult = Pet.Clone(pet);
 
             double toDecreaseJoy = Math.Round(minuteCounter * Factors.JoyFactor);
 
@@ -600,7 +600,7 @@ namespace TamagotchiBot.Controllers
         }
         private int UpdateIndicatorFatigue(int minuteCounter, Pet pet)
         {
-            var petResult = new Pet().Clone(pet);
+            var petResult = Pet.Clone(pet);
 
             if (petResult.CurrentStatus == (int)CurrentStatus.Active)
             {
@@ -615,7 +615,7 @@ namespace TamagotchiBot.Controllers
         }
         private (CurrentStatus, int) UpdateIndicatorSleeping(Pet petDB)
         {
-            var petResult = new Pet().Clone(petDB);
+            var petResult = Pet.Clone(petDB);
 
             var remainsToSleepTime = petResult.ToWakeUpTime - DateTime.UtcNow;
             if (remainsToSleepTime <= TimeSpan.Zero)

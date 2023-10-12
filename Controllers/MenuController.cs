@@ -1098,7 +1098,7 @@ namespace TamagotchiBot.Controllers
 
         private void PutToSleepInline(Pet petDB)
         {
-            Pet petResult = new Pet().Clone(petDB);
+            Pet petResult = Pet.Clone(petDB);
 
             if (CheckStatusIsInactive(petResult, true))
                 return;

@@ -36,7 +36,7 @@ namespace TamagotchiBot.Controllers
 
             if (userDB.Username != _user.Username || userDB.FirstName != _user.FirstName || userDB.LastName != _user.LastName)
             {
-                var userDataToUpdate = new Models.Mongo.User().Clone(userDB);
+                var userDataToUpdate = Models.Mongo.User.Clone(userDB);
 
                 userDataToUpdate.Username = _user.Username;
                 userDataToUpdate.FirstName = _user.FirstName;
