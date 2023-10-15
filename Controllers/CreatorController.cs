@@ -42,8 +42,6 @@ namespace TamagotchiBot.Controllers
         {
             if (_message != null)
                 CreateUserFromMessage(_message);
-            else if (_callback != null)
-                CreateUserFromCallback(_callback);
         }
         public void AskALanguage()
         {
@@ -411,23 +409,6 @@ namespace TamagotchiBot.Controllers
                     }
                 }
             }
-        }
-        private void CreateUserFromCallback(CallbackQuery callback)
-        {
-            var msg = callback.Message;
-
-            if (msg == null)
-                return;
-
-            var ads = Extensions.GetAdsProducerFromStart(msg.Text);
-            if (ads != null)
-                _appServices.AdsProducersService.AddOrInsert(ads);
-
-            var userTMP = _appServices.UserService.Create(callback.From);
-            _userInfo = Extensions.GetLogUser(userTMP);
-            Log.Information($"{_userInfo} has been added to Db");
-
-            Culture = new CultureInfo(msg.From.LanguageCode ?? "ru");
         }
         private void RenamePet()
         {
