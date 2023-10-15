@@ -199,7 +199,7 @@ namespace TamagotchiBot.UserExtensions
                     Command = Commands.RewardCommand,
                     Description = Resources.Resources.rewardCommandDescription
                 },
-                
+
                 new BotCommand()
                 {
                     Command = Commands.ReferalCommand,
@@ -217,7 +217,7 @@ namespace TamagotchiBot.UserExtensions
                     Command = Commands.HelpCommand,
                     Description = Resources.Resources.helpCommandDescription
                 },
-                
+
                 new BotCommand()
                 {
                     Command = Commands.ChangelogCommand,
@@ -297,18 +297,27 @@ namespace TamagotchiBot.UserExtensions
 
         public static AdsProducers GetAdsProducerFromStart(string command)
         {
-            if (command == null || !command.Contains(" myref_1_"))
+            if (command == null || !command.Contains("myref_1_"))
                 return null;
 
-            var dividedCommand = command.Split(" myref_1_");
+            ///start myref_1_{KAKOAYA-TO FIGNYA}myref_1_kekke
+
+
+            var dividedCommand = command.Replace(" ", "").Split("myref_1_");
 
             if (dividedCommand.Length > 1 && dividedCommand[0] == "/start")
             {
-                var pureAds = dividedCommand[1];
+                if (dividedCommand.Length == 2)
+                    return new AdsProducers()
+                    {
+                        ProducerName = dividedCommand[1],
+                        CompanyName = "GramadsNet"
+                    };
+
                 return new AdsProducers()
                 {
-                    ProducerName = pureAds,
-                    CompanyName = "GramadsNet"
+                    ProducerName = dividedCommand[1],
+                    CompanyName = dividedCommand[2]
                 };
             }
             return null;
