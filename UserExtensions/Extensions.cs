@@ -316,8 +316,8 @@ namespace TamagotchiBot.UserExtensions
 
                 return new AdsProducers()
                 {
-                    ProducerName = dividedCommand[1],
-                    CompanyName = dividedCommand[2]
+                    CompanyName = dividedCommand[1],
+                    ProducerName = dividedCommand[2]
                 };
             }
             return null;
