@@ -80,7 +80,7 @@ namespace TamagotchiBot.Models.Mongo
 
         public static Pet Clone(Pet petToClone)
         {
-            Pet clone = new Pet()
+            Pet clone = new()
             {
                 BirthDateTime                   = petToClone.BirthDateTime,
                 CurrentStatus                   = petToClone.CurrentStatus,

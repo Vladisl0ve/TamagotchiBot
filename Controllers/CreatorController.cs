@@ -218,10 +218,11 @@ namespace TamagotchiBot.Controllers
         {
             Telegram.Bot.Types.User userFromMsg = _message?.From ?? _callback?.From;
             var petDB = _appServices.PetService.Get(_userId);
-            var petResult =  Pet.Clone(petDB);
 
             if (userFromMsg == null || petDB == null)
                 return;
+
+            var petResult =  Pet.Clone(petDB);
 
             int minuteCounter = (int)(DateTime.UtcNow - petDB.LastUpdateTime).TotalMinutes;
 
