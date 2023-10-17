@@ -76,12 +76,24 @@ namespace TamagotchiBot.UserExtensions
         }
         public class WorkCommand
         {
-            public CallbackModel WorkCommandInlineShowTime(TimeSpan remainedTime) => new CallbackModel()
+            public CallbackModel WorkCommandInlineShowTime(TimeSpan remainedTime)
             {
-                Text = string.Format(Resources.Resources.workCommandInlineShowTime,
-                                     new DateTime(remainedTime.Ticks).ToString("HH:mm:ss")),
-                CallbackData = "workCommandInlineShowTime"
-            };
+                string timeToShow;
+                if (remainedTime > TimeSpan.Zero)
+                    timeToShow = new DateTime(remainedTime.Ticks).ToString("HH:mm:ss");
+                else
+                    timeToShow = new DateTime(0).ToString("HH:mm:ss");
+
+                var result = new CallbackModel()
+                {
+                    Text = string.Format(Resources.Resources.workCommandInlineShowTime, timeToShow),
+                    CallbackData = "workCommandInlineShowTime"
+                };
+
+                return result;
+            }
+
+
 
             public CallbackModel WorkCommandInlineWorkOnPC = new CallbackModel ()
             {
@@ -143,7 +155,7 @@ namespace TamagotchiBot.UserExtensions
                 Text = Resources.Resources.ToAddToNewGroupReferalCommand,
                 CallbackData = "ToAddToNewGroupReferalCommand"
             };
-            
+
             public CallbackModel ToShareReferalCommand = new CallbackModel ()
             {
                 Text = Resources.Resources.ToShareReferalCommand,
@@ -157,7 +169,7 @@ namespace TamagotchiBot.UserExtensions
                 Text = Resources.Resources.InviteGlobalMultiplayerButton,
                 CallbackData = "InviteGlobalMultiplayerButton"
             };
-            public CallbackModel InviteReferalMultiplayerButton(string refName) => new CallbackModel ()
+            public CallbackModel InviteReferalMultiplayerButton(string refName) => new CallbackModel()
             {
                 Text = string.Format(Resources.Resources.InviteReferalMultiplayerButton, refName),
                 CallbackData = "InviteReferalMultiplayerButton"

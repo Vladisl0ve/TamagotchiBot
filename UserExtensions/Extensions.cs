@@ -300,8 +300,7 @@ namespace TamagotchiBot.UserExtensions
             if (command == null || !command.Contains("myref_1_"))
                 return null;
 
-            ///start myref_1_{KAKOAYA-TO FIGNYA}myref_1_kekke
-
+            //    /start myref_1_ANONmyref_1_GramAdsRobot
 
             var dividedCommand = command.Replace(" ", "").Split("myref_1_");
 

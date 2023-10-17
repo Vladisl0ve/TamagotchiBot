@@ -1298,6 +1298,9 @@ namespace TamagotchiBot.Controllers
             InlineKeyboardMarkup toSendInline;
             string toSendText;
 
+            if (petDB == null)
+                return;
+
             if (petDB.CurrentStatus == (int)CurrentStatus.Active)
             {
                 if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(default).CallbackData)
