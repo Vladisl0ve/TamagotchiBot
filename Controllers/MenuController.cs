@@ -600,6 +600,9 @@ namespace TamagotchiBot.Controllers
 
             var anwserRating = GetRanksByLevel();
 
+            if (anwserRating == null)
+                return;
+
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.RanksCommandCounter++;
             _appServices.AllUsersDataService.Update(aud);
@@ -1489,6 +1492,7 @@ namespace TamagotchiBot.Controllers
 
         private void CureWithPill(Pet petDB)
         {
+            Log.Debug($"Callbacked CureWithPill for {_userInfo}");
             var newHP = petDB.HP + Factors.PillHPFactor;
             if (newHP > 100)
                 newHP = 100;
@@ -1517,7 +1521,6 @@ namespace TamagotchiBot.Controllers
             string toSendText = string.Format(commandHospital, newHP);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineHospital);
 
-            Log.Debug($"Callbacked CureWithPill for {_userInfo}");
             _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
@@ -1526,10 +1529,13 @@ namespace TamagotchiBot.Controllers
 
         private void ShowRanksGold()
         {
+            Log.Debug($"Callbacked ShowRanksGold for {_userInfo}");
             string toSendText = GetRanksByGold();
+            if (toSendText == null)
+                return;
+
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
 
-            Log.Debug($"Callbacked ShowRanksGold for {_userInfo}");
             _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
@@ -1537,10 +1543,13 @@ namespace TamagotchiBot.Controllers
         }
         private void ShowRanksApples()
         {
+            Log.Debug($"Callbacked ShowRanksApples for {_userInfo}");
             string toSendText = GetRanksByApples();
+            if (toSendText == null)
+                return;
+
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
 
-            Log.Debug($"Callbacked ShowRanksApples for {_userInfo}");
             _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
@@ -1548,10 +1557,12 @@ namespace TamagotchiBot.Controllers
         }
         private void ShowRanksLevel()
         {
-            string toSendText = GetRanksByLevel();
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
-
             Log.Debug($"Callbacked ShowRanksLevel for {_userInfo}");
+            string toSendText = GetRanksByLevel();
+            if (toSendText == null) 
+                return;
+
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
             _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
@@ -1562,123 +1573,140 @@ namespace TamagotchiBot.Controllers
 
         private string GetRanksByLevel()
         {
-            var topPets = _appServices.PetService.GetAll()
+            try
+            {
+                var topPets = _appServices.PetService.GetAll()
                 .OrderByDescending(p => p.Level)
                 .ThenByDescending(p => p.LastUpdateTime)
                 .Take(10); //First 10 top-level pets
 
-            string anwserRating = "";
-            var currentUser = _appServices.UserService.Get(_userId);
-            var currentPet = _appServices.PetService.Get(_userId);
+                string anwserRating = "";
+                var currentUser = _appServices.UserService.Get(_userId);
+                var currentPet = _appServices.PetService.Get(_userId);
 
-            int counter = 1;
-            foreach (var petDB in topPets)
-            {
-                var userDB = _appServices.UserService.Get(petDB.UserId);
-                string name = petDB.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
-
-                if (counter == 1)
+                int counter = 1;
+                foreach (var petDB in topPets)
                 {
-                    anwserRating += ranksCommand + "\n\n";
-                    if (currentUser.UserId == userDB.UserId)
-                        anwserRating += "<b>" + "🌟 " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                    var userDB = _appServices.UserService.Get(petDB.UserId);
+                    string name = petDB.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
+
+                    if (counter == 1)
+                    {
+                        anwserRating += ranksCommand + "\n\n";
+                        if (currentUser.UserId == userDB.UserId)
+                            anwserRating += "<b>" + "🌟 " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                        else
+                            anwserRating += "🌟 " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name);
+                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
+                        counter++;
+                    }
                     else
-                        anwserRating += "🌟 " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name);
-                    anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
-                    counter++;
+                    {
+                        anwserRating += "\n";
+
+                        if (currentUser.UserId == userDB.UserId)
+                            anwserRating += "<b>" + counter + ". " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                        else
+                            anwserRating += counter + ". " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name);
+                        counter++;
+                    }
                 }
-                else
+
+                if (!topPets.Any(a => a.UserId == currentUser.UserId))
                 {
-                    anwserRating += "\n";
+                    string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
 
-                    if (currentUser.UserId == userDB.UserId)
-                        anwserRating += "<b>" + counter + ". " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
-                    else
-                        anwserRating += counter + ". " + petDB.Level + " 🐱 " + HttpUtility.HtmlEncode(name);
-                    counter++;
+                    anwserRating += "\n______________________________";
+                    anwserRating += "\n <b>" + _appServices.PetService.GetAll()
+                    .OrderByDescending(p => p.Level)
+                    .ThenByDescending(p => p.LastUpdateTime)
+                    .ToList()
+                    .FindIndex(a => a.UserId == currentUser.UserId) + ". " + currentPet.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
                 }
-            }
 
-            if (!topPets.Any(a => a.UserId == currentUser.UserId))
+                return anwserRating;
+            }
+            catch (Exception ex)
             {
-                string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
-
-                anwserRating += "\n______________________________";
-                anwserRating += "\n <b>" + _appServices.PetService.GetAll()
-                .OrderByDescending(p => p.Level)
-                .ThenByDescending(p => p.LastUpdateTime)
-                .ToList()
-                .FindIndex(a => a.UserId == currentUser.UserId) + ". " + currentPet.Level + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                Log.Error(ex, ex.Message);
+                return null;
             }
-
-            return anwserRating;
         }
         private string GetRanksByApples()
         {
-            var topApples = _appServices.AppleGameDataService.GetAll()
+            try
+            {
+                var topApples = _appServices.AppleGameDataService.GetAll()
                 .OrderByDescending(a => a.TotalWins)
                 .Take(10); //First 10 top-apples users
 
-            string anwserRating = "";
-            var currentUser = _appServices.UserService.Get(_userId);
-            var currentPet = _appServices.PetService.Get(_userId);
+                string anwserRating = "";
+                var currentUser = _appServices.UserService.Get(_userId);
+                var currentPet = _appServices.PetService.Get(_userId);
 
-            int counter = 1;
-            foreach (var appleUser in topApples)
-            {
-                var userDB = _appServices.UserService.Get(appleUser.UserId);
-                string name = " 🐱 " + _appServices.PetService.Get(appleUser.UserId)?.Name ?? userDB?.Username ?? userDB?.FirstName + userDB?.LastName ?? "";
-                if (counter == 1)
+                int counter = 1;
+                foreach (var appleUser in topApples)
                 {
-                    if (currentUser == null)
-                        continue;
+                    var userDB = _appServices.UserService.Get(appleUser.UserId);
+                    string name = " 🐱 " + _appServices.PetService.Get(appleUser.UserId)?.Name ?? userDB?.Username ?? userDB?.FirstName + userDB?.LastName ?? "";
+                    if (counter == 1)
+                    {
+                        if (currentUser == null)
+                            continue;
 
-                    if (appleUser?.TotalWins == null)
-                        continue;
+                        if (appleUser?.TotalWins == null)
+                            continue;
 
-                    anwserRating += ranksCommandApples + "\n\n";
-                    if (currentUser.UserId == userDB?.UserId)
-                        anwserRating += "<b>" + "🍏 " + appleUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
+                        anwserRating += ranksCommandApples + "\n\n";
+                        if (currentUser.UserId == userDB?.UserId)
+                            anwserRating += "<b>" + "🍏 " + appleUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
+                        else
+                            anwserRating += "🍏 " + appleUser.TotalWins + HttpUtility.HtmlEncode(name);
+                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
+                        counter++;
+                    }
                     else
-                        anwserRating += "🍏 " + appleUser.TotalWins + HttpUtility.HtmlEncode(name);
-                    anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
-                    counter++;
+                    {
+                        if (userDB == null)
+                            continue;
+
+                        if (appleUser?.TotalWins == null)
+                            continue;
+
+                        anwserRating += "\n";
+                        if (currentUser.UserId == userDB.UserId)
+                            anwserRating += "<b>" + counter + ". " + appleUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
+                        else
+                            anwserRating += counter + ". " + appleUser.TotalWins + HttpUtility.HtmlEncode(name);
+                        counter++;
+                    }
                 }
-                else
+
+                if (!topApples.Any(a => a.UserId == _userId))
                 {
-                    if (userDB == null)
-                        continue;
+                    var currentUserApple =_appServices.AppleGameDataService.Get(_userId);
 
-                    if (appleUser?.TotalWins == null)
-                        continue;
-
-                    anwserRating += "\n";
-                    if (currentUser.UserId == userDB.UserId)
-                        anwserRating += "<b>" + counter + ". " + appleUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
-                    else
-                        anwserRating += counter + ". " + appleUser.TotalWins + HttpUtility.HtmlEncode(name);
-                    counter++;
-                }
-            }
-
-            if (!topApples.Any(a => a.UserId == _userId))
-            {
-                var currentUserApple =_appServices.AppleGameDataService.Get(_userId);
-
-                anwserRating += "\n______________________________";
-                var counterN = _appServices.AppleGameDataService.GetAll()
+                    anwserRating += "\n______________________________";
+                    var counterN = _appServices.AppleGameDataService.GetAll()
                 .OrderByDescending(a => a.TotalWins)
                 .ToList()
                 .FindIndex(a => a.UserId == _userId);
-                anwserRating += "\n <b> " + (counterN == -1 ? _appServices.AppleGameDataService.GetAll()?.Count : counterN) + ". " + (currentUserApple?.TotalWins ?? 0) + HttpUtility.HtmlEncode(" 🐱 " + currentPet?.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName) + "</b>";
+                    anwserRating += "\n <b> " + (counterN == -1 ? _appServices.AppleGameDataService.GetAll()?.Count : counterN) + ". " + (currentUserApple?.TotalWins ?? 0) + HttpUtility.HtmlEncode(" 🐱 " + currentPet?.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName) + "</b>";
+                }
+
+                return anwserRating;
             }
-
-
-            return anwserRating;
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return null;
+            }
         }
         private string GetRanksByGold()
         {
-            var topPets = _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
+            try
+            {
+                var topPets = _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
                 p => p.UserId,
                 u => u.UserId,
                 (pet, user) => new {user.UserId, user.Gold, pet.Name, pet.LastUpdateTime})
@@ -1686,53 +1714,60 @@ namespace TamagotchiBot.Controllers
                 .ThenByDescending(p => p.LastUpdateTime)
                 .Take(10); //First 10 top-gold pets
 
-            string anwserRating = "";
-            var currentUser = _appServices.UserService.Get(_userId);
-            var currentPet = _appServices.PetService.Get(_userId);
+                string anwserRating = "";
+                var currentUser = _appServices.UserService.Get(_userId);
+                var currentPet = _appServices.PetService.Get(_userId);
 
-            int counter = 1;
-            foreach (var pet in topPets)
-            {
-                var userDB = _appServices.UserService.Get(pet.UserId);
-                string name = pet.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
-                if (counter == 1)
+                int counter = 1;
+                foreach (var pet in topPets)
                 {
-                    anwserRating += ranksCommandGold + "\n\n";
-                    if (currentUser.UserId == userDB.UserId)
-                        anwserRating += "<b>" + "💎 " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                    var userDB = _appServices.UserService.Get(pet.UserId);
+                    string name = pet.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
+                    if (counter == 1)
+                    {
+                        anwserRating += ranksCommandGold + "\n\n";
+                        if (currentUser.UserId == userDB.UserId)
+                            anwserRating += "<b>" + "💎 " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                        else
+                            anwserRating += "💎 " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name);
+                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
+                        counter++;
+                    }
                     else
-                        anwserRating += "💎 " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name);
-                    anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
-                    counter++;
+                    {
+                        anwserRating += "\n";
+                        if (currentUser.UserId == userDB.UserId)
+                            anwserRating += "<b>" + counter + ". " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                        else
+                            anwserRating += counter + ". " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name);
+                        counter++;
+                    }
                 }
-                else
+
+                if (!topPets.Any(a => a.UserId == currentUser.UserId))
                 {
-                    anwserRating += "\n";
-                    if (currentUser.UserId == userDB.UserId)
-                        anwserRating += "<b>" + counter + ". " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
-                    else
-                        anwserRating += counter + ". " + pet.Gold + " 🐱 " + HttpUtility.HtmlEncode(name);
-                    counter++;
+                    string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
+
+                    anwserRating += "\n______________________________";
+                    anwserRating += "\n <b>" +
+                        _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
+                        p => p.UserId,
+                        u => u.UserId,
+                        (pet, user) => new { user.UserId, user.Gold, pet.Name, pet.LastUpdateTime })
+                        .OrderByDescending(p => p.Gold)
+                        .ThenByDescending(p => p.LastUpdateTime)
+                        .ToList()
+                        .FindIndex(a => a.UserId == currentUser.UserId) + ". " + currentUser.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
                 }
-            }
 
-            if (!topPets.Any(a => a.UserId == currentUser.UserId))
+                return anwserRating;
+
+            }
+            catch (Exception ex)
             {
-                string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
-
-                anwserRating += "\n______________________________";
-                anwserRating += "\n <b>" +
-                    _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
-                    p => p.UserId,
-                    u => u.UserId,
-                    (pet, user) => new { user.UserId, user.Gold, pet.Name, pet.LastUpdateTime })
-                    .OrderByDescending(p => p.Gold)
-                    .ThenByDescending(p => p.LastUpdateTime)
-                    .ToList()
-                    .FindIndex(a => a.UserId == currentUser.UserId) + ". " + currentUser.Gold + " 🐱 " + HttpUtility.HtmlEncode(name) + "</b>";
+                Log.Error(ex, ex.Message);
+                return null;
             }
-
-            return anwserRating;
         }
 
         private void UpdateWorkOnPCButtonToDefault(Pet petDB)

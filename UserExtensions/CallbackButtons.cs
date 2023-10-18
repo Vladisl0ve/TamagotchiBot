@@ -93,8 +93,6 @@ namespace TamagotchiBot.UserExtensions
                 return result;
             }
 
-
-
             public CallbackModel WorkCommandInlineWorkOnPC = new CallbackModel ()
             {
                 Text = Resources.Resources.workCommandInlinePC,
