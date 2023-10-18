@@ -34,7 +34,6 @@ namespace TamagotchiBot.Handlers
         private readonly BotControlService bcService;
         private readonly IEnvsSettings _envs;
 
-
         public UpdateHandler(IApplicationServices services, IEnvsSettings envs)
         {
             _appServices = services;
@@ -431,7 +430,7 @@ namespace TamagotchiBot.Handlers
                 _ => exception.ToString()
             };
 
-            Log.Error(ErrorMessage);
+            Log.Fatal(ErrorMessage);
             await Task.Delay(1000, cancellationToken);
 
             if (exception is ApiRequestException apiEx)
@@ -440,9 +439,10 @@ namespace TamagotchiBot.Handlers
                     Environment.Exit(-1);
             }
 
-            int msToWait = 10000;
-            Log.Warning($"Waiting {msToWait / 1000}s before next attempt...");
+            int msToWait = 5000;
+            Log.Warning($"Waiting {msToWait / 1000}s before restart...");
             await Task.Delay(msToWait, cancellationToken);
+            Environment.Exit(-1);
         }
     }
 }
