@@ -734,4 +734,8 @@ Dziękuję, stały graczu 🫶
 Subskrybuj nasz kanał, na którym wszystko jest o bocie:
 https://t.me/news_virtualpetbot</value>
   </data>
+  <data name="BadWordDetected" xml:space="preserve">
+    <value>Zwierzak nie lubi swojego nowego imienia 😾
+Zaproponuj coś innego ⬇️</value>
+  </data>
 </root>
