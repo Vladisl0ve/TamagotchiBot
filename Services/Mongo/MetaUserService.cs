@@ -60,5 +60,15 @@ namespace TamagotchiBot.Services.Mongo
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
+        public bool UpdateMsgDuelId(long userId, int msgId)
+        {
+            var userDb = _metausers.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb == null)
+                return false;
+
+            userDb.MsgDuelId = msgId;
+            _metausers.ReplaceOne(u => u.UserId == userId, userDb);
+            return true;
+        }
     }
 }

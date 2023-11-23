@@ -10,6 +10,9 @@ using Serilog;
 using System.Threading.Tasks;
 using System.Web;
 using System.Linq;
+using System.Collections.Generic;
+using TamagotchiBot.Models;
+using TamagotchiBot.UserExtensions;
 
 namespace TamagotchiBot.Controllers
 {
@@ -57,9 +60,31 @@ namespace TamagotchiBot.Controllers
             {
                 ShowPetMP(petDB, userDB);
             }
+            if (textReceived == "/start_duel")
+            {
+                StartDuel(petDB, userDB);
+            }
 
             return Task.CompletedTask;
 
+            async void StartDuel(Models.Mongo.Pet petDB, Models.Mongo.User userDB)
+            {
+                var customCallback = new DuelMuliplayerCommand().StartDuelMultiplayerButton;
+                customCallback.CallbackData += $"_{userDB.UserId}_{_message.MessageId}";
+                AnswerMessage answerMessage = new AnswerMessage()
+                {
+                    InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
+                    {
+                        customCallback
+                    }),
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    Text = "🥊" + Extensions.GetPersonalLink(_userId, _userName) + ": GO PIZDITSA!"
+                };
+
+                var sentMsg = await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
+                _appServices.MetaUserService.UpdateMsgDuelId(_userId, sentMsg?.MessageId ?? -1);
+                Log.Debug($"MP: started duel by {_userLogInfo}");
+            }
             async void ShowPetMP(Models.Mongo.Pet petDB, Models.Mongo.User userDB)
             {
                 var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
@@ -88,8 +113,51 @@ namespace TamagotchiBot.Controllers
                     Text = toSendText
                 };
 
-                _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
+                await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
                 Log.Debug($"MP: called showPet by {_userLogInfo}");
+            }
+        }
+        public async Task CallbackHandler()
+        {
+            var userDb = _appServices.UserService.Get(_userId);
+            var petDb = _appServices.PetService.Get(_userId);
+
+            if (userDb == null || petDb == null)
+                return;
+
+            if (_callback.Data.Contains(new DuelMuliplayerCommand().StartDuelMultiplayerButton.CallbackData))
+            {
+                await StartDuel();
+            }
+
+            async Task StartDuel()
+            {
+                var splittedData = _callback.Data.Split("_").ToList();
+                if (splittedData.Count != 3)
+                    return;
+
+                var duelCreatorStr = splittedData[1];
+                var duelMsgStr = splittedData[2];
+
+                if (!int.TryParse(duelCreatorStr, out var duelCreatorId))
+                    return;
+                if (!int.TryParse(duelMsgStr, out int duelMsgId))
+                    return;
+
+                var metaUserDBCreator = _appServices.MetaUserService.Get(duelCreatorId);
+                await _appServices.BotControlService.DeleteMessageAsync(_chatId, metaUserDBCreator?.MsgDuelId ?? -1);
+                await _appServices.BotControlService.DeleteMessageAsync(_chatId, duelMsgId);
+
+                var personalLinkCreatorDuel = Extensions.GetPersonalLink(duelCreatorId, _appServices.UserService.Get(duelCreatorId)?.FirstName ?? "🌝");
+                AnswerMessage answerMessage = new AnswerMessage()
+                {
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    Text = $"{Extensions.GetPersonalLink(_userId, _userName)} started duel with {personalLinkCreatorDuel}"
+                };
+
+                await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
+                Log.Debug($"MP: duel accepted by {_userLogInfo}");
+                return;
             }
         }
 
@@ -107,7 +175,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText
             };
 
-            _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
+            await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
             Log.Debug($"MP: called SendInviteForUnregistered by unregistered ID: {_userId}");
         }
         public async void SendWelcomeMessageOnStart()
@@ -123,7 +191,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText
             };
 
-            _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
+            await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
             Log.Debug($"MP: called SendWelcomeMessageOnStart, invited by ID: {_userId}");
         }
     }

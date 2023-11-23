@@ -742,4 +742,7 @@ https://t.me/news_virtualpetbot</value>
     <value>Гадаванцу не падабаецца яго новае імя 😾
 Прапануй іншае ⬇️</value>
   </data>
+  <data name="StartDuelMPCommand" xml:space="preserve">
+    <value>Пачаць бітву гадаванцаў! ⚔️</value>
+  </data>
 </root>

@@ -172,6 +172,14 @@ namespace TamagotchiBot.UserExtensions
                 Text = string.Format(Resources.Resources.InviteReferalMultiplayerButton, refName),
                 CallbackData = "InviteReferalMultiplayerButton"
             };
+        } 
+        public class DuelMuliplayerCommand
+        {
+            public CallbackModel StartDuelMultiplayerButton = new CallbackModel ()
+            {
+                Text = "GO",
+                CallbackData = "StartDuelMultiplayerButton"
+            };
         }
     }
 }

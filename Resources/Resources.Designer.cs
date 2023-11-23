@@ -1301,6 +1301,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start a pet battle! ⚔️.
+        /// </summary>
+        public static string StartDuelMPCommand {
+            get {
+                return ResourceManager.GetString("StartDuelMPCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Statistics.
         /// </summary>
         public static string statisticsText {

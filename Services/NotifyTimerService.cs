@@ -138,7 +138,7 @@ namespace TamagotchiBot.Services
             if (usersToNotify.Count > 1)
                 Log.Information($"RandomEventNotification timer completed - {usersToNotify.Count} users");
         }
-        private void OnDailyRewardTimedEvent(object sender, ElapsedEventArgs e)
+        private async void OnDailyRewardTimedEvent(object sender, ElapsedEventArgs e)
         {
             var usersToNotify = UpdateAllDailyRewardUsersIds();
             Log.Information($"DailyRewardNotification timer - {usersToNotify.Count} users");
@@ -155,7 +155,7 @@ namespace TamagotchiBot.Services
                         StickerId = GetRandomDailyRewardSticker(),
                     };
 
-                    _appServices.BotControlService.SendAnswerMessageAsync(toSend, userId, false);
+                    await _appServices.BotControlService.SendAnswerMessageAsync(toSend, userId, false);
 
                     Log.Information($"Sent DailyRewardNotification to {Extensions.GetLogUser(user)}");
                 }
@@ -233,7 +233,7 @@ namespace TamagotchiBot.Services
                         StickerId = Constants.StickersId.ChangelogSticker
                     };
 
-                    _appServices.BotControlService.SendAnswerMessageAsync(toSend, userDB.UserId, false);
+                    await _appServices.BotControlService.SendAnswerMessageAsync(toSend, userDB.UserId, false);
 
                     await Task.Delay(100);
 
@@ -291,7 +291,7 @@ namespace TamagotchiBot.Services
             }
         }
 
-        private void SendDevNotify()
+        private async void SendDevNotify()
         {
             if (_envs?.ChatsToDevNotify == null)
             {
@@ -308,7 +308,7 @@ namespace TamagotchiBot.Services
 
                 try
                 {
-                    _appServices.BotControlService.SendTextMessageAsync(parsedChatId, $"Tamagotchi is alive! {DateTime.UtcNow:g}UTC", toLog: false);
+                    await _appServices.BotControlService.SendTextMessageAsync(parsedChatId, $"Tamagotchi is alive! {DateTime.UtcNow:g}UTC", toLog: false);
 
                     var dailyInfoToday = _appServices.DailyInfoService.GetToday();
 
@@ -316,7 +316,7 @@ namespace TamagotchiBot.Services
                         (dailyInfoToday != null && (DateTime.UtcNow - dailyInfoToday.DateInfo) > _envs.DevExtraNotifyEvery))
                     {
                         Log.Information("Sent extra dev notify");
-                        _appServices.BotControlService.SendTextMessageAsync(parsedChatId, ToSendExtraDevNotify(), toLog: false);
+                        await _appServices.BotControlService.SendTextMessageAsync(parsedChatId, ToSendExtraDevNotify(), toLog: false);
                     }
                 }
                 catch (ApiRequestException ex)
@@ -475,7 +475,7 @@ namespace TamagotchiBot.Services
         }
 
         #region RandomEvents
-        private void RandomEventStomachache(Models.Mongo.User user)
+        private async void RandomEventStomachache(Models.Mongo.User user)
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             var newSatiety = petDB.Satiety - 15;
@@ -492,10 +492,10 @@ namespace TamagotchiBot.Services
                 StickerId = Constants.StickersId.RandomEventStomachache,
                 Text = Resources.Resources.RandomEventStomachache
             };
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
-        private void RandomEventRaindow(Models.Mongo.User user)
+        private async void RandomEventRaindow(Models.Mongo.User user)
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             if (petDB == null) return;
@@ -510,10 +510,10 @@ namespace TamagotchiBot.Services
                 StickerId = Constants.StickersId.RandomEventRainbow,
                 Text = Resources.Resources.RandomEventRainbow
             };
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
-        private void RandomEventFriendMet(Models.Mongo.User user)
+        private async void RandomEventFriendMet(Models.Mongo.User user)
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             var userDB = _appServices.UserService.Get(user.UserId);
@@ -531,10 +531,10 @@ namespace TamagotchiBot.Services
                 StickerId = Constants.StickersId.RandomEventFriendMet,
                 Text = Resources.Resources.RandomEventFriendMet
             };
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
-        private void RandomEventHotdog(Models.Mongo.User user)
+        private async void RandomEventHotdog(Models.Mongo.User user)
         {
             var userDB = _appServices.UserService.Get(user.UserId);
             var petDB = _appServices.PetService.Get(user.UserId);
@@ -552,10 +552,10 @@ namespace TamagotchiBot.Services
                 StickerId = Constants.StickersId.RandomEventHotdog,
                 Text = Resources.Resources.RandomEventHotdog
             };
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
-        private void RandomEventNotify(Models.Mongo.User user)
+        private async void RandomEventNotify(Models.Mongo.User user)
         {
             int rand = new Random().Next(3);
             var notifyText = new List<string>()
@@ -575,10 +575,10 @@ namespace TamagotchiBot.Services
                 StickerId = Constants.StickersId.PetBored_Cat,
                 Text = toSendText
             };
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
-        private void RandomEventStepOnFoot(Models.Mongo.User user)
+        private async void RandomEventStepOnFoot(Models.Mongo.User user)
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             var newSatiety = petDB.Satiety - 10;
@@ -595,9 +595,9 @@ namespace TamagotchiBot.Services
                 StickerId = Constants.StickersId.RandomEventStepOnFoot,
                 Text = Resources.Resources.RandomEventStepOnFoot
             };
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
-        private void RandomEventNiceFlower(Models.Mongo.User user)
+        private async void RandomEventNiceFlower(Models.Mongo.User user)
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             var newJoy = petDB.Joy + 10;
@@ -612,9 +612,9 @@ namespace TamagotchiBot.Services
                 StickerId = Constants.StickersId.RandomEventNiceFlower,
                 Text = Resources.Resources.RandomEventNiceFlower
             };
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
-        private void RandomEventWatermelon(Models.Mongo.User user)
+        private async void RandomEventWatermelon(Models.Mongo.User user)
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             var newSatiety = petDB.Satiety + 15;
@@ -629,9 +629,9 @@ namespace TamagotchiBot.Services
                 StickerId = Constants.StickersId.RandomEventWatermelon,
                 Text = Resources.Resources.RandomEventWatermelon
             };
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
-        private void RandomEventPlayComputerGames(Models.Mongo.User user)
+        private async void RandomEventPlayComputerGames(Models.Mongo.User user)
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             var newJoy = petDB.Joy + 30;
@@ -646,7 +646,7 @@ namespace TamagotchiBot.Services
                 StickerId = Constants.StickersId.RandomEventPlayComputerGames,
                 Text = Resources.Resources.RandomEventPlayComputerGames
             };
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
         #endregion

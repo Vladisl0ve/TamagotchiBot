@@ -736,4 +736,7 @@ Available commands in chat:
     <value>Pet doesn't like his new name 😾
 Suggest something else ⬇️</value>
   </data>
+  <data name="StartDuelMPCommand" xml:space="preserve">
+    <value>Start a pet battle! ⚔️</value>
+  </data>
 </root>

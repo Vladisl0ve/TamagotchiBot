@@ -742,4 +742,7 @@ https://t.me/news_virtualpetbot</value>
     <value>Питомцу не нравится его новое имя 😾
 Предложи другое ⬇️</value>
   </data>
+  <data name="StartDuelMPCommand" xml:space="preserve">
+    <value>Начать битву питомцев! ⚔️</value>
+  </data>
 </root>

@@ -81,12 +81,12 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
         }
 
-        public AnswerMessage ProcessMessage(string customText = null)
+        public Task<AnswerMessage> ProcessMessage(string customText = null)
         {
             return CommandHandler(customText);
         }
 
-        private AnswerMessage CommandHandler(string customText = null)
+        private async Task<AnswerMessage> CommandHandler(string customText = null)
         {
             string textReceived = customText ?? _message.Text;
             if (textReceived == null)
@@ -138,7 +138,7 @@ namespace TamagotchiBot.Controllers
                         ReplyMarkup = null,
                         InlineKeyboardMarkup = null
                     };
-                    _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                    await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
                     break;
                 case "/menu":
                     ShowMenuInfo();
@@ -153,7 +153,7 @@ namespace TamagotchiBot.Controllers
                     ShowRewardInfo(userDB);
                     break;
                 case "/referal":
-                    ShowReferalInfo();
+                    await ShowReferalInfo();
                     break;
                 default:
                     Log.Debug($"[MESSAGE] '{customText ?? _message.Text}' FROM {_userInfo}");
@@ -295,7 +295,7 @@ namespace TamagotchiBot.Controllers
         }
 
         #region Message Answers
-        private void ShowWorkInfo(Pet petDB)
+        private async void ShowWorkInfo(Pet petDB)
         {
             Log.Debug($"Called /ShowWorkInfo for {_userInfo}");
 
@@ -303,7 +303,7 @@ namespace TamagotchiBot.Controllers
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
-                _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId, false);
                 return;
             }
 
@@ -320,7 +320,7 @@ namespace TamagotchiBot.Controllers
                 if (remainsTime > TimeSpan.Zero)
                 {
                     Log.Debug($"Pet is working for {_userInfo}");
-                    _appServices.BotControlService.SendAnswerMessageAsync(GetRemainedTimeWork(remainsTime), _userId, false);
+                    await _appServices.BotControlService.SendAnswerMessageAsync(GetRemainedTimeWork(remainsTime), _userId, false);
                     return;
                 }
             }
@@ -343,9 +343,9 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup = toSendInline
             };
 
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private void ShowRewardInfo(User userDB)
+        private async void ShowRewardInfo(User userDB)
         {
             Log.Debug($"Called /ShowRewardInfo for {_userInfo}");
 
@@ -360,7 +360,7 @@ namespace TamagotchiBot.Controllers
 
                 if (remainsTime > TimeSpan.Zero)
                 {
-                    _appServices.BotControlService.SendAnswerMessageAsync(GetRemainedTimeDailyReward(remainsTime), _userId, false);
+                    await _appServices.BotControlService.SendAnswerMessageAsync(GetRemainedTimeDailyReward(remainsTime), _userId, false);
                     return;
                 }
             }
@@ -383,9 +383,9 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup = toSendInline
             };
 
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private void ChangeLanguage()
+        private async void ChangeLanguage()
         {
             _appServices.UserService.UpdateLanguage(_userId, null);
 
@@ -401,9 +401,9 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup = null
             };
             Log.Debug($"Called /ChangeLanugage for {_userInfo}");
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private void ShowPetInfo(Pet petDB)
+        private async void ShowPetInfo(Pet petDB)
         {
             var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
             encodedPetName = "<b>" + encodedPetName + "</b>";
@@ -433,7 +433,7 @@ namespace TamagotchiBot.Controllers
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             Log.Debug($"Called /ShowPetInfo for {_userInfo}");
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
         private AnswerMessage CheckStatusIsInactiveOrNull(Pet petDB, bool IsGoToSleepCommand = false, bool IsGoToWorkCommand = false)
         {
@@ -459,14 +459,14 @@ namespace TamagotchiBot.Controllers
 
             return null;
         }
-        private void GoToBathroom(Pet petDB)
+        private async void GoToBathroom(Pet petDB)
         {
             Log.Debug($"Called /GoToBathroom for {_userInfo}");
             var accessCheck = CheckStatusIsInactiveOrNull(petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
-                _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId, false);
                 return;
             }
 
@@ -485,16 +485,16 @@ namespace TamagotchiBot.Controllers
                 StickerId = StickersId.PetBathroom_Cat,
                 InlineKeyboardMarkup = toSendInline
             };
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private void GoToKitchen(Pet petDB)
+        private async void GoToKitchen(Pet petDB)
         {
             Log.Debug($"Called /GoToKitchen for {_userInfo}");
             var accessCheck = CheckStatusIsInactiveOrNull(petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
-                _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId, false);
                 return;
             }
 
@@ -513,16 +513,16 @@ namespace TamagotchiBot.Controllers
                 StickerId = StickersId.PetKitchen_Cat,
                 InlineKeyboardMarkup = toSendInline
             };
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private void GoToGameroom(Pet petDB)
+        private async void GoToGameroom(Pet petDB)
         {
             Log.Debug($"Called /GoToGameroom for {_userInfo}");
             var accessCheck = CheckStatusIsInactiveOrNull(petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
-                _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId, false);
                 return;
             }
 
@@ -549,16 +549,16 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup = toSendInline,
                 ReplyMarkup = new ReplyKeyboardRemove()
             };
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private void GoToHospital(Pet petDB)
+        private async void GoToHospital(Pet petDB)
         {
             Log.Debug($"Called /GoToHospital for {_userInfo}");
             var accessCheck = CheckStatusIsInactiveOrNull(petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
-                _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId, false);
                 return;
             }
 
@@ -592,9 +592,9 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup = toSendInline
             };
 
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private void ShowRankingInfo()
+        private async void ShowRankingInfo()
         {
             Log.Debug($"Called /ShowRankingInfo for {_userInfo}");
 
@@ -615,9 +615,9 @@ namespace TamagotchiBot.Controllers
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
 
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private void GoToSleep(Pet petDB)
+        private async void GoToSleep(Pet petDB)
         {
             Log.Debug($"Called /GoToSleep for {_userInfo}");
 
@@ -625,7 +625,7 @@ namespace TamagotchiBot.Controllers
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
-                _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId, false);
                 return;
             }
 
@@ -672,9 +672,9 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup = toSendInline
             };
 
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private void ShowChangelogsInfo()
+        private async void ShowChangelogsInfo()
         {
             string linkToDiscussChat = "https://t.me/news_virtualpetbot";
             string toSendText = string.Format(changelogCommand, linkToDiscussChat);
@@ -689,9 +689,9 @@ namespace TamagotchiBot.Controllers
                 }
             };
             Log.Debug($"Called /ShowChangelogsInfo for {_userInfo}");
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private void ShowHelpInfo()
+        private async void ShowHelpInfo()
         {
             string toSendText = string.Format(helpCommand);
 
@@ -705,7 +705,7 @@ namespace TamagotchiBot.Controllers
                 StickerId = StickersId.HelpCommandSticker
             };
             Log.Debug($"Called /ShowHelpInfo for {_userInfo}");
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
         private async Task ShowReferalInfo()
         {
@@ -738,9 +738,9 @@ namespace TamagotchiBot.Controllers
                 }),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private void ShowMenuInfo()
+        private async void ShowMenuInfo()
         {
             Log.Debug($"Called /ShowMenuInfo for {_userInfo}");
 
@@ -755,9 +755,9 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.MenuCommandSticker
             };
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private void RenamePet(Pet petDB)
+        private async void RenamePet(Pet petDB)
         {
             Log.Debug($"Called /RenamePet for {_userInfo}");
 
@@ -772,7 +772,7 @@ namespace TamagotchiBot.Controllers
                 _appServices.AllUsersDataService.Update(audF);
 
                 var toSend = new AnswerMessage() { Text = toSendTextBan, StickerId = StickersId.BannedSticker };
-                _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
                 return;
             }
 
@@ -790,9 +790,9 @@ namespace TamagotchiBot.Controllers
                 StickerId = StickersId.RenamePetSticker
             };
 
-            _appServices.BotControlService.SendAnswerMessageAsync(toSendFinal, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSendFinal, _userId, false);
         }
-        private void TestKillPet(Pet petDB)
+        private async void TestKillPet(Pet petDB)
         {
             string toSendText = string.Format("HP is zero (0) for {0}", petDB.Name);
 
@@ -804,9 +804,9 @@ namespace TamagotchiBot.Controllers
                 StickerId = StickersId.BannedSticker
             };
 
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
-        private void RestartPet(Pet petDB)
+        private async void RestartPet(Pet petDB)
         {
             string toSendText = string.Format(restartCommand, petDB.Name);
 
@@ -820,7 +820,7 @@ namespace TamagotchiBot.Controllers
                 StickerId = StickersId.DroppedPetSticker
             };
 
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
         #endregion
 

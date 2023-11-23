@@ -129,27 +129,12 @@ namespace TamagotchiBot.Handlers
                 if (callbackQuery.Data == null)
                     return;
 
-                if (userService.Get(userId)?.IsInAppleGame ?? false)
-                    return;
-
-                if (callbackQuery.Data == new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame.CallbackData)
-                {
-                    await new AppleGameController(_appServices, callbackQuery).PreStart();
-                    return;
-                }
-
-                // call this method wherever you want to show an ad,
-                // for example your bot just made its job and
-                // it's a great time to show an ad to a user
-
-                await SendPostToChat(callbackQuery.From.Id);
-
                 new SynchroDBController(_appServices, callback: callbackQuery).SynchronizeWithDB(); //update user (username, names etc.) in DB
-                CreatorController creatorController = new CreatorController(_appServices, callback: callbackQuery);
-                creatorController.UpdateIndicators(); //update all pet's statistics
+                new SynchroDBController(_appServices, callback: callbackQuery).SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
+                MultiplayerController multiplayerController = new MultiplayerController(_appServices, callback: callbackQuery);
 
-                var controller = new MenuController(_appServices, callbackQuery);
-                controller.CallbackHandler();
+                await multiplayerController.CallbackHandler();
+                return;
             }
 
             async Task OnMessagePrivate(Message message)
@@ -164,7 +149,7 @@ namespace TamagotchiBot.Handlers
 
                 if (!DidUserChoseLanguage(userId))
                 {
-                    new CreatorController(_appServices, message).ApplyNewLanguage(true);
+                    await new CreatorController(_appServices, message).ApplyNewLanguage(true);
                     return;
                 }
 
@@ -176,7 +161,7 @@ namespace TamagotchiBot.Handlers
 
                 if (DidUserChoseNewPetName(userId) ?? false)
                 {
-                    new CreatorController(_appServices, message).AskToConfirmNewName();
+                    await new CreatorController(_appServices, message).AskToConfirmNewName();
                     return;
                 }
 
@@ -208,7 +193,7 @@ namespace TamagotchiBot.Handlers
                         await new AppleGameController(_appServices, message).Menu();
                     else
                     {
-                        toSend = new MenuController(_appServices, message).ProcessMessage();
+                        toSend = await new MenuController(_appServices, message).ProcessMessage();
                         if (toSend != null)
                         {
                             Log.Warning($"Something to send! {Environment.NewLine}Msg: {message.Text}, {Environment.NewLine}Answer: {toSend.Text}, {Environment.NewLine}UserID: {message.From.Id}");
@@ -229,7 +214,7 @@ namespace TamagotchiBot.Handlers
                     Log.Error(ex.Message + Environment.NewLine + ex.StackTrace);
                 }
 
-                _appServices.BotControlService.SendAnswerMessageAsync(toSend, message.From.Id);
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSend, message.From.Id);
             }
 
             async Task OnCallbackPrivate(CallbackQuery callbackQuery)
@@ -289,7 +274,7 @@ namespace TamagotchiBot.Handlers
                                     await OnMessageGroup(update.Message);
                                     return;
                                 case UpdateType.CallbackQuery:
-                                    //OnCallbackGroup(update.CallbackQuery);
+                                    await OnCallbackGroup(update.CallbackQuery);
                                     return;
                                 default:
                                     return;
@@ -379,7 +364,7 @@ namespace TamagotchiBot.Handlers
             else if (userDB.IsLanguageAskedOnCreate)
             {
                 creatorController = new CreatorController(_appServices, message);
-                if (!creatorController.ApplyNewLanguage())
+                if (!await creatorController.ApplyNewLanguage())
                     return;
                 creatorController.SendWelcomeText();
                 await Task.Delay(1000);
@@ -388,10 +373,10 @@ namespace TamagotchiBot.Handlers
             else if (userDB.IsPetNameAskedOnCreate)
             {
                 creatorController = new CreatorController(_appServices, message);
-                if (!creatorController.IsNicknameAcceptable())
+                if (!await creatorController.IsNicknameAcceptable())
                     return;
 
-                if (!creatorController.CreatePet())
+                if (!await creatorController.CreatePet())
                     return;
             }
         }

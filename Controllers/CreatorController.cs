@@ -43,7 +43,7 @@ namespace TamagotchiBot.Controllers
             if (_message != null)
                 CreateUserFromMessage(_message);
         }
-        public void AskALanguage()
+        public async void AskALanguage()
         {
             var toSend = new AnswerMessage(ChangeLanguage,
                                     StickersId.ChangeLanguageSticker,
@@ -51,11 +51,11 @@ namespace TamagotchiBot.Controllers
                                     null);
             Log.Debug($"Asked for language after register {_userInfo}");
 
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
             _appServices.UserService.UpdateIsLanguageAskedOnCreate(_userId, true);
         }
 
-        internal bool CreatePet()
+        internal async Task<bool> CreatePet()
         {
             var msgText = _message?.Text;
             if (string.IsNullOrEmpty(msgText))
@@ -90,10 +90,10 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup = null
             };
 
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
             return true;
         }
-        internal bool AskToConfirmNewName()
+        internal async Task<bool> AskToConfirmNewName()
         {
             var msgText = _message?.Text;
 
@@ -108,7 +108,7 @@ namespace TamagotchiBot.Controllers
 
                 Log.Debug($"Resent rename info {_userInfo}");
 
-                _appServices.BotControlService.SendAnswerMessageAsync(toSendRenameInfoAgain, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSendRenameInfoAgain, _userId, false);
                 return false;
             }
 
@@ -130,11 +130,11 @@ namespace TamagotchiBot.Controllers
             };
 
             Log.Debug($"Asked to confirm new name for pet {_userInfo}");
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
 
             return true;
         }
-        internal bool ApplyNewLanguage(bool isLanguageChanged = false)
+        internal async Task<bool> ApplyNewLanguage(bool isLanguageChanged = false)
         {
             var msgText = _message?.Text;
             if (string.IsNullOrEmpty(msgText))
@@ -155,7 +155,7 @@ namespace TamagotchiBot.Controllers
 
                 Log.Debug($"Asked for language again {_userInfo}");
 
-                _appServices.BotControlService.SendAnswerMessageAsync(toSendLanguagesAgain, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSendLanguagesAgain, _userId, false);
                 return false;
             }
 
@@ -184,11 +184,11 @@ namespace TamagotchiBot.Controllers
             };
 
             Log.Debug($"Confirmed language for {_userInfo}");
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
 
             return true;
         }
-        internal void SendWelcomeText()
+        internal async void SendWelcomeText()
         {
             var toSend =  new AnswerMessage()
             {
@@ -198,9 +198,9 @@ namespace TamagotchiBot.Controllers
             };
 
             Log.Debug($"Sent welcome text for {_userInfo}");
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        internal void AskForAPetName()
+        internal async void AskForAPetName()
         {
             var toSend =  new AnswerMessage()
             {
@@ -209,7 +209,7 @@ namespace TamagotchiBot.Controllers
             };
 
             Log.Debug($"Asked for a pet name for {_userInfo}");
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
 
             _appServices.UserService.UpdateIsPetNameAskedOnCreate(_userId, true);
         }
@@ -287,7 +287,7 @@ namespace TamagotchiBot.Controllers
             Log.Debug($"Sent farewell for {_userInfo}");
 
             _appServices.PetService.Update(_userId, petResult);
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
             _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
 
             await Task.Delay(2500);
@@ -298,7 +298,7 @@ namespace TamagotchiBot.Controllers
             bool? answerFromUser = _message.Text == YesTextEmoji ? true : _message.Text == NoTextEmoji ? false : null;
             if (answerFromUser == null)
             {
-                AskToConfirmNewName();
+                await AskToConfirmNewName();
                 return;
             }
 
@@ -321,7 +321,7 @@ namespace TamagotchiBot.Controllers
                     };
 
                     Log.Debug($"Not enough gold for rename for {_userInfo}");
-                    _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                    await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
                     await Task.Delay(1000);
                     answerFromUser = false;
                 }
@@ -331,7 +331,7 @@ namespace TamagotchiBot.Controllers
             {
                 _appServices.MetaUserService.UpdateIsPetNameAskedOnRename(_userId, false);
                 _appServices.MetaUserService.UpdateIsAskedToConfirmRenaming(_userId, false);
-                _appServices.BotControlService.SendAnswerMessageAsync(new MenuController(_appServices, _message).ProcessMessage("/pet"), _userId);
+                await new MenuController(_appServices, _message).ProcessMessage("/pet");
                 return;
             }
         }
@@ -360,7 +360,7 @@ namespace TamagotchiBot.Controllers
                         ReplyMarkup = new ReplyKeyboardRemove()
                     };
                     Log.Debug($"Sent NotEnoughGoldToResurrect for {_userInfo}");
-                    _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                    await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
                     await Task.Delay(1000);
                     answerFromUser = false;
                 }
@@ -376,13 +376,13 @@ namespace TamagotchiBot.Controllers
                 };
 
                 Log.Debug($"Sent epilogue for {_userInfo}");
-                _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
                 await Task.Delay(2500);
                 KillThePet();
                 return;
             }
         }
-        internal bool IsNicknameAcceptable()
+        internal async Task<bool> IsNicknameAcceptable()
         {
             var badWordsDB = _appServices.SInfoService.GetBadWords();
             if (badWordsDB.Contains(_message.Text.ToUpper()))
@@ -393,7 +393,7 @@ namespace TamagotchiBot.Controllers
                     Text = BadWordDetected,
                     StickerId = StickersId.PetDoesntLikeNameSticker
                 };
-                _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
                 return false;
             }
             return true;
@@ -427,7 +427,7 @@ namespace TamagotchiBot.Controllers
                 }
             }
         }
-        private void RenamePet()
+        private async void RenamePet()
         {
             var metaUser = _appServices.MetaUserService.Get(_userId);
             var userDB = _appServices.UserService.Get(_userId);
@@ -445,9 +445,9 @@ namespace TamagotchiBot.Controllers
             };
 
             Log.Debug($"Confirmed name by {_userInfo}");
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private void ResurrectPet()
+        private async void ResurrectPet()
         {
             var petDB = _appServices.PetService.Get(_userId);
             var userDB = _appServices.UserService.Get(_userId);
@@ -468,7 +468,7 @@ namespace TamagotchiBot.Controllers
             };
 
             Log.Debug($"Pet came back after resurrect {_userInfo}");
-            _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
         private void UpdateOrCreateAUD(Telegram.Bot.Types.User user, Message message = null, CallbackQuery callback = null)
         {
@@ -505,14 +505,14 @@ namespace TamagotchiBot.Controllers
             aud.CallbacksCounter = callback == null ? aud.CallbacksCounter : aud.CallbacksCounter + 1;
             _appServices.AllUsersDataService.Update(aud);
         }
-        private void KillThePet()
+        private async void KillThePet()
         {
             _appServices.PetService.Remove(_userId);
             _appServices.AppleGameDataService.Delete(_userId);
-            _appServices.UserService.UpdateAppleGameStatus(_userId, false);
+            await _appServices.UserService.UpdateAppleGameStatus(_userId, false);
             AskALanguage();
         }
-        private void AskForResurrect()
+        private async void AskForResurrect()
         {
             Culture = _userCulture;
             var toResurrect = new AnswerMessage()
@@ -529,7 +529,7 @@ namespace TamagotchiBot.Controllers
             };
 
             Log.Debug($"Asked to resurrect for {_userInfo}");
-            _appServices.BotControlService.SendAnswerMessageAsync(toResurrect, _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toResurrect, _userId, false);
         }
 
         #region Indicator Updaters
