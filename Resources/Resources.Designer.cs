@@ -150,6 +150,16 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pet doesn&apos;t like his new name 😾
+        ///Suggest something else ⬇️.
+        /// </summary>
+        public static string BadWordDetected {
+            get {
+                return ResourceManager.GetString("BadWordDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You&apos;re in the bathroom 🛁
         ///🚿 Hygiene: {0}%
         ///

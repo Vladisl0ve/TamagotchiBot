@@ -732,4 +732,8 @@ Available commands in chat:
 
 /pet - check the status of the pet</value>
   </data>
+  <data name="BadWordDetected" xml:space="preserve">
+    <value>Pet doesn't like his new name 😾
+Suggest something else ⬇️</value>
+  </data>
 </root>

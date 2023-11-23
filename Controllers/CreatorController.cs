@@ -382,6 +382,22 @@ namespace TamagotchiBot.Controllers
                 return;
             }
         }
+        internal bool IsNicknameAcceptable()
+        {
+            var badWordsDB = _appServices.SInfoService.GetBadWords();
+            if (badWordsDB.Contains(_message.Text))
+            {
+                Log.Debug($"Bad word detected: {_message.Text}");
+                var toSend = new AnswerMessage()
+                {
+                    Text = BadWordDetected,
+                    StickerId = StickersId.PetDoesntLikeNameSticker
+                };
+                _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                return false;
+            }
+            return true;
+        }
 
         private void CreateUserFromMessage(Message msg)
         {

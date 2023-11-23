@@ -738,4 +738,8 @@ https://t.me/news_virtualpetbot</value>
 
 /pet - проверить состояние питомца</value>
   </data>
+  <data name="BadWordDetected" xml:space="preserve">
+    <value>Питомцу не нравится его новое имя 😾
+Предложи другое ⬇️</value>
+  </data>
 </root>

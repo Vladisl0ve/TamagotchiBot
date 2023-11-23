@@ -388,6 +388,9 @@ namespace TamagotchiBot.Handlers
             else if (userDB.IsPetNameAskedOnCreate)
             {
                 creatorController = new CreatorController(_appServices, message);
+                if (!creatorController.IsNicknameAcceptable())
+                    return;
+
                 if (!creatorController.CreatePet())
                     return;
             }
