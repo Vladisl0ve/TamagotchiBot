@@ -12,7 +12,7 @@ using System.Web;
 using System.Linq;
 using System.Collections.Generic;
 using TamagotchiBot.Models;
-using TamagotchiBot.UserExtensions;
+using System;
 
 namespace TamagotchiBot.Controllers
 {
@@ -81,8 +81,18 @@ namespace TamagotchiBot.Controllers
                     Text = "🥊" + Extensions.GetPersonalLink(_userId, _userName) + ": GO PIZDITSA!"
                 };
 
+                var metaUser = _appServices.MetaUserService.Get(_userId);
+                if (metaUser?.MsgDuelId > 0)
+                {
+                    await _appServices.BotControlService.DeleteMessageAsync(metaUser.ChatDuelId, metaUser.MsgDuelId, false);
+                    await _appServices.BotControlService.DeleteMessageAsync(metaUser.ChatDuelId, metaUser.MsgCreatorDuelId, false);
+                }
+
                 var sentMsg = await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
                 _appServices.MetaUserService.UpdateMsgDuelId(_userId, sentMsg?.MessageId ?? -1);
+                _appServices.MetaUserService.UpdateChatDuelId(_userId, _chatId);
+                _appServices.MetaUserService.UpdateMsgCreatorDuelId(_userId, _message?.MessageId ?? -1);
+                _appServices.MetaUserService.UpdateDuelStartTime(_userId, DateTime.UtcNow);
                 Log.Debug($"MP: started duel by {_userLogInfo}");
             }
             async void ShowPetMP(Models.Mongo.Pet petDB, Models.Mongo.User userDB)
@@ -127,10 +137,10 @@ namespace TamagotchiBot.Controllers
 
             if (_callback.Data.Contains(new DuelMuliplayerCommand().StartDuelMultiplayerButton.CallbackData))
             {
-                await StartDuel();
+                await AcceptDuel();
             }
 
-            async Task StartDuel()
+            async Task AcceptDuel()
             {
                 var splittedData = _callback.Data.Split("_").ToList();
                 if (splittedData.Count != 3)
@@ -147,6 +157,8 @@ namespace TamagotchiBot.Controllers
                 var metaUserDBCreator = _appServices.MetaUserService.Get(duelCreatorId);
                 await _appServices.BotControlService.DeleteMessageAsync(_chatId, metaUserDBCreator?.MsgDuelId ?? -1);
                 await _appServices.BotControlService.DeleteMessageAsync(_chatId, duelMsgId);
+                _appServices.MetaUserService.UpdateMsgDuelId(duelCreatorId, -1);
+                _appServices.MetaUserService.UpdateChatDuelId(duelCreatorId, -1);
 
                 var personalLinkCreatorDuel = Extensions.GetPersonalLink(duelCreatorId, _appServices.UserService.Get(duelCreatorId)?.FirstName ?? "🌝");
                 AnswerMessage answerMessage = new AnswerMessage()

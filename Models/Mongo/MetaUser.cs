@@ -28,6 +28,15 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("MsgDuelId")]
         public int MsgDuelId { get; set; }
 
+        [BsonElement("MsgCreatorDuelId")]
+        public int MsgCreatorDuelId { get; set; }
+
+        [BsonElement("ChatDuelId")]
+        public long ChatDuelId { get; set; }
+
+        [BsonElement("DuelStartTime")]
+        public DateTime DuelStartTime { get; set; }
+
         public MetaUser Clone(MetaUser toClone)
         {
             return new MetaUser()

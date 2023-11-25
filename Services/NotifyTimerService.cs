@@ -19,6 +19,7 @@ namespace TamagotchiBot.Services
     {
         private Timer _notifyTimer;
         private Timer _changelogsTimer;
+        private Timer _mpDuelsTimer;
         private Timer _MaintainWorkTimer;
         private Timer _dailyRewardTimer;
         private Timer _randomEventRewardTimer;
@@ -66,6 +67,15 @@ namespace TamagotchiBot.Services
             _MaintainWorkTimer.Elapsed += OnMaintainEvent;
             _MaintainWorkTimer.AutoReset = false;
             _MaintainWorkTimer.Enabled = true;
+        }
+        public void SetMPDuelsCheckingTimer()
+        {
+            TimeSpan timeToWait = TimeSpan.FromSeconds(5);
+            Log.Information("MP duels timer set to wait for " + timeToWait.TotalSeconds + "s");
+            _mpDuelsTimer = new Timer(timeToWait);
+            _mpDuelsTimer.Elapsed += OnMPDuelsTimedEvent;
+            _mpDuelsTimer.AutoReset = true;
+            _mpDuelsTimer.Enabled = true;
         }
         public void SetChangelogsTimer()
         {
@@ -196,6 +206,28 @@ namespace TamagotchiBot.Services
             _appServices.SInfoService.DisableMaintainWorks();
 
             LittileThing(petsWithoutName);
+        }
+        private async void OnMPDuelsTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            var activeDuelMetaUsers = GetAllActiveDuels();
+            Log.Information($"Active Duels MP timer started - {activeDuelMetaUsers.Count} users");
+
+            int counterDuelsEnded = 0;
+            TimeSpan duelLifeTime = new TimeSpan(0, 0, 10); //5 min life
+            foreach (var metaUser in activeDuelMetaUsers)
+            {
+                if (metaUser.DuelStartTime + duelLifeTime < DateTime.UtcNow)
+                {
+                    await _appServices.BotControlService.EditMessageTextAsync(metaUser.ChatDuelId, metaUser.MsgDuelId, "Duel ended :(");
+                    await _appServices.BotControlService.DeleteMessageAsync(metaUser.ChatDuelId, metaUser.MsgCreatorDuelId, false);
+                    _appServices.MetaUserService.UpdateChatDuelId(metaUser.UserId, -1);
+                    _appServices.MetaUserService.UpdateMsgDuelId(metaUser.UserId, -1);
+                    _appServices.MetaUserService.UpdateMsgCreatorDuelId(metaUser.UserId, -1);
+                    counterDuelsEnded++;
+                }
+            }
+
+            Log.Information($"Active Duels MP timer ended - {counterDuelsEnded} duels closed");
         }
         private async void OnChangelogsTimedEvent(object sender, ElapsedEventArgs e)
         {
@@ -421,8 +453,9 @@ namespace TamagotchiBot.Services
             return usersToNotify;
         }
 
-        private List<Models.Mongo.User> GetAllActiveUsersIds() => _appServices.UserService.GetAll().ToList();
-        private List<Models.Mongo.Pet> GetAllPetsWithoutName() => _appServices.PetService.GetAll().Where(p => p.Name == null).ToList();
+        private List<User> GetAllActiveUsersIds() => _appServices.UserService.GetAll().ToList();
+        private List<MetaUser> GetAllActiveDuels() => _appServices.MetaUserService.GetAll().Where(mu => mu.MsgDuelId > 0).ToList();
+        private List<Pet> GetAllPetsWithoutName() => _appServices.PetService.GetAll().Where(p => p.Name == null).ToList();
         private string GetRandomDailyRewardSticker()
         {
             var random = new Random().Next(0, 6);

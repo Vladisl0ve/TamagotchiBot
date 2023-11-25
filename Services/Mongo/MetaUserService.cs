@@ -70,5 +70,37 @@ namespace TamagotchiBot.Services.Mongo
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
+        public bool UpdateMsgCreatorDuelId(long userId, int msgId)
+        {
+            var userDb = _metausers.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb == null)
+                return false;
+
+            userDb.MsgCreatorDuelId = msgId;
+            _metausers.ReplaceOne(u => u.UserId == userId, userDb);
+            return true;
+        }
+
+        public bool UpdateChatDuelId(long userId, long chatId)
+        {
+            var userDb = _metausers.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb == null)
+                return false;
+
+            userDb.ChatDuelId = chatId;
+            _metausers.ReplaceOne(u => u.UserId == userId, userDb);
+            return true;
+        }
+
+        public bool UpdateDuelStartTime(long userId, DateTime startTime)
+        {
+            var userDb = _metausers.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb == null)
+                return false;
+
+            userDb.DuelStartTime = startTime;
+            _metausers.ReplaceOne(u => u.UserId == userId, userDb);
+            return true;
+        }
     }
 }

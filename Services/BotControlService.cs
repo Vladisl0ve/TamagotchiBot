@@ -1,12 +1,10 @@
 ﻿using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using TamagotchiBot.Models.Answers;
-using TamagotchiBot.Models.Mongo;
 using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
@@ -14,7 +12,6 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace TamagotchiBot.Services
 {
@@ -57,6 +54,43 @@ namespace TamagotchiBot.Services
             }
         }
 
+        public async Task<Message> SendDiceMessageAsync(long chatId,
+                                                        Emoji emoji,
+                                                        bool toLog = true)
+        {
+            string logInfo;
+            if (chatId < 0)
+            {
+                logInfo = $"chatId: {chatId}";
+            }
+            else
+            {
+                var userDB = _userService.Get(chatId);
+                if (userDB == null)
+                    Log.Warning("There is no user with id:" + chatId);
+
+                logInfo = Extensions.GetLogUser(userDB);
+            }
+
+            try
+            {
+                if (toLog)
+                    Log.Information($"Dice {emoji} sent to {logInfo}");
+
+                Log.Verbose($"Dice {emoji} sent to {logInfo}");
+                return await _botClient.SendDiceAsync(chatId, emoji);
+            }
+            catch (ApiRequestException ex)
+            {
+                Log.Warning($"{ex.Message} : {logInfo}");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"DICE MSG: {ex.Message}, InnerExeption: {ex.InnerException?.Message}, USER/CHAT: {logInfo}");
+                return null;
+            }
+        }
         public async Task<Message> SendTextMessageAsync(long userId,
                                                string text,
                                                IReplyMarkup replyMarkup = default,
@@ -146,20 +180,30 @@ namespace TamagotchiBot.Services
             }
         }
 
-        public async void EditMessageTextAsync(long userId, int messageId, string text, InlineKeyboardMarkup replyMarkup = default, CancellationToken cancellationToken = default, ParseMode? parseMode = null, bool toLog = true)
+        public async Task EditMessageTextAsync(long chatId, int messageId, string text, InlineKeyboardMarkup replyMarkup = default, CancellationToken cancellationToken = default, ParseMode? parseMode = null, bool toLog = true)
         {
-            var userDB = _userService.Get(userId);
-            if (userDB == null)
-                Log.Warning("There is no user with id:" + userId);
+            string logInfo;
+            if (chatId < 0)
+            {
+                logInfo = $"chatId: {chatId}, messageId: {messageId}";
+            }
+            else
+            {
+                var userDB = _userService.Get(chatId);
+                if (userDB == null)
+                    Log.Warning("There is no user with id:" + chatId);
+
+                logInfo = Extensions.GetLogUser(userDB);
+            }
 
             try
             {
                 if (toLog)
-                    Log.Information($"Message edited for {Extensions.GetLogUser(userDB)}");
+                    Log.Information($"Message edited for {logInfo}");
 
-                Log.Verbose($"Message edited for {Extensions.GetLogUser(userDB)}: {text.Replace("\r\n", " ")}");
+                Log.Verbose($"Message edited for {logInfo}: {text.Replace("\r\n", " ")}");
 
-                await _botClient.EditMessageTextAsync(userId,
+                await _botClient.EditMessageTextAsync(chatId,
                                                messageId,
                                                text,
                                                replyMarkup: replyMarkup,
@@ -169,11 +213,11 @@ namespace TamagotchiBot.Services
             catch (ApiRequestException ex)
             {
                 if (ex.ErrorCode != 400)
-                    Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException?.Message}, USER: {Extensions.GetLogUser(userDB)}");
+                    Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException?.Message}, USER/CHAT: {logInfo}");
             }
             catch (Exception ex)
             {
-                Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException?.Message}, USER: {Extensions.GetLogUser(userDB)}");
+                Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException?.Message}, USER/CHAT: {logInfo}");
             }
         }
         public async void EditMessageReplyMarkupAsync(ChatId chatId, long userId, int messageId, InlineKeyboardMarkup replyMarkup = default, CancellationToken cancellationToken = default)
@@ -342,7 +386,7 @@ namespace TamagotchiBot.Services
             return null;
         }
 
-        public void SendAnswerCallback(long userId, int messageToAnswerId, AnswerCallback toSend, bool toLog = true)
-            => EditMessageTextAsync(userId, messageToAnswerId, toSend.Text, toSend.InlineKeyboardMarkup, parseMode: toSend.ParseMode, toLog: toLog);
+        public async void SendAnswerCallback(long userId, int messageToAnswerId, AnswerCallback toSend, bool toLog = true)
+            => await EditMessageTextAsync(userId, messageToAnswerId, toSend.Text, toSend.InlineKeyboardMarkup, parseMode: toSend.ParseMode, toLog: toLog);
     }
 }
