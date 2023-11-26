@@ -750,7 +750,7 @@ https://t.me/news_virtualpetbot</value>
 "Мой {1}😼 порвёт всех как Тузик грелку! Кто бросит нам вызов?!"</value>
   </data>
   <data name="DuelMPAcceptButton" xml:space="preserve">
-    <value>⚔️Принять вызов</value>
+    <value>⚔️Бросить вызов</value>
   </data>
   <data name="DuelMPFighting1" xml:space="preserve">
     <value>🔰ДУЭЛЬ НАЧАЛАСЬ🔰
