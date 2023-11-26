@@ -898,7 +898,7 @@ namespace TamagotchiBot.Resources {
         ///💰 Gold: {8} 💴
         ///⚡️ Status: {6}
         ///🏅 &lt;b&gt;{3} level &lt;/b&gt;
-        ///✨ &lt;i&gt;EXP: {2}/100&lt;/i&gt;
+        ///✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
         ///
         ////gameroom - Play in Apple🍎
         ////reward - Get your daily reward 🎁.

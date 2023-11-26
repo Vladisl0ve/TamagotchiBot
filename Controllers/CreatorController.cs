@@ -538,10 +538,23 @@ namespace TamagotchiBot.Controllers
         {
             var petResult = Pet.Clone(pet);
 
-            int toAddExp = minuteCounter * Factors.ExpFactor;
-            petResult.EXP += toAddExp;
+            decimal toAddExp = minuteCounter * Factors.ExpFactor;
 
-            if (petResult.EXP > Factors.ExpToLvl)
+            while (toAddExp > 0)
+            {
+                if (toAddExp < Factors.ExpToLvl * petResult.Level)
+                {
+                    petResult.EXP += (int)toAddExp;
+                    break;
+                }
+                else
+                {
+                    toAddExp -= Factors.ExpToLvl * petResult.Level;
+                    petResult.Level++;
+                }
+            }
+
+            if (petResult.EXP > Factors.ExpToLvl * petResult.Level)
             {
                 petResult.Level += petResult.EXP / Factors.ExpToLvl;
                 petResult.EXP %= Factors.ExpToLvl;

@@ -13,6 +13,7 @@ using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
+using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.Services
 {
@@ -71,7 +72,7 @@ namespace TamagotchiBot.Services
         }
         public void SetMPDuelsCheckingTimer()
         {
-            TimeSpan timeToWait = TimeSpan.FromSeconds(5);
+            TimeSpan timeToWait = TimeSpan.FromSeconds(70);
             Log.Information("MP duels timer set to wait for " + timeToWait.TotalSeconds + "s");
             _mpDuelsTimer = new Timer(timeToWait);
             _mpDuelsTimer.Elapsed += OnMPDuelsTimedEvent;
@@ -202,11 +203,41 @@ namespace TamagotchiBot.Services
         }
         private void OnMaintainEvent(object sender, ElapsedEventArgs e)
         {
-            var petsWithoutName = GetAllPetsWithoutName();
-            Log.Information($"MAINTAINS - {petsWithoutName.Count} users");
+            Log.Information($"MAINTAINS");
             _appServices.SInfoService.DisableMaintainWorks();
 
-            LittileThing(petsWithoutName);
+            //Change exps for users
+            var activePets = _appServices.PetService.GetAll();
+            foreach (var pet in activePets)
+            {
+                var petResult = Pet.Clone(pet);                
+
+                decimal toAddExp = petResult.Level * 100 + petResult.EXP;
+                petResult.Level = 1;
+                petResult.EXP = 1;
+
+                while (toAddExp > 0)
+                {
+                    if (toAddExp < Factors.ExpToLvl * petResult.Level)
+                    {
+                        petResult.EXP += (int)toAddExp;
+                        break;
+                    }
+                    else
+                    {
+                        toAddExp -= Factors.ExpToLvl * petResult.Level;
+                        petResult.Level++;
+                    }
+                }
+
+                if (petResult.EXP > Factors.ExpToLvl * petResult.Level)
+                {
+                    petResult.Level += petResult.EXP / Factors.ExpToLvl;
+                    petResult.EXP %= Factors.ExpToLvl;
+                }
+            }
+
+
         }
         private async void OnMPDuelsTimedEvent(object sender, ElapsedEventArgs e)
         {
@@ -215,11 +246,9 @@ namespace TamagotchiBot.Services
 
             int counterDuelsEnded = 0;
             TimeSpan duelLifeTime;
-#if DEBUG
-            duelLifeTime = new TimeSpan(0, 0, 10);
-#else
+
             duelLifeTime = new Constants.TimesToWait().DuelCDToWait; //5 min life
-#endif
+
             foreach (var metaUser in activeDuelMetaUsers)
             {
                 if (metaUser.DuelStartTime + duelLifeTime < DateTime.UtcNow)

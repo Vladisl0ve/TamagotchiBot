@@ -50,7 +50,7 @@ namespace TamagotchiBot.UserExtensions
         public struct Factors //per minute
         {
             public const int ExpFactor = 1;
-            public const int ExpToLvl = 100;
+            public const int ExpToLvl = 50;
             public const double StarvingFactor = 0.2;
             public const double FatigueFactor = 0.19;
             public const double RestFactor = 10;

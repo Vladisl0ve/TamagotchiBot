@@ -418,7 +418,8 @@ namespace TamagotchiBot.Controllers
                                               Extensions.GetCurrentStatus(petDB.CurrentStatus),
                                               petDB.Joy,
                                               _appServices.UserService.Get(_userId).Gold,
-                                              petDB.Hygiene);
+                                              petDB.Hygiene,
+                                              petDB.Level * Factors.ExpToLvl);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.PetCommandCounter++;
@@ -841,7 +842,8 @@ namespace TamagotchiBot.Controllers
                                               Extensions.GetCurrentStatus(petDB.CurrentStatus),
                                               petDB.Joy,
                                               userDB.Gold,
-                                              petDB.Hygiene);
+                                              petDB.Hygiene,
+                                              petDB.Level * Factors.ExpToLvl);
 
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {
