@@ -237,7 +237,7 @@ namespace TamagotchiBot.Services
             }
         }
 
-        public async void AnswerCallbackQueryAsync(string callbackQueryId, long userId, string text = default, bool showAlert = false, CancellationToken cancellationToken = default)
+        public async void AnswerCallbackQueryAsync(string callbackQueryId, long userId, string text = default, bool showAlert = false, CancellationToken cancellationToken = default, string url = default)
         {
             var userDB = _userService.Get(userId);
             if (userDB == null)
@@ -255,6 +255,7 @@ namespace TamagotchiBot.Services
                 await _botClient.AnswerCallbackQueryAsync(callbackQueryId,
                                                text: text,
                                                showAlert: showAlert,
+                                               url: url,
                                                cancellationToken: cancellationToken);
 
             }

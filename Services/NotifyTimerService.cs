@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Web;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Answers;
 using TamagotchiBot.Models.Mongo;
@@ -213,13 +214,26 @@ namespace TamagotchiBot.Services
             Log.Information($"Active Duels MP timer started - {activeDuelMetaUsers.Count} users");
 
             int counterDuelsEnded = 0;
-            TimeSpan duelLifeTime = new TimeSpan(0, 0, 10); //5 min life
+            TimeSpan duelLifeTime;
+#if DEBUG
+            duelLifeTime = new TimeSpan(0, 0, 10);
+#else
+            duelLifeTime = new Constants.TimesToWait().DuelCDToWait; //5 min life
+#endif
             foreach (var metaUser in activeDuelMetaUsers)
             {
                 if (metaUser.DuelStartTime + duelLifeTime < DateTime.UtcNow)
                 {
-                    await _appServices.BotControlService.EditMessageTextAsync(metaUser.ChatDuelId, metaUser.MsgDuelId, "Duel ended :(");
+                    var petDB = _appServices.PetService.Get(metaUser.UserId);
+                    var userDB = _appServices.UserService.Get(metaUser.UserId);
+                    var userLink = Extensions.GetPersonalLink(metaUser.UserId, userDB?.FirstName ?? "0_o");
+                    var petNameEncoded = HttpUtility.HtmlEncode(petDB?.Name ?? "^_^");
+                    Resources.Resources.Culture = new CultureInfo(userDB?.Culture ?? "ru");
+
+                    string textToSend = string.Format(Resources.Resources.DuelMPTimeout, userLink, petNameEncoded, Constants.Costs.Duel);
+                    await _appServices.BotControlService.EditMessageTextAsync(metaUser.ChatDuelId, metaUser.MsgDuelId, textToSend, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
                     await _appServices.BotControlService.DeleteMessageAsync(metaUser.ChatDuelId, metaUser.MsgCreatorDuelId, false);
+                    _appServices.UserService.UpdateGold(metaUser.UserId, userDB.Gold + Constants.Costs.Duel);
                     _appServices.MetaUserService.UpdateChatDuelId(metaUser.UserId, -1);
                     _appServices.MetaUserService.UpdateMsgDuelId(metaUser.UserId, -1);
                     _appServices.MetaUserService.UpdateMsgCreatorDuelId(metaUser.UserId, -1);

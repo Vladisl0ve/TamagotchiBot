@@ -177,7 +177,7 @@ namespace TamagotchiBot.UserExtensions
         {
             public CallbackModel StartDuelMultiplayerButton = new CallbackModel ()
             {
-                Text = "GO",
+                Text = Resources.Resources.DuelMPAcceptButton,
                 CallbackData = "StartDuelMultiplayerButton"
             };
         }

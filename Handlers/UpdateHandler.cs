@@ -121,10 +121,13 @@ namespace TamagotchiBot.Handlers
                     return Task.CompletedTask;
                 }
             }
-            async Task OnCallbackGroup(CallbackQuery callbackQuery)
+            void OnCallbackGroup(CallbackQuery callbackQuery)
             {
                 if (userService.Get(callbackQuery.From.Id) == null || petService.Get(callbackQuery.From.Id) == null)
+                {
+                    _appServices.BotControlService.AnswerCallbackQueryAsync(callbackQuery?.Id, callbackQuery.From.Id, Resources.Resources.MPNoPetCallbackAlert, true);
                     return;
+                }
 
                 if (callbackQuery.Data == null)
                     return;
@@ -133,7 +136,7 @@ namespace TamagotchiBot.Handlers
                 new SynchroDBController(_appServices, callback: callbackQuery).SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
                 MultiplayerController multiplayerController = new MultiplayerController(_appServices, callback: callbackQuery);
 
-                await multiplayerController.CallbackHandler();
+                multiplayerController.CallbackHandler();
                 return;
             }
 
@@ -271,10 +274,10 @@ namespace TamagotchiBot.Handlers
                             switch (update.Type)
                             {
                                 case UpdateType.Message:
-                                    await OnMessageGroup(update.Message);
+                                    OnMessageGroup(update.Message);
                                     return;
                                 case UpdateType.CallbackQuery:
-                                    await OnCallbackGroup(update.CallbackQuery);
+                                    OnCallbackGroup(update.CallbackQuery);
                                     return;
                                 default:
                                     return;

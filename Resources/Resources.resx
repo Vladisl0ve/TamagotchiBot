@@ -739,4 +739,91 @@ Suggest something else ⬇️</value>
   <data name="StartDuelMPCommand" xml:space="preserve">
     <value>Start a pet battle! ⚔️</value>
   </data>
+  <data name="DuelMPStartCommand" xml:space="preserve">
+    <value>♨️{0} announces a pet duel!♨️
+"My {1}😼 kicks ass and takes names! Who will challenge us?!"</value>
+  </data>
+  <data name="DuelMPAcceptButton" xml:space="preserve">
+    <value>⚔️Accept the challenge</value>
+  </data>
+  <data name="DuelMPFighting1" xml:space="preserve">
+    <value>🔰THE DUEL HAS BEGAN🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡          🗡😼{3}</value>
+  </data>
+  <data name="DuelMPFighting2" xml:space="preserve">
+    <value>🔰THE DUEL HAS BEGAN🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡        🗡😼{3}
+
+❕Pet {3} started attacking {2}!</value>
+  </data>
+  <data name="DuelMPFighting3" xml:space="preserve">
+    <value>🔰THE DUEL HAS BEGAN🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡     🗡😼{3}
+
+‼️Pet {3} is already very close to {2}!</value>
+  </data>
+  <data name="DuelMPFighting4" xml:space="preserve">
+    <value>🔰THE DUEL HAS BEGAN🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡  🗡😼{3}
+
+💥Pet {3} hits {2}...</value>
+  </data>
+  <data name="DuelMPFightingEnd" xml:space="preserve">
+    <value>🎌&lt;b&gt;THE DUEL IS OVER&lt;/b&gt;🎌
+{0} ⚔️ {1}
+🏆&lt;b&gt;VICTORY&lt;/b&gt; {2}🏆
+--------------------------------
+
+{3}
+&lt;b&gt;Reward: {4}&lt;/b&gt;💰</value>
+  </data>
+  <data name="DuelMPFightingEndingDefenderWin" xml:space="preserve">
+    <value>Pet {1} slipped and fell on his butt during an attack🧸
+😽{0} wins 🥇</value>
+  </data>
+  <data name="DuelMPFightingEndingAttackerWin" xml:space="preserve">
+    <value>Pet {1} hits the shield with lightning speed💢
+{0} got scared and asked to stop the duel🙅‍♂️
+😽{1} wins 🥇</value>
+  </data>
+  <data name="DuelMPTimeout" xml:space="preserve">
+    <value>No one accepted the duel from {0}
+&lt;i&gt;So everyone is afraid of pet {1}&lt;/i&gt; 🌚
+
+The contribution in the amount of {2}💰 was returned to the account</value>
+  </data>
+  <data name="MPNoPetCallbackAlert" xml:space="preserve">
+    <value>To participate you must have a pet 🪿</value>
+  </data>
+  <data name="NotEnoughGoldForDuel" xml:space="preserve">
+    <value>{0} to start a duel you need {2}💰gold
+You only have {1}💰</value>
+  </data>
+  <data name="NotEnoughGoldForDuelCallback" xml:space="preserve">
+    <value>To accept a duel you need {1}💰gold
+You only have {0}💰</value>
+  </data>
+  <data name="DuelMPCooldownCallback" xml:space="preserve">
+    <value>Your pet is resting after losing the last duel🥷
+It remains to wait {0}</value>
+  </data>
+  <data name="DuelMPCooldown" xml:space="preserve">
+    <value>{1}, Your pet is resting after losing the last duel🥷
+Just wait {0}</value>
+  </data>
+  <data name="DuelMPErrorYourself" xml:space="preserve">
+    <value>You can't accept your own duels 🙈</value>
+  </data>
 </root>

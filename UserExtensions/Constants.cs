@@ -76,6 +76,9 @@ namespace TamagotchiBot.UserExtensions
 
             //Referal
             public const int ReferalAdded = 500;
+
+            //Multiplayer
+            public const int WonDuel = 150;
         }
 
         public struct Costs //in gold
@@ -95,6 +98,9 @@ namespace TamagotchiBot.UserExtensions
 
             //Rename
             public const int RenamePet = 500;
+
+            //Multiplayer
+            public const int Duel = 100;
         }
 
         public class TimesToWait
@@ -102,6 +108,7 @@ namespace TamagotchiBot.UserExtensions
             public TimeSpan WorkOnPCToWait = new(0, 2, 0);
             public TimeSpan DailyRewardToWait = new(24, 0, 0);
             public TimeSpan SleepToWait = new(0, 10, 0);
+            public TimeSpan DuelCDToWait = new(0, 5, 0);
         }
 
         public struct Limits
@@ -188,6 +195,8 @@ namespace TamagotchiBot.UserExtensions
             public const string BannedSticker = "CAACAgIAAxkBAAEIn9VkPlGMflkimxiV4BhDptaNOBhgjgACmwUAAlOx9wNCvw--ehyldy8E";
 
             public const string ResurrectedPetSticker = "CAACAgIAAxkBAAEKAqBk2QhbPJzmYZG1tOdSmWvlW5RYNAACpR4AAsL7YUo1ZV8nKeb1XDAE";
+
+            public const string MPDuelStarted = "CAACAgIAAxkBAAEK0n9lY2dwZDww-D6OZW-5aD4SdN8BcgACGCUAAvYaiEvT6OrPxdApCzME";
 
             //Cat
             public const string PetCreated_Cat = "CAACAgIAAxkBAAEDHvlhcG2oG4rLAAGPvREkKoykMsNnYzsAAlsQAAKlvUhKsth-8cNoWVghBA";

@@ -745,4 +745,91 @@ https://t.me/news_virtualpetbot</value>
   <data name="StartDuelMPCommand" xml:space="preserve">
     <value>Пачаць бітву гадаванцаў! ⚔️</value>
   </data>
+  <data name="DuelMPStartCommand" xml:space="preserve">
+    <value>♨️{0} аб'яўляе дуэль гадаванцаў!♨️
+"Мой {1}😼 парве ўсіх як Тузік грэлку! Хто кіне нам выклік?!"</value>
+  </data>
+  <data name="DuelMPAcceptButton" xml:space="preserve">
+    <value>⚔️Прыняць выклік</value>
+  </data>
+  <data name="DuelMPFighting1" xml:space="preserve">
+    <value>🔰ДУЭЛЬ ПАЧАЛАСЯ🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡          🗡😼{3}</value>
+  </data>
+  <data name="DuelMPFighting2" xml:space="preserve">
+    <value>🔰ДУЭЛЬ ПАЧАЛАСЯ🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡        🗡😼{3}
+
+❕ Гадаванец {3} пачаў атаку на {2}!</value>
+  </data>
+  <data name="DuelMPFighting3" xml:space="preserve">
+    <value>🔰ДУЭЛЬ ПАЧАЛАСЯ🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡     🗡😼{3}
+
+‼️Пітомец {3} ужо зусім блізка да {2}!</value>
+  </data>
+  <data name="DuelMPFighting4" xml:space="preserve">
+    <value>🔰ДУЭЛЬ ПАЧАЛАСЯ🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡  🗡😼{3}
+
+💥Пітомец {3} наносіць удар па {2}...</value>
+  </data>
+  <data name="DuelMPFightingEnd" xml:space="preserve">
+    <value>🎌&lt;b&gt;ДУЭЛЬ СКОНЧАНА&lt;/b&gt;🎌
+{0} ⚔️ {1}
+🏆&lt;b&gt;ПЕРАМОГА&lt;/b&gt; {2}🏆
+--------------------------------
+
+{3}
+&lt;b&gt;Узнагарода: {4}&lt;/b&gt;💰</value>
+  </data>
+  <data name="DuelMPFightingEndingDefenderWin" xml:space="preserve">
+    <value>Гадаванец {1} паслізнуўся і зваліўся на попу прама падчас нападу🧸
+😽{0} перамагае 🥇</value>
+  </data>
+  <data name="DuelMPFightingEndingAttackerWin" xml:space="preserve">
+    <value>Гадаванец {1} вокамгненна б'е па шчыце💢
+{0} спалохаўся і папрасіў спыніць дуэль🙅‍♂️
+😽{1} перамагае 🥇</value>
+  </data>
+  <data name="MPNoPetCallbackAlert" xml:space="preserve">
+    <value>Каб удзельнічаць трэба завесці гадаванца 🪿</value>
+  </data>
+  <data name="NotEnoughGoldForDuel" xml:space="preserve">
+    <value>{0}, каб пачаць дуэль трэба {2}💰золата
+У цябе ёсць толькі {1}💰</value>
+  </data>
+  <data name="NotEnoughGoldForDuelCallback" xml:space="preserve">
+    <value>Каб прыняць дуэль трэба {1}💰золата
+У цябе ёсць толькі {0}💰</value>
+  </data>
+  <data name="DuelMPTimeout" xml:space="preserve">
+    <value>Ніхто не прыняў двубой ад {0}
+&lt;i&gt;Значыць усе баяцца гадаванца {1}&lt;/i&gt; 🌚
+
+Узнос у памеры {2}💰 вярнуўся на рахунак</value>
+  </data>
+  <data name="DuelMPCooldownCallback" xml:space="preserve">
+    <value>Твой гадаванец адпачывае пасля пройгрышу ў апошняй дуэлі🥷
+Засталося пачакаць {0}</value>
+  </data>
+  <data name="DuelMPCooldown" xml:space="preserve">
+    <value>{1}, Твой гадаванец адпачывае пасля пройгрышу ў апошняй дуэлі🥷
+Засталося пачакаць {0}</value>
+  </data>
+  <data name="DuelMPErrorYourself" xml:space="preserve">
+    <value>Ты не можаш прымаць свае ж дуэлі 🙈</value>
+  </data>
 </root>

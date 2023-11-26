@@ -745,4 +745,91 @@ https://t.me/news_virtualpetbot</value>
   <data name="StartDuelMPCommand" xml:space="preserve">
     <value>Начать битву питомцев! ⚔️</value>
   </data>
+  <data name="DuelMPStartCommand" xml:space="preserve">
+    <value>♨️{0} объявляет дуэль питомцев!♨️
+"Мой {1}😼 порвёт всех как Тузик грелку! Кто бросит нам вызов?!"</value>
+  </data>
+  <data name="DuelMPAcceptButton" xml:space="preserve">
+    <value>⚔️Принять вызов</value>
+  </data>
+  <data name="DuelMPFighting1" xml:space="preserve">
+    <value>🔰ДУЭЛЬ НАЧАЛАСЬ🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡          🗡😼{3}</value>
+  </data>
+  <data name="DuelMPFighting2" xml:space="preserve">
+    <value>🔰ДУЭЛЬ НАЧАЛАСЬ🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡        🗡😼{3}
+
+❕Питомец {3} начал атаку на {2}!</value>
+  </data>
+  <data name="DuelMPFighting3" xml:space="preserve">
+    <value>🔰ДУЭЛЬ НАЧАЛАСЬ🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡     🗡😼{3}
+
+‼️Питомец {3} уже совсем близко к {2}!</value>
+  </data>
+  <data name="DuelMPFighting4" xml:space="preserve">
+    <value>🔰ДУЭЛЬ НАЧАЛАСЬ🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡  🗡😼{3}
+
+💥Питомец {3} наносит удар по {2}...</value>
+  </data>
+  <data name="DuelMPFightingEnd" xml:space="preserve">
+    <value>🎌&lt;b&gt;ДУЭЛЬ ОКОНЧЕНА&lt;/b&gt;🎌
+{0} ⚔️ {1}
+🏆&lt;b&gt;ПОБЕДА&lt;/b&gt; {2}🏆
+--------------------------------
+
+{3}
+&lt;b&gt;Награда: {4}&lt;/b&gt;💰</value>
+  </data>
+  <data name="DuelMPFightingEndingDefenderWin" xml:space="preserve">
+    <value>Питомец {1} поскользнулся и упал на попу прямо во время атаки🧸
+😽{0} побеждает 🥇</value>
+  </data>
+  <data name="DuelMPFightingEndingAttackerWin" xml:space="preserve">
+    <value>Питомец {1} молниеносно бьёт по щиту💢
+{0} испугался и попросил остановить дуэль🙅‍♂️
+😽{1} побеждает 🥇</value>
+  </data>
+  <data name="DuelMPTimeout" xml:space="preserve">
+    <value>Никто не принял дуэль от {0}
+&lt;i&gt;Значит все боятся питомца {1}&lt;/i&gt; 🌚
+
+Взнос в размере {2}💰 вернулся на счёт</value>
+  </data>
+  <data name="MPNoPetCallbackAlert" xml:space="preserve">
+    <value>Чтобы участвовать надо завести питомца 🪿</value>
+  </data>
+  <data name="NotEnoughGoldForDuel" xml:space="preserve">
+    <value>{0}, чтобы начать дуэль надо {2}💰золота
+У тебя есть только {1}💰</value>
+  </data>
+  <data name="NotEnoughGoldForDuelCallback" xml:space="preserve">
+    <value>Чтобы принять дуэль надо {1}💰золота
+У тебя есть только {0}💰</value>
+  </data>
+  <data name="DuelMPCooldownCallback" xml:space="preserve">
+    <value>Твой питомец отдыхает после проигрыша в последней дуэли🥷
+Осталось подождать {0}</value>
+  </data>
+  <data name="DuelMPCooldown" xml:space="preserve">
+    <value>{1}, Твой питомец отдыхает после проигрыша в последней дуэли🥷
+Осталось подождать {0}</value>
+  </data>
+  <data name="DuelMPErrorYourself" xml:space="preserve">
+    <value>Ты не можешь принимать свои же дуэли 🙈</value>
+  </data>
 </root>

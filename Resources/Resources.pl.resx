@@ -741,4 +741,91 @@ Zaproponuj coś innego ⬇️</value>
   <data name="StartDuelMPCommand" xml:space="preserve">
     <value>Rozpocznij bitwę zwierząt! ⚔️</value>
   </data>
+  <data name="DuelMPStartCommand" xml:space="preserve">
+    <value>♨️{0} ogłasza pojedynek zwierzaków!♨️
+„Mój {1}😼 rozerwie wszystkich na strzępy jak Tuzik termofor! Kto nam rzuci wyzwanie?!”</value>
+  </data>
+  <data name="DuelMPAcceptButton" xml:space="preserve">
+    <value>⚔️Podejmij wyzwanie</value>
+  </data>
+  <data name="DuelMPFighting1" xml:space="preserve">
+    <value>🔰ROZPOCZĄŁ SIĘ POJEDYNEK🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡          🗡😼{3}</value>
+  </data>
+  <data name="DuelMPFighting2" xml:space="preserve">
+    <value>🔰ROZPOCZĄŁ SIĘ POJEDYNEK🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡        🗡😼{3}
+
+❕Zwierzak {3} zaczął atakować {2}!</value>
+  </data>
+  <data name="DuelMPFighting3" xml:space="preserve">
+    <value>🔰ROZPOCZĄŁ SIĘ POJEDYNEK🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡     🗡😼{3}
+
+‼️Zwierzak {3} jest już bardzo blisko {2}!</value>
+  </data>
+  <data name="DuelMPFighting4" xml:space="preserve">
+    <value>🔰ROZPOCZĄŁ SIĘ POJEDYNEK🔰
+{0} ⚔️ {1}
+--------------------------------
+
+{2} 🙀🛡  🗡😼{3}
+
+💥Zwierzak {3} uderza {2}...</value>
+  </data>
+  <data name="DuelMPFightingEnd" xml:space="preserve">
+    <value>🎌&lt;b&gt;POJEDYNEK DOKOŃCZYŁ SIĘ&lt;/b&gt;🎌
+{0} ⚔️ {1}
+🏆&lt;b&gt;ZWYCIĘSTWO&lt;/b&gt; {2}🏆
+--------------------------------
+
+{3}
+&lt;b&gt;Nagroda: {4}&lt;/b&gt;💰</value>
+  </data>
+  <data name="DuelMPFightingEndingDefenderWin" xml:space="preserve">
+    <value>Zwierzę {1} poślizgnęło się i upadło na tyłek podczas ataku🧸
+😽{0} wygrywa 🥇</value>
+  </data>
+  <data name="DuelMPFightingEndingAttackerWin" xml:space="preserve">
+    <value>Zwierzak {1} uderza w tarczę z szybkością błyskawicy💢
+{0} przestraszył się i poprosił o przerwanie pojedynku🙅‍♂️
+😽{1} wygrywa 🥇</value>
+  </data>
+  <data name="MPNoPetCallbackAlert" xml:space="preserve">
+    <value>Aby wziąć udział musisz mieć zwierzaka 🪿</value>
+  </data>
+  <data name="NotEnoughGoldForDuel" xml:space="preserve">
+    <value>{0} aby rozpocząć pojedynek potrzebujesz {2}💰złota
+Masz tylko {1}💰</value>
+  </data>
+  <data name="NotEnoughGoldForDuelCallback" xml:space="preserve">
+    <value>Aby przyjąć pojedynek potrzebujesz {1}💰złota
+Masz tylko {0}💰</value>
+  </data>
+  <data name="DuelMPTimeout" xml:space="preserve">
+    <value>Nikt nie przyjął pojedynku od {0}
+&lt;i&gt;Więc wszyscy boją się zwierzaka {1}&lt;/i&gt; 🌚
+
+Wpłata w kwocie {2}💰 została zwrócona na konto</value>
+  </data>
+  <data name="DuelMPCooldownCallback" xml:space="preserve">
+    <value>Twój zwierzak odpoczywa po przegranym ostatnim pojedynku🥷
+Pozostaje poczekać {0}</value>
+  </data>
+  <data name="DuelMPCooldown" xml:space="preserve">
+    <value>{1}, Twój zwierzak odpoczywa po przegranym ostatnim pojedynku🥷
+Po prostu poczekaj {0}</value>
+  </data>
+  <data name="DuelMPErrorYourself" xml:space="preserve">
+    <value>Nie można akceptować własnych pojedynków 🙈</value>
+  </data>
 </root>

@@ -37,6 +37,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("DuelStartTime")]
         public DateTime DuelStartTime { get; set; }
 
+        [BsonElement("NextPossibleDuelTime")]
+        public DateTime NextPossibleDuelTime { get; set; }
+
         public MetaUser Clone(MetaUser toClone)
         {
             return new MetaUser()
