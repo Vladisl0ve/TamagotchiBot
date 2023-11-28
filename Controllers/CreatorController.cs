@@ -112,6 +112,9 @@ namespace TamagotchiBot.Controllers
                 return false;
             }
 
+            if (!await IsNicknameAcceptable())
+                return false;
+
             _appServices.MetaUserService.UpdateIsAskedToConfirmRenaming(_userId, true);
             _appServices.MetaUserService.UpdateTmpPetName(_userId, msgText);
 
@@ -385,7 +388,7 @@ namespace TamagotchiBot.Controllers
         }
         internal async Task<bool> IsNicknameAcceptable()
         {
-            var badWordsDB = _appServices.SInfoService.GetBadWords();
+            var badWordsDB = _appServices.SInfoService.GetBadWords().ConvertAll(w => w.ToUpper());
             if (badWordsDB.Contains(_message.Text.ToUpper()))
             {
                 Log.Debug($"Bad word detected: {_message.Text}");
