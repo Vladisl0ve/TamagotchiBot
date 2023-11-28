@@ -751,14 +751,14 @@ Zaproponuj coś innego ⬇️</value>
   <data name="DuelMPFighting1" xml:space="preserve">
     <value>🔰ROZPOCZĄŁ SIĘ POJEDYNEK🔰
 {0} ⚔️ {1}
---------------------------------
+🟥🟥🟥🟥🕐🟥🟥🟥🟥
 
 {2} 🙀🛡          🗡😼{3}</value>
   </data>
   <data name="DuelMPFighting2" xml:space="preserve">
     <value>🔰ROZPOCZĄŁ SIĘ POJEDYNEK🔰
 {0} ⚔️ {1}
---------------------------------
+🟥🟥🟥🟥🕒🟥🟥🟥🟥
 
 {2} 🙀🛡        🗡😼{3}
 
@@ -767,7 +767,7 @@ Zaproponuj coś innego ⬇️</value>
   <data name="DuelMPFighting3" xml:space="preserve">
     <value>🔰ROZPOCZĄŁ SIĘ POJEDYNEK🔰
 {0} ⚔️ {1}
---------------------------------
+🟥🟥🟥🟥🕢🟥🟥🟥🟥
 
 {2} 🙀🛡     🗡😼{3}
 
@@ -776,7 +776,7 @@ Zaproponuj coś innego ⬇️</value>
   <data name="DuelMPFighting4" xml:space="preserve">
     <value>🔰ROZPOCZĄŁ SIĘ POJEDYNEK🔰
 {0} ⚔️ {1}
---------------------------------
+🟥🟥🟥🟥🕙🟥🟥🟥🟥
 
 {2} 🙀🛡  🗡😼{3}
 
@@ -786,7 +786,7 @@ Zaproponuj coś innego ⬇️</value>
     <value>🎌&lt;b&gt;POJEDYNEK DOKOŃCZYŁ SIĘ&lt;/b&gt;🎌
 {0} ⚔️ {1}
 🏆&lt;b&gt;ZWYCIĘSTWO&lt;/b&gt; {2}🏆
---------------------------------
+🟩🟩🟩🟩🎖🟩🟩🟩🟩
 
 {3}
 &lt;b&gt;Nagroda: {4}&lt;/b&gt;💰</value>

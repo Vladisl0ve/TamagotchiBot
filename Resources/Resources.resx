@@ -749,15 +749,14 @@ Suggest something else ⬇️</value>
   <data name="DuelMPFighting1" xml:space="preserve">
     <value>🔰THE DUEL HAS BEGAN🔰
 {0} ⚔️ {1}
---------------------------------
+🟥🟥🟥🟥🕐🟥🟥🟥🟥
 
 {2} 🙀🛡          🗡😼{3}</value>
   </data>
   <data name="DuelMPFighting2" xml:space="preserve">
     <value>🔰THE DUEL HAS BEGAN🔰
 {0} ⚔️ {1}
---------------------------------
-
+🟥🟥🟥🟥🕒🟥🟥🟥🟥
 {2} 🙀🛡        🗡😼{3}
 
 ❕Pet {3} started attacking {2}!</value>
@@ -765,7 +764,7 @@ Suggest something else ⬇️</value>
   <data name="DuelMPFighting3" xml:space="preserve">
     <value>🔰THE DUEL HAS BEGAN🔰
 {0} ⚔️ {1}
---------------------------------
+🟥🟥🟥🟥🕢🟥🟥🟥🟥
 
 {2} 🙀🛡     🗡😼{3}
 
@@ -774,7 +773,7 @@ Suggest something else ⬇️</value>
   <data name="DuelMPFighting4" xml:space="preserve">
     <value>🔰THE DUEL HAS BEGAN🔰
 {0} ⚔️ {1}
---------------------------------
+🟥🟥🟥🟥🕙🟥🟥🟥🟥
 
 {2} 🙀🛡  🗡😼{3}
 
@@ -784,7 +783,7 @@ Suggest something else ⬇️</value>
     <value>🎌&lt;b&gt;THE DUEL IS OVER&lt;/b&gt;🎌
 {0} ⚔️ {1}
 🏆&lt;b&gt;VICTORY&lt;/b&gt; {2}🏆
---------------------------------
+🟩🟩🟩🟩🎖🟩🟩🟩🟩
 
 {3}
 &lt;b&gt;Reward: {4}&lt;/b&gt;💰</value>

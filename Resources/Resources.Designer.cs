@@ -403,7 +403,7 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 🔰THE DUEL HAS BEGAN🔰
         ///{0} ⚔️ {1}
-        ///--------------------------------
+        ///🟥🟥🟥🟥🕐🟥🟥🟥🟥
         ///
         ///{2} 🙀🛡          🗡😼{3}.
         /// </summary>
@@ -416,8 +416,7 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 🔰THE DUEL HAS BEGAN🔰
         ///{0} ⚔️ {1}
-        ///--------------------------------
-        ///
+        ///🟥🟥🟥🟥🕒🟥🟥🟥🟥
         ///{2} 🙀🛡        🗡😼{3}
         ///
         ///❕Pet {3} started attacking {2}!.
@@ -431,7 +430,7 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 🔰THE DUEL HAS BEGAN🔰
         ///{0} ⚔️ {1}
-        ///--------------------------------
+        ///🟥🟥🟥🟥🕢🟥🟥🟥🟥
         ///
         ///{2} 🙀🛡     🗡😼{3}
         ///
@@ -446,7 +445,7 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 🔰THE DUEL HAS BEGAN🔰
         ///{0} ⚔️ {1}
-        ///--------------------------------
+        ///🟥🟥🟥🟥🕙🟥🟥🟥🟥
         ///
         ///{2} 🙀🛡  🗡😼{3}
         ///
@@ -462,7 +461,7 @@ namespace TamagotchiBot.Resources {
         ///   Looks up a localized string similar to 🎌&lt;b&gt;THE DUEL IS OVER&lt;/b&gt;🎌
         ///{0} ⚔️ {1}
         ///🏆&lt;b&gt;VICTORY&lt;/b&gt; {2}🏆
-        ///--------------------------------
+        ///🟩🟩🟩🟩🎖🟩🟩🟩🟩
         ///
         ///{3}
         ///&lt;b&gt;Reward: {4}&lt;/b&gt;💰.
