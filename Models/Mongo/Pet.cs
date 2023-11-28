@@ -45,7 +45,10 @@ namespace TamagotchiBot.Models.Mongo
         public DateTime NextRandomEventNotificationTime { get; set; }
 
         [BsonElement("CurrentStatus")]
-        public int CurrentStatus { get; set; }
+        public int CurrentStatus { get; set; } 
+        
+        [BsonElement("CurrentJob")]
+        public int CurrentJob { get; set; }
 
         [Obsolete]
         [BsonElement("Gold")]
@@ -108,7 +111,8 @@ namespace TamagotchiBot.Models.Mongo
                 UserId                          = petToClone.UserId,
                 ToWakeUpTime                    = petToClone.ToWakeUpTime,
                 IsGone                          = petToClone.IsGone,
-                MPSatiety                       = petToClone.MPSatiety
+                MPSatiety                       = petToClone.MPSatiety,
+                CurrentJob                      = petToClone.CurrentJob,
             };
 
             return clone;

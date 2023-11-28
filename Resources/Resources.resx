@@ -461,8 +461,8 @@ https://t.me/news_virtualpetbot</value>
 /kitchen to feed 🍩
 /gameroom for games 🏓</value>
   </data>
-  <data name="CurrentStatusWorkingOnPC" xml:space="preserve">
-    <value>on work 💻</value>
+  <data name="CurrentStatusWorking" xml:space="preserve">
+    <value>on work 🧰</value>
   </data>
   <data name="denyAccessWorking" xml:space="preserve">
     <value>You can not come in: pet is on work 💻</value>
@@ -472,7 +472,8 @@ https://t.me/news_virtualpetbot</value>
 
 😴 Fatigue: {2}%
 
-Programing 💻 -{0} minutes ⌛️, +{1} golds 💰</value>
+Programing 💻 -{0}⌛️, +{1} golds 💰
+Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} gold 💰</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
     <value>Program 💻</value>
@@ -486,7 +487,7 @@ The pet is tired at +{0}% 😓
 Wait until the pet finishes work</value>
   </data>
   <data name="workCommandPCWorking" xml:space="preserve">
-    <value>Pet is working now 👩‍💻</value>
+    <value>The pet is currently working at the computer 👩‍💻</value>
   </data>
   <data name="workCommandInlineShowTime" xml:space="preserve">
     <value>Remains to work: {0} ⏱</value>
@@ -786,6 +787,7 @@ Suggest something else ⬇️</value>
 🟩🟩🟩🟩🎖🟩🟩🟩🟩
 
 {3}
+
 &lt;b&gt;Reward: {4}&lt;/b&gt;💰</value>
   </data>
   <data name="DuelMPFightingEndingDefenderWin" xml:space="preserve">
@@ -856,5 +858,19 @@ Wait another {2}🕑 before you can feed pet again</value>
   </data>
   <data name="FeedMPErrorFeedOwnPet" xml:space="preserve">
     <value>You can feed your pet only via PM bot 🤷‍♂️</value>
+  </data>
+  <data name="workCommandInlineFlyers" xml:space="preserve">
+    <value>Distribute leaflets 🤹‍♀️</value>
+  </data>
+  <data name="tooTiredForJobPC" xml:space="preserve">
+    <value>The pet doesn't want to work on the computer 🫧
+To do this job you need to have no more than {0}😴 fatigue</value>
+  </data>
+  <data name="tooTiredForJobFlyers" xml:space="preserve">
+    <value>Pet doesn't want to hand out flyers 🫧
+To do this job you need to have no more than {0}😴 fatigue</value>
+  </data>
+  <data name="workCommandFlyersWorking" xml:space="preserve">
+    <value>The pet is now handing out leaflets 🤹‍♀️</value>
   </data>
 </root>

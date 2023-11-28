@@ -261,8 +261,12 @@ namespace TamagotchiBot.Controllers
             }
 
             //Work
-            if (petDB.CurrentStatus == (int)CurrentStatus.WorkingOnPC)
-                petResult.CurrentStatus = (int)UpdateIndicatorWork(petDB);
+            if (petDB.CurrentStatus == (int)CurrentStatus.Working)
+            {
+                var resultWork = UpdateIndicatorWork(petDB);
+                petResult.CurrentStatus = resultWork.currentStatus;
+                petResult.CurrentJob = resultWork.currentJob;
+            }
 
             petResult.LastUpdateTime = DateTime.UtcNow;
             _appServices.PetService.Update(userFromMsg.Id, petResult);
@@ -389,7 +393,9 @@ namespace TamagotchiBot.Controllers
         internal async Task<bool> IsNicknameAcceptable()
         {
             var badWordsDB = _appServices.SInfoService.GetBadWords().ConvertAll(w => w.ToUpper());
-            if (badWordsDB.Contains(_message.Text.ToUpper()))
+            if (string.IsNullOrEmpty(_message.Text)
+                || _message.Text.FirstOrDefault() == '/'
+                || badWordsDB.Contains(_message.Text.ToUpper()))
             {
                 Log.Debug($"Bad word detected: {_message.Text}");
                 var toSend = new AnswerMessage()
@@ -647,15 +653,21 @@ namespace TamagotchiBot.Controllers
 
             return ((CurrentStatus)petResult.CurrentStatus, petResult.Fatigue);
         }
-        private CurrentStatus UpdateIndicatorWork(Pet petDB)
+        private (int currentStatus, int currentJob) UpdateIndicatorWork(Pet petDB)
         {
-            TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
+            TimeSpan workTime = (JobType)petDB.CurrentJob switch
+            {
+                JobType.WorkingOnPC => new TimesToWait().WorkOnPCToWait,
+                JobType.FlyersDistributing => new TimesToWait().FlyersDistToWait,
+                _ => new TimeSpan(0)
+            };
+            TimeSpan remainsTime = workTime - (DateTime.UtcNow - petDB.StartWorkingTime);
 
             //if _callback handled when time of work is over
             if (remainsTime <= TimeSpan.Zero)
-                return CurrentStatus.Active;
+                return ((int)CurrentStatus.Active, (int)JobType.None);
 
-            return CurrentStatus.WorkingOnPC;
+            return ((int)CurrentStatus.Working, petDB.CurrentJob);
         }
 
         #endregion

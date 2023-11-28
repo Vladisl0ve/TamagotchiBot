@@ -466,8 +466,8 @@ https://t.me/news_virtualpetbot</value>
 /kitchen покормить 🍩
 /gameroom гулять 🏓</value>
   </data>
-  <data name="CurrentStatusWorkingOnPC" xml:space="preserve">
-    <value>на работе 💻</value>
+  <data name="CurrentStatusWorking" xml:space="preserve">
+    <value>на работе 🧰</value>
   </data>
   <data name="denyAccessWorking" xml:space="preserve">
     <value>Нельзя войти в комнату: питомец на работе 💻</value>
@@ -477,7 +477,8 @@ https://t.me/news_virtualpetbot</value>
 
 😴 Усталость: {2}%
 
-Программировать 💻 -{0} минуты ⌛️, +{1} золота 💰</value>
+Программировать 💻 -{0}⌛️, +{1} золота 💰
+Раздавать листовки 🤹‍♀️ -{3}⌛️, +{4} золота 💰</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
     <value>Разрабатывать сайты 💻</value>
@@ -491,7 +492,7 @@ https://t.me/news_virtualpetbot</value>
 Подожди пока питомец закончит работу</value>
   </data>
   <data name="workCommandPCWorking" xml:space="preserve">
-    <value>Питомец сейчас на работе 👩‍💻</value>
+    <value>Питомец сейчас на работает за компом 👩‍💻</value>
   </data>
   <data name="workCommandInlineShowTime" xml:space="preserve">
     <value>Осталось работать: {0} ⏱</value>
@@ -789,10 +790,11 @@ https://t.me/news_virtualpetbot</value>
   <data name="DuelMPFightingEnd" xml:space="preserve">
     <value>🎌&lt;b&gt;ДУЭЛЬ ОКОНЧЕНА&lt;/b&gt;🎌
 {0} ⚔️ {1}
-🏆&lt;b&gt;ПОБЕДА&lt;/b&gt; {2}🏆
+🏆&lt;b&gt;ПОБЕДИТЕЛЬ&lt;/b&gt; {2}🏆
 🟩🟩🟩🟩🎖🟩🟩🟩🟩
 
 {3}
+
 &lt;b&gt;Награда: {4}&lt;/b&gt;💰</value>
   </data>
   <data name="DuelMPFightingEndingDefenderWin" xml:space="preserve">
@@ -863,5 +865,19 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="FeedMPErrorFeedOwnPet" xml:space="preserve">
     <value>Своего питомца можно кормить только в ЛС боту 🤷‍♂️</value>
+  </data>
+  <data name="workCommandInlineFlyers" xml:space="preserve">
+    <value>Раздавать листовки 🤹‍♀️</value>
+  </data>
+  <data name="tooTiredForJobPC" xml:space="preserve">
+    <value>Питомец не хочет работать за компьютером 🫧
+Для этой работы надо иметь не больше {0}%😴 усталости</value>
+  </data>
+  <data name="tooTiredForJobFlyers" xml:space="preserve">
+    <value>Питомец не хочет раздавать флаеры 🫧
+Для этой работы надо иметь не больше {0}%😴 усталости</value>
+  </data>
+  <data name="workCommandFlyersWorking" xml:space="preserve">
+    <value>Питомец сейчас раздаёт листовки 🤹‍♀️</value>
   </data>
 </root>

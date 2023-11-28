@@ -318,11 +318,11 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to on work 💻.
+        ///   Looks up a localized string similar to on work 🧰.
         /// </summary>
-        public static string CurrentStatusWorkingOnPC {
+        public static string CurrentStatusWorking {
             get {
-                return ResourceManager.GetString("CurrentStatusWorkingOnPC", resourceCulture);
+                return ResourceManager.GetString("CurrentStatusWorking", resourceCulture);
             }
         }
         
@@ -464,6 +464,7 @@ namespace TamagotchiBot.Resources {
         ///🟩🟩🟩🟩🎖🟩🟩🟩🟩
         ///
         ///{3}
+        ///
         ///&lt;b&gt;Reward: {4}&lt;/b&gt;💰.
         /// </summary>
         public static string DuelMPFightingEnd {
@@ -1608,6 +1609,26 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pet doesn&apos;t want to hand out flyers 🫧
+        ///To do this job you need to have no more than {0}😴 fatigue.
+        /// </summary>
+        public static string tooTiredForJobFlyers {
+            get {
+                return ResourceManager.GetString("tooTiredForJobFlyers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The pet doesn&apos;t want to work on the computer 🫧
+        ///To do this job you need to have no more than {0}😴 fatigue.
+        /// </summary>
+        public static string tooTiredForJobPC {
+            get {
+                return ResourceManager.GetString("tooTiredForJobPC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your pet is too tired, he should sleep 💤.
         /// </summary>
         public static string tooTiredText {
@@ -1658,7 +1679,8 @@ namespace TamagotchiBot.Resources {
         ///
         ///😴 Fatigue: {2}%
         ///
-        ///Programing 💻 -{0} minutes ⌛️, +{1} golds 💰.
+        ///Programing 💻 -{0}⌛️, +{1} golds 💰
+        ///Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} gold 💰.
         /// </summary>
         public static string workCommand {
             get {
@@ -1672,6 +1694,24 @@ namespace TamagotchiBot.Resources {
         public static string workCommandDescription {
             get {
                 return ResourceManager.GetString("workCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The pet is now handing out leaflets 🤹‍♀️.
+        /// </summary>
+        public static string workCommandFlyersWorking {
+            get {
+                return ResourceManager.GetString("workCommandFlyersWorking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distribute leaflets 🤹‍♀️.
+        /// </summary>
+        public static string workCommandInlineFlyers {
+            get {
+                return ResourceManager.GetString("workCommandInlineFlyers", resourceCulture);
             }
         }
         
@@ -1694,7 +1734,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pet is working now 👩‍💻.
+        ///   Looks up a localized string similar to The pet is currently working at the computer 👩‍💻.
         /// </summary>
         public static string workCommandPCWorking {
             get {

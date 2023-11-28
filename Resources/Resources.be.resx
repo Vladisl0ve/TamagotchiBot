@@ -406,8 +406,8 @@
 /kitchen пакарміць 🍩
 /gameroom гуляць 🏓</value>
   </data>
-  <data name="CurrentStatusWorkingOnPC" xml:space="preserve">
-    <value>на працы💻</value>
+  <data name="CurrentStatusWorking" xml:space="preserve">
+    <value>на працы🧰</value>
   </data>
   <data name="denyAccessWorking" xml:space="preserve">
     <value>Ты не можаш зайсці да пакою: твой гадаванец на працы 💻</value>
@@ -417,7 +417,8 @@
 
 😴 Стомленасць: {2}%
 
-Праграмаванне 💻 -{0} мінуты ⌛️ , +{1} золата 💰</value>
+Праграмаванне 💻 -{0}⌛️ , +{1} золата 💰
+Раздаваць улёткі 🤹‍♀️ -{3}⌛️, +{4} золата 💰</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
     <value>Кодзіць 💻</value>
@@ -429,9 +430,6 @@
     <value>Золата +{1} 💰
 Гадаванец стаміўся на +{0}% 😓
 Пачакай пакуль гадаванец не скончыць працу</value>
-  </data>
-  <data name="workCommandPCWorking" xml:space="preserve">
-    <value>Гадаванец цяпер на працы👩‍💻</value>
   </data>
   <data name="workCommandInlineShowTime" xml:space="preserve">
     <value>Засталося папрацаваць: {0} ⏱</value>
@@ -793,6 +791,7 @@ https://t.me/news_virtualpetbot</value>
 🟩🟩🟩🟩🎖🟩🟩🟩🟩
 
 {3}
+
 &lt;b&gt;Узнагарода: {4}&lt;/b&gt;💰</value>
   </data>
   <data name="DuelMPFightingEndingDefenderWin" xml:space="preserve">
@@ -863,5 +862,22 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="FeedMPErrorFeedOwnPet" xml:space="preserve">
     <value>Свайго гадаванца можна карміць толькі ў ЛС боту 🤷‍♂️</value>
+  </data>
+  <data name="workCommandInlineFlyers" xml:space="preserve">
+    <value>Раздаваць улёткі 🤹‍♀️</value>
+  </data>
+  <data name="tooTiredForJobPC" xml:space="preserve">
+    <value>Гадаванец не хоча працаваць за кампутарам 🫧
+Для гэтай працы трэба мець не больш за {0}😴 стомленасці</value>
+  </data>
+  <data name="tooTiredForJobFlyers" xml:space="preserve">
+    <value>Гадаванец не хоча раздаваць флаеры 🫧
+Для гэтай працы трэба мець не больш за {0}😴 стомленасці</value>
+  </data>
+  <data name="workCommandPCWorking" xml:space="preserve">
+    <value>Гадаванец зараз працуе за кампом 👩‍💻</value>
+  </data>
+  <data name="workCommandFlyersWorking" xml:space="preserve">
+    <value>Гадаванец зараз раздае ўлёткі 🤹‍♀️</value>
   </data>
 </root>

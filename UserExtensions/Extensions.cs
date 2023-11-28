@@ -299,7 +299,7 @@ namespace TamagotchiBot.UserExtensions
                 {
                     CurrentStatus.Active => Resources.Resources.CurrentStatusActive,
                     CurrentStatus.Sleeping => Resources.Resources.CurrentStatusSleeping,
-                    CurrentStatus.WorkingOnPC => Resources.Resources.CurrentStatusWorkingOnPC,
+                    CurrentStatus.Working => Resources.Resources.CurrentStatusWorking,
                     _ => null,
                 };
             }

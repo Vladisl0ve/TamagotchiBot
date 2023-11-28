@@ -1,5 +1,6 @@
 ﻿using System;
 using TamagotchiBot.Models;
+using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.UserExtensions
 {
@@ -76,7 +77,7 @@ namespace TamagotchiBot.UserExtensions
         }
         public class WorkCommand
         {
-            public CallbackModel WorkCommandInlineShowTime(TimeSpan remainedTime)
+            public CallbackModel WorkCommandInlineShowTime(TimeSpan remainedTime, JobType jobType)
             {
                 string timeToShow;
                 if (remainedTime > TimeSpan.Zero)
@@ -84,19 +85,35 @@ namespace TamagotchiBot.UserExtensions
                 else
                     timeToShow = new DateTime(0).ToString("HH:mm:ss");
 
-                var result = new CallbackModel()
+                return jobType switch
                 {
-                    Text = string.Format(Resources.Resources.workCommandInlineShowTime, timeToShow),
-                    CallbackData = "workCommandInlineShowTime"
+                    JobType.WorkingOnPC => new CallbackModel()
+                    {
+                        Text = string.Format(Resources.Resources.workCommandInlineShowTime, timeToShow),
+                        CallbackData = "workCommandInlineShowTime"
+                    },
+                    JobType.FlyersDistributing => new CallbackModel()
+                    {
+                        Text = string.Format(Resources.Resources.workCommandInlineShowTime, timeToShow),
+                        CallbackData = "workCommandInlineFlyersShowTime"
+                    },
+                    _ => new CallbackModel()
+                    {
+                        Text = "ERROR",
+                        CallbackData = "ERROR"
+                    }
                 };
-
-                return result;
             }
 
             public CallbackModel WorkCommandInlineWorkOnPC = new CallbackModel ()
             {
                 Text = Resources.Resources.workCommandInlinePC,
                 CallbackData = "workCommandInlineWorkOnPC"
+            };
+            public CallbackModel WorkCommandInlineDistributeFlyers = new CallbackModel ()
+            {
+                Text = Resources.Resources.workCommandInlineFlyers,
+                CallbackData = "WorkCommandInlineDistributeFlyers"
             };
         }
         public class RanksCommand
@@ -172,7 +189,7 @@ namespace TamagotchiBot.UserExtensions
                 Text = string.Format(Resources.Resources.InviteReferalMultiplayerButton, refName),
                 CallbackData = "InviteReferalMultiplayerButton"
             };
-        } 
+        }
         public class DuelMuliplayerCommand
         {
             public CallbackModel StartDuelMultiplayerButton = new CallbackModel ()

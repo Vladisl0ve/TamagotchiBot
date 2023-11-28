@@ -402,8 +402,8 @@ Poddania: {2}</value>
 /kitchen karmić 🍩
 /gameroom bawić się 🏓</value>
   </data>
-  <data name="CurrentStatusWorkingOnPC" xml:space="preserve">
-    <value>w pracy 💻</value>
+  <data name="CurrentStatusWorking" xml:space="preserve">
+    <value>w pracy 🧰</value>
   </data>
   <data name="denyAccessWorking" xml:space="preserve">
     <value>Brak możliwości wejścia do pokoju: zwierzak pracuje 💻</value>
@@ -413,7 +413,8 @@ Poddania: {2}</value>
 
 😴 Zmęczenie: {2}%
 
-Programowanie 💻 -{0} minuty ⌛️, +{1} zł 💰</value>
+Programowanie 💻 -{0}⌛️, +{1} zł 💰
+Rozdawać ulotki 🤹‍♀️ -{3}⌛️, +{4} złota 💰</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
     <value>Programowanie 💻</value>
@@ -425,9 +426,6 @@ Programowanie 💻 -{0} minuty ⌛️, +{1} zł 💰</value>
     <value>Złoto +{1} 💰
 Zwierzę jest zmęczone na +{0}% 😓
 Poczekaj aż zwierzak skończy pracę</value>
-  </data>
-  <data name="workCommandPCWorking" xml:space="preserve">
-    <value>Zwierzak w pracy teraz 👩‍💻</value>
   </data>
   <data name="workCommandInlineShowTime" xml:space="preserve">
     <value>Pozostało do pracy: {0} ⏱</value>
@@ -789,6 +787,7 @@ Zaproponuj coś innego ⬇️</value>
 🟩🟩🟩🟩🎖🟩🟩🟩🟩
 
 {3}
+
 &lt;b&gt;Nagroda: {4}&lt;/b&gt;💰</value>
   </data>
   <data name="DuelMPFightingEndingDefenderWin" xml:space="preserve">
@@ -859,5 +858,22 @@ Poczekaj jeszcze {2}🕑, zanim będziesz mógł ponownie nakarmić zwierzaka</v
   </data>
   <data name="FeedMPErrorFeedOwnPet" xml:space="preserve">
     <value>Karmić swojego zwierzaka możesz wyłącznie poprzez bota PM 🤷‍♂️</value>
+  </data>
+  <data name="workCommandInlineFlyers" xml:space="preserve">
+    <value>Rozdawaj ulotki 🤹‍♀️</value>
+  </data>
+  <data name="tooTiredForJobPC" xml:space="preserve">
+    <value>Zwierzak nie chce pracować na komputerze 🫧
+Aby wykonać tę pracę, nie musisz odczuwać więcej niż {0}😴 zmęczenia</value>
+  </data>
+  <data name="tooTiredForJobFlyers" xml:space="preserve">
+    <value>Zwierzak nie chce rozdawać ulotek 🫧
+Aby wykonać tę pracę, nie musisz odczuwać więcej niż {0}😴 zmęczenia</value>
+  </data>
+  <data name="workCommandPCWorking" xml:space="preserve">
+    <value>Zwierzak obecnie pracuje przy komputerze 👩‍💻</value>
+  </data>
+  <data name="workCommandFlyersWorking" xml:space="preserve">
+    <value>Zwierzak rozdaje teraz ulotki 🤹‍♀️</value>
   </data>
 </root>

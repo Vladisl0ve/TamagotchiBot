@@ -47,6 +47,15 @@ namespace TamagotchiBot.Services.Mongo
                 Update(userId, pet);
             }
         }
+        public void UpdateCurrentJob(long userId, int newJob)
+        {
+            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.CurrentJob = newJob;
+                Update(userId, pet);
+            }
+        }
         public void UpdateLastMPFedTime(long userId, DateTime newLastMPFed)
         {
             var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
