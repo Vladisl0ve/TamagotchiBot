@@ -235,6 +235,7 @@ namespace TamagotchiBot.Controllers
             var satietyHp = UpdateIndicatorSatietyAndHP(minuteCounter, petDB);
             petResult.Satiety = satietyHp.Item1;
             petResult.HP = satietyHp.Item2;
+            petResult.MPSatiety = 0;
 
             //Joy
             petResult.Joy = UpdateIndicatorJoy(minuteCounter, petDB);
@@ -570,6 +571,10 @@ namespace TamagotchiBot.Controllers
 
             petResult.Satiety -= decreaseSatiety;
             petResult.Satiety = Math.Round(petResult.Satiety, 2);
+            petResult.Satiety += petResult.MPSatiety;
+
+            if (petResult.Satiety > 100)
+                petResult.Satiety = 100;
 
             if (petResult.Satiety < 0)
             {

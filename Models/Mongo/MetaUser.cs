@@ -38,7 +38,13 @@ namespace TamagotchiBot.Models.Mongo
         public DateTime DuelStartTime { get; set; }
 
         [BsonElement("NextPossibleDuelTime")]
-        public DateTime NextPossibleDuelTime { get; set; }
+        public DateTime NextPossibleDuelTime { get; set; } 
+        
+        [BsonElement("LastMPFeedingTime")]
+        public DateTime LastMPFeedingTime { get; set; }
+
+        [BsonElement("IsFeedingMPStarted")]
+        public bool IsFeedingMPStarted { get; set; }
 
         public MetaUser Clone(MetaUser toClone)
         {

@@ -832,4 +832,36 @@ https://t.me/news_virtualpetbot</value>
   <data name="DuelMPErrorYourself" xml:space="preserve">
     <value>Ты не можаш прымаць свае ж дуэлі 🙈</value>
   </data>
+  <data name="FeedMPNotFound" xml:space="preserve">
+    <value>Такіх гульцоў не знойдзена 👀</value>
+  </data>
+  <data name="NotEnoughGoldForMPFeed" xml:space="preserve">
+    <value>{0}, каб пакарміць гадаванца трэба {2}💰золата
+У цябе ёсць толькі {1}💰</value>
+  </data>
+  <data name="NotEnoughTimeSpentFeedMP" xml:space="preserve">
+    <value>{0}, прайшло занадта мала часу 🍕
+Гадаванец {1} не захацеў есці🐣
+
+Пачакай яшчэ {2}🕑 перш чым можна будзе карміць гадаванца яшчэ раз</value>
+  </data>
+  <data name="NotEnoughTimeSpentByLastMPFeed" xml:space="preserve">
+    <value>{0}, трэба пачакаць яшчэ {1}🕑 каб пакарміць чужога гадаванца🍗</value>
+  </data>
+  <data name="FeedMPCommand" xml:space="preserve">
+    <value>Пакарміць чужога гадаванца 🍔</value>
+  </data>
+  <data name="FeedMPStart" xml:space="preserve">
+    <value>{0}, прыйшлі нікнейм каго гадаванца ты хочаш пакарміць 🍽
+&lt;i&gt;Падказка: пачні ўводзіць '@' і выберы гульца &lt;/i&gt;</value>
+  </data>
+  <data name="FeedMPEndSuccess" xml:space="preserve">
+    <value>Гадаванец &lt;b&gt;{0}&lt;/b&gt; з радасцю накінуўся на велізарны бургер 🍔 з бульбай фры 🍟
+😻: &lt;i&gt;Дзякуй вялікі! Я перадам гаспадару, што ў яго выдатны сябар!&lt;/i&gt;
+
+-{1}💰</value>
+  </data>
+  <data name="FeedMPErrorFeedOwnPet" xml:space="preserve">
+    <value>Свайго гадаванца можна карміць толькі ў ЛС боту 🤷‍♂️</value>
+  </data>
 </root>

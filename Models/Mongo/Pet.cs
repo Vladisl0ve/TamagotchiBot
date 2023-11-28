@@ -59,6 +59,12 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("Satiety")]
         public double Satiety { get; set; }
+        
+        [BsonElement("MPSatiety")]
+        public int MPSatiety { get; set; }
+
+        [BsonElement("LastMPFedTime")]
+        public DateTime LastMPFedTime { get; set; }
 
         [BsonElement("Joy")]
         public int Joy { get; set; }
@@ -101,7 +107,8 @@ namespace TamagotchiBot.Models.Mongo
                 Type                            = petToClone.Type,
                 UserId                          = petToClone.UserId,
                 ToWakeUpTime                    = petToClone.ToWakeUpTime,
-                IsGone                          = petToClone.IsGone
+                IsGone                          = petToClone.IsGone,
+                MPSatiety                       = petToClone.MPSatiety
             };
 
             return clone;

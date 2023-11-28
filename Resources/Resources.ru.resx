@@ -832,4 +832,36 @@ https://t.me/news_virtualpetbot</value>
   <data name="DuelMPErrorYourself" xml:space="preserve">
     <value>Ты не можешь принимать свои же дуэли 🙈</value>
   </data>
+  <data name="FeedMPNotFound" xml:space="preserve">
+    <value>Таких игроков не найдено 👀</value>
+  </data>
+  <data name="NotEnoughGoldForMPFeed" xml:space="preserve">
+    <value>{0}, чтобы покормить питомца надо {2}💰золота
+У тебя есть только {1}💰</value>
+  </data>
+  <data name="NotEnoughTimeSpentFeedMP" xml:space="preserve">
+    <value>{0}, прошло слишком мало времени 🍕
+Питомец {1} не захотел кушать🐣
+
+Подожди ещё {2}🕑 прежде чем можно будет кормить питомца ещё раз</value>
+  </data>
+  <data name="NotEnoughTimeSpentByLastMPFeed" xml:space="preserve">
+    <value>{0}, надо подождать ещё {1}🕑 чтобы покормить чужого питомца🍗</value>
+  </data>
+  <data name="FeedMPCommand" xml:space="preserve">
+    <value>Покормить чужого питомца 🍔</value>
+  </data>
+  <data name="FeedMPStart" xml:space="preserve">
+    <value>{0}, пришли никнейм кого питомца ты хочешь покормить 🍽
+&lt;i&gt;Подсказка: начни вводить '@' и выбери игрока &lt;/i&gt;</value>
+  </data>
+  <data name="FeedMPEndSuccess" xml:space="preserve">
+    <value>Питомец &lt;b&gt;{0}&lt;/b&gt; с радостью накинулся на огромный бургер 🍔 с картошкой фри 🍟
+😻: &lt;i&gt;Спасибо большое! Я передам хозяину, что у него отличный друг!&lt;/i&gt;
+
+-{1}💰</value>
+  </data>
+  <data name="FeedMPErrorFeedOwnPet" xml:space="preserve">
+    <value>Своего питомца можно кормить только в ЛС боту 🤷‍♂️</value>
+  </data>
 </root>

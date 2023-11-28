@@ -828,4 +828,36 @@ Po prostu poczekaj {0}</value>
   <data name="DuelMPErrorYourself" xml:space="preserve">
     <value>Nie można akceptować własnych pojedynków 🙈</value>
   </data>
+  <data name="FeedMPNotFound" xml:space="preserve">
+    <value>Nie znaleziono takich graczy 👀</value>
+  </data>
+  <data name="NotEnoughGoldForMPFeed" xml:space="preserve">
+    <value>{0}, aby nakarmić zwierzaka, potrzebujesz {2}💰złota
+Masz tylko {1}💰</value>
+  </data>
+  <data name="NotEnoughTimeSpentFeedMP" xml:space="preserve">
+    <value>{0}, minęło zbyt mało czasu 🍕
+Zwierzę {1} nie chciało jeść🐣
+
+Poczekaj jeszcze {2}🕑, zanim będziesz mógł ponownie nakarmić zwierzaka</value>
+  </data>
+  <data name="NotEnoughTimeSpentByLastMPFeed" xml:space="preserve">
+    <value>{0}, musisz poczekać jeszcze {1}🕑, aby nakarmić czyjeś zwierzątko🍗</value>
+  </data>
+  <data name="FeedMPCommand" xml:space="preserve">
+    <value>Nakarm cudzego zwierzaka 🍔</value>
+  </data>
+  <data name="FeedMPStart" xml:space="preserve">
+    <value>{0}, wyślij pseudonim zwierzaka, którego chcesz nakarmić 🍽
+&lt;i&gt;Wskazówka: zacznij pisać „@” i wybierz gracza &lt;/i&gt;</value>
+  </data>
+  <data name="FeedMPEndSuccess" xml:space="preserve">
+    <value>Zwierzak &lt;b&gt;{0}&lt;/b&gt; z radością rzucił się na ogromnego burgera 🍔 z frytkami 🍟
+😻: &lt;i&gt;Dziękuję bardzo! Powiem właścicielowi, że ma świetnego przyjaciela!&lt;/i&gt;
+
+-{1}💰</value>
+  </data>
+  <data name="FeedMPErrorFeedOwnPet" xml:space="preserve">
+    <value>Karmić swojego zwierzaka możesz wyłącznie poprzez bota PM 🤷‍♂️</value>
+  </data>
 </root>

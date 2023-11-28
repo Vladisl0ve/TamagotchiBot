@@ -103,22 +103,20 @@ namespace TamagotchiBot.Handlers
 
                     return Task.CompletedTask;
                 }
-                Task OnTextMessageGroup(Message message, long userId)
+                async Task OnTextMessageGroup(Message message, long userId)
                 {
-                    MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
+                    var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+                    if (!message.Text.Contains($"@{botUsername}") && message.EntityValues == null)
+                        return;
 
-                    if (!IsUserAndPetRegisteredChecking(userId))
-                    {
-                        multiplayerController.SendInviteForUnregistered();
-                        return Task.CompletedTask;
-                    }
+                    MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
 
                     new SynchroDBController(_appServices, message).SynchronizeWithDB(); //update user (username, names etc.) in DB
                     new SynchroDBController(_appServices, message).SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
 
-                    multiplayerController.CommandHandler();
+                    multiplayerController.CommandHandler(botUsername);
 
-                    return Task.CompletedTask;
+                    return;
                 }
             }
             void OnCallbackGroup(CallbackQuery callbackQuery)

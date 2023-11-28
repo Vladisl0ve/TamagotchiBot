@@ -101,6 +101,7 @@ namespace TamagotchiBot.UserExtensions
 
             //Multiplayer
             public const int Duel = 100;
+            public const int FeedMP = 20;
         }
 
         public class TimesToWait
@@ -109,6 +110,7 @@ namespace TamagotchiBot.UserExtensions
             public TimeSpan DailyRewardToWait = new(24, 0, 0);
             public TimeSpan SleepToWait = new(0, 10, 0);
             public TimeSpan DuelCDToWait = new(0, 5, 0);
+            public TimeSpan FeedMPCDToWait = new(6, 0, 0);
         }
 
         public struct Limits
@@ -122,6 +124,9 @@ namespace TamagotchiBot.UserExtensions
             public const double RedAppleHungerFactor = 5; //🍎
             public const double ChocolateHungerFactor = 2; //🍫
             public const double LollipopHungerFactor = 1; //🍭
+
+            //Multiplayer
+            public const int MPFeed = 100; //🍭
         }
 
         public struct HygieneFactors
@@ -154,6 +159,7 @@ namespace TamagotchiBot.UserExtensions
         {
             public const string ShowPetCommand = "show_pet";
             public const string StartDuelCommand = "start_duel";
+            public const string FeedMPCommand = "feed_pet";
         }
 
         public struct StickersId

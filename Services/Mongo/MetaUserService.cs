@@ -53,8 +53,7 @@ namespace TamagotchiBot.Services.Mongo
         public bool UpdateTmpPetName(long userId, string tmpName)
         {
             var userDb = _metausers.Find(u => u.UserId == userId).FirstOrDefault();
-            if (userDb == null)
-                return false;
+            userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.TmpPetName = tmpName;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
@@ -63,8 +62,7 @@ namespace TamagotchiBot.Services.Mongo
         public bool UpdateMsgDuelId(long userId, int msgId)
         {
             var userDb = _metausers.Find(u => u.UserId == userId).FirstOrDefault();
-            if (userDb == null)
-                return false;
+            userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.MsgDuelId = msgId;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
@@ -73,8 +71,7 @@ namespace TamagotchiBot.Services.Mongo
         public bool UpdateMsgCreatorDuelId(long userId, int msgId)
         {
             var userDb = _metausers.Find(u => u.UserId == userId).FirstOrDefault();
-            if (userDb == null)
-                return false;
+            userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.MsgCreatorDuelId = msgId;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
@@ -84,8 +81,7 @@ namespace TamagotchiBot.Services.Mongo
         public bool UpdateChatDuelId(long userId, long chatId)
         {
             var userDb = _metausers.Find(u => u.UserId == userId).FirstOrDefault();
-            if (userDb == null)
-                return false;
+            userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.ChatDuelId = chatId;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
@@ -95,10 +91,29 @@ namespace TamagotchiBot.Services.Mongo
         public bool UpdateDuelStartTime(long userId, DateTime startTime)
         {
             var userDb = _metausers.Find(u => u.UserId == userId).FirstOrDefault();
-            if (userDb == null)
-                return false;
+            userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.DuelStartTime = startTime;
+            _metausers.ReplaceOne(u => u.UserId == userId, userDb);
+            return true;
+        }
+
+        public bool UpdateIsFeedingMPStarted(long userId, bool isStarted)
+        {
+            var userDb = _metausers.Find(u => u.UserId == userId).FirstOrDefault();
+            userDb ??= Create(new MetaUser() { UserId = userId });
+
+            userDb.IsFeedingMPStarted = isStarted;
+            _metausers.ReplaceOne(u => u.UserId == userId, userDb);
+            return true;
+        }
+
+        public bool UpdateLastMPFeedingTime(long userId, DateTime startTime)
+        {
+            var userDb = _metausers.Find(u => u.UserId == userId).FirstOrDefault();
+            userDb ??= Create(new MetaUser() { UserId = userId });
+
+            userDb.LastMPFeedingTime = startTime;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
@@ -106,8 +121,7 @@ namespace TamagotchiBot.Services.Mongo
         public bool UpdateNextPossibleDuelTime(long userId, DateTime nextDuelTime)
         {
             var userDb = _metausers.Find(u => u.UserId == userId).FirstOrDefault();
-            if (userDb == null)
-                return false;
+            userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.NextPossibleDuelTime = nextDuelTime;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);

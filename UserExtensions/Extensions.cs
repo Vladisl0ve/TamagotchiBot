@@ -245,6 +245,11 @@ namespace TamagotchiBot.UserExtensions
                 {
                     Command = CommandsMP.StartDuelCommand,
                     Description = Resources.Resources.StartDuelMPCommand
+                },
+                new BotCommand()
+                {
+                    Command = CommandsMP.FeedMPCommand,
+                    Description = Resources.Resources.FeedMPCommand
                 }
             };
 

@@ -47,6 +47,24 @@ namespace TamagotchiBot.Services.Mongo
                 Update(userId, pet);
             }
         }
+        public void UpdateLastMPFedTime(long userId, DateTime newLastMPFed)
+        {
+            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.LastMPFedTime = newLastMPFed;
+                Update(userId, pet);
+            }
+        } 
+        public void UpdateMPSatiety(long userId, int newMPSatiety)
+        {
+            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.MPSatiety = newMPSatiety;
+                Update(userId, pet);
+            }
+        }
         public void UpdateSatiety(long userId, double newSatiety, bool forcePush = false)
         {
             if (newSatiety > 100 && !forcePush)

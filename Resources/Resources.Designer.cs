@@ -587,6 +587,55 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Feed someone else&apos;s pet 🍔.
+        /// </summary>
+        public static string FeedMPCommand {
+            get {
+                return ResourceManager.GetString("FeedMPCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet &lt;b&gt;{0}&lt;/b&gt; happily pounced on a huge burger 🍔 with fries 🍟
+        ///😻: &lt;i&gt;Thank you very much! I&apos;ll tell the owner that he has a great friend!&lt;/i&gt;
+        ///
+        ///-{1}💰.
+        /// </summary>
+        public static string FeedMPEndSuccess {
+            get {
+                return ResourceManager.GetString("FeedMPEndSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can feed your pet only via PM bot 🤷‍♂️.
+        /// </summary>
+        public static string FeedMPErrorFeedOwnPet {
+            get {
+                return ResourceManager.GetString("FeedMPErrorFeedOwnPet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No such players found 👀.
+        /// </summary>
+        public static string FeedMPNotFound {
+            get {
+                return ResourceManager.GetString("FeedMPNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}, send the nickname of which pet you want to feed 🍽
+        ///&lt;i&gt;Hint: start typing &apos;@&apos; and select a player &lt;/i&gt;.
+        /// </summary>
+        public static string FeedMPStart {
+            get {
+                return ResourceManager.GetString("FeedMPStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are in the gameroom
         ///
         ///⚽️ Fatigue: {0}%
@@ -847,11 +896,42 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} to feed friend&apos;s pet you need {2}💰gold
+        ///You only have {1}💰.
+        /// </summary>
+        public static string NotEnoughGoldForMPFeed {
+            get {
+                return ResourceManager.GetString("NotEnoughGoldForMPFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unfortunately, you don&apos;t have enough money ☠️.
         /// </summary>
         public static string NotEnoughGoldToResurrect {
             get {
                 return ResourceManager.GetString("NotEnoughGoldToResurrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}, you have to wait another {1}🕑 to feed someone else’s pet🍗.
+        /// </summary>
+        public static string NotEnoughTimeSpentByLastMPFeed {
+            get {
+                return ResourceManager.GetString("NotEnoughTimeSpentByLastMPFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}, too little time has passed 🍕
+        ///Pet {1} didn’t want to eat🐣
+        ///
+        ///Wait another {2}🕑 before you can feed pet again.
+        /// </summary>
+        public static string NotEnoughTimeSpentFeedMP {
+            get {
+                return ResourceManager.GetString("NotEnoughTimeSpentFeedMP", resourceCulture);
             }
         }
         
