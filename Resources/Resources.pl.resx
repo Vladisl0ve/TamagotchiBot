@@ -706,32 +706,6 @@ Dlatego częściej odwiedzaj swojego wirtualnego przyjaciela 🧸
 
 /pet - sprawdza status zwierzaka</value>
   </data>
-  <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Została wydana aktualizacja 1.3⚡️⚡️
-
-Dodany:
-👨‍👦‍👦Multiplayer - bota można już dodać do czatu grupowego!
-Teraz możesz pochwalić się swoim pupilem znajomym 😈
-🥂Nowe losowe wydarzenia związane ze zwierzętami
-🦥Program polecający - zapraszasz znajomych i dostajesz za to bonusy 💰 (polecenie/polecenie)
-🧩Dodano polecenie /changelog - tutaj znajduje się link do kanału o naszym bocie Tamagotchi, na którym możesz omówić najnowsze aktualizacje i zaproponować coś nowego
-
-Poprawki:
-🐛 Klawiatura często nie była ukrywana po wybraniu języka/wskrzeszeniu zwierzaka - NAPRAWIONO
-🚀 Praca wielu poleceń bota została przyspieszona dzięki optymalizacji kodu
-
-W planach:
-🐿 Nowe rodzaje zwierząt domowych
-🎰 Nowe mini-gry (w tym do gry wieloosobowej ze znajomymi)
-🏫 Dodaj szkołę, edukację, wiek zwierzaka (jak w nowych wersjach Tamagotchi👾)
-
-Dziękuję wszystkim bardzo za wsparcie ❤️
-Pracuję nad botem samodzielnie, równolegle z pracą. Nie zawsze da się publikować aktualizacje na bieżąco, ale Wasze słowa wdzięczności dla bota bardzo mnie motywują ☺️
-Dziękuję, stały graczu 🫶
-
-Subskrybuj nasz kanał, na którym wszystko jest o bocie:
-https://t.me/news_virtualpetbot</value>
-  </data>
   <data name="BadWordDetected" xml:space="preserve">
     <value>Zwierzak nie lubi swojego nowego imienia 😾
 Zaproponuj coś innego ⬇️</value>
@@ -875,5 +849,31 @@ Aby wykonać tę pracę, nie musisz odczuwać więcej niż {0}😴 zmęczenia</v
   </data>
   <data name="workCommandFlyersWorking" xml:space="preserve">
     <value>Zwierzak rozdaje teraz ulotki 🤹‍♀️</value>
+  </data>
+  <data name="changelog1Text" xml:space="preserve">
+    <value>⚡️⚡️ Wydano aktualizację 1.4⚡️⚡️
+
+🥳&lt;b&gt;Dodano&lt;/b&gt;🥳:
+🤹‍♂️&lt;b&gt;Nowa praca dla zwierzaka - roznoszenie ulotek&lt;/b&gt;
+  &lt;i&gt;Dodano dla równowagi i różnorodności rozgrywki: musisz krócej czekać na koniec pracy, ale dostajesz też mniej złota&lt;/i&gt;
+🌮&lt;b&gt;Teraz można karmić zwierzęta innych osób&lt;/b&gt;
+  Na czacie ogólnym wystarczy wywołać komendę /feedpet, a następnie oznaczyć żądanego gracza &lt;u&gt;(tylko tryb wieloosobowy)&lt;/u&gt;
+🤼‍♀️&lt;b&gt;Teraz możesz walczyć ze zwierzakami (tak jak Pokemon :D)&lt;/b&gt;
+  &lt;i&gt;Musisz dodać bota do czatu ogólnego i wywołać komendę /startduel (Pojedynek jest możliwy &lt;u&gt;tylko w trybie wieloosobowym&lt;/u&gt;)&lt;/i&gt;
+
+😻&lt;b&gt;Poprawki&lt;/b&gt;😻:
+👽&lt;b&gt;Zrównoważony przyrost doświadczenia&lt;/b&gt;
+   &lt;i&gt;Teraz z każdym nowym poziomem potrzebujesz więcej doświadczenia niż poprzedni. Poziom został również przeliczony dla starych graczy.&lt;/i&gt;
+😈&lt;b&gt;Zwierzę może nie lubić swojego nowego imienia&lt;/b&gt;
+   &lt;i&gt;Spróbuj wymyślić odpowiednie i zabawne nazwy&lt;/i&gt;
+
+Chciałbym wyrazić głęboką wdzięczność wszystkim, którzy pomagają pomysłami i znajdują błędy w działaniu bota ❤️
+(jeśli masz coś do powiedzenia, to wpadnij na nasz czat https://t.me/chatvirtualpetbot, chętnie to przeczytamy 😇)
+
+Specjalne podziękowania dla @SuankaSmirnova25, @glitchpavel i wszystkich graczy
+Bez Was ten bot jest niczym 🤍❤️🤍
+
+Subskrybuj nasz kanał, na którym wszystko jest o bocie:
+https://t.me/newsvirtualpetbot</value>
   </data>
 </root>

@@ -212,17 +212,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ⚡️⚡️ Update 1.3 has been released⚡️⚡️
+        ///   Looks up a localized string similar to ⚡️⚡️ Update 1.4 has been released⚡️⚡️
         ///
-        ///Added:
-        ///👨‍👦‍👦Multiplayer - the bot can already be added to the group chat!
-        ///Now you can show off your pet to your friends 😈
-        ///🥂New random pet-related events
-        ///🦥Referral program - you invite friends and get bonuses for it 💰 (command /referal)
-        ///🧩The /changelog command has been added - here is a link to a channel about our Tamagotchi bot, where you can discuss the latest updates and suggest something new
-        ///
-        ///Corrections:
-        ///🐛 The keyboard was often not hidden after  [rest of string was truncated]&quot;;.
+        ///🥳&lt;b&gt;Added&lt;/b&gt;🥳:
+        ///🤹‍♂️&lt;b&gt;New job for a pet - distributing flyers&lt;/b&gt;
+        ///  &lt;i&gt;Added for balance and variety of gameplay: you have to wait less for the end of work, but you also get less gold&lt;/i&gt;
+        ///🌮&lt;b&gt;It’s now possible to feed other people’s pets&lt;/b&gt;
+        ///  In general chat, just call the /feedpet command, then tag the desired player &lt;u&gt;(multiplayer only)&lt;/u&gt;
+        ///🤼‍♀️&lt;b&gt;Now you can fight with pets (just like Pokemon :D)&lt;/b&gt;
+        ///  &lt;i&gt;You need to add the bot to the general chat a [rest of string was truncated]&quot;;.
         /// </summary>
         public static string changelog1Text {
             get {

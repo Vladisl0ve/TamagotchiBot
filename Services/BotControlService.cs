@@ -322,7 +322,8 @@ namespace TamagotchiBot.Services
                 return await SendTextMessageAsync(userId,
                                      toSend.Text,
                                      replyMarkup: toSend.ReplyMarkup,
-                                     toLog: toLog);
+                                     toLog: toLog,
+                                     parseMode: toSend.ParseMode);
             }
 
             if (toSend.InlineKeyboardMarkup != null)
@@ -338,7 +339,8 @@ namespace TamagotchiBot.Services
             {
                 return await SendTextMessageAsync(userId,
                                      toSend.Text,
-                                     toLog: toLog);
+                                     toLog: toLog,
+                                     parseMode: toSend.ParseMode);
             }
             return null;
         }

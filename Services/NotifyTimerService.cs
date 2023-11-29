@@ -203,13 +203,15 @@ namespace TamagotchiBot.Services
         }
         private void OnMaintainEvent(object sender, ElapsedEventArgs e)
         {
-            Log.Information($"MAINTAINS");
+            Log.Information($"MAINTAINS STARTED");
             _appServices.SInfoService.DisableMaintainWorks();
 
             //Change exps for users
             var activePets = _appServices.PetService.GetAll();
+            int counterUser = 0;
             foreach (var pet in activePets)
             {
+                counterUser++;
                 var petResult = Pet.Clone(pet);                
 
                 decimal toAddExp = petResult.Level * 100 + petResult.EXP;
@@ -235,9 +237,10 @@ namespace TamagotchiBot.Services
                     petResult.Level += petResult.EXP / Factors.ExpToLvl;
                     petResult.EXP %= Factors.ExpToLvl;
                 }
+                _appServices.PetService.Update(pet.UserId, petResult);
             }
 
-
+            Log.Information($"MAINTAINS OVER - updated {counterUser} users");
         }
         private async void OnMPDuelsTimedEvent(object sender, ElapsedEventArgs e)
         {
@@ -305,7 +308,8 @@ namespace TamagotchiBot.Services
                     var toSend = new AnswerMessage()
                     {
                         Text = Resources.Resources.changelog1Text,
-                        StickerId = Constants.StickersId.ChangelogSticker
+                        StickerId = Constants.StickersId.ChangelogSticker,
+                        ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
                     };
 
                     await _appServices.BotControlService.SendAnswerMessageAsync(toSend, userDB.UserId, false);

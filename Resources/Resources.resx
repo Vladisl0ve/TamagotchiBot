@@ -424,30 +424,30 @@ Surrendered: {2}</value>
     <value>You are in the gameroom ⚽️</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Update 1.3 has been released⚡️⚡️
+    <value>⚡️⚡️ Update 1.4 has been released⚡️⚡️
 
-Added:
-👨‍👦‍👦Multiplayer - the bot can already be added to the group chat!
-Now you can show off your pet to your friends 😈
-🥂New random pet-related events
-🦥Referral program - you invite friends and get bonuses for it 💰 (command /referal)
-🧩The /changelog command has been added - here is a link to a channel about our Tamagotchi bot, where you can discuss the latest updates and suggest something new
+🥳&lt;b&gt;Added&lt;/b&gt;🥳:
+🤹‍♂️&lt;b&gt;New job for a pet - distributing flyers&lt;/b&gt;
+  &lt;i&gt;Added for balance and variety of gameplay: you have to wait less for the end of work, but you also get less gold&lt;/i&gt;
+🌮&lt;b&gt;It’s now possible to feed other people’s pets&lt;/b&gt;
+  In general chat, just call the /feedpet command, then tag the desired player &lt;u&gt;(multiplayer only)&lt;/u&gt;
+🤼‍♀️&lt;b&gt;Now you can fight with pets (just like Pokemon :D)&lt;/b&gt;
+  &lt;i&gt;You need to add the bot to the general chat and call the /startduel command (Duel is possible &lt;u&gt;only in multiplayer&lt;/u&gt;)&lt;/i&gt;
 
-Corrections:
-🐛 The keyboard was often not hidden after selecting a language/resurrecting a pet - FIXED
-🚀 The work of many bot commands has been accelerated due to code optimization
+😻&lt;b&gt;Corrections&lt;/b&gt;😻:
+👽&lt;b&gt;Rebalanced experience gain &lt;/b&gt;
+   &lt;i&gt;Now, with each new level you need more experience than the previous one. The level has also been recalculated for old players.&lt;/i&gt;
+😈&lt;b&gt;Pet may not like his new name&lt;/b&gt;
+   &lt;i&gt;Try to come up with appropriate and funny names&lt;/i&gt;
 
-In the plans:
-🐿 New types of pets
-🎰 New mini-games (including for multiplayer with friends)
-🏫 Add school, education, pet age (as in new versions of Tamagotchi👾)
+I would like to express my deep gratitude to everyone who helps with ideas and finds errors in the bot’s work ❤️
+(if you have something to say, then come to our chat https://t.me/chatvirtualpetbot, we will be glad to read it 😇)
 
-Thank you all so much for your support ❤️
-I’m working on the bot alone, in parallel with my work. It’s not always possible to release updates constantly, but your words of gratitude for the bot motivate me very much ☺️
-Thank you, regular player 🫶
+Special thanks to @SuankaSmirnova25, @glitchpavel and all the players
+Without you, this bot is nothing 🤍❤️🤍
 
 Subscribe to our channel, where everything is about the bot:
-https://t.me/news_virtualpetbot</value>
+https://t.me/newsvirtualpetbot</value>
   </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
     <value>🐱: Waiting for you here, come back
