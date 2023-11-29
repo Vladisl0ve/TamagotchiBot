@@ -304,7 +304,7 @@ namespace TamagotchiBot.Controllers
                 var duelCreatorStr = splittedData[1];
                 var duelMsgStr = splittedData[2];
 
-                if (!int.TryParse(duelCreatorStr, out var duelCreatorId))
+                if (!long.TryParse(duelCreatorStr, out var duelCreatorId))
                     return;
                 if (!int.TryParse(duelMsgStr, out int duelMsgId))
                     return;

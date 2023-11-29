@@ -205,39 +205,20 @@ namespace TamagotchiBot.Services
         {
             Log.Information($"MAINTAINS STARTED");
             _appServices.SInfoService.DisableMaintainWorks();
-
-            //Change exps for users
-            var activePets = _appServices.PetService.GetAll();
             int counterUser = 0;
-            foreach (var pet in activePets)
+            var allPets = _appServices.PetService.GetAll();
+
+            foreach (var pet in allPets)
             {
-                counterUser++;
-                var petResult = Pet.Clone(pet);                
-
-                decimal toAddExp = petResult.Level * 100 + petResult.EXP;
-                petResult.Level = 1;
-                petResult.EXP = 1;
-
-                while (toAddExp > 0)
+                var userDB = _appServices.UserService.Get(pet.UserId);
+                if (userDB == null)
                 {
-                    if (toAddExp < Factors.ExpToLvl * petResult.Level)
-                    {
-                        petResult.EXP += (int)toAddExp;
-                        break;
-                    }
-                    else
-                    {
-                        toAddExp -= Factors.ExpToLvl * petResult.Level;
-                        petResult.Level++;
-                    }
+                    _appServices.PetService.Remove(pet.UserId);
+                    _appServices.UserService.Remove(pet.UserId);
+                    _appServices.ChatService.Remove(pet.UserId);
+                    Log.Information($"Removed {pet.UserId}");
+                    counterUser++;
                 }
-
-                if (petResult.EXP > Factors.ExpToLvl * petResult.Level)
-                {
-                    petResult.Level += petResult.EXP / Factors.ExpToLvl;
-                    petResult.EXP %= Factors.ExpToLvl;
-                }
-                _appServices.PetService.Update(pet.UserId, petResult);
             }
 
             Log.Information($"MAINTAINS OVER - updated {counterUser} users");
@@ -453,6 +434,11 @@ namespace TamagotchiBot.Services
             foreach (var pet in petsDB)
             {
                 var user = _appServices.UserService.Get(pet.UserId);
+                if (user == null)
+                {
+                    Log.Fatal($"USER NOT FOUND ON RANOM EVENT {pet.UserId}");
+                    continue;
+                }
 
                 if (pet.NextRandomEventNotificationTime < DateTime.UtcNow)
                 {

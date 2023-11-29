@@ -57,7 +57,7 @@ namespace TamagotchiBot.Handlers
             var chatId = messageFromUser?.Chat.Id ?? callbackFromUser?.Message.Chat.Id ?? default;
             var msgAudience = chatId > 0 ? MessageAudience.Private : MessageAudience.Group;
 
-            await HandleUpdate(update, msgAudience);
+            HandleUpdate(update, msgAudience);
 
             new SetCommandController(_appServices, messageFromUser, callbackFromUser).UpdateCommands(msgAudience);
 
@@ -105,7 +105,7 @@ namespace TamagotchiBot.Handlers
                 }
                 async Task OnTextMessageGroup(Message message, long userId)
                 {
-                    var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+                    var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username.ToLower();
                     if (!message.Text.Contains($"@{botUsername}") && message.EntityValues == null)
                         return;
 
@@ -258,10 +258,10 @@ namespace TamagotchiBot.Handlers
                             switch (update.Type)
                             {
                                 case UpdateType.Message:
-                                    await OnMessagePrivate(update.Message);
+                                    OnMessagePrivate(update.Message);
                                     return;
                                 case UpdateType.CallbackQuery:
-                                    await OnCallbackPrivate(update.CallbackQuery);
+                                    OnCallbackPrivate(update.CallbackQuery);
                                     return;
                                 default:
                                     return;
