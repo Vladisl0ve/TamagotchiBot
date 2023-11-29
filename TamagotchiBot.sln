@@ -24,5 +24,6 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CA526728-884A-46A9-B3E5-DB70859CBA4C}
+		RESX_NeutralResourcesLanguage = en-US
 	EndGlobalSection
 EndGlobal

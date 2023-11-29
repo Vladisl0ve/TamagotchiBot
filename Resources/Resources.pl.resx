@@ -147,7 +147,7 @@ Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
 💰 Złoto: {8} 💴
 ⚡️ Status: {6}
 🏅 &lt;b&gt;Pioziom: {3} &lt;/b&gt;
-✨ &lt;i&gt;Doświadczenie {2}/100&lt;/i&gt;
+✨ &lt;i&gt;Doświadczenie {2}/{10}&lt;/i&gt;
 
 /gameroom - zagraj w Jabłko🍎
 /reward - codzienna nagroda 🎁</value>
@@ -402,8 +402,8 @@ Poddania: {2}</value>
 /kitchen karmić 🍩
 /gameroom bawić się 🏓</value>
   </data>
-  <data name="CurrentStatusWorkingOnPC" xml:space="preserve">
-    <value>w pracy 💻</value>
+  <data name="CurrentStatusWorking" xml:space="preserve">
+    <value>w pracy 🧰</value>
   </data>
   <data name="denyAccessWorking" xml:space="preserve">
     <value>Brak możliwości wejścia do pokoju: zwierzak pracuje 💻</value>
@@ -413,7 +413,8 @@ Poddania: {2}</value>
 
 😴 Zmęczenie: {2}%
 
-Programowanie 💻 -{0} minuty ⌛️, +{1} zł 💰</value>
+Programowanie 💻 -{0}⌛️, +{1} zł 💰
+Rozdawać ulotki 🤹‍♀️ -{3}⌛️, +{4} złota 💰</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
     <value>Programowanie 💻</value>
@@ -425,9 +426,6 @@ Programowanie 💻 -{0} minuty ⌛️, +{1} zł 💰</value>
     <value>Złoto +{1} 💰
 Zwierzę jest zmęczone na +{0}% 😓
 Poczekaj aż zwierzak skończy pracę</value>
-  </data>
-  <data name="workCommandPCWorking" xml:space="preserve">
-    <value>Zwierzak w pracy teraz 👩‍💻</value>
   </data>
   <data name="workCommandInlineShowTime" xml:space="preserve">
     <value>Pozostało do pracy: {0} ⏱</value>
@@ -643,7 +641,9 @@ Twój link referencyjny:
 Bot 🐾 Tamagotchi | Wirtualny zwierzak 🐾 zapewnia możliwość posiadania własnego zwierzaka bezpośrednio w Telegramie
 
 Dostępne polecenia na czacie:
-/show_pet - pokaż swojego zwierzaka</value>
+/show_pet - pokaż swojego zwierzaka 🦁
+/start_duel - rozpocznij pojedynek zwierzaka ⚔️
+/feed_pet - nakarm cudzego zwierzaka 🥞</value>
   </data>
   <data name="petCommandMoreInfo1" xml:space="preserve">
     <value>🐱{0}
@@ -708,30 +708,174 @@ Dlatego częściej odwiedzaj swojego wirtualnego przyjaciela 🧸
 
 /pet - sprawdza status zwierzaka</value>
   </data>
+  <data name="BadWordDetected" xml:space="preserve">
+    <value>Zwierzak nie lubi swojego nowego imienia 😾
+Zaproponuj coś innego ⬇️</value>
+  </data>
+  <data name="StartDuelMPCommand" xml:space="preserve">
+    <value>Rozpocznij bitwę zwierząt! ⚔️</value>
+  </data>
+  <data name="DuelMPStartCommand" xml:space="preserve">
+    <value>♨️{0} ogłasza pojedynek zwierzaków!♨️
+„Mój {1}😼 rozerwie wszystkich na strzępy jak Tuzik termofor! Kto nam rzuci wyzwanie?!”</value>
+  </data>
+  <data name="DuelMPAcceptButton" xml:space="preserve">
+    <value>⚔️Podejmij wyzwanie</value>
+  </data>
+  <data name="DuelMPFighting1" xml:space="preserve">
+    <value>🔰ROZPOCZĄŁ SIĘ POJEDYNEK🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕐🟥🟥🟥🟥
+
+{2} 🙀🛡          🗡😼{3}</value>
+  </data>
+  <data name="DuelMPFighting2" xml:space="preserve">
+    <value>🔰ROZPOCZĄŁ SIĘ POJEDYNEK🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕒🟥🟥🟥🟥
+
+{2} 🙀🛡        🗡😼{3}
+
+❕Zwierzak {3} zaczął atakować {2}!</value>
+  </data>
+  <data name="DuelMPFighting3" xml:space="preserve">
+    <value>🔰ROZPOCZĄŁ SIĘ POJEDYNEK🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕢🟥🟥🟥🟥
+
+{2} 🙀🛡     🗡😼{3}
+
+‼️Zwierzak {3} jest już bardzo blisko {2}!</value>
+  </data>
+  <data name="DuelMPFighting4" xml:space="preserve">
+    <value>🔰ROZPOCZĄŁ SIĘ POJEDYNEK🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕙🟥🟥🟥🟥
+
+{2} 🙀🛡  🗡😼{3}
+
+💥Zwierzak {3} uderza {2}...</value>
+  </data>
+  <data name="DuelMPFightingEnd" xml:space="preserve">
+    <value>🎌&lt;b&gt;POJEDYNEK DOKOŃCZYŁ SIĘ&lt;/b&gt;🎌
+{0} ⚔️ {1}
+🏆&lt;b&gt;ZWYCIĘSTWO&lt;/b&gt; {2}🏆
+🟩🟩🟩🟩🎖🟩🟩🟩🟩
+
+{3}
+
+&lt;b&gt;Nagroda: {4}&lt;/b&gt;💰</value>
+  </data>
+  <data name="DuelMPFightingEndingDefenderWin" xml:space="preserve">
+    <value>Zwierzę {1} poślizgnęło się i upadło na tyłek podczas ataku🧸
+😽{0} wygrywa 🥇</value>
+  </data>
+  <data name="DuelMPFightingEndingAttackerWin" xml:space="preserve">
+    <value>Zwierzak {1} uderza w tarczę z szybkością błyskawicy💢
+{0} przestraszył się i poprosił o przerwanie pojedynku🙅‍♂️
+😽{1} wygrywa 🥇</value>
+  </data>
+  <data name="MPNoPetCallbackAlert" xml:space="preserve">
+    <value>Aby wziąć udział musisz mieć zwierzaka 🪿</value>
+  </data>
+  <data name="NotEnoughGoldForDuel" xml:space="preserve">
+    <value>{0} aby rozpocząć pojedynek potrzebujesz {2}💰złota
+Masz tylko {1}💰</value>
+  </data>
+  <data name="NotEnoughGoldForDuelCallback" xml:space="preserve">
+    <value>Aby przyjąć pojedynek potrzebujesz {1}💰złota
+Masz tylko {0}💰</value>
+  </data>
+  <data name="DuelMPTimeout" xml:space="preserve">
+    <value>Nikt nie przyjął pojedynku od {0}
+&lt;i&gt;Więc wszyscy boją się zwierzaka {1}&lt;/i&gt; 🌚
+
+Wpłata w kwocie {2}💰 została zwrócona na konto</value>
+  </data>
+  <data name="DuelMPCooldownCallback" xml:space="preserve">
+    <value>Twój zwierzak odpoczywa po przegranym ostatnim pojedynku🥷
+Pozostaje poczekać {0}</value>
+  </data>
+  <data name="DuelMPCooldown" xml:space="preserve">
+    <value>{1}, Twój zwierzak odpoczywa po przegranym ostatnim pojedynku🥷
+Po prostu poczekaj {0}</value>
+  </data>
+  <data name="DuelMPErrorYourself" xml:space="preserve">
+    <value>Nie można akceptować własnych pojedynków 🙈</value>
+  </data>
+  <data name="FeedMPNotFound" xml:space="preserve">
+    <value>Nie znaleziono takich graczy 👀</value>
+  </data>
+  <data name="NotEnoughGoldForMPFeed" xml:space="preserve">
+    <value>{0}, aby nakarmić zwierzaka, potrzebujesz {2}💰złota
+Masz tylko {1}💰</value>
+  </data>
+  <data name="NotEnoughTimeSpentFeedMP" xml:space="preserve">
+    <value>{0}, minęło zbyt mało czasu 🍕
+Zwierzę {1} nie chciało jeść🐣
+
+Poczekaj jeszcze {2}🕑, zanim będziesz mógł ponownie nakarmić zwierzaka</value>
+  </data>
+  <data name="NotEnoughTimeSpentByLastMPFeed" xml:space="preserve">
+    <value>{0}, musisz poczekać jeszcze {1}🕑, aby nakarmić czyjeś zwierzątko🍗</value>
+  </data>
+  <data name="FeedMPCommand" xml:space="preserve">
+    <value>Nakarm cudzego zwierzaka 🍔</value>
+  </data>
+  <data name="FeedMPStart" xml:space="preserve">
+    <value>{0}, wyślij pseudonim zwierzaka, którego chcesz nakarmić 🍽
+&lt;i&gt;Wskazówka: zacznij pisać „@” i wybierz gracza &lt;/i&gt;</value>
+  </data>
+  <data name="FeedMPEndSuccess" xml:space="preserve">
+    <value>Zwierzak &lt;b&gt;{0}&lt;/b&gt; z radością rzucił się na ogromnego burgera 🍔 z frytkami 🍟
+😻: &lt;i&gt;Dziękuję bardzo! Powiem właścicielowi, że ma świetnego przyjaciela!&lt;/i&gt;
+
+-{1}💰</value>
+  </data>
+  <data name="FeedMPErrorFeedOwnPet" xml:space="preserve">
+    <value>Karmić swojego zwierzaka możesz wyłącznie poprzez bota PM 🤷‍♂️</value>
+  </data>
+  <data name="workCommandInlineFlyers" xml:space="preserve">
+    <value>Rozdawaj ulotki 🤹‍♀️</value>
+  </data>
+  <data name="tooTiredForJobPC" xml:space="preserve">
+    <value>Zwierzak nie chce pracować na komputerze 🫧
+Aby wykonać tę pracę, nie musisz odczuwać więcej niż {0}😴 zmęczenia</value>
+  </data>
+  <data name="tooTiredForJobFlyers" xml:space="preserve">
+    <value>Zwierzak nie chce rozdawać ulotek 🫧
+Aby wykonać tę pracę, nie musisz odczuwać więcej niż {0}😴 zmęczenia</value>
+  </data>
+  <data name="workCommandPCWorking" xml:space="preserve">
+    <value>Zwierzak obecnie pracuje przy komputerze 👩‍💻</value>
+  </data>
+  <data name="workCommandFlyersWorking" xml:space="preserve">
+    <value>Zwierzak rozdaje teraz ulotki 🤹‍♀️</value>
+  </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Została wydana aktualizacja 1.3⚡️⚡️
+    <value>⚡️⚡️ Wydano aktualizację 1.4⚡️⚡️
 
-Dodany:
-👨‍👦‍👦Multiplayer - bota można już dodać do czatu grupowego!
-Teraz możesz pochwalić się swoim pupilem znajomym 😈
-🥂Nowe losowe wydarzenia związane ze zwierzętami
-🦥Program polecający - zapraszasz znajomych i dostajesz za to bonusy 💰 (polecenie/polecenie)
-🧩Dodano polecenie /changelog - tutaj znajduje się link do kanału o naszym bocie Tamagotchi, na którym możesz omówić najnowsze aktualizacje i zaproponować coś nowego
+🥳&lt;b&gt;Dodano&lt;/b&gt;🥳:
+🤹‍♂️&lt;b&gt;Nowa praca dla zwierzaka - roznoszenie ulotek&lt;/b&gt;
+  &lt;i&gt;Dodano dla równowagi i różnorodności rozgrywki: musisz krócej czekać na koniec pracy, ale dostajesz też mniej złota&lt;/i&gt;
+🌮&lt;b&gt;Teraz można karmić zwierzęta innych osób&lt;/b&gt;
+  Na czacie ogólnym wystarczy wywołać komendę /feedpet, a następnie oznaczyć żądanego gracza &lt;u&gt;(tylko tryb wieloosobowy)&lt;/u&gt;
+🤼‍♀️&lt;b&gt;Teraz możesz walczyć ze zwierzakami (tak jak Pokemon :D)&lt;/b&gt;
+  &lt;i&gt;Musisz dodać bota do czatu ogólnego i wywołać komendę /startduel (Pojedynek jest możliwy &lt;u&gt;tylko w trybie wieloosobowym&lt;/u&gt;)&lt;/i&gt;
 
-Poprawki:
-🐛 Klawiatura często nie była ukrywana po wybraniu języka/wskrzeszeniu zwierzaka - NAPRAWIONO
-🚀 Praca wielu poleceń bota została przyspieszona dzięki optymalizacji kodu
+😻&lt;b&gt;Poprawki&lt;/b&gt;😻:
+👽&lt;b&gt;Zrównoważony przyrost doświadczenia&lt;/b&gt;
+   &lt;i&gt;Teraz z każdym nowym poziomem potrzebujesz więcej doświadczenia niż poprzedni. Poziom został również przeliczony dla starych graczy.&lt;/i&gt;
+😈&lt;b&gt;Zwierzę może nie lubić swojego nowego imienia&lt;/b&gt;
+   &lt;i&gt;Spróbuj wymyślić odpowiednie i zabawne nazwy&lt;/i&gt;
 
-W planach:
-🐿 Nowe rodzaje zwierząt domowych
-🎰 Nowe mini-gry (w tym do gry wieloosobowej ze znajomymi)
-🏫 Dodaj szkołę, edukację, wiek zwierzaka (jak w nowych wersjach Tamagotchi👾)
+Chciałbym wyrazić głęboką wdzięczność wszystkim, którzy pomagają pomysłami i znajdują błędy w działaniu bota ❤️
+(jeśli masz coś do powiedzenia, to wpadnij na nasz czat https://t.me/chatvirtualpetbot, chętnie to przeczytamy 😇)
 
-Dziękuję wszystkim bardzo za wsparcie ❤️
-Pracuję nad botem samodzielnie, równolegle z pracą. Nie zawsze da się publikować aktualizacje na bieżąco, ale Wasze słowa wdzięczności dla bota bardzo mnie motywują ☺️
-Dziękuję, stały graczu 🫶
+Specjalne podziękowania dla @SuankaSmirnova25, @glitchpavel i wszystkich graczy
+Bez Was ten bot jest niczym 🤍❤️🤍
 
 Subskrybuj nasz kanał, na którym wszystko jest o bocie:
-https://t.me/news_virtualpetbot</value>
+https://t.me/newsvirtualpetbot</value>
   </data>
 </root>

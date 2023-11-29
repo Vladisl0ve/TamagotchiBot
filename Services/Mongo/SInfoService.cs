@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TamagotchiBot.Database;
@@ -24,6 +25,7 @@ namespace TamagotchiBot.Services.Mongo
         public DateTime GetLastGlobalUpdate() => _sinfo.Find(si => true).FirstOrDefault()?.LastGlobalUpdate ?? DateTime.MinValue;
         public bool GetDoSendChangelogs() => _sinfo.Find(si => true).FirstOrDefault()?.DoSendChangelogs ?? false;
         public bool GetDoMaintainWorks() => _sinfo.Find(si => true).FirstOrDefault()?.DoMaintainWorks ?? false;
+        public List<string> GetBadWords() => _sinfo.Find(si => true).FirstOrDefault()?.BannedWords ?? new List<string>();
         public DateTime GetNextNotify()
         {
             bool isMongoAlive;
@@ -132,7 +134,7 @@ namespace TamagotchiBot.Services.Mongo
 
             _sinfo.ReplaceOne(s => s._id == sinfoDB._id, info);
         }
-        public async Task<Telegram.Bot.Types.User> GetBotUserInfo() => await _botClient.GetMeAsync();          
-        
+        public async Task<Telegram.Bot.Types.User> GetBotUserInfo() => await _botClient.GetMeAsync();
+
     }
 }

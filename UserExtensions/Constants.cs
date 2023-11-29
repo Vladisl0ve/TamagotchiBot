@@ -20,7 +20,14 @@ namespace TamagotchiBot.UserExtensions
         {
             Active,
             Sleeping,
-            WorkingOnPC
+            Working
+        }
+
+        public enum JobType
+        {
+            None = 0,
+            WorkingOnPC = 1,
+            FlyersDistributing = 2
         }
 
         public enum Fatigue
@@ -50,7 +57,7 @@ namespace TamagotchiBot.UserExtensions
         public struct Factors //per minute
         {
             public const int ExpFactor = 1;
-            public const int ExpToLvl = 100;
+            public const int ExpToLvl = 50;
             public const double StarvingFactor = 0.2;
             public const double FatigueFactor = 0.19;
             public const double RestFactor = 10;
@@ -63,7 +70,8 @@ namespace TamagotchiBot.UserExtensions
             public const int DiceGameFatigueFactor = 5;
             public const int DiceGameJoyFactor = 10;
 
-            public const int WorkOnPCFatigueFactor = 70;
+            public const int WorkOnPCFatigueFactor = 50;
+            public const int FlyersDistributingFatigueFactor = 20;
 
             public const int PillHPFactor = 20;
             public const int PillJoyFactor = -10;
@@ -72,10 +80,14 @@ namespace TamagotchiBot.UserExtensions
         public struct Rewards //in gold
         {
             public const int WorkOnPCGoldReward = 100;
+            public const int FlyersDistributingGoldReward = 40;
             public const int DailyGoldReward = 100;
 
             //Referal
             public const int ReferalAdded = 500;
+
+            //Multiplayer
+            public const int WonDuel = 150;
         }
 
         public struct Costs //in gold
@@ -95,13 +107,20 @@ namespace TamagotchiBot.UserExtensions
 
             //Rename
             public const int RenamePet = 500;
+
+            //Multiplayer
+            public const int Duel = 100;
+            public const int FeedMP = 20;
         }
 
         public class TimesToWait
         {
             public TimeSpan WorkOnPCToWait = new(0, 2, 0);
+            public TimeSpan FlyersDistToWait = new(0, 0, 30);
             public TimeSpan DailyRewardToWait = new(24, 0, 0);
             public TimeSpan SleepToWait = new(0, 10, 0);
+            public TimeSpan DuelCDToWait = new(0, 5, 0);
+            public TimeSpan FeedMPCDToWait = new(6, 0, 0);
         }
 
         public struct Limits
@@ -115,6 +134,9 @@ namespace TamagotchiBot.UserExtensions
             public const double RedAppleHungerFactor = 5; //🍎
             public const double ChocolateHungerFactor = 2; //🍫
             public const double LollipopHungerFactor = 1; //🍭
+
+            //Multiplayer
+            public const int MPFeed = 100; //🍭
         }
 
         public struct HygieneFactors
@@ -146,6 +168,8 @@ namespace TamagotchiBot.UserExtensions
         public struct CommandsMP
         {
             public const string ShowPetCommand = "show_pet";
+            public const string StartDuelCommand = "start_duel";
+            public const string FeedMPCommand = "feed_pet";
         }
 
         public struct StickersId
@@ -160,6 +184,7 @@ namespace TamagotchiBot.UserExtensions
             public const string DevelopWarningSticker = "CAACAgIAAxkBAAEDHxNhcHJP59QL8Fe9GaY3POWBIeII6QACUQADLMqqByX_VpH__oXBIQQ";
             public const string DroppedPetSticker = "CAACAgIAAxkBAAEIDftkCODBW8d3hT4S-iBjBJnpuSbGjwACcBIAAt6p8Et8ICHIsOd3qy4E";
             public const string RenamePetSticker = "CAACAgIAAxkBAAEIDjxkCP5MTi3jeoVyqqptSecoJc0B3AACbRQAAvh48Ev_35tLbqKxRy4E";
+            public const string PetDoesntLikeNameSticker = "CAACAgEAAxkBAAEKzlNlX6I8gelMuHkWo5lf5lJ4GFkvhQACiAIAAoVVWEYa_0H43ss_kTME";
             public const string PolishLanguageSetSticker = "CAACAgIAAxkBAAEDHxVhcHU6BuzdT1sw-MZB0uBR35h5iAACKwEAAr8DyQQgsxfQYO--ECEE";
             public const string EnglishLanguageSetSticker = "CAACAgIAAxkBAAEDHxdhcHV4y14-CyrH_D1YujHDCBROUQAC6AADvwPJBGHtqaDNJtEyIQQ";
             public const string RussianLanguageSetSticker = "CAACAgIAAxkBAAEDHxlhcHWCiuvBtQ-IZJknE2hlBlZ-TwAC4gADvwPJBOLja80qqucgIQQ";
@@ -188,6 +213,8 @@ namespace TamagotchiBot.UserExtensions
 
             public const string ResurrectedPetSticker = "CAACAgIAAxkBAAEKAqBk2QhbPJzmYZG1tOdSmWvlW5RYNAACpR4AAsL7YUo1ZV8nKeb1XDAE";
 
+            public const string MPDuelStarted = "CAACAgIAAxkBAAEK0n9lY2dwZDww-D6OZW-5aD4SdN8BcgACGCUAAvYaiEvT6OrPxdApCzME";
+
             //Cat
             public const string PetCreated_Cat = "CAACAgIAAxkBAAEDHvlhcG2oG4rLAAGPvREkKoykMsNnYzsAAlsQAAKlvUhKsth-8cNoWVghBA";
             public const string PetInfo_Cat = "CAACAgIAAxkBAAEDHwFhcG3C-_owIcuMOR9GTlE4MeoTOAACvRIAAhxUSUo2xUCLEnwQHiEE";
@@ -199,7 +226,9 @@ namespace TamagotchiBot.UserExtensions
             public const string PetGameroom_Cat = "CAACAgIAAxkBAAEDnIhh1LTJGdhUdSU1y0PFrMmr0wJ3EwAC_RIAAjV1SEq7O0eiJ48IqCME";
             public const string PetSleep_Cat = "CAACAgIAAxkBAAEDuq1h6xbXEQHcyTH6hf6bDcluqK2-bgAC4ScAAvVFSEo8b-MRtutFhiME";
             public const string PetBusy_Cat = "CAACAgIAAxkBAAEDLJJherSnCEKTmK9t5i1x9shxgGVzuwACdBIAAuAOQEqBqm_p74rsAAEhBA";
-            public const string PetWork_Cat = "CAACAgIAAxkBAAEIm5BkPBgi8nYhbfCXNX4we5SCqnlT3QAC8RAAAowt_Qf8Tl-qgXK7Oy8E";
+            public const string PetWork_Cat = "CAACAgIAAxkBAAEK1yBlZlxHrCC3KI92GdDnsv7ml2BpyAACbxgAAh1UyUtNxQKfdLqZ7zME";
+            public const string PetWorkOnPC_Cat = "CAACAgIAAxkBAAEK1xxlZlWln8UKh7QT3VELzQPUB3ORyQAC9RgAAk91yUtrMUFsJhd4XjME";
+            public const string PetFlyersJob_Cat = "CAACAgIAAxkBAAEK1x5lZlXZ6mDQC3ZYi6TeTiijYz-fFgACbhgAAsUnyUsEceKwVvyxWjME";
             public const string PetRanks_Cat = "CAACAgIAAxkBAAEDuydh6-QrBh7ZWsJ08P5JPbuhEbhIlAAC6hAAAowt_QeFBFvPjWUsjyME";
             public const string PetHospitalLowHP_Cat = "CAACAgIAAxkBAAEIEa1kCkgUfc3lvy1OnyY5LneOAz3tQwAC2hAAAowt_QeJ21KeBteIlS8E";
             public const string PetHospitalMidHP_Cat = "CAACAgIAAxkBAAEIEbFkCkhUqHOSaEfmY85yxF98gaUZhwAC7BAAAowt_QdvxODKmdLpri8E";
@@ -245,7 +274,8 @@ namespace TamagotchiBot.UserExtensions
 
             public List<CallbackModel> InlineWork = new()
             {
-                new CallbackButtons.WorkCommand().WorkCommandInlineWorkOnPC
+                new CallbackButtons.WorkCommand().WorkCommandInlineWorkOnPC,
+                new CallbackButtons.WorkCommand().WorkCommandInlineDistributeFlyers,
             };
 
             public List<CallbackModel> InlineRanks = new()

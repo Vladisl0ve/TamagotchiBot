@@ -150,6 +150,16 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pet doesn&apos;t like his new name 😾
+        ///Suggest something else ⬇️.
+        /// </summary>
+        public static string BadWordDetected {
+            get {
+                return ResourceManager.GetString("BadWordDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You&apos;re in the bathroom 🛁
         ///🚿 Hygiene: {0}%
         ///
@@ -202,17 +212,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ⚡️⚡️ Update 1.3 has been released⚡️⚡️
+        ///   Looks up a localized string similar to ⚡️⚡️ Update 1.4 has been released⚡️⚡️
         ///
-        ///Added:
-        ///👨‍👦‍👦Multiplayer - the bot can already be added to the group chat!
-        ///Now you can show off your pet to your friends 😈
-        ///🥂New random pet-related events
-        ///🦥Referral program - you invite friends and get bonuses for it 💰 (command /referal)
-        ///🧩The /changelog command has been added - here is a link to a channel about our Tamagotchi bot, where you can discuss the latest updates and suggest something new
-        ///
-        ///Corrections:
-        ///🐛 The keyboard was often not hidden after  [rest of string was truncated]&quot;;.
+        ///🥳&lt;b&gt;Added&lt;/b&gt;🥳:
+        ///🤹‍♂️&lt;b&gt;New job for a pet - distributing flyers&lt;/b&gt;
+        ///  &lt;i&gt;Added for balance and variety of gameplay: you have to wait less for the end of work, but you also get less gold&lt;/i&gt;
+        ///🌮&lt;b&gt;It’s now possible to feed other people’s pets&lt;/b&gt;
+        ///  In general chat, just call the /feedpet command, then tag the desired player &lt;u&gt;(multiplayer only)&lt;/u&gt;
+        ///🤼‍♀️&lt;b&gt;Now you can fight with pets (just like Pokemon :D)&lt;/b&gt;
+        ///  &lt;i&gt;You need to add the bot to the general chat a [rest of string was truncated]&quot;;.
         /// </summary>
         public static string changelog1Text {
             get {
@@ -308,11 +316,11 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to on work 💻.
+        ///   Looks up a localized string similar to on work 🧰.
         /// </summary>
-        public static string CurrentStatusWorkingOnPC {
+        public static string CurrentStatusWorking {
             get {
-                return ResourceManager.GetString("CurrentStatusWorkingOnPC", resourceCulture);
+                return ResourceManager.GetString("CurrentStatusWorking", resourceCulture);
             }
         }
         
@@ -349,6 +357,160 @@ namespace TamagotchiBot.Resources {
         public static string DevelopWarning {
             get {
                 return ResourceManager.GetString("DevelopWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⚔️Accept the challenge.
+        /// </summary>
+        public static string DuelMPAcceptButton {
+            get {
+                return ResourceManager.GetString("DuelMPAcceptButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {1}, Your pet is resting after losing the last duel🥷
+        ///Just wait {0}.
+        /// </summary>
+        public static string DuelMPCooldown {
+            get {
+                return ResourceManager.GetString("DuelMPCooldown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your pet is resting after losing the last duel🥷
+        ///It remains to wait {0}.
+        /// </summary>
+        public static string DuelMPCooldownCallback {
+            get {
+                return ResourceManager.GetString("DuelMPCooldownCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can&apos;t accept your own duels 🙈.
+        /// </summary>
+        public static string DuelMPErrorYourself {
+            get {
+                return ResourceManager.GetString("DuelMPErrorYourself", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔰THE DUEL HAS BEGAN🔰
+        ///{0} ⚔️ {1}
+        ///🟥🟥🟥🟥🕐🟥🟥🟥🟥
+        ///
+        ///{2} 🙀🛡          🗡😼{3}.
+        /// </summary>
+        public static string DuelMPFighting1 {
+            get {
+                return ResourceManager.GetString("DuelMPFighting1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔰THE DUEL HAS BEGAN🔰
+        ///{0} ⚔️ {1}
+        ///🟥🟥🟥🟥🕒🟥🟥🟥🟥
+        ///{2} 🙀🛡        🗡😼{3}
+        ///
+        ///❕Pet {3} started attacking {2}!.
+        /// </summary>
+        public static string DuelMPFighting2 {
+            get {
+                return ResourceManager.GetString("DuelMPFighting2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔰THE DUEL HAS BEGAN🔰
+        ///{0} ⚔️ {1}
+        ///🟥🟥🟥🟥🕢🟥🟥🟥🟥
+        ///
+        ///{2} 🙀🛡     🗡😼{3}
+        ///
+        ///‼️Pet {3} is already very close to {2}!.
+        /// </summary>
+        public static string DuelMPFighting3 {
+            get {
+                return ResourceManager.GetString("DuelMPFighting3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🔰THE DUEL HAS BEGAN🔰
+        ///{0} ⚔️ {1}
+        ///🟥🟥🟥🟥🕙🟥🟥🟥🟥
+        ///
+        ///{2} 🙀🛡  🗡😼{3}
+        ///
+        ///💥Pet {3} hits {2}....
+        /// </summary>
+        public static string DuelMPFighting4 {
+            get {
+                return ResourceManager.GetString("DuelMPFighting4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🎌&lt;b&gt;THE DUEL IS OVER&lt;/b&gt;🎌
+        ///{0} ⚔️ {1}
+        ///🏆&lt;b&gt;VICTORY&lt;/b&gt; {2}🏆
+        ///🟩🟩🟩🟩🎖🟩🟩🟩🟩
+        ///
+        ///{3}
+        ///
+        ///&lt;b&gt;Reward: {4}&lt;/b&gt;💰.
+        /// </summary>
+        public static string DuelMPFightingEnd {
+            get {
+                return ResourceManager.GetString("DuelMPFightingEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet {1} hits the shield with lightning speed💢
+        ///{0} got scared and asked to stop the duel🙅‍♂️
+        ///😽{1} wins 🥇.
+        /// </summary>
+        public static string DuelMPFightingEndingAttackerWin {
+            get {
+                return ResourceManager.GetString("DuelMPFightingEndingAttackerWin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet {1} slipped and fell on his butt during an attack🧸
+        ///😽{0} wins 🥇.
+        /// </summary>
+        public static string DuelMPFightingEndingDefenderWin {
+            get {
+                return ResourceManager.GetString("DuelMPFightingEndingDefenderWin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ♨️{0} announces a pet duel!♨️
+        ///&quot;My {1}😼 kicks ass and takes names! Who will challenge us?!&quot;.
+        /// </summary>
+        public static string DuelMPStartCommand {
+            get {
+                return ResourceManager.GetString("DuelMPStartCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No one accepted the duel from {0}
+        ///&lt;i&gt;So everyone is afraid of pet {1}&lt;/i&gt; 🌚
+        ///
+        ///The contribution in the amount of {2}💰 was returned to the account.
+        /// </summary>
+        public static string DuelMPTimeout {
+            get {
+                return ResourceManager.GetString("DuelMPTimeout", resourceCulture);
             }
         }
         
@@ -419,6 +581,55 @@ namespace TamagotchiBot.Resources {
         public static string FatigueTired {
             get {
                 return ResourceManager.GetString("FatigueTired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feed someone else&apos;s pet 🍔.
+        /// </summary>
+        public static string FeedMPCommand {
+            get {
+                return ResourceManager.GetString("FeedMPCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet &lt;b&gt;{0}&lt;/b&gt; happily pounced on a huge burger 🍔 with fries 🍟
+        ///😻: &lt;i&gt;Thank you very much! I&apos;ll tell the owner that he has a great friend!&lt;/i&gt;
+        ///
+        ///-{1}💰.
+        /// </summary>
+        public static string FeedMPEndSuccess {
+            get {
+                return ResourceManager.GetString("FeedMPEndSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can feed your pet only via PM bot 🤷‍♂️.
+        /// </summary>
+        public static string FeedMPErrorFeedOwnPet {
+            get {
+                return ResourceManager.GetString("FeedMPErrorFeedOwnPet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No such players found 👀.
+        /// </summary>
+        public static string FeedMPNotFound {
+            get {
+                return ResourceManager.GetString("FeedMPNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}, send the nickname of which pet you want to feed 🍽
+        ///&lt;i&gt;Hint: start typing &apos;@&apos; and select a player &lt;/i&gt;.
+        /// </summary>
+        public static string FeedMPStart {
+            get {
+                return ResourceManager.GetString("FeedMPStart", resourceCulture);
             }
         }
         
@@ -635,6 +846,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To participate you must have a pet 🪿.
+        /// </summary>
+        public static string MPNoPetCallbackAlert {
+            get {
+                return ResourceManager.GetString("MPNoPetCallbackAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {8}, here is your pet
         ///
         ///🐱 &lt;b&gt;{0}&lt;/b&gt;
@@ -654,11 +874,62 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} to start a duel you need {2}💰gold
+        ///You only have {1}💰.
+        /// </summary>
+        public static string NotEnoughGoldForDuel {
+            get {
+                return ResourceManager.GetString("NotEnoughGoldForDuel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To accept a duel you need {1}💰gold
+        ///You only have {0}💰.
+        /// </summary>
+        public static string NotEnoughGoldForDuelCallback {
+            get {
+                return ResourceManager.GetString("NotEnoughGoldForDuelCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} to feed friend&apos;s pet you need {2}💰gold
+        ///You only have {1}💰.
+        /// </summary>
+        public static string NotEnoughGoldForMPFeed {
+            get {
+                return ResourceManager.GetString("NotEnoughGoldForMPFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unfortunately, you don&apos;t have enough money ☠️.
         /// </summary>
         public static string NotEnoughGoldToResurrect {
             get {
                 return ResourceManager.GetString("NotEnoughGoldToResurrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}, you have to wait another {1}🕑 to feed someone else’s pet🍗.
+        /// </summary>
+        public static string NotEnoughTimeSpentByLastMPFeed {
+            get {
+                return ResourceManager.GetString("NotEnoughTimeSpentByLastMPFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}, too little time has passed 🍕
+        ///Pet {1} didn’t want to eat🐣
+        ///
+        ///Wait another {2}🕑 before you can feed pet again.
+        /// </summary>
+        public static string NotEnoughTimeSpentFeedMP {
+            get {
+                return ResourceManager.GetString("NotEnoughTimeSpentFeedMP", resourceCulture);
             }
         }
         
@@ -705,7 +976,7 @@ namespace TamagotchiBot.Resources {
         ///💰 Gold: {8} 💴
         ///⚡️ Status: {6}
         ///🏅 &lt;b&gt;{3} level &lt;/b&gt;
-        ///✨ &lt;i&gt;EXP: {2}/100&lt;/i&gt;
+        ///✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
         ///
         ////gameroom - Play in Apple🍎
         ////reward - Get your daily reward 🎁.
@@ -1244,7 +1515,9 @@ namespace TamagotchiBot.Resources {
         ///Bot 🐾 Tamagotchi | Virtual Pet 🐾 provides the opportunity to have your own pet directly in Telegram
         ///
         ///Available commands in chat:
-        ////show_pet - show your pet.
+        ////show_pet - show your pet 🦁
+        ////start_duel - start a pet duel ⚔️
+        ////feed_pet - feed someone else’s pet 🥞.
         /// </summary>
         public static string ShowWelcomeMessageMultiplayer {
             get {
@@ -1291,6 +1564,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start a pet battle! ⚔️.
+        /// </summary>
+        public static string StartDuelMPCommand {
+            get {
+                return ResourceManager.GetString("StartDuelMPCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Statistics.
         /// </summary>
         public static string statisticsText {
@@ -1323,6 +1605,26 @@ namespace TamagotchiBot.Resources {
         public static string tooManyStarvingCommand {
             get {
                 return ResourceManager.GetString("tooManyStarvingCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet doesn&apos;t want to hand out flyers 🫧
+        ///To do this job you need to have no more than {0}😴 fatigue.
+        /// </summary>
+        public static string tooTiredForJobFlyers {
+            get {
+                return ResourceManager.GetString("tooTiredForJobFlyers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The pet doesn&apos;t want to work on the computer 🫧
+        ///To do this job you need to have no more than {0}😴 fatigue.
+        /// </summary>
+        public static string tooTiredForJobPC {
+            get {
+                return ResourceManager.GetString("tooTiredForJobPC", resourceCulture);
             }
         }
         
@@ -1377,7 +1679,8 @@ namespace TamagotchiBot.Resources {
         ///
         ///😴 Fatigue: {2}%
         ///
-        ///Programing 💻 -{0} minutes ⌛️, +{1} golds 💰.
+        ///Programing 💻 -{0}⌛️, +{1} golds 💰
+        ///Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} gold 💰.
         /// </summary>
         public static string workCommand {
             get {
@@ -1391,6 +1694,24 @@ namespace TamagotchiBot.Resources {
         public static string workCommandDescription {
             get {
                 return ResourceManager.GetString("workCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The pet is now handing out leaflets 🤹‍♀️.
+        /// </summary>
+        public static string workCommandFlyersWorking {
+            get {
+                return ResourceManager.GetString("workCommandFlyersWorking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distribute leaflets 🤹‍♀️.
+        /// </summary>
+        public static string workCommandInlineFlyers {
+            get {
+                return ResourceManager.GetString("workCommandInlineFlyers", resourceCulture);
             }
         }
         
@@ -1413,7 +1734,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pet is working now 👩‍💻.
+        ///   Looks up a localized string similar to The pet is currently working at the computer 👩‍💻.
         /// </summary>
         public static string workCommandPCWorking {
             get {

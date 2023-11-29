@@ -56,7 +56,10 @@ namespace TamagotchiBot.Models.Mongo
         public long DicePlayedCounter { get; set; }
 
         [BsonElement("WorkOnPCCounter")]
-        public long WorkOnPCCounter { get; set; }
+        public long WorkOnPCCounter { get; set; } 
+        
+        [BsonElement("WorkFlyersCounter")]
+        public long WorkFlyersCounter { get; set; }
 
         [BsonElement("AppleGamePlayedCounter")]
         public long AppleGamePlayedCounter { get; set; }

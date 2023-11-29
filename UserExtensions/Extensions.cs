@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
+using System.Web;
 using TamagotchiBot.Models;
 using TamagotchiBot.Models.Mongo;
 using Telegram.Bot.Types;
@@ -238,6 +240,16 @@ namespace TamagotchiBot.UserExtensions
                 {
                     Command = CommandsMP.ShowPetCommand,
                     Description = Resources.Resources.ShowPetMPCommand
+                },
+                new BotCommand()
+                {
+                    Command = CommandsMP.StartDuelCommand,
+                    Description = Resources.Resources.StartDuelMPCommand
+                },
+                new BotCommand()
+                {
+                    Command = CommandsMP.FeedMPCommand,
+                    Description = Resources.Resources.FeedMPCommand
                 }
             };
 
@@ -287,7 +299,7 @@ namespace TamagotchiBot.UserExtensions
                 {
                     CurrentStatus.Active => Resources.Resources.CurrentStatusActive,
                     CurrentStatus.Sleeping => Resources.Resources.CurrentStatusSleeping,
-                    CurrentStatus.WorkingOnPC => Resources.Resources.CurrentStatusWorkingOnPC,
+                    CurrentStatus.Working => Resources.Resources.CurrentStatusWorking,
                     _ => null,
                 };
             }

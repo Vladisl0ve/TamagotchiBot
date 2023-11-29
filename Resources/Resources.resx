@@ -147,7 +147,7 @@ BTW '/menu' shows some commands to start</value>
 💰 Gold: {8} 💴
 ⚡️ Status: {6}
 🏅 &lt;b&gt;{3} level &lt;/b&gt;
-✨ &lt;i&gt;EXP: {2}/100&lt;/i&gt;
+✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
 
 /gameroom - Play in Apple🍎
 /reward - Get your daily reward 🎁</value>
@@ -424,30 +424,30 @@ Surrendered: {2}</value>
     <value>You are in the gameroom ⚽️</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Update 1.3 has been released⚡️⚡️
+    <value>⚡️⚡️ Update 1.4 has been released⚡️⚡️
 
-Added:
-👨‍👦‍👦Multiplayer - the bot can already be added to the group chat!
-Now you can show off your pet to your friends 😈
-🥂New random pet-related events
-🦥Referral program - you invite friends and get bonuses for it 💰 (command /referal)
-🧩The /changelog command has been added - here is a link to a channel about our Tamagotchi bot, where you can discuss the latest updates and suggest something new
+🥳&lt;b&gt;Added&lt;/b&gt;🥳:
+🤹‍♂️&lt;b&gt;New job for a pet - distributing flyers&lt;/b&gt;
+  &lt;i&gt;Added for balance and variety of gameplay: you have to wait less for the end of work, but you also get less gold&lt;/i&gt;
+🌮&lt;b&gt;It’s now possible to feed other people’s pets&lt;/b&gt;
+  In general chat, just call the /feedpet command, then tag the desired player &lt;u&gt;(multiplayer only)&lt;/u&gt;
+🤼‍♀️&lt;b&gt;Now you can fight with pets (just like Pokemon :D)&lt;/b&gt;
+  &lt;i&gt;You need to add the bot to the general chat and call the /startduel command (Duel is possible &lt;u&gt;only in multiplayer&lt;/u&gt;)&lt;/i&gt;
 
-Corrections:
-🐛 The keyboard was often not hidden after selecting a language/resurrecting a pet - FIXED
-🚀 The work of many bot commands has been accelerated due to code optimization
+😻&lt;b&gt;Corrections&lt;/b&gt;😻:
+👽&lt;b&gt;Rebalanced experience gain &lt;/b&gt;
+   &lt;i&gt;Now, with each new level you need more experience than the previous one. The level has also been recalculated for old players.&lt;/i&gt;
+😈&lt;b&gt;Pet may not like his new name&lt;/b&gt;
+   &lt;i&gt;Try to come up with appropriate and funny names&lt;/i&gt;
 
-In the plans:
-🐿 New types of pets
-🎰 New mini-games (including for multiplayer with friends)
-🏫 Add school, education, pet age (as in new versions of Tamagotchi👾)
+I would like to express my deep gratitude to everyone who helps with ideas and finds errors in the bot’s work ❤️
+(if you have something to say, then come to our chat https://t.me/chatvirtualpetbot, we will be glad to read it 😇)
 
-Thank you all so much for your support ❤️
-I’m working on the bot alone, in parallel with my work. It’s not always possible to release updates constantly, but your words of gratitude for the bot motivate me very much ☺️
-Thank you, regular player 🫶
+Special thanks to @SuankaSmirnova25, @glitchpavel and all the players
+Without you, this bot is nothing 🤍❤️🤍
 
 Subscribe to our channel, where everything is about the bot:
-https://t.me/news_virtualpetbot</value>
+https://t.me/newsvirtualpetbot</value>
   </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
     <value>🐱: Waiting for you here, come back
@@ -461,8 +461,8 @@ https://t.me/news_virtualpetbot</value>
 /kitchen to feed 🍩
 /gameroom for games 🏓</value>
   </data>
-  <data name="CurrentStatusWorkingOnPC" xml:space="preserve">
-    <value>on work 💻</value>
+  <data name="CurrentStatusWorking" xml:space="preserve">
+    <value>on work 🧰</value>
   </data>
   <data name="denyAccessWorking" xml:space="preserve">
     <value>You can not come in: pet is on work 💻</value>
@@ -472,7 +472,8 @@ https://t.me/news_virtualpetbot</value>
 
 😴 Fatigue: {2}%
 
-Programing 💻 -{0} minutes ⌛️, +{1} golds 💰</value>
+Programing 💻 -{0}⌛️, +{1} golds 💰
+Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} gold 💰</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
     <value>Program 💻</value>
@@ -486,7 +487,7 @@ The pet is tired at +{0}% 😓
 Wait until the pet finishes work</value>
   </data>
   <data name="workCommandPCWorking" xml:space="preserve">
-    <value>Pet is working now 👩‍💻</value>
+    <value>The pet is currently working at the computer 👩‍💻</value>
   </data>
   <data name="workCommandInlineShowTime" xml:space="preserve">
     <value>Remains to work: {0} ⏱</value>
@@ -698,7 +699,9 @@ Your referral link:
 Bot 🐾 Tamagotchi | Virtual Pet 🐾 provides the opportunity to have your own pet directly in Telegram
 
 Available commands in chat:
-/show_pet - show your pet</value>
+/show_pet - show your pet 🦁
+/start_duel - start a pet duel ⚔️
+/feed_pet - feed someone else’s pet 🥞</value>
   </data>
   <data name="changelogCommand" xml:space="preserve">
     <value>📢💬 You can view and discuss bot updates here:
@@ -731,5 +734,145 @@ Available commands in chat:
 +30% joy 🎊
 
 /pet - check the status of the pet</value>
+  </data>
+  <data name="BadWordDetected" xml:space="preserve">
+    <value>Pet doesn't like his new name 😾
+Suggest something else ⬇️</value>
+  </data>
+  <data name="StartDuelMPCommand" xml:space="preserve">
+    <value>Start a pet battle! ⚔️</value>
+  </data>
+  <data name="DuelMPStartCommand" xml:space="preserve">
+    <value>♨️{0} announces a pet duel!♨️
+"My {1}😼 kicks ass and takes names! Who will challenge us?!"</value>
+  </data>
+  <data name="DuelMPAcceptButton" xml:space="preserve">
+    <value>⚔️Accept the challenge</value>
+  </data>
+  <data name="DuelMPFighting1" xml:space="preserve">
+    <value>🔰THE DUEL HAS BEGAN🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕐🟥🟥🟥🟥
+
+{2} 🙀🛡          🗡😼{3}</value>
+  </data>
+  <data name="DuelMPFighting2" xml:space="preserve">
+    <value>🔰THE DUEL HAS BEGAN🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕒🟥🟥🟥🟥
+{2} 🙀🛡        🗡😼{3}
+
+❕Pet {3} started attacking {2}!</value>
+  </data>
+  <data name="DuelMPFighting3" xml:space="preserve">
+    <value>🔰THE DUEL HAS BEGAN🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕢🟥🟥🟥🟥
+
+{2} 🙀🛡     🗡😼{3}
+
+‼️Pet {3} is already very close to {2}!</value>
+  </data>
+  <data name="DuelMPFighting4" xml:space="preserve">
+    <value>🔰THE DUEL HAS BEGAN🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕙🟥🟥🟥🟥
+
+{2} 🙀🛡  🗡😼{3}
+
+💥Pet {3} hits {2}...</value>
+  </data>
+  <data name="DuelMPFightingEnd" xml:space="preserve">
+    <value>🎌&lt;b&gt;THE DUEL IS OVER&lt;/b&gt;🎌
+{0} ⚔️ {1}
+🏆&lt;b&gt;VICTORY&lt;/b&gt; {2}🏆
+🟩🟩🟩🟩🎖🟩🟩🟩🟩
+
+{3}
+
+&lt;b&gt;Reward: {4}&lt;/b&gt;💰</value>
+  </data>
+  <data name="DuelMPFightingEndingDefenderWin" xml:space="preserve">
+    <value>Pet {1} slipped and fell on his butt during an attack🧸
+😽{0} wins 🥇</value>
+  </data>
+  <data name="DuelMPFightingEndingAttackerWin" xml:space="preserve">
+    <value>Pet {1} hits the shield with lightning speed💢
+{0} got scared and asked to stop the duel🙅‍♂️
+😽{1} wins 🥇</value>
+  </data>
+  <data name="DuelMPTimeout" xml:space="preserve">
+    <value>No one accepted the duel from {0}
+&lt;i&gt;So everyone is afraid of pet {1}&lt;/i&gt; 🌚
+
+The contribution in the amount of {2}💰 was returned to the account</value>
+  </data>
+  <data name="MPNoPetCallbackAlert" xml:space="preserve">
+    <value>To participate you must have a pet 🪿</value>
+  </data>
+  <data name="NotEnoughGoldForDuel" xml:space="preserve">
+    <value>{0} to start a duel you need {2}💰gold
+You only have {1}💰</value>
+  </data>
+  <data name="NotEnoughGoldForDuelCallback" xml:space="preserve">
+    <value>To accept a duel you need {1}💰gold
+You only have {0}💰</value>
+  </data>
+  <data name="DuelMPCooldownCallback" xml:space="preserve">
+    <value>Your pet is resting after losing the last duel🥷
+It remains to wait {0}</value>
+  </data>
+  <data name="DuelMPCooldown" xml:space="preserve">
+    <value>{1}, Your pet is resting after losing the last duel🥷
+Just wait {0}</value>
+  </data>
+  <data name="DuelMPErrorYourself" xml:space="preserve">
+    <value>You can't accept your own duels 🙈</value>
+  </data>
+  <data name="FeedMPNotFound" xml:space="preserve">
+    <value>No such players found 👀</value>
+  </data>
+  <data name="NotEnoughGoldForMPFeed" xml:space="preserve">
+    <value>{0} to feed friend's pet you need {2}💰gold
+You only have {1}💰</value>
+  </data>
+  <data name="NotEnoughTimeSpentFeedMP" xml:space="preserve">
+    <value>{0}, too little time has passed 🍕
+Pet {1} didn’t want to eat🐣
+
+Wait another {2}🕑 before you can feed pet again</value>
+  </data>
+  <data name="NotEnoughTimeSpentByLastMPFeed" xml:space="preserve">
+    <value>{0}, you have to wait another {1}🕑 to feed someone else’s pet🍗</value>
+  </data>
+  <data name="FeedMPCommand" xml:space="preserve">
+    <value>Feed someone else's pet 🍔</value>
+  </data>
+  <data name="FeedMPStart" xml:space="preserve">
+    <value>{0}, send the nickname of which pet you want to feed 🍽
+&lt;i&gt;Hint: start typing '@' and select a player &lt;/i&gt;</value>
+  </data>
+  <data name="FeedMPEndSuccess" xml:space="preserve">
+    <value>Pet &lt;b&gt;{0}&lt;/b&gt; happily pounced on a huge burger 🍔 with fries 🍟
+😻: &lt;i&gt;Thank you very much! I'll tell the owner that he has a great friend!&lt;/i&gt;
+
+-{1}💰</value>
+  </data>
+  <data name="FeedMPErrorFeedOwnPet" xml:space="preserve">
+    <value>You can feed your pet only via PM bot 🤷‍♂️</value>
+  </data>
+  <data name="workCommandInlineFlyers" xml:space="preserve">
+    <value>Distribute leaflets 🤹‍♀️</value>
+  </data>
+  <data name="tooTiredForJobPC" xml:space="preserve">
+    <value>The pet doesn't want to work on the computer 🫧
+To do this job you need to have no more than {0}😴 fatigue</value>
+  </data>
+  <data name="tooTiredForJobFlyers" xml:space="preserve">
+    <value>Pet doesn't want to hand out flyers 🫧
+To do this job you need to have no more than {0}😴 fatigue</value>
+  </data>
+  <data name="workCommandFlyersWorking" xml:space="preserve">
+    <value>The pet is now handing out leaflets 🤹‍♀️</value>
   </data>
 </root>

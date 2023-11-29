@@ -148,7 +148,7 @@
 💰 Золото: {8} 💴
 ⚡️ Состояние: {6}
 🏅 &lt;b&gt;{3} уровень&lt;/b&gt; 
-✨ &lt;i&gt;Опыт: {2}/100&lt;/i&gt;
+✨ &lt;i&gt;Опыт: {2}/{10}&lt;/i&gt;
 
 /gameroom - попробуй игру Яблоко🍎
 /reward - ежедневный бонус 🎁</value>
@@ -427,29 +427,30 @@ FAQ:
     <value>Вы снова в детской ⚽️</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Вышло обновление 1.3⚡️⚡️
+    <value>⚡️⚡️ Вышло обновление 1.4⚡️⚡️
 
-Добавлено:
-👨‍👦‍👦Мультиплеер - бота уже можно добавить в групповой чат! 
-Теперь можно хвастаться своим питомцем перед друзьями 😈
-🥂Новые случайные ивенты, связанные с питомцем
-🦥Реферальная программа - приглашаешь друзей и получаешь за это бонусы 💰 (команда /referal)
-🧩Добавлена команда /changelog - здесь ссылка на канал про нашего бота Тамагочи, где можно пообсуждать последние обновления, предложить что-то новое
+🥳&lt;b&gt;Добавлено&lt;/b&gt;🥳:
+🤹‍♂️&lt;b&gt;Новая работа для питомца - раздача флаеров&lt;/b&gt;
+  &lt;i&gt;Добавлено для баланса и разнообразия геймплея: надо меньше ждать окончания работы, но и золота получаешь тоже меньше&lt;/i&gt;
+🌮&lt;b&gt;Появилась возможность кормить чужих питомцев&lt;/b&gt; 
+  &lt;i&gt; В общем чате достаточно вызывать команду /feed_pet, затем тэгнуть нужного игрока &lt;u&gt;(только мультиплеер)&lt;/u&gt; &lt;/i&gt;
+🤼‍♀️&lt;b&gt;Теперь можно сражаться питомцами (прямо как Покемонами :D)&lt;/b&gt;
+  &lt;i&gt;Надо добавить бота в общий чат и вызывать команду /start_duel (Дуэль возможна &lt;u&gt;только в мультиплеере&lt;/u&gt;)&lt;/i&gt;
 
-Исправления:
-🐛 Часто не скрывалась клавиатура после выбора языка/воскрешения питомца - ИСПРАВЛЕНО
-🚀 Ускорена работа многих команд бота за счёт оптимизации кода
-🛟 Улучшена команда /help - теперь там будут появляться ответы на самые популярные вопросы
-🛩 И очень-очень-очень много прочих мелких исправлений
+😻&lt;b&gt;Исправления&lt;/b&gt;😻:
+👽&lt;b&gt;Перебалансировано получение опыта &lt;/b&gt;
+   &lt;i&gt;Теперь с каждым новым уровнем нужно больше опыта, чем в предыдущем. Уровень был перерасчитан также для старых игроков.&lt;/i&gt;
+😈&lt;b&gt;Питомцу может не понравиться его новое имя&lt;/b&gt;
+   &lt;i&gt;Старайтесь придумывать адекватные и смешные имена&lt;/i&gt;
 
-В планах:
-🐿 Новые виды питомцев
-🎰 Новые мини-игры (в том числе для мультиплеера с друзьями)
-🏫 Добавить школу, образование, возраст питомца (как в новых версиях Тамагочи👾)
+Чтобы добавить бота в общий чат надо прописать команду /referal, а там уже найдёте кнопку "Добавить в новый чат"
+Если хотите, чтобы бот удалял некоторые свои сообщения, то добавьте его как администратора и дайте полномочия удалять сообщения
 
-Всем огромное спасибо за поддержку ❤️
-Над ботом работаю один, параллельно с работой. Не всегда получается выпускать обновления постоянно, но ваши слова благодарности за бота меня очень сильно мотивируют ☺️
-Спасибо тебе, обычный игрок 🫶
+Хочется выразить огромную благодарность всем, кто помогает идеями и находит ошибки в работе бота ❤️ 
+(если есть что сказать, то заходи к нам в чатик https://t.me/chat_virtualpetbot, будем рады почитать 😇)
+
+Отдельная благодарность @SuankaSmirnova25, @glitchpavel и всем-всем игрокам
+Без вас этот бот - ничто🤍❤️🤍
 
 Подписывайтесь на наш канал, где всё о боте:
 https://t.me/news_virtualpetbot</value>
@@ -466,8 +467,8 @@ https://t.me/news_virtualpetbot</value>
 /kitchen покормить 🍩
 /gameroom гулять 🏓</value>
   </data>
-  <data name="CurrentStatusWorkingOnPC" xml:space="preserve">
-    <value>на работе 💻</value>
+  <data name="CurrentStatusWorking" xml:space="preserve">
+    <value>на работе 🧰</value>
   </data>
   <data name="denyAccessWorking" xml:space="preserve">
     <value>Нельзя войти в комнату: питомец на работе 💻</value>
@@ -477,7 +478,8 @@ https://t.me/news_virtualpetbot</value>
 
 😴 Усталость: {2}%
 
-Программировать 💻 -{0} минуты ⌛️, +{1} золота 💰</value>
+Программировать 💻 -{0}⌛️, +{1} золота 💰
+Раздавать листовки 🤹‍♀️ -{3}⌛️, +{4} золота 💰</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
     <value>Разрабатывать сайты 💻</value>
@@ -491,7 +493,7 @@ https://t.me/news_virtualpetbot</value>
 Подожди пока питомец закончит работу</value>
   </data>
   <data name="workCommandPCWorking" xml:space="preserve">
-    <value>Питомец сейчас на работе 👩‍💻</value>
+    <value>Питомец сейчас на работает за компом 👩‍💻</value>
   </data>
   <data name="workCommandInlineShowTime" xml:space="preserve">
     <value>Осталось работать: {0} ⏱</value>
@@ -704,7 +706,9 @@ https://t.me/news_virtualpetbot</value>
 Бот 🐾 Тамагочи | Virtual Pet 🐾 предоставляет возможность завести своего питомца прямо в Телеграме 
 
 Доступные команды в чате:
-/show_pet - показать своего питомца</value>
+/show_pet - показать своего питомца 🦁
+/start_duel - начать дуэль питомцев ⚔️
+/feed_pet - покормить чужого питомца 🥞</value>
   </data>
   <data name="changelogCommand" xml:space="preserve">
     <value>📢💬 Посмотреть и пообсуждать обновления бота можно тут:
@@ -737,5 +741,146 @@ https://t.me/news_virtualpetbot</value>
 +30% радость 🎊
 
 /pet - проверить состояние питомца</value>
+  </data>
+  <data name="BadWordDetected" xml:space="preserve">
+    <value>Питомцу не нравится его новое имя 😾
+Предложи другое ⬇️</value>
+  </data>
+  <data name="StartDuelMPCommand" xml:space="preserve">
+    <value>Начать битву питомцев! ⚔️</value>
+  </data>
+  <data name="DuelMPStartCommand" xml:space="preserve">
+    <value>♨️{0} объявляет дуэль питомцев!♨️
+"Мой {1}😼 порвёт всех как Тузик грелку! Кто бросит нам вызов?!"</value>
+  </data>
+  <data name="DuelMPAcceptButton" xml:space="preserve">
+    <value>⚔️Бросить вызов</value>
+  </data>
+  <data name="DuelMPFighting1" xml:space="preserve">
+    <value>🔰ДУЭЛЬ НАЧАЛАСЬ🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕐🟥🟥🟥🟥
+
+{2} 🙀🛡          🗡😼{3}</value>
+  </data>
+  <data name="DuelMPFighting2" xml:space="preserve">
+    <value>🔰ДУЭЛЬ НАЧАЛАСЬ🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕒🟥🟥🟥🟥
+
+{2} 🙀🛡        🗡😼{3}
+
+❕Питомец {3} начал атаку на {2}!</value>
+  </data>
+  <data name="DuelMPFighting3" xml:space="preserve">
+    <value>🔰ДУЭЛЬ НАЧАЛАСЬ🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕢🟥🟥🟥🟥
+
+{2} 🙀🛡     🗡😼{3}
+
+‼️Питомец {3} уже совсем близко к {2}!</value>
+  </data>
+  <data name="DuelMPFighting4" xml:space="preserve">
+    <value>🔰ДУЭЛЬ НАЧАЛАСЬ🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕙🟥🟥🟥🟥
+
+{2} 🙀🛡  🗡😼{3}
+
+💥Питомец {3} наносит удар по {2}...</value>
+  </data>
+  <data name="DuelMPFightingEnd" xml:space="preserve">
+    <value>🎌&lt;b&gt;ДУЭЛЬ ОКОНЧЕНА&lt;/b&gt;🎌
+{0} ⚔️ {1}
+🏆&lt;b&gt;ПОБЕДИТЕЛЬ&lt;/b&gt; {2}🏆
+🟩🟩🟩🟩🎖🟩🟩🟩🟩
+
+{3}
+
+&lt;b&gt;Награда: {4}&lt;/b&gt;💰</value>
+  </data>
+  <data name="DuelMPFightingEndingDefenderWin" xml:space="preserve">
+    <value>Питомец {1} поскользнулся и упал на попу прямо во время атаки🧸
+😽{0} побеждает 🥇</value>
+  </data>
+  <data name="DuelMPFightingEndingAttackerWin" xml:space="preserve">
+    <value>Питомец {1} молниеносно бьёт по щиту💢
+{0} испугался и попросил остановить дуэль🙅‍♂️
+😽{1} побеждает 🥇</value>
+  </data>
+  <data name="DuelMPTimeout" xml:space="preserve">
+    <value>Никто не принял дуэль от {0}
+&lt;i&gt;Значит все боятся питомца {1}&lt;/i&gt; 🌚
+
+Взнос в размере {2}💰 вернулся на счёт</value>
+  </data>
+  <data name="MPNoPetCallbackAlert" xml:space="preserve">
+    <value>Чтобы участвовать надо завести питомца 🪿</value>
+  </data>
+  <data name="NotEnoughGoldForDuel" xml:space="preserve">
+    <value>{0}, чтобы начать дуэль надо {2}💰золота
+У тебя есть только {1}💰</value>
+  </data>
+  <data name="NotEnoughGoldForDuelCallback" xml:space="preserve">
+    <value>Чтобы принять дуэль надо {1}💰золота
+У тебя есть только {0}💰</value>
+  </data>
+  <data name="DuelMPCooldownCallback" xml:space="preserve">
+    <value>Твой питомец отдыхает после проигрыша в последней дуэли🥷
+Осталось подождать {0}</value>
+  </data>
+  <data name="DuelMPCooldown" xml:space="preserve">
+    <value>{1}, Твой питомец отдыхает после проигрыша в последней дуэли🥷
+Осталось подождать {0}</value>
+  </data>
+  <data name="DuelMPErrorYourself" xml:space="preserve">
+    <value>Ты не можешь принимать свои же дуэли 🙈</value>
+  </data>
+  <data name="FeedMPNotFound" xml:space="preserve">
+    <value>Таких игроков не найдено 👀</value>
+  </data>
+  <data name="NotEnoughGoldForMPFeed" xml:space="preserve">
+    <value>{0}, чтобы покормить питомца надо {2}💰золота
+У тебя есть только {1}💰</value>
+  </data>
+  <data name="NotEnoughTimeSpentFeedMP" xml:space="preserve">
+    <value>{0}, прошло слишком мало времени 🍕
+Питомец {1} не захотел кушать🐣
+
+Подожди ещё {2}🕑 прежде чем можно будет кормить питомца ещё раз</value>
+  </data>
+  <data name="NotEnoughTimeSpentByLastMPFeed" xml:space="preserve">
+    <value>{0}, надо подождать ещё {1}🕑 чтобы покормить чужого питомца🍗</value>
+  </data>
+  <data name="FeedMPCommand" xml:space="preserve">
+    <value>Покормить чужого питомца 🍔</value>
+  </data>
+  <data name="FeedMPStart" xml:space="preserve">
+    <value>{0}, пришли никнейм кого питомца ты хочешь покормить 🍽
+&lt;i&gt;Подсказка: начни вводить '@' и выбери игрока &lt;/i&gt;</value>
+  </data>
+  <data name="FeedMPEndSuccess" xml:space="preserve">
+    <value>Питомец &lt;b&gt;{0}&lt;/b&gt; с радостью накинулся на огромный бургер 🍔 с картошкой фри 🍟
+😻: &lt;i&gt;Спасибо большое! Я передам хозяину, что у него отличный друг!&lt;/i&gt;
+
+-{1}💰</value>
+  </data>
+  <data name="FeedMPErrorFeedOwnPet" xml:space="preserve">
+    <value>Своего питомца можно кормить только в ЛС боту 🤷‍♂️</value>
+  </data>
+  <data name="workCommandInlineFlyers" xml:space="preserve">
+    <value>Раздавать листовки 🤹‍♀️</value>
+  </data>
+  <data name="tooTiredForJobPC" xml:space="preserve">
+    <value>Питомец не хочет работать за компьютером 🫧
+Для этой работы надо иметь не больше {0}%😴 усталости</value>
+  </data>
+  <data name="tooTiredForJobFlyers" xml:space="preserve">
+    <value>Питомец не хочет раздавать флаеры 🫧
+Для этой работы надо иметь не больше {0}%😴 усталости</value>
+  </data>
+  <data name="workCommandFlyersWorking" xml:space="preserve">
+    <value>Питомец сейчас раздаёт листовки 🤹‍♀️</value>
   </data>
 </root>
