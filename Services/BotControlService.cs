@@ -257,7 +257,6 @@ namespace TamagotchiBot.Services
                                                showAlert: showAlert,
                                                url: url,
                                                cancellationToken: cancellationToken);
-
             }
             catch (Exception ex)
             {

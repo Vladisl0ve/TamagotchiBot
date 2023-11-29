@@ -641,7 +641,9 @@ Twój link referencyjny:
 Bot 🐾 Tamagotchi | Wirtualny zwierzak 🐾 zapewnia możliwość posiadania własnego zwierzaka bezpośrednio w Telegramie
 
 Dostępne polecenia na czacie:
-/show_pet - pokaż swojego zwierzaka</value>
+/show_pet - pokaż swojego zwierzaka 🦁
+/start_duel - rozpocznij pojedynek zwierzaka ⚔️
+/feed_pet - nakarm cudzego zwierzaka 🥞</value>
   </data>
   <data name="petCommandMoreInfo1" xml:space="preserve">
     <value>🐱{0}

@@ -1515,7 +1515,9 @@ namespace TamagotchiBot.Resources {
         ///Bot 🐾 Tamagotchi | Virtual Pet 🐾 provides the opportunity to have your own pet directly in Telegram
         ///
         ///Available commands in chat:
-        ////show_pet - show your pet.
+        ////show_pet - show your pet 🦁
+        ////start_duel - start a pet duel ⚔️
+        ////feed_pet - feed someone else’s pet 🥞.
         /// </summary>
         public static string ShowWelcomeMessageMultiplayer {
             get {
