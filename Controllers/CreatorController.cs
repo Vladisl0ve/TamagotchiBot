@@ -549,7 +549,6 @@ namespace TamagotchiBot.Controllers
             var petResult = Pet.Clone(pet);
 
             decimal toAddExp = minuteCounter * Factors.ExpFactor;
-
             while (toAddExp > 0)
             {
                 if (toAddExp < Factors.ExpToLvl * petResult.Level)
@@ -566,7 +565,7 @@ namespace TamagotchiBot.Controllers
 
             if (petResult.EXP > Factors.ExpToLvl * petResult.Level)
             {
-                petResult.Level += petResult.EXP / Factors.ExpToLvl;
+                petResult.Level += petResult.EXP / (Factors.ExpToLvl * petResult.Level);
                 petResult.EXP %= Factors.ExpToLvl;
             }
 
