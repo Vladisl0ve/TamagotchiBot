@@ -269,7 +269,7 @@ namespace TamagotchiBot.Controllers
                         Text = string.Format(NotEnoughTimeSpentFeedMP, persLink, petName, timeToWait),
                         replyToMsgId = _message.MessageId,
                         ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                        msgThreadId = _message.MessageId,
+                        msgThreadId = _msgThreadId,
                     },
                     _chatId,
                     false);
@@ -286,7 +286,7 @@ namespace TamagotchiBot.Controllers
                     Text = string.Format(FeedMPEndSuccess, HttpUtility.HtmlEncode(petToFeedDB.Name), Constants.Costs.FeedMP),
                     replyToMsgId = _message.MessageId,
                     ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                    msgThreadId = _message.MessageId,
+                    msgThreadId = _msgThreadId,
                 },
                 _chatId,
                 false);
