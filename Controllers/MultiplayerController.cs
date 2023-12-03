@@ -15,6 +15,7 @@ using TamagotchiBot.Models;
 using System;
 using TamagotchiBot.Models.Mongo;
 using TamagotchiBot.UserExtensions;
+using User = TamagotchiBot.Models.Mongo.User;
 
 namespace TamagotchiBot.Controllers
 {
@@ -25,6 +26,7 @@ namespace TamagotchiBot.Controllers
         private readonly CallbackQuery _callback = null;
         private readonly long _userId;
         private readonly long _chatId;
+        private readonly int? _msgThreadId;
         private readonly CultureInfo _userCulture;
 
         private readonly string _chatName;
@@ -37,6 +39,8 @@ namespace TamagotchiBot.Controllers
             _message = message;
             _userId = callback?.From.Id ?? message.From.Id;
             _chatId = callback?.Message?.Chat?.Id ?? message.Chat.Id;
+            _msgThreadId = callback?.Message?.MessageThreadId ?? message.MessageThreadId;
+
             _appServices = services;
 
             _userName = message?.From?.FirstName ?? callback?.From?.FirstName;
@@ -105,7 +109,7 @@ namespace TamagotchiBot.Controllers
 
             return Task.CompletedTask;
 
-            async void StartDuel(Models.Mongo.Pet petDB, Models.Mongo.User userDB)
+            async void StartDuel(Pet petDB, User userDB)
             {
                 var personalLink = Extensions.GetPersonalLink(_userId, _userName);
                 if (userDB?.Gold < Constants.Costs.Duel)
@@ -114,7 +118,8 @@ namespace TamagotchiBot.Controllers
                     AnswerMessage notEnoughGoldMsg = new AnswerMessage()
                     {
                         ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                        Text = string.Format(NotEnoughGoldForDuel, personalLink, userDB?.Gold ?? 0, Constants.Costs.Duel)
+                        Text = string.Format(NotEnoughGoldForDuel, personalLink, userDB?.Gold ?? 0, Constants.Costs.Duel),
+                        msgThreadId = _msgThreadId
                     };
                     await _appServices.BotControlService.SendAnswerMessageGroupAsync(notEnoughGoldMsg, _chatId, false);
                     return;
@@ -128,7 +133,8 @@ namespace TamagotchiBot.Controllers
                     AnswerMessage waitForDuelText = new AnswerMessage()
                     {
                         ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                        Text = string.Format(DuelMPCooldown, new DateTime(timeToWaitNextDuel?.Ticks ?? 0).ToString("HH:mm:ss"), personalLink)
+                        Text = string.Format(DuelMPCooldown, new DateTime(timeToWaitNextDuel?.Ticks ?? 0).ToString("HH:mm:ss"), personalLink),
+                        msgThreadId = _msgThreadId
                     };
                     await _appServices.BotControlService.SendAnswerMessageGroupAsync(waitForDuelText, _chatId, false);
                     return;
@@ -144,7 +150,8 @@ namespace TamagotchiBot.Controllers
                         customCallback
                     }),
                     ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                    Text = string.Format(DuelMPStartCommand, personalLink, petDB.Name)
+                    Text = string.Format(DuelMPStartCommand, personalLink, petDB.Name),
+                    msgThreadId= _msgThreadId
                 };
 
                 var metaUser = _appServices.MetaUserService.Get(_userId);
@@ -187,7 +194,8 @@ namespace TamagotchiBot.Controllers
                             Extensions.GetReferalLink(_userId, botUsername)
                             )),
                     ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                    Text = toSendText
+                    Text = toSendText,
+                    msgThreadId = _msgThreadId
                 };
 
                 await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
@@ -247,7 +255,8 @@ namespace TamagotchiBot.Controllers
                     {
                         Text = string.Format(NotEnoughTimeSpentFeedMP, persLink, petName, timeToWait),
                         replyToMsgId = _message.MessageId,
-                        ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                        ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                        msgThreadId = _message.MessageId,
                     },
                     _chatId,
                     false);
@@ -263,7 +272,8 @@ namespace TamagotchiBot.Controllers
                 {
                     Text = string.Format(FeedMPEndSuccess, HttpUtility.HtmlEncode(petToFeedDB.Name), Constants.Costs.FeedMP),
                     replyToMsgId = _message.MessageId,
-                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    msgThreadId = _message.MessageId,
                 },
                 _chatId,
                 false);
@@ -274,7 +284,8 @@ namespace TamagotchiBot.Controllers
                         new AnswerMessage()
                         {
                             Text = FeedMPNotFound,
-                            replyToMsgId = _message?.MessageId
+                            replyToMsgId = _message?.MessageId,
+                            msgThreadId = _msgThreadId
                         },
                         _chatId,
                         false
@@ -357,7 +368,8 @@ namespace TamagotchiBot.Controllers
                 {
                     StickerId = Constants.StickersId.MPDuelStarted,
                     ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                    Text = string.Format(DuelMPFighting1, personalLinkCreatorDuel, personalLinkDuelAccepted, petDefenderName, petAttackerName)
+                    Text = string.Format(DuelMPFighting1, personalLinkCreatorDuel, personalLinkDuelAccepted, petDefenderName, petAttackerName),
+                    msgThreadId = _msgThreadId
                 };
 
                 Log.Debug($"MP: duel accepted by {_userLogInfo}");
@@ -413,7 +425,8 @@ namespace TamagotchiBot.Controllers
             {
                 InlineKeyboardMarkup = new ( InlineKeyboardButton.WithUrl(new InviteMuliplayerCommand().InviteGlobalMultiplayerButton.Text, $"https://t.me/{botUsername}")),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                Text = toSendText
+                Text = toSendText,
+                msgThreadId = _msgThreadId
             };
 
             await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
@@ -429,7 +442,8 @@ namespace TamagotchiBot.Controllers
             {
                 InlineKeyboardMarkup = new ( InlineKeyboardButton.WithUrl(new InviteMuliplayerCommand().InviteGlobalMultiplayerButton.Text, Extensions.GetReferalLink(_userId, botUsername))),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                Text = toSendText
+                Text = toSendText,
+                msgThreadId = _msgThreadId
             };
 
             await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
@@ -475,7 +489,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = string.Format(FeedMPStart, persLink),
                 replyToMsgId = _message.MessageId,
-                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                msgThreadId = _msgThreadId
             },
             _chatId,
             false);
@@ -488,7 +503,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = string.Format(NotEnoughGoldForMPFeed, persLink, userDB.Gold, Constants.Costs.FeedMP),
                 replyToMsgId = _message.MessageId,
-                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                msgThreadId = _msgThreadId
             },
             _chatId,
             false);
@@ -499,7 +515,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = string.Format(FeedMPErrorFeedOwnPet),
                 replyToMsgId = _message.MessageId,
-                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                msgThreadId = _msgThreadId
             },
             _chatId,
             false);
@@ -537,7 +554,8 @@ namespace TamagotchiBot.Controllers
                 {
                     Text = string.Format(NotEnoughTimeSpentByLastMPFeed, persLink, timeToWait),
                     replyToMsgId = _message.MessageId,
-                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    msgThreadId = _msgThreadId
                 },
                 _chatId,
                 false);

@@ -21,5 +21,6 @@ namespace TamagotchiBot.Models.Answers
         public InlineKeyboardMarkup InlineKeyboardMarkup { get; set; }
         public ParseMode? ParseMode { get; set; } = null;
         public int? replyToMsgId { get; set; } = null;
+        public int? msgThreadId { get; set; } = null;
     }
 }
