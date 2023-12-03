@@ -81,16 +81,16 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
         }
 
-        public Task<AnswerMessage> ProcessMessage(string customText = null)
+        public Task ProcessMessage(string customText = null)
         {
             return CommandHandler(customText);
         }
 
-        private async Task<AnswerMessage> CommandHandler(string customText = null)
+        private async Task CommandHandler(string customText = null)
         {
             string textReceived = customText ?? _message.Text;
             if (textReceived == null)
-                return null;
+                return;
 
             textReceived = textReceived.ToLower();
 
@@ -167,8 +167,6 @@ namespace TamagotchiBot.Controllers
                     break;
 #endif
             }
-
-            return null;
         }
 
         public void CallbackHandler()

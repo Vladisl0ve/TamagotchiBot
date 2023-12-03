@@ -6,9 +6,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TamagotchiBot.Controllers;
-using TamagotchiBot.Models.Answers;
-using TamagotchiBot.Services;
-using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
@@ -26,30 +23,18 @@ namespace TamagotchiBot.Handlers
     public class UpdateHandler : IUpdateHandler
     {
         private readonly IApplicationServices _appServices;
-        private readonly UserService userService;
-        private readonly PetService petService;
-        private readonly ChatService chatService;
-        private readonly SInfoService sinfoService;
-        private readonly AppleGameDataService appleGameDataService;
-        private readonly BotControlService bcService;
         private readonly IEnvsSettings _envs;
 
         public UpdateHandler(IApplicationServices services, IEnvsSettings envs)
         {
             _appServices = services;
-            userService = services.UserService;
-            petService = services.PetService;
-            chatService = services.ChatService;
-            sinfoService = services.SInfoService;
-            appleGameDataService = services.AppleGameDataService;
-            bcService = services.BotControlService;
             _envs = envs;
         }
 
-        public async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
+        public Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
         {
             if (!ToContinueHandlingUpdateChecking(update))
-                return;
+                return Task.CompletedTask;
 
             var messageFromUser = update.Message;
             var callbackFromUser = update.CallbackQuery;
@@ -61,9 +46,45 @@ namespace TamagotchiBot.Handlers
 
             new SetCommandController(_appServices, messageFromUser, callbackFromUser).UpdateCommands(msgAudience);
 
-            sinfoService.UpdateLastGlobalUpdate();
-            return;
+            _appServices.SInfoService.UpdateLastGlobalUpdate();
+            return Task.CompletedTask;
 
+            void HandleUpdate(Update update, MessageAudience messageAudience)
+            {
+                switch (messageAudience)
+                {
+                    case MessageAudience.Private:
+                        {
+                            switch (update.Type)
+                            {
+                                case UpdateType.Message:
+                                    OnMessagePrivate(update.Message);
+                                    return;
+                                case UpdateType.CallbackQuery:
+                                    OnCallbackPrivate(update.CallbackQuery);
+                                    return;
+                                default:
+                                    return;
+                            };
+                        }
+                    case MessageAudience.Group:
+                        {
+                            switch (update.Type)
+                            {
+                                case UpdateType.Message:
+                                    OnMessageGroup(update.Message);
+                                    return;
+                                case UpdateType.CallbackQuery:
+                                    OnCallbackGroup(update.CallbackQuery);
+                                    return;
+                                default:
+                                    return;
+                            };
+                        }
+                    default:
+                        return;
+                }
+            }
             Task OnMessageGroup(Message message)
             {
                 return message.Type switch
@@ -121,7 +142,8 @@ namespace TamagotchiBot.Handlers
             }
             void OnCallbackGroup(CallbackQuery callbackQuery)
             {
-                if (userService.Get(callbackQuery.From.Id) == null || petService.Get(callbackQuery.From.Id) == null)
+                if (_appServices.UserService.Get(callbackQuery.From.Id) == null
+                    || _appServices.PetService.Get(callbackQuery.From.Id) == null)
                 {
                     _appServices.BotControlService.AnswerCallbackQueryAsync(callbackQuery?.Id, callbackQuery.From.Id, Resources.Resources.MPNoPetCallbackAlert, true);
                     return;
@@ -138,10 +160,8 @@ namespace TamagotchiBot.Handlers
                 return;
             }
 
-            async Task OnMessagePrivate(Message message)
+            async void OnMessagePrivate(Message message)
             {
-                AnswerMessage toSend = null;
-
                 if (!IsUserAndPetRegisteredChecking(userId))
                 {
                     RegisterUserAndPet(message); //CreatorController
@@ -182,51 +202,28 @@ namespace TamagotchiBot.Handlers
                     return;
                 }
 
-                try
-                {
-                    // call this method wherever you want to show an ad,
-                    // for example your bot just made its job and
-                    // it's a great time to show an ad to a user
-                    if (_appServices.PetService.Get(message.From.Id)?.Name != null)
-                        await SendPostToChat(message.From.Id);
+                // call this method wherever you want to show an ad,
+                // for example your bot just made its job and
+                // it's a great time to show an ad to a user
+                if (_appServices.PetService.Get(message.From.Id)?.Name != null)
+                    await SendPostToChat(message.From.Id);
 
-                    if (userService.Get(message.From.Id).IsInAppleGame)
-                        await new AppleGameController(_appServices, message).Menu();
-                    else
-                    {
-                        toSend = await new MenuController(_appServices, message).ProcessMessage();
-                        if (toSend != null)
-                        {
-                            Log.Warning($"Something to send! {Environment.NewLine}Msg: {message.Text}, {Environment.NewLine}Answer: {toSend.Text}, {Environment.NewLine}UserID: {message.From.Id}");
-                        }
-                    }
-
-                }
-                catch (ApiRequestException apiEx)
-                {
-                    Log.Error($"{apiEx.ErrorCode}: {apiEx.Message}, user: {message.From.Username ?? message.From.FirstName}");
-                }
-                catch (RequestException recEx)
-                {
-                    Log.Error($"{recEx.Source}: {recEx.Message}, user: {message.From.Username ?? message.From.FirstName}");
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex.Message + Environment.NewLine + ex.StackTrace);
-                }
-
-                await _appServices.BotControlService.SendAnswerMessageAsync(toSend, message.From.Id);
+                if (_appServices.UserService.Get(message.From.Id)?.IsInAppleGame ?? false)
+                    await new AppleGameController(_appServices, message).Menu();
+                else
+                    await new MenuController(_appServices, message).ProcessMessage();
             }
-
-            async Task OnCallbackPrivate(CallbackQuery callbackQuery)
+            async void OnCallbackPrivate(CallbackQuery callbackQuery)
             {
-                if (userService.Get(callbackQuery.From.Id) == null || petService.Get(callbackQuery.From.Id) == null)
+                var petDB = _appServices.PetService.Get(userId);
+                var userDB = _appServices.UserService.Get(userId);
+                if (userDB == null || petDB == null)
                     return;
 
                 if (callbackQuery.Data == null)
                     return;
 
-                if (userService.Get(userId)?.IsInAppleGame ?? false)
+                if (userDB.IsInAppleGame)
                     return;
 
                 if (callbackQuery.Data == new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame.CallbackData)
@@ -247,43 +244,6 @@ namespace TamagotchiBot.Handlers
 
                 var controller = new MenuController(_appServices, callbackQuery);
                 controller.CallbackHandler();
-            }
-
-            async Task HandleUpdate(Update update, MessageAudience messageAudience)
-            {
-                switch (messageAudience)
-                {
-                    case MessageAudience.Private:
-                        {
-                            switch (update.Type)
-                            {
-                                case UpdateType.Message:
-                                    OnMessagePrivate(update.Message);
-                                    return;
-                                case UpdateType.CallbackQuery:
-                                    OnCallbackPrivate(update.CallbackQuery);
-                                    return;
-                                default:
-                                    return;
-                            };
-                        }
-                    case MessageAudience.Group:
-                        {
-                            switch (update.Type)
-                            {
-                                case UpdateType.Message:
-                                    OnMessageGroup(update.Message);
-                                    return;
-                                case UpdateType.CallbackQuery:
-                                    OnCallbackGroup(update.CallbackQuery);
-                                    return;
-                                default:
-                                    return;
-                            };
-                        }
-                    default:
-                        return;
-                }
             }
         }
 
