@@ -683,7 +683,7 @@ namespace TamagotchiBot.Resources {
         ///
         ///FAQ:
         ///1. How does the 🏅 level accumulate?
-        ///- 100 experience = 1 level. Exp [rest of string was truncated]&quot;;.
+        ///- 1 experience = 1 minute of pe [rest of string was truncated]&quot;;.
         /// </summary>
         public static string helpCommand {
             get {

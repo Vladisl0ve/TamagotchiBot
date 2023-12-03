@@ -55,6 +55,7 @@ namespace TamagotchiBot.Services
         }
 
         public async Task<Message> SendDiceMessageAsync(long chatId,
+                                                        int msgThreadId,
                                                         Emoji emoji,
                                                         bool toLog = true)
         {
@@ -78,7 +79,7 @@ namespace TamagotchiBot.Services
                     Log.Information($"Dice {emoji} sent to {logInfo}");
 
                 Log.Verbose($"Dice {emoji} sent to {logInfo}");
-                return await _botClient.SendDiceAsync(chatId, emoji);
+                return await _botClient.SendDiceAsync(chatId, messageThreadId: msgThreadId, emoji: emoji);
             }
             catch (ApiRequestException ex)
             {
@@ -91,25 +92,36 @@ namespace TamagotchiBot.Services
                 return null;
             }
         }
-        public async Task<Message> SendTextMessageAsync(long userId,
+        public async Task<Message> SendTextMessageAsync(long chatId,
                                                string text,
+                                               int? msgThreadId = null,
                                                IReplyMarkup replyMarkup = default,
                                                CancellationToken cancellationToken = default,
                                                ParseMode? parseMode = null,
                                                bool toLog = true,
                                                int? replyToMsgId = null)
         {
-            var user = _userService.Get(userId);
+            string logInfo;
+            Models.Mongo.User user = null;
+            if (chatId < 0)
+                logInfo = $"chat id: {chatId}";
+            else
+            {
+                user = _userService.Get(chatId);
+                logInfo = $"{Extensions.GetLogUser(user)}";
+            }
+
             Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
 
             try
             {
                 if (toLog)
-                    Log.Information($"Message sent to {Extensions.GetLogUser(user)}");
+                    Log.Information($"Message sent to {logInfo}");
 
-                Log.Verbose($"Message sent to {Extensions.GetLogUser(user)}: {text.Replace("\r\n", " ")}");
-                return await _botClient.SendTextMessageAsync(userId,
-                                     text,
+                Log.Verbose($"Message sent to {logInfo}: {text.Replace("\r\n", " ")}");
+                return await _botClient.SendTextMessageAsync(chatId: chatId,
+                                     text: text,
+                                     messageThreadId: msgThreadId,
                                      replyMarkup: replyMarkup,
                                      cancellationToken: cancellationToken,
                                      parseMode: parseMode,
@@ -120,63 +132,73 @@ namespace TamagotchiBot.Services
                 if (ex.ErrorCode == 403) //Forbidden by user
                 {
                     //remove all data about user
-                    _chatService.Remove(userId);
-                    _petService.Remove(userId);
-                    _userService.Remove(userId);
-                    _appleGameDataService.Delete(userId);
+                    _chatService.Remove(chatId);
+                    _petService.Remove(chatId);
+                    _userService.Remove(chatId);
+                    _appleGameDataService.Delete(chatId);
                 }
-                Log.Warning($"{ex.Message} : {Extensions.GetLogUser(user)}");
+                Log.Warning($"{ex.Message} : {logInfo}");
                 return null;
             }
             catch (Exception ex)
             {
-                Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException?.Message}, USER: {Extensions.GetLogUser(user)}");
+                Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException?.Message}, USER/CHAT: {logInfo}");
                 return null;
             }
         }
 
-        public async void SendStickerAsync(long userId,
+        public async void SendStickerAsync(long chatId,
                                            string stickerId,
+                                           int? msgThreadId = null,
                                            bool toRemoveKeyboard = false,
                                            CancellationToken cancellationToken = default,
                                            bool toLog = true)
         {
-            var user = _userService.Get(userId);
+            string logInfo;
+            if (chatId < 0)
+                logInfo = $"chat id: {chatId}";
+            else
+            {
+                var user = _userService.Get(chatId);
+                logInfo = $"{Extensions.GetLogUser(user)}";
+            }
 
             try
             {
                 if (toLog)
-                    Log.Information($"Sticker sent for {Extensions.GetLogUser(user)}");
+                    Log.Information($"Sticker sent for {logInfo}");
 
-                Log.Verbose($"Sticker sent for {Extensions.GetLogUser(user)}");
+                Log.Verbose($"Sticker sent for {logInfo}");
                 if (toRemoveKeyboard)
                 {
-                    await _botClient.SendStickerAsync(userId,
-                     stickerId,
-                     replyMarkup: new ReplyKeyboardRemove(),
-                     cancellationToken: cancellationToken);
+                    await _botClient.SendStickerAsync(chatId: chatId,
+                                                      sticker: new InputFileId(stickerId),
+                                                      messageThreadId: msgThreadId,
+                                                      replyMarkup: new ReplyKeyboardRemove(),
+                                                      cancellationToken: cancellationToken);
                 }
                 else
-                    await _botClient.SendStickerAsync(userId,
-                                         stickerId,
-                                         cancellationToken: cancellationToken);
+                    await _botClient.SendStickerAsync(chatId: chatId,
+                                                      sticker: new InputFileId(stickerId),
+                                                      messageThreadId: msgThreadId,
+                                                      cancellationToken: cancellationToken);
             }
             catch (ApiRequestException ex)
             {
                 if (ex.ErrorCode == 403) //Forbidden by user
                 {
-                    Log.Warning($"{ex.Message} {Extensions.GetLogUser(user)}");
+                    Log.Warning($"{ex.Message} {logInfo}");
 
                     //remove all data about user
-                    _chatService.Remove(userId);
-                    _petService.Remove(userId);
-                    _userService.Remove(userId);
-                    _appleGameDataService.Delete(userId);
+                    _chatService.Remove(chatId);
+                    _petService.Remove(chatId);
+                    _userService.Remove(chatId);
+                    _appleGameDataService.Delete(chatId);
                 }
             }
             catch (Exception ex)
             {
-                Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException?.Message}, USER: {Extensions.GetLogUser(user)}");
+                Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException?.Message}, USER/CHAT: {logInfo}");
             }
         }
 
@@ -287,7 +309,7 @@ namespace TamagotchiBot.Services
 
             try
             {
-                await _botClient.SendChatActionAsync(chatId, chatAction, cancellationToken);
+                await _botClient.SendChatActionAsync(chatId, chatAction, cancellationToken: cancellationToken);
             }
             catch (ApiRequestException ex)
             {
@@ -311,6 +333,7 @@ namespace TamagotchiBot.Services
             {
                 SendStickerAsync(userId,
                                  toSend.StickerId,
+                                 toSend.msgThreadId,
                                  toSend.ReplyMarkup?.GetType() == typeof(ReplyKeyboardRemove),
                                  toLog: toLog);
                 await Task.Delay(50);
@@ -355,6 +378,7 @@ namespace TamagotchiBot.Services
             {
                 SendStickerAsync(chatId,
                                  toSend.StickerId,
+                                 msgThreadId: toSend.msgThreadId,
                                  toSend.ReplyMarkup?.GetType() == typeof(ReplyKeyboardRemove),
                                  toLog: toLog);
                 await Task.Delay(50);
@@ -364,6 +388,7 @@ namespace TamagotchiBot.Services
             {
                 return await SendTextMessageAsync(chatId,
                                                   toSend.Text,
+                                                  msgThreadId: toSend.msgThreadId,
                                                   replyMarkup: toSend.ReplyMarkup,
                                                   toLog: toLog,
                                                   replyToMsgId: toSend.replyToMsgId);
@@ -371,8 +396,9 @@ namespace TamagotchiBot.Services
 
             if (toSend.InlineKeyboardMarkup != null)
             {
-                return await SendTextMessageAsync(chatId,
-                                                  toSend.Text,
+                return await SendTextMessageAsync(chatId: chatId,
+                                                  text: toSend.Text,
+                                                  msgThreadId: toSend.msgThreadId,
                                                   replyMarkup: toSend.InlineKeyboardMarkup,
                                                   parseMode: toSend.ParseMode,
                                                   toLog: toLog,
@@ -381,8 +407,9 @@ namespace TamagotchiBot.Services
 
             if (!string.IsNullOrEmpty(toSend.Text))
             {
-                return await SendTextMessageAsync(chatId,
-                                                  toSend.Text,
+                return await SendTextMessageAsync(chatId: chatId,
+                                                  text: toSend.Text,
+                                                  msgThreadId: toSend.msgThreadId,
                                                   parseMode: toSend.ParseMode,
                                                   toLog: toLog,
                                                   replyToMsgId: toSend.replyToMsgId);
