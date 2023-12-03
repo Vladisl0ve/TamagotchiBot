@@ -878,4 +878,12 @@ Bez Was ten bot jest niczym 🤍❤️🤍
 Subskrybuj nasz kanał, na którym wszystko jest o bocie:
 https://t.me/newsvirtualpetbot</value>
   </data>
+  <data name="NotEnoughHPForDuel" xml:space="preserve">
+    <value>{0} aby rozpocząć pojedynek potrzebujesz {1}%💊 zdrowia
+Masz tylko {2}%💊</value>
+  </data>
+  <data name="NotEnoughHPForDuelCallback" xml:space="preserve">
+    <value>Aby przyjąć pojedynek potrzebujesz {1}%💊 zdrowia
+Masz tylko {0}%💊</value>
+  </data>
 </root>

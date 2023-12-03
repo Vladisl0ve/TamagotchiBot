@@ -109,7 +109,8 @@ namespace TamagotchiBot.UserExtensions
             public const int RenamePet = 500;
 
             //Multiplayer
-            public const int Duel = 100;
+            public const int DuelGold = 100;
+            public const int DuelHP = 100;
             public const int FeedMP = 20;
         }
 

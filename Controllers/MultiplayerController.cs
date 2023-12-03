@@ -39,7 +39,7 @@ namespace TamagotchiBot.Controllers
             _message = message;
             _userId = callback?.From.Id ?? message.From.Id;
             _chatId = callback?.Message?.Chat?.Id ?? message.Chat.Id;
-            _msgThreadId = callback?.Message?.MessageThreadId ?? message.MessageThreadId;
+            _msgThreadId = callback?.Message?.MessageThreadId ?? message?.MessageThreadId;
 
             _appServices = services;
 
@@ -112,16 +112,29 @@ namespace TamagotchiBot.Controllers
             async void StartDuel(Pet petDB, User userDB)
             {
                 var personalLink = Extensions.GetPersonalLink(_userId, _userName);
-                if (userDB?.Gold < Constants.Costs.Duel)
+                if (userDB?.Gold < Constants.Costs.DuelGold)
                 {
                     Culture = new CultureInfo(userDB?.Culture ?? "ru");
                     AnswerMessage notEnoughGoldMsg = new AnswerMessage()
                     {
                         ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                        Text = string.Format(NotEnoughGoldForDuel, personalLink, userDB?.Gold ?? 0, Constants.Costs.Duel),
+                        Text = string.Format(NotEnoughGoldForDuel, personalLink, userDB?.Gold ?? 0, Constants.Costs.DuelGold),
                         msgThreadId = _msgThreadId
                     };
                     await _appServices.BotControlService.SendAnswerMessageGroupAsync(notEnoughGoldMsg, _chatId, false);
+                    return;
+                }
+
+                if (petDB?.HP < Constants.Costs.DuelHP)
+                {
+                    Culture = new CultureInfo(userDB?.Culture ?? "ru");
+                    AnswerMessage notEnoughHPMsg = new AnswerMessage()
+                    {
+                        ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                        Text = string.Format(NotEnoughHPForDuel, personalLink, Constants.Costs.DuelHP, petDB?.HP ?? 0),
+                        msgThreadId = _msgThreadId
+                    };
+                    await _appServices.BotControlService.SendAnswerMessageGroupAsync(notEnoughHPMsg, _chatId, false);
                     return;
                 }
 
@@ -162,7 +175,7 @@ namespace TamagotchiBot.Controllers
                 }
 
                 var sentMsg = await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
-                _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.Duel);
+                _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.DuelGold);
                 _appServices.MetaUserService.UpdateMsgDuelId(_userId, sentMsg?.MessageId ?? -1);
                 _appServices.MetaUserService.UpdateChatDuelId(_userId, _chatId);
                 _appServices.MetaUserService.UpdateMsgCreatorDuelId(_userId, _message?.MessageId ?? -1);
@@ -298,7 +311,7 @@ namespace TamagotchiBot.Controllers
             var userDB = _appServices.UserService.Get(_userId);
             var petDB = _appServices.PetService.Get(_userId);
 
-            if (userDB == null || petDB == null)
+            if (userDB == null || petDB == null || petDB.IsGone || petDB.HP <= 0)
                 return;
 
             if (_callback.Data.Contains(new DuelMuliplayerCommand().StartDuelMultiplayerButton.CallbackData))
@@ -320,6 +333,14 @@ namespace TamagotchiBot.Controllers
                 if (!int.TryParse(duelMsgStr, out int duelMsgId))
                     return;
 
+                if (petDB?.HP < Constants.Costs.DuelHP)
+                {
+                    Culture = new CultureInfo(userDB?.Culture ?? "ru");
+                    string notEnoughHPTextCallback = string.Format(NotEnoughHPForDuelCallback, Constants.Costs.DuelHP, petDB?.HP ?? 0);
+                    _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, notEnoughHPTextCallback, true);
+                    return;
+                }
+
                 if (_userId == duelCreatorId)
                 {
                     Culture = new CultureInfo(userDB?.Culture ?? "ru");
@@ -328,10 +349,10 @@ namespace TamagotchiBot.Controllers
                     return;
                 }
 
-                if (userDB?.Gold < Constants.Costs.Duel)
+                if (userDB?.Gold < Constants.Costs.DuelGold)
                 {
                     Culture = new CultureInfo(userDB?.Culture ?? "ru");
-                    string notEnoughGoldTextCallback = string.Format(NotEnoughGoldForDuelCallback, userDB?.Gold ?? 0, Constants.Costs.Duel);
+                    string notEnoughGoldTextCallback = string.Format(NotEnoughGoldForDuelCallback, userDB?.Gold ?? 0, Constants.Costs.DuelGold);
                     _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, notEnoughGoldTextCallback, true);
                     return;
                 }
@@ -352,7 +373,7 @@ namespace TamagotchiBot.Controllers
                 _appServices.MetaUserService.UpdateMsgDuelId(duelCreatorId, -1);
                 _appServices.MetaUserService.UpdateChatDuelId(duelCreatorId, -1);
                 _appServices.MetaUserService.UpdateMsgCreatorDuelId(duelCreatorId, -1);
-                _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.Duel);
+                _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.DuelGold);
 
                 var petAttacker = _appServices.PetService.Get(_userId);
                 var petDefender = _appServices.PetService.Get(duelCreatorId);
@@ -462,6 +483,12 @@ namespace TamagotchiBot.Controllers
                 return false;
 
             if (petDB == null)
+                return false;
+
+            if (petDB.IsGone)
+                return false;
+
+            if (petDB.HP <= 0)
                 return false;
 
             return true;

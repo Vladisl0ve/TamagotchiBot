@@ -222,7 +222,7 @@ namespace TamagotchiBot.Controllers
             Telegram.Bot.Types.User userFromMsg = _message?.From ?? _callback?.From;
             var petDB = _appServices.PetService.Get(_userId);
 
-            if (userFromMsg == null || petDB == null)
+            if (userFromMsg == null || petDB == null || petDB.IsGone || petDB.HP <= 0)
                 return;
 
             var petResult =  Pet.Clone(petDB);
