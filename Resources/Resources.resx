@@ -875,4 +875,12 @@ To do this job you need to have no more than {0}😴 fatigue</value>
   <data name="workCommandFlyersWorking" xml:space="preserve">
     <value>The pet is now handing out leaflets 🤹‍♀️</value>
   </data>
+  <data name="NotEnoughHPForDuel" xml:space="preserve">
+    <value>{0} to start a duel you need {1}%💊 health
+You only have {2}%💊</value>
+  </data>
+  <data name="NotEnoughHPForDuelCallback" xml:space="preserve">
+    <value>To accept a duel you need {0}%💊 health
+You only have {1}%💊</value>
+  </data>
 </root>

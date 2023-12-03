@@ -883,4 +883,12 @@ https://t.me/news_virtualpetbot</value>
   <data name="workCommandFlyersWorking" xml:space="preserve">
     <value>Питомец сейчас раздаёт листовки 🤹‍♀️</value>
   </data>
+  <data name="NotEnoughHPForDuel" xml:space="preserve">
+    <value>{0}, чтобы начать дуэль надо {1}%💊 здоровья
+У тебя есть только {2}%💊</value>
+  </data>
+  <data name="NotEnoughHPForDuelCallback" xml:space="preserve">
+    <value>Чтобы принять дуэль надо {1}%💊 здоровья
+У тебя есть только {0}%💊</value>
+  </data>
 </root>

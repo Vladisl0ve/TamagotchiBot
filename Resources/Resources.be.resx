@@ -882,4 +882,12 @@ FAQ:
 Падпісвайцеся на наш канал, дзе ўсё аб боце:
 https://t.me/newsvirtualpetbot</value>
   </data>
+  <data name="NotEnoughHPForDuel" xml:space="preserve">
+    <value>{0}, каб пачаць дуэль трэба {1}%💊 здароўя
+У цябе ёсць толькі {2}%💊</value>
+  </data>
+  <data name="NotEnoughHPForDuelCallback" xml:space="preserve">
+    <value>Каб прыняць дуэль трэба {1}%💊 здароўя
+У цябе ёсць толькі {0}%💊</value>
+  </data>
 </root>

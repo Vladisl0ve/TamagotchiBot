@@ -913,6 +913,26 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} to start a duel you need {1}%💊 health
+        ///You only have {2}%💊.
+        /// </summary>
+        public static string NotEnoughHPForDuel {
+            get {
+                return ResourceManager.GetString("NotEnoughHPForDuel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To accept a duel you need {0}%💊 health
+        ///You only have {1}%💊.
+        /// </summary>
+        public static string NotEnoughHPForDuelCallback {
+            get {
+                return ResourceManager.GetString("NotEnoughHPForDuelCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0}, you have to wait another {1}🕑 to feed someone else’s pet🍗.
         /// </summary>
         public static string NotEnoughTimeSpentByLastMPFeed {

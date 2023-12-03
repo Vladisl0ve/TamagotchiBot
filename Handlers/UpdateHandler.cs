@@ -132,6 +132,7 @@ namespace TamagotchiBot.Handlers
 
                     MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
 
+                    new CreatorController(_appServices, message).UpdateIndicators();
                     new SynchroDBController(_appServices, message).SynchronizeWithDB(); //update user (username, names etc.) in DB
                     new SynchroDBController(_appServices, message).SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
 
