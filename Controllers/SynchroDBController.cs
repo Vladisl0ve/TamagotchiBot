@@ -53,7 +53,7 @@ namespace TamagotchiBot.Controllers
             var chatMP = _appServices.ChatsMPService.Get(_chatId);
             if (chatMP == null)
             {
-                _appServices.ChatsMPService.Create(new Models.Mongo.ChatsMP()
+                chatMP = _appServices.ChatsMPService.Create(new Models.Mongo.ChatsMP()
                 {
                     ChatId = _chatId,
                     Name = _chatName
