@@ -3,11 +3,13 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
-    <Configurations>Debug;Release;Debug-Notify</Configurations>
+    <Configurations>Debug;Release;Debug-Notify;Debug-Hotfix</Configurations>
     <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Hotfix|AnyCPU'" />
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Notify|AnyCPU'">
     <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
