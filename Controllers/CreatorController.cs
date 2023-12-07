@@ -394,6 +394,7 @@ namespace TamagotchiBot.Controllers
         {
             var badWordsDB = _appServices.SInfoService.GetBadWords().ConvertAll(w => w.ToUpper());
             if (string.IsNullOrEmpty(_message.Text)
+                || _message.Text.Count() > 25
                 || _message.Text.FirstOrDefault() == '/'
                 || badWordsDB.Contains(_message.Text.ToUpper()))
             {
