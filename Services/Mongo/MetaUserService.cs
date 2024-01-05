@@ -32,6 +32,8 @@ namespace TamagotchiBot.Services.Mongo
             return user;
         }
 
+        public void Remove(long userId) => _metausers.DeleteOne(u => u.UserId == userId);
+
         public bool UpdateIsPetNameAskedOnRename(long userId, bool isPetNameAskedOnRename)
         {
             var userDb = _metausers.Find(u => u.UserId == userId).FirstOrDefault();

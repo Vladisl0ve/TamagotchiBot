@@ -206,7 +206,10 @@ namespace TamagotchiBot.Services
             Log.Information($"MAINTAINS STARTED");
             _appServices.SInfoService.DisableMaintainWorks();
             int counterUser = 0;
+            int counterUser2 = 0;
             var allPets = _appServices.PetService.GetAll();
+            var allUsers = _appServices.UserService.GetAll();
+            var allMetaUsers = _appServices.MetaUserService.GetAll();
 
             foreach (var pet in allPets)
             {
@@ -216,12 +219,22 @@ namespace TamagotchiBot.Services
                     _appServices.PetService.Remove(pet.UserId);
                     _appServices.UserService.Remove(pet.UserId);
                     _appServices.ChatService.Remove(pet.UserId);
+                    _appServices.MetaUserService.Remove(pet.UserId);
                     Log.Information($"Removed {pet.UserId}");
                     counterUser++;
                 }
             }
 
-            Log.Information($"MAINTAINS OVER - updated {counterUser} users");
+            foreach (var metUserDB in allMetaUsers)
+            {
+                if (allUsers.Any(u => u.UserId == metUserDB.UserId))
+                    continue;
+
+                _appServices.MetaUserService.Remove(metUserDB.UserId);
+                counterUser2++;
+            }
+
+            Log.Information($"MAINTAINS OVER - updated {counterUser} users, removed {counterUser2} metausers");
         }
         private async void OnMPDuelsTimedEvent(object sender, ElapsedEventArgs e)
         {
@@ -239,6 +252,14 @@ namespace TamagotchiBot.Services
                 {
                     var petDB = _appServices.PetService.Get(metaUser.UserId);
                     var userDB = _appServices.UserService.Get(metaUser.UserId);
+
+                    if (petDB == null || userDB == null)
+                    {
+                        _appServices.MetaUserService.Remove(metaUser.UserId);
+                        Log.Information($"Deleted metauser id: {metaUser.UserId}");
+                        continue;
+                    }
+
                     var userLink = Extensions.GetPersonalLink(metaUser.UserId, userDB?.FirstName ?? "0_o");
                     var petNameEncoded = HttpUtility.HtmlEncode(petDB?.Name ?? "^_^");
                     Resources.Resources.Culture = new CultureInfo(userDB?.Culture ?? "ru");
