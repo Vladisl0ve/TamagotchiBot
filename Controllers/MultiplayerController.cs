@@ -15,6 +15,7 @@ using TamagotchiBot.Models;
 using System;
 using TamagotchiBot.Models.Mongo;
 using TamagotchiBot.UserExtensions;
+using User = TamagotchiBot.Models.Mongo.User;
 
 namespace TamagotchiBot.Controllers
 {
@@ -25,6 +26,7 @@ namespace TamagotchiBot.Controllers
         private readonly CallbackQuery _callback = null;
         private readonly long _userId;
         private readonly long _chatId;
+        private readonly int? _msgThreadId;
         private readonly CultureInfo _userCulture;
 
         private readonly string _chatName;
@@ -37,6 +39,8 @@ namespace TamagotchiBot.Controllers
             _message = message;
             _userId = callback?.From.Id ?? message.From.Id;
             _chatId = callback?.Message?.Chat?.Id ?? message.Chat.Id;
+            _msgThreadId = callback?.Message?.MessageThreadId ?? message?.MessageThreadId;
+
             _appServices = services;
 
             _userName = message?.From?.FirstName ?? callback?.From?.FirstName;
@@ -45,18 +49,21 @@ namespace TamagotchiBot.Controllers
 
             Culture = _userCulture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
         }
-        public Task CommandHandler(string botUsername, string customText = null)
+        public void CommandHandler(string botUsername, string customText = null)
         {
             string textReceived = customText ?? _message.Text;
             if (textReceived == null)
-                return Task.CompletedTask;
+                return;
 
             textReceived = textReceived.ToLower();
             if (textReceived.Contains($"@{botUsername}"))
                 textReceived = textReceived.Split($"@{botUsername}").FirstOrDefault();
 
-            if (textReceived == null || (textReceived.FirstOrDefault() != '/' && !IsMessageHasMentions()))
-                return Task.CompletedTask;
+            if (textReceived == null)
+                return;
+
+            if (textReceived.FirstOrDefault() != '/' && !IsMessageHasMentions())
+                return;
 
             var petDB = _appServices.PetService.Get(_userId);
             var userDB = _appServices.UserService.Get(_userId);
@@ -66,11 +73,11 @@ namespace TamagotchiBot.Controllers
                 if (!IsUserAndPetRegisteredChecking(petDB, userDB))
                 {
                     SendInviteForUnregistered();
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 ShowPetMP(petDB, userDB);
-                return Task.CompletedTask;
+                return;
             }
 
             if (textReceived == "/start_duel")
@@ -78,11 +85,11 @@ namespace TamagotchiBot.Controllers
                 if (!IsUserAndPetRegisteredChecking(petDB, userDB))
                 {
                     SendInviteForUnregistered();
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 StartDuel(petDB, userDB);
-                return Task.CompletedTask;
+                return;
             }
 
             if (textReceived == "/feed_pet")
@@ -90,196 +97,17 @@ namespace TamagotchiBot.Controllers
                 if (!IsUserAndPetRegisteredChecking(petDB, userDB))
                 {
                     SendInviteForUnregistered();
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 SendFeedMPMessage(userDB);
-                return Task.CompletedTask;
+                return;
             }
 
             if (IsMessageHasMentions())
             {
                 FeedByMentionPetMP(petDB, userDB);
-                return Task.CompletedTask;
-            }
-
-            return Task.CompletedTask;
-
-            async void StartDuel(Models.Mongo.Pet petDB, Models.Mongo.User userDB)
-            {
-                var personalLink = Extensions.GetPersonalLink(_userId, _userName);
-                if (userDB?.Gold < Constants.Costs.Duel)
-                {
-                    Culture = new CultureInfo(userDB?.Culture ?? "ru");
-                    AnswerMessage notEnoughGoldMsg = new AnswerMessage()
-                    {
-                        ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                        Text = string.Format(NotEnoughGoldForDuel, personalLink, userDB?.Gold ?? 0, Constants.Costs.Duel)
-                    };
-                    await _appServices.BotControlService.SendAnswerMessageGroupAsync(notEnoughGoldMsg, _chatId, false);
-                    return;
-                }
-
-                var metaUserDB = _appServices.MetaUserService.Get(_userId);
-                var timeToWaitNextDuel = metaUserDB?.NextPossibleDuelTime - DateTime.UtcNow;
-                if (timeToWaitNextDuel != null && timeToWaitNextDuel > TimeSpan.Zero)
-                {
-                    Culture = new CultureInfo(userDB?.Culture ?? "ru");
-                    AnswerMessage waitForDuelText = new AnswerMessage()
-                    {
-                        ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                        Text = string.Format(DuelMPCooldown, new DateTime(timeToWaitNextDuel?.Ticks ?? 0).ToString("HH:mm:ss"), personalLink)
-                    };
-                    await _appServices.BotControlService.SendAnswerMessageGroupAsync(waitForDuelText, _chatId, false);
-                    return;
-                }
-
-                Culture = new CultureInfo(userDB?.Culture ?? "ru");
-                var customCallback = new DuelMuliplayerCommand().StartDuelMultiplayerButton;
-                customCallback.CallbackData += $"_{userDB.UserId}_{_message.MessageId}";
-                AnswerMessage answerMessage = new AnswerMessage()
-                {
-                    InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
-                    {
-                        customCallback
-                    }),
-                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                    Text = string.Format(DuelMPStartCommand, personalLink, petDB.Name)
-                };
-
-                var metaUser = _appServices.MetaUserService.Get(_userId);
-                if (metaUser?.MsgDuelId > 0)
-                {
-                    await _appServices.BotControlService.DeleteMessageAsync(metaUser.ChatDuelId, metaUser.MsgDuelId, false);
-                    await _appServices.BotControlService.DeleteMessageAsync(metaUser.ChatDuelId, metaUser.MsgCreatorDuelId, false);
-                }
-
-                var sentMsg = await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
-                _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.Duel);
-                _appServices.MetaUserService.UpdateMsgDuelId(_userId, sentMsg?.MessageId ?? -1);
-                _appServices.MetaUserService.UpdateChatDuelId(_userId, _chatId);
-                _appServices.MetaUserService.UpdateMsgCreatorDuelId(_userId, _message?.MessageId ?? -1);
-                _appServices.MetaUserService.UpdateDuelStartTime(_userId, DateTime.UtcNow);
-                Log.Debug($"MP: started duel by {_userLogInfo}");
-            }
-            async void ShowPetMP(Models.Mongo.Pet petDB, Models.Mongo.User userDB)
-            {
-                var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
-                var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
-                string toSendText = string.Format(MultiplayerShowPet,
-                                                  encodedPetName,
-                                                  petDB.HP,
-                                                  petDB.Satiety,
-                                                  petDB.Hygiene,
-                                                  petDB.Fatigue,
-                                                  petDB.Joy,
-                                                  petDB.Level,
-                                                  userDB.Gold,
-                                                  "`personalLink`");
-
-                toSendText = toSendText.Replace("`personalLink`", Extensions.GetPersonalLink(_userId, _userName));
-
-                AnswerMessage answerMessage = new AnswerMessage()
-                {
-                    InlineKeyboardMarkup = new (
-                        InlineKeyboardButton.WithUrl(
-                            new InviteMuliplayerCommand().InviteReferalMultiplayerButton(userDB.FirstName).Text,
-                            Extensions.GetReferalLink(_userId, botUsername)
-                            )),
-                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                    Text = toSendText
-                };
-
-                await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
-                Log.Debug($"MP: called showPet by {_userLogInfo}");
-            }
-            async void FeedByMentionPetMP(Models.Mongo.Pet petDB, Models.Mongo.User userDB)
-            {
-                bool isError = false;
-                var metaUserDB = _appServices.MetaUserService.Get(_userId);
-
-                if (!metaUserDB?.IsFeedingMPStarted ?? true)
-                    return;
-
-                if (!CheckAndSendOnFailIsEnoughGoldAtFeeder(userDB))
-                    goto ending;
-
-                var msgEntity = _message.Entities?.FirstOrDefault();
-                if (msgEntity == default)
-                {
-                    isError = true;
-                    goto ending;
-                }
-
-                var userToFeedDB = msgEntity.Type switch
-                {
-                    Telegram.Bot.Types.Enums.MessageEntityType.TextMention => GetUserFromEntity(msgEntity),
-                    _ => GetUserByUsername(_message.EntityValues.FirstOrDefault())
-                };
-
-                if (userToFeedDB == null)
-                {
-                    isError = true;
-                    goto ending;
-                }
-
-                if(userToFeedDB.UserId == _userId)
-                {
-                    SendCanNotFeedOwnPetMessage(userDB);
-                    goto ending;
-                }
-
-                var petToFeedDB = _appServices.PetService.Get(userToFeedDB.UserId);
-                if (petToFeedDB == null)
-                {
-                    isError = true;
-                    goto ending;
-                }
-
-                var spentTimeByLastPetFeeding = DateTime.UtcNow - petToFeedDB.LastMPFedTime;
-                if (spentTimeByLastPetFeeding < new Constants.TimesToWait().FeedMPCDToWait)
-                {
-                    string timeToWait = new DateTime((petToFeedDB.LastMPFedTime + new Constants.TimesToWait().FeedMPCDToWait - DateTime.UtcNow).Ticks).ToString("HH:mm:ss");
-                    var persLink = Extensions.GetPersonalLink(_userId, _userName);
-                    var petName = HttpUtility.HtmlEncode(petToFeedDB.Name);
-                    petName = "<b>" + petName + "</b>";
-                    await _appServices.BotControlService.SendAnswerMessageGroupAsync(new AnswerMessage()
-                    {
-                        Text = string.Format(NotEnoughTimeSpentFeedMP, persLink, petName, timeToWait),
-                        replyToMsgId = _message.MessageId,
-                        ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
-                    },
-                    _chatId,
-                    false);
-                    goto ending;
-                }
-
-                _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.FeedMP);
-                _appServices.MetaUserService.UpdateLastMPFeedingTime(_userId, DateTime.UtcNow);
-                _appServices.PetService.UpdateMPSatiety(petToFeedDB.UserId, petToFeedDB.MPSatiety + Constants.FoodFactors.MPFeed);
-                _appServices.PetService.UpdateLastMPFedTime(userToFeedDB.UserId, DateTime.UtcNow);
-
-                await _appServices.BotControlService.SendAnswerMessageGroupAsync(new AnswerMessage()
-                {
-                    Text = string.Format(FeedMPEndSuccess, HttpUtility.HtmlEncode(petToFeedDB.Name), Constants.Costs.FeedMP),
-                    replyToMsgId = _message.MessageId,
-                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
-                },
-                _chatId,
-                false);
-
-            ending:
-                if (isError)
-                    await _appServices.BotControlService.SendAnswerMessageGroupAsync(
-                        new AnswerMessage()
-                        {
-                            Text = FeedMPNotFound,
-                            replyToMsgId = _message?.MessageId
-                        },
-                        _chatId,
-                        false
-                        );
-                _appServices.MetaUserService.UpdateIsFeedingMPStarted(_userId, false);
+                return;
             }
         }
         public void CallbackHandler()
@@ -287,7 +115,7 @@ namespace TamagotchiBot.Controllers
             var userDB = _appServices.UserService.Get(_userId);
             var petDB = _appServices.PetService.Get(_userId);
 
-            if (userDB == null || petDB == null)
+            if (userDB == null || petDB == null || petDB.IsGone || petDB.HP <= 0)
                 return;
 
             if (_callback.Data.Contains(new DuelMuliplayerCommand().StartDuelMultiplayerButton.CallbackData))
@@ -299,29 +127,49 @@ namespace TamagotchiBot.Controllers
             {
                 var splittedData = _callback.Data.Split("_").ToList();
                 if (splittedData.Count != 3)
+                {
+                    Log.Debug($"MP: called callback AcceptDuel, but callback data is wrong (data doesnt have 3 parts) by {_userLogInfo}");
                     return;
+                }
 
                 var duelCreatorStr = splittedData[1];
                 var duelMsgStr = splittedData[2];
 
                 if (!long.TryParse(duelCreatorStr, out var duelCreatorId))
+                {
+                    Log.Debug($"MP: called callback AcceptDuel, but callback data is wrong (duelCreatorId is not long) by {_userLogInfo}");
                     return;
+                }
                 if (!int.TryParse(duelMsgStr, out int duelMsgId))
+                {
+                    Log.Debug($"MP: called callback AcceptDuel, but callback data is wrong (duelMsgId is not long) by {_userLogInfo}");
                     return;
+                }
+
+                if (petDB?.HP < Constants.Costs.DuelHP)
+                {
+                    Culture = new CultureInfo(userDB?.Culture ?? "ru");
+                    string notEnoughHPTextCallback = string.Format(NotEnoughHPForDuelCallback, Constants.Costs.DuelHP, petDB?.HP ?? 0);
+                    _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, notEnoughHPTextCallback, true);
+                    Log.Debug($"MP: called callback AcceptDuel, but not enough HP by {_userLogInfo}");
+                    return;
+                }
 
                 if (_userId == duelCreatorId)
                 {
                     Culture = new CultureInfo(userDB?.Culture ?? "ru");
                     string cannotYourselfText = string.Format(DuelMPErrorYourself);
                     _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, cannotYourselfText, true);
+                    Log.Debug($"MP: called callback AcceptDuel, but can not accept own duel by {_userLogInfo}");
                     return;
                 }
 
-                if (userDB?.Gold < Constants.Costs.Duel)
+                if (userDB?.Gold < Constants.Costs.DuelGold)
                 {
                     Culture = new CultureInfo(userDB?.Culture ?? "ru");
-                    string notEnoughGoldTextCallback = string.Format(NotEnoughGoldForDuelCallback, userDB?.Gold ?? 0, Constants.Costs.Duel);
+                    string notEnoughGoldTextCallback = string.Format(NotEnoughGoldForDuelCallback, userDB?.Gold ?? 0, Constants.Costs.DuelGold);
                     _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, notEnoughGoldTextCallback, true);
+                    Log.Debug($"MP: called callback AcceptDuel, but not enough gold by {_userLogInfo}");
                     return;
                 }
 
@@ -329,9 +177,11 @@ namespace TamagotchiBot.Controllers
                 var timeToWaitNextDuel = metaUserDB?.NextPossibleDuelTime - DateTime.UtcNow;
                 if (timeToWaitNextDuel != null && timeToWaitNextDuel > TimeSpan.Zero)
                 {
+                    var timeToWaitString = new DateTime(timeToWaitNextDuel?.Ticks ?? 0).ToString("HH:mm:ss");
                     Culture = new CultureInfo(userDB?.Culture ?? "ru");
-                    string waitForDuelText = string.Format(DuelMPCooldownCallback, new DateTime(timeToWaitNextDuel?.Ticks ?? 0).ToString("HH:mm:ss"));
+                    string waitForDuelText = string.Format(DuelMPCooldownCallback, timeToWaitString);
                     _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, waitForDuelText, true);
+                    Log.Debug($"MP: called callback AcceptDuel, but has to wait {timeToWaitString} by {_userLogInfo}");
                     return;
                 }
 
@@ -341,7 +191,7 @@ namespace TamagotchiBot.Controllers
                 _appServices.MetaUserService.UpdateMsgDuelId(duelCreatorId, -1);
                 _appServices.MetaUserService.UpdateChatDuelId(duelCreatorId, -1);
                 _appServices.MetaUserService.UpdateMsgCreatorDuelId(duelCreatorId, -1);
-                _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.Duel);
+                _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.DuelGold);
 
                 var petAttacker = _appServices.PetService.Get(_userId);
                 var petDefender = _appServices.PetService.Get(duelCreatorId);
@@ -357,7 +207,8 @@ namespace TamagotchiBot.Controllers
                 {
                     StickerId = Constants.StickersId.MPDuelStarted,
                     ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                    Text = string.Format(DuelMPFighting1, personalLinkCreatorDuel, personalLinkDuelAccepted, petDefenderName, petAttackerName)
+                    Text = string.Format(DuelMPFighting1, personalLinkCreatorDuel, personalLinkDuelAccepted, petDefenderName, petAttackerName),
+                    msgThreadId = _msgThreadId
                 };
 
                 Log.Debug($"MP: duel accepted by {_userLogInfo}");
@@ -413,7 +264,8 @@ namespace TamagotchiBot.Controllers
             {
                 InlineKeyboardMarkup = new ( InlineKeyboardButton.WithUrl(new InviteMuliplayerCommand().InviteGlobalMultiplayerButton.Text, $"https://t.me/{botUsername}")),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                Text = toSendText
+                Text = toSendText,
+                msgThreadId = _msgThreadId
             };
 
             await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
@@ -429,12 +281,224 @@ namespace TamagotchiBot.Controllers
             {
                 InlineKeyboardMarkup = new ( InlineKeyboardButton.WithUrl(new InviteMuliplayerCommand().InviteGlobalMultiplayerButton.Text, Extensions.GetReferalLink(_userId, botUsername))),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                Text = toSendText
+                Text = toSendText,
+                msgThreadId = _msgThreadId
             };
 
             await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
             Log.Debug($"MP: called SendWelcomeMessageOnStart, invited by ID: {_userId}");
         }
+
+        private async void StartDuel(Pet petDB, User userDB)
+        {
+            var personalLink = Extensions.GetPersonalLink(_userId, _userName);
+            if (userDB?.Gold < Constants.Costs.DuelGold)
+            {
+                Culture = new CultureInfo(userDB?.Culture ?? "ru");
+                AnswerMessage notEnoughGoldMsg = new AnswerMessage()
+                {
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    Text = string.Format(NotEnoughGoldForDuel, personalLink, userDB?.Gold ?? 0, Constants.Costs.DuelGold),
+                    msgThreadId = _msgThreadId
+                };
+                await _appServices.BotControlService.SendAnswerMessageGroupAsync(notEnoughGoldMsg, _chatId, false);
+                Log.Debug($"MP: called command StartDuel, but not enough gold by {_userLogInfo}");
+                return;
+            }
+
+            if (petDB?.HP < Constants.Costs.DuelHP)
+            {
+                Culture = new CultureInfo(userDB?.Culture ?? "ru");
+                AnswerMessage notEnoughHPMsg = new AnswerMessage()
+                {
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    Text = string.Format(NotEnoughHPForDuel, personalLink, Constants.Costs.DuelHP, petDB?.HP ?? 0),
+                    msgThreadId = _msgThreadId
+                };
+                await _appServices.BotControlService.SendAnswerMessageGroupAsync(notEnoughHPMsg, _chatId, false);
+                Log.Debug($"MP: called command StartDuel, but not enough HP by {_userLogInfo}");
+                return;
+            }
+
+            var metaUserDB = _appServices.MetaUserService.Get(_userId);
+            var timeToWaitNextDuel = metaUserDB?.NextPossibleDuelTime - DateTime.UtcNow;
+            if (timeToWaitNextDuel != null && timeToWaitNextDuel > TimeSpan.Zero)
+            {
+                var waitTimeString = new DateTime(timeToWaitNextDuel?.Ticks ?? 0).ToString("HH:mm:ss");
+                Culture = new CultureInfo(userDB?.Culture ?? "ru");
+                AnswerMessage waitForDuelText = new AnswerMessage()
+                {
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    Text = string.Format(DuelMPCooldown, waitTimeString, personalLink),
+                    msgThreadId = _msgThreadId
+                };
+                await _appServices.BotControlService.SendAnswerMessageGroupAsync(waitForDuelText, _chatId, false);
+                Log.Debug($"MP: called command StartDuel, but have to wait {waitTimeString} by {_userLogInfo}");
+                return;
+            }
+
+            Culture = new CultureInfo(userDB?.Culture ?? "ru");
+            var customCallback = new DuelMuliplayerCommand().StartDuelMultiplayerButton;
+            customCallback.CallbackData += $"_{userDB.UserId}_{_message.MessageId}";
+            AnswerMessage answerMessage = new AnswerMessage()
+            {
+                InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
+                    {
+                        customCallback
+                    }),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                Text = string.Format(DuelMPStartCommand, personalLink, petDB.Name),
+                msgThreadId = _msgThreadId
+            };
+
+            var metaUser = _appServices.MetaUserService.Get(_userId);
+            if (metaUser?.MsgDuelId > 0)
+            {
+                await _appServices.BotControlService.DeleteMessageAsync(metaUser.ChatDuelId, metaUser.MsgDuelId, false);
+                await _appServices.BotControlService.DeleteMessageAsync(metaUser.ChatDuelId, metaUser.MsgCreatorDuelId, false);
+            }
+
+            var sentMsg = await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
+            _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.DuelGold);
+            _appServices.MetaUserService.UpdateMsgDuelId(_userId, sentMsg?.MessageId ?? -1);
+            _appServices.MetaUserService.UpdateChatDuelId(_userId, _chatId);
+            _appServices.MetaUserService.UpdateMsgCreatorDuelId(_userId, _message?.MessageId ?? -1);
+            _appServices.MetaUserService.UpdateDuelStartTime(_userId, DateTime.UtcNow);
+            Log.Debug($"MP: started duel by {_userLogInfo}");
+        }
+        private async void ShowPetMP(Pet petDB, User userDB)
+        {
+            var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+            var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
+            string toSendText = string.Format(MultiplayerShowPet,
+                                                  encodedPetName,
+                                                  petDB.HP,
+                                                  petDB.Satiety,
+                                                  petDB.Hygiene,
+                                                  petDB.Fatigue,
+                                                  petDB.Joy,
+                                                  petDB.Level,
+                                                  userDB.Gold,
+                                                  "`personalLink`");
+
+            toSendText = toSendText.Replace("`personalLink`", Extensions.GetPersonalLink(_userId, _userName));
+
+            AnswerMessage answerMessage = new AnswerMessage()
+            {
+                InlineKeyboardMarkup = new (
+                        InlineKeyboardButton.WithUrl(
+                            new InviteMuliplayerCommand().InviteReferalMultiplayerButton(userDB.FirstName).Text,
+                            Extensions.GetReferalLink(_userId, botUsername)
+                            )),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                Text = toSendText,
+                msgThreadId = _msgThreadId
+            };
+
+            await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
+            Log.Debug($"MP: called showPet by {_userLogInfo}");
+        }
+        public async void FeedByMentionPetMP(Pet petDB, User userDB)
+        {
+            bool isError = false;
+            var metaUserDB = _appServices.MetaUserService.Get(_userId);
+
+            if (!metaUserDB?.IsFeedingMPStarted ?? true)
+            {
+                Log.Debug($"MP: called command FeedByMentionPetMP, but feeding not started yet by {_userLogInfo}");
+                return;
+            }
+
+            if (!CheckAndSendOnFailIsEnoughGoldAtFeeder(userDB))
+            {
+                Log.Debug($"MP: called command FeedByMentionPetMP, but not enough gold by {_userLogInfo}");
+                goto ending;
+            }
+
+            var msgEntity = _message.Entities?.FirstOrDefault();
+            if (msgEntity == default)
+            {
+                isError = true;
+                goto ending;
+            }
+
+            var userToFeedDB = msgEntity.Type switch
+            {
+                Telegram.Bot.Types.Enums.MessageEntityType.TextMention => GetUserFromEntity(msgEntity),
+                _ => GetUserByUsername(_message.EntityValues.FirstOrDefault())
+            };
+
+            if (userToFeedDB == null)
+            {
+                isError = true;
+                goto ending;
+            }
+
+            if (userToFeedDB.UserId == _userId)
+            {
+                SendCanNotFeedOwnPetMessage(userDB);
+                goto ending;
+            }
+
+            var petToFeedDB = _appServices.PetService.Get(userToFeedDB.UserId);
+            if (petToFeedDB == null)
+            {
+                isError = true;
+                goto ending;
+            }
+
+            var spentTimeByLastPetFeeding = DateTime.UtcNow - petToFeedDB.LastMPFedTime;
+            if (spentTimeByLastPetFeeding < new Constants.TimesToWait().FeedMPCDToWait)
+            {
+                string timeToWait = new DateTime((petToFeedDB.LastMPFedTime + new Constants.TimesToWait().FeedMPCDToWait - DateTime.UtcNow).Ticks).ToString("HH:mm:ss");
+                var persLink = Extensions.GetPersonalLink(_userId, _userName);
+                var petName = HttpUtility.HtmlEncode(petToFeedDB.Name);
+                petName = "<b>" + petName + "</b>";
+                await _appServices.BotControlService.SendAnswerMessageGroupAsync(new AnswerMessage()
+                {
+                    Text = string.Format(NotEnoughTimeSpentFeedMP, persLink, petName, timeToWait),
+                    replyToMsgId = _message.MessageId,
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    msgThreadId = _msgThreadId,
+                },
+                _chatId,
+                false);
+                goto ending;
+            }
+
+            _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.FeedMP);
+            _appServices.MetaUserService.UpdateLastMPFeedingTime(_userId, DateTime.UtcNow);
+            _appServices.PetService.UpdateMPSatiety(petToFeedDB.UserId, petToFeedDB.MPSatiety + Constants.FoodFactors.MPFeed);
+            _appServices.PetService.UpdateLastMPFedTime(userToFeedDB.UserId, DateTime.UtcNow);
+
+            await _appServices.BotControlService.SendAnswerMessageGroupAsync(new AnswerMessage()
+            {
+                Text = string.Format(FeedMPEndSuccess, HttpUtility.HtmlEncode(petToFeedDB.Name), Constants.Costs.FeedMP),
+                replyToMsgId = _message.MessageId,
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                msgThreadId = _msgThreadId,
+            },
+            _chatId,
+            false);
+
+        ending:
+            if (isError)
+            {
+                await _appServices.BotControlService.SendAnswerMessageGroupAsync(new AnswerMessage()
+                {
+                    Text = FeedMPNotFound,
+                    replyToMsgId = _message?.MessageId,
+                    msgThreadId = _msgThreadId
+                },
+                    _chatId,
+                    false
+                    );
+
+                Log.Debug($"MP: called command FeedByMentionPetMP, but something went wrong by {_userLogInfo}");
+            }
+            _appServices.MetaUserService.UpdateIsFeedingMPStarted(_userId, false);
+        }
+
 
         private bool IsUserAndPetRegisteredChecking(Pet petDB, Models.Mongo.User userDB)
         {
@@ -448,6 +512,12 @@ namespace TamagotchiBot.Controllers
                 return false;
 
             if (petDB == null)
+                return false;
+
+            if (petDB.IsGone)
+                return false;
+
+            if (petDB.HP <= 0)
                 return false;
 
             return true;
@@ -475,7 +545,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = string.Format(FeedMPStart, persLink),
                 replyToMsgId = _message.MessageId,
-                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                msgThreadId = _msgThreadId
             },
             _chatId,
             false);
@@ -488,7 +559,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = string.Format(NotEnoughGoldForMPFeed, persLink, userDB.Gold, Constants.Costs.FeedMP),
                 replyToMsgId = _message.MessageId,
-                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                msgThreadId = _msgThreadId
             },
             _chatId,
             false);
@@ -499,7 +571,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = string.Format(FeedMPErrorFeedOwnPet),
                 replyToMsgId = _message.MessageId,
-                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                msgThreadId = _msgThreadId
             },
             _chatId,
             false);
@@ -537,7 +610,8 @@ namespace TamagotchiBot.Controllers
                 {
                     Text = string.Format(NotEnoughTimeSpentByLastMPFeed, persLink, timeToWait),
                     replyToMsgId = _message.MessageId,
-                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    msgThreadId = _msgThreadId
                 },
                 _chatId,
                 false);

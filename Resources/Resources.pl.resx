@@ -675,7 +675,7 @@ Odwiedzaj częściej swojego zwierzaka, bo on też Cię kocha i bardzo chętnie 
 
 Często zadawane pytania:
 1. Jak gromadzi się poziom 🏅?
-- 100 doświadczenia = 1 poziom. Doświadczenie zdobywa się wraz z postępami w grze - wystarczy odpowiednio zaopiekować się swoim pupilem.
+- 1 doświadczenie = 1 minuta życia zwierzaka. Wystarczy nie zapomnieć o swoim zwierzaku🦩
 
 2. Jak zarabiać pieniądze 💰?
 - Złoto zdobywa się w pracy (/work)
@@ -877,5 +877,13 @@ Bez Was ten bot jest niczym 🤍❤️🤍
 
 Subskrybuj nasz kanał, na którym wszystko jest o bocie:
 https://t.me/newsvirtualpetbot</value>
+  </data>
+  <data name="NotEnoughHPForDuel" xml:space="preserve">
+    <value>{0} aby rozpocząć pojedynek potrzebujesz {1}%💊 zdrowia
+Masz tylko {2}%💊</value>
+  </data>
+  <data name="NotEnoughHPForDuelCallback" xml:space="preserve">
+    <value>Aby przyjąć pojedynek potrzebujesz {1}%💊 zdrowia
+Masz tylko {0}%💊</value>
   </data>
 </root>

@@ -264,10 +264,10 @@ namespace TamagotchiBot.Services
                     var petNameEncoded = HttpUtility.HtmlEncode(petDB?.Name ?? "^_^");
                     Resources.Resources.Culture = new CultureInfo(userDB?.Culture ?? "ru");
 
-                    string textToSend = string.Format(Resources.Resources.DuelMPTimeout, userLink, petNameEncoded, Constants.Costs.Duel);
+                    string textToSend = string.Format(Resources.Resources.DuelMPTimeout, userLink, petNameEncoded, Constants.Costs.DuelGold);
                     await _appServices.BotControlService.EditMessageTextAsync(metaUser.ChatDuelId, metaUser.MsgDuelId, textToSend, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
                     await _appServices.BotControlService.DeleteMessageAsync(metaUser.ChatDuelId, metaUser.MsgCreatorDuelId, false);
-                    _appServices.UserService.UpdateGold(metaUser.UserId, userDB.Gold + Constants.Costs.Duel);
+                    _appServices.UserService.UpdateGold(metaUser.UserId, userDB.Gold + Constants.Costs.DuelGold);
                     _appServices.MetaUserService.UpdateChatDuelId(metaUser.UserId, -1);
                     _appServices.MetaUserService.UpdateMsgDuelId(metaUser.UserId, -1);
                     _appServices.MetaUserService.UpdateMsgCreatorDuelId(metaUser.UserId, -1);

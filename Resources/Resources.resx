@@ -319,7 +319,7 @@ Visit your pet more often, because he loves you too and will be very happy to ta
 
 FAQ:
 1. How does the 🏅 level accumulate?
-- 100 experience = 1 level. Experience is gained as the game progresses - it is enough to properly care for your pet.
+- 1 experience = 1 minute of pet’s life. It’s enough not to forget about your pet 🦩
 
 2. How to make money 💰?
 - Gold is earned at work (/work)
@@ -874,5 +874,13 @@ To do this job you need to have no more than {0}😴 fatigue</value>
   </data>
   <data name="workCommandFlyersWorking" xml:space="preserve">
     <value>The pet is now handing out leaflets 🤹‍♀️</value>
+  </data>
+  <data name="NotEnoughHPForDuel" xml:space="preserve">
+    <value>{0} to start a duel you need {1}%💊 health
+You only have {2}%💊</value>
+  </data>
+  <data name="NotEnoughHPForDuelCallback" xml:space="preserve">
+    <value>To accept a duel you need {0}%💊 health
+You only have {1}%💊</value>
   </data>
 </root>

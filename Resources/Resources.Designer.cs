@@ -683,7 +683,7 @@ namespace TamagotchiBot.Resources {
         ///
         ///FAQ:
         ///1. How does the 🏅 level accumulate?
-        ///- 100 experience = 1 level. Exp [rest of string was truncated]&quot;;.
+        ///- 1 experience = 1 minute of pe [rest of string was truncated]&quot;;.
         /// </summary>
         public static string helpCommand {
             get {
@@ -909,6 +909,26 @@ namespace TamagotchiBot.Resources {
         public static string NotEnoughGoldToResurrect {
             get {
                 return ResourceManager.GetString("NotEnoughGoldToResurrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} to start a duel you need {1}%💊 health
+        ///You only have {2}%💊.
+        /// </summary>
+        public static string NotEnoughHPForDuel {
+            get {
+                return ResourceManager.GetString("NotEnoughHPForDuel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To accept a duel you need {0}%💊 health
+        ///You only have {1}%💊.
+        /// </summary>
+        public static string NotEnoughHPForDuelCallback {
+            get {
+                return ResourceManager.GetString("NotEnoughHPForDuelCallback", resourceCulture);
             }
         }
         
