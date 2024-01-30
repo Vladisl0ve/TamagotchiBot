@@ -68,7 +68,10 @@ namespace TamagotchiBot.Controllers
             var petDB = _appServices.PetService.Get(_userId);
             var userDB = _appServices.UserService.Get(_userId);
 
-            if (textReceived == "/show_pet")
+            if(textReceived.FirstOrDefault() == '/')
+                textReceived = textReceived.Remove(0, 1);
+
+            if (textReceived == Constants.CommandsMP.ShowPetCommand)
             {
                 if (!IsUserAndPetRegisteredChecking(petDB, userDB))
                 {
@@ -80,7 +83,7 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            if (textReceived == "/start_duel")
+            if (textReceived == Constants.CommandsMP.StartDuelCommand)
             {
                 if (!IsUserAndPetRegisteredChecking(petDB, userDB))
                 {
@@ -92,7 +95,7 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            if (textReceived == "/feed_pet")
+            if (textReceived == Constants.CommandsMP.FeedMPCommand)
             {
                 if (!IsUserAndPetRegisteredChecking(petDB, userDB))
                 {
@@ -192,6 +195,14 @@ namespace TamagotchiBot.Controllers
                 _appServices.MetaUserService.UpdateMsgCreatorDuelId(duelCreatorId, -1);
                 _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.DuelGold);
 
+                var audCreator = _appServices.AllUsersDataService.Get(duelCreatorId);
+                audCreator.DuelsStartedCounter++;
+                _appServices.AllUsersDataService.Update(audCreator);
+
+                var audAccepter = _appServices.AllUsersDataService.Get(_userId);
+                audAccepter.DuelsAcceptedCounter++;
+                _appServices.AllUsersDataService.Update(audAccepter);
+
                 var petAttacker = _appServices.PetService.Get(_userId);
                 var petDefender = _appServices.PetService.Get(duelCreatorId);
 
@@ -238,11 +249,35 @@ namespace TamagotchiBot.Controllers
                 string ownerWinnerName = isDefenderWin ? personalLinkCreatorDuel : personalLinkDuelAccepted;
                 if (isDefenderWin)
                 {
+                    var audDefender = _appServices.AllUsersDataService.Get(duelCreatorId);
+                    audDefender.DuelsWinCounter++;
+                    _appServices.AllUsersDataService.Update(audDefender);
+
+                    _appServices.ChatsMPService.AddDuelResult(_chatId, new DuelResultModel()
+                    {
+                        AttackerUserId = _userId,
+                        DefenderUserId = duelCreatorId,
+                        Revision = DateTime.UtcNow,
+                        WinnerUserId = duelCreatorId
+                    });
+
                     _appServices.UserService.UpdateGold(userDBCreator.UserId, userDBCreator.Gold + Constants.Rewards.WonDuel);
                     _appServices.MetaUserService.UpdateNextPossibleDuelTime(_userId, DateTime.UtcNow + new Constants.TimesToWait().DuelCDToWait);
                 }
                 else
                 {
+                    var audAttacker = _appServices.AllUsersDataService.Get(_userId);
+                    audAttacker.DuelsWinCounter++;
+                    _appServices.AllUsersDataService.Update(audAttacker);
+
+                    _appServices.ChatsMPService.AddDuelResult(_chatId, new DuelResultModel()
+                    {
+                        AttackerUserId = _userId,
+                        DefenderUserId = duelCreatorId,
+                        Revision = DateTime.UtcNow,
+                        WinnerUserId = _userId
+                    });
+
                     _appServices.UserService.UpdateGold(_userId, userDB.Gold + Constants.Rewards.WonDuel);
                     _appServices.MetaUserService.UpdateNextPossibleDuelTime(userDBCreator.UserId, DateTime.UtcNow + new Constants.TimesToWait().DuelCDToWait);
                 }
@@ -497,7 +532,6 @@ namespace TamagotchiBot.Controllers
             }
             _appServices.MetaUserService.UpdateIsFeedingMPStarted(_userId, false);
         }
-
 
         private bool IsUserAndPetRegisteredChecking(Pet petDB, Models.Mongo.User userDB)
         {

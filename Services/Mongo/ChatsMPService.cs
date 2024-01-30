@@ -2,11 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TamagotchiBot.Database;
+using TamagotchiBot.Models;
 using TamagotchiBot.Models.Mongo;
-using TamagotchiBot.Services.Interfaces;
 
 namespace TamagotchiBot.Services.Mongo
 {
@@ -39,5 +37,20 @@ namespace TamagotchiBot.Services.Mongo
         }
 
         public void Remove(long chatId) => _chats.DeleteOne(u => u.ChatId == chatId);
+
+        public void AddDuelResult(long chatId, DuelResultModel duelResult)
+        {
+            var chatMPDB = Get(chatId);
+            chatMPDB ??= Create(new ChatsMP()
+            {
+                ChatId = chatId,
+                Name = "UNKNOWN",
+                DuelResults = new List<DuelResultModel> ()
+            });
+
+            chatMPDB.DuelResults ??= new List<DuelResultModel>();
+            chatMPDB.DuelResults.Add(duelResult);
+            Update(chatMPDB.ChatId, chatMPDB);
+        }
     }
 }

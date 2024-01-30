@@ -1,11 +1,11 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
-using System;
 
 namespace TamagotchiBot.Models.Mongo
 {
     public class AllUsersData : MongoModelBase
     {
+        #region Private
         [BsonElement("UserId")]
         public long UserId { get; set; }
 
@@ -107,5 +107,18 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("RenameCommandCounter")]
         public long RenameCommandCounter { get; set; }
+#endregion
+
+        #region MP
+        [BsonElement("DuelsStartedCounter")]
+        public long DuelsStartedCounter { get; set; }
+        
+        [BsonElement("DuelsAcceptedCounter")]
+        public long DuelsAcceptedCounter { get; set; }
+        
+        [BsonElement("DuelsWinCounter")]
+        public long DuelsWinCounter { get; set; }
+
+        #endregion
     }
 }

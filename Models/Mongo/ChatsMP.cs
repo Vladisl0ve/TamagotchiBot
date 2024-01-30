@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using System.Collections.Generic;
 
 namespace TamagotchiBot.Models.Mongo
 {
@@ -13,5 +14,8 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("Culture")]
         public string Culture { get; set; }
+
+        [BsonElement("DuelResults")]
+        public List<DuelResultModel> DuelResults { get; set; }
     }
 }
