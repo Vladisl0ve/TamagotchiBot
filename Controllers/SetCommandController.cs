@@ -9,7 +9,7 @@ namespace TamagotchiBot.Controllers
     public class SetCommandController
     {
 
-        private IApplicationServices _appServices;
+        private readonly IApplicationServices _appServices;
         private readonly Message _message = null;
         private readonly CallbackQuery _callback = null;
         private readonly long _userId;

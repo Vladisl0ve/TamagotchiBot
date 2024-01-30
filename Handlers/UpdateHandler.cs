@@ -65,7 +65,7 @@ namespace TamagotchiBot.Handlers
                                     return;
                                 default:
                                     return;
-                            };
+                            }
                         }
                     case MessageAudience.Group:
                         {
@@ -79,7 +79,7 @@ namespace TamagotchiBot.Handlers
                                     return;
                                 default:
                                     return;
-                            };
+                            }
                         }
                     default:
                         return;
@@ -137,8 +137,6 @@ namespace TamagotchiBot.Handlers
                     new SynchroDBController(_appServices, message).SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
 
                     multiplayerController.CommandHandler(botUsername);
-
-                    return;
                 }
             }
             void OnCallbackGroup(CallbackQuery callbackQuery)
@@ -383,11 +381,8 @@ namespace TamagotchiBot.Handlers
             Log.Fatal(ErrorMessage);
             await Task.Delay(1000, cancellationToken);
 
-            if (exception is ApiRequestException apiEx)
-            {
-                if (apiEx.ErrorCode == 409)
-                    Environment.Exit(-1);
-            }
+            if (exception is ApiRequestException apiEx && apiEx.ErrorCode == 409)
+                Environment.Exit(-1);
 
             int msToWait = 5000;
             Log.Warning($"Waiting {msToWait / 1000}s before restart...");
