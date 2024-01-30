@@ -886,4 +886,22 @@ Masz tylko {2}%💊</value>
     <value>Aby przyjąć pojedynek potrzebujesz {1}%💊 zdrowia
 Masz tylko {0}%💊</value>
   </data>
+  <data name="ShowChatRanksMPCommand" xml:space="preserve">
+    <value>Top 10 na czacie 🎖</value>
+  </data>
+  <data name="ShowGlobalRanksMPCommand" xml:space="preserve">
+    <value>Top 10 ze wszystkich czatów 🏆</value>
+  </data>
+  <data name="ShowChatRanksMPHeader" xml:space="preserve">
+    <value>🎖&lt;b&gt;Najlepsi pojedynkowicze na czacie {0}&lt;/b&gt;🎖</value>
+  </data>
+  <data name="ShowGlobalRanksMPHeader" xml:space="preserve">
+    <value>🏆&lt;b&gt;Najlepsi pojedynkowicze na świecie&lt;/b&gt; 🏆</value>
+  </data>
+  <data name="ShowChatRanksMPButton" xml:space="preserve">
+    <value>10 najlepszych 🎖</value>
+  </data>
+  <data name="ShowGlobalRanksMPButton" xml:space="preserve">
+    <value>10 najlepszych na świecie 🏆</value>
+  </data>
 </root>

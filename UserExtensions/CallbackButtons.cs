@@ -198,5 +198,19 @@ namespace TamagotchiBot.UserExtensions
                 CallbackData = "StartDuelMultiplayerButton"
             };
         }
+
+        public class RanksMultiplayerCommand
+        {
+            public CallbackModel ShowChatRanksMP = new CallbackModel()
+            {
+                Text = Resources.Resources.ShowChatRanksMPButton,
+                CallbackData = "ShowChatRanksMP"
+            };  
+            public CallbackModel ShowGlobalRanksMP = new CallbackModel()
+            {
+                Text = Resources.Resources.ShowGlobalRanksMPButton,
+                CallbackData = "ShowGlobalRanksMP"
+            };
+        }
     }
 }

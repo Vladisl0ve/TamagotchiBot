@@ -171,6 +171,7 @@ namespace TamagotchiBot.UserExtensions
             public const string ShowPetCommand = "show_pet";
             public const string StartDuelCommand = "start_duel";
             public const string FeedMPCommand = "feed_pet";
+            public const string ShowChatRanksMPCommand = "ranks";
         }
 
         public struct StickersId
@@ -299,6 +300,12 @@ namespace TamagotchiBot.UserExtensions
             public List<CallbackModel> InlineShowInviteMP = new()
             {
                 new CallbackButtons.PetCommand().PetCommandInlineExtraInfo
+            };    
+            
+            public List<CallbackModel> InlineShowRanksMP = new()
+            {
+                new CallbackButtons.RanksMultiplayerCommand().ShowChatRanksMP,
+                new CallbackButtons.RanksMultiplayerCommand().ShowGlobalRanksMP
             };
         }
 

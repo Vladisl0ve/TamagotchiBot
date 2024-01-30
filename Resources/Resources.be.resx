@@ -890,4 +890,22 @@ https://t.me/newsvirtualpetbot</value>
     <value>Каб прыняць дуэль трэба {1}%💊 здароўя
 У цябе ёсць толькі {0}%💊</value>
   </data>
+  <data name="ShowChatRanksMPCommand" xml:space="preserve">
+    <value>Топ-10 гульцоў чата 🎖</value>
+  </data>
+  <data name="ShowGlobalRanksMPCommand" xml:space="preserve">
+    <value>Топ-10 гульцоў усіх чатаў 🏆</value>
+  </data>
+  <data name="ShowChatRanksMPHeader" xml:space="preserve">
+    <value>🎖&lt;b&gt;Лепшыя дуэлянты чата {0}&lt;/b&gt;🎖</value>
+  </data>
+  <data name="ShowGlobalRanksMPHeader" xml:space="preserve">
+    <value>🏆&lt;b&gt;Лепшыя дуэлянты свету&lt;/b&gt; 🏆</value>
+  </data>
+  <data name="ShowChatRanksMPButton" xml:space="preserve">
+    <value>Топ-10 чата 🎖</value>
+  </data>
+  <data name="ShowGlobalRanksMPButton" xml:space="preserve">
+    <value>Топ-10 свету 🏆</value>
+  </data>
 </root>

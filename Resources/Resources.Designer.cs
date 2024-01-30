@@ -1522,6 +1522,60 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Top 10 chat 🎖.
+        /// </summary>
+        public static string ShowChatRanksMPButton {
+            get {
+                return ResourceManager.GetString("ShowChatRanksMPButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top 10 chat players 🎖.
+        /// </summary>
+        public static string ShowChatRanksMPCommand {
+            get {
+                return ResourceManager.GetString("ShowChatRanksMPCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🎖&lt;b&gt;Best chat duelists {0}&lt;/b&gt;🎖.
+        /// </summary>
+        public static string ShowChatRanksMPHeader {
+            get {
+                return ResourceManager.GetString("ShowChatRanksMPHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top 10 world 🏆.
+        /// </summary>
+        public static string ShowGlobalRanksMPButton {
+            get {
+                return ResourceManager.GetString("ShowGlobalRanksMPButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top 10 players of all chats 🏆.
+        /// </summary>
+        public static string ShowGlobalRanksMPCommand {
+            get {
+                return ResourceManager.GetString("ShowGlobalRanksMPCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🏆&lt;b&gt;The best duelists in the world&lt;/b&gt; 🏆.
+        /// </summary>
+        public static string ShowGlobalRanksMPHeader {
+            get {
+                return ResourceManager.GetString("ShowGlobalRanksMPHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🦁 Show your pet.
         /// </summary>
         public static string ShowPetMPCommand {

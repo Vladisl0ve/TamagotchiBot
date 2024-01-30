@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
-using System.Web;
 using TamagotchiBot.Models;
 using TamagotchiBot.Models.Mongo;
 using Telegram.Bot.Types;
@@ -250,6 +248,11 @@ namespace TamagotchiBot.UserExtensions
                 {
                     Command = CommandsMP.FeedMPCommand,
                     Description = Resources.Resources.FeedMPCommand
+                },
+                new BotCommand()
+                {
+                    Command = CommandsMP.ShowChatRanksMPCommand,
+                    Description = Resources.Resources.ShowChatRanksMPCommand
                 }
             };
 

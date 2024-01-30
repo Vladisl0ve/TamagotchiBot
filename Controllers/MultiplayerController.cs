@@ -16,6 +16,7 @@ using System;
 using TamagotchiBot.Models.Mongo;
 using TamagotchiBot.UserExtensions;
 using User = TamagotchiBot.Models.Mongo.User;
+using System.Text;
 
 namespace TamagotchiBot.Controllers
 {
@@ -68,7 +69,7 @@ namespace TamagotchiBot.Controllers
             var petDB = _appServices.PetService.Get(_userId);
             var userDB = _appServices.UserService.Get(_userId);
 
-            if(textReceived.FirstOrDefault() == '/')
+            if (textReceived.FirstOrDefault() == '/')
                 textReceived = textReceived.Remove(0, 1);
 
             if (textReceived == Constants.CommandsMP.ShowPetCommand)
@@ -92,6 +93,18 @@ namespace TamagotchiBot.Controllers
                 }
 
                 StartDuel(petDB, userDB);
+                return;
+            }
+
+            if (textReceived == Constants.CommandsMP.ShowChatRanksMPCommand)
+            {
+                if (!IsUserAndPetRegisteredChecking(petDB, userDB))
+                {
+                    SendInviteForUnregistered();
+                    return;
+                }
+
+                ShowRanksMP(petDB, userDB);
                 return;
             }
 
@@ -123,6 +136,16 @@ namespace TamagotchiBot.Controllers
             if (_callback.Data.Contains(new DuelMuliplayerCommand().StartDuelMultiplayerButton.CallbackData))
             {
                 AcceptDuel();
+            }
+
+            if (_callback.Data.Contains(new RanksMultiplayerCommand().ShowChatRanksMP.CallbackData))
+            {
+                ShowRanks();
+            }
+
+            if (_callback.Data.Contains(new RanksMultiplayerCommand().ShowGlobalRanksMP.CallbackData))
+            {
+                ShowRanks(true);
             }
 
             async void AcceptDuel()
@@ -285,6 +308,38 @@ namespace TamagotchiBot.Controllers
                 var fightEnd = string.Format(DuelMPFightingEnd, personalLinkCreatorDuel, personalLinkDuelAccepted, ownerWinnerName, fightingEndExplanation, Constants.Rewards.WonDuel);
                 await _appServices.BotControlService.EditMessageTextAsync(_chatId, fightingMsg.MessageId, fightEnd, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
             }
+            async void ShowRanks(bool isGlobal = false)
+            {
+                string msgSenderId = _callback.Data.Split("_").LastOrDefault();
+                if (msgSenderId == null || msgSenderId != _userId.ToString())
+                    return;
+
+                var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+                string toShowText = isGlobal ? GetGlobalRanks() : GetChatRanks();
+                var replyMarkupToShow = new InlineKeyboardMarkup(
+                    new List<List<InlineKeyboardButton>>()
+                    {
+                        new List<InlineKeyboardButton>()
+                        {
+                            InlineKeyboardButton.WithCallbackData(new RanksMultiplayerCommand().ShowChatRanksMP.Text,  new RanksMultiplayerCommand().ShowChatRanksMP.CallbackData + $"_{_userId}"),
+                            InlineKeyboardButton.WithCallbackData(new RanksMultiplayerCommand().ShowGlobalRanksMP.Text,  new RanksMultiplayerCommand().ShowGlobalRanksMP.CallbackData + $"_{_userId}"),
+                        },
+                        new List<InlineKeyboardButton>()
+                        {
+                            InlineKeyboardButton.WithUrl(
+                                new InviteMuliplayerCommand().InviteReferalMultiplayerButton(userDB.FirstName).Text,
+                                Extensions.GetReferalLink(_userId, botUsername)
+                                )
+                        }
+                    }
+                    );
+
+                await _appServices.BotControlService.EditMessageTextAsync(_chatId, _callback.Message.MessageId,
+                                                                          toShowText,
+                                                                          replyMarkup: replyMarkupToShow,
+                                                                          parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
+
+            }
         }
 
         public async void SendInviteForUnregistered()
@@ -323,6 +378,39 @@ namespace TamagotchiBot.Controllers
             Log.Debug($"MP: called SendWelcomeMessageOnStart, invited by ID: {_userId}");
         }
 
+        private async void ShowRanksMP(Pet petDB, User userDB)
+        {
+            string msgToShow = GetChatRanks();
+
+            var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+            AnswerMessage answerMessage = new AnswerMessage()
+            {
+                InlineKeyboardMarkup =
+                new InlineKeyboardMarkup(
+                    new List<List<InlineKeyboardButton>>()
+                    {
+                        new List<InlineKeyboardButton>()
+                        {
+                            InlineKeyboardButton.WithCallbackData(new RanksMultiplayerCommand().ShowChatRanksMP.Text,  new RanksMultiplayerCommand().ShowChatRanksMP.CallbackData + $"_{_userId}"),
+                            InlineKeyboardButton.WithCallbackData(new RanksMultiplayerCommand().ShowGlobalRanksMP.Text,  new RanksMultiplayerCommand().ShowGlobalRanksMP.CallbackData + $"_{_userId}"),
+                        },
+                        new List<InlineKeyboardButton>()
+                        {
+                            InlineKeyboardButton.WithUrl(
+                                new InviteMuliplayerCommand().InviteReferalMultiplayerButton(userDB.FirstName).Text,
+                                Extensions.GetReferalLink(_userId, botUsername)
+                                )
+                        }
+                    }
+                    ),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                Text = msgToShow,
+                msgThreadId = _msgThreadId
+            };
+
+            await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
+            Log.Debug($"MP: called showChatRanks by {_userLogInfo}");
+        }
         private async void StartDuel(Pet petDB, User userDB)
         {
             var personalLink = Extensions.GetPersonalLink(_userId, _userName);
@@ -555,7 +643,6 @@ namespace TamagotchiBot.Controllers
 
             return true;
         }
-
         private bool IsMessageHasMentions()
         {
             if (_message?.Entities == null)
@@ -662,6 +749,102 @@ namespace TamagotchiBot.Controllers
             }
 
             return true;
+        }
+        private string GetChatRanks()
+        {
+            var duelResults = _appServices.ChatsMPService.Get(_chatId).DuelResults ?? new List<DuelResultModel>();
+            var groupByWinner = duelResults.GroupBy(d => d.WinnerUserId);
+
+            Dictionary<long, int> UserAndDuelWins = new Dictionary<long, int>();
+            foreach (var groupResult in groupByWinner)
+            {
+                var userId = groupResult.Key;
+                var wins = groupResult.Count();
+                UserAndDuelWins.Add(userId, wins);
+            }
+            var sortedUserAndDuelWins = UserAndDuelWins.OrderByDescending(u => u.Value)
+                                             .ToDictionary(p => p.Key, p => p.Value);
+
+            var encodedChatName = "<i>" + HttpUtility.HtmlEncode(_chatName) + "</i>";
+            StringBuilder msgToShow = new StringBuilder($"{string.Format(ShowChatRanksMPHeader, encodedChatName)}" +
+                $"{Environment.NewLine}");
+            int counter = 0;
+            foreach (var userDuel in sortedUserAndDuelWins)
+            {
+                if (counter == 10)
+                    break;
+
+                var userTmpDB = _appServices.UserService.Get(userDuel.Key);
+                if (userTmpDB == null)
+                    continue;
+
+                counter++;
+                msgToShow.Append($"{Environment.NewLine}");
+                if (counter == 1)
+                {
+                    msgToShow.Append($"🥇 {GetAlignedRank(userTmpDB.FirstName, userDuel.Value.ToString())}");
+                    msgToShow.Append($"{Environment.NewLine}");
+                    msgToShow.Append($"<code>----------</code>");
+                }
+                else if (counter == 2)
+                    msgToShow.Append($"🥈 {GetAlignedRank(userTmpDB.FirstName, userDuel.Value.ToString())}");
+                else if (counter == 3)
+                    msgToShow.Append($"🥉 {GetAlignedRank(userTmpDB.FirstName, userDuel.Value.ToString())}");
+                else
+                    msgToShow.Append($"{counter}. {GetAlignedRank(userTmpDB.FirstName, userDuel.Value.ToString())}");
+            }
+
+            return msgToShow.ToString();
+        }
+        private string GetGlobalRanks()
+        {
+            var topPlayers = _appServices.AllUsersDataService.GetAll().OrderByDescending(aud => aud.DuelsWinCounter).ToList();
+
+            StringBuilder msgToShow = new StringBuilder($"{ShowGlobalRanksMPHeader}" +
+                $"{Environment.NewLine}");
+            int counter = 0;
+            foreach (var aud in topPlayers)
+            {
+                if (counter == 10)
+                    break;
+
+                var userTmpDB = _appServices.UserService.Get(aud.UserId);
+                if (userTmpDB == null)
+                    continue;
+
+                counter++;
+                msgToShow.Append($"{Environment.NewLine}");
+                if (counter == 1)
+                {
+                    msgToShow.Append($"🥇 {GetAlignedRank(userTmpDB.FirstName, aud.DuelsWinCounter.ToString())}");
+                    msgToShow.Append($"{Environment.NewLine}");
+                    msgToShow.Append($"<code>----------</code>");
+                }
+                else if (counter == 2)
+                    msgToShow.Append($"🥈 {GetAlignedRank(userTmpDB.FirstName, aud.DuelsWinCounter.ToString())}");
+                else if (counter == 3)
+                    msgToShow.Append($"🥉 {GetAlignedRank(userTmpDB.FirstName, aud.DuelsWinCounter.ToString())}");
+                else
+                    msgToShow.Append($"{counter}. {GetAlignedRank(userTmpDB.FirstName, aud.DuelsWinCounter.ToString())}");
+            }
+
+            return msgToShow.ToString();
+        }
+
+        private string GetAlignedRank(string username, string duelResult)
+        {
+            const int MAX_SYMBOLS = 20;
+            if (username.Length > MAX_SYMBOLS)
+                username = string.Concat(username.AsSpan(0, MAX_SYMBOLS - 3), "...");
+
+            if (username.Length < MAX_SYMBOLS)
+            {
+                while (username.Length < MAX_SYMBOLS)
+                    username = string.Concat(username, " ");
+            }
+
+            username = "<code>" + username + "</code>";
+            return $"{username} ⚔️{duelResult}";
         }
     }
 }
