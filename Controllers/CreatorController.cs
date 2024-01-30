@@ -70,7 +70,6 @@ namespace TamagotchiBot.Controllers
                 LastUpdateTime = DateTime.UtcNow,
                 NextRandomEventNotificationTime = DateTime.UtcNow.AddMinutes(25),
                 EXP = 0,
-                Gold = -1,
                 HP = 100,
                 Joy = 70,
                 Fatigue = 0,

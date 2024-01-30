@@ -35,6 +35,6 @@ namespace TamagotchiBot.Services.Mongo
             while (restart);
         }
 
-        public virtual IMongoCollection<T> GetCollection<T>(string collectionName) => MongoDatabase.GetCollection<T>(collectionName);
+        public virtual IMongoCollection<T> GetCollection<T>(string name = null) => MongoDatabase.GetCollection<T>(name ?? typeof(T).Name);
     }
 }

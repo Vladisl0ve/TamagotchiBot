@@ -5,12 +5,8 @@ using System.Collections.Generic;
 
 namespace TamagotchiBot.Models.Mongo
 {
-    public class ServiceInfo
+    public class ServiceInfo : MongoModelBase
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId _id { get; set; }
-
         [BsonElement("LastGlobalUpdate")]
         public DateTime LastGlobalUpdate { get; set; }
 

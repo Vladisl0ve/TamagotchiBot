@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TamagotchiBot.Database;
@@ -12,7 +13,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public AdsProducersService(ITamagotchiDatabaseSettings settings) : base(settings)
         {
-            _adsProducers = base.GetCollection<AdsProducers>(nameof(AdsProducers));
+            _adsProducers = base.GetCollection<AdsProducers>();
         }
         public List<AdsProducers> GetAll() => _adsProducers.Find(u => true).ToList();
 
@@ -22,15 +23,16 @@ namespace TamagotchiBot.Services.Mongo
         public AdsProducers Get(AdsProducers ads) => _adsProducers.Find(u => u.ProducerName == ads.ProducerName
                                                                                             && u.CompanyName == ads.CompanyName).FirstOrDefault();
 
-        public AdsProducers Create(AdsProducers ads)
+        private void Create(AdsProducers ads)
         {
             ads.Counter = 1;
+            ads.Created = DateTime.UtcNow;
             _adsProducers.InsertOne(ads);
-            return ads;
         }
 
         public AdsProducers Update(AdsProducers adsProducersIn)
         {
+            adsProducersIn.Updated = DateTime.UtcNow;
             _adsProducers.ReplaceOne(u => u.CompanyName == adsProducersIn.CompanyName && u.ProducerName == adsProducersIn.ProducerName, adsProducersIn);
             return adsProducersIn;
         }
@@ -38,6 +40,7 @@ namespace TamagotchiBot.Services.Mongo
         public AdsProducers Create(string company, string producer)
         {
             AdsProducers adsProducer = new(){ CompanyName = company, ProducerName = producer };
+            adsProducer.Created = DateTime.UtcNow;
             _adsProducers.InsertOne(adsProducer);
             return adsProducer;
         }

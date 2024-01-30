@@ -3,12 +3,8 @@ using MongoDB.Bson;
 
 namespace TamagotchiBot.Models.Mongo
 {
-    public class ChatsMP
+    public class ChatsMP : MongoModelBase
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId Id { get; set; }
-
         [BsonElement("ChatId")]
         public long ChatId { get; set; }
 
@@ -17,6 +13,5 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("Culture")]
         public string Culture { get; set; }
-
     }
 }

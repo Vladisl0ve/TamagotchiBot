@@ -4,12 +4,8 @@ using System;
 
 namespace TamagotchiBot.Models.Mongo
 {
-    public class AllUsersData
+    public class AllUsersData : MongoModelBase
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId Id { get; set; }
-
         [BsonElement("UserId")]
         public long UserId { get; set; }
 
@@ -111,13 +107,5 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("RenameCommandCounter")]
         public long RenameCommandCounter { get; set; }
-
-        [BsonElement("Created")]
-        public DateTime Created { get; set; }
-
-        [BsonElement("Updated")]
-        public DateTime Updated { get; set; }
-
-
     }
 }

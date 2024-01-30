@@ -63,7 +63,8 @@ namespace TamagotchiBot.Services.Mongo
                 return;
             }
             lgu.LastGlobalUpdate = DateTime.UtcNow;
-            _sinfo.ReplaceOne(i => i._id == lgu._id, lgu);
+            lgu.Updated = DateTime.UtcNow;
+            _sinfo.ReplaceOne(i => i.Id == lgu.Id, lgu);
         }
 
         public void UpdateNextNotify(DateTime newNotifyDate)
@@ -75,7 +76,8 @@ namespace TamagotchiBot.Services.Mongo
                 return;
             }
             unn.NextNotify = newNotifyDate;
-            _sinfo.ReplaceOne(i => i._id == unn._id, unn);
+            unn.Updated = DateTime.UtcNow;
+            _sinfo.ReplaceOne(i => i.Id == unn.Id, unn);
         }
 
         public void UpdateNextDevNotify(DateTime newNotifyDate)
@@ -87,7 +89,8 @@ namespace TamagotchiBot.Services.Mongo
                 return;
             }
             unn.NextDevNotify = newNotifyDate;
-            _sinfo.ReplaceOne(i => i._id == unn._id, unn);
+            unn.Updated = DateTime.UtcNow;
+            _sinfo.ReplaceOne(i => i.Id == unn.Id, unn);
         }
 
         public void DisableMaintainWorks() //you can enable manually in database
@@ -99,7 +102,8 @@ namespace TamagotchiBot.Services.Mongo
                 return;
             }
             lgu.DoMaintainWorks = false;
-            _sinfo.ReplaceOne(i => i._id == lgu._id, lgu);
+            lgu.Updated = DateTime.UtcNow;
+            _sinfo.ReplaceOne(i => i.Id == lgu.Id, lgu);
         }
         public void DisableChangelogsSending() //you can enable manually in database
         {
@@ -110,10 +114,16 @@ namespace TamagotchiBot.Services.Mongo
                 return;
             }
             lgu.DoSendChangelogs = false;
-            _sinfo.ReplaceOne(i => i._id == lgu._id, lgu);
+            lgu.Updated = DateTime.UtcNow;
+            _sinfo.ReplaceOne(i => i.Id == lgu.Id, lgu);
         }
 
-        public void Create(ServiceInfo info) => _sinfo.InsertOne(info);
+        public void Create(ServiceInfo info)
+        {
+            info.Created = DateTime.UtcNow;
+            _sinfo.InsertOne(info);
+        }
+
         public ServiceInfo Get() => _sinfo.Find(s => true).FirstOrDefault();
         public void CreateDefault()
         {
@@ -123,6 +133,8 @@ namespace TamagotchiBot.Services.Mongo
                 LastGlobalUpdate = DateTime.UtcNow,
                 NextNotify = DateTime.UtcNow + TimeSpan.FromMinutes(1),
                 NextDevNotify = DateTime.UtcNow,
+                Created = DateTime.UtcNow,
+                BannedWords = new List<string>() { "TEST_STRING" }
             });
             Log.Warning("Created default SInfo");
         }
@@ -132,7 +144,8 @@ namespace TamagotchiBot.Services.Mongo
             if (sinfoDB == null)
                 Create(info);
 
-            _sinfo.ReplaceOne(s => s._id == sinfoDB._id, info);
+            info.Updated = DateTime.UtcNow;
+            _sinfo.ReplaceOne(s => s.Id == sinfoDB.Id, info);
         }
         public async Task<Telegram.Bot.Types.User> GetBotUserInfo() => await _botClient.GetMeAsync();
 

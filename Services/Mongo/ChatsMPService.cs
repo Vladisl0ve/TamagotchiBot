@@ -16,7 +16,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public ChatsMPService(ITamagotchiDatabaseSettings settings) : base(settings)
         {
-            _chats = base.GetCollection<ChatsMP>(nameof(ChatsMP));
+            _chats = base.GetCollection<ChatsMP>(settings.ChatsMPCollectionName);
         }
 
         public List<ChatsMP> GetAll() => _chats.Find(c => true).ToList();
@@ -25,6 +25,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public ChatsMP Create(ChatsMP chat)
         {
+            chat.Created = DateTime.UtcNow;
             if (Get(chat.ChatId) == null)
                 _chats.InsertOne(chat);
             return chat;
@@ -32,6 +33,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public ChatsMP Update(long chatId, ChatsMP chat)
         {
+            chat.Updated = DateTime.UtcNow;
             _chats.ReplaceOne(c => c.ChatId == chatId, chat);
             return chat;
         }

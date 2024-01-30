@@ -2,11 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
-using Telegram.Bot.Types;
 
 namespace TamagotchiBot.Services.Mongo
 {
@@ -16,18 +13,20 @@ namespace TamagotchiBot.Services.Mongo
 
         public MetaUserService(ITamagotchiDatabaseSettings settings) : base(settings)
         {
-            _metausers = base.GetCollection<MetaUser>(nameof(MetaUser));
+            _metausers = base.GetCollection<MetaUser>();
         }
 
         public List<MetaUser> GetAll() => _metausers.Find(u => true).ToList();
         public MetaUser Get(long userId) => _metausers.Find(u => u.UserId == userId).FirstOrDefault();
         public MetaUser Update(long userId, MetaUser userIn)
         {
+            userIn.Updated = DateTime.UtcNow;
             _metausers.ReplaceOne(u => u.UserId == userId, userIn);
             return userIn;
         }
         public MetaUser Create(MetaUser user)
         {
+            user.Created = DateTime.UtcNow;
             _metausers.InsertOne(user);
             return user;
         }
@@ -40,6 +39,7 @@ namespace TamagotchiBot.Services.Mongo
             userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.IsPetNameAskedOnRename = isPetNameAskedOnRename;
+            userDb.Updated = DateTime.UtcNow;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
@@ -49,6 +49,7 @@ namespace TamagotchiBot.Services.Mongo
             userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.IsAskedToConfirmRenaming = isConfirmedPetRenaming;
+            userDb.Updated = DateTime.UtcNow;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
@@ -58,6 +59,7 @@ namespace TamagotchiBot.Services.Mongo
             userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.TmpPetName = tmpName;
+            userDb.Updated = DateTime.UtcNow;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
@@ -67,6 +69,7 @@ namespace TamagotchiBot.Services.Mongo
             userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.MsgDuelId = msgId;
+            userDb.Updated = DateTime.UtcNow;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
@@ -76,6 +79,7 @@ namespace TamagotchiBot.Services.Mongo
             userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.MsgCreatorDuelId = msgId;
+            userDb.Updated = DateTime.UtcNow;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
@@ -86,6 +90,7 @@ namespace TamagotchiBot.Services.Mongo
             userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.ChatDuelId = chatId;
+            userDb.Updated = DateTime.UtcNow;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
@@ -96,6 +101,7 @@ namespace TamagotchiBot.Services.Mongo
             userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.DuelStartTime = startTime;
+            userDb.Updated = DateTime.UtcNow;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
@@ -106,6 +112,7 @@ namespace TamagotchiBot.Services.Mongo
             userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.IsFeedingMPStarted = isStarted;
+            userDb.Updated = DateTime.UtcNow;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
@@ -116,6 +123,7 @@ namespace TamagotchiBot.Services.Mongo
             userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.LastMPFeedingTime = startTime;
+            userDb.Updated = DateTime.UtcNow;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
@@ -126,6 +134,7 @@ namespace TamagotchiBot.Services.Mongo
             userDb ??= Create(new MetaUser() { UserId = userId });
 
             userDb.NextPossibleDuelTime = nextDuelTime;
+            userDb.Updated = DateTime.UtcNow;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }

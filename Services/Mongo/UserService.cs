@@ -24,6 +24,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public User Create(User user)
         {
+            user.Created = DateTime.UtcNow;
             _users.InsertOne(user);
             return user;
         }
@@ -38,7 +39,8 @@ namespace TamagotchiBot.Services.Mongo
                 Username = user.Username,
                 Culture = user.LanguageCode,
                 Gold = 50,
-                ChatIds = new List<long>() { user.Id }
+                ChatIds = new List<long>() { user.Id },
+                Created = DateTime.UtcNow                
             });
         }
 
@@ -48,6 +50,7 @@ namespace TamagotchiBot.Services.Mongo
             if (userDb == null)
                 return false;
 
+            userDb.Updated = DateTime.UtcNow;
             userDb.ReferaledBy = referaledByUserId;
             _users.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
@@ -55,6 +58,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public User Update(long userId, User userIn)
         {
+            userIn.Updated = DateTime.UtcNow;
             _users.ReplaceOne(u => u.UserId == userId, userIn);
             return userIn;
         }
@@ -66,8 +70,8 @@ namespace TamagotchiBot.Services.Mongo
                 return;
 
             userDb.IsInAppleGame = isInAppleGame;
+            userDb.Updated = DateTime.UtcNow;
             await _users.ReplaceOneAsync(u => u.UserId == userId, userDb);
-            return;
         }
 
         public void UpdateGold(long userId, int newGold)
@@ -90,18 +94,6 @@ namespace TamagotchiBot.Services.Mongo
             }
         }
 
-        [Obsolete]
-        public bool UpdateNextRandomEventNotificationTime(long userId, DateTime nextNotify)
-        {
-            var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
-            if (userDb == null)
-                return false;
-
-            userDb.NextRandomEventNotificationTime = nextNotify;
-            _users.ReplaceOne(u => u.UserId == userId, userDb);
-            return true;
-        }
-
         public bool UpdateNextDailyRewardNotificationTime(long userId, DateTime nextNotify)
         {
             var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
@@ -109,6 +101,7 @@ namespace TamagotchiBot.Services.Mongo
                 return false;
 
             userDb.NextDailyRewardNotificationTime = nextNotify;
+            userDb.Updated = DateTime.UtcNow;
             _users.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
@@ -160,7 +153,8 @@ namespace TamagotchiBot.Services.Mongo
                 LastName = userIn.LastName,
                 UserId = userIn.Id,
                 Username = userIn.Username,
-                Culture = oldUser.Culture
+                Culture = oldUser.Culture,
+                Updated = DateTime.UtcNow
             };
             _users.ReplaceOne(u => u.UserId == userId, newUser);
             return newUser;

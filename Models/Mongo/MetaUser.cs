@@ -8,12 +8,8 @@ using System.Threading.Tasks;
 
 namespace TamagotchiBot.Models.Mongo
 {
-    public class MetaUser
+    public class MetaUser : MongoModelBase
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId Id { get; set; }
-
         [BsonElement("UserId")]
         public long UserId { get; set; }
 

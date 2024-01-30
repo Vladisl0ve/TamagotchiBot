@@ -5,18 +5,10 @@ using System.Collections.Generic;
 
 namespace TamagotchiBot.Models.Mongo
 {
-    public class User
+    public class User : MongoModelBase
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId Id { get; set; }
-
         [BsonElement("UserId")]
         public long UserId { get; set; }
-
-        [Obsolete]
-        [BsonElement("ChatId")]
-        public long ChatId { get; set; }
 
         [BsonElement("ChatIds")]
         public List<long> ChatIds { get; set; }
@@ -44,10 +36,6 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("NextDailyRewardNotificationTime")]
         public DateTime NextDailyRewardNotificationTime { get; set; }
-
-        [Obsolete]
-        [BsonElement("NextRandomEventNotificationTime")]
-        public DateTime NextRandomEventNotificationTime { get; set; }
 
         [BsonElement("GotDailyRewardTime")]
         public DateTime GotDailyRewardTime { get; set; }
