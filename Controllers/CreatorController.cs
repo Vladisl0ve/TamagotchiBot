@@ -172,10 +172,10 @@ namespace TamagotchiBot.Controllers
 
             string stickerToSend = newLanguage.Language() switch
             {
-                Language.Polish => StickersId.PolishLanguageSetSticker,
-                Language.English => StickersId.EnglishLanguageSetSticker,
-                Language.Belarusian => StickersId.BelarussianLanguageSetSticker,
-                Language.Russian => StickersId.RussianLanguageSetSticker,
+                Languages.Polish => StickersId.PolishLanguageSetSticker,
+                Languages.English => StickersId.EnglishLanguageSetSticker,
+                Languages.Belarusian => StickersId.BelarussianLanguageSetSticker,
+                Languages.Russian => StickersId.RussianLanguageSetSticker,
                 _ => null,
             };
             var toSend = new AnswerMessage()

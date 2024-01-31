@@ -97,37 +97,47 @@ namespace TamagotchiBot.UserExtensions
         {
             List<string> result = new();
 
-            foreach (Language l in Enum.GetValues(typeof(Language)))
+            foreach (Languages l in Enum.GetValues(typeof(Languages)))
                 result.Add($"{l} {l.GetDisplayShortName()}");
 
             return result;
         }
 
-        public static List<string> Languages()
+        public static List<string> GetAllAvailableLanguages()
         {
             List<string> result = new();
 
-            foreach (var l in Enum.GetNames(typeof(Language)))
+            foreach (var l in Enum.GetNames(typeof(Languages)))
                 result.Add(l);
+            return result;
+        }    
+        
+        public static List<string> GetAllAvailableLanguagesDisplayName()
+        {
+            List<string> result = new();
+
+            foreach (Languages l in Enum.GetValues(typeof(Languages)))
+                result.Add(l.GetDisplayName());
+
             return result;
         }
 
         public static string GetCulture(this string flag)
         {
-            foreach (Language l in Enum.GetValues(typeof(Language)))
+            foreach (Languages l in Enum.GetValues(typeof(Languages)))
                 if (l.GetDisplayShortName() == flag)
                     return l.GetDisplayName();
 
             return null;
         }
 
-        public static Language Language(this string flag)
+        public static Languages Language(this string flag)
         {
-            foreach (Language l in Enum.GetValues(typeof(Language)))
+            foreach (Languages l in Enum.GetValues(typeof(Languages)))
                 if (l.GetDisplayName() == flag)
                     return l;
 
-            return Constants.Language.English;
+            return Constants.Languages.English;
         }
 
         public static List<BotCommand> GetCommands(bool showAllCommands = true)

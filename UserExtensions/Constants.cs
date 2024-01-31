@@ -8,7 +8,7 @@ namespace TamagotchiBot.UserExtensions
 {
     public static class Constants
     {
-        public enum Language
+        public enum Languages
         {
             [Display(ShortName = "🇨🇷", Name = "be")] Belarusian,
             [Display(ShortName = "🇷🇺", Name = "ru")] Russian,
@@ -44,14 +44,6 @@ namespace TamagotchiBot.UserExtensions
             Unknown,
             Private,
             Group
-        }
-
-        public struct Languages
-        {
-            public const string LanguageBe = "be";
-            public const string LanguagePl = "pl";
-            public const string LanguageRu = "ru";
-            public const string LanguageEn = "en";
         }
 
         public struct Factors //per minute

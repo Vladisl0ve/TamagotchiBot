@@ -19,7 +19,7 @@ using User = TamagotchiBot.Models.Mongo.User;
 
 namespace TamagotchiBot.Controllers
 {
-    public class MenuController
+    public class MenuController : ControllerBase
     {
         private readonly IApplicationServices _appServices;
         private readonly Message _message = null;
@@ -34,8 +34,7 @@ namespace TamagotchiBot.Controllers
             _userId = callback?.From.Id ?? message.From.Id;
             _appServices = services;
             _userInfo = Extensions.GetLogUser(_appServices.UserService.Get(_userId));
-
-            UpdateOrCreateAUD(message?.From ?? callback.From, message, callback);
+            UpdateOrCreateAUD(message?.From ?? callback?.From, message, callback);
         }
         public MenuController(IApplicationServices services, CallbackQuery callback) : this(services, null, callback)
         {
@@ -93,80 +92,114 @@ namespace TamagotchiBot.Controllers
                 return;
 
             textReceived = textReceived.ToLower();
+            if (textReceived.First() == '/')
+                textReceived = textReceived.Substring(1);
 
             var petDB = _appServices.PetService.Get(_userId);
             var userDB = _appServices.UserService.Get(_userId);
 
-            switch (textReceived)
+            if (textReceived == "language" || GetAllTranslatedAndLowered("languageCommandDescription").Contains(textReceived))
             {
-                case "/language":
-                    ChangeLanguage();
-                    break;
-                case "/help":
-                    ShowHelpInfo();
-                    break;
-                case "/pet":
-                    ShowPetInfo(petDB);
-                    break;
-                case "/bathroom":
-                    GoToBathroom(petDB);
-                    break;
-                case "/kitchen":
-                    GoToKitchen(petDB);
-                    break;
-                case "/gameroom":
-                    GoToGameroom(petDB);
-                    break;
-                case "/hospital":
-                    GoToHospital(petDB);
-                    break;
-                case "/ranks":
-                    ShowRankingInfo();
-                    break;
-                case "/sleep":
-                    GoToSleep(petDB);
-                    break;
-                case "/changelog":
-                    ShowChangelogsInfo();
-                    break;
-                case "/test":
-                    Log.Debug($"Called /test for {_userInfo}");
-                    var toSend = new AnswerMessage()
-                    {
-                        Text = DevelopWarning,
-                        StickerId = StickersId.DevelopWarningSticker,
-                        ReplyMarkup = null,
-                        InlineKeyboardMarkup = null
-                    };
-                    await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
-                    break;
-                case "/menu":
-                    ShowMenuInfo();
-                    break;
-                case "/rename":
-                    RenamePet(petDB);
-                    break;
-                case "/work":
-                    ShowWorkInfo(petDB);
-                    break;
-                case "/reward":
-                    ShowRewardInfo(userDB);
-                    break;
-                case "/referal":
-                    await ShowReferalInfo();
-                    break;
-                default:
-                    Log.Debug($"[MESSAGE] '{customText ?? _message.Text}' FROM {_userInfo}");
-                    break;
-#if DEBUG
-                case "/restart":
-                    RestartPet(petDB);
-                    break;
-                case "/kill":
-                    TestKillPet(petDB);
-                    break;
-#endif
+                ChangeLanguage();
+                return;
             }
+            if (textReceived == "help" || GetAllTranslatedAndLowered("helpCommandDescription").Contains(textReceived))
+            {
+                ShowHelpInfo();
+                return;
+            }
+            if (textReceived == "pet" || GetAllTranslatedAndLowered("petCommandDescription").Contains(textReceived))
+            {
+                ShowPetInfo(petDB);
+                return;
+            }
+            if (textReceived == "bathroom" || GetAllTranslatedAndLowered("bathroomCommandDescription").Contains(textReceived))
+            {
+                GoToBathroom(petDB);
+                return;
+            }
+            if (textReceived == "kitchen" || GetAllTranslatedAndLowered("kitchenCommandDescription").Contains(textReceived))
+            {
+                GoToKitchen(petDB);
+                return;
+            }
+            if (textReceived == "gameroom" || GetAllTranslatedAndLowered("gameroomCommandDescription").Contains(textReceived))
+            {
+                GoToGameroom(petDB);
+                return;
+            }
+            if (textReceived == "hospital" || GetAllTranslatedAndLowered("hospitalCommandDescription").Contains(textReceived))
+            {
+                GoToHospital(petDB);
+                return;
+            }
+            if (textReceived == "ranks" || GetAllTranslatedAndLowered("ranksCommandDescription").Contains(textReceived))
+            {
+                ShowRankingInfo();
+                return;
+            }
+            if (textReceived == "sleep" || GetAllTranslatedAndLowered("sleepCommandDescription").Contains(textReceived))
+            {
+                GoToSleep(petDB);
+                return;
+            }
+            if (textReceived == "changelog" || GetAllTranslatedAndLowered("changelogCommandDescription").Contains(textReceived))
+            {
+                ShowChangelogsInfo();
+                return;
+            }
+            if (textReceived == "menu" || GetAllTranslatedAndLowered("menuCommandDescription").Contains(textReceived))
+            {
+                ShowMenuInfo();
+                return;
+            }
+            if (textReceived == "rename" || GetAllTranslatedAndLowered("renameCommandDescription").Contains(textReceived))
+            {
+                RenamePet(petDB);
+                return;
+            }
+            if (textReceived == "work" || GetAllTranslatedAndLowered("workCommandDescription").Contains(textReceived))
+            {
+                ShowWorkInfo(petDB);
+                return;
+            }
+            if (textReceived == "reward" || GetAllTranslatedAndLowered("rewardCommandDescription").Contains(textReceived))
+            {
+                ShowRewardInfo(userDB);
+                return;
+            }
+            if (textReceived == "referal" || GetAllTranslatedAndLowered("referalCommandDescription").Contains(textReceived))
+            {
+                await ShowReferalInfo();
+                return;
+            }
+#if DEBUG
+            if (textReceived == "restart")
+            {
+                RestartPet(petDB);
+                return;
+            }
+            if (textReceived == "kill")
+            {
+                TestKillPet(petDB);
+                return;
+            }
+#endif
+            if (textReceived == "test")
+            {
+                Log.Debug($"Called /test for {_userInfo}");
+                var toSend = new AnswerMessage()
+                {
+                    Text = DevelopWarning,
+                    StickerId = StickersId.DevelopWarningSticker,
+                    ReplyMarkup = null,
+                    InlineKeyboardMarkup = null
+                };
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                return;
+            }
+
+            Log.Debug($"[MESSAGE] '{customText ?? _message.Text}' FROM {_userInfo}");
         }
 
         public void CallbackHandler()
