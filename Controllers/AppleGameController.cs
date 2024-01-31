@@ -113,7 +113,7 @@ namespace TamagotchiBot.Controllers
             for (int i = 0; i < names.Count; i++)
                 keyboard[i / x][i % x] = names[i];
 
-            return new ReplyKeyboardMarkup(keyboard) { ResizeKeyboard = true, OneTimeKeyboard = true };
+            return new ReplyKeyboardMarkup(keyboard) { ResizeKeyboard = true };
         }
 
         public AnswerMessage StartGame()
@@ -139,7 +139,7 @@ namespace TamagotchiBot.Controllers
             if (appleDataToUpdate == null)
             {
                 await _appServices.UserService.UpdateAppleGameStatus(_userId, false);
-                new MenuController(_appServices, _message).ProcessMessage("/pet");
+                await new MenuController(_appServices, _message).ProcessMessage("/pet");
                 return;
             }
 

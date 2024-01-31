@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TamagotchiBot.Models.Answers;
@@ -288,9 +289,11 @@ namespace TamagotchiBot.Services
         {
             try
             {
-                await _botClient.SetMyCommandsAsync(commands,
-                                                    scope: scope,
-                                                    cancellationToken: cancellationToken);
+                var currentCommands = await _botClient.GetMyCommandsAsync(scope: scope, cancellationToken: cancellationToken);
+                if (!currentCommands.IsEqual(commands.ToArray()))
+                    await _botClient.SetMyCommandsAsync(commands,
+                                                        scope: scope,
+                                                        cancellationToken: cancellationToken);
             }
             catch (Exception ex)
             {

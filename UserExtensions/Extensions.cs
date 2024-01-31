@@ -101,7 +101,7 @@ namespace TamagotchiBot.UserExtensions
                 result.Add($"{l} {l.GetDisplayShortName()}");
 
             return result;
-        }        
+        }
 
         public static List<string> GetAllAvailableLanguages()
         {
@@ -110,8 +110,8 @@ namespace TamagotchiBot.UserExtensions
             foreach (var l in Enum.GetNames(typeof(Languages)))
                 result.Add(l);
             return result;
-        }    
-        
+        }
+
         public static List<string> GetAllAvailableLanguagesDisplayName()
         {
             List<string> result = new();
@@ -425,6 +425,25 @@ namespace TamagotchiBot.UserExtensions
             else
                 return false;
         }
+        public static bool IsEqual(this BotCommand[] bcFirst, BotCommand[] bcSecond)
+        {
+            if (bcFirst == null && bcSecond == null)
+                return true;
 
+            if (bcFirst == null || bcSecond == null)
+                return false;
+
+            if (bcFirst.Length != bcSecond.Length)
+                return false;
+
+            for (int i = 0; i < bcFirst.Length; i++)
+            {
+                if (bcFirst[i].Description != bcSecond[i].Description
+                    || bcFirst[i].Command != bcSecond[i].Command)
+                    return false;
+            }
+
+            return true;
+        }
     }
 }
