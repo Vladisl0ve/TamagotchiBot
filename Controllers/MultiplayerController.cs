@@ -726,7 +726,7 @@ namespace TamagotchiBot.Controllers
 
         private async Task<bool> CheckAndSendOnFailSpentTimeByFeeder()
         {
-            var metaUserFeeder = _appServices.MetaUserService.Get(_userId);
+            var metaUserFeeder = _appServices.MetaUserService.Get(_userId) ?? _appServices.MetaUserService.Create(new MetaUser() { UserId = _userId });
             if (metaUserFeeder == null)
             {
                 return false;

@@ -305,7 +305,6 @@ Ale radość spadła o {1}%</value>
 /pet - status zwierzaka 🐱
 /kuchnia - nakarm swojego zwierzaka 🍕
 /work - zarabiać kasę 💰
-/reward - dostać codzienny bonus 🎁
 /sleep - sypialnia 🧸
 /gameroom - rozrywka 🎳
 /ranks- zobacz najlepsze zwierzaki! 👑
@@ -313,6 +312,8 @@ Ale radość spadła o {1}%</value>
 /bathroom - posprzątaj swojego zwierzaka 🛁
 /referal - program referancyjny 👩‍👩‍👧‍👦
 /rename - zmień imię 🌀
+
+/reward - &lt;i&gt;&lt;b&gt;dostać codzienny bonus&lt;/b&gt;&lt;/i&gt; 🎁
 
 /changelog - główny kanał Tamagotchi 🚀
 /language - language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺

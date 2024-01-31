@@ -812,13 +812,12 @@ namespace TamagotchiBot.Resources {
                 return ResourceManager.GetString("languageCommandDescription", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to What to do with pet:
         ////pet - pet&apos;s status 🐱
         ////kitchen - feed your pet 🍕
         ////work - to earn more gold 💰
-        ////reward - to earn daily bonus 🎁 
         ////sleep - bedroom 🧸
         ////gameroom entertainments 🎳
         ////ranks - see the best pets! 👑
@@ -827,11 +826,12 @@ namespace TamagotchiBot.Resources {
         ////referal - referral program 👩‍👩‍👧‍👦
         ////rename - to change name 🌀
         ///
+        ////reward - &lt;i&gt;&lt;b&gt;to earn daily bonus&lt;/b&gt;&lt;/i&gt; 🎁 
+        ///
         ////changelog - official channel of Tamagotchi bot 🚀
         ////language - language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺
         ///
-        ///There will be more in future!
-        ///Stay tuned! 💝.
+        ///There will be more in f [rest of string was truncated]&quot;;.
         /// </summary>
         public static string menuCommand {
             get {

@@ -799,7 +799,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.MenuCommandSticker,
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup,
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
