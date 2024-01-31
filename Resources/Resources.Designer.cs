@@ -812,7 +812,7 @@ namespace TamagotchiBot.Resources {
                 return ResourceManager.GetString("languageCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to What to do with pet:
         ////pet - pet&apos;s status 🐱
@@ -826,6 +826,9 @@ namespace TamagotchiBot.Resources {
         ////bathroom - clean your pet 🛁
         ////referal - referral program 👩‍👩‍👧‍👦
         ////rename - to change name 🌀
+        ///
+        ////changelog - official channel of Tamagotchi bot 🚀
+        ////language - language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺
         ///
         ///There will be more in future!
         ///Stay tuned! 💝.

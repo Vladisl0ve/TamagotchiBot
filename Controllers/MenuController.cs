@@ -374,7 +374,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.PetWork_Cat,
-                InlineKeyboardMarkup = toSendInline
+                InlineKeyboardMarkup = toSendInline,
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -414,7 +415,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.DailyRewardSticker,
-                InlineKeyboardMarkup = toSendInline
+                InlineKeyboardMarkup = toSendInline,
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -463,7 +465,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.PetInfo_Cat,
-                ReplyMarkup = new ReplyKeyboardRemove(),
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup,
                 InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new InlineItems().InlinePet),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
@@ -518,7 +520,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.PetBathroom_Cat,
-                InlineKeyboardMarkup = toSendInline
+                InlineKeyboardMarkup = toSendInline,
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
@@ -546,7 +549,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.PetKitchen_Cat,
-                InlineKeyboardMarkup = toSendInline
+                InlineKeyboardMarkup = toSendInline,
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
@@ -582,7 +586,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.PetGameroom_Cat,
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = new ReplyKeyboardRemove()
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
@@ -624,7 +628,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = stickerHospital,
-                InlineKeyboardMarkup = toSendInline
+                InlineKeyboardMarkup = toSendInline,
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -647,6 +652,7 @@ namespace TamagotchiBot.Controllers
                 Text = anwserRating,
                 StickerId = StickersId.PetRanks_Cat,
                 InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks, 3),
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
 
@@ -704,7 +710,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.PetSleep_Cat,
-                InlineKeyboardMarkup = toSendInline
+                InlineKeyboardMarkup = toSendInline,
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -721,7 +728,8 @@ namespace TamagotchiBot.Controllers
                 InlineKeyboardMarkup = new InlineKeyboardButton(ChangelogGoToDicussChannelButton)
                 {
                     Url = linkToDiscussChat
-                }
+                },
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
             };
             Log.Debug($"Called /ShowChangelogsInfo for {_userInfo}");
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -737,7 +745,8 @@ namespace TamagotchiBot.Controllers
             var toSend = new AnswerMessage()
             {
                 Text = toSendText,
-                StickerId = StickersId.HelpCommandSticker
+                StickerId = StickersId.HelpCommandSticker,
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
             };
             Log.Debug($"Called /ShowHelpInfo for {_userInfo}");
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -771,6 +780,7 @@ namespace TamagotchiBot.Controllers
                         Url = $"https://t.me/share/url?url={Extensions.GetReferalLink(_userId, botUsername)}"
                     }
                 }),
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -788,7 +798,8 @@ namespace TamagotchiBot.Controllers
             var toSend = new AnswerMessage()
             {
                 Text = toSendText,
-                StickerId = StickersId.MenuCommandSticker
+                StickerId = StickersId.MenuCommandSticker,
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
@@ -822,7 +833,8 @@ namespace TamagotchiBot.Controllers
             var toSendFinal = new AnswerMessage()
             {
                 Text = toSendText,
-                StickerId = StickersId.RenamePetSticker
+                StickerId = StickersId.RenamePetSticker,
+                ReplyMarkup = new ReplyKeyboardRemove()
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSendFinal, _userId, false);
@@ -847,6 +859,7 @@ namespace TamagotchiBot.Controllers
 
             _appServices.PetService.Remove(_userId);
             _appServices.UserService.Remove(_userId);
+            _appServices.MetaUserService.Remove(_userId);
             _appServices.ChatService.Remove(_userId);
 
             var toSend = new AnswerMessage()
@@ -1485,7 +1498,7 @@ namespace TamagotchiBot.Controllers
                         }
                     });
 
-            return new AnswerMessage() { InlineKeyboardMarkup = toSendInline, Text = toSendText, StickerId = StickersId.DailyRewardSticker };
+            return new AnswerMessage() { InlineKeyboardMarkup = toSendInline, Text = toSendText, StickerId = StickersId.DailyRewardSticker, ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup };
         }
         private AnswerCallback ShowRemainedTimeDailyRewardCallback(TimeSpan remainedTime = default, bool isAlert = false)
         {

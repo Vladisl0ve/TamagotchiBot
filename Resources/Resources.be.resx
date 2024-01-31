@@ -317,11 +317,14 @@
 /referal - бонусы за сяброў 👩‍👩‍👧‍👦
 /rename - змяніць імя 🌀
 
+/changelog - афіцыяльны канал бота Tamagotchi 🚀
+/language - language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺
+
 У будучыні будзе больш!
 Сачыце за абнаўленнямі! 💝</value>
   </data>
   <data name="menuCommandDescription" xml:space="preserve">
-    <value>Дзеянні з гадаванцам 🎒</value>
+    <value>Іншае 🎒</value>
   </data>
   <data name="FarewellText" xml:space="preserve">
     <value>Ты заходзіш да {0}, але бачыш толькі пусты пакой і занатоўку на стале:

@@ -350,11 +350,14 @@ FAQ:
 /referal - бонусы за друзей 👩‍👩‍👧‍👦
 /rename - сменить имя питомца 🌀
 
+/changelog - официальный канал бота Тамагочи 🚀
+/language - смена языка 🇨🇦
+
 В будущем будет больше!
 Следите за обновлениями! 💝</value>
   </data>
   <data name="menuCommandDescription" xml:space="preserve">
-    <value>Что можно делать 🎒</value>
+    <value>Прочее 🎒</value>
   </data>
   <data name="FarewellText" xml:space="preserve">
     <value>Ты заходишь к {0}, но видишь лишь пустую комнату и записку на столе:

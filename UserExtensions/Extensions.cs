@@ -101,7 +101,7 @@ namespace TamagotchiBot.UserExtensions
                 result.Add($"{l} {l.GetDisplayShortName()}");
 
             return result;
-        }
+        }        
 
         public static List<string> GetAllAvailableLanguages()
         {
@@ -138,6 +138,24 @@ namespace TamagotchiBot.UserExtensions
                     return l;
 
             return Constants.Languages.English;
+        }
+
+        public static List<string> GetMenuButtons()
+        {
+            return new List<string>()
+            {
+                Resources.Resources.workCommandDescription,
+                Resources.Resources.petCommandDescription,
+                Resources.Resources.kitchenCommandDescription,
+
+                Resources.Resources.sleepCommandDescription,
+                Resources.Resources.gameroomCommandDescription,
+                Resources.Resources.bathroomCommandDescription,
+
+                Resources.Resources.ranksCommandDescription,
+                Resources.Resources.referalCommandDescription,
+                Resources.Resources.menuCommandDescription,
+            };
         }
 
         public static List<BotCommand> GetCommands(bool showAllCommands = true)

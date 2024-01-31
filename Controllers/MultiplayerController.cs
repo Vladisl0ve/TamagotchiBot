@@ -247,6 +247,11 @@ namespace TamagotchiBot.Controllers
                 Log.Debug($"MP: duel accepted by {_userLogInfo}");
                 Culture = new CultureInfo(userDBCreator?.Culture ?? "ru");
                 var fightingMsg = await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
+                if (fightingMsg == null)
+                {
+                    Log.Fatal("ERROR ON FIGHTING_MP #1");
+                    return;
+                }
 
                 await Task.Delay(3000);
                 Culture = new CultureInfo(userDBCreator?.Culture ?? "ru");
@@ -481,6 +486,11 @@ namespace TamagotchiBot.Controllers
             }
 
             var sentMsg = await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
+            if (sentMsg == null)
+            {
+                Log.Fatal("ERROR ON StartDuel #1");
+                return;
+            }
             _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.DuelGold);
             _appServices.MetaUserService.UpdateMsgDuelId(_userId, sentMsg?.MessageId ?? -1);
             _appServices.MetaUserService.UpdateChatDuelId(_userId, _chatId);

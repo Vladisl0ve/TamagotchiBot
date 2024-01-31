@@ -182,7 +182,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = ConfirmedLanguage,
                 StickerId = stickerToSend,
-                ReplyMarkup = new ReplyKeyboardRemove()
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
             };
 
             Log.Debug($"Confirmed language for {_userInfo}");

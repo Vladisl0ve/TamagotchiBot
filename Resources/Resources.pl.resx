@@ -311,14 +311,17 @@ Ale radość spadła o {1}%</value>
 /ranks- zobacz najlepsze zwierzaki! 👑
 /hospital- wylecz swojego zwierzaka 🏥
 /bathroom - posprzątaj swojego zwierzaka 🛁
-/referal - program referancyjny  👩‍👩‍👧‍👦
+/referal - program referancyjny 👩‍👩‍👧‍👦
 /rename - zmień imię 🌀
+
+/changelog - główny kanał Tamagotchi 🚀
+/language - language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺
 
 Będzie więcej w przyszłości!
 Czekaj na dalsze informacje! 💝</value>
   </data>
   <data name="menuCommandDescription" xml:space="preserve">
-    <value>Akcje ze zwierzakiem 🎒</value>
+    <value>Inne akcje 🎒</value>
   </data>
   <data name="FarewellText" xml:space="preserve">
     <value>Dotarłeś do {0}, ale wszystko, co widzisz, to pusty pokój i notatka na stole:

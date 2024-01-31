@@ -13,7 +13,6 @@ using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
-using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.Services
 {
@@ -181,6 +180,7 @@ namespace TamagotchiBot.Services
                         _appServices.ChatService.Remove(user.UserId);
                         _appServices.PetService.Remove(user.UserId);
                         _appServices.UserService.Remove(user.UserId);
+                        _appServices.MetaUserService.Remove(user.UserId);
                         _appServices.AppleGameDataService.Delete(user.UserId);
                     }
                 }
@@ -220,6 +220,7 @@ namespace TamagotchiBot.Services
                     _appServices.UserService.Remove(pet.UserId);
                     _appServices.ChatService.Remove(pet.UserId);
                     _appServices.MetaUserService.Remove(pet.UserId);
+                    _appServices.AppleGameDataService.Delete(pet.UserId);
                     Log.Information($"Removed {pet.UserId}");
                     counterUser++;
                 }
@@ -297,6 +298,7 @@ namespace TamagotchiBot.Services
                     _appServices.ChatService.Remove(userDB.UserId);
                     _appServices.PetService.Remove(userDB.UserId);
                     _appServices.UserService.Remove(userDB.UserId);
+                    _appServices.MetaUserService.Remove(userDB.UserId);
                     _appServices.AppleGameDataService.Delete(userDB.UserId);
 
                     Log.Information($"DELETED {Extensions.GetLogUser(userDB)}");
@@ -342,6 +344,7 @@ namespace TamagotchiBot.Services
                         _appServices.ChatService.Remove(userDB.UserId);
                         _appServices.PetService.Remove(userDB.UserId);
                         _appServices.UserService.Remove(userDB.UserId);
+                        _appServices.MetaUserService.Remove(userDB.UserId);
                         _appServices.AppleGameDataService.Delete(userDB.UserId);
                         usersForbidden++;
                     }

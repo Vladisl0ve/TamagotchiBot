@@ -292,13 +292,23 @@ namespace TamagotchiBot.UserExtensions
             public List<CallbackModel> InlineShowInviteMP = new()
             {
                 new CallbackButtons.PetCommand().PetCommandInlineExtraInfo
-            };    
-            
+            };
+
             public List<CallbackModel> InlineShowRanksMP = new()
             {
                 new CallbackButtons.RanksMultiplayerCommand().ShowChatRanksMP,
                 new CallbackButtons.RanksMultiplayerCommand().ShowGlobalRanksMP
             };
+        }
+
+        public class ReplyKeyboardItems
+        {
+            public ReplyKeyboardMarkup MenuKeyboardMarkup =
+            Extensions.ReplyKeyboardOptimizer(
+                Extensions.GetMenuButtons(),
+                columnCounter: 3,
+                isOneTimeKeyboard: false
+                );
         }
 
         public static ReplyKeyboardMarkup LanguagesMarkup = Extensions.ReplyKeyboardOptimizer(Extensions.LanguagesWithFlags(), isOneTimeKeyboard: true);
