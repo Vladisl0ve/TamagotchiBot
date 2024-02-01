@@ -22,6 +22,12 @@ namespace TamagotchiBot.Models.Mongo
         public int TodayMessages { get; set; }
 
         [BsonElement("TodayCallbacks")]
-        public int TodayCallbacks { get; set; }
+        public int TodayCallbacks { get; set; } 
+        
+        [BsonElement("PetCounter")]
+        public long PetCounter { get; set; }   
+        
+        [BsonElement("UserCounter")]
+        public long UserCounter { get; set; }
     }
 }

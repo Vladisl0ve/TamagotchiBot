@@ -18,6 +18,7 @@ namespace TamagotchiBot.Services.Mongo
         public List<Pet> GetAll() => _pets.Find(p => true).ToList();
 
         public Pet Get(long userId) => _pets.Find(p => p.UserId == userId).FirstOrDefault();
+        public long Count() => _pets.CountDocuments(p => true);
 
         public Pet Create(Pet pet)
         {

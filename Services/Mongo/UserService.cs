@@ -20,6 +20,7 @@ namespace TamagotchiBot.Services.Mongo
         public List<User> GetAll() => _users.Find(u => true).ToList();
 
         public User Get(long userId) => _users.Find(u => u.UserId == userId).FirstOrDefault();
+        public long Count() => _users.CountDocuments(u => true);
         public User GetByUsername(string username) => _users.Find(u => u.Username == username).FirstOrDefault();
 
         public User Create(User user)
