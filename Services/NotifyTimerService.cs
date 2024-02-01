@@ -141,8 +141,8 @@ namespace TamagotchiBot.Services
                 DoRandomEvent(user);
 
                 counter++;
-                if (counter % 50 == 0)
-                    await Task.Delay(1000);
+                if (counter % 30 == 0)
+                    await Task.Delay(3000);
 
                 Log.Information($"Sent RandomEventNotification to {Extensions.GetLogUser(user)}");
             }
@@ -153,6 +153,7 @@ namespace TamagotchiBot.Services
         {
             var usersToNotify = UpdateAllDailyRewardUsersIds();
             Log.Information($"DailyRewardNotification timer - {usersToNotify.Count} users");
+            int counter = 0;
             foreach (var userId in usersToNotify)
             {
                 var user = _appServices.UserService.Get(userId);
@@ -169,6 +170,10 @@ namespace TamagotchiBot.Services
                     await _appServices.BotControlService.SendAnswerMessageAsync(toSend, userId, false);
 
                     Log.Information($"Sent DailyRewardNotification to {Extensions.GetLogUser(user)}");
+
+                    counter++;
+                    if (counter % 30 == 0)
+                        await Task.Delay(3000);
                 }
                 catch (ApiRequestException ex)
                 {
@@ -190,52 +195,45 @@ namespace TamagotchiBot.Services
                 }
             }
         }
-        private void LittileThing(List<Pet> pets)
-        {
-            var counter = 0;
-            foreach (var pet in pets)
-            {
-                _appServices.UserService.Remove(pet.UserId);
-                _appServices.PetService.Remove(pet.UserId);
-                counter++;
-            }
-            Log.Information($"Removed {counter} users");
-        }
+
         private void OnMaintainEvent(object sender, ElapsedEventArgs e)
         {
             Log.Information($"MAINTAINS STARTED");
             _appServices.SInfoService.DisableMaintainWorks();
-            int counterUser = 0;
-            int counterUser2 = 0;
-            var allPets = _appServices.PetService.GetAll();
-            var allUsers = _appServices.UserService.GetAll();
-            var allMetaUsers = _appServices.MetaUserService.GetAll();
 
-            foreach (var pet in allPets)
+            int usersDeleted = 0;
+
+            var allUsersData = _appServices.AllUsersDataService.GetAll().Select(a => a.UserId);
+            foreach (var userId in allUsersData)
             {
-                var userDB = _appServices.UserService.Get(pet.UserId);
-                if (userDB == null)
+                var petDB = _appServices.PetService.Get(userId);
+                var userDB = _appServices.UserService.Get(userId);
+
+                if (petDB == null && userDB == null)
                 {
-                    _appServices.PetService.Remove(pet.UserId);
-                    _appServices.UserService.Remove(pet.UserId);
-                    _appServices.ChatService.Remove(pet.UserId);
-                    _appServices.MetaUserService.Remove(pet.UserId);
-                    _appServices.AppleGameDataService.Delete(pet.UserId);
-                    Log.Information($"Removed {pet.UserId}");
-                    counterUser++;
+                    _appServices.ChatService.Remove(userId);
+                    _appServices.MetaUserService.Remove(userId);
+                    _appServices.AppleGameDataService.Delete(userId);
+
+                    continue;
+                }
+
+                if (petDB == null || petDB.Name == null || userDB == null)
+                {
+                    _appServices.ChatService.Remove(userId);
+                    _appServices.PetService.Remove(userId);
+                    _appServices.UserService.Remove(userId);
+                    _appServices.MetaUserService.Remove(userId);
+                    _appServices.AppleGameDataService.Delete(userId);
+
+                    Log.Information($"DELETED id: {userId}");
+                    usersDeleted++;
                 }
             }
 
-            foreach (var metUserDB in allMetaUsers)
-            {
-                if (allUsers.Any(u => u.UserId == metUserDB.UserId))
-                    continue;
-
-                _appServices.MetaUserService.Remove(metUserDB.UserId);
-                counterUser2++;
-            }
-
-            Log.Information($"MAINTAINS OVER - updated {counterUser} users, removed {counterUser2} metausers");
+            Log.Warning($"DELETED USERS:   {usersDeleted}");
+            Log.Warning($"BD CLEANING IS OVER...");
+            Log.Information($"MAINTAINS ARE OVER");
         }
         private async void OnMPDuelsTimedEvent(object sender, ElapsedEventArgs e)
         {
