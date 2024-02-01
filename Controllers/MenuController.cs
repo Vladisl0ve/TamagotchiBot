@@ -310,6 +310,12 @@ namespace TamagotchiBot.Controllers
             {
                 TeethInline(petDb);
                 return;
+            }       
+            
+            if (_callback.Data == new CallbackButtons.BathroomCommand().BathroomCommandMakePoo.CallbackData)
+            {
+                MakePooInline(petDb);
+                return;
             }
 
             if (_callback.Data == new CallbackButtons.BathroomCommand().BathroomCommandTakeShower.CallbackData)
@@ -982,6 +988,32 @@ namespace TamagotchiBot.Controllers
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             Log.Debug($"Callbacked TakeShowerInline for {_userInfo}");
+            _appServices.BotControlService.SendAnswerCallback(_userId,
+                                                              _callback?.Message?.MessageId ?? 0,
+                                                              new AnswerCallback(toSendText, toSendInline),
+                                                              false);
+        }
+        private void MakePooInline(Pet petDB)
+        {
+            if (petDB.Hygiene >= 100)
+            {
+                SendAlertToUser(PetDoesntWantToPoo, true);
+                return;
+            }
+
+            var newHygiene = petDB.Hygiene + HygieneFactors.PoopFactor;
+            newHygiene = newHygiene > 100 ? 100 : newHygiene;
+
+            _appServices.PetService.UpdateHygiene(_userId, newHygiene);
+
+            string anwser = string.Format(PetHygieneAnwserCallback, HygieneFactors.PoopFactor);
+            SendAlertToUser(anwser);
+
+            string toSendText = string.Format(bathroomCommand, newHygiene);
+            List<CallbackModel> inlineParts = new InlineItems().InlineHygiene;
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+
+            Log.Debug($"Callbacked PoopInline for {_userInfo}");
             _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),

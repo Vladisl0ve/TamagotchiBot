@@ -129,11 +129,16 @@ Let's start!</value>
 Just type it here</value>
   </data>
   <data name="ConfirmedName" xml:space="preserve">
-    <value>🧃 Nice!
-Your pet {0} is waiting for you 🐱
-Do not forget feed and wash him, play the games and just love ☺️
+    <value>🧃 Cool!
+Your pet {0} is waiting 🐱
 
-BTW '/menu' shows some commands to start</value>
+Schedule:
+1️⃣ Have breakfast in the kitchen 🍳
+2️⃣ Brush your teeth and take a shower 🛁
+3️⃣ Play in the nursery (the pet really loves playing Apple🍎)
+
+Don't forget to visit your pet, otherwise he may get offended and leave
+Have fun 🍿</value>
   </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
@@ -904,5 +909,11 @@ You only have {1}%💊</value>
   </data>
   <data name="ShowGlobalRanksMPButton" xml:space="preserve">
     <value>Top 10 world 🏆</value>
+  </data>
+  <data name="bathroomCommandMakePoo" xml:space="preserve">
+    <value>🧻Poop💩</value>
+  </data>
+  <data name="PetDoesntWantToPoo" xml:space="preserve">
+    <value>Pet doesn't want to poop 🗿</value>
   </data>
 </root>

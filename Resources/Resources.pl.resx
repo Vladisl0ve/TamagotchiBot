@@ -128,13 +128,6 @@ Startujemy!</value>
     <value>🧸 Przede wszystkim musisz nazwać swojego nowego przyjaciela
 Po prostu wpisz to tutaj</value>
   </data>
-  <data name="ConfirmedName" xml:space="preserve">
-    <value>🧃 Fajnie!
-Twój zwierzak {0} czeka na Ciebie 🐱
-Nie zapomnij go karmić i myć, grać w gry i po prostu lubić ☺️
-
-'/menu' pokaże więcej</value>
-  </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
 
@@ -907,5 +900,23 @@ Masz tylko {0}%💊</value>
   </data>
   <data name="ShowGlobalRanksMPButton" xml:space="preserve">
     <value>10 najlepszych na świecie 🏆</value>
+  </data>
+  <data name="ConfirmedName" xml:space="preserve">
+    <value>🧃 Świetnie!
+Twój zwierzak {0} czeka 🐱
+
+Harmonogram:
+1️⃣ Zjedz śniadanie w kuchni 🍳
+2️⃣ Umyj zęby i weź prysznic 🛁
+3️⃣ Baw się w pokoju gier (zwierzak naprawdę uwielbia bawić się Apple🍎)
+
+Nie zapomnij odwiedzić swojego zwierzaka, w przeciwnym razie może się obrazić i odejść
+Miłej zabawy 🍿</value>
+  </data>
+  <data name="bathroomCommandMakePoo" xml:space="preserve">
+    <value>🧻Kupa💩</value>
+  </data>
+  <data name="PetDoesntWantToPoo" xml:space="preserve">
+    <value>Zwierzak nie chce robić kupy 🗿</value>
   </data>
 </root>

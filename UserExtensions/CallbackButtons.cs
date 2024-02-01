@@ -65,6 +65,11 @@ namespace TamagotchiBot.UserExtensions
             {
                 Text = Resources.Resources.bathroomCommandTakeShower,
                 CallbackData = "bathroomCommandTakeShower"
+            };            
+            public CallbackModel BathroomCommandMakePoo = new CallbackModel ()
+            {
+                Text = Resources.Resources.bathroomCommandMakePoo,
+                CallbackData = "bathroomCommandMakePoo"
             };
         }
         public class HospitalCommand

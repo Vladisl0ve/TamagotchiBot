@@ -129,13 +129,6 @@
     <value>🧸 Спачатку вам трэба даць імя новаму сябру
 Проста ўвядзіце яго тут</value>
   </data>
-  <data name="ConfirmedName" xml:space="preserve">
-    <value>🧃 Цудоўна!
-Твой гадаванец {0} ужо чакае 🐱
-Не забывай карміць і мыць яго, гуляць у гульні і проста любіць ☺️
-
-'/menu' пакажа больш</value>
-  </data>
   <data name="petCommand" xml:space="preserve">
     <value>🐱 {0}
 
@@ -911,5 +904,23 @@ https://t.me/newsvirtualpetbot</value>
   </data>
   <data name="ShowGlobalRanksMPButton" xml:space="preserve">
     <value>Топ-10 свету 🏆</value>
+  </data>
+  <data name="ConfirmedName" xml:space="preserve">
+    <value>🧃 Круць!
+Твой гадаванец {0} чакае 🐱
+
+Распарадак дня:
+1️⃣ Паснедаць на кухні 🍳
+2️⃣ Пачысціць зубы і прыняць душ 🛁
+3️⃣ Пагуляць у дзіцячай (гадаванец вельмі любіць гульню ў Яблык🍎)
+
+Не забывай наведваць гадаванца, інакш ён можа пакрыўдзіцца і пайсці
+Забаўляйцеся 🍿</value>
+  </data>
+  <data name="bathroomCommandMakePoo" xml:space="preserve">
+    <value>🧻Пакакаць💩</value>
+  </data>
+  <data name="PetDoesntWantToPoo" xml:space="preserve">
+    <value>Гадаванец не хоча какаць 🗿</value>
   </data>
 </root>

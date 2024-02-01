@@ -190,6 +190,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🧻Poop💩.
+        /// </summary>
+        public static string bathroomCommandMakePoo {
+            get {
+                return ResourceManager.GetString("bathroomCommandMakePoo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🛁Shower.
         /// </summary>
         public static string bathroomCommandTakeShower {
@@ -285,11 +294,16 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🧃 Nice!
-        ///Your pet {0} is waiting for you 🐱
-        ///Do not forget feed and wash him, play the games and just love ☺️
+        ///   Looks up a localized string similar to 🧃 Cool!
+        ///Your pet {0} is waiting 🐱
         ///
-        ///BTW &apos;/menu&apos; shows some commands to start.
+        ///Schedule:
+        ///1️⃣ Have breakfast in the kitchen 🍳
+        ///2️⃣ Brush your teeth and take a shower 🛁
+        ///3️⃣ Play in the nursery (the pet really loves playing Apple🍎)
+        ///
+        ///Don&apos;t forget to visit your pet, otherwise he may get offended and leave
+        ///Have fun 🍿.
         /// </summary>
         public static string ConfirmedName {
             get {
@@ -1056,6 +1070,15 @@ namespace TamagotchiBot.Resources {
         public static string PetCuringAnwserCallback {
             get {
                 return ResourceManager.GetString("PetCuringAnwserCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet doesn&apos;t want to poop 🗿.
+        /// </summary>
+        public static string PetDoesntWantToPoo {
+            get {
+                return ResourceManager.GetString("PetDoesntWantToPoo", resourceCulture);
             }
         }
         

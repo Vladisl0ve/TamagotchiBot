@@ -13,6 +13,7 @@ using System.Linq;
 using Telegram.Bot.Types.ReplyMarkups;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Web;
 
 namespace TamagotchiBot.Controllers
 {
@@ -83,10 +84,10 @@ namespace TamagotchiBot.Controllers
 
             var toSend = new AnswerMessage()
             {
-                Text = string.Format(ConfirmedName, msgText),
+                Text = string.Format(ConfirmedName, HttpUtility.HtmlEncode(msgText)),
                 StickerId = StickersId.PetConfirmedName_Cat,
-                ReplyMarkup = null,
-                InlineKeyboardMarkup = null
+                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup,
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);

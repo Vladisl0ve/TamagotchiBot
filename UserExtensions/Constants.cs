@@ -136,6 +136,7 @@ namespace TamagotchiBot.UserExtensions
         {
             public const int ShowerFactor = 80;
             public const int TeethFactor = 20;
+            public const int PoopFactor = 20;
         }
 
         public struct Commands
@@ -258,7 +259,8 @@ namespace TamagotchiBot.UserExtensions
             public List<CallbackModel> InlineHygiene = new()
             {
                 new CallbackButtons.BathroomCommand().BathroomCommandBrushTeeth,
-                new CallbackButtons.BathroomCommand().BathroomCommandTakeShower
+                new CallbackButtons.BathroomCommand().BathroomCommandTakeShower,
+                new CallbackButtons.BathroomCommand().BathroomCommandMakePoo
             };
 
             public List<CallbackModel> InlineHospital = new()
