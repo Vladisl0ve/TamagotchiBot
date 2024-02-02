@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +18,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public AllUsersData Get(long userId) => _allUsersData.Find(x => x.UserId == userId).FirstOrDefault();
         public List<AllUsersData> GetAll() => _allUsersData.Find(x => true).ToList();
+        public long CountAllAUD() => _allUsersData.CountDocuments(a => true);
 
         public void Create(AllUsersData userData) 
         {

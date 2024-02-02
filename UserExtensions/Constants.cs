@@ -157,6 +157,12 @@ namespace TamagotchiBot.UserExtensions
             public const string WorkCommand = "work";
             public const string QuitCommand = "quit";
             public const string ChangelogCommand = "changelog";
+
+            //ADMIN
+            public const string CheckCommand = "check";
+            public const string KillCommand = "kill";
+            public const string RestartCommand = "restart";
+            public const string GoldCommand = "gold";
         }
 
         public struct CommandsMP

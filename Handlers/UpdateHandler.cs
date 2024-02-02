@@ -17,6 +17,7 @@ using TamagotchiBot.Services.Interfaces;
 using static TamagotchiBot.UserExtensions.Constants;
 using System.Linq;
 using TamagotchiBot.Database;
+using System.Collections.Generic;
 
 namespace TamagotchiBot.Handlers
 {
@@ -44,7 +45,7 @@ namespace TamagotchiBot.Handlers
 
             HandleUpdate(update, msgAudience);
 
-            new SetCommandController(_appServices, messageFromUser, callbackFromUser).UpdateCommands(msgAudience);
+            new SetCommandController(_appServices, _envs, messageFromUser, callbackFromUser).UpdateCommands(msgAudience);
 
             _appServices.SInfoService.UpdateLastGlobalUpdate();
             return Task.CompletedTask;
@@ -107,7 +108,7 @@ namespace TamagotchiBot.Handlers
                         MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
                         multiplayerController.SendWelcomeMessageOnStart();
 
-                        new SetCommandController(_appServices, messageFromUser, callbackFromUser).UpdateCommandsForThisChat();
+                        new SetCommandController(_appServices, _envs, messageFromUser, callbackFromUser).UpdateCommandsForThisChat();
                         Log.Information($"Bot has been added to new chat #{message.Chat.Title}, ID:{message.Chat.Id} #");
                     }
 
@@ -161,6 +162,13 @@ namespace TamagotchiBot.Handlers
 
             async void OnMessagePrivate(Message message)
             {
+                if (IsAdminMessage(userId))
+                {
+                    var adminController = new AdminController(_appServices, message);
+                    if (await adminController.ProcessMessage())
+                        return;
+                }
+
                 if (!IsUserAndPetRegisteredChecking(userId))
                 {
                     RegisterUserAndPet(message); //CreatorController
@@ -308,6 +316,14 @@ namespace TamagotchiBot.Handlers
                 return false;
 
             return true;
+        }
+        private bool IsAdminMessage(long userId)
+        {
+            if (_envs?.AlwaysNotifyUsers == null)
+                return false;
+
+            var chatsToNotify = new List<string>(_envs.AlwaysNotifyUsers);
+            return chatsToNotify.Exists(c => c == userId.ToString());
         }
 
         private async void RegisterUserAndPet(Message message)

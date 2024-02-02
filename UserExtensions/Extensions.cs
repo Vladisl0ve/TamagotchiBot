@@ -257,6 +257,127 @@ namespace TamagotchiBot.UserExtensions
 
             return resultExtra;
         }
+        public static List<BotCommand> GetCommandsAdmin(bool showAllCommands = true)
+        {
+            List<BotCommand> result = new()
+            {
+                new BotCommand()
+                {
+                    Command = Commands.LanguageCommand,
+                    Description = Resources.Resources.languageCommandDescription
+                }
+            };
+
+            if (!showAllCommands)
+                return result;
+
+            List<BotCommand> resultExtra = new()
+            {
+                new BotCommand()
+                {
+                    Command = Commands.PetCommand,
+                    Description = Resources.Resources.petCommandDescription
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.KitchenCommand,
+                    Description = Resources.Resources.kitchenCommandDescription
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.WorkCommand,
+                    Description = Resources.Resources.workCommandDescription
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.SleepCommand,
+                    Description = Resources.Resources.sleepCommandDescription
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.GameroomCommand,
+                    Description = Resources.Resources.gameroomCommandDescription
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.BathroomCommand,
+                    Description = Resources.Resources.bathroomCommandDescription
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.RanksCommand,
+                    Description = Resources.Resources.ranksCommandDescription
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.HospitalCommand,
+                    Description = Resources.Resources.hospitalCommandDescription
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.RewardCommand,
+                    Description = Resources.Resources.rewardCommandDescription
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.ReferalCommand,
+                    Description = Resources.Resources.referalCommandDescription
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.MenuCommand,
+                    Description = Resources.Resources.menuCommandDescription
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.HelpCommand,
+                    Description = Resources.Resources.helpCommandDescription
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.ChangelogCommand,
+                    Description = Resources.Resources.changelogCommandDescription
+                }
+            };
+            List<BotCommand> resultAdmin = new List<BotCommand>()
+            {
+                new BotCommand()
+                {
+                    Command = Commands.CheckCommand,
+                    Description = "Stats check"
+                },
+                new BotCommand()
+                {
+                    Command = Commands.GoldCommand,
+                    Description = "Add gold [amount]"
+                },
+                new BotCommand()
+                {
+                    Command = Commands.KillCommand,
+                    Description = "Sets HP to zero"
+                },
+                new BotCommand()
+                {
+                    Command = Commands.RestartCommand,
+                    Description = "Deletes user from DB"
+                }
+            };
+            resultExtra.AddRange(result);
+            resultAdmin.AddRange(resultExtra);
+            return resultAdmin;
+        }
 
         public static List<BotCommand> GetMultiplayerCommands()
         {
@@ -444,6 +565,20 @@ namespace TamagotchiBot.UserExtensions
             }
 
             return true;
+        }
+        public static List<int> ParseString(List<string> toParse)
+        {
+            List<int> result = new List<int> ();
+
+            if (toParse == null || toParse.Count == 0)
+                return result;
+
+            foreach (string s in toParse)
+            {
+                if (int.TryParse(s, out int parsedInt))
+                    result.Add(parsedInt);
+            }
+            return result;
         }
     }
 }

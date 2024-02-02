@@ -28,6 +28,12 @@ namespace TamagotchiBot.Models.Mongo
         public long PetCounter { get; set; }   
         
         [BsonElement("UserCounter")]
-        public long UserCounter { get; set; }
+        public long UserCounter { get; set; }   
+        
+        [BsonElement("AUDCounter")]
+        public long AUDCounter { get; set; }   
+        
+        [BsonElement("ReferalsCounter")]
+        public long ReferalsCounter { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using TamagotchiBot.Database;
 using TamagotchiBot.Services.Interfaces;
 using Telegram.Bot.Types;
 using static TamagotchiBot.UserExtensions.Constants;
@@ -10,18 +11,20 @@ namespace TamagotchiBot.Controllers
     {
 
         private readonly IApplicationServices _appServices;
+        private readonly IEnvsSettings _envs;
         private readonly Message _message = null;
         private readonly CallbackQuery _callback = null;
         private readonly long _userId;
         private readonly long _chatId;
 
-        public SetCommandController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
+        public SetCommandController(IApplicationServices services, IEnvsSettings envs, Message message = null, CallbackQuery callback = null)
         {
             _callback = callback;
             _message = message;
             _userId = callback?.From.Id ?? message.From.Id;
             _chatId = callback?.Message?.Chat.Id ?? message.Chat.Id;
 
+            _envs = envs;
             _appServices = services;
 
             Resources.Resources.Culture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
@@ -50,7 +53,12 @@ namespace TamagotchiBot.Controllers
 
             void UpdateCommandsForPrivate(Models.Mongo.User userDB, Models.Mongo.Pet petDB)
             {
-                if (petDB is not null && !userDB.IsInAppleGame)
+                if (userDB is not null && Extensions.ParseString(_envs.AlwaysNotifyUsers).Exists(u => u == userDB.UserId))
+                {
+                    _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetCommandsAdmin(true),
+                                                  scope: new BotCommandScopeChat() { ChatId = _userId });
+                }
+                else if (petDB is not null && !userDB.IsInAppleGame)
                 {
                     _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetCommands(true),
                                                                       scope: new BotCommandScopeChat() { ChatId = _userId });

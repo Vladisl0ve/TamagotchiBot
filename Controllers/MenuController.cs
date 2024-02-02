@@ -34,7 +34,6 @@ namespace TamagotchiBot.Controllers
             _userId = callback?.From.Id ?? message.From.Id;
             _appServices = services;
             _userInfo = Extensions.GetLogUser(_appServices.UserService.Get(_userId));
-            UpdateOrCreateAUD(message?.From ?? callback?.From, message, callback);
         }
         public MenuController(IApplicationServices services, CallbackQuery callback) : this(services, null, callback)
         {
@@ -42,42 +41,6 @@ namespace TamagotchiBot.Controllers
 
         public MenuController(IApplicationServices services, Message message) : this(services, message, null)
         {
-        }
-
-        private void UpdateOrCreateAUD(Telegram.Bot.Types.User user, Message message = null, CallbackQuery callback = null)
-        {
-            if (user == null)
-            {
-                Log.Warning("User is null, can not add to AUD");
-                return;
-            }
-
-            var aud = _appServices.AllUsersDataService.Get(user.Id);
-            if (aud == null) //if new
-            {
-                _appServices.AllUsersDataService.Create(new AllUsersData()
-                {
-                    UserId = user.Id,
-                    ChatId = user.Id,
-                    Created = DateTime.UtcNow,
-                    Culture = Culture.ToString(),
-                    Username = user.Username,
-                    Updated = DateTime.UtcNow,
-                    LastMessage = message?.Text ?? string.Empty,
-                    MessageCounter = message == null ? 0 : 1,
-                    CallbacksCounter = callback == null ? 0 : 1,
-
-                });
-                return;
-            }
-
-            aud.Updated = DateTime.UtcNow;
-            aud.Username = user.Username;
-            aud.Culture = _appServices.UserService.Get(user.Id)?.Culture ?? "ru";
-            aud.LastMessage = message?.Text ?? string.Empty;
-            aud.MessageCounter = message == null ? aud.MessageCounter : aud.MessageCounter + 1;
-            aud.CallbacksCounter = callback == null ? aud.CallbacksCounter : aud.CallbacksCounter + 1;
-            _appServices.AllUsersDataService.Update(aud);
         }
 
         public Task ProcessMessage(string customText = null)
@@ -173,18 +136,6 @@ namespace TamagotchiBot.Controllers
                 await ShowReferalInfo();
                 return;
             }
-#if DEBUG
-            if (textReceived == "restart")
-            {
-                RestartPet(petDB);
-                return;
-            }
-            if (textReceived == "kill")
-            {
-                TestKillPet(petDB);
-                return;
-            }
-#endif
             if (textReceived == "test")
             {
                 Log.Debug($"Called /test for {_userInfo}");
@@ -845,37 +796,6 @@ namespace TamagotchiBot.Controllers
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSendFinal, _userId, false);
-        }
-        private async void TestKillPet(Pet petDB)
-        {
-            string toSendText = string.Format("HP is zero (0) for {0}", petDB.Name);
-
-            _appServices.PetService.UpdateHP(_userId, 0);
-
-            var toSend = new AnswerMessage()
-            {
-                Text = toSendText,
-                StickerId = StickersId.BannedSticker
-            };
-
-            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
-        }
-        private async void RestartPet(Pet petDB)
-        {
-            string toSendText = string.Format(restartCommand, petDB.Name);
-
-            _appServices.PetService.Remove(_userId);
-            _appServices.UserService.Remove(_userId);
-            _appServices.MetaUserService.Remove(_userId);
-            _appServices.ChatService.Remove(_userId);
-
-            var toSend = new AnswerMessage()
-            {
-                Text = toSendText,
-                StickerId = StickersId.DroppedPetSticker
-            };
-
-            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
         }
         #endregion
 

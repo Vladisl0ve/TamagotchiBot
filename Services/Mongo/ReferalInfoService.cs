@@ -24,6 +24,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public ReferalInfo Get(long creatorUserId) => _refInfos.Find(c => c.CreatorUserId == creatorUserId).FirstOrDefault();
         public int GetDoneRefsAmount(long creatorUserId) => _refInfos.Find(c => c.CreatorUserId == creatorUserId).FirstOrDefault()?.RefUsers.Count(r => r.IsTaskDone) ?? 0;
+        public long CountAllRefUsers() => _refInfos.Find(c => true).ToList().SelectMany(r => r.RefUsers).LongCount(r => r.IsTaskDone);
 
         public ReferalInfo Create(ReferalInfo refInfo)
         {
