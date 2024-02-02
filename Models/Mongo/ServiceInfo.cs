@@ -22,6 +22,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("DoMaintainWorks")]
         public bool DoMaintainWorks { get; set; }
 
+        [BsonElement("BotstatCheckId")]
+        public string BotstatCheckId { get; set; }
+
         [BsonElement("BannedWords")]
         public List<string> BannedWords { get; set; }
     }

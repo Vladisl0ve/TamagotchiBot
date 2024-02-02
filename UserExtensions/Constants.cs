@@ -163,6 +163,8 @@ namespace TamagotchiBot.UserExtensions
             public const string KillCommand = "kill";
             public const string RestartCommand = "restart";
             public const string GoldCommand = "gold";
+            public const string StartBotstatCheckCommand = "start_botstat_check";
+            public const string StatusBotstatCheckCommand = "status_botstat_check";
         }
 
         public struct CommandsMP

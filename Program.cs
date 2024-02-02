@@ -54,7 +54,7 @@ namespace Telegram.Bots.Example
                   {
                       services.AddHostedService<TelegramBotHostedService>();
                       services.AddTransient<IUpdateHandler, UpdateHandler>();
-                      services.AddTransient<ITelegramBotClient>(_ => new TelegramBotClient(context.Configuration["TokenBot"]));
+                      services.AddTransient<ITelegramBotClient>(_ => new TelegramBotClient(context.Configuration.GetSection(nameof(EnvsSettings))["TokenBot"]));
 
                       services.Configure<TamagotchiDatabaseSettings>(context.Configuration.GetSection(nameof(TamagotchiDatabaseSettings)));
                       services.AddTransient<ITamagotchiDatabaseSettings>(sp => sp.GetRequiredService<IOptions<TamagotchiDatabaseSettings>>().Value);
@@ -108,8 +108,6 @@ namespace Telegram.Bots.Example
         {
             GlobalConfig globalConfig = new GlobalConfig()
             {
-                TokenBot = "",
-
                 TamagotchiDatabaseSettings = new TamagotchiDatabaseSettings()
                 {
                     AllUsersDataCollectionName = "AllUsersData",
@@ -121,7 +119,7 @@ namespace Telegram.Bots.Example
                     PetsCollectionName = "Pets",
                     ServiceInfoCollectionName = "ServiceInfo",
                     UsersCollectionName = "Users",
-
+                    
                     ConnectionString = "",
                     DatabaseName = "TamagotchiDb"
                 },
@@ -135,7 +133,9 @@ namespace Telegram.Bots.Example
                     DevNotifyEvery = TimeSpan.FromMinutes(1),
                     DevExtraNotifyEvery = TimeSpan.FromMinutes(5),
                     TriggersEvery  = TimeSpan.FromSeconds(20),
-                    AwakeWhenAFKFor = TimeSpan.FromMinutes(30)
+                    AwakeWhenAFKFor = TimeSpan.FromMinutes(30),
+                    BotstatApiKey = "",
+                    TokenBot = ""
                 },
             };
 

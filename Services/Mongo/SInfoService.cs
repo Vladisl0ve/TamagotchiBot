@@ -26,6 +26,7 @@ namespace TamagotchiBot.Services.Mongo
         public bool GetDoSendChangelogs() => _sinfo.Find(si => true).FirstOrDefault()?.DoSendChangelogs ?? false;
         public bool GetDoMaintainWorks() => _sinfo.Find(si => true).FirstOrDefault()?.DoMaintainWorks ?? false;
         public List<string> GetBadWords() => _sinfo.Find(si => true).FirstOrDefault()?.BannedWords ?? new List<string>();
+        public string GetLastBotstatId() => _sinfo.Find(si => true).FirstOrDefault()?.BotstatCheckId;
         public DateTime GetNextNotify()
         {
             bool isMongoAlive;
@@ -67,6 +68,18 @@ namespace TamagotchiBot.Services.Mongo
             _sinfo.ReplaceOne(i => i.Id == lgu.Id, lgu);
         }
 
+        public void UpdateBotstatId(string newId)
+        {
+            var unn = Get();
+            if (unn == null)
+            {
+                CreateDefault();
+                return;
+            }
+            unn.BotstatCheckId = newId;
+            unn.Updated = DateTime.UtcNow;
+            _sinfo.ReplaceOne(i => i.Id == unn.Id, unn);
+        }
         public void UpdateNextNotify(DateTime newNotifyDate)
         {
             var unn = Get();

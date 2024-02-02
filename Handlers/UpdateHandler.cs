@@ -164,7 +164,7 @@ namespace TamagotchiBot.Handlers
             {
                 if (IsAdminMessage(userId))
                 {
-                    var adminController = new AdminController(_appServices, message);
+                    var adminController = new AdminController(_appServices, _envs, message);
                     if (await adminController.ProcessMessage())
                         return;
                 }

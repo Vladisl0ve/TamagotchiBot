@@ -12,30 +12,35 @@ using static TamagotchiBot.UserExtensions.Constants;
 using static TamagotchiBot.Resources.Resources;
 using TamagotchiBot.Models.Answers;
 using User = TamagotchiBot.Models.Mongo.User;
+using System.IO;
+using File = System.IO.File;
+using TamagotchiBot.Database;
 
 namespace TamagotchiBot.Controllers
 {
     public class AdminController : ControllerBase
     {
         private readonly IApplicationServices _appServices;
+        private readonly IEnvsSettings _envs;
         private readonly Message _message = null;
         private readonly CallbackQuery _callback = null;
         private readonly long _userId;
         private readonly string _userInfo;
 
-        private AdminController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
+        private AdminController(IApplicationServices services, IEnvsSettings envs, Message message = null, CallbackQuery callback = null)
         {
             _callback = callback;
             _message = message;
             _userId = callback?.From.Id ?? message.From.Id;
             _appServices = services;
+            _envs = envs;
             _userInfo = Extensions.GetLogUser(_appServices.UserService.Get(_userId));
         }
-        public AdminController(IApplicationServices services, CallbackQuery callback) : this(services, null, callback)
+        public AdminController(IApplicationServices services, IEnvsSettings envs, CallbackQuery callback) : this(services, envs, null, callback)
         {
         }
 
-        public AdminController(IApplicationServices services, Message message) : this(services, message, null)
+        public AdminController(IApplicationServices services, IEnvsSettings envs, Message message) : this(services, envs, message, null)
         {
         }
 
@@ -83,6 +88,16 @@ namespace TamagotchiBot.Controllers
                 await TestKillPet();
                 return true;
             }
+            if (command == Commands.StartBotstatCheckCommand)
+            {
+                await BotstatCheck();
+                return true;
+            }
+            if (command == Commands.StatusBotstatCheckCommand)
+            {
+                await StatusBotstatCheck();
+                return true;
+            }
             if (command.Length >= 4 && command.Substring(0, 4) == Commands.GoldCommand)
             {
                 await AddGold(command);
@@ -90,6 +105,60 @@ namespace TamagotchiBot.Controllers
             }
 
             return false;
+        }
+
+        private async Task StatusBotstatCheck()
+        {
+            var tmp = _appServices.SInfoService.GetLastBotstatId();
+            if (tmp == null)
+            {
+                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage() { Text = $"Error on status check: no id in system" }, _userId);
+                return;
+            }
+
+            var (Status, Content) = await HttpController.StatusCheck(tmp);
+            if (Status == System.Net.HttpStatusCode.OK)
+            {
+                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage() { Text = $"Status checked to Botstat: {Content}" }, _userId);
+            }
+            else
+                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage() { Text = $"Error on status check: [{(int)Status}] {Content}" }, _userId);
+        }
+
+        private async Task BotstatCheck()
+        {
+            var filePath = await CreateBotstatFile();
+            if (filePath == null)
+            {
+                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage() { Text = "Error on Botstat check: could not create file" }, _userId);
+                return;
+            }
+            string token = _envs.TokenBot;
+            if (token == null)
+            {
+                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage() { Text = "Error on Botstat check: no token in system config" }, _userId);
+                return;
+            }
+            string accessKey = _envs.BotstatApiKey;
+            if (accessKey == null)
+            {
+                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage() { Text = "Error on Botstat check: no BotStatApi key" }, _userId);
+                return;
+            }
+
+            var (Status, Content) = await HttpController.StartBotStatChecking(token, accessKey, filePath);
+            if (Status == System.Net.HttpStatusCode.OK)
+            {
+                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage() { Text = $"Stats sent to Botstat: {Content}" }, _userId);
+
+                int pFrom = Content.IndexOf("\"id\":\"") + "\"id\":\"".Length;
+                int pTo = Content.LastIndexOf("\"}}");
+                string result = Content.Substring(pFrom, pTo - pFrom);
+
+                _appServices.SInfoService.UpdateBotstatId(result);
+            }
+            else
+                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage() { Text = $"Error on Botstat check: [{(int)Status}] {Content}" }, _userId);
         }
 
         private async Task<bool> AddGold(string command)
@@ -249,6 +318,37 @@ namespace TamagotchiBot.Controllers
             }
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId);
             return result;
+        }
+
+        private async Task<string> CreateBotstatFile()
+        {
+            string filePath = Path.Combine(Environment.CurrentDirectory, $"botstat.json");
+            List<long> idUsers = _appServices.AllUsersDataService.GetAll().Select(aud => aud.UserId).ToList();
+            List<long> idChatsMP = _appServices.ChatsMPService.GetAll().Select(c => c.ChatId).ToList();
+
+            StringBuilder result = new StringBuilder();
+            result.Append("[" + Environment.NewLine);
+            foreach (long idUser in idUsers)
+            {
+                result.Append($"userId: {idUser}," + Environment.NewLine);
+            }
+            foreach (long idChat in idChatsMP)
+            {
+                result.Append($"chatId: {idChat}," + Environment.NewLine);
+            }
+            result.Append("]");
+
+            try
+            {
+                await File.WriteAllTextAsync(filePath, result.ToString());
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "CREATE BOTSTAT FILE ERROR!");
+                return null;
+            }
+
+            return filePath;
         }
     }
 }

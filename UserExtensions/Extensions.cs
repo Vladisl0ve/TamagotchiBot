@@ -370,6 +370,16 @@ namespace TamagotchiBot.UserExtensions
                 },
                 new BotCommand()
                 {
+                    Command = Commands.StartBotstatCheckCommand,
+                    Description = "Check on Botstat"
+                },
+                new BotCommand()
+                {
+                    Command = Commands.StatusBotstatCheckCommand,
+                    Description = "Status of Botstat check"
+                },
+                new BotCommand()
+                {
                     Command = Commands.RestartCommand,
                     Description = "Deletes user from DB"
                 }
