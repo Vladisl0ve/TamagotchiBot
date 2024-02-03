@@ -648,7 +648,7 @@ namespace TamagotchiBot.Controllers
                         new CallbackModel()
                         {
                             Text = timeToWaitStr,
-                            CallbackData = "sleepCommandInlinePutToSleep"
+                            CallbackData = CallbackButtons.SleepCommand.SleepCommandInlinePutToSleep(default, _userCulture).CallbackData
                         }
                     });
             }
@@ -1167,7 +1167,7 @@ namespace TamagotchiBot.Controllers
                     new CallbackModel()
                     {
                         Text = nameof(sleepCommandInlinePutToSleep).UseCulture(_userCulture),
-                        CallbackData = "sleepCommandInlinePutToSleep"
+                        CallbackData = CallbackButtons.SleepCommand.SleepCommandInlinePutToSleep(default, _userCulture).CallbackData
                     }
                 });
 
@@ -1449,7 +1449,7 @@ namespace TamagotchiBot.Controllers
                         new CallbackModel()
                         {
                             Text = inlineStr,
-                            CallbackData = "rewardCommandDailyRewardInlineShowTime"
+                            CallbackData = CallbackButtons.RewardsCommand.RewardCommandDailyRewardInlineShowTime(default, _userCulture).CallbackData
                         }
                     });
 

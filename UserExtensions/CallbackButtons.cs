@@ -118,7 +118,7 @@ namespace TamagotchiBot.UserExtensions
                     },
                     JobType.FlyersDistributing => new CallbackModel()
                     {
-                        Text = string.Format(Resources.Resources.workCommandInlineShowTime, timeToShow),
+                        Text = string.Format(nameof(Resources.Resources.workCommandInlineShowTime).UseCulture(culture), timeToShow),
                         CallbackData = nameof(WorkCommandInlineShowTime)
                     },
                     _ => new CallbackModel()

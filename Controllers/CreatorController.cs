@@ -91,6 +91,9 @@ namespace TamagotchiBot.Controllers
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+
+            await Task.Delay(2500);
+            await new MenuController(_appServices, _message).ProcessMessage("/pet");
             return true;
         }
         internal async Task<bool> AskToConfirmNewName()
@@ -462,7 +465,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = string.Format(nameof(ConfirmedName).UseCulture(_userCulture), metaUser.TmpPetName),
                 StickerId = StickersId.PetConfirmedName_Cat,
-                ReplyMarkup = new ReplyKeyboardRemove()
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
 
             Log.Debug($"Confirmed name by {_userInfo}");
