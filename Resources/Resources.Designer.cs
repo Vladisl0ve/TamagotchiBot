@@ -891,6 +891,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unfortunately, you don&apos;t have enough money ☠️.
+        /// </summary>
+        public static string NotEnoughGold {
+            get {
+                return ResourceManager.GetString("NotEnoughGold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} to start a duel you need {2}💰gold
         ///You only have {1}💰.
         /// </summary>
@@ -917,15 +926,6 @@ namespace TamagotchiBot.Resources {
         public static string NotEnoughGoldForMPFeed {
             get {
                 return ResourceManager.GetString("NotEnoughGoldForMPFeed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unfortunately, you don&apos;t have enough money ☠️.
-        /// </summary>
-        public static string NotEnoughGoldToResurrect {
-            get {
-                return ResourceManager.GetString("NotEnoughGoldToResurrect", resourceCulture);
             }
         }
         

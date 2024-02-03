@@ -559,7 +559,7 @@ Pogodziliście się 💕
 
 /pet - sprawdza status zwierzaka</value>
   </data>
-  <data name="NotEnoughGoldToResurrect" xml:space="preserve">
+  <data name="NotEnoughGold" xml:space="preserve">
     <value>Niestety nie masz wystarczająco dużo pieniędzy ☠️</value>
   </data>
   <data name="PetIsCleanEnoughAlert" xml:space="preserve">

@@ -632,7 +632,7 @@ You both reconciled 💕
 
 /pet - check pet status</value>
   </data>
-  <data name="NotEnoughGoldToResurrect" xml:space="preserve">
+  <data name="NotEnoughGold" xml:space="preserve">
     <value>Unfortunately, you don't have enough money ☠️</value>
   </data>
   <data name="PetIsCleanEnoughAlert" xml:space="preserve">

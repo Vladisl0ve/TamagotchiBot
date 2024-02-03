@@ -563,7 +563,7 @@
 
 /pet - праверыць стан гадаванца</value>
   </data>
-  <data name="NotEnoughGoldToResurrect" xml:space="preserve">
+  <data name="NotEnoughGold" xml:space="preserve">
     <value>На жаль, у цябе занадта мала грошай ☠️</value>
   </data>
   <data name="PetIsCleanEnoughAlert" xml:space="preserve">

@@ -638,7 +638,7 @@ https://t.me/news_virtualpetbot</value>
 
 /pet - проверить состояние питомца</value>
   </data>
-  <data name="NotEnoughGoldToResurrect" xml:space="preserve">
+  <data name="NotEnoughGold" xml:space="preserve">
     <value>К сожалению у тебя слишком мало денег ☠️</value>
   </data>
   <data name="PetIsCleanEnoughAlert" xml:space="preserve">
