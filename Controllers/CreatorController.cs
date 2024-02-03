@@ -426,9 +426,6 @@ namespace TamagotchiBot.Controllers
 
         private void CreateUserFromMessage(Message msg)
         {
-            if (msg == null)
-                return;
-
             var userTMP = _appServices.UserService.Create(msg.From);
             _userInfo = Extensions.GetLogUser(userTMP);
             Log.Information($"{_userInfo} has been added to Db");

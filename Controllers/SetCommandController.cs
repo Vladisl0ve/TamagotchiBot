@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using TamagotchiBot.Database;
+﻿using TamagotchiBot.Database;
 using TamagotchiBot.Services.Interfaces;
 using Telegram.Bot.Types;
 using static TamagotchiBot.UserExtensions.Constants;
@@ -9,39 +8,26 @@ namespace TamagotchiBot.Controllers
 {
     public class SetCommandController
     {
-
         private readonly IApplicationServices _appServices;
         private readonly IEnvsSettings _envs;
-        private readonly Message _message = null;
-        private readonly CallbackQuery _callback = null;
         private readonly long _userId;
         private readonly long _chatId;
 
-        public SetCommandController(IApplicationServices services, IEnvsSettings envs, Message message = null, CallbackQuery callback = null)
+        public SetCommandController(IApplicationServices services, IEnvsSettings envs, long userId, long chatId)
         {
-            _callback = callback;
-            _message = message;
-            _userId = callback?.From.Id ?? message.From.Id;
-            _chatId = callback?.Message?.Chat.Id ?? message.Chat.Id;
+            _userId = userId;
+            _chatId = chatId;
 
             _envs = envs;
             _appServices = services;
-
-            Resources.Resources.Culture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
         }
         public void UpdateCommands(MessageAudience messageAudience)
         {
-            var userDB = _appServices.UserService.Get(_userId);
-            var petDB = _appServices.PetService.Get(_userId);
-
-
-            Resources.Resources.Culture = new CultureInfo(userDB?.Culture ?? "ru");
-
             switch (messageAudience)
             {
                 case MessageAudience.Private:
                     {
-                        UpdateCommandsForPrivate(userDB, petDB);
+                        UpdateCommandsForPrivate();
                         break;
                     }
                 case MessageAudience.Group:
@@ -51,8 +37,11 @@ namespace TamagotchiBot.Controllers
                     }
             }
 
-            void UpdateCommandsForPrivate(Models.Mongo.User userDB, Models.Mongo.Pet petDB)
+            void UpdateCommandsForPrivate()
             {
+                var userDB = _appServices.UserService.Get(_userId);
+                var petDB = _appServices.PetService.Get(_userId);
+
                 if (userDB is not null && Extensions.ParseString(_envs.AlwaysNotifyUsers).Exists(u => u == userDB.UserId))
                 {
                     _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetCommandsAdmin(true),
