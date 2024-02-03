@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -450,7 +452,6 @@ namespace TamagotchiBot.UserExtensions
 
             return Resources.Resources.FatigueSleepy;
         }
-
         public static string GetCurrentStatus(int status)
         {
             //var statusEnum = Enum.GetValues(typeof(CurrentStatus)).Cast<CurrentStatus>().FirstOrDefault(s => (int)s == status);
@@ -589,6 +590,31 @@ namespace TamagotchiBot.UserExtensions
                     result.Add(parsedInt);
             }
             return result;
+        }
+        public static string UseCulture(this string toTranslate, CultureInfo culture)
+        {
+            if (culture == null || string.IsNullOrEmpty(toTranslate))
+                return null;
+
+            return Resources.Resources.ResourceManager.GetString(toTranslate, culture);
+        }
+        public static string UseCulture(this string toTranslate, string culture)
+        {
+            if (string.IsNullOrEmpty(culture) || string.IsNullOrEmpty(toTranslate))
+                return null;
+
+            CultureInfo cultureInfo;
+            try
+            {
+                cultureInfo = CultureInfo.GetCultureInfo(culture);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "ResourceManager");
+                return null;
+            }
+
+            return toTranslate.UseCulture(cultureInfo);
         }
     }
 }
