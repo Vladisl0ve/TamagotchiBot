@@ -272,7 +272,7 @@ namespace TamagotchiBot.Controllers
             }
             else
             {
-                string toSendText = string.Format(restartCommand, petDB.Name);
+                string toSendText = string.Format(nameof(restartCommand).UseCulture("be"), petDB.Name);
 
                 _appServices.PetService.Remove(_userId);
                 _appServices.UserService.Remove(_userId);
