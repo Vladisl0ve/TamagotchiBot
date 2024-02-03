@@ -22,7 +22,7 @@ namespace TamagotchiBot.Controllers
 
         private readonly Message _message;
         private readonly CallbackQuery _callback;
-        private readonly CultureInfo CultureUser;
+        private readonly CultureInfo _userCulture;
 
         private readonly long _userId = 0;
 
@@ -39,7 +39,7 @@ namespace TamagotchiBot.Controllers
 
             _userInfo = Extensions.GetLogUser(_appServices.UserService.Get(_userId));
 
-            CultureUser = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
+            _userCulture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
             AppleCounter = _appServices.AppleGameDataService.Get(_userId)?.CurrentAppleCounter ?? 1;
         }
 
@@ -56,9 +56,9 @@ namespace TamagotchiBot.Controllers
         public int AppleCounter { get; set; }
         private List<string> MenuCommands => new()
         {
-            nameof(againText).UseCulture(CultureUser),
-            nameof(statisticsText).UseCulture(CultureUser),
-            nameof(quitText).UseCulture(CultureUser)
+            nameof(againText).UseCulture(_userCulture),
+            nameof(statisticsText).UseCulture(_userCulture),
+            nameof(quitText).UseCulture(_userCulture)
         };
         private List<string> ApplesToChoose
         {
@@ -67,9 +67,9 @@ namespace TamagotchiBot.Controllers
                 return AppleCounter switch
                 {
                     1 => MenuCommands,
-                    2 => new List<string>() { "🍎", nameof(ConcedeText).UseCulture(CultureUser) },
-                    3 => new List<string>() { "🍎", "🍎🍎", nameof(ConcedeText).UseCulture(CultureUser) },
-                    _ => new List<string>() { "🍎", "🍎🍎", "🍎🍎🍎", nameof(ConcedeText).UseCulture(CultureUser) },
+                    2 => new List<string>() { "🍎", nameof(ConcedeText).UseCulture(_userCulture) },
+                    3 => new List<string>() { "🍎", "🍎🍎", nameof(ConcedeText).UseCulture(_userCulture) },
+                    _ => new List<string>() { "🍎", "🍎🍎", "🍎🍎🍎", nameof(ConcedeText).UseCulture(_userCulture) },
                 };
             }
         }
@@ -131,7 +131,7 @@ namespace TamagotchiBot.Controllers
             AppleCounter = APPLE_COUNTER_DEFAULT;
             _appServices.AppleGameDataService.Update(appleDataToUpdate);
 
-            string text = $"{nameof(appleGameHelpText).UseCulture(CultureUser)}\n\n{string.Format(nameof(remainingApplesText).UseCulture(CultureUser), AppleCounter)}\n{ApplesIcons}";
+            string text = $"{nameof(appleGameHelpText).UseCulture(_userCulture)}\n\n{string.Format(nameof(remainingApplesText).UseCulture(_userCulture), AppleCounter)}\n{ApplesIcons}";
             var keyboard = KeyboardOptimizer(ApplesToChoose);
             return new AnswerMessage()
             {
@@ -157,7 +157,7 @@ namespace TamagotchiBot.Controllers
 
             if (GetAllTranslatedAndLowered(nameof(statisticsText)).Contains(msgText) && appleDataToUpdate.IsGameOvered)
             {
-                var toSendText = string.Format(nameof(appleGameStatisticsCommand).UseCulture(CultureUser),
+                var toSendText = string.Format(nameof(appleGameStatisticsCommand).UseCulture(_userCulture),
                                                appleDataToUpdate.TotalWins,
                                                appleDataToUpdate.TotalLoses,
                                                appleDataToUpdate.TotalDraws);
@@ -180,7 +180,7 @@ namespace TamagotchiBot.Controllers
                 appleDataToUpdate.IsGameOvered = true;
                 _appServices.AppleGameDataService.Update(appleDataToUpdate);
 
-                string toSendText = $"{nameof(appleGameHelpText).UseCulture(CultureUser)}";
+                string toSendText = $"{nameof(appleGameHelpText).UseCulture(_userCulture)}";
 
                 var toSend = new AnswerMessage()
                 {
@@ -218,7 +218,7 @@ namespace TamagotchiBot.Controllers
 
             if (msgText != "🍎" && msgText != "🍎🍎" && msgText != "🍎🍎🍎")
             {
-                var toSend = new AnswerMessage() { Text = nameof(appleGameUndefiendText).UseCulture(CultureUser), ReplyMarkup = KeyboardOptimizer(ApplesToChoose) };
+                var toSend = new AnswerMessage() { Text = nameof(appleGameUndefiendText).UseCulture(_userCulture), ReplyMarkup = KeyboardOptimizer(ApplesToChoose) };
                 Log.Debug($"Wrong message {msgText} in AppleGame {_userInfo}");
 
                 await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -276,14 +276,14 @@ namespace TamagotchiBot.Controllers
                     break;
             }
 
-            textToSay += $"{string.Format(nameof(appleGameSysEaten).UseCulture(CultureUser), systemRemove)}";
+            textToSay += $"{string.Format(nameof(appleGameSysEaten).UseCulture(_userCulture), systemRemove)}";
 
             textToSay += $"\n\n{ApplesIcons}\n";
 
             switch (AppleCounter)
             {
                 case 1 when systemRemove != 0:
-                    textToSay += nameof(appleGameLoseText).UseCulture(CultureUser);
+                    textToSay += nameof(appleGameLoseText).UseCulture(_userCulture);
                     appleDataToUpdate.TotalLoses += 1;
                     appleDataToUpdate.IsGameOvered = true;
 
@@ -300,7 +300,7 @@ namespace TamagotchiBot.Controllers
 
                     break;
                 case 1 when systemRemove == 0:
-                    textToSay += nameof(appleGameWinText).UseCulture(CultureUser);
+                    textToSay += nameof(appleGameWinText).UseCulture(_userCulture);
                     appleDataToUpdate.TotalWins += 1;
                     appleDataToUpdate.IsGameOvered = true;
 
@@ -317,7 +317,7 @@ namespace TamagotchiBot.Controllers
 
                     break;
                 default:
-                    textToSay += string.Format(nameof(remainingApplesText).UseCulture(CultureUser), AppleCounter);
+                    textToSay += string.Format(nameof(remainingApplesText).UseCulture(_userCulture), AppleCounter);
                     appleDataToUpdate.CurrentAppleCounter = AppleCounter;
                     break;
             }
@@ -341,7 +341,7 @@ namespace TamagotchiBot.Controllers
 
             if (petDB.Fatigue >= 100)
             {
-                string anwser = string.Format(nameof(tooTiredText).UseCulture(CultureUser));
+                string anwser = string.Format(nameof(tooTiredText).UseCulture(_userCulture));
                 _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
                                                                         _userId,
                                                                         anwser,
@@ -350,7 +350,7 @@ namespace TamagotchiBot.Controllers
             }
             if (petDB.Joy >= 100)
             {
-                string anwser = string.Format(nameof(PetIsFullOfJoyText).UseCulture(CultureUser));
+                string anwser = string.Format(nameof(PetIsFullOfJoyText).UseCulture(_userCulture));
                 _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
                                                                         _userId,
                                                                         anwser,
@@ -360,7 +360,7 @@ namespace TamagotchiBot.Controllers
 
             if (userDB.Gold <= Costs.AppleGame)
             {
-                string anwser = string.Format(nameof(goldNotEnough).UseCulture(CultureUser));
+                string anwser = string.Format(nameof(goldNotEnough).UseCulture(_userCulture));
                 _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
                                                                         _userId,
                                                                         anwser,
