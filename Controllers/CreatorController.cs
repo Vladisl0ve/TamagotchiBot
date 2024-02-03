@@ -295,7 +295,7 @@ namespace TamagotchiBot.Controllers
 
             _appServices.PetService.Update(_userId, petResult);
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
-            _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
+            await _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
 
             await Task.Delay(2500);
             await AskForResurrect();

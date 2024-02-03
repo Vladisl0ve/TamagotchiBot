@@ -122,7 +122,7 @@ namespace TamagotchiBot.Controllers
             }
             if (textReceived == "rename" || GetAllTranslatedAndLowered("renameCommandDescription").Contains(textReceived))
             {
-                await RenamePet(petDB);
+                await RenamePet();
                 return;
             }
             if (textReceived == "work" || GetAllTranslatedAndLowered("workCommandDescription").Contains(textReceived))
@@ -157,7 +157,7 @@ namespace TamagotchiBot.Controllers
             Log.Debug($"[MESSAGE] '{customText ?? _message.Text}' FROM {_userInfo}");
         }
 
-        public void CallbackHandler()
+        public async Task CallbackHandler()
         {
             var userDb = _appServices.UserService.Get(_userId);
             var petDb = _appServices.PetService.Get(_userId);
@@ -167,133 +167,133 @@ namespace TamagotchiBot.Controllers
 
             if (_callback.Data == new CallbackButtons.PetCommand().PetCommandInlineBasicInfo.CallbackData)
             {
-                ShowBasicInfoInline(petDb);
+                await ShowBasicInfoInline(petDb);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.PetCommand().PetCommandInlineExtraInfo.CallbackData)
             {
-                ShowExtraInfoInline(petDb);
+                await ShowExtraInfoInline(petDb);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineBread.CallbackData)
             {
-                FeedWithBreadInline(petDb);
+                await FeedWithBreadInline(petDb);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineRedApple.CallbackData)
             {
-                FeedWithAppleInline(petDb);
+                await FeedWithAppleInline(petDb);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineChocolate.CallbackData)
             {
-                FeedWithChocolateInline(petDb);
+                await FeedWithChocolateInline(petDb);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineLollipop.CallbackData)
             {
-                FeedWithLollipopInline(petDb);
+                await FeedWithLollipopInline(petDb);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.SleepCommand().SleepCommandInlinePutToSleep(default).CallbackData)
             {
-                PutToSleepInline(petDb);
+                await PutToSleepInline(petDb);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineWorkOnPC.CallbackData)
             {
-                StartWorkInline(petDb, JobType.WorkingOnPC);
+                await StartWorkInline(petDb, JobType.WorkingOnPC);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(default, JobType.WorkingOnPC).CallbackData)
             {
-                StartWorkInline(petDb, JobType.WorkingOnPC);
+                await StartWorkInline(petDb, JobType.WorkingOnPC);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineDistributeFlyers.CallbackData)
             {
-                StartWorkInline(petDb, JobType.FlyersDistributing);
+                await StartWorkInline(petDb, JobType.FlyersDistributing);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(default, JobType.FlyersDistributing).CallbackData)
             {
-                StartWorkInline(petDb, JobType.FlyersDistributing);
+                await StartWorkInline(petDb, JobType.FlyersDistributing);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.RewardsCommand().RewardCommandInlineDailyReward.CallbackData)
             {
-                GetDailyRewardInline(userDb);
+                await GetDailyRewardInline(userDb);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.RewardsCommand().RewardCommandDailyRewardInlineShowTime(default).CallbackData)
             {
-                GetDailyRewardInline(userDb);
+                await GetDailyRewardInline(userDb);
                 return;
             }
 
             if (_callback.Data == "gameroomCommandInlineCard")
             {
-                PlayCardInline(petDb);
+                await PlayCardInline(petDb);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.GameroomCommand().GameroomCommandInlineDice.CallbackData)
             {
-                PlayDiceInline(petDb);
+                await PlayDiceInline(petDb);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.HospitalCommand().HospitalCommandCurePills.CallbackData)
             {
-                CureWithPill(petDb);
+                await CureWithPill(petDb);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.BathroomCommand().BathroomCommandBrushTeeth.CallbackData)
             {
-                TeethInline(petDb);
+                await TeethInline(petDb);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.BathroomCommand().BathroomCommandMakePoo.CallbackData)
             {
-                MakePooInline(petDb);
+                await MakePooInline(petDb);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.BathroomCommand().BathroomCommandTakeShower.CallbackData)
             {
-                TakeShowerInline(petDb);
+                await TakeShowerInline(petDb);
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.RanksCommand().RanksCommandInlineGold.CallbackData)
             {
-                ShowRanksGold();
+                await ShowRanksGold();
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.RanksCommand().RanksCommandInlineLevel.CallbackData)
             {
-                ShowRanksLevel();
+                await ShowRanksLevel();
                 return;
             }
 
             if (_callback.Data == new CallbackButtons.RanksCommand().RanksCommandInlineApples.CallbackData)
             {
-                ShowRanksApples();
+                await ShowRanksApples();
                 return;
             }
         }
@@ -765,7 +765,7 @@ namespace TamagotchiBot.Controllers
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private async Task RenamePet(Pet petDB)
+        private async Task RenamePet()
         {
             Log.Debug($"Called /RenamePet for {_userInfo}");
 
@@ -804,7 +804,7 @@ namespace TamagotchiBot.Controllers
         #endregion
 
         #region Inline Answers
-        private void ShowBasicInfoInline(Pet petDB)
+        private async Task ShowBasicInfoInline(Pet petDB)
         {
             var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
             encodedPetName = "<b>" + encodedPetName + "</b>";
@@ -828,12 +828,12 @@ namespace TamagotchiBot.Controllers
             });
 
             Log.Debug($"Callbacked ShowBasicInfoInline for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
                                                               false);
         }
-        private void ShowExtraInfoInline(Pet petDB)
+        private async Task ShowExtraInfoInline(Pet petDB)
         {
             var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
             encodedPetName = "<b>" + encodedPetName + "</b>";
@@ -848,28 +848,28 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
 
             Log.Debug($"Callbacked ShowExtraInfoInline for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
                                                               false);
         }
 
-        private void PetIsNotHungry()
+        private async Task PetIsNotHungry()
         {
             Log.Debug($"Sent alert PetIsNotHungry for {_userInfo}");
 
             string answerLocal = string.Format(nameof(tooManyStarvingCommand).UseCulture(_userCulture));
-            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, answerLocal, true);
+            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, answerLocal, true);
         }
-        private void NotEnoughGold()
+        private async Task NotEnoughGold()
         {
             Log.Debug($"Sent alert NotEnoughGold for {_userInfo}");
 
             string anwserLocal = string.Format(nameof(goldNotEnough).UseCulture(_userCulture));
-            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal, true);
+            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal, true);
         }
 
-        private void PetIsTooTired(JobType job = JobType.None)
+        private async Task PetIsTooTired(JobType job = JobType.None)
         {
             Log.Debug($"Sent alert PetIsTooTired for {_userInfo}");
 
@@ -879,22 +879,22 @@ namespace TamagotchiBot.Controllers
                 JobType.FlyersDistributing => string.Format(nameof(tooTiredForJobFlyers).UseCulture(_userCulture), Factors.FlyersDistributingFatigueFactor),
                 _ => string.Format(nameof(tooTiredText).UseCulture(_userCulture))
             };
-            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal, true);
+            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal, true);
         }
 
-        private void PetIsFullOfJoy()
+        private async Task PetIsFullOfJoy()
         {
             Log.Debug($"Sent alert PetIsFullOfJoy for {_userInfo}");
 
             string anwserLocal = string.Format(nameof(PetIsFullOfJoyText).UseCulture(_userCulture));
-            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal, true);
+            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal, true);
         }
 
-        private void TakeShowerInline(Pet petDB)
+        private async Task TakeShowerInline(Pet petDB)
         {
             if (petDB.Hygiene >= 100)
             {
-                SendAlertToUser(nameof(PetIsCleanEnoughAlert).UseCulture(_userCulture), true);
+                await SendAlertToUser(nameof(PetIsCleanEnoughAlert).UseCulture(_userCulture), true);
                 return;
             }
 
@@ -904,23 +904,23 @@ namespace TamagotchiBot.Controllers
             _appServices.PetService.UpdateHygiene(_userId, newHygiene);
 
             string anwser = string.Format(nameof(PetHygieneAnwserCallback).UseCulture(_userCulture), HygieneFactors.ShowerFactor);
-            SendAlertToUser(anwser);
+            await SendAlertToUser(anwser);
 
             string toSendText = string.Format(nameof(bathroomCommand).UseCulture(_userCulture), newHygiene);
             List<CallbackModel> inlineParts = new InlineItems().InlineHygiene;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             Log.Debug($"Callbacked TakeShowerInline for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
         }
-        private void MakePooInline(Pet petDB)
+        private async Task MakePooInline(Pet petDB)
         {
             if (petDB.Hygiene >= 100)
             {
-                SendAlertToUser(nameof(PetDoesntWantToPoo).UseCulture(_userCulture), true);
+                await SendAlertToUser(nameof(PetDoesntWantToPoo).UseCulture(_userCulture), true);
                 return;
             }
 
@@ -930,23 +930,23 @@ namespace TamagotchiBot.Controllers
             _appServices.PetService.UpdateHygiene(_userId, newHygiene);
 
             string anwser = string.Format(nameof(PetHygieneAnwserCallback).UseCulture(_userCulture), HygieneFactors.PoopFactor);
-            SendAlertToUser(anwser);
+            await SendAlertToUser(anwser);
 
             string toSendText = string.Format(nameof(bathroomCommand).UseCulture(_userCulture), newHygiene);
             List<CallbackModel> inlineParts = new InlineItems().InlineHygiene;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             Log.Debug($"Callbacked PoopInline for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
         }
-        private void TeethInline(Pet petDB)
+        private async Task TeethInline(Pet petDB)
         {
             if (petDB.Hygiene >= 100)
             {
-                SendAlertToUser(nameof(PetIsCleanEnoughAlert).UseCulture(_userCulture), true);
+                await SendAlertToUser(nameof(PetIsCleanEnoughAlert).UseCulture(_userCulture), true);
                 return;
             }
 
@@ -956,41 +956,41 @@ namespace TamagotchiBot.Controllers
             _appServices.PetService.UpdateHygiene(_userId, newHygiene);
 
             string anwser = string.Format(nameof(PetHygieneAnwserCallback).UseCulture(_userCulture), HygieneFactors.TeethFactor);
-            SendAlertToUser(anwser);
+            await SendAlertToUser(anwser);
 
             string toSendText = string.Format(nameof(bathroomCommand).UseCulture(_userCulture), newHygiene);
             List<CallbackModel> inlineParts = new InlineItems().InlineHygiene;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             Log.Debug($"Callbacked TeethInline for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
         }
 
-        private bool ToContinueFeedingPet(Pet petDB, User userDB, int foodPrice)
+        private async Task<bool> ToContinueFeedingPet(Pet petDB, User userDB, int foodPrice)
         {
             if (petDB.Satiety >= 100)
             {
-                PetIsNotHungry();
+                await PetIsNotHungry();
                 return false;
             }
 
             var newGold = userDB.Gold - foodPrice;
             if (newGold < 0)
             {
-                NotEnoughGold();
+                await NotEnoughGold();
                 return false;
             }
 
             return true;
         }
-        private void FeedWithBreadInline(Pet petDB)
+        private async Task FeedWithBreadInline(Pet petDB)
         {
             var userDB = _appServices.UserService.Get(_userId);
 
-            if (!ToContinueFeedingPet(petDB, userDB, Costs.Bread))
+            if (!await ToContinueFeedingPet(petDB, userDB, Costs.Bread))
                 return;
 
             var newGold = userDB.Gold - Costs.Bread;
@@ -1006,22 +1006,22 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
 
             string anwser = string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)FoodFactors.BreadHungerFactor);
-            SendAlertToUser(anwser);
+            await SendAlertToUser(anwser);
 
             string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture), newSatiety, newGold);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
 
             Log.Debug($"Callbacked FeedWithBreadInline for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
         }
-        private void FeedWithAppleInline(Pet petDB)
+        private async Task FeedWithAppleInline(Pet petDB)
         {
             var userDB = _appServices.UserService.Get(_userId);
 
-            if (!ToContinueFeedingPet(petDB, userDB, Costs.Apple))
+            if (!await ToContinueFeedingPet(petDB, userDB, Costs.Apple))
                 return;
 
             var newGold = userDB.Gold - Constants.Costs.Apple;
@@ -1036,22 +1036,22 @@ namespace TamagotchiBot.Controllers
             aud.GoldSpentCounter += Costs.Apple;
             _appServices.AllUsersDataService.Update(aud);
 
-            SendAlertToUser(string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)FoodFactors.RedAppleHungerFactor));
+            await SendAlertToUser(string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)FoodFactors.RedAppleHungerFactor));
 
             string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture), newSatiety, newGold);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
 
             Log.Debug($"Callbacked FeedWithAppleInline for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
         }
-        private void FeedWithChocolateInline(Pet petDB)
+        private async Task FeedWithChocolateInline(Pet petDB)
         {
             var userDB = _appServices.UserService.Get(_userId);
 
-            if (!ToContinueFeedingPet(petDB, userDB, Costs.Chocolate))
+            if (!await ToContinueFeedingPet(petDB, userDB, Costs.Chocolate))
                 return;
 
             var newGold = userDB.Gold - Constants.Costs.Chocolate;
@@ -1066,22 +1066,22 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
 
             string anwser = string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)FoodFactors.ChocolateHungerFactor);
-            SendAlertToUser(anwser);
+            await SendAlertToUser(anwser);
 
             string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture), newSatiety, newGold);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
 
             Log.Debug($"Callbacked FeedWithChocolateInline for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
         }
-        private void FeedWithLollipopInline(Pet petDB)
+        private async Task FeedWithLollipopInline(Pet petDB)
         {
             var userDB = _appServices.UserService.Get(_userId);
 
-            if (!ToContinueFeedingPet(petDB, userDB, Costs.Lollipop))
+            if (!await ToContinueFeedingPet(petDB, userDB, Costs.Lollipop))
                 return;
 
             var newGold = userDB.Gold - Constants.Costs.Lollipop;
@@ -1097,40 +1097,40 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
 
             string anwser = string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)FoodFactors.LollipopHungerFactor);
-            SendAlertToUser(anwser);
+            await SendAlertToUser(anwser);
 
             string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture), newSatiety, newGold);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
 
             Log.Debug($"Callbacked FeedWithLollipopInline for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
         }
 
-        private void PutToSleepInline(Pet petDB)
+        private async Task PutToSleepInline(Pet petDB)
         {
             Pet petResult = Pet.Clone(petDB);
 
-            if (CheckStatusIsInactive(petResult, true))
+            if (await CheckStatusIsInactive(petResult, true))
                 return;
 
             if (petResult.CurrentStatus == (int)CurrentStatus.Sleeping)
             {
-                UpdateSleepingInline(petResult);
+                await UpdateSleepingInline(petResult);
                 return;
             }
 
             if (petResult.Fatigue < Limits.ToRestMinLimitOfFatigue)
             {
-                DeclineSleepingInline(petResult);
+                await DeclineSleepingInline(petResult);
                 return;
             }
 
-            StartSleepingInline(petResult);
+            await StartSleepingInline(petResult);
         }
-        private void StartSleepingInline(Pet petDB)
+        private async Task StartSleepingInline(Pet petDB)
         {
             petDB.CurrentStatus = (int)CurrentStatus.Sleeping;
             petDB.StartSleepingTime = DateTime.UtcNow;
@@ -1151,14 +1151,14 @@ namespace TamagotchiBot.Controllers
                 });
 
             Log.Debug($"Callbacked StartSleepingInline for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
         }
-        private void DeclineSleepingInline(Pet petDB)
+        private async Task DeclineSleepingInline(Pet petDB)
         {
-            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, nameof(PetSleepingDoesntWantYetAnwserCallback).UseCulture(_userCulture));
+            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, nameof(PetSleepingDoesntWantYetAnwserCallback).UseCulture(_userCulture));
             string sendTxt = string.Format(nameof(sleepCommand).UseCulture(_userCulture), petDB.Name, petDB.Fatigue, Extensions.GetCurrentStatus(petDB.CurrentStatus));
 
             InlineKeyboardMarkup toSendInlineWhileActive =
@@ -1172,14 +1172,14 @@ namespace TamagotchiBot.Controllers
                 });
 
             Log.Debug($"Callbacked DeclineSleepingInline for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback.Message?.MessageId ?? 0,
                                                               new AnswerCallback(sendTxt, toSendInlineWhileActive),
                                                               false);
         }
-        private void UpdateSleepingInline(Pet petDB)
+        private async Task UpdateSleepingInline(Pet petDB)
         {
-            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, nameof(sleepCommandInlinePutToSleep).UseCulture(_userCulture));
+            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, nameof(sleepCommandInlinePutToSleep).UseCulture(_userCulture));
 
             string toSendText = string.Format(nameof(sleepCommand).UseCulture(_userCulture), petDB.Name, petDB.Fatigue, Extensions.GetCurrentStatus(petDB.CurrentStatus));
 
@@ -1193,33 +1193,33 @@ namespace TamagotchiBot.Controllers
                 });
 
             Log.Debug($"Callbacked UpdateSleepingInline for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
         }
 
-        private void PlayCardInline(Pet petDB)
+        private async Task PlayCardInline(Pet petDB)
         {
             var userDB = _appServices.UserService.Get(_userId);
 
             var newGold = userDB.Gold - Costs.AppleGame;
             if (newGold < 0)
             {
-                NotEnoughGold();
+                await NotEnoughGold();
                 return;
             }
 
             var newFatigue = petDB.Fatigue + Factors.CardGameFatigueFactor;
             if (newFatigue > 100)
             {
-                PetIsTooTired();
+                await PetIsTooTired();
                 return;
             }
 
             if (petDB.Joy >= 100)
             {
-                PetIsFullOfJoy();
+                await PetIsFullOfJoy();
                 return;
             }
             var newJoy = petDB.Joy + Factors.CardGameJoyFactor;
@@ -1230,7 +1230,7 @@ namespace TamagotchiBot.Controllers
             _appServices.PetService.UpdateJoy(_userId, newJoy);
 
             string anwser = string.Format(nameof(PetPlayingAnwserCallback).UseCulture(_userCulture), Factors.CardGameFatigueFactor);
-            SendAlertToUser(anwser);
+            await SendAlertToUser(anwser);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.CardsPlayedCounter++;
@@ -1248,32 +1248,32 @@ namespace TamagotchiBot.Controllers
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineGames, 3);
 
             Log.Debug($"Callbacked PlayCardInline for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
         }
-        private void PlayDiceInline(Pet petDB)
+        private async Task PlayDiceInline(Pet petDB)
         {
             var userDB = _appServices.UserService.Get(_userId);
 
             var newGold = userDB.Gold - Costs.DiceGame;
             if (newGold < 0)
             {
-                NotEnoughGold();
+                await NotEnoughGold();
                 return;
             }
 
             var newFatigue = petDB.Fatigue + Factors.DiceGameFatigueFactor;
             if (newFatigue > 100)
             {
-                PetIsTooTired();
+                await PetIsTooTired();
                 return;
             }
 
             if (petDB.Joy >= 100)
             {
-                PetIsFullOfJoy();
+                await PetIsFullOfJoy();
                 return;
             }
             var newJoy = petDB.Joy + Factors.DiceGameJoyFactor;
@@ -1288,7 +1288,7 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
 
             string anwser = string.Format(nameof(PetPlayingAnwserCallback).UseCulture(_userCulture), Factors.DiceGameJoyFactor);
-            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser);
+            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser);
 
             string toSendText = string.Format(nameof(gameroomCommand).UseCulture(_userCulture),
                                               newFatigue,
@@ -1301,12 +1301,12 @@ namespace TamagotchiBot.Controllers
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineGames, 3);
 
             Log.Debug($"Callbacked PlayDiceInline for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
         }
-        private void StartWorkInline(Pet petDB, JobType jobType)
+        private async Task StartWorkInline(Pet petDB, JobType jobType)
         {
             if (petDB == null)
                 return;
@@ -1315,13 +1315,13 @@ namespace TamagotchiBot.Controllers
             {
                 if (jobType == JobType.WorkingOnPC)
                 {
-                    StartWorkOnPC(petDB);
+                    await StartWorkOnPC(petDB);
                     return;
                 }
 
                 if (jobType == JobType.FlyersDistributing)
                 {
-                    StartJobFlyers(petDB);
+                    await StartJobFlyers(petDB);
                     return;
                 }
             }
@@ -1329,26 +1329,26 @@ namespace TamagotchiBot.Controllers
             {
                 if (petDB.CurrentJob == (int)JobType.WorkingOnPC)
                 {
-                    ServeWorkOnPC(petDB);
+                    await ServeWorkOnPC(petDB);
                     return;
                 }
                 if (petDB.CurrentJob == (int)JobType.FlyersDistributing)
                 {
-                    ServeJobFlyers(petDB);
+                    await ServeJobFlyers(petDB);
                     return;
                 }
             }
         }
 
-        private void GetDailyRewardInline(User userDB)
+        private async Task GetDailyRewardInline(User userDB)
         {
             var dateTimeWhenOver = userDB.GotDailyRewardTime.Add(new TimesToWait().DailyRewardToWait);
             if (dateTimeWhenOver > DateTime.UtcNow)
             {
                 Log.Debug($"Callbacked GetDailyRewardInline (still waiting) for {_userInfo}");
-                _appServices.BotControlService.SendAnswerCallback(_userId,
+                await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                                   _callback.Message?.MessageId ?? 0,
-                                                                  ShowRemainedTimeDailyRewardCallback(dateTimeWhenOver - DateTime.UtcNow, true),
+                                                                  await ShowRemainedTimeDailyRewardCallback(dateTimeWhenOver - DateTime.UtcNow, true),
                                                                   false);
                 return;
             }
@@ -1362,14 +1362,13 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
 
             string anwser = string.Format(nameof(DailyRewardAnwserCallback).UseCulture(_userCulture), Rewards.DailyGoldReward);
-            SendAlertToUser(anwser, true);
+            await SendAlertToUser(anwser, true);
 
             Log.Debug($"Callbacked GetDailyRewardInline (default) for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
-                                                              ShowRemainedTimeDailyRewardCallback(new TimeSpan(23, 59, 59), false),
+                                                              await ShowRemainedTimeDailyRewardCallback(new TimeSpan(23, 59, 59), false),
                                                               false);
-            return;
         }
 
         private AnswerMessage GetRemainedTimeWork(TimeSpan remainedTime, JobType job)
@@ -1398,7 +1397,7 @@ namespace TamagotchiBot.Controllers
             };
             return result;
         }
-        private AnswerCallback ShowRemainedTimeWorkOnPCCallback(TimeSpan remainedTime = default)
+        private async Task<AnswerCallback> ShowRemainedTimeWorkOnPCCallback(TimeSpan remainedTime = default)
         {
             InlineKeyboardMarkup toSendInline;
             string toSendText;
@@ -1407,7 +1406,7 @@ namespace TamagotchiBot.Controllers
                 remainedTime = new TimeSpan(0);
 
             string anwser = string.Format(nameof(workCommandPCWorking).UseCulture(_userCulture));
-            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser);
+            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser);
 
             toSendText = string.Format(nameof(workCommandPCWorking).UseCulture(_userCulture));
             toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
@@ -1417,7 +1416,7 @@ namespace TamagotchiBot.Controllers
 
             return new AnswerCallback(toSendText, toSendInline);
         }
-        private AnswerCallback ShowRemainedTimeJobFlyersCallback(TimeSpan remainedTime = default)
+        private async Task<AnswerCallback> ShowRemainedTimeJobFlyersCallback(TimeSpan remainedTime = default)
         {
             InlineKeyboardMarkup toSendInline;
             string toSendText;
@@ -1426,7 +1425,7 @@ namespace TamagotchiBot.Controllers
                 remainedTime = new TimeSpan(0);
 
             string anwser = string.Format(nameof(workCommandFlyersWorking).UseCulture(_userCulture));
-            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser);
+            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser);
 
             toSendText = string.Format(nameof(workCommandFlyersWorking).UseCulture(_userCulture));
             toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
@@ -1456,7 +1455,7 @@ namespace TamagotchiBot.Controllers
 
             return new AnswerMessage() { InlineKeyboardMarkup = toSendInline, Text = toSendText, StickerId = StickersId.DailyRewardSticker, ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup };
         }
-        private AnswerCallback ShowRemainedTimeDailyRewardCallback(TimeSpan remainedTime = default, bool isAlert = false)
+        private async Task<AnswerCallback> ShowRemainedTimeDailyRewardCallback(TimeSpan remainedTime = default, bool isAlert = false)
         {
             InlineKeyboardMarkup toSendInline;
             string toSendText;
@@ -1467,7 +1466,7 @@ namespace TamagotchiBot.Controllers
             if (isAlert)
             {
                 string anwser = string.Format(nameof(rewardCommandDailyRewardGotten).UseCulture(_userCulture));
-                SendAlertToUser(anwser, isAlert);
+                await SendAlertToUser(anwser, isAlert);
             }
 
             toSendText = string.Format(nameof(rewardCommandDailyRewardGotten).UseCulture(_userCulture));
@@ -1480,7 +1479,7 @@ namespace TamagotchiBot.Controllers
             return new AnswerCallback(toSendText, toSendInline);
         }
 
-        private void CureWithPill(Pet petDB)
+        private async Task CureWithPill(Pet petDB)
         {
             Log.Debug($"Callbacked CureWithPill for {_userInfo}");
             var newHP = petDB.HP + Factors.PillHPFactor;
@@ -1499,7 +1498,7 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
 
             string anwser = string.Format(nameof(PetCuringAnwserCallback).UseCulture(_userCulture), Factors.PillHPFactor, Factors.PillJoyFactor);
-            SendAlertToUser(anwser, true);
+            await SendAlertToUser(anwser, true);
 
             string commandHospital =  newHP switch
             {
@@ -1511,13 +1510,13 @@ namespace TamagotchiBot.Controllers
             string toSendText = string.Format(commandHospital, newHP);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineHospital);
 
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
         }
 
-        private void ShowRanksGold()
+        private async Task ShowRanksGold()
         {
             Log.Debug($"Callbacked ShowRanksGold for {_userInfo}");
             string toSendText = GetRanksByGold();
@@ -1526,12 +1525,12 @@ namespace TamagotchiBot.Controllers
 
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
 
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
                                                               false);
         }
-        private void ShowRanksApples()
+        private async Task ShowRanksApples()
         {
             Log.Debug($"Callbacked ShowRanksApples for {_userInfo}");
             string toSendText = GetRanksByApples();
@@ -1540,12 +1539,12 @@ namespace TamagotchiBot.Controllers
 
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
 
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
                                                               false);
         }
-        private void ShowRanksLevel()
+        private async Task ShowRanksLevel()
         {
             Log.Debug($"Callbacked ShowRanksLevel for {_userInfo}");
             string toSendText = GetRanksByLevel();
@@ -1553,7 +1552,7 @@ namespace TamagotchiBot.Controllers
                 return;
 
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
                                                               false);
@@ -1760,7 +1759,7 @@ namespace TamagotchiBot.Controllers
             }
         }
 
-        private void UpdateWorkOnPCButtonToDefault(Pet petDB)
+        private async Task UpdateWorkOnPCButtonToDefault(Pet petDB)
         {
             string toSendTextIfTimeOver = string.Format(nameof(workCommand).UseCulture(_userCulture),
                                                         new DateTime(new TimesToWait().WorkOnPCToWait.Ticks).ToString("HH:mm:ss"),
@@ -1773,7 +1772,7 @@ namespace TamagotchiBot.Controllers
             InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             Log.Debug($"Callbacked UpdateWorkOnPCButtonToDefault for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendTextIfTimeOver, toSendInlineIfTimeOver),
                                                               false);
@@ -1796,12 +1795,12 @@ namespace TamagotchiBot.Controllers
             }
         }
 
-        private bool CheckStatusIsInactive(Pet petDB, bool IsGoToSleepCommand = false)
+        private async Task<bool> CheckStatusIsInactive(Pet petDB, bool IsGoToSleepCommand = false)
         {
             if (petDB.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
             {
                 string denyText = string.Format(nameof(denyAccessSleeping).UseCulture(_userCulture));
-                _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, denyText, true);
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, denyText, true);
 
                 return true;
             }
@@ -1809,19 +1808,19 @@ namespace TamagotchiBot.Controllers
             if (petDB.CurrentStatus == (int)CurrentStatus.Working)
             {
                 string denyText = string.Format(nameof(denyAccessWorking).UseCulture(_userCulture));
-                _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, denyText, true);
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, denyText, true);
 
                 return true;
             }
 
             return false;
         }
-        private void SendAlertToUser(string textInAlert, bool isWarning = false)
+        private async Task SendAlertToUser(string textInAlert, bool isWarning = false)
         {
             Log.Debug($"Sent alert for {_userInfo}");
-            _appServices.BotControlService.AnswerCallbackQueryAsync(_callback?.Id, _userId, textInAlert, isWarning);
+            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback?.Id, _userId, textInAlert, isWarning);
         }
-        private void EditMessageToDefaultWorkCommand(Pet petDB)
+        private async Task EditMessageToDefaultWorkCommand(Pet petDB)
         {
             petDB.CurrentStatus = (int)CurrentStatus.Active;
             _appServices.PetService.UpdateCurrentStatus(_userId, petDB.CurrentStatus);
@@ -1836,26 +1835,26 @@ namespace TamagotchiBot.Controllers
             InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             Log.Debug($"Callbacked ShowDefaultWorkCommand (work is over) for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendTextIfTimeOver, toSendInlineIfTimeOver),
                                                               false);
         }
-        private void StartWorkOnPC(Pet petDB)
+        private async Task StartWorkOnPC(Pet petDB)
         {
             InlineKeyboardMarkup toSendInline;
             string toSendText;
 
             if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(default, JobType.WorkingOnPC).CallbackData)
             {
-                UpdateWorkOnPCButtonToDefault(petDB);
+                await UpdateWorkOnPCButtonToDefault(petDB);
                 return;
             }
 
             var newFatigue = petDB.Fatigue + Factors.WorkOnPCFatigueFactor;
             if (newFatigue > 100)
             {
-                PetIsTooTired(JobType.WorkingOnPC);
+                await PetIsTooTired(JobType.WorkingOnPC);
                 return;
             }
 
@@ -1873,7 +1872,7 @@ namespace TamagotchiBot.Controllers
             _appServices.PetService.UpdateStartWorkingTime(_userId, startWorkingTime);
 
             string anwser = string.Format(nameof(PetWorkingAnswerCallback).UseCulture(_userCulture), Factors.WorkOnPCFatigueFactor, Rewards.WorkOnPCGoldReward);
-            SendAlertToUser(anwser, true);
+            await SendAlertToUser(anwser, true);
 
             toSendText = string.Format(nameof(workCommandPCWorking).UseCulture(_userCulture));
 
@@ -1885,45 +1884,45 @@ namespace TamagotchiBot.Controllers
                 });
 
             Log.Debug($"Callbacked StartWorkOnPC for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
         }
-        private void ServeWorkOnPC(Pet petDB)
+        private async Task ServeWorkOnPC(Pet petDB)
         {
             TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
 
             //if _callback handled when time of work is over
             if (remainsTime <= TimeSpan.Zero)
             {
-                EditMessageToDefaultWorkCommand(petDB);
+                await EditMessageToDefaultWorkCommand(petDB);
                 return;
             }
 
             Log.Debug($"Callbacked ServeWorkOnPC (still working) for {_userInfo}");
 
             //if _callback handled when pet is still working
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
-                                                              ShowRemainedTimeWorkOnPCCallback(remainsTime),
+                                                              await ShowRemainedTimeWorkOnPCCallback(remainsTime),
                                                               false);
         }
-        private void StartJobFlyers(Pet petDB)
+        private async Task StartJobFlyers(Pet petDB)
         {
             InlineKeyboardMarkup toSendInline;
             string toSendText;
 
             if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(default, JobType.FlyersDistributing).CallbackData)
             {
-                UpdateWorkOnPCButtonToDefault(petDB);
+                await UpdateWorkOnPCButtonToDefault(petDB);
                 return;
             }
 
             var newFatigue = petDB.Fatigue + Factors.FlyersDistributingFatigueFactor;
             if (newFatigue > 100)
             {
-                PetIsTooTired(JobType.FlyersDistributing);
+                await PetIsTooTired(JobType.FlyersDistributing);
                 return;
             }
 
@@ -1941,7 +1940,7 @@ namespace TamagotchiBot.Controllers
             _appServices.PetService.UpdateStartWorkingTime(_userId, startWorkingTime);
 
             string anwser = string.Format(nameof(PetWorkingAnswerCallback).UseCulture(_userCulture), Factors.FlyersDistributingFatigueFactor, Rewards.FlyersDistributingGoldReward);
-            SendAlertToUser(anwser, true);
+            await SendAlertToUser(anwser, true);
 
             toSendText = string.Format(nameof(workCommandFlyersWorking).UseCulture(_userCulture));
 
@@ -1953,28 +1952,28 @@ namespace TamagotchiBot.Controllers
                 });
 
             Log.Debug($"Callbacked StartJobFlyers for {_userInfo}");
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
         }
-        private void ServeJobFlyers(Pet petDB)
+        private async Task ServeJobFlyers(Pet petDB)
         {
             TimeSpan remainsTime = new TimesToWait().FlyersDistToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
 
             //if _callback handled when time of work is over
             if (remainsTime <= TimeSpan.Zero)
             {
-                EditMessageToDefaultWorkCommand(petDB);
+                await EditMessageToDefaultWorkCommand(petDB);
                 return;
             }
 
             Log.Debug($"Callbacked ServeJobFlyers (still working) for {_userInfo}");
 
             //if _callback handled when pet is still working
-            _appServices.BotControlService.SendAnswerCallback(_userId,
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
-                                                              ShowRemainedTimeJobFlyersCallback(remainsTime),
+                                                              await ShowRemainedTimeJobFlyersCallback(remainsTime),
                                                               false);
         }
     }

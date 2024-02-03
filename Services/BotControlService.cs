@@ -106,16 +106,13 @@ namespace TamagotchiBot.Services
                                                int? replyToMsgId = null)
         {
             string logInfo;
-            Models.Mongo.User user = null;
             if (chatId < 0)
                 logInfo = $"chat id: {chatId}";
             else
             {
-                user = _userService.Get(chatId);
+                var user = _userService.Get(chatId);
                 logInfo = $"{Extensions.GetLogUser(user)}";
             }
-
-            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
 
             try
             {
@@ -241,7 +238,7 @@ namespace TamagotchiBot.Services
                 Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException?.Message}, USER/CHAT: {logInfo}");
             }
         }
-        public async void EditMessageReplyMarkupAsync(ChatId chatId, long userId, int messageId, InlineKeyboardMarkup replyMarkup = default, CancellationToken cancellationToken = default)
+        public async Task EditMessageReplyMarkupAsync(ChatId chatId, long userId, int messageId, InlineKeyboardMarkup replyMarkup = default, CancellationToken cancellationToken = default)
         {
             var userDB = _userService.Get(userId);
             if (userDB == null)
@@ -258,7 +255,7 @@ namespace TamagotchiBot.Services
             }
         }
 
-        public async void AnswerCallbackQueryAsync(string callbackQueryId, long userId, string text = default, bool showAlert = false, CancellationToken cancellationToken = default, string url = default)
+        public async Task AnswerCallbackQueryAsync(string callbackQueryId, long userId, string text = default, bool showAlert = false, CancellationToken cancellationToken = default, string url = default)
         {
             var userDB = _userService.Get(userId);
             if (userDB == null)
@@ -285,7 +282,7 @@ namespace TamagotchiBot.Services
             }
         }
 
-        public async void SetMyCommandsAsync(IEnumerable<BotCommand> commands, BotCommandScope scope = default, CancellationToken cancellationToken = default)
+        public async Task SetMyCommandsAsync(IEnumerable<BotCommand> commands, BotCommandScope scope = default, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -301,7 +298,7 @@ namespace TamagotchiBot.Services
             }
         }
 
-        public async void SendChatActionAsync(ChatId chatId, ChatAction chatAction, CancellationToken cancellationToken = default)
+        public async Task SendChatActionAsync(ChatId chatId, ChatAction chatAction, CancellationToken cancellationToken = default)
         {
             var userDB = _allUsersDataService.Get(chatId.Identifier ?? -1);
 
@@ -373,7 +370,7 @@ namespace TamagotchiBot.Services
                          parseMode: toSend.ParseMode);
         }
 
-        public async void SendAnswerCallback(long userId, int messageToAnswerId, AnswerCallback toSend, bool toLog = true)
+        public async Task SendAnswerCallback(long userId, int messageToAnswerId, AnswerCallback toSend, bool toLog = true)
             => await EditMessageTextAsync(userId, messageToAnswerId, toSend.Text, toSend.InlineKeyboardMarkup, parseMode: toSend.ParseMode, toLog: toLog);
     }
 }

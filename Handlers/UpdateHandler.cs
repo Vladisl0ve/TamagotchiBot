@@ -180,7 +180,7 @@ namespace TamagotchiBot.Handlers
             creatorController.UpdateIndicators(); //update all pet's statistics
 
             var controller = new MenuController(_appServices, callbackQuery);
-            controller.CallbackHandler();
+            await controller.CallbackHandler();
         }
         private async Task OnCallbackGroup(CallbackQuery callbackQuery)
         {
@@ -199,7 +199,7 @@ namespace TamagotchiBot.Handlers
             synchroController.SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
             MultiplayerController multiplayerController = new MultiplayerController(_appServices, callback: callbackQuery);
 
-            multiplayerController.CallbackHandler();
+            await multiplayerController.CallbackHandler();
         }
         private Task OnMessageGroup(Message message, long botId)
         {
@@ -224,7 +224,7 @@ namespace TamagotchiBot.Handlers
                     MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
                     await multiplayerController.SendWelcomeMessageOnStart();
 
-                    new SetCommandController(_appServices, _envs, userId, message.Chat.Id).UpdateCommandsForThisChat();
+                    await new SetCommandController(_appServices, _envs, userId, message.Chat.Id).UpdateCommandsForThisChat();
                     Log.Information($"Bot has been added to new chat #{message.Chat.Title}, ID:{message.Chat.Id} #");
                 }
             }

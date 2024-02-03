@@ -1,4 +1,5 @@
-﻿using TamagotchiBot.Database;
+﻿using System.Threading.Tasks;
+using TamagotchiBot.Database;
 using TamagotchiBot.Services.Interfaces;
 using Telegram.Bot.Types;
 using static TamagotchiBot.UserExtensions.Constants;
@@ -21,52 +22,52 @@ namespace TamagotchiBot.Controllers
             _envs = envs;
             _appServices = services;
         }
-        public void UpdateCommands(MessageAudience messageAudience)
+        public async void UpdateCommands(MessageAudience messageAudience)
         {
             switch (messageAudience)
             {
                 case MessageAudience.Private:
                     {
-                        UpdateCommandsForPrivate();
+                        await UpdateCommandsForPrivate();
                         break;
                     }
                 case MessageAudience.Group:
                     {
-                        UpdateCommandsForGroup();
+                        await UpdateCommandsForGroup();
                         break;
                     }
             }
 
-            void UpdateCommandsForPrivate()
+            async Task UpdateCommandsForPrivate()
             {
                 var userDB = _appServices.UserService.Get(_userId);
                 var petDB = _appServices.PetService.Get(_userId);
 
                 if (userDB is not null && Extensions.ParseString(_envs.AlwaysNotifyUsers).Exists(u => u == userDB.UserId))
                 {
-                    _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetCommandsAdmin(true),
+                    await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetCommandsAdmin(true),
                                                   scope: new BotCommandScopeChat() { ChatId = _userId });
                 }
                 else if (petDB is not null && !userDB.IsInAppleGame)
                 {
-                    _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetCommands(true),
+                    await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetCommands(true),
                                                                       scope: new BotCommandScopeChat() { ChatId = _userId });
                 }
                 else if (userDB?.IsInAppleGame ?? false)
                 {
-                    _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetInApplegameCommands(),
+                    await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetInApplegameCommands(),
                                                                       scope: new BotCommandScopeChat() { ChatId = _userId });
                 }
             }
-            void UpdateCommandsForGroup()
+            async Task UpdateCommandsForGroup()
             {
-                _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetMultiplayerCommands(),
+                await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetMultiplayerCommands(),
                                                   scope: new BotCommandScopeChatMember() { ChatId = _chatId, UserId = _userId });
             }
         }
-        public void UpdateCommandsForThisChat()
+        public async Task UpdateCommandsForThisChat()
         {
-            _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetMultiplayerCommands(),
+            await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetMultiplayerCommands(),
                                   scope: new BotCommandScopeChat() { ChatId = _chatId });
         }
     }

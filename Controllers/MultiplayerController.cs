@@ -125,7 +125,7 @@ namespace TamagotchiBot.Controllers
                 await FeedByMentionPetMP(petDB, userDB);
             }
         }
-        public void CallbackHandler()
+        public async Task CallbackHandler()
         {
             var userDB = _appServices.UserService.Get(_userId);
             var petDB = _appServices.PetService.Get(_userId);
@@ -135,20 +135,20 @@ namespace TamagotchiBot.Controllers
 
             if (_callback.Data.Contains(new DuelMuliplayerCommand().StartDuelMultiplayerButton.CallbackData))
             {
-                AcceptDuel();
+                await AcceptDuel();
             }
 
             if (_callback.Data.Contains(new RanksMultiplayerCommand().ShowChatRanksMP.CallbackData))
             {
-                ShowRanks();
+                await ShowRanks();
             }
 
             if (_callback.Data.Contains(new RanksMultiplayerCommand().ShowGlobalRanksMP.CallbackData))
             {
-                ShowRanks(true);
+                await ShowRanks(true);
             }
 
-            async void AcceptDuel()
+            async Task AcceptDuel()
             {
                 var splittedData = _callback.Data.Split("_").ToList();
                 if (splittedData.Count != 3)
@@ -304,7 +304,7 @@ namespace TamagotchiBot.Controllers
                 var fightEnd = string.Format(nameof(DuelMPFightingEnd).UseCulture(_userCulture), personalLinkCreatorDuel, personalLinkDuelAccepted, ownerWinnerName, fightingEndExplanation, Constants.Rewards.WonDuel);
                 await _appServices.BotControlService.EditMessageTextAsync(_chatId, fightingMsg.MessageId, fightEnd, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
             }
-            async void ShowRanks(bool isGlobal = false)
+            async Task ShowRanks(bool isGlobal = false)
             {
                 string msgSenderId = _callback.Data.Split("_").LastOrDefault();
                 if (msgSenderId == null || msgSenderId != _userId.ToString())

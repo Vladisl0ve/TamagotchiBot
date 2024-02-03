@@ -342,7 +342,7 @@ namespace TamagotchiBot.Controllers
             if (petDB.Fatigue >= 100)
             {
                 string anwser = string.Format(nameof(tooTiredText).UseCulture(_userCulture));
-                _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
                                                                         _userId,
                                                                         anwser,
                                                                         true);
@@ -351,7 +351,7 @@ namespace TamagotchiBot.Controllers
             if (petDB.Joy >= 100)
             {
                 string anwser = string.Format(nameof(PetIsFullOfJoyText).UseCulture(_userCulture));
-                _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
                                                                         _userId,
                                                                         anwser,
                                                                         true);
@@ -361,7 +361,7 @@ namespace TamagotchiBot.Controllers
             if (userDB.Gold <= Costs.AppleGame)
             {
                 string anwser = string.Format(nameof(goldNotEnough).UseCulture(_userCulture));
-                _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
                                                                         _userId,
                                                                         anwser,
                                                                         true);
@@ -371,7 +371,7 @@ namespace TamagotchiBot.Controllers
             _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.AppleGame);
 
             await _appServices.UserService.UpdateAppleGameStatus(_userId, true);
-            _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetInApplegameCommands(),
+            await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetInApplegameCommands(),
                                                               scope: new BotCommandScopeChat() { ChatId = _userId });
             var appleData = _appServices.AppleGameDataService.Get(_userId);
 

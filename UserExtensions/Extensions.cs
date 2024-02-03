@@ -519,7 +519,7 @@ namespace TamagotchiBot.UserExtensions
             if (user.Username != null)
                 return $"|@{user.Username}, ID: {user.UserId}|";
 
-            if (user.FirstName != null & user.LastName != null)
+            if (user.FirstName != null && user.LastName != null)
                 return $"|{user.FirstName} {user.LastName}, ID: {user.UserId}|";
 
             if (user.FirstName != null)
