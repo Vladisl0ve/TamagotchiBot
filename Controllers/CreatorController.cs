@@ -48,7 +48,7 @@ namespace TamagotchiBot.Controllers
         {
             var toSend = new AnswerMessage(nameof(ChangeLanguage).UseCulture(_userCulture),
                                     StickersId.ChangeLanguageSticker,
-                                    LanguagesMarkup,
+                                    Constants.ReplyKeyboardItems.LanguagesMarkup,
                                     null);
             Log.Debug($"Asked for language after register {_userInfo}");
 
@@ -86,7 +86,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = string.Format(nameof(ConfirmedName).UseCulture(_userCulture), HttpUtility.HtmlEncode(msgText)),
                 StickerId = StickersId.PetConfirmedName_Cat,
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup,
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
 
@@ -152,7 +152,7 @@ namespace TamagotchiBot.Controllers
                 {
                     Text = nameof(ChangeLanguage).UseCulture(_userCulture),
                     StickerId = StickersId.ChangeLanguageSticker,
-                    ReplyMarkup = LanguagesMarkup,
+                    ReplyMarkup = Constants.ReplyKeyboardItems.LanguagesMarkup,
                     InlineKeyboardMarkup = null
                 };
 
@@ -183,7 +183,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = nameof(ConfirmedLanguage).UseCulture(_userCulture),
                 StickerId = stickerToSend,
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup
             };
 
             Log.Debug($"Confirmed language for {_userInfo}");

@@ -163,7 +163,7 @@ namespace TamagotchiBot.Handlers
             if (userDB.IsInAppleGame)
                 return;
 
-            if (callbackQuery.Data == new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame.CallbackData)
+            if (callbackQuery.Data == CallbackButtons.GameroomCommand.GameroomCommandInlineAppleGame.CallbackData)
             {
                 await new AppleGameController(_appServices, callbackQuery).PreStart();
                 return;

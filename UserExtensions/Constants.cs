@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using TamagotchiBot.Models;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -241,86 +242,100 @@ namespace TamagotchiBot.UserExtensions
             public const string PetEpilogue_Cat = "CAACAgIAAxkBAAEINs1kGKvlnOEEu_6Mk1gDWEiXI2MaDQAC6RAAAowt_QcWUbbRSyZNxS8E";
         }
 
-        public class InlineItems
+        public static class InlineItems
         {
-            public List<CallbackModel> InlineFood = new()
+            public static List<CallbackModel> InlineFood => _inlineFood;
+            private static List<CallbackModel> _inlineFood = new()
             {
-                new CallbackButtons.KitchenCommand().KitchenCommandInlineBread,
-                new CallbackButtons.KitchenCommand().KitchenCommandInlineRedApple,
-                new CallbackButtons.KitchenCommand().KitchenCommandInlineChocolate,
-                new CallbackButtons.KitchenCommand().KitchenCommandInlineLollipop
+                CallbackButtons.KitchenCommand.KitchenCommandInlineBread,
+                CallbackButtons.KitchenCommand.KitchenCommandInlineRedApple,
+                CallbackButtons.KitchenCommand.KitchenCommandInlineChocolate,
+                CallbackButtons.KitchenCommand.KitchenCommandInlineLollipop
             };
 
-            public List<CallbackModel> InlineReferal = new()
+            public static List<CallbackModel> InlineReferal(CultureInfo culture) => _inlineReferal(culture);
+            private static List<CallbackModel> _inlineReferal(CultureInfo culture) => new()
             {
-                new CallbackButtons.ReferalCommand().ToAddToNewGroupReferalCommand,
-                new CallbackButtons.ReferalCommand().ToShareReferalCommand
+                CallbackButtons.ReferalCommand.ToAddToNewGroupReferalCommand(culture),
+                CallbackButtons.ReferalCommand.ToShareReferalCommand(culture)
             };
 
-            public List<CallbackModel> InlineGames = new()
+            public static List<CallbackModel> InlineGames => _inlineGames;
+            private static List<CallbackModel> _inlineGames = new()
             {
-                new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame,
-                new CallbackButtons.GameroomCommand().GameroomCommandInlineDice
+                CallbackButtons.GameroomCommand.GameroomCommandInlineAppleGame,
+                CallbackButtons.GameroomCommand.GameroomCommandInlineDice
             };
 
 
-            public List<CallbackModel> InlineHygiene = new()
+            public static List<CallbackModel> InlineHygiene(CultureInfo culture) => _inlineHygiene(culture);
+            private static List<CallbackModel> _inlineHygiene(CultureInfo culture) => new()
             {
-                new CallbackButtons.BathroomCommand().BathroomCommandBrushTeeth,
-                new CallbackButtons.BathroomCommand().BathroomCommandTakeShower,
-                new CallbackButtons.BathroomCommand().BathroomCommandMakePoo
+                CallbackButtons.BathroomCommand.BathroomCommandBrushTeeth(culture),
+                CallbackButtons.BathroomCommand.BathroomCommandTakeShower(culture),
+                CallbackButtons.BathroomCommand.BathroomCommandMakePoo(culture)
             };
 
-            public List<CallbackModel> InlineHospital = new()
+            public static List<CallbackModel> InlineHospital(CultureInfo culture) => _inlineHospital(culture);
+            private static List<CallbackModel> _inlineHospital(CultureInfo culture) => new()
             {
-                new CallbackButtons.HospitalCommand().HospitalCommandCurePills
+                CallbackButtons.HospitalCommand.HospitalCommandCurePills(culture)
             };
 
-            public List<CallbackModel> InlineWork = new()
+            public static List<CallbackModel> InlineWork(CultureInfo culture) => _inlineWork(culture);
+            private static List<CallbackModel> _inlineWork(CultureInfo culture) => new()
             {
-                new CallbackButtons.WorkCommand().WorkCommandInlineWorkOnPC,
-                new CallbackButtons.WorkCommand().WorkCommandInlineDistributeFlyers,
+                CallbackButtons.WorkCommand.WorkCommandInlineWorkOnPC(culture),
+                CallbackButtons.WorkCommand.WorkCommandInlineDistributeFlyers(culture),
             };
 
-            public List<CallbackModel> InlineRanks = new()
+            public static List<CallbackModel> InlineRanks(CultureInfo culture) => _inlineRanks(culture);
+            private static List<CallbackModel> _inlineRanks(CultureInfo culture) => new()
             {
-                new CallbackButtons.RanksCommand().RanksCommandInlineLevel,
-                new CallbackButtons.RanksCommand().RanksCommandInlineGold,
-                new CallbackButtons.RanksCommand().RanksCommandInlineApples,
+                CallbackButtons.RanksCommand.RanksCommandInlineLevel(culture),
+                CallbackButtons.RanksCommand.RanksCommandInlineGold(culture),
+                CallbackButtons.RanksCommand.RanksCommandInlineApples(culture),
             };
 
-            public List<CallbackModel> InlineRewards = new()
+            public static List<CallbackModel> InlineRewards(CultureInfo culture) => _inlineRewards(culture);
+            private static List<CallbackModel> _inlineRewards(CultureInfo culture) => new()
             {
-                new CallbackButtons.RewardsCommand().RewardCommandInlineDailyReward
+                CallbackButtons.RewardsCommand.RewardCommandInlineDailyReward(culture)
             };
 
-            public List<CallbackModel> InlinePet = new()
+            public static List<CallbackModel> InlinePet(CultureInfo culture) => _inlinePet(culture);
+            private static List<CallbackModel> _inlinePet(CultureInfo culture) => new()
             {
-                new CallbackButtons.PetCommand().PetCommandInlineExtraInfo
+                CallbackButtons.PetCommand.PetCommandInlineExtraInfo(culture)
             };
 
-            public List<CallbackModel> InlineShowInviteMP = new()
+            public static List<CallbackModel> InlineShowInviteMP(CultureInfo culture) => _inlineShowInviteMP(culture);
+            private static List<CallbackModel> _inlineShowInviteMP(CultureInfo culture) => new()
             {
-                new CallbackButtons.PetCommand().PetCommandInlineExtraInfo
+                CallbackButtons.PetCommand.PetCommandInlineExtraInfo(culture)
             };
 
-            public List<CallbackModel> InlineShowRanksMP = new()
+            public static List<CallbackModel> InlineShowRanksMP(CultureInfo culture) => _inlineShowRanksMP(culture);
+            private static List<CallbackModel> _inlineShowRanksMP(CultureInfo culture) => new()
             {
-                new CallbackButtons.RanksMultiplayerCommand().ShowChatRanksMP,
-                new CallbackButtons.RanksMultiplayerCommand().ShowGlobalRanksMP
+                CallbackButtons.RanksMultiplayerCommand.ShowChatRanksMP(culture),
+                CallbackButtons.RanksMultiplayerCommand.ShowGlobalRanksMP(culture)
             };
         }
 
-        public class ReplyKeyboardItems
+        public static class ReplyKeyboardItems
         {
-            public ReplyKeyboardMarkup MenuKeyboardMarkup =
+            public static ReplyKeyboardMarkup MenuKeyboardMarkup => _menuKeyboardMarkup;
+            private static ReplyKeyboardMarkup _menuKeyboardMarkup =
             Extensions.ReplyKeyboardOptimizer(
                 Extensions.GetMenuButtons(),
                 columnCounter: 3,
                 isOneTimeKeyboard: false
                 );
+
+            public static ReplyKeyboardMarkup LanguagesMarkup => _languagesMarkup;
+            private static ReplyKeyboardMarkup _languagesMarkup = Extensions.ReplyKeyboardOptimizer(Extensions.LanguagesWithFlags(), isOneTimeKeyboard: true);
         }
 
-        public static ReplyKeyboardMarkup LanguagesMarkup = Extensions.ReplyKeyboardOptimizer(Extensions.LanguagesWithFlags(), isOneTimeKeyboard: true);
     }
 }

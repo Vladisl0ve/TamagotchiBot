@@ -133,17 +133,17 @@ namespace TamagotchiBot.Controllers
             if (userDB == null || petDB == null || petDB.IsGone || petDB.HP <= 0)
                 return;
 
-            if (_callback.Data.Contains(new DuelMuliplayerCommand().StartDuelMultiplayerButton.CallbackData))
+            if (_callback.Data.Contains(DuelMuliplayerCommand.StartDuelMultiplayerButton(_userCulture).CallbackData))
             {
                 await AcceptDuel();
             }
 
-            if (_callback.Data.Contains(new RanksMultiplayerCommand().ShowChatRanksMP.CallbackData))
+            if (_callback.Data.Contains(RanksMultiplayerCommand.ShowChatRanksMP(_userCulture).CallbackData))
             {
                 await ShowRanks();
             }
 
-            if (_callback.Data.Contains(new RanksMultiplayerCommand().ShowGlobalRanksMP.CallbackData))
+            if (_callback.Data.Contains(RanksMultiplayerCommand.ShowGlobalRanksMP(_userCulture).CallbackData))
             {
                 await ShowRanks(true);
             }
@@ -317,13 +317,13 @@ namespace TamagotchiBot.Controllers
                     {
                         new List<InlineKeyboardButton>()
                         {
-                            InlineKeyboardButton.WithCallbackData(new RanksMultiplayerCommand().ShowChatRanksMP.Text,  new RanksMultiplayerCommand().ShowChatRanksMP.CallbackData + $"_{_userId}"),
-                            InlineKeyboardButton.WithCallbackData(new RanksMultiplayerCommand().ShowGlobalRanksMP.Text,  new RanksMultiplayerCommand().ShowGlobalRanksMP.CallbackData + $"_{_userId}"),
+                            InlineKeyboardButton.WithCallbackData(RanksMultiplayerCommand.ShowChatRanksMP(_userCulture).Text,  RanksMultiplayerCommand.ShowChatRanksMP(_userCulture).CallbackData + $"_{_userId}"),
+                            InlineKeyboardButton.WithCallbackData(RanksMultiplayerCommand.ShowGlobalRanksMP(_userCulture).Text,  RanksMultiplayerCommand.ShowGlobalRanksMP(_userCulture).CallbackData + $"_{_userId}"),
                         },
                         new List<InlineKeyboardButton>()
                         {
                             InlineKeyboardButton.WithUrl(
-                                new InviteMuliplayerCommand().InviteReferalMultiplayerButton(userDB.FirstName).Text,
+                                InviteMuliplayerCommand.InviteReferalMultiplayerButton(userDB.FirstName, _userCulture).Text,
                                 Extensions.GetReferalLink(_userId, botUsername)
                                 )
                         }
@@ -347,7 +347,7 @@ namespace TamagotchiBot.Controllers
 
             AnswerMessage answerMessage = new AnswerMessage()
             {
-                InlineKeyboardMarkup = new ( InlineKeyboardButton.WithUrl(new InviteMuliplayerCommand().InviteGlobalMultiplayerButton.Text, $"https://t.me/{botUsername}")),
+                InlineKeyboardMarkup = new ( InlineKeyboardButton.WithUrl(InviteMuliplayerCommand.InviteGlobalMultiplayerButton(_userCulture).Text, $"https://t.me/{botUsername}")),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
                 Text = toSendText,
                 msgThreadId = _msgThreadId
@@ -364,7 +364,7 @@ namespace TamagotchiBot.Controllers
 
             AnswerMessage answerMessage = new AnswerMessage()
             {
-                InlineKeyboardMarkup = new ( InlineKeyboardButton.WithUrl(new InviteMuliplayerCommand().InviteGlobalMultiplayerButton.Text, Extensions.GetReferalLink(_userId, botUsername))),
+                InlineKeyboardMarkup = new ( InlineKeyboardButton.WithUrl(InviteMuliplayerCommand.InviteGlobalMultiplayerButton(_userCulture).Text, Extensions.GetReferalLink(_userId, botUsername))),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
                 Text = toSendText,
                 msgThreadId = _msgThreadId
@@ -387,13 +387,13 @@ namespace TamagotchiBot.Controllers
                     {
                         new List<InlineKeyboardButton>()
                         {
-                            InlineKeyboardButton.WithCallbackData(new RanksMultiplayerCommand().ShowChatRanksMP.Text,  new RanksMultiplayerCommand().ShowChatRanksMP.CallbackData + $"_{_userId}"),
-                            InlineKeyboardButton.WithCallbackData(new RanksMultiplayerCommand().ShowGlobalRanksMP.Text,  new RanksMultiplayerCommand().ShowGlobalRanksMP.CallbackData + $"_{_userId}"),
+                            InlineKeyboardButton.WithCallbackData(RanksMultiplayerCommand.ShowChatRanksMP(_userCulture).Text,  RanksMultiplayerCommand.ShowChatRanksMP(_userCulture).CallbackData + $"_{_userId}"),
+                            InlineKeyboardButton.WithCallbackData(RanksMultiplayerCommand.ShowGlobalRanksMP(_userCulture).Text,  RanksMultiplayerCommand.ShowGlobalRanksMP(_userCulture).CallbackData + $"_{_userId}"),
                         },
                         new List<InlineKeyboardButton>()
                         {
                             InlineKeyboardButton.WithUrl(
-                                new InviteMuliplayerCommand().InviteReferalMultiplayerButton(userDB.FirstName).Text,
+                                InviteMuliplayerCommand.InviteReferalMultiplayerButton(userDB.FirstName, _userCulture).Text,
                                 Extensions.GetReferalLink(_userId, botUsername)
                                 )
                         }
@@ -452,7 +452,7 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            var customCallback = new DuelMuliplayerCommand().StartDuelMultiplayerButton;
+            var customCallback = DuelMuliplayerCommand.StartDuelMultiplayerButton(_userCulture);
             customCallback.CallbackData += $"_{userDB?.UserId}_{_message.MessageId}";
             AnswerMessage answerMessage = new AnswerMessage()
             {
@@ -506,7 +506,7 @@ namespace TamagotchiBot.Controllers
             {
                 InlineKeyboardMarkup = new (
                         InlineKeyboardButton.WithUrl(
-                            new InviteMuliplayerCommand().InviteReferalMultiplayerButton(userDB.FirstName).Text,
+                            InviteMuliplayerCommand.InviteReferalMultiplayerButton(userDB.FirstName, _userCulture).Text,
                             Extensions.GetReferalLink(_userId, botUsername)
                             )),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,

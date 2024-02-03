@@ -165,79 +165,79 @@ namespace TamagotchiBot.Controllers
             if (userDb == null || petDb == null)
                 return;
 
-            if (_callback.Data == new CallbackButtons.PetCommand().PetCommandInlineBasicInfo.CallbackData)
+            if (_callback.Data == CallbackButtons.PetCommand.PetCommandInlineBasicInfo(_userCulture).CallbackData)
             {
                 await ShowBasicInfoInline(petDb);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.PetCommand().PetCommandInlineExtraInfo.CallbackData)
+            if (_callback.Data == CallbackButtons.PetCommand.PetCommandInlineExtraInfo(_userCulture).CallbackData)
             {
                 await ShowExtraInfoInline(petDb);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineBread.CallbackData)
+            if (_callback.Data == CallbackButtons.KitchenCommand.KitchenCommandInlineBread.CallbackData)
             {
                 await FeedWithBreadInline(petDb);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineRedApple.CallbackData)
+            if (_callback.Data == CallbackButtons.KitchenCommand.KitchenCommandInlineRedApple.CallbackData)
             {
                 await FeedWithAppleInline(petDb);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineChocolate.CallbackData)
+            if (_callback.Data == CallbackButtons.KitchenCommand.KitchenCommandInlineChocolate.CallbackData)
             {
                 await FeedWithChocolateInline(petDb);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.KitchenCommand().KitchenCommandInlineLollipop.CallbackData)
+            if (_callback.Data == CallbackButtons.KitchenCommand.KitchenCommandInlineLollipop.CallbackData)
             {
                 await FeedWithLollipopInline(petDb);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.SleepCommand().SleepCommandInlinePutToSleep(default).CallbackData)
+            if (_callback.Data == CallbackButtons.SleepCommand.SleepCommandInlinePutToSleep(default, _userCulture).CallbackData)
             {
                 await PutToSleepInline(petDb);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineWorkOnPC.CallbackData)
+            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineWorkOnPC(_userCulture).CallbackData)
             {
                 await StartWorkInline(petDb, JobType.WorkingOnPC);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(default, JobType.WorkingOnPC).CallbackData)
+            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineShowTime(default, JobType.WorkingOnPC, _userCulture).CallbackData)
             {
                 await StartWorkInline(petDb, JobType.WorkingOnPC);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineDistributeFlyers.CallbackData)
+            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineDistributeFlyers(_userCulture).CallbackData)
             {
                 await StartWorkInline(petDb, JobType.FlyersDistributing);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(default, JobType.FlyersDistributing).CallbackData)
+            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineShowTime(default, JobType.FlyersDistributing, _userCulture).CallbackData)
             {
                 await StartWorkInline(petDb, JobType.FlyersDistributing);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.RewardsCommand().RewardCommandInlineDailyReward.CallbackData)
+            if (_callback.Data == CallbackButtons.RewardsCommand.RewardCommandInlineDailyReward(_userCulture).CallbackData)
             {
                 await GetDailyRewardInline(userDb);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.RewardsCommand().RewardCommandDailyRewardInlineShowTime(default).CallbackData)
+            if (_callback.Data == CallbackButtons.RewardsCommand.RewardCommandDailyRewardInlineShowTime(default, _userCulture).CallbackData)
             {
                 await GetDailyRewardInline(userDb);
                 return;
@@ -249,49 +249,49 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.GameroomCommand().GameroomCommandInlineDice.CallbackData)
+            if (_callback.Data == CallbackButtons.GameroomCommand.GameroomCommandInlineDice.CallbackData)
             {
                 await PlayDiceInline(petDb);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.HospitalCommand().HospitalCommandCurePills.CallbackData)
+            if (_callback.Data == CallbackButtons.HospitalCommand.HospitalCommandCurePills(_userCulture).CallbackData)
             {
                 await CureWithPill(petDb);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.BathroomCommand().BathroomCommandBrushTeeth.CallbackData)
+            if (_callback.Data == CallbackButtons.BathroomCommand.BathroomCommandBrushTeeth(_userCulture).CallbackData)
             {
                 await TeethInline(petDb);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.BathroomCommand().BathroomCommandMakePoo.CallbackData)
+            if (_callback.Data == CallbackButtons.BathroomCommand.BathroomCommandMakePoo(_userCulture).CallbackData)
             {
                 await MakePooInline(petDb);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.BathroomCommand().BathroomCommandTakeShower.CallbackData)
+            if (_callback.Data == CallbackButtons.BathroomCommand.BathroomCommandTakeShower(_userCulture).CallbackData)
             {
                 await TakeShowerInline(petDb);
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.RanksCommand().RanksCommandInlineGold.CallbackData)
+            if (_callback.Data == CallbackButtons.RanksCommand.RanksCommandInlineGold(_userCulture).CallbackData)
             {
                 await ShowRanksGold();
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.RanksCommand().RanksCommandInlineLevel.CallbackData)
+            if (_callback.Data == CallbackButtons.RanksCommand.RanksCommandInlineLevel(_userCulture).CallbackData)
             {
                 await ShowRanksLevel();
                 return;
             }
 
-            if (_callback.Data == new CallbackButtons.RanksCommand().RanksCommandInlineApples.CallbackData)
+            if (_callback.Data == CallbackButtons.RanksCommand.RanksCommandInlineApples(_userCulture).CallbackData)
             {
                 await ShowRanksApples();
                 return;
@@ -324,7 +324,7 @@ namespace TamagotchiBot.Controllers
                                        new DateTime(new TimesToWait().FlyersDistToWait.Ticks).ToString("HH:mm:ss"),
                                        Rewards.FlyersDistributingGoldReward);
 
-            List<CallbackModel> inlineParts = new InlineItems().InlineWork;
+            List<CallbackModel> inlineParts = InlineItems.InlineWork(_userCulture);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -336,7 +336,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.PetWork_Cat,
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -364,7 +364,7 @@ namespace TamagotchiBot.Controllers
             {
                 toSendText = string.Format(nameof(rewardCommand).UseCulture(_userCulture));
 
-                inlineParts = new InlineItems().InlineRewards;
+                inlineParts = InlineItems.InlineRewards(_userCulture);
                 toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
                 var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -377,7 +377,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.DailyRewardSticker,
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -394,7 +394,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = nameof(ChangeLanguage).UseCulture(_userCulture),
                 StickerId = StickersId.ChangeLanguageSticker,
-                ReplyMarkup = LanguagesMarkup,
+                ReplyMarkup = Constants.ReplyKeyboardItems.LanguagesMarkup,
                 InlineKeyboardMarkup = null
             };
             Log.Debug($"Called /ChangeLanugage for {_userInfo}");
@@ -426,8 +426,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.PetInfo_Cat,
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup,
-                InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new InlineItems().InlinePet),
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup,
+                InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(InlineItems.InlinePet(_userCulture)),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             Log.Debug($"Called /ShowPetInfo for {_userInfo}");
@@ -470,7 +470,7 @@ namespace TamagotchiBot.Controllers
 
             string toSendText = string.Format(nameof(bathroomCommand).UseCulture(_userCulture), petDB.Hygiene);
 
-            List<CallbackModel> inlineParts = new InlineItems().InlineHygiene;
+            List<CallbackModel> inlineParts = InlineItems.InlineHygiene(_userCulture);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -482,7 +482,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.PetBathroom_Cat,
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
@@ -499,7 +499,7 @@ namespace TamagotchiBot.Controllers
 
             string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture), petDB.Satiety, _appServices.UserService.Get(_userId).Gold);
 
-            List<CallbackModel> inlineParts = new InlineItems().InlineFood;
+            List<CallbackModel> inlineParts = InlineItems.InlineFood;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -511,7 +511,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.PetKitchen_Cat,
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
@@ -535,7 +535,7 @@ namespace TamagotchiBot.Controllers
                                               Factors.DiceGameJoyFactor,
                                               Costs.DiceGame);
 
-            List<CallbackModel> inlineParts = new InlineItems().InlineGames;
+            List<CallbackModel> inlineParts = InlineItems.InlineGames;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -547,7 +547,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.PetGameroom_Cat,
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
@@ -578,7 +578,7 @@ namespace TamagotchiBot.Controllers
 
             string toSendText = string.Format(commandHospital, petDB.HP);
 
-            List<CallbackModel> inlineParts = new InlineItems().InlineHospital;
+            List<CallbackModel> inlineParts = InlineItems.InlineHospital(_userCulture);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -590,7 +590,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = stickerHospital,
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -612,8 +612,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = anwserRating,
                 StickerId = StickersId.PetRanks_Cat,
-                InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks, 3),
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup,
+                InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(InlineItems.InlineRanks(_userCulture), 3),
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
 
@@ -659,7 +659,7 @@ namespace TamagotchiBot.Controllers
                         new CallbackModel()
                         {
                             Text = nameof(sleepCommandInlinePutToSleep).UseCulture(_userCulture),
-                            CallbackData = new CallbackButtons.SleepCommand().SleepCommandInlinePutToSleep(default).CallbackData
+                            CallbackData = CallbackButtons.SleepCommand.SleepCommandInlinePutToSleep(default, _userCulture).CallbackData
                         }
                     });
 
@@ -672,7 +672,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.PetSleep_Cat,
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -690,7 +690,7 @@ namespace TamagotchiBot.Controllers
                 {
                     Url = linkToDiscussChat
                 },
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup
             };
             Log.Debug($"Called /ShowChangelogsInfo for {_userInfo}");
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -707,7 +707,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.HelpCommandSticker,
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup
             };
             Log.Debug($"Called /ShowHelpInfo for {_userInfo}");
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -732,16 +732,16 @@ namespace TamagotchiBot.Controllers
                 StickerId = StickersId.ReferalCommandSticker,
                 InlineKeyboardMarkup = new InlineKeyboardMarkup(new List<InlineKeyboardButton>()
                 {
-                    new InlineKeyboardButton(new CallbackButtons.ReferalCommand().ToAddToNewGroupReferalCommand.Text)
+                    new InlineKeyboardButton(CallbackButtons.ReferalCommand.ToAddToNewGroupReferalCommand(_userCulture).Text)
                     {
                         Url = $"http://t.me/{botUsername}?startgroup=start"
                     },
-                    new InlineKeyboardButton(new CallbackButtons.ReferalCommand().ToShareReferalCommand.Text)
+                    new InlineKeyboardButton(CallbackButtons.ReferalCommand.ToShareReferalCommand(_userCulture).Text)
                     {
                         Url = $"https://t.me/share/url?url={Extensions.GetReferalLink(_userId, botUsername)}"
                     }
                 }),
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup,
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -760,7 +760,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.MenuCommandSticker,
-                ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup,
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -824,7 +824,7 @@ namespace TamagotchiBot.Controllers
 
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {
-                new CallbackButtons.PetCommand().PetCommandInlineExtraInfo
+                CallbackButtons.PetCommand.PetCommandInlineExtraInfo(_userCulture)
             });
 
             Log.Debug($"Callbacked ShowBasicInfoInline for {_userInfo}");
@@ -840,7 +840,7 @@ namespace TamagotchiBot.Controllers
             string toSendText = string.Format(nameof(petCommandMoreInfo1).UseCulture(_userCulture), encodedPetName, petDB.BirthDateTime, _appServices.ReferalInfoService.GetDoneRefsAmount(_userId));
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {
-                new CallbackButtons.PetCommand().PetCommandInlineBasicInfo
+                CallbackButtons.PetCommand.PetCommandInlineBasicInfo(_userCulture)
             });
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -907,7 +907,7 @@ namespace TamagotchiBot.Controllers
             await SendAlertToUser(anwser);
 
             string toSendText = string.Format(nameof(bathroomCommand).UseCulture(_userCulture), newHygiene);
-            List<CallbackModel> inlineParts = new InlineItems().InlineHygiene;
+            List<CallbackModel> inlineParts = InlineItems.InlineHygiene(_userCulture);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             Log.Debug($"Callbacked TakeShowerInline for {_userInfo}");
@@ -933,7 +933,7 @@ namespace TamagotchiBot.Controllers
             await SendAlertToUser(anwser);
 
             string toSendText = string.Format(nameof(bathroomCommand).UseCulture(_userCulture), newHygiene);
-            List<CallbackModel> inlineParts = new InlineItems().InlineHygiene;
+            List<CallbackModel> inlineParts = InlineItems.InlineHygiene(_userCulture);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             Log.Debug($"Callbacked PoopInline for {_userInfo}");
@@ -959,7 +959,7 @@ namespace TamagotchiBot.Controllers
             await SendAlertToUser(anwser);
 
             string toSendText = string.Format(nameof(bathroomCommand).UseCulture(_userCulture), newHygiene);
-            List<CallbackModel> inlineParts = new InlineItems().InlineHygiene;
+            List<CallbackModel> inlineParts = InlineItems.InlineHygiene(_userCulture);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             Log.Debug($"Callbacked TeethInline for {_userInfo}");
@@ -1009,7 +1009,7 @@ namespace TamagotchiBot.Controllers
             await SendAlertToUser(anwser);
 
             string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture), newSatiety, newGold);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
 
             Log.Debug($"Callbacked FeedWithBreadInline for {_userInfo}");
             await _appServices.BotControlService.SendAnswerCallback(_userId,
@@ -1039,7 +1039,7 @@ namespace TamagotchiBot.Controllers
             await SendAlertToUser(string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)FoodFactors.RedAppleHungerFactor));
 
             string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture), newSatiety, newGold);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
 
             Log.Debug($"Callbacked FeedWithAppleInline for {_userInfo}");
             await _appServices.BotControlService.SendAnswerCallback(_userId,
@@ -1069,7 +1069,7 @@ namespace TamagotchiBot.Controllers
             await SendAlertToUser(anwser);
 
             string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture), newSatiety, newGold);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
 
             Log.Debug($"Callbacked FeedWithChocolateInline for {_userInfo}");
             await _appServices.BotControlService.SendAnswerCallback(_userId,
@@ -1100,7 +1100,7 @@ namespace TamagotchiBot.Controllers
             await SendAlertToUser(anwser);
 
             string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture), newSatiety, newGold);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineFood, 3);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
 
             Log.Debug($"Callbacked FeedWithLollipopInline for {_userInfo}");
             await _appServices.BotControlService.SendAnswerCallback(_userId,
@@ -1147,7 +1147,7 @@ namespace TamagotchiBot.Controllers
             InlineKeyboardMarkup toSendInline =
                 Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
                 {
-                    new CallbackButtons.SleepCommand().SleepCommandInlinePutToSleep(timeToWait)
+                    CallbackButtons.SleepCommand.SleepCommandInlinePutToSleep(timeToWait, _userCulture)
                 });
 
             Log.Debug($"Callbacked StartSleepingInline for {_userInfo}");
@@ -1189,7 +1189,7 @@ namespace TamagotchiBot.Controllers
             InlineKeyboardMarkup toSendInline =
                 Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
                 {
-                    new CallbackButtons.SleepCommand().SleepCommandInlinePutToSleep(timeToWait)
+                    CallbackButtons.SleepCommand.SleepCommandInlinePutToSleep(timeToWait, _userCulture)
                 });
 
             Log.Debug($"Callbacked UpdateSleepingInline for {_userInfo}");
@@ -1245,7 +1245,7 @@ namespace TamagotchiBot.Controllers
                                               Costs.AppleGame,
                                               Factors.DiceGameJoyFactor,
                                               Costs.DiceGame);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineGames, 3);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineGames, 3);
 
             Log.Debug($"Callbacked PlayCardInline for {_userInfo}");
             await _appServices.BotControlService.SendAnswerCallback(_userId,
@@ -1298,7 +1298,7 @@ namespace TamagotchiBot.Controllers
                                               Costs.AppleGame,
                                               Factors.DiceGameJoyFactor,
                                               Costs.DiceGame);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineGames, 3);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineGames, 3);
 
             Log.Debug($"Callbacked PlayDiceInline for {_userInfo}");
             await _appServices.BotControlService.SendAnswerCallback(_userId,
@@ -1379,7 +1379,7 @@ namespace TamagotchiBot.Controllers
                 {
                     InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
                     {
-                        new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(remainedTime, JobType.WorkingOnPC)
+                        CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainedTime, JobType.WorkingOnPC, _userCulture)
                     }),
                     Text = string.Format(nameof(workCommandPCWorking).UseCulture(_userCulture)),
                     StickerId = StickersId.PetWorkOnPC_Cat
@@ -1389,7 +1389,7 @@ namespace TamagotchiBot.Controllers
                 {
                     InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
                     {
-                        new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(remainedTime, JobType.FlyersDistributing)
+                        CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainedTime, JobType.FlyersDistributing, _userCulture)
                     }),
                     Text = string.Format(nameof(workCommandFlyersWorking).UseCulture(_userCulture)),
                     StickerId = StickersId.PetFlyersJob_Cat
@@ -1411,7 +1411,7 @@ namespace TamagotchiBot.Controllers
             toSendText = string.Format(nameof(workCommandPCWorking).UseCulture(_userCulture));
             toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {
-                new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(remainedTime, JobType.WorkingOnPC)
+                CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainedTime, JobType.WorkingOnPC, _userCulture)
             });
 
             return new AnswerCallback(toSendText, toSendInline);
@@ -1430,7 +1430,7 @@ namespace TamagotchiBot.Controllers
             toSendText = string.Format(nameof(workCommandFlyersWorking).UseCulture(_userCulture));
             toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {
-                new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(remainedTime, JobType.FlyersDistributing)
+                CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainedTime, JobType.FlyersDistributing, _userCulture)
             });
 
             return new AnswerCallback(toSendText, toSendInline);
@@ -1453,7 +1453,7 @@ namespace TamagotchiBot.Controllers
                         }
                     });
 
-            return new AnswerMessage() { InlineKeyboardMarkup = toSendInline, Text = toSendText, StickerId = StickersId.DailyRewardSticker, ReplyMarkup = new ReplyKeyboardItems().MenuKeyboardMarkup };
+            return new AnswerMessage() { InlineKeyboardMarkup = toSendInline, Text = toSendText, StickerId = StickersId.DailyRewardSticker, ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup };
         }
         private async Task<AnswerCallback> ShowRemainedTimeDailyRewardCallback(TimeSpan remainedTime = default, bool isAlert = false)
         {
@@ -1473,7 +1473,7 @@ namespace TamagotchiBot.Controllers
 
             toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {
-                new CallbackButtons.RewardsCommand().RewardCommandDailyRewardInlineShowTime(remainedTime)
+                CallbackButtons.RewardsCommand.RewardCommandDailyRewardInlineShowTime(remainedTime, _userCulture)
             });
 
             return new AnswerCallback(toSendText, toSendInline);
@@ -1508,7 +1508,7 @@ namespace TamagotchiBot.Controllers
             };
 
             string toSendText = string.Format(commandHospital, newHP);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineHospital);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineHospital(_userCulture));
 
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
@@ -1523,7 +1523,7 @@ namespace TamagotchiBot.Controllers
             if (toSendText == null)
                 return;
 
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineRanks(_userCulture));
 
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
@@ -1537,7 +1537,7 @@ namespace TamagotchiBot.Controllers
             if (toSendText == null)
                 return;
 
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineRanks(_userCulture));
 
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
@@ -1551,7 +1551,7 @@ namespace TamagotchiBot.Controllers
             if (toSendText == null)
                 return;
 
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new InlineItems().InlineRanks);
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineRanks(_userCulture));
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
@@ -1768,7 +1768,7 @@ namespace TamagotchiBot.Controllers
                                                         new DateTime(new TimesToWait().FlyersDistToWait.Ticks).ToString("HH:mm:ss"),
                                                         Rewards.FlyersDistributingGoldReward);
 
-            List<CallbackModel> inlineParts = new InlineItems().InlineWork;
+            List<CallbackModel> inlineParts = InlineItems.InlineWork(_userCulture);
             InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             Log.Debug($"Callbacked UpdateWorkOnPCButtonToDefault for {_userInfo}");
@@ -1831,7 +1831,7 @@ namespace TamagotchiBot.Controllers
                                                         petDB.Fatigue,
                                                         new DateTime(new TimesToWait().FlyersDistToWait.Ticks).ToString("HH:mm:ss"),
                                                         Rewards.FlyersDistributingGoldReward);
-            List<CallbackModel> inlineParts = new InlineItems().InlineWork;
+            List<CallbackModel> inlineParts = InlineItems.InlineWork(_userCulture);
             InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
             Log.Debug($"Callbacked ShowDefaultWorkCommand (work is over) for {_userInfo}");
@@ -1845,7 +1845,7 @@ namespace TamagotchiBot.Controllers
             InlineKeyboardMarkup toSendInline;
             string toSendText;
 
-            if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(default, JobType.WorkingOnPC).CallbackData)
+            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineShowTime(default, JobType.WorkingOnPC, _userCulture).CallbackData)
             {
                 await UpdateWorkOnPCButtonToDefault(petDB);
                 return;
@@ -1880,7 +1880,7 @@ namespace TamagotchiBot.Controllers
 
             toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
                 {
-                    new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(remainsTime, JobType.WorkingOnPC)
+                    CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainsTime, JobType.WorkingOnPC, _userCulture)
                 });
 
             Log.Debug($"Callbacked StartWorkOnPC for {_userInfo}");
@@ -1913,7 +1913,7 @@ namespace TamagotchiBot.Controllers
             InlineKeyboardMarkup toSendInline;
             string toSendText;
 
-            if (_callback.Data == new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(default, JobType.FlyersDistributing).CallbackData)
+            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineShowTime(default, JobType.FlyersDistributing, _userCulture).CallbackData)
             {
                 await UpdateWorkOnPCButtonToDefault(petDB);
                 return;
@@ -1948,7 +1948,7 @@ namespace TamagotchiBot.Controllers
 
             toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
                 {
-                    new CallbackButtons.WorkCommand().WorkCommandInlineShowTime(remainsTime, JobType.FlyersDistributing)
+                    CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainsTime, JobType.FlyersDistributing, _userCulture)
                 });
 
             Log.Debug($"Callbacked StartJobFlyers for {_userInfo}");
