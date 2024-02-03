@@ -336,12 +336,14 @@ namespace TamagotchiBot.Services
                              inlineMarkup: toSend.ReplyMarkup,
                              toLog: toLog,
                              parseMode: toSend.ParseMode);
+            if (toSend.Text?.Length > 0)
+                return await SendTextMessageAsync(userId,
+                             toSend.Text,
+                             inlineMarkup: toSend.InlineKeyboardMarkup,
+                             toLog: toLog,
+                             parseMode: toSend.ParseMode);
 
-            return await SendTextMessageAsync(userId,
-                         toSend.Text,
-                         inlineMarkup: toSend.InlineKeyboardMarkup,
-                         toLog: toLog,
-                         parseMode: toSend.ParseMode);
+            return null;
         }
         public async Task<Message> SendAnswerMessageGroupAsync(AnswerMessage toSend, long chatId, bool toLog = true)
         {

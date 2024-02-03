@@ -325,10 +325,10 @@ namespace TamagotchiBot.UserExtensions
 
         public static class ReplyKeyboardItems
         {
-            public static ReplyKeyboardMarkup MenuKeyboardMarkup => _menuKeyboardMarkup;
-            private static ReplyKeyboardMarkup _menuKeyboardMarkup =
+            public static ReplyKeyboardMarkup MenuKeyboardMarkup(CultureInfo culture) => _menuKeyboardMarkup(culture);
+            private static ReplyKeyboardMarkup _menuKeyboardMarkup(CultureInfo culture) =>
             Extensions.ReplyKeyboardOptimizer(
-                Extensions.GetMenuButtons(),
+                Extensions.GetMenuButtons(culture),
                 columnCounter: 3,
                 isOneTimeKeyboard: false
                 );

@@ -371,7 +371,7 @@ namespace TamagotchiBot.Controllers
             _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.AppleGame);
 
             await _appServices.UserService.UpdateAppleGameStatus(_userId, true);
-            await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetInApplegameCommands(),
+            await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetInApplegameCommands(_userCulture),
                                                               scope: new BotCommandScopeChat() { ChatId = _userId });
             var appleData = _appServices.AppleGameDataService.Get(_userId);
 

@@ -142,32 +142,32 @@ namespace TamagotchiBot.UserExtensions
             return Constants.Languages.English;
         }
 
-        public static List<string> GetMenuButtons()
+        public static List<string> GetMenuButtons(CultureInfo culture)
         {
             return new List<string>()
             {
-                Resources.Resources.workCommandDescription,
-                Resources.Resources.petCommandDescription,
-                Resources.Resources.kitchenCommandDescription,
+                nameof(Resources.Resources.workCommandDescription).UseCulture(culture),
+                nameof(Resources.Resources.petCommandDescription).UseCulture(culture),
+                nameof(Resources.Resources.kitchenCommandDescription).UseCulture(culture),
 
-                Resources.Resources.sleepCommandDescription,
-                Resources.Resources.gameroomCommandDescription,
-                Resources.Resources.bathroomCommandDescription,
+                nameof(Resources.Resources.sleepCommandDescription).UseCulture(culture),
+                nameof(Resources.Resources.gameroomCommandDescription).UseCulture(culture),
+                nameof(Resources.Resources.bathroomCommandDescription).UseCulture(culture),
 
-                Resources.Resources.ranksCommandDescription,
-                Resources.Resources.referalCommandDescription,
-                Resources.Resources.menuCommandDescription,
+                nameof(Resources.Resources.ranksCommandDescription).UseCulture(culture),
+                nameof(Resources.Resources.referalCommandDescription).UseCulture(culture),
+                nameof(Resources.Resources.menuCommandDescription).UseCulture(culture),
             };
         }
 
-        public static List<BotCommand> GetCommands(bool showAllCommands = true)
+        public static List<BotCommand> GetCommands(string culture, bool showAllCommands = true)
         {
             List<BotCommand> result = new()
             {
                 new BotCommand()
                 {
                     Command = Commands.LanguageCommand,
-                    Description = Resources.Resources.languageCommandDescription
+                    Description = nameof(Resources.Resources.languageCommandDescription).UseCulture(culture)
                 }
             };
 
@@ -179,79 +179,79 @@ namespace TamagotchiBot.UserExtensions
                 new BotCommand()
                 {
                     Command = Commands.PetCommand,
-                    Description = Resources.Resources.petCommandDescription
+                    Description = nameof(Resources.Resources.petCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.KitchenCommand,
-                    Description = Resources.Resources.kitchenCommandDescription
+                    Description = nameof(Resources.Resources.kitchenCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.WorkCommand,
-                    Description = Resources.Resources.workCommandDescription
+                    Description = nameof(Resources.Resources.workCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.SleepCommand,
-                    Description = Resources.Resources.sleepCommandDescription
+                    Description = nameof(Resources.Resources.sleepCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.GameroomCommand,
-                    Description = Resources.Resources.gameroomCommandDescription
+                    Description = nameof(Resources.Resources.gameroomCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.BathroomCommand,
-                    Description = Resources.Resources.bathroomCommandDescription
+                    Description = nameof(Resources.Resources.bathroomCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.RanksCommand,
-                    Description = Resources.Resources.ranksCommandDescription
+                    Description = nameof(Resources.Resources.ranksCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.HospitalCommand,
-                    Description = Resources.Resources.hospitalCommandDescription
+                    Description = nameof(Resources.Resources.hospitalCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.RewardCommand,
-                    Description = Resources.Resources.rewardCommandDescription
+                    Description = nameof(Resources.Resources.rewardCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.ReferalCommand,
-                    Description = Resources.Resources.referalCommandDescription
+                    Description = nameof(Resources.Resources.referalCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.MenuCommand,
-                    Description = Resources.Resources.menuCommandDescription
+                    Description = nameof(Resources.Resources.menuCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.HelpCommand,
-                    Description = Resources.Resources.helpCommandDescription
+                    Description = nameof(Resources.Resources.helpCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.ChangelogCommand,
-                    Description = Resources.Resources.changelogCommandDescription
+                    Description = nameof(Resources.Resources.changelogCommandDescription).UseCulture(culture)
                 }
             };
 
@@ -259,14 +259,14 @@ namespace TamagotchiBot.UserExtensions
 
             return resultExtra;
         }
-        public static List<BotCommand> GetCommandsAdmin(bool showAllCommands = true)
+        public static List<BotCommand> GetCommandsAdmin(string culture, bool showAllCommands = true)
         {
             List<BotCommand> result = new()
             {
                 new BotCommand()
                 {
                     Command = Commands.LanguageCommand,
-                    Description = Resources.Resources.languageCommandDescription
+                    Description = nameof(Resources.Resources.languageCommandDescription).UseCulture(culture)
                 }
             };
 
@@ -278,79 +278,79 @@ namespace TamagotchiBot.UserExtensions
                 new BotCommand()
                 {
                     Command = Commands.PetCommand,
-                    Description = Resources.Resources.petCommandDescription
+                    Description = nameof(Resources.Resources.petCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.KitchenCommand,
-                    Description = Resources.Resources.kitchenCommandDescription
+                    Description = nameof(Resources.Resources.kitchenCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.WorkCommand,
-                    Description = Resources.Resources.workCommandDescription
+                    Description = nameof(Resources.Resources.workCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.SleepCommand,
-                    Description = Resources.Resources.sleepCommandDescription
+                    Description = nameof(Resources.Resources.sleepCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.GameroomCommand,
-                    Description = Resources.Resources.gameroomCommandDescription
+                    Description = nameof(Resources.Resources.gameroomCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.BathroomCommand,
-                    Description = Resources.Resources.bathroomCommandDescription
+                    Description = nameof(Resources.Resources.bathroomCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.RanksCommand,
-                    Description = Resources.Resources.ranksCommandDescription
+                    Description = nameof(Resources.Resources.ranksCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.HospitalCommand,
-                    Description = Resources.Resources.hospitalCommandDescription
+                    Description = nameof(Resources.Resources.hospitalCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.RewardCommand,
-                    Description = Resources.Resources.rewardCommandDescription
+                    Description = nameof(Resources.Resources.rewardCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.ReferalCommand,
-                    Description = Resources.Resources.referalCommandDescription
+                    Description = nameof(Resources.Resources.referalCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.MenuCommand,
-                    Description = Resources.Resources.menuCommandDescription
+                    Description = nameof(Resources.Resources.menuCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.HelpCommand,
-                    Description = Resources.Resources.helpCommandDescription
+                    Description = nameof(Resources.Resources.helpCommandDescription).UseCulture(culture)
                 },
 
                 new BotCommand()
                 {
                     Command = Commands.ChangelogCommand,
-                    Description = Resources.Resources.changelogCommandDescription
+                    Description = nameof(Resources.Resources.changelogCommandDescription).UseCulture(culture)
                 }
             };
             List<BotCommand> resultAdmin = new List<BotCommand>()
@@ -391,78 +391,91 @@ namespace TamagotchiBot.UserExtensions
             return resultAdmin;
         }
 
-        public static List<BotCommand> GetMultiplayerCommands()
+        public static List<BotCommand> GetMultiplayerCommands(string culture)
         {
             List<BotCommand> result = new()
             {
                 new BotCommand()
                 {
                     Command = CommandsMP.ShowPetCommand,
-                    Description = Resources.Resources.ShowPetMPCommand
+                    Description = nameof(Resources.Resources.ShowPetMPCommand).UseCulture(culture)
                 },
                 new BotCommand()
                 {
                     Command = CommandsMP.StartDuelCommand,
-                    Description = Resources.Resources.StartDuelMPCommand
+                    Description = nameof(Resources.Resources.StartDuelMPCommand).UseCulture(culture)
                 },
                 new BotCommand()
                 {
                     Command = CommandsMP.FeedMPCommand,
-                    Description = Resources.Resources.FeedMPCommand
+                    Description = nameof(Resources.Resources.FeedMPCommand).UseCulture(culture)
                 },
                 new BotCommand()
                 {
                     Command = CommandsMP.ShowChatRanksMPCommand,
-                    Description = Resources.Resources.ShowChatRanksMPCommand
+                    Description = nameof(Resources.Resources.ShowChatRanksMPCommand).UseCulture(culture)
                 }
             };
 
             return result;
         }
-        public static List<BotCommand> GetInApplegameCommands()
+        public static List<BotCommand> GetInApplegameCommands(string culture)
+        {
+            CultureInfo tmpCult;
+            try
+            {
+                tmpCult = new CultureInfo(culture);
+            }
+            catch
+            {
+                return new List<BotCommand>();
+            }
+
+            return GetInApplegameCommands(tmpCult);
+        }
+        public static List<BotCommand> GetInApplegameCommands(CultureInfo culture)
         {
             List<BotCommand> result = new()
             {
                 new BotCommand()
                 {
                     Command = Commands.QuitCommand,
-                    Description = Resources.Resources.quitCommandDescription
+                    Description = nameof(Resources.Resources.quitCommandDescription).UseCulture(culture)
                 }
             };
 
             return result;
         }
 
-        public static string GetFatigue(int fatigue)
+        public static string GetFatigue(int fatigue, CultureInfo culture)
         {
             if (fatigue is >= 0 and < 20)
-                return Resources.Resources.FatigueFresh;
+                return nameof(Resources.Resources.FatigueFresh).UseCulture(culture);
 
             if (fatigue is >= 20 and < 40)
-                return Resources.Resources.FatigueRested;
+                return nameof(Resources.Resources.FatigueRested).UseCulture(culture);
 
             if (fatigue is >= 40 and < 60)
-                return Resources.Resources.FatigueSlightlyTired;
+                return nameof(Resources.Resources.FatigueSlightlyTired).UseCulture(culture);
 
             if (fatigue is >= 60 and < 80)
-                return Resources.Resources.FatigueTired;
+                return nameof(Resources.Resources.FatigueTired).UseCulture(culture);
 
             if (fatigue >= 80)
-                return Resources.Resources.FatigueSleepy;
+                return nameof(Resources.Resources.FatigueSleepy).UseCulture(culture);
 
-            return Resources.Resources.FatigueSleepy;
+            return nameof(Resources.Resources.FatigueSleepy).UseCulture(culture);
         }
-        public static string GetCurrentStatus(int status)
+        public static string GetCurrentStatus(int status, CultureInfo culture)
         {
-            //var statusEnum = Enum.GetValues(typeof(CurrentStatus)).Cast<CurrentStatus>().FirstOrDefault(s => (int)s == status);
             if (Enum.IsDefined(typeof(CurrentStatus), status))
             {
                 var statusEnum = (CurrentStatus)status;
                 return statusEnum switch
                 {
-                    CurrentStatus.Active => Resources.Resources.CurrentStatusActive,
-                    CurrentStatus.Sleeping => Resources.Resources.CurrentStatusSleeping,
-                    CurrentStatus.Working => Resources.Resources.CurrentStatusWorking,
+                    CurrentStatus.Active => nameof(Resources.Resources.CurrentStatusActive).UseCulture(culture),
+                    CurrentStatus.Sleeping => nameof(Resources.Resources.CurrentStatusSleeping).UseCulture(culture),
+                    CurrentStatus.Working => nameof(Resources.Resources.CurrentStatusWorking).UseCulture(culture),
                     _ => null,
                 };
             }

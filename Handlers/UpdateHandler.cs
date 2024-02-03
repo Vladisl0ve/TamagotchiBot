@@ -45,7 +45,7 @@ namespace TamagotchiBot.Handlers
 
             HandleUpdate(update, msgAudience);
 
-            new SetCommandController(_appServices, _envs, userId, chatId).UpdateCommands(msgAudience);
+            new SetCommandController(_appServices, _envs, userId, chatId).UpdateCommands(msgAudience, _appServices.UserService.Get(userId)?.Culture ?? "ru");
 
             _appServices.SInfoService.UpdateLastGlobalUpdate();
             return Task.CompletedTask;
@@ -224,7 +224,7 @@ namespace TamagotchiBot.Handlers
                     MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
                     await multiplayerController.SendWelcomeMessageOnStart();
 
-                    await new SetCommandController(_appServices, _envs, userId, message.Chat.Id).UpdateCommandsForThisChat();
+                    await new SetCommandController(_appServices, _envs, userId, message.Chat.Id).UpdateCommandsForThisChat("ru");
                     Log.Information($"Bot has been added to new chat #{message.Chat.Title}, ID:{message.Chat.Id} #");
                 }
             }
