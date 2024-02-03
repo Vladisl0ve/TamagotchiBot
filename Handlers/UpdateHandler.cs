@@ -122,7 +122,7 @@ namespace TamagotchiBot.Handlers
                 return;
             }
 
-            new SynchroDBController(_appServices, message).SynchronizeWithDB(); //update user (username, names etc.) in DB
+            new SynchroDBController(_appServices, message.From, userId, message.Chat.Title).SynchronizeWithDB(); //update user (username, names etc.) in DB
             CreatorController creatorController = new CreatorController(_appServices, message);
             creatorController.UpdateIndicators(); //update all pet's statistics
 
@@ -175,7 +175,7 @@ namespace TamagotchiBot.Handlers
 
             await SendPostToChat(callbackQuery.From.Id);
 
-            new SynchroDBController(_appServices, callback: callbackQuery).SynchronizeWithDB(); //update user (username, names etc.) in DB
+            new SynchroDBController(_appServices, callbackQuery.From, userId, callbackQuery.Message.Chat.Title).SynchronizeWithDB(); //update user (username, names etc.) in DB
             CreatorController creatorController = new CreatorController(_appServices, callback: callbackQuery);
             creatorController.UpdateIndicators(); //update all pet's statistics
 
@@ -194,8 +194,9 @@ namespace TamagotchiBot.Handlers
             if (callbackQuery.Data == null)
                 return;
 
-            new SynchroDBController(_appServices, callback: callbackQuery).SynchronizeWithDB(); //update user (username, names etc.) in DB
-            new SynchroDBController(_appServices, callback: callbackQuery).SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
+            var synchroController = new SynchroDBController(_appServices, callbackQuery.From, callbackQuery.Message.Chat.Id, callbackQuery.Message.Chat.Title);
+            synchroController.SynchronizeWithDB(); //update user (username, names etc.) in DB
+            synchroController.SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
             MultiplayerController multiplayerController = new MultiplayerController(_appServices, callback: callbackQuery);
 
             multiplayerController.CallbackHandler();
@@ -247,10 +248,11 @@ namespace TamagotchiBot.Handlers
                 MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
 
                 new CreatorController(_appServices, message).UpdateIndicators();
-                new SynchroDBController(_appServices, message).SynchronizeWithDB(); //update user (username, names etc.) in DB
-                new SynchroDBController(_appServices, message).SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
+                var synchroController =  new SynchroDBController(_appServices, message.From, message.Chat.Id, message.Chat.Title);
+                synchroController.SynchronizeWithDB(); //update user (username, names etc.) in DB
+                synchroController.SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
 
-                multiplayerController.CommandHandler(botUsername);
+                await multiplayerController.CommandHandler(botUsername);
             }
         }
 

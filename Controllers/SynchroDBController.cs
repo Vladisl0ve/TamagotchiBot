@@ -1,28 +1,23 @@
 ﻿using TamagotchiBot.Services.Interfaces;
-using Telegram.Bot.Types;
 using Serilog;
 
 namespace TamagotchiBot.Controllers
 {
     public class SynchroDBController
     {
-        private IApplicationServices _appServices;
-        private readonly Message _message = null;
-        private readonly CallbackQuery _callback = null;
+        private readonly IApplicationServices _appServices;
+
         private readonly long _userId;
         private readonly long _chatId;
         private readonly string _chatName;
         private readonly Telegram.Bot.Types.User _user;
 
-        public SynchroDBController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
+        public SynchroDBController(IApplicationServices services, Telegram.Bot.Types.User userFrom, long chatId, string chatTitle)
         {
-            _callback = callback;
-            _message = message;
-            _userId = callback?.From.Id ?? message.From.Id;
-            _chatId = callback?.Message?.Chat?.Id ?? message.Chat.Id;
-            _chatName = callback?.Message?.Chat?.Title ?? message?.Chat?.Title ?? "";
-
-            _user = callback?.From ?? message.From;
+            _user = userFrom;
+            _userId = _user.Id;
+            _chatId = chatId;
+            _chatName = chatTitle ?? "";
 
             _appServices = services;
         }
@@ -51,14 +46,11 @@ namespace TamagotchiBot.Controllers
         public void SynchronizeMPWithDB()
         {
             var chatMP = _appServices.ChatsMPService.Get(_chatId);
-            if (chatMP == null)
-            {
-                chatMP = _appServices.ChatsMPService.Create(new Models.Mongo.ChatsMP()
+            chatMP ??= _appServices.ChatsMPService.Create(new Models.Mongo.ChatsMP()
                 {
                     ChatId = _chatId,
                     Name = _chatName
                 });
-            }
 
             if (chatMP?.Name != _chatName)
             {
