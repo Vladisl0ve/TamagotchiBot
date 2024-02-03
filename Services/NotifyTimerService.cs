@@ -1,7 +1,6 @@
 ﻿using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
@@ -13,6 +12,7 @@ using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
+using Telegram.Bot.Types;
 
 namespace TamagotchiBot.Services
 {
@@ -26,27 +26,21 @@ namespace TamagotchiBot.Services
         private Timer _randomEventRewardTimer;
         private readonly IApplicationServices _appServices;
 
-        private IEnvsSettings _envs;
+        private readonly IEnvsSettings _envs;
 
-        private DateTime _nextNotify = DateTime.MaxValue;
         private DateTime _nextDevNotify = DateTime.MaxValue;
-        private TimeSpan _notifyEvery = TimeSpan.MaxValue;
         private TimeSpan _notifyDevEvery = TimeSpan.MaxValue;
         private TimeSpan _triggerNTEvery = TimeSpan.MaxValue;
-        public NotifyTimerService(ITelegramBotClient telegramBotClient,
-                                  IApplicationServices applicationServices,
-                                  IEnvsSettings envs)
+        public NotifyTimerService(IApplicationServices applicationServices, IEnvsSettings envs)
         {
             _appServices = applicationServices;
             _envs = envs;
 
-            _nextNotify = _appServices.SInfoService.GetNextNotify();
             _nextDevNotify = _appServices.SInfoService.GetNextDevNotify();
         }
 
-        public void SetNotifyTimer(TimeSpan timeToTrigger = default, TimeSpan timeToNotify = default, TimeSpan timeToDevNotify = default)
+        public void SetNotifyTimer(TimeSpan timeToTrigger = default, TimeSpan timeToDevNotify = default)
         {
-            _notifyEvery = timeToNotify == default ? _envs.NotifyEvery : timeToNotify;
             _notifyDevEvery = timeToDevNotify == default ? _envs.DevNotifyEvery : timeToDevNotify;
             _triggerNTEvery = timeToTrigger == default ? _envs.TriggersEvery : timeToTrigger;
             Log.Information("Triggers every " + _triggerNTEvery.TotalSeconds + "s");
@@ -133,12 +127,11 @@ namespace TamagotchiBot.Services
             foreach (var userId in usersToNotify)
             {
                 var user = _appServices.UserService.Get(userId);
-                Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
 
                 if (user == null)
                     continue;
 
-                DoRandomEvent(user);
+                await DoRandomEvent(user);
 
                 counter++;
                 if (counter % 30 == 0)
@@ -160,10 +153,9 @@ namespace TamagotchiBot.Services
 
                 try
                 {
-                    Resources.Resources.Culture = new CultureInfo(user.Culture);
                     var toSend = new AnswerMessage()
                     {
-                        Text = Resources.Resources.rewardNotification,
+                        Text = nameof(Resources.Resources.rewardNotification).UseCulture(user?.Culture),
                         StickerId = GetRandomDailyRewardSticker(),
                     };
 
@@ -259,11 +251,10 @@ namespace TamagotchiBot.Services
                         continue;
                     }
 
-                    var userLink = Extensions.GetPersonalLink(metaUser.UserId, userDB?.FirstName ?? "0_o");
-                    var petNameEncoded = HttpUtility.HtmlEncode(petDB?.Name ?? "^_^");
-                    Resources.Resources.Culture = new CultureInfo(userDB?.Culture ?? "ru");
+                    var userLink = Extensions.GetPersonalLink(metaUser.UserId, userDB.FirstName ?? "0_o");
+                    var petNameEncoded = HttpUtility.HtmlEncode(petDB.Name ?? "^_^");
 
-                    string textToSend = string.Format(Resources.Resources.DuelMPTimeout, userLink, petNameEncoded, Constants.Costs.DuelGold);
+                    string textToSend = string.Format(nameof(Resources.Resources.DuelMPTimeout).UseCulture(userDB.Culture), userLink, petNameEncoded, Constants.Costs.DuelGold);
                     await _appServices.BotControlService.EditMessageTextAsync(metaUser.ChatDuelId, metaUser.MsgDuelId, textToSend, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
                     await _appServices.BotControlService.DeleteMessageAsync(metaUser.ChatDuelId, metaUser.MsgCreatorDuelId, false);
                     _appServices.UserService.UpdateGold(metaUser.UserId, userDB.Gold + Constants.Costs.DuelGold);
@@ -306,10 +297,9 @@ namespace TamagotchiBot.Services
 
                 try
                 {
-                    Resources.Resources.Culture = new CultureInfo(userDB?.Culture ?? "ru");
                     var toSend = new AnswerMessage()
                     {
-                        Text = Resources.Resources.changelog1Text,
+                        Text = nameof(Resources.Resources.changelog1Text).UseCulture(userDB?.Culture),
                         StickerId = Constants.StickersId.ChangelogSticker,
                         ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
                     };
@@ -532,7 +522,7 @@ namespace TamagotchiBot.Services
             return usersToNotify;
         }
 
-        private List<User> GetAllActiveUsersIds() => _appServices.UserService.GetAll().ToList();
+        private List<Models.Mongo.User> GetAllActiveUsersIds() => _appServices.UserService.GetAll().ToList();
         private List<MetaUser> GetAllActiveDuels() => _appServices.MetaUserService.GetAll().Where(mu => mu.MsgDuelId > 0).ToList();
         private List<Pet> GetAllPetsWithoutName() => _appServices.PetService.GetAll().Where(p => p.Name == null).ToList();
         private string GetRandomDailyRewardSticker()
@@ -550,44 +540,43 @@ namespace TamagotchiBot.Services
             };
         }
 
-        private void DoRandomEvent(Models.Mongo.User user)
+        private async Task DoRandomEvent(Models.Mongo.User user)
         {
-            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var random = new Random().Next(10);
             switch (random)
             {
                 case 0:
-                    RandomEventRaindow(user);
+                    await RandomEventRaindow(user);
                     break;
                 case 1:
-                    RandomEventStomachache(user);
+                    await RandomEventStomachache(user);
                     break;
                 case 2:
-                    RandomEventStepOnFoot(user);
+                    await RandomEventStepOnFoot(user);
                     break;
                 case 3:
-                    RandomEventFriendMet(user);
+                    await RandomEventFriendMet(user);
                     break;
                 case 4:
-                    RandomEventHotdog(user);
+                    await RandomEventHotdog(user);
                     break;
                 case 5:
-                    RandomEventNiceFlower(user);
+                    await RandomEventNiceFlower(user);
                     break;
                 case 6:
-                    RandomEventWatermelon(user);
+                    await RandomEventWatermelon(user);
                     break;
                 case 7:
-                    RandomEventPlayComputerGames(user);
+                    await RandomEventPlayComputerGames(user);
                     break;
                 default:
-                    RandomEventNotify(user);
+                    await RandomEventNotify(user);
                     break;
             }
         }
 
         #region RandomEvents
-        private async void RandomEventStomachache(Models.Mongo.User user)
+        private async Task RandomEventStomachache(Models.Mongo.User user)
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             var newSatiety = petDB.Satiety - 15;
@@ -598,16 +587,15 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
-            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var toSend = new AnswerMessage()
             {
                 StickerId = Constants.StickersId.RandomEventStomachache,
-                Text = Resources.Resources.RandomEventStomachache
+                Text = nameof(Resources.Resources.RandomEventStomachache).UseCulture(user.Culture)
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
-        private async void RandomEventRaindow(Models.Mongo.User user)
+        private async Task RandomEventRaindow(Models.Mongo.User user)
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             if (petDB == null) return;
@@ -616,16 +604,15 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
-            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var toSend = new AnswerMessage()
             {
                 StickerId = Constants.StickersId.RandomEventRainbow,
-                Text = Resources.Resources.RandomEventRainbow
+                Text = nameof(Resources.Resources.RandomEventRainbow).UseCulture(user.Culture)
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
-        private async void RandomEventFriendMet(Models.Mongo.User user)
+        private async Task RandomEventFriendMet(Models.Mongo.User user)
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             var userDB = _appServices.UserService.Get(user.UserId);
@@ -637,16 +624,15 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
-            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var toSend = new AnswerMessage()
             {
                 StickerId = Constants.StickersId.RandomEventFriendMet,
-                Text = Resources.Resources.RandomEventFriendMet
+                Text = nameof(Resources.Resources.RandomEventFriendMet).UseCulture(user.Culture)
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
-        private async void RandomEventHotdog(Models.Mongo.User user)
+        private async Task RandomEventHotdog(Models.Mongo.User user)
         {
             var userDB = _appServices.UserService.Get(user.UserId);
             var petDB = _appServices.PetService.Get(user.UserId);
@@ -658,30 +644,28 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
-            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var toSend = new AnswerMessage()
             {
                 StickerId = Constants.StickersId.RandomEventHotdog,
-                Text = Resources.Resources.RandomEventHotdog
+                Text = nameof(Resources.Resources.RandomEventHotdog).UseCulture(user.Culture)
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
-        private async void RandomEventNotify(Models.Mongo.User user)
+        private async Task RandomEventNotify(Models.Mongo.User user)
         {
             int rand = new Random().Next(3);
             var notifyText = new List<string>()
                 {
-                    Resources.Resources.ReminderNotifyText1,
-                    Resources.Resources.ReminderNotifyText2,
-                    Resources.Resources.ReminderNotifyText3
+                    nameof(Resources.Resources.ReminderNotifyText1).UseCulture(user.Culture),
+                    nameof(Resources.Resources.ReminderNotifyText2).UseCulture(user.Culture),
+                    nameof(Resources.Resources.ReminderNotifyText3).UseCulture(user.Culture)
                 };
 
-            string toSendText = notifyText.ElementAtOrDefault(rand) ?? Resources.Resources.ReminderNotifyText1;
+            string toSendText = notifyText.ElementAtOrDefault(rand) ?? nameof(Resources.Resources.ReminderNotifyText1).UseCulture(user.Culture);
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
-            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var toSend = new AnswerMessage()
             {
                 StickerId = Constants.StickersId.PetBored_Cat,
@@ -690,7 +674,7 @@ namespace TamagotchiBot.Services
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
 
-        private async void RandomEventStepOnFoot(Models.Mongo.User user)
+        private async Task RandomEventStepOnFoot(Models.Mongo.User user)
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             var newSatiety = petDB.Satiety - 10;
@@ -701,15 +685,14 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
-            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var toSend = new AnswerMessage()
             {
                 StickerId = Constants.StickersId.RandomEventStepOnFoot,
-                Text = Resources.Resources.RandomEventStepOnFoot
+                Text = nameof(Resources.Resources.RandomEventStepOnFoot).UseCulture(user.Culture)
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
-        private async void RandomEventNiceFlower(Models.Mongo.User user)
+        private async Task RandomEventNiceFlower(Models.Mongo.User user)
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             var newJoy = petDB.Joy + 10;
@@ -718,15 +701,14 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
-            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var toSend = new AnswerMessage()
             {
                 StickerId = Constants.StickersId.RandomEventNiceFlower,
-                Text = Resources.Resources.RandomEventNiceFlower
+                Text = nameof(Resources.Resources.RandomEventNiceFlower).UseCulture(user.Culture)
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
-        private async void RandomEventWatermelon(Models.Mongo.User user)
+        private async Task RandomEventWatermelon(Models.Mongo.User user)
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             var newSatiety = petDB.Satiety + 15;
@@ -735,15 +717,14 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
-            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var toSend = new AnswerMessage()
             {
                 StickerId = Constants.StickersId.RandomEventWatermelon,
-                Text = Resources.Resources.RandomEventWatermelon
+                Text = nameof(Resources.Resources.RandomEventWatermelon).UseCulture(user.Culture)
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
-        private async void RandomEventPlayComputerGames(Models.Mongo.User user)
+        private async Task RandomEventPlayComputerGames(Models.Mongo.User user)
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             var newJoy = petDB.Joy + 30;
@@ -752,11 +733,10 @@ namespace TamagotchiBot.Services
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
-            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
             var toSend = new AnswerMessage()
             {
                 StickerId = Constants.StickersId.RandomEventPlayComputerGames,
-                Text = Resources.Resources.RandomEventPlayComputerGames
+                Text = nameof(Resources.Resources.RandomEventPlayComputerGames).UseCulture(user.Culture)
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
