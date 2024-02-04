@@ -355,6 +355,7 @@ Therefore, visit your virtual friend more often 🧸
 
 /changelog - official channel of Tamagotchi bot 🚀
 /language - language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺
+/help - FAQ 🆘
 
 There will be more in future!
 Stay tuned! 💝</value>
@@ -384,13 +385,13 @@ I want to eat 🌭 and play with you 🪁
 /gameroom for games 🏓</value>
   </data>
   <data name="quitText" xml:space="preserve">
-    <value>Quit</value>
+    <value>Quit ❌</value>
   </data>
   <data name="againText" xml:space="preserve">
-    <value>Again</value>
+    <value>Again 🍏</value>
   </data>
   <data name="statisticsText" xml:space="preserve">
-    <value>Statistics</value>
+    <value>Statistics 📊</value>
   </data>
   <data name="ConcedeText" xml:space="preserve">
     <value>Concede</value>

@@ -61,7 +61,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Again.
+        ///   Looks up a localized string similar to Again 🍏.
         /// </summary>
         public static string againText {
             get {
@@ -844,8 +844,9 @@ namespace TamagotchiBot.Resources {
         ///
         ////changelog - official channel of Tamagotchi bot 🚀
         ////language - language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺
+        ////help - FAQ 🆘
         ///
-        ///There will be more in f [rest of string was truncated]&quot;;.
+        ///There w [rest of string was truncated]&quot;;.
         /// </summary>
         public static string menuCommand {
             get {
@@ -1166,7 +1167,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Quit.
+        ///   Looks up a localized string similar to Quit ❌.
         /// </summary>
         public static string quitText {
             get {
@@ -1673,7 +1674,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Statistics.
+        ///   Looks up a localized string similar to Statistics 📊.
         /// </summary>
         public static string statisticsText {
             get {

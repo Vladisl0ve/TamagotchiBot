@@ -313,6 +313,7 @@
 
 /changelog - афіцыяльны канал бота Tamagotchi 🚀
 /language - language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺
+/help - FAQ 🆘
 
 У будучыні будзе больш!
 Сачыце за абнаўленнямі! 💝</value>
@@ -342,13 +343,13 @@
 /gameroom гуляць 🏓</value>
   </data>
   <data name="quitText" xml:space="preserve">
-    <value>Выйсці</value>
+    <value>Выйсці ❌</value>
   </data>
   <data name="againText" xml:space="preserve">
-    <value>Яшчэ раз</value>
+    <value>Яшчэ раз 🍏</value>
   </data>
   <data name="statisticsText" xml:space="preserve">
-    <value>Статыстыка</value>
+    <value>Статыстыка 📊</value>
   </data>
   <data name="ConcedeText" xml:space="preserve">
     <value>Здацца</value>

@@ -488,7 +488,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = nameof(PetCameBackText).UseCulture(_userCulture),
                 StickerId = StickersId.ResurrectedPetSticker,
-                ReplyMarkup = new ReplyKeyboardRemove()
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
             };
 
             Log.Debug($"Pet came back after resurrect {_userInfo}");

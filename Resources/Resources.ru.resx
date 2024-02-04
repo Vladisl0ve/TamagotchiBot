@@ -357,6 +357,7 @@ FAQ:
 
 /changelog - официальный канал бота Тамагочи 🚀
 /language - смена языка 🇨🇦
+/help - FAQ (вопросы-ответ) 🆘
 
 В будущем будет больше!
 Следите за обновлениями! 💝</value>
@@ -386,13 +387,13 @@ FAQ:
 /gameroom гулять 🏓</value>
   </data>
   <data name="quitText" xml:space="preserve">
-    <value>Закончить игру</value>
+    <value>Закончить игру ❌</value>
   </data>
   <data name="againText" xml:space="preserve">
-    <value>Ещё раз</value>
+    <value>Ещё раз 🍏</value>
   </data>
   <data name="statisticsText" xml:space="preserve">
-    <value>Статистика</value>
+    <value>Статистика 📊</value>
   </data>
   <data name="ConcedeText" xml:space="preserve">
     <value>Сдаться</value>

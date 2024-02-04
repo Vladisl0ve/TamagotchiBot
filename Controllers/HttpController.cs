@@ -41,16 +41,10 @@ namespace TamagotchiBot.Controllers
         }
         static async Task<(HttpStatusCode, string)> SendRequest()
         {
-            string apiUrl = $"https://api.botstat.io/create/{TOKEN}/{ACCESS_KEY}";
+            string apiUrl = $"https://api.botstat.io/create/{TOKEN}/{ACCESS_KEY}?notify_id={401250312}";
 
             using var httpClient = new HttpClient();
             using var content = new MultipartFormDataContent();
-
-            // Add JSON payload
-            var jsonPayload = "{\"notify_id\": \"401250312\"}";
-            var jsonContent = new StringContent(jsonPayload);
-            jsonContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            content.Add(jsonContent, "query");
 
             // Add file attachment
             byte[] fileBytes = System.IO.File.ReadAllBytes(FILEPATH);

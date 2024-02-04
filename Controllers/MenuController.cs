@@ -65,77 +65,82 @@ namespace TamagotchiBot.Controllers
             var petDB = _appServices.PetService.Get(_userId);
             var userDB = _appServices.UserService.Get(_userId);
 
-            if (textReceived == "language" || GetAllTranslatedAndLowered("languageCommandDescription").Contains(textReceived))
+            if (textReceived == Commands.LanguageCommand || GetAllTranslatedAndLowered(nameof(languageCommandDescription)).Contains(textReceived))
             {
                 await ChangeLanguageCmd();
                 return;
             }
-            if (textReceived == "help" || GetAllTranslatedAndLowered("helpCommandDescription").Contains(textReceived))
+            if (textReceived == Commands.HelpCommand || GetAllTranslatedAndLowered(nameof(helpCommandDescription)).Contains(textReceived))
             {
                 await ShowHelpInfo();
                 return;
             }
-            if (textReceived == "pet" || GetAllTranslatedAndLowered("petCommandDescription").Contains(textReceived))
+            if (textReceived == Commands.PetCommand || GetAllTranslatedAndLowered(nameof(petCommandDescription)).Contains(textReceived))
             {
                 await ShowPetInfo(petDB);
                 return;
             }
-            if (textReceived == "bathroom" || GetAllTranslatedAndLowered("bathroomCommandDescription").Contains(textReceived))
+            if (textReceived == Commands.BathroomCommand || GetAllTranslatedAndLowered(nameof(bathroomCommandDescription)).Contains(textReceived))
             {
                 await GoToBathroom(petDB);
                 return;
             }
-            if (textReceived == "kitchen" || GetAllTranslatedAndLowered("kitchenCommandDescription").Contains(textReceived))
+            if (textReceived == Commands.KitchenCommand || GetAllTranslatedAndLowered(nameof(kitchenCommandDescription)).Contains(textReceived))
             {
                 await GoToKitchen(petDB);
                 return;
             }
-            if (textReceived == "gameroom" || GetAllTranslatedAndLowered("gameroomCommandDescription").Contains(textReceived))
+            if (textReceived == Commands.GameroomCommand || GetAllTranslatedAndLowered(nameof(gameroomCommandDescription)).Contains(textReceived))
             {
                 await GoToGameroom(petDB);
                 return;
             }
-            if (textReceived == "hospital" || GetAllTranslatedAndLowered("hospitalCommandDescription").Contains(textReceived))
+            if (textReceived == Commands.HospitalCommand || GetAllTranslatedAndLowered(nameof(hospitalCommandDescription)).Contains(textReceived))
             {
                 await GoToHospital(petDB);
                 return;
             }
-            if (textReceived == "ranks" || GetAllTranslatedAndLowered("ranksCommandDescription").Contains(textReceived))
+            if (textReceived == Commands.RanksCommand || GetAllTranslatedAndLowered(nameof(ranksCommandDescription)).Contains(textReceived))
             {
                 await ShowRankingInfo();
                 return;
             }
-            if (textReceived == "sleep" || GetAllTranslatedAndLowered("sleepCommandDescription").Contains(textReceived))
+            if (textReceived == Commands.SleepCommand || GetAllTranslatedAndLowered(nameof(sleepCommandDescription)).Contains(textReceived))
             {
                 await GoToSleep(petDB);
                 return;
             }
-            if (textReceived == "changelog" || GetAllTranslatedAndLowered("changelogCommandDescription").Contains(textReceived))
+            if (textReceived == Commands.ChangelogCommand || GetAllTranslatedAndLowered(nameof(changelogCommandDescription)).Contains(textReceived))
             {
                 await ShowChangelogsInfo();
                 return;
             }
-            if (textReceived == "menu" || GetAllTranslatedAndLowered("menuCommandDescription").Contains(textReceived))
+            if (textReceived == Commands.MenuCommand || GetAllTranslatedAndLowered(nameof(menuCommandDescription)).Contains(textReceived))
             {
                 await ShowMenuInfo();
                 return;
             }
-            if (textReceived == "rename" || GetAllTranslatedAndLowered("renameCommandDescription").Contains(textReceived))
+            if (textReceived == Commands.RenameCommand || GetAllTranslatedAndLowered(nameof(renameCommandDescription)).Contains(textReceived))
             {
                 await RenamePet();
                 return;
             }
-            if (textReceived == "work" || GetAllTranslatedAndLowered("workCommandDescription").Contains(textReceived))
+            if (textReceived == Commands.WorkCommand || GetAllTranslatedAndLowered(nameof(workCommandDescription)).Contains(textReceived))
             {
                 await ShowWorkInfo(petDB);
                 return;
             }
-            if (textReceived == "reward" || GetAllTranslatedAndLowered("rewardCommandDescription").Contains(textReceived))
+            if (textReceived == Commands.RewardCommand || GetAllTranslatedAndLowered(nameof(rewardCommandDescription)).Contains(textReceived))
             {
                 await ShowRewardInfo(userDB);
                 return;
             }
-            if (textReceived == "referal" || GetAllTranslatedAndLowered("referalCommandDescription").Contains(textReceived))
+            if (textReceived == Commands.ReferalCommand || GetAllTranslatedAndLowered(nameof(referalCommandDescription)).Contains(textReceived))
+            {
+                await ShowReferalInfo();
+                return;
+            }    
+            if (textReceived == Commands.ReferalCommand || GetAllTranslatedAndLowered(nameof(referalCommandDescription)).Contains(textReceived))
             {
                 await ShowReferalInfo();
                 return;
