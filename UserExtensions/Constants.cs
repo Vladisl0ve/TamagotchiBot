@@ -107,14 +107,17 @@ namespace TamagotchiBot.UserExtensions
             public const int FeedMP = 20;
         }
 
-        public class TimesToWait
+        public static class TimesToWait
         {
-            public TimeSpan WorkOnPCToWait = new(0, 2, 0);
-            public TimeSpan FlyersDistToWait = new(0, 0, 30);
-            public TimeSpan DailyRewardToWait = new(24, 0, 0);
-            public TimeSpan SleepToWait = new(0, 10, 0);
-            public TimeSpan DuelCDToWait = new(0, 5, 0);
-            public TimeSpan FeedMPCDToWait = new(6, 0, 0);
+            public readonly static TimeSpan WorkOnPCToWait = new(0, 2, 0);
+            public readonly static TimeSpan FlyersDistToWait = new(0, 0, 30);
+            public readonly static TimeSpan DailyRewardToWait = new(24, 0, 0);
+            public readonly static TimeSpan SleepToWait = new(0, 10, 0);
+            public readonly static TimeSpan DuelCDToWait = new(0, 5, 0);
+            public readonly static TimeSpan FeedMPCDToWait = new(6, 0, 0);
+
+            public readonly static TimeSpan CooldownOnMessage = new TimeSpan(0, 0, 0, 0, 500);
+            public readonly static TimeSpan OldMessageDelta = new TimeSpan(0, 0, 30);
         }
 
         public struct Limits

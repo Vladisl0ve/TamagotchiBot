@@ -669,8 +669,8 @@ namespace TamagotchiBot.Controllers
         {
             TimeSpan workTime = (JobType)petDB.CurrentJob switch
             {
-                JobType.WorkingOnPC => new TimesToWait().WorkOnPCToWait,
-                JobType.FlyersDistributing => new TimesToWait().FlyersDistToWait,
+                JobType.WorkingOnPC => TimesToWait.WorkOnPCToWait,
+                JobType.FlyersDistributing => TimesToWait.FlyersDistToWait,
                 _ => new TimeSpan(0)
             };
             TimeSpan remainsTime = workTime - (DateTime.UtcNow - petDB.StartWorkingTime);

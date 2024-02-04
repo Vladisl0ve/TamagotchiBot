@@ -18,6 +18,7 @@ using static TamagotchiBot.UserExtensions.Constants;
 using System.Linq;
 using TamagotchiBot.Database;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace TamagotchiBot.Handlers
 {
@@ -25,6 +26,7 @@ namespace TamagotchiBot.Handlers
     {
         private readonly IApplicationServices _appServices;
         private readonly IEnvsSettings _envs;
+        private readonly ConcurrentDictionary<(long userId, long chatId), DateTime> lastMsgList = new ConcurrentDictionary<(long, long), DateTime>();
 
         public UpdateHandler(IApplicationServices services, IEnvsSettings envs)
         {
@@ -96,6 +98,12 @@ namespace TamagotchiBot.Handlers
                 var adminController = new AdminController(_appServices, _envs, message);
                 if (await adminController.ProcessMessage())
                     return;
+            }
+
+            if (IsCooldown(userId, userId, message.Date))
+            {
+                Log.Debug($"Cooldown for userId: {userId}");
+                return;
             }
 
             if (!IsUserAndPetRegisteredChecking(userId))
@@ -273,6 +281,25 @@ namespace TamagotchiBot.Handlers
                 && (update.CallbackQuery.Message.ForwardDate == null))
                 return true;
 
+            return false;
+        }
+
+        private bool IsCooldown(long userId, long chatId, DateTime sentMsgTime)
+        {
+            DateTime timeNow = DateTime.UtcNow;
+            if (!lastMsgList.ContainsKey((userId, chatId)))
+            {
+                lastMsgList.TryAdd((userId, chatId), timeNow);
+                return false;
+            }
+
+            if ((sentMsgTime + TimesToWait.OldMessageDelta) < timeNow)
+                return true;
+
+            if (timeNow < (lastMsgList[(userId, chatId)] + TimesToWait.CooldownOnMessage))
+                return true;
+
+            lastMsgList[(userId, chatId)] = timeNow;
             return false;
         }
         private bool DidUserChoseLanguage(long userId)

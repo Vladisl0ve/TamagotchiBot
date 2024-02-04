@@ -235,7 +235,7 @@ namespace TamagotchiBot.Services
             int counterDuelsEnded = 0;
             TimeSpan duelLifeTime;
 
-            duelLifeTime = new Constants.TimesToWait().DuelCDToWait; //5 min life
+            duelLifeTime = Constants.TimesToWait.DuelCDToWait; //5 min life
 
             foreach (var metaUser in activeDuelMetaUsers)
             {

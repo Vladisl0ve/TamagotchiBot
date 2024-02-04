@@ -318,10 +318,10 @@ namespace TamagotchiBot.Controllers
             }
 
             string toSendText = string.Format(nameof(workCommand).UseCulture(_userCulture),
-                                       new DateTime(new TimesToWait().WorkOnPCToWait.Ticks).ToString("HH:mm:ss"),
+                                       new DateTime(TimesToWait.WorkOnPCToWait.Ticks).ToString("HH:mm:ss"),
                                        Rewards.WorkOnPCGoldReward,
                                        petDB.Fatigue,
-                                       new DateTime(new TimesToWait().FlyersDistToWait.Ticks).ToString("HH:mm:ss"),
+                                       new DateTime(TimesToWait.FlyersDistToWait.Ticks).ToString("HH:mm:ss"),
                                        Rewards.FlyersDistributingGoldReward);
 
             List<CallbackModel> inlineParts = InlineItems.InlineWork(_userCulture);
@@ -350,9 +350,9 @@ namespace TamagotchiBot.Controllers
             List<CallbackModel> inlineParts;
             InlineKeyboardMarkup toSendInline = default;
 
-            if (userDB.GotDailyRewardTime.AddHours(new TimesToWait().DailyRewardToWait.TotalHours) > DateTime.UtcNow)
+            if (userDB.GotDailyRewardTime.AddHours(TimesToWait.DailyRewardToWait.TotalHours) > DateTime.UtcNow)
             {
-                TimeSpan remainsTime = new TimesToWait().DailyRewardToWait - (DateTime.UtcNow - userDB.GotDailyRewardTime);
+                TimeSpan remainsTime = TimesToWait.DailyRewardToWait - (DateTime.UtcNow - userDB.GotDailyRewardTime);
 
                 if (remainsTime > TimeSpan.Zero)
                 {
@@ -1134,7 +1134,7 @@ namespace TamagotchiBot.Controllers
         {
             petDB.CurrentStatus = (int)CurrentStatus.Sleeping;
             petDB.StartSleepingTime = DateTime.UtcNow;
-            petDB.ToWakeUpTime = DateTime.UtcNow + new TimesToWait().SleepToWait;
+            petDB.ToWakeUpTime = DateTime.UtcNow + TimesToWait.SleepToWait;
             _appServices.PetService.Update(petDB.UserId, petDB);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -1342,7 +1342,7 @@ namespace TamagotchiBot.Controllers
 
         private async Task GetDailyRewardInline(User userDB)
         {
-            var dateTimeWhenOver = userDB.GotDailyRewardTime.Add(new TimesToWait().DailyRewardToWait);
+            var dateTimeWhenOver = userDB.GotDailyRewardTime.Add(TimesToWait.DailyRewardToWait);
             if (dateTimeWhenOver > DateTime.UtcNow)
             {
                 Log.Debug($"Callbacked GetDailyRewardInline (still waiting) for {_userInfo}");
@@ -1762,10 +1762,10 @@ namespace TamagotchiBot.Controllers
         private async Task UpdateWorkOnPCButtonToDefault(Pet petDB)
         {
             string toSendTextIfTimeOver = string.Format(nameof(workCommand).UseCulture(_userCulture),
-                                                        new DateTime(new TimesToWait().WorkOnPCToWait.Ticks).ToString("HH:mm:ss"),
+                                                        new DateTime(TimesToWait.WorkOnPCToWait.Ticks).ToString("HH:mm:ss"),
                                                         Rewards.WorkOnPCGoldReward,
                                                         petDB.Fatigue,
-                                                        new DateTime(new TimesToWait().FlyersDistToWait.Ticks).ToString("HH:mm:ss"),
+                                                        new DateTime(TimesToWait.FlyersDistToWait.Ticks).ToString("HH:mm:ss"),
                                                         Rewards.FlyersDistributingGoldReward);
 
             List<CallbackModel> inlineParts = InlineItems.InlineWork(_userCulture);
@@ -1781,8 +1781,8 @@ namespace TamagotchiBot.Controllers
         {
             TimeSpan timeToWait = job switch
             {
-                JobType.WorkingOnPC => new TimesToWait().WorkOnPCToWait,
-                JobType.FlyersDistributing => new TimesToWait().FlyersDistToWait,
+                JobType.WorkingOnPC => TimesToWait.WorkOnPCToWait,
+                JobType.FlyersDistributing => TimesToWait.FlyersDistToWait,
                 _ => new TimeSpan(0)
             };
             TimeSpan remainsTime = timeToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
@@ -1826,10 +1826,10 @@ namespace TamagotchiBot.Controllers
             _appServices.PetService.UpdateCurrentStatus(_userId, petDB.CurrentStatus);
 
             string toSendTextIfTimeOver = string.Format(nameof(workCommand).UseCulture(_userCulture),
-                                                        new DateTime(new TimesToWait().WorkOnPCToWait.Ticks).ToString("HH:mm:ss"),
+                                                        new DateTime(TimesToWait.WorkOnPCToWait.Ticks).ToString("HH:mm:ss"),
                                                         Rewards.WorkOnPCGoldReward,
                                                         petDB.Fatigue,
-                                                        new DateTime(new TimesToWait().FlyersDistToWait.Ticks).ToString("HH:mm:ss"),
+                                                        new DateTime(TimesToWait.FlyersDistToWait.Ticks).ToString("HH:mm:ss"),
                                                         Rewards.FlyersDistributingGoldReward);
             List<CallbackModel> inlineParts = InlineItems.InlineWork(_userCulture);
             InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -1876,7 +1876,7 @@ namespace TamagotchiBot.Controllers
 
             toSendText = string.Format(nameof(workCommandPCWorking).UseCulture(_userCulture));
 
-            TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - startWorkingTime);
+            TimeSpan remainsTime = TimesToWait.WorkOnPCToWait - (DateTime.UtcNow - startWorkingTime);
 
             toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
                 {
@@ -1891,7 +1891,7 @@ namespace TamagotchiBot.Controllers
         }
         private async Task ServeWorkOnPC(Pet petDB)
         {
-            TimeSpan remainsTime = new TimesToWait().WorkOnPCToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
+            TimeSpan remainsTime = TimesToWait.WorkOnPCToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
 
             //if _callback handled when time of work is over
             if (remainsTime <= TimeSpan.Zero)
@@ -1944,7 +1944,7 @@ namespace TamagotchiBot.Controllers
 
             toSendText = string.Format(nameof(workCommandFlyersWorking).UseCulture(_userCulture));
 
-            TimeSpan remainsTime = new TimesToWait().FlyersDistToWait - (DateTime.UtcNow - startWorkingTime);
+            TimeSpan remainsTime = TimesToWait.FlyersDistToWait - (DateTime.UtcNow - startWorkingTime);
 
             toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
                 {
@@ -1959,7 +1959,7 @@ namespace TamagotchiBot.Controllers
         }
         private async Task ServeJobFlyers(Pet petDB)
         {
-            TimeSpan remainsTime = new TimesToWait().FlyersDistToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
+            TimeSpan remainsTime = TimesToWait.FlyersDistToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
 
             //if _callback handled when time of work is over
             if (remainsTime <= TimeSpan.Zero)

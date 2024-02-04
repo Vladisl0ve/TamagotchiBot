@@ -281,7 +281,7 @@ namespace TamagotchiBot.Controllers
                     });
 
                     _appServices.UserService.UpdateGold(userDBCreator.UserId, userDBCreator.Gold + Constants.Rewards.WonDuel);
-                    _appServices.MetaUserService.UpdateNextPossibleDuelTime(_userId, DateTime.UtcNow + new Constants.TimesToWait().DuelCDToWait);
+                    _appServices.MetaUserService.UpdateNextPossibleDuelTime(_userId, DateTime.UtcNow + Constants.TimesToWait.DuelCDToWait);
                 }
                 else
                 {
@@ -298,7 +298,7 @@ namespace TamagotchiBot.Controllers
                     });
 
                     _appServices.UserService.UpdateGold(_userId, userDB.Gold + Constants.Rewards.WonDuel);
-                    _appServices.MetaUserService.UpdateNextPossibleDuelTime(userDBCreator.UserId, DateTime.UtcNow + new Constants.TimesToWait().DuelCDToWait);
+                    _appServices.MetaUserService.UpdateNextPossibleDuelTime(userDBCreator.UserId, DateTime.UtcNow + Constants.TimesToWait.DuelCDToWait);
                 }
 
                 var fightEnd = string.Format(nameof(DuelMPFightingEnd).UseCulture(_userCulture), personalLinkCreatorDuel, personalLinkDuelAccepted, ownerWinnerName, fightingEndExplanation, Constants.Rewards.WonDuel);
@@ -567,9 +567,9 @@ namespace TamagotchiBot.Controllers
             }
 
             var spentTimeByLastPetFeeding = DateTime.UtcNow - petToFeedDB.LastMPFedTime;
-            if (spentTimeByLastPetFeeding < new Constants.TimesToWait().FeedMPCDToWait)
+            if (spentTimeByLastPetFeeding < Constants.TimesToWait.FeedMPCDToWait)
             {
-                string timeToWait = new DateTime((petToFeedDB.LastMPFedTime + new Constants.TimesToWait().FeedMPCDToWait - DateTime.UtcNow).Ticks).ToString("HH:mm:ss");
+                string timeToWait = new DateTime((petToFeedDB.LastMPFedTime + Constants.TimesToWait.FeedMPCDToWait - DateTime.UtcNow).Ticks).ToString("HH:mm:ss");
                 var persLink = Extensions.GetPersonalLink(_userId, _userName);
                 var petName = HttpUtility.HtmlEncode(petToFeedDB.Name);
                 petName = "<b>" + petName + "</b>";
@@ -719,9 +719,9 @@ namespace TamagotchiBot.Controllers
                 return false;
             }
             var spentTimeByLastUserFeeding = DateTime.UtcNow - metaUserFeeder.LastMPFeedingTime;
-            if (spentTimeByLastUserFeeding < new Constants.TimesToWait().FeedMPCDToWait)
+            if (spentTimeByLastUserFeeding < Constants.TimesToWait.FeedMPCDToWait)
             {
-                string timeToWait = new DateTime((metaUserFeeder.LastMPFeedingTime + new Constants.TimesToWait().FeedMPCDToWait - DateTime.UtcNow).Ticks).ToString("HH:mm:ss");
+                string timeToWait = new DateTime((metaUserFeeder.LastMPFeedingTime + Constants.TimesToWait.FeedMPCDToWait - DateTime.UtcNow).Ticks).ToString("HH:mm:ss");
                 var persLink = Extensions.GetPersonalLink(_userId, _userName);
                 await _appServices.BotControlService.SendAnswerMessageGroupAsync(new AnswerMessage()
                 {
