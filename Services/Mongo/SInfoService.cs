@@ -23,6 +23,7 @@ namespace TamagotchiBot.Services.Mongo
         }
 
         public DateTime GetLastGlobalUpdate() => _sinfo.Find(si => true).FirstOrDefault()?.LastGlobalUpdate ?? DateTime.MinValue;
+        public DateTime GetLastAppChangeTime() => _sinfo.Find(si => true).FirstOrDefault()?.Updated ?? DateTime.MinValue;
         public bool GetDoSendChangelogs() => _sinfo.Find(si => true).FirstOrDefault()?.DoSendChangelogs ?? false;
         public bool GetDoMaintainWorks() => _sinfo.Find(si => true).FirstOrDefault()?.DoMaintainWorks ?? false;
         public List<string> GetBadWords() => _sinfo.Find(si => true).FirstOrDefault()?.BannedWords ?? new List<string>();

@@ -32,6 +32,9 @@ namespace TamagotchiBot.Handlers
         {
             _appServices = services;
             _envs = envs;
+#if !DEBUG && !DEBUG_NOTIFY
+            EmergencyUpdatePets();
+#endif
         }
 
         public Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -354,6 +357,33 @@ namespace TamagotchiBot.Handlers
 
             var chatsToNotify = new List<string>(_envs.AlwaysNotifyUsers);
             return chatsToNotify.Exists(c => c == userId.ToString());
+        }
+        private void EmergencyUpdatePets()
+        {
+            DateTime lastUpdateTime = _appServices.SInfoService.GetLastAppChangeTime();
+            if (lastUpdateTime == DateTime.MinValue)
+            {
+                Log.Debug("No EmergencyUpdate: lastUpdateTime is null");
+                return;
+            }
+
+            var deltaTime = DateTime.UtcNow - lastUpdateTime;
+            if (deltaTime < new TimeSpan(0, 5, 0)) // delay 5 minutes
+            {
+                Log.Debug($"No EmergencyUpdate: delta time is {deltaTime}");
+                return;
+            }
+
+            var petsToUpdate = _appServices.PetService.GetAll();
+            foreach (var pet in petsToUpdate)
+            {
+                if (pet == null)
+                    continue;
+
+                pet.LastUpdateTime += deltaTime;
+                _appServices.PetService.Update(pet.UserId, pet);
+            }
+            Log.Fatal($"EmergencyUpdate: updated {petsToUpdate.Count} pets");
         }
 
         private async Task RegisterUserAndPet(Message message)
