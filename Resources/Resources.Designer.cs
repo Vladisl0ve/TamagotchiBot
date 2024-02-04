@@ -208,6 +208,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kitty 🐱.
+        /// </summary>
+        public static string CatTypeText {
+            get {
+                return ResourceManager.GetString("CatTypeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choose new language:
         ///- Belarusian (беларуская) 🇨🇷
         ///- Russian (русский) 🇷🇺
@@ -262,6 +271,18 @@ namespace TamagotchiBot.Resources {
         public static string ChangelogGoToDicussChannelButton {
             get {
                 return ResourceManager.GetString("ChangelogGoToDicussChannelButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 👨‍🌾: I&apos;m a &lt;i&gt;magic&lt;i&gt;farmer, so I can change the appearance of your pet
+        ///Choose whoever you want!
+        ///
+        ///Pet Shape: {0} gold 💰.
+        /// </summary>
+        public static string changeTypeButtonCommand {
+            get {
+                return ResourceManager.GetString("changeTypeButtonCommand", resourceCulture);
             }
         }
         
@@ -371,6 +392,15 @@ namespace TamagotchiBot.Resources {
         public static string DevelopWarning {
             get {
                 return ResourceManager.GetString("DevelopWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Doggie 🐶.
+        /// </summary>
+        public static string DogTypeText {
+            get {
+                return ResourceManager.GetString("DogTypeText", resourceCulture);
             }
         }
         
@@ -554,6 +584,34 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change your pet&apos;s appearance 🎩.
+        /// </summary>
+        public static string farmButtonChangeType {
+            get {
+                return ResourceManager.GetString("farmButtonChangeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 👨‍🌾: Oh, who came to us! It&apos;s {0} with its owner!
+        ///&lt;b&gt;How can I help?&lt;/b&gt;.
+        /// </summary>
+        public static string farmCommand {
+            get {
+                return ResourceManager.GetString("farmCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Farm 🚜.
+        /// </summary>
+        public static string farmCommandDescription {
+            get {
+                return ResourceManager.GetString("farmCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to fresh.
         /// </summary>
         public static string FatigueFresh {
@@ -648,6 +706,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Little fox 🦊.
+        /// </summary>
+        public static string FoxTypeText {
+            get {
+                return ResourceManager.GetString("FoxTypeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are in the gameroom
         ///
         ///⚽️ Fatigue: {0}%
@@ -671,6 +738,15 @@ namespace TamagotchiBot.Resources {
         public static string gameroomCommandDescription {
             get {
                 return ResourceManager.GetString("gameroomCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Say goodbye and leave 👋.
+        /// </summary>
+        public static string goAwayButton {
+            get {
+                return ResourceManager.GetString("goAwayButton", resourceCulture);
             }
         }
         
@@ -864,6 +940,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Little mouse 🐭.
+        /// </summary>
+        public static string MouseTypeText {
+            get {
+                return ResourceManager.GetString("MouseTypeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to To participate you must have a pet 🪿.
         /// </summary>
         public static string MPNoPetCallbackAlert {
@@ -986,6 +1071,15 @@ namespace TamagotchiBot.Resources {
         public static string NoTextEmoji {
             get {
                 return ResourceManager.GetString("NoTextEmoji", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Panda 🐼.
+        /// </summary>
+        public static string PandaTypeText {
+            get {
+                return ResourceManager.GetString("PandaTypeText", resourceCulture);
             }
         }
         

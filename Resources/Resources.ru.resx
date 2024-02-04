@@ -924,4 +924,38 @@ https://t.me/news_virtualpetbot</value>
   <data name="PetDoesntWantToPoo" xml:space="preserve">
     <value>Питомец не хочет какать 🗿</value>
   </data>
+  <data name="farmCommandDescription" xml:space="preserve">
+    <value>Ферма 🚜</value>
+  </data>
+  <data name="farmCommand" xml:space="preserve">
+    <value>👨‍🌾: О, кто к нам пожаловал! Это же {0} со своим хозяином!
+&lt;b&gt;Чем могу быть полезен?&lt;/b&gt;</value>
+  </data>
+  <data name="farmButtonChangeType" xml:space="preserve">
+    <value>Сменить облик питомца 🎩</value>
+  </data>
+  <data name="goAwayButton" xml:space="preserve">
+    <value>Попрощаться и уйти 👋</value>
+  </data>
+  <data name="changeTypeButtonCommand" xml:space="preserve">
+    <value>👨‍🌾: Я же &lt;i&gt;волшебный&lt;i&gt; фермер, поэтому могу сменить облик твоему питомцу
+Выбирай кого хочешь!
+
+Смена облика питомца: {0} золота 💰</value>
+  </data>
+  <data name="CatTypeText" xml:space="preserve">
+    <value>Котик 🐱</value>
+  </data>
+  <data name="DogTypeText" xml:space="preserve">
+    <value>Пёсик 🐶</value>
+  </data>
+  <data name="FoxTypeText" xml:space="preserve">
+    <value>Лисёнок 🦊</value>
+  </data>
+  <data name="PandaTypeText" xml:space="preserve">
+    <value>Панда 🐼</value>
+  </data>
+  <data name="MouseTypeText" xml:space="preserve">
+    <value>Мышёнок 🐭</value>
+  </data>
 </root>

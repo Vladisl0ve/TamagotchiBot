@@ -920,4 +920,38 @@ Miłej zabawy 🍿</value>
   <data name="PetDoesntWantToPoo" xml:space="preserve">
     <value>Zwierzak nie chce robić kupy 🗿</value>
   </data>
+  <data name="farmCommandDescription" xml:space="preserve">
+    <value>Farma 🚜</value>
+  </data>
+  <data name="farmCommand" xml:space="preserve">
+    <value>👨‍🌾: Och, kto do nas przyszedł! To {0} ze swoim właścicielem!
+&lt;b&gt;Jak mogę pomóc?&lt;/b&gt;</value>
+  </data>
+  <data name="farmButtonChangeType" xml:space="preserve">
+    <value>Zmień wygląd swojego zwierzaka 🎩</value>
+  </data>
+  <data name="goAwayButton" xml:space="preserve">
+    <value>Pożegnaj się i odejdź 👋</value>
+  </data>
+  <data name="changeTypeButtonCommand" xml:space="preserve">
+    <value>👨‍🌾: Jestem &lt;i&gt;magicznym&lt;i&gt;rolnikiem, więc mogę zmienić wygląd Twojego zwierzaka
+Wybierz kogo chcesz!
+
+Kształt zwierzaka: {0} złoty 💰</value>
+  </data>
+  <data name="CatTypeText" xml:space="preserve">
+    <value>Kotek 🐱</value>
+  </data>
+  <data name="DogTypeText" xml:space="preserve">
+    <value>Piesek 🐶</value>
+  </data>
+  <data name="FoxTypeText" xml:space="preserve">
+    <value>Mały lisek 🦊</value>
+  </data>
+  <data name="PandaTypeText" xml:space="preserve">
+    <value>Panda 🐼</value>
+  </data>
+  <data name="MouseTypeText" xml:space="preserve">
+    <value>Mała myszka 🐭</value>
+  </data>
 </root>

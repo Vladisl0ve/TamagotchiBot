@@ -75,7 +75,10 @@ namespace TamagotchiBot.Controllers
                 await ShowHelpInfo();
                 return;
             }
-            if (textReceived == Commands.PetCommand || GetAllTranslatedAndLowered(nameof(petCommandDescription)).Contains(textReceived))
+            if (textReceived == Commands.PetCommand 
+                || GetAllTranslatedAndLowered(nameof(petCommandDescription)).Contains(textReceived)
+                || GetAllTranslatedAndLowered(nameof(goAwayButton)).Contains(textReceived)
+                )
             {
                 await ShowPetInfo(petDB);
                 return;
@@ -139,10 +142,15 @@ namespace TamagotchiBot.Controllers
             {
                 await ShowReferalInfo();
                 return;
-            }    
-            if (textReceived == Commands.ReferalCommand || GetAllTranslatedAndLowered(nameof(referalCommandDescription)).Contains(textReceived))
+            }
+            if (textReceived == Commands.FarmCommand || GetAllTranslatedAndLowered(nameof(farmCommandDescription)).Contains(textReceived))
             {
-                await ShowReferalInfo();
+                await GoToFarm(petDB);
+                return;
+            }    
+            if (GetAllTranslatedAndLowered(nameof(farmButtonChangeType)).Contains(textReceived))
+            {
+                await ChangeTypeCMD();
                 return;
             }
             if (textReceived == "test")
@@ -304,6 +312,25 @@ namespace TamagotchiBot.Controllers
         }
 
         #region Message Answers
+        private async Task ChangeTypeCMD()
+        {
+            string toSendText = string.Format(nameof(changeTypeButtonCommand).UseCulture(_userCulture),
+                                              Costs.ChangePetType);
+
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.ChangeTypeButtonCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            var toSend = new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = StickersId.ChangeTypePetSticker,
+                ReplyMarkup = ReplyKeyboardItems.ChangeTypeKeyboardMarkup(_userCulture),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+            };
+            Log.Debug($"Called /ChangeTypeCMD for {_userInfo}");
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
         private async Task ShowWorkInfo(Pet petDB)
         {
             Log.Debug($"Called /ShowWorkInfo for {_userInfo}");
@@ -346,6 +373,29 @@ namespace TamagotchiBot.Controllers
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
+        private async Task GoToFarm(Pet petDB)
+        {
+            var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
+            encodedPetName = "<b>" + encodedPetName + "</b>";
+
+            string toSendText = string.Format(nameof(farmCommand).UseCulture(_userCulture),
+                                              encodedPetName);
+
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.FarmCommandCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            var toSend = new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = StickersId.FarmSticker,
+                ReplyMarkup = ReplyKeyboardItems.FarmKeyboardMarkup(_userCulture),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+            };
+            Log.Debug($"Called /GoToFarm for {_userInfo}");
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
+
         private async Task ShowRewardInfo(User userDB)
         {
             Log.Debug($"Called /ShowRewardInfo for {_userInfo}");

@@ -98,6 +98,9 @@ namespace TamagotchiBot.UserExtensions
             //Resurrect
             public const int ResurrectPet = 1000;
 
+            //Change type
+            public const int ChangePetType = 5000;
+
             //Rename
             public const int RenamePet = 500;
 
@@ -155,6 +158,7 @@ namespace TamagotchiBot.UserExtensions
             public const string HospitalCommand = "hospital";
             public const string RewardCommand = "reward";
             public const string ReferalCommand = "referal";
+            public const string FarmCommand = "farm";
             public const string BathroomCommand = "bathroom";
             public const string HelpCommand = "help";
             public const string MenuCommand = "menu";
@@ -168,7 +172,7 @@ namespace TamagotchiBot.UserExtensions
             public const string RestartCommand = "restart";
             public const string GoldCommand = "gold";
             public const string StartBotstatCheckCommand = "start_botstat_check";
-            public const string StatusBotstatCheckCommand = "status_botstat_check";
+            public const string StatusBotstatCheckCommand = "status_botstat_check";            
         }
 
         public struct CommandsMP
@@ -183,6 +187,7 @@ namespace TamagotchiBot.UserExtensions
         {
             //Common
             public const string WelcomeSticker = "CAACAgIAAxkBAAEDHvdhcG0r5WOkfladhV2zTUYwN6LyOQACUwADr8ZRGjkySUcbM1VLIQQ";
+            public const string FarmSticker = "CAACAgIAAxkBAAELURxlv-IkydD8-3BK8XslqNTCAc-7PwACAhEAAjSLWwYP0_s-zhcRSzQE";
             public const string HelpCommandSticker = "CAACAgIAAxkBAAEIEd9kCluWEaE86RH_SAr0tnJcJf_A4AACiXAAAp7OCwAB00mUUVh4ERkvBA";
             public const string ChangelogCommandSticker = "CAACAgIAAxkBAAEKbMBlGKE7cGtOkD35P_1Qf3dm0XVQKQACcR8AAvMoYEpm_8ahsriuMzAE";
             public const string ReferalCommandSticker = "CAACAgIAAxkBAAEIMmVkFxFa_IOB62mjlU6QjY8xAfFC8gACZxcAAqLdcElp3-Tq2zyHiS8E";
@@ -196,6 +201,8 @@ namespace TamagotchiBot.UserExtensions
             public const string EnglishLanguageSetSticker = "CAACAgIAAxkBAAEDHxdhcHV4y14-CyrH_D1YujHDCBROUQAC6AADvwPJBGHtqaDNJtEyIQQ";
             public const string RussianLanguageSetSticker = "CAACAgIAAxkBAAEDHxlhcHWCiuvBtQ-IZJknE2hlBlZ-TwAC4gADvwPJBOLja80qqucgIQQ";
             public const string BelarussianLanguageSetSticker = "CAACAgIAAxkBAAEDIdJhcyf3ErjEmUZRgDJgMsCtstPpGAACYQIAAladvQq0dN7WdBr5ViEE";
+
+            public const string ChangeTypePetSticker = "CAACAgIAAxkBAAELUTFlv-y-GF6diGzs6trFkSR13nqCbwAC-RAAAjSLWwaVH1nmaD8TjDQE";
 
             public const string ChangelogSticker = "CAACAgIAAxkBAAIoiWQfmY19TqmIZL38KrfWnSS9frV0AAIrKwACnQhYSBduaR-WJLE7LwQ";
             public const string MaintanceProblems = "CAACAgIAAxkBAAEK0sVlY46CnU9WiXGRp7t0MXqbkJhwvwAC6jUAAvnOCElTk5NEHcWxQjME";
@@ -243,6 +250,8 @@ namespace TamagotchiBot.UserExtensions
             public const string PetGone_Cat = "CAACAgIAAxkBAAEINstkGKuoCNpoeRthX9rvkQyYw8aGIQAC2hAAAowt_QeJ21KeBteIlS8E";
             public const string PetBored_Cat = "CAACAgIAAxkBAAEIOhdkGhWlP20cd5VazW0bzgnCFu14TwAC7RAAAowt_Qc5_hbrTG3BAS8E";
             public const string PetEpilogue_Cat = "CAACAgIAAxkBAAEINs1kGKvlnOEEu_6Mk1gDWEiXI2MaDQAC6RAAAowt_QcWUbbRSyZNxS8E";
+            public const string PetChangeType_Cat = "CAACAgIAAxkBAAELUR5lv-nhjujL-EjpGugIQQY7qeUQTgACSUMAAges2EllTD73Xi5RejQE";
+
         }
 
         public static class InlineItems
@@ -328,6 +337,20 @@ namespace TamagotchiBot.UserExtensions
 
         public static class ReplyKeyboardItems
         {
+            public static ReplyKeyboardMarkup ChangeTypeKeyboardMarkup(CultureInfo culture) => _changeTypeKeyboardMarkup(culture);
+            private static ReplyKeyboardMarkup _changeTypeKeyboardMarkup(CultureInfo culture) =>
+            Extensions.ReplyKeyboardOptimizer(
+                Extensions.GetChangeTypeButtons(culture),
+                columnCounter: 3,
+                isOneTimeKeyboard: false
+                );
+            public static ReplyKeyboardMarkup FarmKeyboardMarkup(CultureInfo culture) => _farmKeyboardMarkup(culture);
+            private static ReplyKeyboardMarkup _farmKeyboardMarkup(CultureInfo culture) =>
+            Extensions.ReplyKeyboardOptimizer(
+                Extensions.GetFarmButtons(culture),
+                columnCounter: 3,
+                isOneTimeKeyboard: false
+                );
             public static ReplyKeyboardMarkup MenuKeyboardMarkup(CultureInfo culture) => _menuKeyboardMarkup(culture);
             private static ReplyKeyboardMarkup _menuKeyboardMarkup(CultureInfo culture) =>
             Extensions.ReplyKeyboardOptimizer(

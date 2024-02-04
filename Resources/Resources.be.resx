@@ -924,4 +924,38 @@ https://t.me/newsvirtualpetbot</value>
   <data name="PetDoesntWantToPoo" xml:space="preserve">
     <value>Гадаванец не хоча какаць 🗿</value>
   </data>
+  <data name="farmCommandDescription" xml:space="preserve">
+    <value>Ферма 🚜</value>
+  </data>
+  <data name="farmCommand" xml:space="preserve">
+    <value>👨‍🌾: О, хто да нас завітаў! Гэта ж {0} са сваім гаспадаром!
+&lt;b&gt;Чым магу быць карысны?&lt;/b&gt;</value>
+  </data>
+  <data name="farmButtonChangeType" xml:space="preserve">
+    <value>Змяніць аблічча гадаванца 🎩</value>
+  </data>
+  <data name="goAwayButton" xml:space="preserve">
+    <value>Развітацца і пайсці 👋</value>
+  </data>
+  <data name="changeTypeButtonCommand" xml:space="preserve">
+    <value>👨‍🌾: Я ж &lt;i&gt;чароўны&lt;/i&gt; фермер, таму магу змяніць аблічча твайму гадаванцу
+Выбірай каго хочаш!
+
+Змена аблічча гадаванца: {0} золата 💰</value>
+  </data>
+  <data name="CatTypeText" xml:space="preserve">
+    <value>Коцік 🐱</value>
+  </data>
+  <data name="DogTypeText" xml:space="preserve">
+    <value>Пёсік 🐶</value>
+  </data>
+  <data name="FoxTypeText" xml:space="preserve">
+    <value>Лісяня 🦊</value>
+  </data>
+  <data name="PandaTypeText" xml:space="preserve">
+    <value>Панда 🐼</value>
+  </data>
+  <data name="MouseTypeText" xml:space="preserve">
+    <value>Мышаня 🐭</value>
+  </data>
 </root>

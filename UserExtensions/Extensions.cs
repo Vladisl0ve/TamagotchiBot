@@ -142,6 +142,25 @@ namespace TamagotchiBot.UserExtensions
             return Constants.Languages.English;
         }
 
+        public static List<string> GetFarmButtons(CultureInfo culture)
+        {
+            return new List<string>()
+            {
+                nameof(Resources.Resources.farmButtonChangeType).UseCulture(culture),
+                nameof(Resources.Resources.goAwayButton).UseCulture(culture),
+            };
+        }
+        public static List<string> GetChangeTypeButtons(CultureInfo culture)
+        {
+            return new List<string>()
+            {
+                nameof(Resources.Resources.CatTypeText).UseCulture(culture),
+                nameof(Resources.Resources.DogTypeText).UseCulture(culture),
+                nameof(Resources.Resources.MouseTypeText).UseCulture(culture),
+                nameof(Resources.Resources.FoxTypeText).UseCulture(culture),
+                nameof(Resources.Resources.PandaTypeText).UseCulture(culture),
+            };
+        }
         public static List<string> GetMenuButtons(CultureInfo culture)
         {
             return new List<string>()
@@ -155,7 +174,7 @@ namespace TamagotchiBot.UserExtensions
                 nameof(Resources.Resources.bathroomCommandDescription).UseCulture(culture),
 
                 nameof(Resources.Resources.ranksCommandDescription).UseCulture(culture),
-                nameof(Resources.Resources.referalCommandDescription).UseCulture(culture),
+                nameof(Resources.Resources.farmCommandDescription).UseCulture(culture),
                 nameof(Resources.Resources.menuCommandDescription).UseCulture(culture),
             };
         }

@@ -917,4 +917,38 @@ You only have {1}%💊</value>
   <data name="PetDoesntWantToPoo" xml:space="preserve">
     <value>Pet doesn't want to poop 🗿</value>
   </data>
+  <data name="farmCommandDescription" xml:space="preserve">
+    <value>Farm 🚜</value>
+  </data>
+  <data name="farmCommand" xml:space="preserve">
+    <value>👨‍🌾: Oh, who came to us! It's {0} with its owner!
+&lt;b&gt;How can I help?&lt;/b&gt;</value>
+  </data>
+  <data name="farmButtonChangeType" xml:space="preserve">
+    <value>Change your pet's appearance 🎩</value>
+  </data>
+  <data name="goAwayButton" xml:space="preserve">
+    <value>Say goodbye and leave 👋</value>
+  </data>
+  <data name="changeTypeButtonCommand" xml:space="preserve">
+    <value>👨‍🌾: I'm a &lt;i&gt;magic&lt;i&gt;farmer, so I can change the appearance of your pet
+Choose whoever you want!
+
+Pet Shape: {0} gold 💰</value>
+  </data>
+  <data name="CatTypeText" xml:space="preserve">
+    <value>Kitty 🐱</value>
+  </data>
+  <data name="DogTypeText" xml:space="preserve">
+    <value>Doggie 🐶</value>
+  </data>
+  <data name="FoxTypeText" xml:space="preserve">
+    <value>Little fox 🦊</value>
+  </data>
+  <data name="PandaTypeText" xml:space="preserve">
+    <value>Panda 🐼</value>
+  </data>
+  <data name="MouseTypeText" xml:space="preserve">
+    <value>Little mouse 🐭</value>
+  </data>
 </root>

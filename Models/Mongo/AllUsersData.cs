@@ -75,6 +75,12 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("PetCommandCounter")]
         public long PetCommandCounter { get; set; }
 
+        [BsonElement("FarmCommandCounter")]
+        public long FarmCommandCounter { get; set; }
+
+        [BsonElement("ChangeTypeButtonCounter")]
+        public long ChangeTypeButtonCounter { get; set; }
+
         [BsonElement("SleepCommandCounter")]
         public long SleepCommandCounter { get; set; }
 
