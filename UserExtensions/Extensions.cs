@@ -159,6 +159,7 @@ namespace TamagotchiBot.UserExtensions
                 nameof(Resources.Resources.MouseTypeText).UseCulture(culture),
                 nameof(Resources.Resources.FoxTypeText).UseCulture(culture),
                 nameof(Resources.Resources.PandaTypeText).UseCulture(culture),
+                nameof(Resources.Resources.goAwayButton).UseCulture(culture),
             };
         }
         public static List<string> GetMenuButtons(CultureInfo culture)
@@ -406,8 +407,8 @@ namespace TamagotchiBot.UserExtensions
                 }
             };
             resultExtra.AddRange(result);
-            resultAdmin.AddRange(resultExtra);
-            return resultAdmin;
+            resultExtra.AddRange(resultAdmin);
+            return resultExtra;
         }
 
         public static List<BotCommand> GetMultiplayerCommands(string culture)

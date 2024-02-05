@@ -75,7 +75,7 @@ namespace TamagotchiBot.Controllers
                 await ShowHelpInfo();
                 return;
             }
-            if (textReceived == Commands.PetCommand 
+            if (textReceived == Commands.PetCommand
                 || GetAllTranslatedAndLowered(nameof(petCommandDescription)).Contains(textReceived)
                 || GetAllTranslatedAndLowered(nameof(goAwayButton)).Contains(textReceived)
                 )
@@ -147,10 +147,35 @@ namespace TamagotchiBot.Controllers
             {
                 await GoToFarm(petDB);
                 return;
-            }    
+            }
             if (GetAllTranslatedAndLowered(nameof(farmButtonChangeType)).Contains(textReceived))
             {
                 await ChangeTypeCMD();
+                return;
+            }
+            if (GetAllTranslatedAndLowered(nameof(CatTypeText)).Contains(textReceived))
+            {
+                await ChangeTypeToCatCMD(userDB, petDB);
+                return;
+            }
+            if (GetAllTranslatedAndLowered(nameof(DogTypeText)).Contains(textReceived))
+            {
+                await ChangeTypeToDogCMD(userDB, petDB);
+                return;
+            }
+            if (GetAllTranslatedAndLowered(nameof(FoxTypeText)).Contains(textReceived))
+            {
+                await ChangeTypeToFoxCMD(userDB, petDB);
+                return;
+            }
+            if (GetAllTranslatedAndLowered(nameof(MouseTypeText)).Contains(textReceived))
+            {
+                await ChangeTypeToMouseCMD(userDB, petDB);
+                return;
+            }
+            if (GetAllTranslatedAndLowered(nameof(PandaTypeText)).Contains(textReceived))
+            {
+                await ChangeTypeToPandaCMD(userDB, petDB);
                 return;
             }
             if (textReceived == "test")
@@ -168,6 +193,97 @@ namespace TamagotchiBot.Controllers
             }
 
             Log.Debug($"[MESSAGE] '{customText ?? _message.Text}' FROM {_userInfo}");
+        }
+
+        private async Task ChangeTypeToCatCMD(User userDB, Pet petDB)
+        {
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.ChangedToCatCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            Log.Debug($"Called /ChangeTypeToCatCMD for {_userInfo}");
+            await ChangePetTypeCMD(userDB, petDB, PetType.Cat, string.Format(nameof(changedTypeToCat).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)), "");
+        }
+        private async Task ChangeTypeToDogCMD(User userDB, Pet petDB)
+        {
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.ChangedToDogCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            Log.Debug($"Called /ChangeTypeToDogCMD for {_userInfo}");
+            await ChangePetTypeCMD(userDB, petDB, PetType.Dog, string.Format(nameof(changedTypeToDog).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)), "");
+        }
+        private async Task ChangeTypeToPandaCMD(User userDB, Pet petDB)
+        {
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.ChangedToPandaCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            Log.Debug($"Called /ChangeTypeToPandaCMD for {_userInfo}");
+            await ChangePetTypeCMD(userDB, petDB, PetType.Panda, string.Format(nameof(changedTypeToPanda).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)), "");
+        }
+        private async Task ChangeTypeToFoxCMD(User userDB, Pet petDB)
+        {
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.ChangedToFoxCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            Log.Debug($"Called /ChangeTypeToFoxCMD for {_userInfo}");
+            await ChangePetTypeCMD(userDB, petDB, PetType.Fox, string.Format(nameof(changedTypeToFox).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)), "");
+        }
+        private async Task ChangeTypeToMouseCMD(User userDB, Pet petDB)
+        {
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.ChangedToMouseCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            Log.Debug($"Called /ChangeTypeToMouseCMD for {_userInfo}");
+            await ChangePetTypeCMD(userDB,
+                petDB, PetType.Mouse,
+                string.Format(nameof(changedTypeToMouse).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)),
+                null);
+        }
+
+        private async Task ChangePetTypeCMD(User userDB, Pet petDB, PetType newPetType, string toSendText, string stickerId)
+        {
+            if ((int)newPetType == petDB.Type)
+            {
+                var toSendErr1 = new AnswerMessage()
+                {
+                    Text = nameof(changeTypeErrorSameType).UseCulture(_userCulture),
+                    StickerId = Constants.StickersId.ChangeTypeErrorSticker,
+                    ReplyMarkup = ReplyKeyboardItems.ChangeTypeKeyboardMarkup(_userCulture),
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                };
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSendErr1, _userId, false);
+
+                return;
+            }
+
+            if (userDB.Gold < Costs.ChangePetType)
+            {
+                var toSendErr2 = new AnswerMessage()
+                {
+                    Text = nameof(goldNotEnough).UseCulture(_userCulture),
+                    StickerId = Constants.StickersId.ChangeTypeErrorGoldSticker,
+                    ReplyMarkup = ReplyKeyboardItems.ChangeTypeKeyboardMarkup(_userCulture),
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                };
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSendErr2, _userId, false);
+
+                return;
+            }
+            _appServices.PetService.UpdateType(userDB.UserId, newPetType);
+            _appServices.UserService.UpdateGold(_userId, userDB.Gold - Costs.ChangePetType);
+
+            var toSend = new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = stickerId,
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+            };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
 
         public async Task CallbackHandler()
@@ -375,6 +491,20 @@ namespace TamagotchiBot.Controllers
         }
         private async Task GoToFarm(Pet petDB)
         {
+            Log.Debug($"Called /GoToFarm for {_userInfo}");
+            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            if (accessCheck != null)
+            {
+                Log.Debug($"Pet is busy for {_userInfo}");
+                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
+                {
+                    Text = nameof(petIsBusyForFarm).UseCulture(_userCulture),
+                    ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
+                    StickerId = StickersId.PetBusy_Cat
+                }, _userId, false);
+                return;
+            }
+
             var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
             encodedPetName = "<b>" + encodedPetName + "</b>";
 
@@ -392,7 +522,6 @@ namespace TamagotchiBot.Controllers
                 ReplyMarkup = ReplyKeyboardItems.FarmKeyboardMarkup(_userCulture),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
-            Log.Debug($"Called /GoToFarm for {_userInfo}");
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
 

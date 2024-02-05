@@ -75,7 +75,7 @@ namespace TamagotchiBot.Controllers
                 Joy = 70,
                 Fatigue = 0,
                 Satiety = 80,
-                Type = null
+                Type = (int)PetType.Cat
             });
             Log.Information($"Pet of UserID: {_userId} has been added to Db");
 

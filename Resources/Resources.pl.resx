@@ -934,7 +934,7 @@ Miłej zabawy 🍿</value>
     <value>Pożegnaj się i odejdź 👋</value>
   </data>
   <data name="changeTypeButtonCommand" xml:space="preserve">
-    <value>👨‍🌾: Jestem &lt;i&gt;magicznym&lt;i&gt;rolnikiem, więc mogę zmienić wygląd Twojego zwierzaka
+    <value>👨‍🌾: Jestem &lt;i&gt;magicznym&lt;/i&gt;rolnikiem, więc mogę zmienić wygląd Twojego zwierzaka
 Wybierz kogo chcesz!
 
 Kształt zwierzaka: {0} złoty 💰</value>
@@ -953,5 +953,27 @@ Kształt zwierzaka: {0} złoty 💰</value>
   </data>
   <data name="MouseTypeText" xml:space="preserve">
     <value>Mała myszka 🐭</value>
+  </data>
+  <data name="changedTypeToCat" xml:space="preserve">
+    <value>😼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: WOW! Jestem teraz kotem!</value>
+  </data>
+  <data name="changedTypeToDog" xml:space="preserve">
+    <value>🐶&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Hau-hau! Co jest nie tak z moim głosem?
+A ogon jest niezwykły...</value>
+  </data>
+  <data name="changedTypeToMouse" xml:space="preserve">
+    <value>🐭&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Jak wy wszyscy jesteście teraz duzi, a ja jestem mały!</value>
+  </data>
+  <data name="changedTypeToPanda" xml:space="preserve">
+    <value>🐼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Świat nie jest podzielony na czarny i biały. Ale tak, pandy!</value>
+  </data>
+  <data name="changedTypeToFox" xml:space="preserve">
+    <value>🦊&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Och, jakie przytulne i przyjemne futerko ❤️</value>
+  </data>
+  <data name="changeTypeErrorSameType" xml:space="preserve">
+    <value>Twój zwierzak już tak wygląda ❌</value>
+  </data>
+  <data name="petIsBusyForFarm" xml:space="preserve">
+    <value>Nie możesz iść na farmę, bo zwierzak jest zajęty 🚫</value>
   </data>
 </root>

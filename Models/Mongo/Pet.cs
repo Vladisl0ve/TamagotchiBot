@@ -13,7 +13,7 @@ namespace TamagotchiBot.Models.Mongo
         public string Name { get; set; }
 
         [BsonElement("Type")]
-        public string Type { get; set; }
+        public int Type { get; set; }
 
         [BsonElement("BirthDateTime")]
         public DateTime BirthDateTime { get; set; }

@@ -31,6 +31,15 @@ namespace TamagotchiBot.UserExtensions
             FlyersDistributing = 2
         }
 
+        public enum PetType
+        {
+            Cat = 0,
+            Dog = 1,
+            Mouse = 2,
+            Fox = 3,
+            Panda = 4
+        }
+
         public enum Fatigue
         {
             Fresh,
@@ -203,6 +212,8 @@ namespace TamagotchiBot.UserExtensions
             public const string BelarussianLanguageSetSticker = "CAACAgIAAxkBAAEDIdJhcyf3ErjEmUZRgDJgMsCtstPpGAACYQIAAladvQq0dN7WdBr5ViEE";
 
             public const string ChangeTypePetSticker = "CAACAgIAAxkBAAELUTFlv-y-GF6diGzs6trFkSR13nqCbwAC-RAAAjSLWwaVH1nmaD8TjDQE";
+            public const string ChangeTypeErrorSticker = "CAACAgIAAxkBAAELUzVlwUL-5fyYwZJCGyjXYWDqDMPX3gACrUUAAgsn4En6llfN6C4pCjQE";
+            public const string ChangeTypeErrorGoldSticker = "CAACAgIAAxkBAAELUzdlwUQlfiUpuAPpKwejhj8JUrtamAAC6z4AAr4b2UkCVdfVjLsgnDQE";
 
             public const string ChangelogSticker = "CAACAgIAAxkBAAIoiWQfmY19TqmIZL38KrfWnSS9frV0AAIrKwACnQhYSBduaR-WJLE7LwQ";
             public const string MaintanceProblems = "CAACAgIAAxkBAAEK0sVlY46CnU9WiXGRp7t0MXqbkJhwvwAC6jUAAvnOCElTk5NEHcWxQjME";

@@ -931,7 +931,7 @@ You only have {1}%💊</value>
     <value>Say goodbye and leave 👋</value>
   </data>
   <data name="changeTypeButtonCommand" xml:space="preserve">
-    <value>👨‍🌾: I'm a &lt;i&gt;magic&lt;i&gt;farmer, so I can change the appearance of your pet
+    <value>👨‍🌾: I'm a &lt;i&gt;magic&lt;/i&gt;farmer, so I can change the appearance of your pet
 Choose whoever you want!
 
 Pet Shape: {0} gold 💰</value>
@@ -950,5 +950,27 @@ Pet Shape: {0} gold 💰</value>
   </data>
   <data name="MouseTypeText" xml:space="preserve">
     <value>Little mouse 🐭</value>
+  </data>
+  <data name="changedTypeToCat" xml:space="preserve">
+    <value>😼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: WOW! I'm a cat now!</value>
+  </data>
+  <data name="changedTypeToDog" xml:space="preserve">
+    <value>🐶&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Woof-woof! What's wrong with my voice?
+And the tail is unusual...</value>
+  </data>
+  <data name="changedTypeToMouse" xml:space="preserve">
+    <value>🐭&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: How big you all are now, and I’m small!</value>
+  </data>
+  <data name="changedTypeToPanda" xml:space="preserve">
+    <value>🐼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: The world is not divided into black and white. But yes, pandas!</value>
+  </data>
+  <data name="changedTypeToFox" xml:space="preserve">
+    <value>🦊&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Oh, what a cozy and pleasant fur ❤️</value>
+  </data>
+  <data name="changeTypeErrorSameType" xml:space="preserve">
+    <value>Your pet already looks like this ❌</value>
+  </data>
+  <data name="petIsBusyForFarm" xml:space="preserve">
+    <value>You can't go to the farm because the pet is busy 🚫</value>
   </data>
 </root>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
+using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.Services.Mongo
 {
@@ -66,6 +67,15 @@ namespace TamagotchiBot.Services.Mongo
             if (pet != null)
             {
                 pet.LastMPFedTime = newLastMPFed;
+                Update(userId, pet);
+            }
+        }      
+        public void UpdateType(long userId, PetType newType)
+        {
+            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.Type = (int)newType;
                 Update(userId, pet);
             }
         } 

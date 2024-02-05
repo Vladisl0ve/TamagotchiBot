@@ -938,7 +938,7 @@ https://t.me/news_virtualpetbot</value>
     <value>Попрощаться и уйти 👋</value>
   </data>
   <data name="changeTypeButtonCommand" xml:space="preserve">
-    <value>👨‍🌾: Я же &lt;i&gt;волшебный&lt;i&gt; фермер, поэтому могу сменить облик твоему питомцу
+    <value>👨‍🌾: Я же &lt;i&gt;волшебный&lt;/i&gt; фермер, поэтому могу сменить облик твоему питомцу
 Выбирай кого хочешь!
 
 Смена облика питомца: {0} золота 💰</value>
@@ -957,5 +957,27 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="MouseTypeText" xml:space="preserve">
     <value>Мышёнок 🐭</value>
+  </data>
+  <data name="changedTypeToCat" xml:space="preserve">
+    <value>😼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: ОГО! Я теперь котик!</value>
+  </data>
+  <data name="changedTypeToDog" xml:space="preserve">
+    <value>🐶&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Гав-гав! Что это с моим голосом?
+И хвост непривычный...</value>
+  </data>
+  <data name="changedTypeToMouse" xml:space="preserve">
+    <value>🐭&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Какие же вы все большие теперь, а я маленькая!</value>
+  </data>
+  <data name="changedTypeToPanda" xml:space="preserve">
+    <value>🐼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Мир не разделён на чёрное и белое. А вот панды да!</value>
+  </data>
+  <data name="changedTypeToFox" xml:space="preserve">
+    <value>🦊&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Ой, какой же уютный и приятный мех ❤️</value>
+  </data>
+  <data name="changeTypeErrorSameType" xml:space="preserve">
+    <value>Твой питомец уже такого облика ❌</value>
+  </data>
+  <data name="petIsBusyForFarm" xml:space="preserve">
+    <value>Нельзя пойти на ферму, ведь питомец занят 🚫</value>
   </data>
 </root>

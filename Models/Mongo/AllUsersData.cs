@@ -79,7 +79,22 @@ namespace TamagotchiBot.Models.Mongo
         public long FarmCommandCounter { get; set; }
 
         [BsonElement("ChangeTypeButtonCounter")]
-        public long ChangeTypeButtonCounter { get; set; }
+        public long ChangeTypeButtonCounter { get; set; }  
+        
+        [BsonElement("ChangedToCatCounter")]
+        public long ChangedToCatCounter { get; set; }
+
+        [BsonElement("ChangedToDogCounter")]
+        public long ChangedToDogCounter { get; set; }
+
+        [BsonElement("ChangedToFoxCounter")]
+        public long ChangedToFoxCounter { get; set; }
+
+        [BsonElement("ChangedToMouseCounter")]
+        public long ChangedToMouseCounter { get; set; }
+
+        [BsonElement("ChangedToPandaCounter")]
+        public long ChangedToPandaCounter { get; set; }
 
         [BsonElement("SleepCommandCounter")]
         public long SleepCommandCounter { get; set; }

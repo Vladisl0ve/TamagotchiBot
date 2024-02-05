@@ -958,4 +958,26 @@ https://t.me/newsvirtualpetbot</value>
   <data name="MouseTypeText" xml:space="preserve">
     <value>Мышаня 🐭</value>
   </data>
+  <data name="changedTypeToCat" xml:space="preserve">
+    <value>😼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: ОГО! Я цяпер коцік!</value>
+  </data>
+  <data name="changedTypeToDog" xml:space="preserve">
+    <value>🐶&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Гаў-гаў! Што гэта з маім голасам?
+І хвост нязвыклы...</value>
+  </data>
+  <data name="changedTypeToMouse" xml:space="preserve">
+    <value>🐭&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Якія ж вы ўсё вялікія, а я маленькая!</value>
+  </data>
+  <data name="changedTypeToPanda" xml:space="preserve">
+    <value>🐼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Свет не падзелены на чорнае і белае. А вось панды так!</value>
+  </data>
+  <data name="changedTypeToFox" xml:space="preserve">
+    <value>🦊&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Ой, які ж утульны і прыемны мех ❤️</value>
+  </data>
+  <data name="changeTypeErrorSameType" xml:space="preserve">
+    <value>Твой гадаванец ужо такога аблічча ❌</value>
+  </data>
+  <data name="petIsBusyForFarm" xml:space="preserve">
+    <value>Нельга пайсці на ферму, бо гадаванец заняты 🚫</value>
+  </data>
 </root>
