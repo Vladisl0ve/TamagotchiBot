@@ -130,7 +130,7 @@
 Проста ўвядзіце яго тут</value>
   </data>
   <data name="petCommand" xml:space="preserve">
-    <value>🐱 {0}
+    <value>{11} {0}
 
 💊 Здароўе: {1}%
 🍕 Сытасць: {4}%
@@ -206,9 +206,9 @@
     <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺</value>
   </data>
   <data name="sleepCommand" xml:space="preserve">
-    <value>🐱 {0}
-😴 Стомленасць: {1}%
-⚡️ Стан: {2}</value>
+    <value>{0} {1}
+😴 Стомленасць: {2}%
+⚡️ Стан: {3}</value>
   </data>
   <data name="sleepCommandDescription" xml:space="preserve">
     <value>Спальня 🛏</value>
@@ -267,7 +267,7 @@
   <data name="hospitalCommandHighHp" xml:space="preserve">
     <value>Клопат пра сваё цела і розум - ключ да доўгага і здаровага жыцця 🏄🏄🏻‍♀️🏄
 Гадаванец здаровы на {0}% ❤️‍🔥
-Ты малайчынка 😻</value>
+Ты малайчынка 🫵</value>
   </data>
   <data name="hospitalCommandMidHp" xml:space="preserve">
     <value>Бяспека ў першую чаргу! 🏥
@@ -284,7 +284,7 @@
   </data>
   <data name="PetCuringAnwserCallback" xml:space="preserve">
     <value>Ваш гадаванец быў вылечаны на {0}% 🌡
-Пілюлі былі вельмі нясмачныя 😿
+Пілюлі былі вельмі нясмачныя 🧸
 Радасць змянілася на {1}%</value>
   </data>
   <data name="hospitalCommandDescription" xml:space="preserve">
@@ -298,7 +298,7 @@
   </data>
   <data name="menuCommand" xml:space="preserve">
     <value>Што рабіць з гадаванцам:
-/pet - паказльнікі гадаванца 🐱
+/pet - паказльнікі гадаванца {0}
 /kitchen - есці тут 🍕
 /work - зарабляць грошы 💰
 /sleep - спальня 🧸
@@ -325,17 +325,18 @@
     <value>Ты заходзіш да {0}, але бачыш толькі пусты пакой і занатоўку на стале:
 "Дарагі сябар {1}!
 Было вельмі прыемна бавіць з табой час, але я пачаў хварэць
-Шкода...😿
+Шкода...❤️‍🩹
 
 Твой гадаванец сышоў, таму што яму не хапала клопату 💔</value>
   </data>
   <data name="EpilogueText" xml:space="preserve">
     <value>Бывае з кожным, але жыццё працягваецца!
 Можа з новым гадаванцам табе павязе 😼
+
 Давай спачатку? 🫶</value>
   </data>
   <data name="ReminderNotifyText1" xml:space="preserve">
-    <value>😺: Ты вярнуўся!
+    <value>{0}: Ты вярнуўся!
 Мне так цябе не хапала!
 Хачу есці 🌭 і гуляць 🪁
 
@@ -366,15 +367,15 @@
     <value>Засталося {0} яблыкаў</value>
   </data>
   <data name="appleGameSysEaten" xml:space="preserve">
-    <value>🐱: мною з'едзена яблыкаў - {0}</value>
+    <value>{0}: мною з'едзена яблыкаў - {1}</value>
   </data>
   <data name="appleGameLoseText" xml:space="preserve">
     <value>Застаўся твой зялёны яблык
 
-🐱: Пашанцуе другім разам 😉</value>
+{0}: Пашанцуе другім разам 😉</value>
   </data>
   <data name="appleGameWinText" xml:space="preserve">
-    <value>🐱: Ты выйграў, малайчына!</value>
+    <value>{0}: Ты выйграў, малайчына!</value>
   </data>
   <data name="appleGameStatisticsCommand" xml:space="preserve">
     <value>📈СТАТЫСТЫКА📉
@@ -392,13 +393,13 @@
     <value>Вы зноў у дзіцячай ⚽️</value>
   </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
-    <value>🐱: Чакаю цябе тут, вяртайся
+    <value>{0}: Чакаю цябе тут, вяртайся
 
 /kitchen пакарміць 🍩
 /gameroom гуляць 🏓</value>
   </data>
   <data name="ReminderNotifyText3" xml:space="preserve">
-    <value>🐱: Сяджу, сумую...
+    <value>{0}: Сяджу, сумую...
 
 
 /kitchen пакарміць 🍩
@@ -481,7 +482,7 @@
   </data>
   <data name="RandomEventStomachache" xml:space="preserve">
     <value>❤️‍🔥Дапамажыце неадкладна свайму гадаванцу!
-😾:Мой жывоцік вельмі баліць...
+{0}:Мой жывоцік вельмі баліць...
 
 -5% здароўя 💊
 -15% сытасці 🍕
@@ -558,7 +559,7 @@
     <value>Вярнуць гадаванца? 🧬</value>
   </data>
   <data name="PetCameBackText" xml:space="preserve">
-    <value>Пасля доўгіх пошукаў і кучы грошай на дэтэктываў гадаванец знайшоўся! 😺
+    <value>Пасля доўгіх пошукаў і кучы грошай на дэтэктываў гадаванец знайшоўся! {0}
 Ты доўга прасіў прабачэння і абяцаў больш не забываць пра свайго гадаванца 🐣
 Вы абодва памірыліся 💕
 
@@ -593,10 +594,10 @@
 Кошт: {2} золата 💰</value>
   </data>
   <data name="InviteGlobalMultiplayerButton" xml:space="preserve">
-    <value>😺 Завесці свайго Тамагочы</value>
+    <value>{0} Завесці свайго Тамагочы</value>
   </data>
   <data name="InviteReferalMultiplayerButton" xml:space="preserve">
-    <value>🐣 Стаць сябрам для {0}</value>
+    <value>{0} Стаць сябрам для {1}</value>
   </data>
   <data name="InviteGlobalMultiplayerText" xml:space="preserve">
     <value>{0}, у цябе яшчэ няма свайго Тамагочы 🐧</value>
@@ -604,7 +605,7 @@
   <data name="MultiplayerShowPet" xml:space="preserve">
     <value>{8}, вось твой гадаванец
 
-🐱 &lt;b&gt;{0}&lt;/b&gt;
+{9} &lt;b&gt;{0}&lt;/b&gt;
 💊 Здароўе: {1}%
 🍕 Сытасць: {2}%
 🛁 Гігіена: {3}%
@@ -645,13 +646,14 @@
 Даступныя каманды ў чаце:
 /show_pet - паказаць свайго гадаванца 🦁
 /start_duel - пачаць дуэль гадаванцаў ⚔️
-/feed_pet - пакарміць чужога гадаванца 🥞</value>
+/feed_pet - пакарміць чужога гадаванца 🥞
+/ranks - Топ-10 найлепшых 🏆</value>
   </data>
   <data name="petCommandMoreInfo1" xml:space="preserve">
-    <value>🐱 {0}
+    <value>{0} {1}
 
-🎂 Дата нараджэння: {1}
-👫 Рэфералаў: {2}</value>
+🎂 Дата нараджэння: {2}
+👫 Рэфералаў: {3}</value>
   </data>
   <data name="changelogCommand" xml:space="preserve">
     <value>📢💬 Паглядзець і пагаварыць аб абнаўленнях бота можна тут:
@@ -690,14 +692,14 @@ FAQ:
   </data>
   <data name="RandomEventNiceFlower" xml:space="preserve">
     <value>Вы пагулялі па батанічным садзе 🌷🌷🌷
-🐱 Вельмі спадабалася, абавязкова яшчэ сюды вернемся!
+{0}: Вельмі спадабалася, абавязкова яшчэ сюды вернемся!
 
 +10% радасць 🎊
 
 /pet - праверыць стан гадаванца</value>
   </data>
   <data name="RandomEventWatermelon" xml:space="preserve">
-    <value>🐱: Смачны кавун, хачу яшчэ 🍉
+    <value>{0}: Смачны кавун, хачу яшчэ 🍉
 
 +15% сытасці 🍕
 
@@ -711,7 +713,7 @@ FAQ:
 /pet - праверыць стан гадаванца</value>
   </data>
   <data name="BadWordDetected" xml:space="preserve">
-    <value>Гадаванцу не падабаецца яго новае імя 😾
+    <value>Гадаванцу не падабаецца яго новае імя {0}:
 Прапануй іншае ⬇️</value>
   </data>
   <data name="StartDuelMPCommand" xml:space="preserve">
@@ -719,7 +721,8 @@ FAQ:
   </data>
   <data name="DuelMPStartCommand" xml:space="preserve">
     <value>♨️{0} аб'яўляе дуэль гадаванцаў!♨️
-"Мой {1}😼 парве ўсіх як Тузік грэлку! Хто кіне нам выклік?!"</value>
+
+"Мой &lt;i&gt;&lt;b&gt;{2} {1}&lt;/b&gt;&lt;/i&gt; парве ўсіх як Тузік грэлку! Хто кіне нам выклік?!"</value>
   </data>
   <data name="DuelMPAcceptButton" xml:space="preserve">
     <value>⚔️Прыняць выклік</value>
@@ -729,14 +732,14 @@ FAQ:
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕐🟥🟥🟥🟥
 
-{2} 🙀🛡          🗡😼{3}</value>
+{2} {4}🛡                    🗡{5}{3}</value>
   </data>
   <data name="DuelMPFighting2" xml:space="preserve">
     <value>🔰ДУЭЛЬ ПАЧАЛАСЯ🔰
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕒🟥🟥🟥🟥
 
-{2} 🙀🛡        🗡😼{3}
+{2} {4}🛡               🗡{5}{3}
 
 ❕ Гадаванец {3} пачаў атаку на {2}!</value>
   </data>
@@ -745,7 +748,7 @@ FAQ:
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕢🟥🟥🟥🟥
 
-{2} 🙀🛡     🗡😼{3}
+{2} {4}🛡          🗡{5}{3}
 
 ‼️Пітомец {3} ужо зусім блізка да {2}!</value>
   </data>
@@ -754,7 +757,7 @@ FAQ:
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕙🟥🟥🟥🟥
 
-{2} 🙀🛡  🗡😼{3}
+{2} {4}🛡   🗡{5}{3}
 
 💥Пітомец {3} наносіць удар па {2}...</value>
   </data>
@@ -768,14 +771,16 @@ FAQ:
 
 &lt;b&gt;Узнагарода: {4}&lt;/b&gt;💰</value>
   </data>
-  <data name="DuelMPFightingEndingDefenderWin" xml:space="preserve">
-    <value>Гадаванец {1} паслізнуўся і зваліўся на попу прама падчас нападу🧸
-😽{0} перамагае 🥇</value>
+  <data name="DuelMPFightingEnding1" xml:space="preserve">
+    <value>Гадаванец {1}{3} паслізнуўся і зваліўся на попу прама падчас нападу🧸
+
+{2}{0} перамагае 🥇</value>
   </data>
-  <data name="DuelMPFightingEndingAttackerWin" xml:space="preserve">
-    <value>Гадаванец {1} вокамгненна б'е па шчыце💢
-{0} спалохаўся і папрасіў спыніць дуэль🙅‍♂️
-😽{1} перамагае 🥇</value>
+  <data name="DuelMPFightingEnding2" xml:space="preserve">
+    <value>Гадаванец {1}{3} вокамгненна б'е па шчыце💢
+{0}{2} спалохаўся і папрасіў спыніць дуэль🙅‍♂️
+
+{3}{1} перамагае 🥇</value>
   </data>
   <data name="MPNoPetCallbackAlert" xml:space="preserve">
     <value>Каб удзельнічаць трэба завесці гадаванца 🪿</value>
@@ -830,7 +835,7 @@ FAQ:
   </data>
   <data name="FeedMPEndSuccess" xml:space="preserve">
     <value>Гадаванец &lt;b&gt;{0}&lt;/b&gt; з радасцю накінуўся на велізарны бургер 🍔 з бульбай фры 🍟
-😻: &lt;i&gt;Дзякуй вялікі! Я перадам гаспадару, што ў яго выдатны сябар!&lt;/i&gt;
+{2}&lt;b&gt;{3}&lt;/b&gt;: &lt;i&gt;Дзякуй вялікі! Я перадам гаспадару, што ў яго выдатны сябар!&lt;/i&gt;
 
 -{1}💰</value>
   </data>
@@ -979,5 +984,51 @@ https://t.me/newsvirtualpetbot</value>
   </data>
   <data name="petIsBusyForFarm" xml:space="preserve">
     <value>Нельга пайсці на ферму, бо гадаванец заняты 🚫</value>
+  </data>
+  <data name="DuelMPFightingEnding10" xml:space="preserve">
+    <value>Гадаванец {3}{1} паспрабаваў ухіліцца ад нападу, але яго спрыт не выратавала яго ад магутнага ўдару 🥊
+
+Гадаванец {2}{0} перамагае 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding3" xml:space="preserve">
+    <value>Гадаванец {3}{1} смела абараняўся, блакуючы кожны напад сваім шчытом 🛡️
+
+Гадаванец {2}{0} у канчатковым выніку знайшоў шчыліну і атрымаў перамогу 🎉</value>
+  </data>
+  <data name="DuelMPFightingEnding4" xml:space="preserve">
+    <value>Гадаванец {3}{1} вытрымаў серыю магутных удараў,
+але яго сіла пачала згасаць, і ён саступіў перад атакай гадаванца {2}{0}
+
+Гадаванец {2}{0} перамагае 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding5" xml:space="preserve">
+    <value>Гадаванец {2}{0} быў марудлівым, але яго цярпенне і ўстойлівасць дазволілі яму адбіць усе атакі 🛡️
+Гадаванец {3}{1} здаўся, убачыўшы, што яго супернік не саступіць
+
+Гадаванец {2}{0} перамагае 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding6" xml:space="preserve">
+    <value>Гадаванец {3}{1} спалохаўся нападу і замёр на месцы,
+дазваляючы свайму суперніку {2}{0} выйграць бітву 🏁
+
+Гадаванец {2}{0} перамагае 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding7" xml:space="preserve">
+    <value>Гадаванец {3}{1} скакаў з боку ў бок, пазбягаючы кожнага нападу свайго суперніка 🦎
+Аднак гадаванец {2}{0} знайшоў слабое месца і перамог 🎖️
+
+Гадаванец {2}{0} перамагае 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding8" xml:space="preserve">
+    <value>Гадаванец {3}{1} выкарыстаў сваю чароўную сілу, каб стварыць шчыт, які адлюстроўвае напады свайго суперніка {2}{0},
+але стомленасць у выніку прывяла да яго паразы.
+
+Гадаванец {2}{0} перамагае 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding9" xml:space="preserve">
+    <value>Гадаванец {3}{1} нёсся на поўную хуткасць, спрабуючы ўхіліцца ад нападу свайго суперніка {2}{0}
+але ў выніку пацярпеў паражэнне з-за недахопу канцэнтрацыі 🪫
+
+Гадаванец {2}{0} перамагае 🏆</value>
   </data>
 </root>

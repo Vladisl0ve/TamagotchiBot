@@ -33,6 +33,7 @@ namespace TamagotchiBot.UserExtensions
 
         public enum PetType
         {
+            UNKNOWN = -1,
             Cat = 0,
             Dog = 1,
             Mouse = 2,

@@ -129,7 +129,7 @@ Startujemy!</value>
 Po prostu wpisz to tutaj</value>
   </data>
   <data name="petCommand" xml:space="preserve">
-    <value>🐱 {0}
+    <value>{11} {0}
 
 💊 Zdrowie: {1}%
 🍕 Sytość: {4}%
@@ -204,9 +204,9 @@ Nie zapominaj karmić zwierzaka 🐣</value>
     <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺</value>
   </data>
   <data name="sleepCommand" xml:space="preserve">
-    <value>🐱 {0}
-😴 Zmęczenie: {1}%
-⚡️ Status: {2}</value>
+    <value>{0} {1}
+😴 Zmęczenie: {2}%
+⚡️ Status: {3}</value>
   </data>
   <data name="sleepCommandDescription" xml:space="preserve">
     <value>Sypialnia 🛏</value>
@@ -265,7 +265,7 @@ Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
   <data name="hospitalCommandHighHp" xml:space="preserve">
     <value>W zdrowym ciele zdrowy duch 🏄🏄🏻‍♀️🏄
 Zwierzę jest zdrowe w {0}% ❤️‍🔥
-Brawo 😻</value>
+Brawo 🫵</value>
   </data>
   <data name="hospitalCommandMidHp" xml:space="preserve">
     <value>Bezpieczeństwo przede wszystkim 🏥
@@ -295,7 +295,7 @@ Ale radość spadła o {1}%</value>
   </data>
   <data name="menuCommand" xml:space="preserve">
     <value>Akcje ze zwierzakiem:
-/pet - status zwierzaka 🐱
+/pet - status zwierzaka {0}
 /kuchnia - nakarm swojego zwierzaka 🍕
 /work - zarabiać kasę 💰
 /sleep - sypialnia 🧸
@@ -322,17 +322,18 @@ Czekaj na dalsze informacje! 💝</value>
     <value>Dotarłeś do {0}, ale wszystko, co widzisz, to pusty pokój i notatka na stole:
 "Mój ukochany przyjacielu {1}!
 Bardzo miło było spędzić z tobą czas, ale zacząłem się źle czuć.
-Potrzebuję więcej uwagi...😿
+Potrzebuję więcej uwagi...❤️‍🩹
 
 Twój pupil odszedł, bo brakowało mu opieki💔</value>
   </data>
   <data name="EpilogueText" xml:space="preserve">
     <value>Każdemu się to zdarza, ale życie toczy się dalej!
 Może Ci się poszczęści z nowym zwierzakiem 😼
+
 Od początku? 🫶</value>
   </data>
   <data name="ReminderNotifyText1" xml:space="preserve">
-    <value>😺: Wróciłeś!
+    <value>{0}: Wróciłeś!
 Tak bardzo za tobą tęskniłem!
 Chcę jeść 🌭 i bawić się 🪁
 
@@ -363,15 +364,15 @@ Czy możesz ograć swojego zwierzaka i zostawić mu niesmaczny 🍏?</value>
     <value>Zostało {0} jabłek</value>
   </data>
   <data name="appleGameSysEaten" xml:space="preserve">
-    <value>🐱: zjadłem jabłka - {0}</value>
+    <value>{0}: zjadłem jabłka - {1}</value>
   </data>
   <data name="appleGameLoseText" xml:space="preserve">
     <value>Twoje zielone jabłko pozostaje
 
-🐱: Więcej szczęścia następnym razem 😉</value>
+{0}: Więcej szczęścia następnym razem 😉</value>
   </data>
   <data name="appleGameWinText" xml:space="preserve">
-    <value>🐱: Wygrałeś, brawo!</value>
+    <value>{0}: Wygrałeś, brawo!</value>
   </data>
   <data name="appleGameStatisticsCommand" xml:space="preserve">
     <value>📈STATYSTYKI📉
@@ -389,13 +390,13 @@ Poddania: {2}</value>
     <value>Znowu jesteś w pokoju gier ⚽️</value>
   </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
-    <value>🐱: Czekam tu na Ciebie, wróć
+    <value>{0}: Czekam tu na Ciebie, wróć
 
 /kitchen karmić 🍩
 /gameroom bawić się 🏓</value>
   </data>
   <data name="ReminderNotifyText3" xml:space="preserve">
-    <value>🐱: Siedzę, tęsknię...
+    <value>{0}: Siedzę, tęsknię...
 
 /kitchen karmić 🍩
 /gameroom bawić się 🏓</value>
@@ -477,7 +478,7 @@ Odbierz ją wkrótce! 🎁</value>
   </data>
   <data name="RandomEventStomachache" xml:space="preserve">
     <value>❤️‍🔥Pomóż pilnie!
-😾: bardzo boli mnie brzuszek...
+{0}: bardzo boli mnie brzuszek...
 
 -5% zdrowia 💊
 -15% sytości 🍕
@@ -554,7 +555,7 @@ Ale zwierzak przypadkiem wpadł do kałuży 💦
     <value>Chcesz wskrzesić swojego zwierzaka? 🧬</value>
   </data>
   <data name="PetCameBackText" xml:space="preserve">
-    <value>Po długich poszukiwaniach i dużych wydatkach na detektywów zwierzak został odnaleziony! 😺
+    <value>Po długich poszukiwaniach i dużych wydatkach na detektywów zwierzak został odnaleziony! {0}
 Długo prosiłeś o przebaczenie i obiecałeś, że już nigdy nie zapomnisz o swoim pupilu 🐣
 Pogodziliście się 💕
 
@@ -589,10 +590,10 @@ Pogodziliście się 💕
 Cena: {2} złota 💰</value>
   </data>
   <data name="InviteGlobalMultiplayerButton" xml:space="preserve">
-    <value>😺 Zdobądź własne Tamagotchi</value>
+    <value>{0} Zdobądź własne Tamagotchi</value>
   </data>
   <data name="InviteReferalMultiplayerButton" xml:space="preserve">
-    <value>🐣 Zostań przyjacielem dla {0}</value>
+    <value>{0} Zostań przyjacielem dla {1}</value>
   </data>
   <data name="InviteGlobalMultiplayerText" xml:space="preserve">
     <value>{0}, nie masz jeszcze swojego Tamagotchi 🐧</value>
@@ -600,7 +601,7 @@ Cena: {2} złota 💰</value>
   <data name="MultiplayerShowPet" xml:space="preserve">
     <value>{8}, oto twoje zwierzątko
 
-🐱 &lt;b&gt;{0}&lt;/b&gt;
+{9} &lt;b&gt;{0}&lt;/b&gt;
 💊 Zdrowie: {1}%
 🍕 Sytość: {2}%
 🛁 Higiena: {3}%
@@ -641,13 +642,14 @@ Bot 🐾 Tamagotchi | Wirtualny zwierzak 🐾 zapewnia możliwość posiadania w
 Dostępne polecenia na czacie:
 /show_pet - pokaż swojego zwierzaka 🦁
 /start_duel - rozpocznij pojedynek zwierzaka ⚔️
-/feed_pet - nakarm cudzego zwierzaka 🥞</value>
+/feed_pet - nakarm cudzego zwierzaka 🥞
+/ranks - Top-10 najlepszych 🏆</value>
   </data>
   <data name="petCommandMoreInfo1" xml:space="preserve">
-    <value>🐱{0}
+    <value>{0} {1}
 
-🎂 Data urodzenia: {1}
-👫 Polecenia: {2}</value>
+🎂 Data urodzenia: {2}
+👫 Polecenia: {3}</value>
   </data>
   <data name="changelogCommand" xml:space="preserve">
     <value>📢💬 Tutaj możesz przeglądać i omawiać aktualizacje botów:
@@ -686,14 +688,14 @@ Dlatego częściej odwiedzaj swojego wirtualnego przyjaciela 🧸
   </data>
   <data name="RandomEventNiceFlower" xml:space="preserve">
     <value>Wybraliście się na spacer po ogrodzie botanicznym 🌷🌷🌷
-🐱 Bardzo mi się podobało, na pewno tu wrócimy!
+{0}: Bardzo mi się podobało, na pewno tu wrócimy!
 
 +10% radości 🎊
 
 /pet - sprawdza status zwierzaka</value>
   </data>
   <data name="RandomEventWatermelon" xml:space="preserve">
-    <value>🐱: Pyszny arbuz, chcę więcej 🍉
+    <value>{0}: Pyszny arbuz, chcę więcej 🍉
 
 +15% sytości 🍕
 
@@ -707,7 +709,7 @@ Dlatego częściej odwiedzaj swojego wirtualnego przyjaciela 🧸
 /pet - sprawdza status zwierzaka</value>
   </data>
   <data name="BadWordDetected" xml:space="preserve">
-    <value>Zwierzak nie lubi swojego nowego imienia 😾
+    <value>Zwierzak nie lubi swojego nowego imienia {0}:
 Zaproponuj coś innego ⬇️</value>
   </data>
   <data name="StartDuelMPCommand" xml:space="preserve">
@@ -715,7 +717,8 @@ Zaproponuj coś innego ⬇️</value>
   </data>
   <data name="DuelMPStartCommand" xml:space="preserve">
     <value>♨️{0} ogłasza pojedynek zwierzaków!♨️
-„Mój {1}😼 rozerwie wszystkich na strzępy jak Tuzik termofor! Kto nam rzuci wyzwanie?!”</value>
+
+„Mój &lt;i&gt;&lt;b&gt;{2} {1}&lt;/b&gt;&lt;/i&gt; rozerwie wszystkich na strzępy jak Tuzik termofor! Kto nam rzuci wyzwanie?!”</value>
   </data>
   <data name="DuelMPAcceptButton" xml:space="preserve">
     <value>⚔️Podejmij wyzwanie</value>
@@ -725,14 +728,14 @@ Zaproponuj coś innego ⬇️</value>
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕐🟥🟥🟥🟥
 
-{2} 🙀🛡          🗡😼{3}</value>
+{2} {4}🛡                    🗡{5}{3}</value>
   </data>
   <data name="DuelMPFighting2" xml:space="preserve">
     <value>🔰ROZPOCZĄŁ SIĘ POJEDYNEK🔰
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕒🟥🟥🟥🟥
 
-{2} 🙀🛡        🗡😼{3}
+{2} {4}🛡               🗡{5}{3}
 
 ❕Zwierzak {3} zaczął atakować {2}!</value>
   </data>
@@ -741,7 +744,7 @@ Zaproponuj coś innego ⬇️</value>
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕢🟥🟥🟥🟥
 
-{2} 🙀🛡     🗡😼{3}
+{2} {4}🛡          🗡{5}{3}
 
 ‼️Zwierzak {3} jest już bardzo blisko {2}!</value>
   </data>
@@ -750,7 +753,7 @@ Zaproponuj coś innego ⬇️</value>
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕙🟥🟥🟥🟥
 
-{2} 🙀🛡  🗡😼{3}
+{2} {4}🛡   🗡{5}{3}
 
 💥Zwierzak {3} uderza {2}...</value>
   </data>
@@ -764,14 +767,16 @@ Zaproponuj coś innego ⬇️</value>
 
 &lt;b&gt;Nagroda: {4}&lt;/b&gt;💰</value>
   </data>
-  <data name="DuelMPFightingEndingDefenderWin" xml:space="preserve">
-    <value>Zwierzę {1} poślizgnęło się i upadło na tyłek podczas ataku🧸
-😽{0} wygrywa 🥇</value>
+  <data name="DuelMPFightingEnding1" xml:space="preserve">
+    <value>Zwierzę {1}{3} poślizgnęło się i upadło na tyłek podczas ataku🧸
+
+{2}{0} wygrywa 🥇</value>
   </data>
-  <data name="DuelMPFightingEndingAttackerWin" xml:space="preserve">
-    <value>Zwierzak {1} uderza w tarczę z szybkością błyskawicy💢
-{0} przestraszył się i poprosił o przerwanie pojedynku🙅‍♂️
-😽{1} wygrywa 🥇</value>
+  <data name="DuelMPFightingEnding2" xml:space="preserve">
+    <value>Zwierzak {1}{3} uderza w tarczę z szybkością błyskawicy💢
+{0}{2} przestraszył się i poprosił o przerwanie pojedynku🙅‍♂️
+
+{3}{1} wygrywa 🥇</value>
   </data>
   <data name="MPNoPetCallbackAlert" xml:space="preserve">
     <value>Aby wziąć udział musisz mieć zwierzaka 🪿</value>
@@ -826,7 +831,7 @@ Poczekaj jeszcze {2}🕑, zanim będziesz mógł ponownie nakarmić zwierzaka</v
   </data>
   <data name="FeedMPEndSuccess" xml:space="preserve">
     <value>Zwierzak &lt;b&gt;{0}&lt;/b&gt; z radością rzucił się na ogromnego burgera 🍔 z frytkami 🍟
-😻: &lt;i&gt;Dziękuję bardzo! Powiem właścicielowi, że ma świetnego przyjaciela!&lt;/i&gt;
+{2}&lt;b&gt;{3}&lt;/b&gt;: &lt;i&gt;Dziękuję bardzo! Powiem właścicielowi, że ma świetnego przyjaciela!&lt;/i&gt;
 
 -{1}💰</value>
   </data>
@@ -975,5 +980,51 @@ A ogon jest niezwykły...</value>
   </data>
   <data name="petIsBusyForFarm" xml:space="preserve">
     <value>Nie możesz iść na farmę, bo zwierzak jest zajęty 🚫</value>
+  </data>
+  <data name="DuelMPFightingEnding10" xml:space="preserve">
+    <value>Zwierzak {3}{1} próbował uniknąć ataku, ale jego zwinność nie była w stanie uchronić go przed potężnym ciosem 🥊
+
+Zwierzak {2}{0} wygrywa 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding3" xml:space="preserve">
+    <value>Zwierzak {3}{1} dzielnie się bronił, blokując tarczą każdy atak 🛡️
+
+Pet {2}{0} w końcu znalazł przewagę i wygrał 🎉</value>
+  </data>
+  <data name="DuelMPFightingEnding4" xml:space="preserve">
+    <value>Zwierzak {3}{1} wytrzymał serię potężnych ciosów,
+ale jego siły zaczęły słabnąć i uległ atakowi swojego zwierzaka {2}{0}
+
+Zwierzak {2}{0} wygrywa 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding5" xml:space="preserve">
+    <value>Zwierzak {2}{0} był powolny, ale jego cierpliwość i odporność pozwoliły mu odeprzeć wszystkie ataki 🛡️
+Pet {3}{1} poddał się, gdy zobaczył, że jego przeciwnik nie ustąpi
+
+Zwierzak {2}{0} wygrywa 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding6" xml:space="preserve">
+    <value>Zwierzak {3}{1} przestraszył się ataku i zamarł w miejscu,
+pozwalając swojemu przeciwnikowi {2}{0} wygrać bitwę 🏁
+
+Zwierzak {2}{0} wygrywa 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding7" xml:space="preserve">
+    <value>Zwierzak {3}{1} skakał z boku na bok, unikając każdego ataku przeciwnika 🦎
+Jednak zwierzak {2}{0} znalazł słaby punkt i wygrał 🎖️
+
+Zwierzak {2}{0} wygrywa 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding8" xml:space="preserve">
+    <value>Zwierzak {3}{1} użył swoich magicznych mocy, aby stworzyć tarczę, która odpiera ataki przeciwnika {2}{0},
+ale zmęczenie ostatecznie doprowadziło do jego porażki.
+
+Zwierzak {2}{0} wygrywa 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding9" xml:space="preserve">
+    <value>Zwierzak {3}{1} biegł na pełnych obrotach, próbując uniknąć ataku przeciwnika {2}{0}
+ale ostatecznie został pokonany przez brak koncentracji 🪫
+
+Zwierzak {2}{0} wygrywa 🏆</value>
   </data>
 </root>

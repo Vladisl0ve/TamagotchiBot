@@ -17,6 +17,7 @@ using Extensions = TamagotchiBot.UserExtensions.Extensions;
 using User = TamagotchiBot.Models.Mongo.User;
 using static TamagotchiBot.Resources.Resources;
 using static TamagotchiBot.UserExtensions.CallbackButtons;
+using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.Controllers
 {
@@ -29,10 +30,12 @@ namespace TamagotchiBot.Controllers
         private readonly long _chatId;
         private readonly int? _msgThreadId;
         private readonly CultureInfo _userCulture;
+        private readonly PetType _userPetType;
 
         private readonly string _chatName;
         private readonly string _userName;
         private readonly string _userLogInfo;
+        private readonly string _userPetEmoji;
 
         public MultiplayerController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
         {
@@ -49,6 +52,8 @@ namespace TamagotchiBot.Controllers
             _userLogInfo = Extensions.GetLogUser(_appServices.UserService.Get(_userId) ?? new User() { UserId = _userId });
 
             _userCulture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
+            _userPetType = Extensions.GetEnumPetType(_appServices.PetService.Get(_userId)?.Type ?? -1);
+            _userPetEmoji = Extensions.GetTypeEmoji(_userPetType);
         }
         public async Task CommandHandler(string botUsername, string customText = null)
         {
@@ -229,13 +234,22 @@ namespace TamagotchiBot.Controllers
                 var personalLinkDuelAccepted = Extensions.GetPersonalLink(_userId, _userName);
                 var petAttackerName = "<b>" + HttpUtility.HtmlEncode(petAttacker?.Name ?? "attacker") + "</b>";
                 var petDefenderName = "<b>" + HttpUtility.HtmlEncode(petDefender?.Name ?? "defender") + "</b>";
+                var petDefenderEmoji = Extensions.GetTypeEmoji(petDefender?.Type ?? -1);
+                var petAttackerEmoji = Extensions.GetTypeEmoji(petAttacker?.Type ?? -1);
 
                 var userDBCreator = _appServices.UserService.Get(duelCreatorId);
                 AnswerMessage answerMessage = new AnswerMessage()
                 {
                     StickerId = Constants.StickersId.MPDuelStarted,
                     ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                    Text = string.Format(nameof(DuelMPFighting1).UseCulture(_userCulture), personalLinkCreatorDuel, personalLinkDuelAccepted, petDefenderName, petAttackerName),
+                    Text = string.Format(
+                        nameof(DuelMPFighting1).UseCulture(_userCulture),
+                        personalLinkCreatorDuel,
+                        personalLinkDuelAccepted,
+                        petDefenderName,
+                        petAttackerName,
+                        petDefenderEmoji,
+                        petAttackerEmoji),
                     msgThreadId = _msgThreadId
                 };
 
@@ -248,23 +262,43 @@ namespace TamagotchiBot.Controllers
                 }
 
                 await Task.Delay(3000);
-                var fight2 = string.Format(nameof(DuelMPFighting2).UseCulture(_userCulture), personalLinkCreatorDuel, personalLinkDuelAccepted, petDefenderName, petAttackerName);
+                var fight2 = string.Format(
+                    nameof(DuelMPFighting2).UseCulture(_userCulture),
+                    personalLinkCreatorDuel,
+                    personalLinkDuelAccepted,
+                    petDefenderName,
+                    petAttackerName,
+                    petDefenderEmoji,
+                    petAttackerEmoji);
                 await _appServices.BotControlService.EditMessageTextAsync(_chatId, fightingMsg.MessageId, fight2, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
 
                 await Task.Delay(2000);
-                var fight3 = string.Format(nameof(DuelMPFighting3).UseCulture(_userCulture), personalLinkCreatorDuel, personalLinkDuelAccepted, petDefenderName, petAttackerName);
+                var fight3 = string.Format(
+                    nameof(DuelMPFighting3).UseCulture(_userCulture),
+                    personalLinkCreatorDuel,
+                    personalLinkDuelAccepted,
+                    petDefenderName,
+                    petAttackerName,
+                    petDefenderEmoji,
+                    petAttackerEmoji);
                 await _appServices.BotControlService.EditMessageTextAsync(_chatId, fightingMsg.MessageId, fight3, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
 
                 await Task.Delay(2000);
-                var fight4 = string.Format(nameof(DuelMPFighting4).UseCulture(_userCulture), personalLinkCreatorDuel, personalLinkDuelAccepted, petDefenderName, petAttackerName);
+                var fight4 = string.Format(nameof(DuelMPFighting4).UseCulture(_userCulture),
+                    personalLinkCreatorDuel,
+                    personalLinkDuelAccepted,
+                    petDefenderName,
+                    petAttackerName,
+                    petDefenderEmoji,
+                    petAttackerEmoji);
                 await _appServices.BotControlService.EditMessageTextAsync(_chatId, fightingMsg.MessageId, fight4, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
 
                 await Task.Delay(2000);
                 var random = new Random();
                 bool isDefenderWin = random.Next(2) == 1;
                 string fightingEndExplanation = isDefenderWin
-                    ? string.Format(nameof(DuelMPFightingEndingDefenderWin).UseCulture(_userCulture), petDefenderName, petAttackerName)
-                    : string.Format(nameof(DuelMPFightingEndingAttackerWin).UseCulture(_userCulture), petDefenderName, petAttackerName);
+                    ? RandomDuelEndExplanation(petDefenderName, petAttackerName, petDefenderEmoji, petAttackerEmoji)
+                    : RandomDuelEndExplanation(petAttackerName, petDefenderName, petAttackerEmoji, petDefenderEmoji);
                 string ownerWinnerName = isDefenderWin ? personalLinkCreatorDuel : personalLinkDuelAccepted;
                 if (isDefenderWin)
                 {
@@ -301,7 +335,13 @@ namespace TamagotchiBot.Controllers
                     _appServices.MetaUserService.UpdateNextPossibleDuelTime(userDBCreator.UserId, DateTime.UtcNow + Constants.TimesToWait.DuelCDToWait);
                 }
 
-                var fightEnd = string.Format(nameof(DuelMPFightingEnd).UseCulture(_userCulture), personalLinkCreatorDuel, personalLinkDuelAccepted, ownerWinnerName, fightingEndExplanation, Constants.Rewards.WonDuel);
+                var fightEnd = string.Format(
+                    nameof(DuelMPFightingEnd).UseCulture(_userCulture),
+                    personalLinkCreatorDuel,
+                    personalLinkDuelAccepted,
+                    ownerWinnerName,
+                    fightingEndExplanation,
+                    Constants.Rewards.WonDuel);
                 await _appServices.BotControlService.EditMessageTextAsync(_chatId, fightingMsg.MessageId, fightEnd, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
             }
             async Task ShowRanks(bool isGlobal = false)
@@ -337,7 +377,80 @@ namespace TamagotchiBot.Controllers
 
             }
         }
-
+        private string RandomDuelEndExplanation(string winnerName, string loserName, string emojiWinner, string emojiLoser)
+        {
+            int rand = new Random().Next(11);
+            try
+            {
+                return rand switch
+                {
+                    0 => string.Format(nameof(DuelMPFightingEnding1).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    1 => string.Format(nameof(DuelMPFightingEnding2).UseCulture(_userCulture),
+                    loserName,
+                    winnerName,
+                    emojiLoser,
+                    emojiWinner),
+                    2 => string.Format(nameof(DuelMPFightingEnding3).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    3 => string.Format(nameof(DuelMPFightingEnding4).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    4 => string.Format(nameof(DuelMPFightingEnding5).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    5 => string.Format(nameof(DuelMPFightingEnding6).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    6 => string.Format(nameof(DuelMPFightingEnding7).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    7 => string.Format(nameof(DuelMPFightingEnding8).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    8 => string.Format(nameof(DuelMPFightingEnding9).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    9 => string.Format(nameof(DuelMPFightingEnding10).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    _ => string.Format(nameof(DuelMPFightingEnding1).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser)
+                };
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal("Duel string proebal!", ex);
+                return string.Format(nameof(DuelMPFightingEnding1).UseCulture(_userCulture),
+                winnerName,
+                loserName,
+                emojiWinner,
+                emojiLoser);
+            }
+        }
         public async Task SendInviteForUnregistered()
         {
             string toSendText = string.Format(nameof(InviteGlobalMultiplayerText).UseCulture(_userCulture), "`personalLink`");
@@ -461,7 +574,7 @@ namespace TamagotchiBot.Controllers
                         customCallback
                     }),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                Text = string.Format(nameof(DuelMPStartCommand).UseCulture(_userCulture), personalLink, petDB?.Name),
+                Text = string.Format(nameof(DuelMPStartCommand).UseCulture(_userCulture), personalLink, HttpUtility.HtmlEncode(petDB?.Name), Extensions.GetLongTypeEmoji(_userPetType, _userCulture)),
                 msgThreadId = _msgThreadId
             };
 
@@ -498,7 +611,8 @@ namespace TamagotchiBot.Controllers
                                                   petDB.Joy,
                                                   petDB.Level,
                                                   userDB.Gold,
-                                                  "`personalLink`");
+                                                  "`personalLink`",
+                                                  Extensions.GetLongTypeEmoji(_userPetType, _userCulture));
 
             toSendText = toSendText.Replace("`personalLink`", Extensions.GetPersonalLink(_userId, _userName));
 
@@ -592,7 +706,12 @@ namespace TamagotchiBot.Controllers
 
             await _appServices.BotControlService.SendAnswerMessageGroupAsync(new AnswerMessage()
             {
-                Text = string.Format(nameof(FeedMPEndSuccess).UseCulture(_userCulture), HttpUtility.HtmlEncode(petToFeedDB.Name), Constants.Costs.FeedMP),
+                Text = string.Format(
+                    nameof(FeedMPEndSuccess).UseCulture(_userCulture),
+                    HttpUtility.HtmlEncode(petToFeedDB.Name),
+                    Constants.Costs.FeedMP,
+                    Extensions.GetTypeEmoji(petToFeedDB.Type),
+                    HttpUtility.HtmlEncode(petToFeedDB.Name)),
                 replyToMsgId = _message.MessageId,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
                 msgThreadId = _msgThreadId,

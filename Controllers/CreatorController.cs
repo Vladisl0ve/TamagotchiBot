@@ -416,9 +416,10 @@ namespace TamagotchiBot.Controllers
                 || badWordsDB.Contains(_message.Text.ToUpper()))
             {
                 Log.Debug($"Bad word detected: {_message.Text}");
+                var emoji = Extensions.GetTypeEmoji(_appServices.PetService.Get(_userId)?.Type ?? -1);
                 var toSend = new AnswerMessage()
                 {
-                    Text = nameof(BadWordDetected).UseCulture(_userCulture),
+                    Text = string.Format(nameof(BadWordDetected).UseCulture(_userCulture), emoji),
                     StickerId = StickersId.PetDoesntLikeNameSticker
                 };
                 await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -486,7 +487,7 @@ namespace TamagotchiBot.Controllers
 
             var toSend = new AnswerMessage()
             {
-                Text = nameof(PetCameBackText).UseCulture(_userCulture),
+                Text = string.Format(nameof(PetCameBackText).UseCulture(_userCulture), Extensions.GetTypeEmoji(petDB.Type)),
                 StickerId = StickersId.ResurrectedPetSticker,
                 ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
             };

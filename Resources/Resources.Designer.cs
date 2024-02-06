@@ -83,7 +83,7 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Your green apple remains
         ///
-        ///🐱: Better luck next time 😉.
+        ///{0}: Better luck next time 😉.
         /// </summary>
         public static string appleGameLoseText {
             get {
@@ -104,7 +104,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🐱: I ate apples - {0}.
+        ///   Looks up a localized string similar to {0}: I ate apples - {1}.
         /// </summary>
         public static string appleGameSysEaten {
             get {
@@ -122,7 +122,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🐱: You won, well done!.
+        ///   Looks up a localized string similar to {0}: You won, well done!.
         /// </summary>
         public static string appleGameWinText {
             get {
@@ -150,7 +150,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pet doesn&apos;t like his new name 😾
+        ///   Looks up a localized string similar to Pet doesn&apos;t like his new name {0}:
         ///Suggest something else ⬇️.
         /// </summary>
         public static string BadWordDetected {
@@ -502,7 +502,7 @@ namespace TamagotchiBot.Resources {
         ///{0} ⚔️ {1}
         ///🟥🟥🟥🟥🕐🟥🟥🟥🟥
         ///
-        ///{2} 🙀🛡          🗡😼{3}.
+        ///{2} {4}🛡                    🗡{5}{3}.
         /// </summary>
         public static string DuelMPFighting1 {
             get {
@@ -514,7 +514,8 @@ namespace TamagotchiBot.Resources {
         ///   Looks up a localized string similar to 🔰THE DUEL HAS BEGAN🔰
         ///{0} ⚔️ {1}
         ///🟥🟥🟥🟥🕒🟥🟥🟥🟥
-        ///{2} 🙀🛡        🗡😼{3}
+        ///
+        ///{2} {4}🛡               🗡{5}{3}
         ///
         ///❕Pet {3} started attacking {2}!.
         /// </summary>
@@ -529,7 +530,7 @@ namespace TamagotchiBot.Resources {
         ///{0} ⚔️ {1}
         ///🟥🟥🟥🟥🕢🟥🟥🟥🟥
         ///
-        ///{2} 🙀🛡     🗡😼{3}
+        ///{2} {4}🛡          🗡{5}{3}
         ///
         ///‼️Pet {3} is already very close to {2}!.
         /// </summary>
@@ -544,7 +545,7 @@ namespace TamagotchiBot.Resources {
         ///{0} ⚔️ {1}
         ///🟥🟥🟥🟥🕙🟥🟥🟥🟥
         ///
-        ///{2} 🙀🛡  🗡😼{3}
+        ///{2} {4}🛡   🗡{5}{3}
         ///
         ///💥Pet {3} hits {2}....
         /// </summary>
@@ -571,29 +572,126 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pet {1} hits the shield with lightning speed💢
-        ///{0} got scared and asked to stop the duel🙅‍♂️
-        ///😽{1} wins 🥇.
+        ///   Looks up a localized string similar to Pet {1}{3} slipped and fell on his butt during an attack🧸
+        ///
+        ///{2}{0} wins 🥇.
         /// </summary>
-        public static string DuelMPFightingEndingAttackerWin {
+        public static string DuelMPFightingEnding1 {
             get {
-                return ResourceManager.GetString("DuelMPFightingEndingAttackerWin", resourceCulture);
+                return ResourceManager.GetString("DuelMPFightingEnding1", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pet {1} slipped and fell on his butt during an attack🧸
-        ///😽{0} wins 🥇.
+        ///   Looks up a localized string similar to Pet {3}{1} tried to dodge the attack, but his agility could not save him from a powerful blow 🥊
+        ///
+        ///Pet {2}{0} wins 🏆.
         /// </summary>
-        public static string DuelMPFightingEndingDefenderWin {
+        public static string DuelMPFightingEnding10 {
             get {
-                return ResourceManager.GetString("DuelMPFightingEndingDefenderWin", resourceCulture);
+                return ResourceManager.GetString("DuelMPFightingEnding10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet {1}{3} hits the shield with lightning speed💢
+        ///{0}{2} got scared and asked to stop the duel🙅‍♂️
+        ///
+        ///{3}{1} wins 🥇.
+        /// </summary>
+        public static string DuelMPFightingEnding2 {
+            get {
+                return ResourceManager.GetString("DuelMPFightingEnding2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet {3}{1} bravely defended himself, blocking every attack with his shield 🛡️
+        ///
+        ///Pet {2}{0} eventually found the gap and won 🎉.
+        /// </summary>
+        public static string DuelMPFightingEnding3 {
+            get {
+                return ResourceManager.GetString("DuelMPFightingEnding3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet {3}{1} withstood a series of powerful blows,
+        ///but his strength began to fade and he succumbed to the attack of his pet {2}{0}
+        ///
+        ///Pet {2}{0} wins 🏆.
+        /// </summary>
+        public static string DuelMPFightingEnding4 {
+            get {
+                return ResourceManager.GetString("DuelMPFightingEnding4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet {2}{0} was slow, but his patience and resilience allowed him to repel all attacks 🛡️
+        ///Pet {3}{1} surrendered after seeing that his opponent would not yield
+        ///
+        ///Pet {2}{0} wins 🏆.
+        /// </summary>
+        public static string DuelMPFightingEnding5 {
+            get {
+                return ResourceManager.GetString("DuelMPFightingEnding5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet {3}{1} was afraid of the attack and froze in place,
+        ///allowing your opponent {2}{0} to win the battle 🏁
+        ///
+        ///Pet {2}{0} wins 🏆.
+        /// </summary>
+        public static string DuelMPFightingEnding6 {
+            get {
+                return ResourceManager.GetString("DuelMPFightingEnding6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet {3}{1} jumped from side to side, avoiding every attack of its opponent 🦎
+        ///However, pet {2}{0} found a weak spot and won 🎖️
+        ///
+        ///Pet {2}{0} wins 🏆.
+        /// </summary>
+        public static string DuelMPFightingEnding7 {
+            get {
+                return ResourceManager.GetString("DuelMPFightingEnding7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet {3}{1} used its magical powers to create a shield that repelled attacks from its opponent {2}{0},
+        ///but fatigue ultimately led to his defeat.
+        ///
+        ///Pet {2}{0} wins 🏆.
+        /// </summary>
+        public static string DuelMPFightingEnding8 {
+            get {
+                return ResourceManager.GetString("DuelMPFightingEnding8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet {3}{1} ran at full speed, trying to dodge his opponent&apos;s attack {2}{0}
+        ///but in the end he was defeated due to lack of concentration 🪫
+        ///
+        ///Pet {2}{0} wins 🏆.
+        /// </summary>
+        public static string DuelMPFightingEnding9 {
+            get {
+                return ResourceManager.GetString("DuelMPFightingEnding9", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to ♨️{0} announces a pet duel!♨️
-        ///&quot;My {1}😼 kicks ass and takes names! Who will challenge us?!&quot;.
+        ///
+        ///&quot;My &lt;i&gt;&lt;b&gt;{2} {1}&lt;/b&gt;&lt;/i&gt; kicks ass and takes names! Who will challenge us?!&quot;.
         /// </summary>
         public static string DuelMPStartCommand {
             get {
@@ -616,6 +714,7 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to It happens to everyone, but life goes on!
         ///Maybe you&apos;ll be lucky with a new pet 😼
+        ///
         ///Try again? 🫶.
         /// </summary>
         public static string EpilogueText {
@@ -628,7 +727,7 @@ namespace TamagotchiBot.Resources {
         ///   Looks up a localized string similar to You have come to {0}, but all you see is an empty room and a note on the table:
         ///&quot;My beloved friend {1}!
         ///It was very nice to spend time with you, but I&apos;ve started feel not good.
-        ///You should have kept an eye on me...😿&quot;
+        ///You should have kept an eye on me...❤️‍🩹&quot;
         ///
         ///Your pet left because he lacked care 💔.
         /// </summary>
@@ -722,7 +821,7 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Pet &lt;b&gt;{0}&lt;/b&gt; happily pounced on a huge burger 🍔 with fries 🍟
-        ///😻: &lt;i&gt;Thank you very much! I&apos;ll tell the owner that he has a great friend!&lt;/i&gt;
+        ///{2}&lt;b&gt;{3}&lt;/b&gt;: &lt;i&gt;Thank you very much! I&apos;ll tell the owner that he has a great friend!&lt;/i&gt;
         ///
         ///-{1}💰.
         /// </summary>
@@ -896,7 +995,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 😺 Get your own Tamagotchi.
+        ///   Looks up a localized string similar to {0} Get your own Tamagotchi.
         /// </summary>
         public static string InviteGlobalMultiplayerButton {
             get {
@@ -914,7 +1013,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🐣 Become a friend for {0}.
+        ///   Looks up a localized string similar to {0} Become a friend for {1}.
         /// </summary>
         public static string InviteReferalMultiplayerButton {
             get {
@@ -960,7 +1059,7 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to What to do with pet:
-        ////pet - pet&apos;s status 🐱
+        ////pet - pet&apos;s status {0}
         ////kitchen - feed your pet 🍕
         ////work - to earn more gold 💰
         ////sleep - bedroom 🧸
@@ -977,7 +1076,7 @@ namespace TamagotchiBot.Resources {
         ////language - language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺
         ////help - FAQ 🆘
         ///
-        ///There w [rest of string was truncated]&quot;;.
+        ///There  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string menuCommand {
             get {
@@ -1015,7 +1114,7 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to {8}, here is your pet
         ///
-        ///🐱 &lt;b&gt;{0}&lt;/b&gt;
+        ///{9} &lt;b&gt;{0}&lt;/b&gt;
         ///💊 Health: {1}%
         ///🍕 Satiety: {2}%
         ///🛁 Hygiene: {3}%
@@ -1139,7 +1238,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to After a long search and a lot of money for detectives, the pet was found! 😺
+        ///   Looks up a localized string similar to After a long search and a lot of money for detectives, the pet was found! {0}
         ///You asked for forgiveness for a long time and promised not to forget about your pet again 🐣
         ///You both reconciled 💕
         ///
@@ -1152,7 +1251,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🐱 {0}
+        ///   Looks up a localized string similar to {11} {0}
         ///
         ///💊 HP: {1}%
         ///🍕 Satiety: {4}%
@@ -1202,10 +1301,10 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🐱 {0}
+        ///   Looks up a localized string similar to {0} {1}
         ///
-        ///🎂 Date of birth: {1}
-        ///👫 Referrals: {2}.
+        ///🎂 Date of birth: {2}
+        ///👫 Referrals: {3}.
         /// </summary>
         public static string petCommandMoreInfo1 {
             get {
@@ -1215,7 +1314,7 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Your pet has been cured on {0}% 🌡
-        ///But joy decreased on {1}%.
+        ///🧸 But joy decreased on {1}%.
         /// </summary>
         public static string PetCuringAnwserCallback {
             get {
@@ -1379,7 +1478,7 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to You took a walk through the botanical garden 🌷🌷🌷
-        ///🐱 I liked it very much, we will definitely come back here!
+        ///{0}: I liked it very much, we will definitely come back here!
         ///
         ///+10% joy 🎊
         ///
@@ -1433,7 +1532,7 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to ❤️‍🔥Help your pet urgently!
-        ///😾: my tummy hurts very much...
+        ///{0}: my tummy hurts very much...
         ///
         ///-5% health 💊
         ///-15% satiety 🍕
@@ -1447,7 +1546,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🐱: Delicious watermelon, I want more 🍉
+        ///   Looks up a localized string similar to {0}: Delicious watermelon, I want more 🍉
         ///
         ///+15% satiety 🍕
         ///
@@ -1559,7 +1658,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 😺: You&apos;ve come back!
+        ///   Looks up a localized string similar to {0}: You&apos;ve come back!
         ///I&apos;ve missed you so much!
         ///I want to eat 🌭 and play with you 🪁
         ///
@@ -1573,7 +1672,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🐱: Waiting for you here, come back
+        ///   Looks up a localized string similar to {0}: Waiting for you here, come back
         ///
         ////kitchen to feed 🍩
         ////gameroom for games 🏓.
@@ -1585,7 +1684,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🐱: Sadness to be alone...
+        ///   Looks up a localized string similar to {0}: Sadness to be alone...
         ///
         ////kitchen to feed 🍩
         ////gameroom for games 🏓.
@@ -1776,7 +1875,8 @@ namespace TamagotchiBot.Resources {
         ///Available commands in chat:
         ////show_pet - show your pet 🦁
         ////start_duel - start a pet duel ⚔️
-        ////feed_pet - feed someone else’s pet 🥞.
+        ////feed_pet - feed someone else’s pet 🥞
+        ////ranks - Top-10 of Best 🏆.
         /// </summary>
         public static string ShowWelcomeMessageMultiplayer {
             get {
@@ -1785,9 +1885,9 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🐱 {0}
-        ///😴 Fatigue: {1}%
-        ///⚡️ Status: {2}.
+        ///   Looks up a localized string similar to {0} {1}
+        ///😴 Fatigue: {2}%
+        ///⚡️ Status: {3}.
         /// </summary>
         public static string sleepCommand {
             get {

@@ -276,14 +276,18 @@ namespace TamagotchiBot.Controllers
                     break;
             }
 
-            textToSay += $"{string.Format(nameof(appleGameSysEaten).UseCulture(_userCulture), systemRemove)}";
+            textToSay += $"{string.Format(
+                nameof(appleGameSysEaten).UseCulture(_userCulture),
+                Extensions.GetTypeEmoji(petDB.Type),
+                systemRemove
+                )}";
 
             textToSay += $"\n\n{ApplesIcons}\n";
 
             switch (AppleCounter)
             {
                 case 1 when systemRemove != 0:
-                    textToSay += nameof(appleGameLoseText).UseCulture(_userCulture);
+                    textToSay += string.Format(nameof(appleGameLoseText).UseCulture(_userCulture), Extensions.GetTypeEmoji(petDB.Type));
                     appleDataToUpdate.TotalLoses += 1;
                     appleDataToUpdate.IsGameOvered = true;
 
@@ -300,7 +304,7 @@ namespace TamagotchiBot.Controllers
 
                     break;
                 case 1 when systemRemove == 0:
-                    textToSay += nameof(appleGameWinText).UseCulture(_userCulture);
+                    textToSay += string.Format(nameof(appleGameWinText).UseCulture(_userCulture), Extensions.GetTypeEmoji(petDB.Type));
                     appleDataToUpdate.TotalWins += 1;
                     appleDataToUpdate.IsGameOvered = true;
 

@@ -22,7 +22,7 @@ namespace TamagotchiBot.Services.Mongo
         public DailyInfo Get(DateTime dateIndex) => _dailyInfo.Find(x => x.DateInfo == dateIndex).FirstOrDefault();
         public List<DailyInfo> GetAll() => _dailyInfo.Find(x => true).ToList();
         public DailyInfo GetToday() => GetAll().Find(x => x.DateInfo.Date == DateTime.UtcNow.Date);
-        public DailyInfo GetPreviousDay() => GetAll().OrderByDescending(di => di.DateInfo).FirstOrDefault();
+        public DailyInfo GetPreviousDay() => GetAll().Find(d => d.DateInfo.Date < DateTime.UtcNow.Date);
 
         public void Create(DailyInfo dateIndex)
         {

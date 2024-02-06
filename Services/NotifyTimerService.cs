@@ -13,6 +13,7 @@ using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
+using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.Services
 {
@@ -472,7 +473,7 @@ namespace TamagotchiBot.Services
                 var user = _appServices.UserService.Get(pet.UserId);
                 if (user == null)
                 {
-                    Log.Fatal($"USER NOT FOUND ON RANOM EVENT {pet.UserId}");
+                    Log.Fatal($"USER NOT FOUND ON RANDOM EVENT {pet.UserId}");
                     continue;
                 }
 
@@ -590,7 +591,7 @@ namespace TamagotchiBot.Services
             var toSend = new AnswerMessage()
             {
                 StickerId = Constants.StickersId.RandomEventStomachache,
-                Text = nameof(Resources.Resources.RandomEventStomachache).UseCulture(user.Culture)
+                Text = string.Format(nameof(Resources.Resources.RandomEventStomachache).UseCulture(user.Culture), Extensions.GetTypeEmoji(petDB.Type)),
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
@@ -655,14 +656,15 @@ namespace TamagotchiBot.Services
         private async Task RandomEventNotify(Models.Mongo.User user)
         {
             int rand = new Random().Next(3);
+            var emoji = Extensions.GetTypeEmoji(_appServices.PetService.Get(user.UserId)?.Type ?? -1);
             var notifyText = new List<string>()
                 {
-                    nameof(Resources.Resources.ReminderNotifyText1).UseCulture(user.Culture),
-                    nameof(Resources.Resources.ReminderNotifyText2).UseCulture(user.Culture),
-                    nameof(Resources.Resources.ReminderNotifyText3).UseCulture(user.Culture)
+                    string.Format(nameof(Resources.Resources.ReminderNotifyText1).UseCulture(user.Culture), emoji),
+                    string.Format(nameof(Resources.Resources.ReminderNotifyText2).UseCulture(user.Culture), emoji),
+                    string.Format(nameof(Resources.Resources.ReminderNotifyText3).UseCulture(user.Culture), emoji)
                 };
 
-            string toSendText = notifyText.ElementAtOrDefault(rand) ?? nameof(Resources.Resources.ReminderNotifyText1).UseCulture(user.Culture);
+            string toSendText = notifyText.ElementAtOrDefault(rand) ?? string.Format(nameof(Resources.Resources.ReminderNotifyText1).UseCulture(user.Culture), emoji);
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
 
@@ -720,7 +722,7 @@ namespace TamagotchiBot.Services
             var toSend = new AnswerMessage()
             {
                 StickerId = Constants.StickersId.RandomEventWatermelon,
-                Text = nameof(Resources.Resources.RandomEventWatermelon).UseCulture(user.Culture)
+                Text = string.Format(nameof(Resources.Resources.RandomEventWatermelon).UseCulture(user.Culture), Extensions.GetTypeEmoji(petDB.Type))
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }

@@ -563,7 +563,37 @@ namespace TamagotchiBot.UserExtensions
 
             return $"|ID: {user.UserId}|";
         }
-
+        public static PetType GetEnumPetType(int type)
+        {
+            if (!Enum.IsDefined(typeof(PetType), type))
+                return PetType.UNKNOWN;
+            return (PetType)type;
+        }
+        public static string GetTypeEmoji(int type) => GetTypeEmoji(GetEnumPetType(type));
+        public static string GetTypeEmoji(PetType petType)
+        {
+            return petType switch
+            {
+                PetType.Cat => "🐱",
+                PetType.Dog => "🐶",
+                PetType.Mouse => "🐭",
+                PetType.Fox => "🦊",
+                PetType.Panda => "🐼",
+                _ => "🐽"
+            };
+        }
+        public static string GetLongTypeEmoji(PetType petType, CultureInfo culture)
+        {
+            return petType switch
+            {
+                PetType.Cat => nameof(Resources.Resources.CatTypeText).UseCulture(culture),
+                PetType.Dog => nameof(Resources.Resources.DogTypeText).UseCulture(culture),
+                PetType.Mouse => nameof(Resources.Resources.MouseTypeText).UseCulture(culture),
+                PetType.Fox => nameof(Resources.Resources.FoxTypeText).UseCulture(culture),
+                PetType.Panda => nameof(Resources.Resources.PandaTypeText).UseCulture(culture),
+                _ => "⭕️"
+            };
+        }
         public static string GetPersonalLink(long userId, string userName)
         {
             string personalLink = "<a href=\"tg://user?id=`userId`\">`username`</a>";
@@ -649,5 +679,6 @@ namespace TamagotchiBot.UserExtensions
 
             return toTranslate.UseCulture(cultureInfo);
         }
+
     }
 }

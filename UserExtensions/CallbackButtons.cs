@@ -202,16 +202,25 @@ namespace TamagotchiBot.UserExtensions
         }
         public static class InviteMuliplayerCommand
         {
-            public static CallbackModel InviteGlobalMultiplayerButton(CultureInfo culture) => new CallbackModel()
+            public static CallbackModel InviteGlobalMultiplayerButton(CultureInfo culture)
             {
-                Text = nameof(Resources.Resources.InviteGlobalMultiplayerButton).UseCulture(culture),
-                CallbackData = nameof(InviteGlobalMultiplayerButton)
-            };
-            public static CallbackModel InviteReferalMultiplayerButton(string refName, CultureInfo culture) => new CallbackModel()
+                var emoji = Extensions.GetTypeEmoji(new Random().Next(5));
+                return new CallbackModel()
+                {
+                    Text = string.Format(nameof(Resources.Resources.InviteGlobalMultiplayerButton).UseCulture(culture), emoji),
+                    CallbackData = nameof(InviteGlobalMultiplayerButton)
+                };
+            }
+
+            public static CallbackModel InviteReferalMultiplayerButton(string refName, CultureInfo culture)
             {
-                Text = string.Format(nameof(Resources.Resources.InviteReferalMultiplayerButton).UseCulture(culture), refName),
-                CallbackData = nameof(InviteReferalMultiplayerButton)
-            };
+                var emoji = Extensions.GetTypeEmoji(new Random().Next(5));
+                return new CallbackModel()
+                {
+                    Text = string.Format(nameof(Resources.Resources.InviteReferalMultiplayerButton).UseCulture(culture), emoji, refName),
+                    CallbackData = nameof(InviteReferalMultiplayerButton)
+                };
+            }
         }
         public static class DuelMuliplayerCommand
         {
