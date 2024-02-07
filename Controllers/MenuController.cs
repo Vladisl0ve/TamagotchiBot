@@ -207,7 +207,10 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
 
             Log.Debug($"Called /ChangeTypeToCatCMD for {_userInfo}");
-            await ChangePetTypeCMD(userDB, petDB, PetType.Cat, string.Format(nameof(changedTypeToCat).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)), "");
+            await ChangePetTypeCMD(userDB,
+                                   petDB,
+                                   PetType.Cat,
+                                   string.Format(nameof(changedTypeToCat).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)));
         }
         private async Task ChangeTypeToDogCMD(User userDB, Pet petDB)
         {
@@ -216,7 +219,11 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
 
             Log.Debug($"Called /ChangeTypeToDogCMD for {_userInfo}");
-            await ChangePetTypeCMD(userDB, petDB, PetType.Dog, string.Format(nameof(changedTypeToDog).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)), "");
+            await ChangePetTypeCMD(
+                userDB,
+                petDB,
+                PetType.Dog,
+                string.Format(nameof(changedTypeToDog).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)));
         }
         private async Task ChangeTypeToPandaCMD(User userDB, Pet petDB)
         {
@@ -225,7 +232,10 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
 
             Log.Debug($"Called /ChangeTypeToPandaCMD for {_userInfo}");
-            await ChangePetTypeCMD(userDB, petDB, PetType.Panda, string.Format(nameof(changedTypeToPanda).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)), "");
+            await ChangePetTypeCMD(userDB,
+                                   petDB,
+                                   PetType.Panda,
+                                   string.Format(nameof(changedTypeToPanda).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)));
         }
         private async Task ChangeTypeToFoxCMD(User userDB, Pet petDB)
         {
@@ -234,7 +244,10 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
 
             Log.Debug($"Called /ChangeTypeToFoxCMD for {_userInfo}");
-            await ChangePetTypeCMD(userDB, petDB, PetType.Fox, string.Format(nameof(changedTypeToFox).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)), "");
+            await ChangePetTypeCMD(userDB,
+                                   petDB,
+                                   PetType.Fox,
+                                   string.Format(nameof(changedTypeToFox).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)));
         }
         private async Task ChangeTypeToMouseCMD(User userDB, Pet petDB)
         {
@@ -244,12 +257,12 @@ namespace TamagotchiBot.Controllers
 
             Log.Debug($"Called /ChangeTypeToMouseCMD for {_userInfo}");
             await ChangePetTypeCMD(userDB,
-                petDB, PetType.Mouse,
-                string.Format(nameof(changedTypeToMouse).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)),
-                null);
+                                   petDB,
+                                   PetType.Mouse,
+                                   string.Format(nameof(changedTypeToMouse).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)));
         }
 
-        private async Task ChangePetTypeCMD(User userDB, Pet petDB, PetType newPetType, string toSendText, string stickerId)
+        private async Task ChangePetTypeCMD(User userDB, Pet petDB, PetType newPetType, string toSendText)
         {
             if ((int)newPetType == petDB.Type)
             {
@@ -284,7 +297,7 @@ namespace TamagotchiBot.Controllers
             var toSend = new AnswerMessage()
             {
                 Text = toSendText,
-                StickerId = stickerId,
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetChangeTypeSticker_Cat), newPetType),
                 ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
@@ -487,7 +500,7 @@ namespace TamagotchiBot.Controllers
             var toSend = new AnswerMessage()
             {
                 Text = toSendText,
-                StickerId = StickersId.PetWork_Cat,
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetWorkSticker_Cat), _userPetType),
                 InlineKeyboardMarkup = toSendInline,
                 ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
             };
@@ -505,7 +518,7 @@ namespace TamagotchiBot.Controllers
                 {
                     Text = nameof(petIsBusyForFarm).UseCulture(_userCulture),
                     ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
-                    StickerId = StickersId.PetBusy_Cat
+                    StickerId = StickersId.GetStickerByType(nameof(StickersId.PetBusySticker_Cat), _userPetType),
                 }, _userId, false);
                 return;
             }
@@ -615,7 +628,7 @@ namespace TamagotchiBot.Controllers
             var toSend = new AnswerMessage()
             {
                 Text = toSendText,
-                StickerId = StickersId.PetInfo_Cat,
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetInfoSticker_Cat), _userPetType),
                 ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
                 InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(InlineItems.InlinePet(_userCulture)),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
@@ -631,7 +644,7 @@ namespace TamagotchiBot.Controllers
                 return new AnswerMessage()
                 {
                     Text = denyText,
-                    StickerId = StickersId.PetBusy_Cat
+                    StickerId = StickersId.GetStickerByType(nameof(StickersId.PetBusySticker_Cat), _userPetType),
                 };
             }
 
@@ -641,7 +654,7 @@ namespace TamagotchiBot.Controllers
                 return new AnswerMessage()
                 {
                     Text = denyText,
-                    StickerId = StickersId.PetBusy_Cat
+                    StickerId = StickersId.GetStickerByType(nameof(StickersId.PetBusySticker_Cat), _userPetType),
                 };
             }
 
@@ -670,7 +683,7 @@ namespace TamagotchiBot.Controllers
             var toSend = new AnswerMessage()
             {
                 Text = toSendText,
-                StickerId = StickersId.PetBathroom_Cat,
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetBathroomSticker_Cat), _userPetType),
                 InlineKeyboardMarkup = toSendInline,
                 ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
             };
@@ -699,7 +712,7 @@ namespace TamagotchiBot.Controllers
             var toSend = new AnswerMessage()
             {
                 Text = toSendText,
-                StickerId = StickersId.PetKitchen_Cat,
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetKitchenSticker_Cat), _userPetType),
                 InlineKeyboardMarkup = toSendInline,
                 ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
             };
@@ -735,7 +748,7 @@ namespace TamagotchiBot.Controllers
             var toSend = new AnswerMessage()
             {
                 Text = toSendText,
-                StickerId = StickersId.PetGameroom_Cat,
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetGameroomSticker_Cat), _userPetType),
                 InlineKeyboardMarkup = toSendInline,
                 ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
             };
@@ -761,9 +774,9 @@ namespace TamagotchiBot.Controllers
 
             string stickerHospital =  petDB.HP switch
             {
-                >= 80 => StickersId.PetHospitalHighHP_Cat,
-                >20 and < 80 => StickersId.PetHospitalMidHP_Cat,
-                _ => StickersId.PetHospitalLowHP_Cat
+                >= 80 => StickersId.GetStickerByType(nameof(StickersId.PetHospitalHighHPSticker_Cat), _userPetType),
+                >20 and < 80 => StickersId.GetStickerByType(nameof(StickersId.PetHospitalMidHPSticker_Cat), _userPetType),
+                _ => StickersId.GetStickerByType(nameof(StickersId.PetHospitalLowHPSticker_Cat), _userPetType),
             };
 
             string toSendText = string.Format(commandHospital, petDB.HP);
@@ -801,7 +814,7 @@ namespace TamagotchiBot.Controllers
             var toSend = new AnswerMessage()
             {
                 Text = anwserRating,
-                StickerId = StickersId.PetRanks_Cat,
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetRanksSticker_Cat), _userPetType),
                 InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(InlineItems.InlineRanks(_userCulture), 3),
                 ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
@@ -861,7 +874,7 @@ namespace TamagotchiBot.Controllers
             var toSend = new AnswerMessage()
             {
                 Text = toSendText,
-                StickerId = StickersId.PetSleep_Cat,
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetSleepSticker_Cat), _userPetType),
                 InlineKeyboardMarkup = toSendInline,
                 ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
             };
@@ -1371,7 +1384,7 @@ namespace TamagotchiBot.Controllers
         }
         private async Task UpdateSleepingInline(Pet petDB)
         {
-            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, nameof(sleepCommandInlinePutToSleep).UseCulture(_userCulture));
+            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, nameof(PetSleepingAlreadyAnwserCallback).UseCulture(_userCulture));
 
             string toSendText = string.Format(nameof(sleepCommand).UseCulture(_userCulture), _userPetEmoji, petDB.Name, petDB.Fatigue, Extensions.GetCurrentStatus(petDB.CurrentStatus, _userCulture));
 
@@ -1574,7 +1587,7 @@ namespace TamagotchiBot.Controllers
                         CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainedTime, JobType.WorkingOnPC, _userCulture)
                     }),
                     Text = string.Format(nameof(workCommandPCWorking).UseCulture(_userCulture)),
-                    StickerId = StickersId.PetWorkOnPC_Cat
+                    StickerId = StickersId.GetStickerByType(nameof(StickersId.PetWorkOnPCSticker_Cat), _userPetType)
                 },
                 //DEFAULT, also Flyers job
                 _ => new AnswerMessage()
@@ -1584,7 +1597,7 @@ namespace TamagotchiBot.Controllers
                         CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainedTime, JobType.FlyersDistributing, _userCulture)
                     }),
                     Text = string.Format(nameof(workCommandFlyersWorking).UseCulture(_userCulture)),
-                    StickerId = StickersId.PetFlyersJob_Cat
+                    StickerId = StickersId.GetStickerByType(nameof(StickersId.PetFlyersJobSticker_Cat), _userPetType)
                 },
             };
             return result;

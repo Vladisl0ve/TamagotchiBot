@@ -151,13 +151,13 @@ namespace TamagotchiBot.Services
             foreach (var userId in usersToNotify)
             {
                 var user = _appServices.UserService.Get(userId);
-
+                var petType = Extensions.GetEnumPetType(_appServices.PetService.Get(userId)?.Type);
                 try
                 {
                     var toSend = new AnswerMessage()
                     {
                         Text = nameof(Resources.Resources.rewardNotification).UseCulture(user?.Culture),
-                        StickerId = GetRandomDailyRewardSticker(),
+                        StickerId = GetRandomDailyRewardSticker(petType),
                     };
 
                     await _appServices.BotControlService.SendAnswerMessageAsync(toSend, userId, false);
@@ -448,7 +448,7 @@ namespace TamagotchiBot.Services
                         + $"Callbacks today: {callbacksSentToday}" + Environment.NewLine
                         + $"------------------------" + Environment.NewLine
                         + $"ΔUsers: {deltaUsers}" + Environment.NewLine
-                        + $"ΔPets: {deltaPets}" + Environment.NewLine                 
+                        + $"ΔPets: {deltaPets}" + Environment.NewLine
                         + Environment.NewLine
                         + $"ΔAUD: {deltaAUD}" + Environment.NewLine
                         + $"ΔReferals: {deltaRef}" + Environment.NewLine
@@ -526,11 +526,11 @@ namespace TamagotchiBot.Services
         private List<Models.Mongo.User> GetAllActiveUsersIds() => _appServices.UserService.GetAll().ToList();
         private List<MetaUser> GetAllActiveDuels() => _appServices.MetaUserService.GetAll().Where(mu => mu.MsgDuelId > 0).ToList();
         private List<Pet> GetAllPetsWithoutName() => _appServices.PetService.GetAll().Where(p => p.Name == null).ToList();
-        private string GetRandomDailyRewardSticker()
+        private string GetRandomDailyRewardSticker(PetType petType = PetType.UNKNOWN)
         {
             var random = new Random().Next(0, 6);
 
-            return random switch
+            var result = random switch
             {
                 1 => Constants.StickersId.DailyRewardNotificationSticker_1,
                 2 => Constants.StickersId.DailyRewardNotificationSticker_2,
@@ -539,6 +539,11 @@ namespace TamagotchiBot.Services
                 5 => Constants.StickersId.DailyRewardNotificationSticker_5,
                 _ => Constants.StickersId.DailyRewardNotificationSticker_3,
             };
+
+            if (new Random().Next(0, 2) == 0 && petType != PetType.UNKNOWN)
+                result = StickersId.GetStickerByType(nameof(StickersId.PetDailyRewardSticker_Cat), petType);
+
+            return result;
         }
 
         private async Task DoRandomEvent(Models.Mongo.User user)
@@ -656,7 +661,8 @@ namespace TamagotchiBot.Services
         private async Task RandomEventNotify(Models.Mongo.User user)
         {
             int rand = new Random().Next(3);
-            var emoji = Extensions.GetTypeEmoji(_appServices.PetService.Get(user.UserId)?.Type ?? -1);
+            var userPetType = Extensions.GetEnumPetType(_appServices.PetService.Get(user.UserId)?.Type);
+            var emoji = Extensions.GetTypeEmoji(userPetType);
             var notifyText = new List<string>()
                 {
                     string.Format(nameof(Resources.Resources.ReminderNotifyText1).UseCulture(user.Culture), emoji),
@@ -670,7 +676,7 @@ namespace TamagotchiBot.Services
 
             var toSend = new AnswerMessage()
             {
-                StickerId = Constants.StickersId.PetBored_Cat,
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetBoredSticker_Cat), userPetType),
                 Text = toSendText
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
@@ -689,7 +695,7 @@ namespace TamagotchiBot.Services
 
             var toSend = new AnswerMessage()
             {
-                StickerId = Constants.StickersId.RandomEventStepOnFoot,
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.RandomEventStepOnFootSticker_Cat), petDB.Type),
                 Text = nameof(Resources.Resources.RandomEventStepOnFoot).UseCulture(user.Culture)
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
@@ -705,8 +711,11 @@ namespace TamagotchiBot.Services
 
             var toSend = new AnswerMessage()
             {
-                StickerId = Constants.StickersId.RandomEventNiceFlower,
-                Text = nameof(Resources.Resources.RandomEventNiceFlower).UseCulture(user.Culture)
+                StickerId = StickersId.RandomEventNiceFlower,
+                Text = string.Format(
+                    nameof(Resources.Resources.RandomEventNiceFlower).UseCulture(user.Culture),
+                    Extensions.GetTypeEmoji(petDB.Type)
+                    )
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }
@@ -737,7 +746,7 @@ namespace TamagotchiBot.Services
 
             var toSend = new AnswerMessage()
             {
-                StickerId = Constants.StickersId.RandomEventPlayComputerGames,
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.RandomEventPlayComputerSticker_Cat), petDB.Type),
                 Text = nameof(Resources.Resources.RandomEventPlayComputerGames).UseCulture(user.Culture)
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);

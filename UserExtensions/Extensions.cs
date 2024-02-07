@@ -563,13 +563,13 @@ namespace TamagotchiBot.UserExtensions
 
             return $"|ID: {user.UserId}|";
         }
-        public static PetType GetEnumPetType(int type)
+        public static PetType GetEnumPetType(int? type)
         {
-            if (!Enum.IsDefined(typeof(PetType), type))
+            if (type == null || !Enum.IsDefined(typeof(PetType), type))
                 return PetType.UNKNOWN;
             return (PetType)type;
         }
-        public static string GetTypeEmoji(int type) => GetTypeEmoji(GetEnumPetType(type));
+        public static string GetTypeEmoji(int? type) => GetTypeEmoji(GetEnumPetType(type));
         public static string GetTypeEmoji(PetType petType)
         {
             return petType switch
