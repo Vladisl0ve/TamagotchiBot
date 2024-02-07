@@ -905,6 +905,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compensation credited: {0}💰.
+        /// </summary>
+        public static string GoldCompensastionGotText {
+            get {
+                return ResourceManager.GetString("GoldCompensastionGotText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Need more gold 💰.
         /// </summary>
         public static string goldNotEnough {

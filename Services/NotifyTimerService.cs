@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Web;
@@ -189,12 +190,13 @@ namespace TamagotchiBot.Services
             }
         }
 
-        private void OnMaintainEvent(object sender, ElapsedEventArgs e)
+        private async void OnMaintainEvent(object sender, ElapsedEventArgs e)
         {
             Log.Information($"MAINTAINS STARTED");
             _appServices.SInfoService.DisableMaintainWorks();
 
-            int usersDeleted = 0;
+            int usersDeletedPartly = 0;
+            int usersDeletedFull = 0;
 
             var allUsersData = _appServices.AllUsersDataService.GetAll().Select(a => a.UserId);
             foreach (var userId in allUsersData)
@@ -208,6 +210,9 @@ namespace TamagotchiBot.Services
                     _appServices.MetaUserService.Remove(userId);
                     _appServices.AppleGameDataService.Delete(userId);
 
+                    Log.Information($"DELETED (partly) id: {userId}");
+                    usersDeletedPartly++;
+
                     continue;
                 }
 
@@ -220,12 +225,37 @@ namespace TamagotchiBot.Services
                     _appServices.AppleGameDataService.Delete(userId);
 
                     Log.Information($"DELETED id: {userId}");
-                    usersDeleted++;
+                    usersDeletedFull++;
                 }
             }
 
-            Log.Warning($"DELETED USERS:   {usersDeleted}");
-            Log.Warning($"BD CLEANING IS OVER...");
+            Log.Warning($"DELETED USERS ON MAINTAIN: partly {usersDeletedPartly}; full {usersDeletedFull}");
+
+            int usersToCompens = 0;
+            var allPetsDB = _appServices.PetService.GetAll();
+            foreach (var pet in allPetsDB)
+            {
+                var userDB = _appServices.UserService.Get(pet.UserId);
+                var toCompensate = pet.Level * 100;
+                if (toCompensate <= 10)
+                    continue;
+
+                _appServices.UserService.UpdateGold(userDB.UserId, userDB.Gold + toCompensate);
+                usersToCompens++;
+                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
+                {
+                    Text = string.Format(
+                        nameof(Resources.Resources.GoldCompensastionGotText).UseCulture(userDB.Culture ?? "ru"),
+                        toCompensate)
+                }, userDB.UserId, false);
+                pet.Level = 0;
+                _appServices.PetService.Update(pet.UserId, pet);
+
+                Log.Information($"Compensed {toCompensate} for user {userDB.UserId}");
+                if (usersToCompens % 100 == 0)
+                    await Task.Delay(2000);
+            }
+            Log.Information($"Compensations have been sent: {usersToCompens} users");
             Log.Information($"MAINTAINS ARE OVER");
         }
         private async void OnMPDuelsTimedEvent(object sender, ElapsedEventArgs e)

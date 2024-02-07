@@ -1025,4 +1025,7 @@ Pet {2}{0} wins 🏆</value>
 
 Pet {2}{0} wins 🏆</value>
   </data>
+  <data name="GoldCompensastionGotText" xml:space="preserve">
+    <value>Compensation credited: {0}💰</value>
+  </data>
 </root>

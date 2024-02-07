@@ -1031,4 +1031,7 @@ https://t.me/newsvirtualpetbot</value>
 
 Гадаванец {2}{0} перамагае 🏆</value>
   </data>
+  <data name="GoldCompensastionGotText" xml:space="preserve">
+    <value>Залічана кампенсацыя: {0}💰</value>
+  </data>
 </root>

@@ -1031,4 +1031,7 @@ https://t.me/news_virtualpetbot</value>
 
 Питомец {2}{0} побеждает 🏆</value>
   </data>
+  <data name="GoldCompensastionGotText" xml:space="preserve">
+    <value>Зачислена компенсация: {0}💰</value>
+  </data>
 </root>

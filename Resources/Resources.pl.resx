@@ -1027,4 +1027,7 @@ ale ostatecznie został pokonany przez brak koncentracji 🪫
 
 Zwierzak {2}{0} wygrywa 🏆</value>
   </data>
+  <data name="GoldCompensastionGotText" xml:space="preserve">
+    <value>Przyznane odszkodowanie: {0}💰</value>
+  </data>
 </root>
