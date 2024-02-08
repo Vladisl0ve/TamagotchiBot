@@ -136,9 +136,11 @@ namespace TamagotchiBot.Services
                 await DoRandomEvent(user);
 
                 counter++;
-                if (counter % 30 == 0)
+                if (counter % 100 == 0)
+                {
+                    Log.Information("Rand: Delay 3s...");
                     await Task.Delay(3000);
-
+                }
                 Log.Information($"Sent RandomEventNotification to {Extensions.GetLogUser(user)}");
             }
             if (usersToNotify.Count > 1)
@@ -166,8 +168,11 @@ namespace TamagotchiBot.Services
                     Log.Information($"Sent DailyRewardNotification to {Extensions.GetLogUser(user)}");
 
                     counter++;
-                    if (counter % 30 == 0)
+                    if (counter % 100 == 0)
+                    {
+                        Log.Information("Delay 3s...");
                         await Task.Delay(3000);
+                    }
                 }
                 catch (ApiRequestException ex)
                 {

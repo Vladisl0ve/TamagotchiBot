@@ -649,12 +649,6 @@
 /feed_pet - пакарміць чужога гадаванца 🥞
 /ranks - Топ-10 найлепшых 🏆</value>
   </data>
-  <data name="petCommandMoreInfo1" xml:space="preserve">
-    <value>{0} {1}
-
-🎂 Дата нараджэння: {2}
-👫 Рэфералаў: {3}</value>
-  </data>
   <data name="changelogCommand" xml:space="preserve">
     <value>📢💬 Паглядзець і пагаварыць аб абнаўленнях бота можна тут:
 {0}</value>
@@ -1033,5 +1027,18 @@ https://t.me/newsvirtualpetbot</value>
   </data>
   <data name="GoldCompensastionGotText" xml:space="preserve">
     <value>Залічана кампенсацыя: {0}💰</value>
+  </data>
+  <data name="petCommandMoreInfo1" xml:space="preserve">
+    <value>{0} {1}
+
+🎂 Дата нараджэння: {2}
+👫 Рэфералаў: {3}
+
+🍗 Гадаванца кармілі &lt;b&gt;&lt;i&gt;{4} разоў&lt;/i&gt;&lt;/b&gt;
+🍎 Згуляна ў Яблык &lt;b&gt;&lt;i&gt;{5} разоў&lt;/i&gt;&lt;/b&gt;
+🌙 Гадаванец праспаў &lt;b&gt;&lt;i&gt;{6} хвілін&lt;/i&gt;&lt;/b&gt;
+🧰 &lt;b&gt;&lt;i&gt;{7} хвілін&lt;/i&gt;&lt;/b&gt; гадаванец працаваў
+
+🦭 Гадавачу &lt;b&gt;&lt;i&gt;{8} дзён&lt;/i&gt;&lt;/b&gt;</value>
   </data>
 </root>

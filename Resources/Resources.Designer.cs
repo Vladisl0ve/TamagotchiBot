@@ -1313,7 +1313,14 @@ namespace TamagotchiBot.Resources {
         ///   Looks up a localized string similar to {0} {1}
         ///
         ///🎂 Date of birth: {2}
-        ///👫 Referrals: {3}.
+        ///👫 Referrals: {3}
+        ///
+        ///🍗 Pet was fed &lt;b&gt;&lt;i&gt;{4} times&lt;/i&gt;&lt;/b&gt;
+        ///🍎 Played Apple &lt;b&gt;&lt;i&gt;{5} times&lt;/i&gt;&lt;/b&gt;
+        ///🌙 Pet slept for &lt;b&gt;&lt;i&gt;{6} minutes&lt;/i&gt;&lt;/b&gt;
+        ///🧰 &lt;b&gt;&lt;i&gt;{7} minutes&lt;/i&gt;&lt;/b&gt; the pet worked
+        ///
+        ///🦭 Pet is &lt;b&gt;&lt;i&gt;{8} days old&lt;/i&gt;&lt;/b&gt;.
         /// </summary>
         public static string petCommandMoreInfo1 {
             get {

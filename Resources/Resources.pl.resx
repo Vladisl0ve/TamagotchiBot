@@ -645,12 +645,6 @@ Dostępne polecenia na czacie:
 /feed_pet - nakarm cudzego zwierzaka 🥞
 /ranks - Top-10 najlepszych 🏆</value>
   </data>
-  <data name="petCommandMoreInfo1" xml:space="preserve">
-    <value>{0} {1}
-
-🎂 Data urodzenia: {2}
-👫 Polecenia: {3}</value>
-  </data>
   <data name="changelogCommand" xml:space="preserve">
     <value>📢💬 Tutaj możesz przeglądać i omawiać aktualizacje botów:
 {0}</value>
@@ -1029,5 +1023,18 @@ Zwierzak {2}{0} wygrywa 🏆</value>
   </data>
   <data name="GoldCompensastionGotText" xml:space="preserve">
     <value>Przyznane odszkodowanie: {0}💰</value>
+  </data>
+  <data name="petCommandMoreInfo1" xml:space="preserve">
+    <value>{0} {1}
+
+🎂 Data urodzenia: {2}
+👫 Polecenia: {3}
+
+🍗 Zwierzę zostało nakarmione &lt;b&gt;&lt;i&gt;{4} razy&lt;/i&gt;&lt;/b&gt;
+🍎 Grałeś w Apple &lt;b&gt;&lt;i&gt;{5} razy&lt;/i&gt;&lt;/b&gt;
+🌙 Zwierzę spało przez &lt;b&gt;&lt;i&gt;{6} minut&lt;/i&gt;&lt;/b&gt;
+🧰 &lt;b&gt;&lt;i&gt;{7} minut&lt;/i&gt;&lt;/b&gt; zwierzak pracował
+
+🦭 Zwierzę ma &lt;b&gt;&lt;i&gt;{8} dni&lt;/i&gt;&lt;/b&gt;</value>
   </data>
 </root>

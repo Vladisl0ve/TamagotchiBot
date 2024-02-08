@@ -1041,8 +1041,31 @@ namespace TamagotchiBot.Controllers
         private async Task ShowExtraInfoInline(Pet petDB)
         {
             var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
+            var audUser = _appServices.AllUsersDataService.Get(_userId);
+            if (audUser == null)
+                return;
+
+            var petWasFetTimes = audUser.ChocolateEatenCounter +
+                                 audUser.AppleEatenCounter +
+                                 audUser.BreadEatenCounter+
+                                 audUser.LollypopEatenCounter;
+
+            var petWasSleptMinutes = (int)(audUser.SleepenTimesCounter * Constants.TimesToWait.SleepToWait.TotalMinutes);
+            var petWasWorkingMinutes = (int)((audUser.WorkFlyersCounter * Constants.TimesToWait.FlyersDistToWait.TotalMinutes) + (audUser.WorkOnPCCounter + TimesToWait.WorkOnPCToWait.TotalMinutes));
+
             encodedPetName = "<b>" + encodedPetName + "</b>";
-            string toSendText = string.Format(nameof(petCommandMoreInfo1).UseCulture(_userCulture), _userPetEmoji, encodedPetName, petDB.BirthDateTime, _appServices.ReferalInfoService.GetDoneRefsAmount(_userId));
+            string toSendText = string.Format(
+                nameof(petCommandMoreInfo1).UseCulture(_userCulture),
+                _userPetEmoji,
+                encodedPetName,
+                petDB.BirthDateTime,
+                _appServices.ReferalInfoService.GetDoneRefsAmount(_userId),
+                petWasFetTimes,
+                audUser.AppleGamePlayedCounter,
+                petWasSleptMinutes,
+                petWasWorkingMinutes,
+                (int)((DateTime.UtcNow - petDB.BirthDateTime).TotalDays)
+                );
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {
                 CallbackButtons.PetCommand.PetCommandInlineBasicInfo(_userCulture)
