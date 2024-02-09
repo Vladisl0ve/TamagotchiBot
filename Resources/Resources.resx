@@ -442,27 +442,30 @@ Surrendered: {2}</value>
     <value>You are in the gameroom ⚽️</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Update 1.4 has been released⚡️⚡️
+    <value>⚡️⚡️ Update 1.5 has been released⚡️⚡️
 
-🥳&lt;b&gt;Added&lt;/b&gt;🥳:
-🤹‍♂️&lt;b&gt;New job for a pet - distributing flyers&lt;/b&gt;
-  &lt;i&gt;Added for balance and variety of gameplay: you have to wait less for the end of work, but you also get less gold&lt;/i&gt;
-🌮&lt;b&gt;It’s now possible to feed other people’s pets&lt;/b&gt;
-  In general chat, just call the /feedpet command, then tag the desired player &lt;u&gt;(multiplayer only)&lt;/u&gt;
-🤼‍♀️&lt;b&gt;Now you can fight with pets (just like Pokemon :D)&lt;/b&gt;
-  &lt;i&gt;You need to add the bot to the general chat and call the /startduel command (Duel is possible &lt;u&gt;only in multiplayer&lt;/u&gt;)&lt;/i&gt;
+&lt;i&gt;&lt;b&gt;NEW:&lt;/b&gt;&lt;/i&gt;
+ 🧸 &lt;b&gt;New pet types have been added:&lt;/b&gt;
+       🦊 &lt;i&gt;Cool fox&lt;/i&gt;
+       🐶 &lt;i&gt;Loyal doggie&lt;/i&gt;
+       🐭 &lt;i&gt;Little Mouse&lt;/i&gt;
+       🐼 &lt;i&gt;Ambiguous panda&lt;/i&gt;
+       🐱 &lt;i&gt;Favorite cat&lt;/i&gt;
+       &lt;i&gt;To change a pet you need to have 5000💰&lt;/i&gt;
 
-😻&lt;b&gt;Corrections&lt;/b&gt;😻:
-👽&lt;b&gt;Rebalanced experience gain &lt;/b&gt;
-   &lt;i&gt;Now, with each new level you need more experience than the previous one. The level has also been recalculated for old players.&lt;/i&gt;
-😈&lt;b&gt;Pet may not like his new name&lt;/b&gt;
-   &lt;i&gt;Try to come up with appropriate and funny names&lt;/i&gt;
+🎮 &lt;b&gt;Added control buttons&lt;/b&gt; - now you can go to different locations (kitchen, nursery, work, etc.) using buttons instead of the keyboard
+🏕 &lt;b&gt;A new Farm location has been added&lt;/b&gt; - it will be possible to change the type of pet there.
+There will be even more fun here in the future 🥁
+🏆 &lt;b&gt;Added a table of Duel results for chats&lt;/b&gt;
+🎯 There are also a lot of little things, so there’s a reason to look for it yourself :)
 
-I would like to express my deep gratitude to everyone who helps with ideas and finds errors in the bot’s work ❤️
-(if you have something to say, then come to our chat https://t.me/chatvirtualpetbot, we will be glad to read it 😇)
+&lt;i&gt;&lt;b&gt;CHANGES:&lt;/b&gt;&lt;/i&gt;
+🧰 Now more information is shown in the “additional info”
+💻 Rewrote almost 20k lines in the bot - added multithreading, improved performance
 
-Special thanks to @SuankaSmirnova25, @glitchpavel and all the players
-Without you, this bot is nothing 🤍❤️🤍
+This patch turned out to be the most difficult: I had to optimize and rewrite a lot of things, but it was worth it😎
+
+After the patch is released, there may be problems with the bot, but I will quickly fix it :)
 
 Subscribe to our channel, where everything is about the bot:
 https://t.me/newsvirtualpetbot</value>

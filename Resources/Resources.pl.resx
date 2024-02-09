@@ -849,32 +849,6 @@ Aby wykonać tę pracę, nie musisz odczuwać więcej niż {0}😴 zmęczenia</v
   <data name="workCommandFlyersWorking" xml:space="preserve">
     <value>Zwierzak rozdaje teraz ulotki 🤹‍♀️</value>
   </data>
-  <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Wydano aktualizację 1.4⚡️⚡️
-
-🥳&lt;b&gt;Dodano&lt;/b&gt;🥳:
-🤹‍♂️&lt;b&gt;Nowa praca dla zwierzaka - roznoszenie ulotek&lt;/b&gt;
-  &lt;i&gt;Dodano dla równowagi i różnorodności rozgrywki: musisz krócej czekać na koniec pracy, ale dostajesz też mniej złota&lt;/i&gt;
-🌮&lt;b&gt;Teraz można karmić zwierzęta innych osób&lt;/b&gt;
-  Na czacie ogólnym wystarczy wywołać komendę /feedpet, a następnie oznaczyć żądanego gracza &lt;u&gt;(tylko tryb wieloosobowy)&lt;/u&gt;
-🤼‍♀️&lt;b&gt;Teraz możesz walczyć ze zwierzakami (tak jak Pokemon :D)&lt;/b&gt;
-  &lt;i&gt;Musisz dodać bota do czatu ogólnego i wywołać komendę /startduel (Pojedynek jest możliwy &lt;u&gt;tylko w trybie wieloosobowym&lt;/u&gt;)&lt;/i&gt;
-
-😻&lt;b&gt;Poprawki&lt;/b&gt;😻:
-👽&lt;b&gt;Zrównoważony przyrost doświadczenia&lt;/b&gt;
-   &lt;i&gt;Teraz z każdym nowym poziomem potrzebujesz więcej doświadczenia niż poprzedni. Poziom został również przeliczony dla starych graczy.&lt;/i&gt;
-😈&lt;b&gt;Zwierzę może nie lubić swojego nowego imienia&lt;/b&gt;
-   &lt;i&gt;Spróbuj wymyślić odpowiednie i zabawne nazwy&lt;/i&gt;
-
-Chciałbym wyrazić głęboką wdzięczność wszystkim, którzy pomagają pomysłami i znajdują błędy w działaniu bota ❤️
-(jeśli masz coś do powiedzenia, to wpadnij na nasz czat https://t.me/chatvirtualpetbot, chętnie to przeczytamy 😇)
-
-Specjalne podziękowania dla @SuankaSmirnova25, @glitchpavel i wszystkich graczy
-Bez Was ten bot jest niczym 🤍❤️🤍
-
-Subskrybuj nasz kanał, na którym wszystko jest o bocie:
-https://t.me/newsvirtualpetbot</value>
-  </data>
   <data name="NotEnoughHPForDuel" xml:space="preserve">
     <value>{0} aby rozpocząć pojedynek potrzebujesz {1}%💊 zdrowia
 Masz tylko {2}%💊</value>
@@ -1036,5 +1010,34 @@ Zwierzak {2}{0} wygrywa 🏆</value>
 🧰 &lt;b&gt;&lt;i&gt;{7} minut&lt;/i&gt;&lt;/b&gt; zwierzak pracował
 
 🦭 Zwierzę ma &lt;b&gt;&lt;i&gt;{8} dni&lt;/i&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="changelog1Text" xml:space="preserve">
+    <value>⚡️⚡️ Została wydana aktualizacja 1.5⚡️⚡️
+
+&lt;i&gt;&lt;b&gt;NOWOŚĆ:&lt;/b&gt;&lt;/i&gt;
+ 🧸 &lt;b&gt;Dodano nowe typy zwierzaków:&lt;/b&gt;
+       🦊 &lt;i&gt;Fajny lis&lt;/i&gt;
+       🐶 &lt;i&gt;Wierny piesek&lt;/i&gt;
+       🐭 &lt;i&gt;Mała Myszka&lt;/i&gt;
+       🐼 &lt;i&gt;Niejednoznaczna panda&lt;/i&gt;
+       🐱 &lt;i&gt;Ulubiony kot&lt;/i&gt;
+       &lt;i&gt;Aby zmienić zwierzaka, musisz mieć 5000💰&lt;/i&gt;
+
+🎮 &lt;b&gt;Dodano przyciski sterujące&lt;/b&gt; - teraz możesz przechodzić do różnych lokalizacji (kuchnia, pokój dziecięcy, praca itp.) za pomocą przycisków zamiast klawiatury
+🏕 &lt;b&gt;Dodano nową lokalizację Farmy&lt;/b&gt; - będzie można tam zmienić rodzaj zwierzaka.
+W przyszłości będzie tu jeszcze więcej zabawy 🥁
+🏆 &lt;b&gt;Dodano tabelę wyników pojedynków dla czatów&lt;/b&gt;
+🎯 Jest też mnóstwo drobiazgów, więc jest powód, żeby poszukać ich samodzielnie :)
+
+&lt;i&gt;&lt;b&gt;ZMIANY:&lt;/b&gt;&lt;/i&gt;
+🧰 Teraz więcej informacji jest wyświetlanych w „informacjach dodatkowych”
+💻 Przepisano prawie 20 tys. linii w bocie - dodano wielowątkowość, poprawiono wydajność
+
+Ten patch okazał się najtrudniejszy: musiałem zoptymalizować i napisać wiele rzeczy na nowo, ale było warto😎
+
+Po wypuszczeniu łatki mogą pojawić się problemy z botem, ale szybko to naprawię :)
+
+Subskrybuj nasz kanał, na którym wszystko jest o bocie:
+https://t.me/newsvirtualpetbot</value>
   </data>
 </root>

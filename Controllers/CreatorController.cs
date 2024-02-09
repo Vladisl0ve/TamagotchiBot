@@ -84,7 +84,9 @@ namespace TamagotchiBot.Controllers
 
             var toSend = new AnswerMessage()
             {
-                Text = string.Format(nameof(ConfirmedName).UseCulture(_userCulture), HttpUtility.HtmlEncode(msgText)),
+                Text = string.Format(
+                    nameof(ConfirmedName).UseCulture(_userCulture),
+                    HttpUtility.HtmlEncode(msgText)),
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.PetConfirmedNameSticker_Cat), PetType.Cat),
                 ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
@@ -124,7 +126,11 @@ namespace TamagotchiBot.Controllers
             var petDB = _appServices.PetService.Get(_userId);
             var toSend = new AnswerMessage()
             {
-                Text = string.Format(nameof(AskToConfirmRenamingPet).UseCulture(_userCulture), petDB.Name, msgText, Constants.Costs.RenamePet),
+                Text = string.Format(
+                    nameof(AskToConfirmRenamingPet).UseCulture(_userCulture),
+                    petDB.Name,
+                    msgText, 
+                    Constants.Costs.RenamePet),
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.PetAskForConfirmNameSticker_Cat), Extensions.GetEnumPetType(petDB.Type)),
                 ReplyMarkup = new ReplyKeyboardMarkup(new List<KeyboardButton>()
                 {
@@ -288,7 +294,10 @@ namespace TamagotchiBot.Controllers
             var petResult = Pet.Clone(petDB);
             petResult.IsGone = true;
 
-            string textToSend = string.Format(nameof(FarewellText).UseCulture(_userCulture), petResult.Name, userDB.Username);
+            string textToSend = string.Format(
+                nameof(FarewellText).UseCulture(_userCulture),
+                petResult.Name,
+                userDB.Username);
 
             var toSend = new AnswerMessage()
             {
@@ -421,7 +430,9 @@ namespace TamagotchiBot.Controllers
                 var emoji = Extensions.GetTypeEmoji(_appServices.PetService.Get(_userId)?.Type ?? -1);
                 var toSend = new AnswerMessage()
                 {
-                    Text = string.Format(nameof(BadWordDetected).UseCulture(_userCulture), emoji),
+                    Text = string.Format(
+                        nameof(BadWordDetected).UseCulture(_userCulture),
+                        emoji),
                     StickerId = StickersId.PetDoesntLikeNameSticker
                 };
                 await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -467,7 +478,9 @@ namespace TamagotchiBot.Controllers
 
             var toSend = new AnswerMessage()
             {
-                Text = string.Format(nameof(ConfirmedName).UseCulture(_userCulture), metaUser.TmpPetName),
+                Text = string.Format(
+                    nameof(ConfirmedName).UseCulture(_userCulture),
+                    metaUser.TmpPetName),
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.PetConfirmedNameSticker_Cat), Extensions.GetEnumPetType(petDB?.Type)),
                 ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
@@ -490,7 +503,9 @@ namespace TamagotchiBot.Controllers
 
             var toSend = new AnswerMessage()
             {
-                Text = string.Format(nameof(PetCameBackText).UseCulture(_userCulture), Extensions.GetTypeEmoji(petDB.Type)),
+                Text = string.Format(
+                    nameof(PetCameBackText).UseCulture(_userCulture),
+                    Extensions.GetTypeEmoji(petDB.Type)),
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.PetResurrectedSticker_Cat), petDB.Type),
                 ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
             };

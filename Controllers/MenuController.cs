@@ -95,12 +95,12 @@ namespace TamagotchiBot.Controllers
             }
             if (textReceived == Commands.KitchenCommand || GetAllTranslatedAndLowered(nameof(kitchenCommandDescription)).Contains(textReceived))
             {
-                await GoToKitchen(petDB);
+                await GoToKitchen(petDB, userDB);
                 return;
             }
             if (textReceived == Commands.GameroomCommand || GetAllTranslatedAndLowered(nameof(gameroomCommandDescription)).Contains(textReceived))
             {
-                await GoToGameroom(petDB);
+                await GoToGameroom(petDB, userDB);
                 return;
             }
             if (textReceived == Commands.HospitalCommand || GetAllTranslatedAndLowered(nameof(hospitalCommandDescription)).Contains(textReceived))
@@ -210,7 +210,9 @@ namespace TamagotchiBot.Controllers
             await ChangePetTypeCMD(userDB,
                                    petDB,
                                    PetType.Cat,
-                                   string.Format(nameof(changedTypeToCat).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)));
+                                   string.Format(
+                                       nameof(changedTypeToCat).UseCulture(_userCulture),
+                                       HttpUtility.HtmlEncode(petDB.Name)));
         }
         private async Task ChangeTypeToDogCMD(User userDB, Pet petDB)
         {
@@ -223,7 +225,9 @@ namespace TamagotchiBot.Controllers
                 userDB,
                 petDB,
                 PetType.Dog,
-                string.Format(nameof(changedTypeToDog).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)));
+                string.Format(
+                    nameof(changedTypeToDog).UseCulture(_userCulture),
+                    HttpUtility.HtmlEncode(petDB.Name)));
         }
         private async Task ChangeTypeToPandaCMD(User userDB, Pet petDB)
         {
@@ -235,7 +239,9 @@ namespace TamagotchiBot.Controllers
             await ChangePetTypeCMD(userDB,
                                    petDB,
                                    PetType.Panda,
-                                   string.Format(nameof(changedTypeToPanda).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)));
+                                   string.Format(
+                                       nameof(changedTypeToPanda).UseCulture(_userCulture),
+                                       HttpUtility.HtmlEncode(petDB.Name)));
         }
         private async Task ChangeTypeToFoxCMD(User userDB, Pet petDB)
         {
@@ -247,7 +253,9 @@ namespace TamagotchiBot.Controllers
             await ChangePetTypeCMD(userDB,
                                    petDB,
                                    PetType.Fox,
-                                   string.Format(nameof(changedTypeToFox).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)));
+                                   string.Format(
+                                       nameof(changedTypeToFox).UseCulture(_userCulture),
+                                       HttpUtility.HtmlEncode(petDB.Name)));
         }
         private async Task ChangeTypeToMouseCMD(User userDB, Pet petDB)
         {
@@ -259,7 +267,9 @@ namespace TamagotchiBot.Controllers
             await ChangePetTypeCMD(userDB,
                                    petDB,
                                    PetType.Mouse,
-                                   string.Format(nameof(changedTypeToMouse).UseCulture(_userCulture), HttpUtility.HtmlEncode(petDB.Name)));
+                                   string.Format(
+                                       nameof(changedTypeToMouse).UseCulture(_userCulture),
+                                       HttpUtility.HtmlEncode(petDB.Name)));
         }
 
         private async Task ChangePetTypeCMD(User userDB, Pet petDB, PetType newPetType, string toSendText)
@@ -564,7 +574,7 @@ namespace TamagotchiBot.Controllers
             }
             else
             {
-                toSendText = string.Format(nameof(rewardCommand).UseCulture(_userCulture));
+                toSendText = nameof(rewardCommand).UseCulture(_userCulture);
 
                 inlineParts = InlineItems.InlineRewards(_userCulture);
                 toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -640,7 +650,7 @@ namespace TamagotchiBot.Controllers
         {
             if (petDB.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
             {
-                string denyText = string.Format(nameof(denyAccessSleeping).UseCulture(_userCulture));
+                string denyText = nameof(denyAccessSleeping).UseCulture(_userCulture);
                 return new AnswerMessage()
                 {
                     Text = denyText,
@@ -650,7 +660,7 @@ namespace TamagotchiBot.Controllers
 
             if (petDB.CurrentStatus == (int)CurrentStatus.Working && !IsGoToWorkCommand)
             {
-                string denyText = string.Format(nameof(denyAccessWorking).UseCulture(_userCulture));
+                string denyText = nameof(denyAccessWorking).UseCulture(_userCulture);
                 return new AnswerMessage()
                 {
                     Text = denyText,
@@ -671,7 +681,9 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            string toSendText = string.Format(nameof(bathroomCommand).UseCulture(_userCulture), petDB.Hygiene);
+            string toSendText = string.Format(
+                nameof(bathroomCommand).UseCulture(_userCulture),
+                petDB.Hygiene);
 
             List<CallbackModel> inlineParts = InlineItems.InlineHygiene(_userCulture);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -689,7 +701,7 @@ namespace TamagotchiBot.Controllers
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private async Task GoToKitchen(Pet petDB)
+        private async Task GoToKitchen(Pet petDB, User userDB)
         {
             Log.Debug($"Called /GoToKitchen for {_userInfo}");
             var accessCheck = CheckStatusIsInactiveOrNull(petDB);
@@ -700,7 +712,10 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture), petDB.Satiety, _appServices.UserService.Get(_userId).Gold);
+            string toSendText = string.Format(
+                nameof(kitchenCommand).UseCulture(_userCulture),
+                petDB.Satiety,
+                userDB.Gold);
 
             List<CallbackModel> inlineParts = InlineItems.InlineFood;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -718,7 +733,7 @@ namespace TamagotchiBot.Controllers
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private async Task GoToGameroom(Pet petDB)
+        private async Task GoToGameroom(Pet petDB, User userDB)
         {
             Log.Debug($"Called /GoToGameroom for {_userInfo}");
             var accessCheck = CheckStatusIsInactiveOrNull(petDB);
@@ -732,7 +747,7 @@ namespace TamagotchiBot.Controllers
             string toSendText = string.Format(nameof(gameroomCommand).UseCulture(_userCulture),
                                               petDB.Fatigue,
                                               petDB.Joy,
-                                              _appServices.UserService.Get(_userId).Gold,
+                                              userDB.Gold,
                                               Factors.CardGameJoyFactor,
                                               Costs.AppleGame,
                                               Factors.DiceGameJoyFactor,
@@ -844,7 +859,9 @@ namespace TamagotchiBot.Controllers
             if (petDB.CurrentStatus == (int)CurrentStatus.Sleeping)
             {
                 var ticksToWait = (petDB.ToWakeUpTime - DateTime.UtcNow).Ticks;
-                string timeToWaitStr = string.Format(nameof(sleepCommandInlineShowTime).UseCulture(_userCulture), new DateTime().AddTicks(ticksToWait).ToString("HH:mm:ss"));
+                string timeToWaitStr = string.Format(
+                    nameof(sleepCommandInlineShowTime).UseCulture(_userCulture),
+                    new DateTime().AddTicks(ticksToWait).ToString("HH:mm:ss"));
 
                 toSendInline = Extensions.InlineKeyboardOptimizer(
                     new List<CallbackModel>()
@@ -884,7 +901,9 @@ namespace TamagotchiBot.Controllers
         private async Task ShowChangelogsInfo()
         {
             string linkToDiscussChat = "https://t.me/news_virtualpetbot";
-            string toSendText = string.Format(nameof(changelogCommand).UseCulture(_userCulture), linkToDiscussChat);
+            string toSendText = string.Format(
+                nameof(changelogCommand).UseCulture(_userCulture),
+                linkToDiscussChat);
 
             var toSend = new AnswerMessage()
             {
@@ -901,7 +920,7 @@ namespace TamagotchiBot.Controllers
         }
         private async Task ShowHelpInfo()
         {
-            string toSendText = string.Format(nameof(helpCommand).UseCulture(_userCulture));
+            string toSendText = nameof(helpCommand).UseCulture(_userCulture);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.HelpCommandCounter++;

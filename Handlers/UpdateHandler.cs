@@ -454,7 +454,7 @@ namespace TamagotchiBot.Handlers
                 _ => exception.ToString()
             };
 
-            Log.Fatal(ErrorMessage);
+            Log.Fatal(exception, $"Polling error async {ErrorMessage}");
             await Task.Delay(1000, cancellationToken);
 
             if (exception is ApiRequestException apiEx && apiEx.ErrorCode == 409)

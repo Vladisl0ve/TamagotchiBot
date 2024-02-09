@@ -345,7 +345,7 @@ namespace TamagotchiBot.Controllers
 
             if (petDB.Fatigue >= 100)
             {
-                string anwser = string.Format(nameof(tooTiredText).UseCulture(_userCulture));
+                string anwser = nameof(tooTiredText).UseCulture(_userCulture);
                 await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
                                                                         _userId,
                                                                         anwser,
@@ -354,7 +354,7 @@ namespace TamagotchiBot.Controllers
             }
             if (petDB.Joy >= 100)
             {
-                string anwser = string.Format(nameof(PetIsFullOfJoyText).UseCulture(_userCulture));
+                string anwser = nameof(PetIsFullOfJoyText).UseCulture(_userCulture);
                 await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
                                                                         _userId,
                                                                         anwser,
@@ -364,7 +364,7 @@ namespace TamagotchiBot.Controllers
 
             if (userDB.Gold <= Costs.AppleGame)
             {
-                string anwser = string.Format(nameof(goldNotEnough).UseCulture(_userCulture));
+                string anwser = nameof(goldNotEnough).UseCulture(_userCulture);
                 await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
                                                                         _userId,
                                                                         anwser,
