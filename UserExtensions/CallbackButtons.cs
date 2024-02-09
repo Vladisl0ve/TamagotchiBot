@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using TamagotchiBot.Models;
 using static TamagotchiBot.UserExtensions.Constants;
 
@@ -6,78 +7,101 @@ namespace TamagotchiBot.UserExtensions
 {
     public static class CallbackButtons
     {
-        public class KitchenCommand
+        public static class KitchenCommand
         {
-            public CallbackModel KitchenCommandInlineBread = new CallbackModel ()
+            public static CallbackModel KitchenCommandInlineBread
+            {
+                get => _kitchenCommandInlineBread;
+            }
+            private static CallbackModel _kitchenCommandInlineBread = new CallbackModel ()
             {
                 Text = "🍞",
-                CallbackData = "kitchenCommandInlineBread"
+                CallbackData = nameof(KitchenCommandInlineBread)
             };
 
-            public CallbackModel KitchenCommandInlineRedApple = new CallbackModel ()
+            public static CallbackModel KitchenCommandInlineRedApple
+            {
+                get => _kitchenCommandInlineRedApple;
+            }
+            private static CallbackModel _kitchenCommandInlineRedApple = new CallbackModel ()
             {
                 Text = "🍎",
-                CallbackData = "kitchenCommandInlineRedApple"
+                CallbackData = nameof(KitchenCommandInlineRedApple)
             };
 
-            public CallbackModel KitchenCommandInlineChocolate = new CallbackModel ()
+            public static CallbackModel KitchenCommandInlineChocolate
+            {
+                get => _kitchenCommandInlineChocolate;
+            }
+            private static CallbackModel _kitchenCommandInlineChocolate = new CallbackModel ()
             {
                 Text = "🍫",
-                CallbackData = "kitchenCommandInlineChocolate"
+                CallbackData = nameof (KitchenCommandInlineChocolate)
             };
 
-            public CallbackModel KitchenCommandInlineLollipop = new CallbackModel ()
+            public static CallbackModel KitchenCommandInlineLollipop
+            {
+                get => _kitchenCommandInlineLollipop;
+            }
+            private static CallbackModel _kitchenCommandInlineLollipop = new CallbackModel ()
             {
                 Text = "🍭",
-                CallbackData = "kitchenCommandInlineLollipop"
+                CallbackData = nameof(KitchenCommandInlineLollipop)
             };
         }
-        public class GameroomCommand
+        public static class GameroomCommand
         {
-            public CallbackModel GameroomCommandInlineAppleGame = new CallbackModel ()
+            public static CallbackModel GameroomCommandInlineAppleGame { get => _gameroomCommandInlineAppleGame; }
+            private static CallbackModel _gameroomCommandInlineAppleGame = new CallbackModel ()
             {
                 Text = "🍏",
-                CallbackData = "gameroomCommandInlineAppleGame"
+                CallbackData = nameof(GameroomCommandInlineAppleGame)
             };
 
-            public CallbackModel GameroomCommandInlineDice = new CallbackModel ()
+            public static CallbackModel GameroomCommandInlineDice { get => _gameroomCommandInlineDice; }
+            private static CallbackModel _gameroomCommandInlineDice = new CallbackModel ()
             {
                 Text = "🎲",
-                CallbackData = "gameroomCommandInlineDice"
+                CallbackData = nameof(GameroomCommandInlineDice)
             };
         }
-        public class SleepCommand
+        public static class SleepCommand
         {
-            public CallbackModel SleepCommandInlinePutToSleep(TimeSpan remainsTime) => new CallbackModel()
+            public static CallbackModel SleepCommandInlinePutToSleep(TimeSpan remainsTime, CultureInfo culture) => new CallbackModel()
             {
-                Text = string.Format(Resources.Resources.sleepCommandInlineShowTime, new DateTime().AddTicks(remainsTime.Ticks).ToString("HH:mm:ss")),
-                CallbackData = "sleepCommandInlinePutToSleep"
+                Text = string.Format(nameof(Resources.Resources.sleepCommandInlineShowTime).UseCulture(culture), new DateTime().AddTicks(remainsTime.Ticks).ToString("HH:mm:ss")),
+                CallbackData = nameof(SleepCommandInlinePutToSleep)
             };
         }
-        public class BathroomCommand
+        public static class BathroomCommand
         {
-            public CallbackModel BathroomCommandBrushTeeth = new CallbackModel ()
+            public static CallbackModel BathroomCommandBrushTeeth(CultureInfo culture) => new CallbackModel()
             {
-                Text = Resources.Resources.bathroomCommandBrushTeeth,
-                CallbackData = "bathroomCommandBrushTeeth"
+                Text = string.Format(nameof(Resources.Resources.bathroomCommandBrushTeeth).UseCulture(culture)),
+                CallbackData = nameof(BathroomCommandBrushTeeth)
             };
-            public CallbackModel BathroomCommandTakeShower = new CallbackModel ()
+            public static CallbackModel BathroomCommandTakeShower(CultureInfo culture) => new CallbackModel()
             {
-                Text = Resources.Resources.bathroomCommandTakeShower,
-                CallbackData = "bathroomCommandTakeShower"
+                Text = string.Format(nameof(Resources.Resources.bathroomCommandTakeShower).UseCulture(culture)),
+                CallbackData = nameof(BathroomCommandTakeShower)
             };
-        }
-        public class HospitalCommand
-        {
-            public CallbackModel HospitalCommandCurePills = new CallbackModel ()
+            public static CallbackModel BathroomCommandMakePoo(CultureInfo culture) => new CallbackModel()
             {
-                Text = Resources.Resources.hospitalCommandCurePills,
-                CallbackData = "hospitalCommandCurePills"
+                Text = string.Format(nameof(Resources.Resources.bathroomCommandMakePoo).UseCulture(culture)),
+                CallbackData = nameof(BathroomCommandMakePoo)
             };
         }
-        public class WorkCommand
+        public static class HospitalCommand
         {
-            public CallbackModel WorkCommandInlineShowTime(TimeSpan remainedTime, JobType jobType)
+            public static CallbackModel HospitalCommandCurePills(CultureInfo culture) => new CallbackModel()
+            {
+                Text = string.Format(nameof(Resources.Resources.hospitalCommandCurePills).UseCulture(culture)),
+                CallbackData = nameof(HospitalCommandCurePills)
+            };
+        }
+        public static class WorkCommand
+        {
+            public static CallbackModel WorkCommandInlineShowTime(TimeSpan remainedTime, JobType jobType, CultureInfo culture)
             {
                 string timeToShow;
                 if (remainedTime > TimeSpan.Zero)
@@ -89,13 +113,13 @@ namespace TamagotchiBot.UserExtensions
                 {
                     JobType.WorkingOnPC => new CallbackModel()
                     {
-                        Text = string.Format(Resources.Resources.workCommandInlineShowTime, timeToShow),
-                        CallbackData = "workCommandInlineShowTime"
+                        Text = string.Format(nameof(Resources.Resources.workCommandInlineShowTime).UseCulture(culture), timeToShow),
+                        CallbackData = nameof(WorkCommandInlineShowTime)
                     },
                     JobType.FlyersDistributing => new CallbackModel()
                     {
-                        Text = string.Format(Resources.Resources.workCommandInlineShowTime, timeToShow),
-                        CallbackData = "workCommandInlineFlyersShowTime"
+                        Text = string.Format(nameof(Resources.Resources.workCommandInlineShowTime).UseCulture(culture), timeToShow),
+                        CallbackData = nameof(WorkCommandInlineShowTime)
                     },
                     _ => new CallbackModel()
                     {
@@ -104,98 +128,120 @@ namespace TamagotchiBot.UserExtensions
                     }
                 };
             }
-
-            public CallbackModel WorkCommandInlineWorkOnPC = new CallbackModel ()
+            public static CallbackModel WorkCommandInlineWorkOnPC(CultureInfo culture) => new CallbackModel()
             {
-                Text = Resources.Resources.workCommandInlinePC,
-                CallbackData = "workCommandInlineWorkOnPC"
+                Text = nameof(Resources.Resources.workCommandInlinePC).UseCulture(culture),
+                CallbackData = nameof(WorkCommandInlineWorkOnPC)
             };
-            public CallbackModel WorkCommandInlineDistributeFlyers = new CallbackModel ()
+            public static CallbackModel WorkCommandInlineDistributeFlyers(CultureInfo culture) => new CallbackModel()
             {
-                Text = Resources.Resources.workCommandInlineFlyers,
-                CallbackData = "WorkCommandInlineDistributeFlyers"
+                Text = nameof(Resources.Resources.workCommandInlineFlyers).UseCulture(culture),
+                CallbackData = nameof(WorkCommandInlineDistributeFlyers)
             };
         }
-        public class RanksCommand
+        public static class RanksCommand
         {
-            public CallbackModel RanksCommandInlineLevel = new CallbackModel ()
+            public static CallbackModel RanksCommandInlineLevel(CultureInfo culture) => new CallbackModel()
             {
-                Text = Resources.Resources.ranksCommandInlineLevel,
-                CallbackData = "ranksCommandInlineLevel"
-            };
-
-            public CallbackModel RanksCommandInlineGold = new CallbackModel ()
-            {
-                Text = Resources.Resources.ranksCommandInlineGold,
-                CallbackData = "ranksCommandInlineGold"
+                Text = nameof(Resources.Resources.ranksCommandInlineLevel).UseCulture(culture),
+                CallbackData = nameof(RanksCommandInlineLevel)
             };
 
-            public CallbackModel RanksCommandInlineApples = new CallbackModel ()
+            public static CallbackModel RanksCommandInlineGold(CultureInfo culture) => new CallbackModel()
             {
-                Text = Resources.Resources.ranksCommandInlineApples,
-                CallbackData = "ranksCommandInlineApples"
-            };
-        }
-        public class RewardsCommand
-        {
-            public CallbackModel RewardCommandDailyRewardInlineShowTime(TimeSpan remainedTime) => new CallbackModel()
-            {
-                Text = string.Format(Resources.Resources.rewardCommandDailyRewardInlineShowTime, new DateTime(remainedTime.Ticks).ToString("HH:mm:ss")),
-                CallbackData = "rewardCommandDailyRewardInlineShowTime"
+                Text = nameof(Resources.Resources.ranksCommandInlineGold).UseCulture(culture),
+                CallbackData = nameof(RanksCommandInlineGold)
             };
 
-            public CallbackModel RewardCommandInlineDailyReward = new CallbackModel ()
+            public static CallbackModel RanksCommandInlineApples(CultureInfo culture) => new CallbackModel()
             {
-                Text = Resources.Resources.rewardCommandInlineDailyReward,
-                CallbackData = "rewardCommandInlineDailyReward"
+                Text = nameof(Resources.Resources.ranksCommandInlineApples).UseCulture(culture),
+                CallbackData = nameof(RanksCommandInlineApples)
             };
         }
-        public class PetCommand
+        public static class RewardsCommand
         {
-            public CallbackModel PetCommandInlineBasicInfo = new CallbackModel ()
+            public static CallbackModel RewardCommandDailyRewardInlineShowTime(TimeSpan remainedTime, CultureInfo culture) => new CallbackModel()
             {
-                Text = Resources.Resources.petCommandInlineBasicInfo,
-                CallbackData = "petCommandInlineBasicInfo"
-            };
-            public CallbackModel PetCommandInlineExtraInfo = new CallbackModel ()
-            {
-                Text = Resources.Resources.petCommandInlineExtraInfo,
-                CallbackData = "petCommandInlineExtraInfo"
-            };
-        }
-        public class ReferalCommand
-        {
-            public CallbackModel ToAddToNewGroupReferalCommand = new CallbackModel ()
-            {
-                Text = Resources.Resources.ToAddToNewGroupReferalCommand,
-                CallbackData = "ToAddToNewGroupReferalCommand"
+                Text = string.Format(nameof(Resources.Resources.rewardCommandDailyRewardInlineShowTime).UseCulture(culture), new DateTime(remainedTime.Ticks).ToString("HH:mm:ss")),
+                CallbackData = nameof(RewardCommandDailyRewardInlineShowTime)
             };
 
-            public CallbackModel ToShareReferalCommand = new CallbackModel ()
+            public static CallbackModel RewardCommandInlineDailyReward(CultureInfo culture) => new CallbackModel()
             {
-                Text = Resources.Resources.ToShareReferalCommand,
-                CallbackData = "ToShareReferalCommand"
+                Text = nameof(Resources.Resources.rewardCommandInlineDailyReward).UseCulture(culture),
+                CallbackData = nameof(RewardCommandInlineDailyReward)
             };
         }
-        public class InviteMuliplayerCommand
+        public static class PetCommand
         {
-            public CallbackModel InviteGlobalMultiplayerButton = new CallbackModel ()
+            public static CallbackModel PetCommandInlineBasicInfo(CultureInfo culture) => new CallbackModel()
             {
-                Text = Resources.Resources.InviteGlobalMultiplayerButton,
-                CallbackData = "InviteGlobalMultiplayerButton"
+                Text = nameof(Resources.Resources.petCommandInlineBasicInfo).UseCulture(culture),
+                CallbackData = nameof(PetCommandInlineBasicInfo)
             };
-            public CallbackModel InviteReferalMultiplayerButton(string refName) => new CallbackModel()
+            public static CallbackModel PetCommandInlineExtraInfo(CultureInfo culture) => new CallbackModel()
             {
-                Text = string.Format(Resources.Resources.InviteReferalMultiplayerButton, refName),
-                CallbackData = "InviteReferalMultiplayerButton"
+                Text = nameof(Resources.Resources.petCommandInlineExtraInfo).UseCulture(culture),
+                CallbackData = nameof(PetCommandInlineExtraInfo)
             };
         }
-        public class DuelMuliplayerCommand
+        public static class ReferalCommand
         {
-            public CallbackModel StartDuelMultiplayerButton = new CallbackModel ()
+            public static CallbackModel ToAddToNewGroupReferalCommand(CultureInfo culture) => new CallbackModel()
             {
-                Text = Resources.Resources.DuelMPAcceptButton,
-                CallbackData = "StartDuelMultiplayerButton"
+                Text = nameof(Resources.Resources.ToAddToNewGroupReferalCommand).UseCulture(culture),
+                CallbackData = nameof(ToAddToNewGroupReferalCommand)
+            };
+
+            public static CallbackModel ToShareReferalCommand(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.ToShareReferalCommand).UseCulture(culture),
+                CallbackData = nameof(ToShareReferalCommand)
+            };
+        }
+        public static class InviteMuliplayerCommand
+        {
+            public static CallbackModel InviteGlobalMultiplayerButton(CultureInfo culture)
+            {
+                var emoji = Extensions.GetTypeEmoji(new Random().Next(5));
+                return new CallbackModel()
+                {
+                    Text = string.Format(nameof(Resources.Resources.InviteGlobalMultiplayerButton).UseCulture(culture), emoji),
+                    CallbackData = nameof(InviteGlobalMultiplayerButton)
+                };
+            }
+
+            public static CallbackModel InviteReferalMultiplayerButton(string refName, CultureInfo culture)
+            {
+                var emoji = Extensions.GetTypeEmoji(new Random().Next(5));
+                return new CallbackModel()
+                {
+                    Text = string.Format(nameof(Resources.Resources.InviteReferalMultiplayerButton).UseCulture(culture), emoji, refName),
+                    CallbackData = nameof(InviteReferalMultiplayerButton)
+                };
+            }
+        }
+        public static class DuelMuliplayerCommand
+        {
+            public static CallbackModel StartDuelMultiplayerButton(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.DuelMPAcceptButton).UseCulture(culture),
+                CallbackData = nameof(StartDuelMultiplayerButton)
+            };
+        }
+
+        public static class RanksMultiplayerCommand
+        {
+            public static CallbackModel ShowChatRanksMP(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.ShowChatRanksMPButton).UseCulture(culture),
+                CallbackData = nameof(ShowChatRanksMP)
+            };
+            public static CallbackModel ShowGlobalRanksMP(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.ShowGlobalRanksMPButton).UseCulture(culture),
+                CallbackData = nameof(ShowGlobalRanksMP)
             };
         }
     }

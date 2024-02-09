@@ -4,12 +4,8 @@ using System;
 
 namespace TamagotchiBot.Models.Mongo
 {
-    public class Pet
+    public class Pet : MongoModelBase
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId Id { get; set; }
-
         [BsonElement("UserId")]
         public long UserId { get; set; }
 
@@ -17,7 +13,7 @@ namespace TamagotchiBot.Models.Mongo
         public string Name { get; set; }
 
         [BsonElement("Type")]
-        public string Type { get; set; }
+        public int Type { get; set; }
 
         [BsonElement("BirthDateTime")]
         public DateTime BirthDateTime { get; set; }
@@ -30,10 +26,6 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("GotRandomEventTime")]
         public DateTime GotRandomEventTime { get; set; }
-
-        [Obsolete]
-        [BsonElement("GotDailyRewardTime")]
-        public DateTime GotDailyRewardTime { get; set; }
 
         [BsonElement("LastUpdateTime")]
         public DateTime LastUpdateTime { get; set; }
@@ -49,10 +41,6 @@ namespace TamagotchiBot.Models.Mongo
         
         [BsonElement("CurrentJob")]
         public int CurrentJob { get; set; }
-
-        [Obsolete]
-        [BsonElement("Gold")]
-        public int Gold { get; set; }
 
         [BsonElement("HP")]
         public int HP { get; set; }

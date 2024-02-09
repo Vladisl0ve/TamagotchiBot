@@ -1,19 +1,11 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TamagotchiBot.Models.Mongo
 {
-    public class DailyInfo
+    public class DailyInfo : MongoModelBase
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId Id { get; set; }
-
         [BsonElement("DateInfo")]
         public DateTime DateInfo { get; set; }
 
@@ -30,6 +22,18 @@ namespace TamagotchiBot.Models.Mongo
         public int TodayMessages { get; set; }
 
         [BsonElement("TodayCallbacks")]
-        public int TodayCallbacks { get; set; }
+        public int TodayCallbacks { get; set; } 
+        
+        [BsonElement("PetCounter")]
+        public long PetCounter { get; set; }   
+        
+        [BsonElement("UserCounter")]
+        public long UserCounter { get; set; }   
+        
+        [BsonElement("AUDCounter")]
+        public long AUDCounter { get; set; }   
+        
+        [BsonElement("ReferalsCounter")]
+        public long ReferalsCounter { get; set; }
     }
 }

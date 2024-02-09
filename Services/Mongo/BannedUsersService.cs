@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TamagotchiBot.Database;
@@ -22,6 +23,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public BannedUsers Create(BannedUsers user)
         {
+            user.Created = DateTime.UtcNow;
             _bannedUsers.InsertOne(user);
             return user;
         }

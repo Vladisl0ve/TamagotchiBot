@@ -13,6 +13,8 @@ namespace TamagotchiBot.Database
         public TimeSpan DevExtraNotifyEvery     { get; set; }
         public TimeSpan TriggersEvery           { get; set; }
         public TimeSpan AwakeWhenAFKFor         { get; set; }
+        public string TokenBot                  { get; set; }
+        public string BotstatApiKey             { get; set; }
     }
 
     public interface IEnvsSettings
@@ -25,5 +27,7 @@ namespace TamagotchiBot.Database
         TimeSpan DevExtraNotifyEvery     { get; set; }
         TimeSpan TriggersEvery           { get; set; }
         TimeSpan AwakeWhenAFKFor         { get; set; }
+        string   TokenBot                { get; set; }
+        string   BotstatApiKey           { get; set; }
     }
 }

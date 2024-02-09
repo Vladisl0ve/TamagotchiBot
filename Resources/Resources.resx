@@ -129,14 +129,19 @@ Let's start!</value>
 Just type it here</value>
   </data>
   <data name="ConfirmedName" xml:space="preserve">
-    <value>🧃 Nice!
-Your pet {0} is waiting for you 🐱
-Do not forget feed and wash him, play the games and just love ☺️
+    <value>🧃 Cool!
+Your pet {0} is waiting 🐱
 
-BTW '/menu' shows some commands to start</value>
+Schedule:
+1️⃣ Have breakfast in the kitchen 🍳
+2️⃣ Brush your teeth and take a shower 🛁
+3️⃣ Play in the nursery (the pet really loves playing Apple🍎)
+
+Don't forget to visit your pet, otherwise he may get offended and leave
+Have fun 🍿</value>
   </data>
   <data name="petCommand" xml:space="preserve">
-    <value>🐱 {0}
+    <value>{11} {0}
 
 💊 HP: {1}%
 🍕 Satiety: {4}%
@@ -166,10 +171,17 @@ BTW '/menu' shows some commands to start</value>
     <value>Language was set to English 🇺🇸</value>
   </data>
   <data name="petCommandMoreInfo1" xml:space="preserve">
-    <value>🐱 {0}
+    <value>{0} {1}
 
-🎂 Date of birth: {1}
-👫 Referrals: {2}</value>
+🎂 Date of birth: {2}
+👫 Referrals: {3}
+
+🍗 Pet was fed &lt;b&gt;&lt;i&gt;{4} times&lt;/i&gt;&lt;/b&gt;
+🍎 Played Apple &lt;b&gt;&lt;i&gt;{5} times&lt;/i&gt;&lt;/b&gt;
+🌙 Pet slept for &lt;b&gt;&lt;i&gt;{6} minutes&lt;/i&gt;&lt;/b&gt;
+🧰 &lt;b&gt;&lt;i&gt;{7} minutes&lt;/i&gt;&lt;/b&gt; the pet worked
+
+🦭 Pet is &lt;b&gt;&lt;i&gt;{8} days old&lt;/i&gt;&lt;/b&gt;</value>
   </data>
   <data name="petCommandInlineBasicInfo" xml:space="preserve">
     <value>Basic info 📋</value>
@@ -217,9 +229,9 @@ Don't forget feed him 🐣</value>
     <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺</value>
   </data>
   <data name="sleepCommand" xml:space="preserve">
-    <value>🐱 {0}
-😴 Fatigue: {1}%
-⚡️ Status: {2}</value>
+    <value>{0} {1}
+😴 Fatigue: {2}%
+⚡️ Status: {3}</value>
   </data>
   <data name="sleepCommandDescription" xml:space="preserve">
     <value>Bedroom 🛏</value>
@@ -297,7 +309,7 @@ Health: {0}%</value>
   </data>
   <data name="PetCuringAnwserCallback" xml:space="preserve">
     <value>Your pet has been cured on {0}% 🌡
-But joy decreased on {1}%</value>
+🧸 But joy decreased on {1}%</value>
   </data>
   <data name="hospitalCommandDescription" xml:space="preserve">
     <value>Hospital 🏥</value>
@@ -335,10 +347,9 @@ Therefore, visit your virtual friend more often 🧸
   </data>
   <data name="menuCommand" xml:space="preserve">
     <value>What to do with pet:
-/pet - pet's status 🐱
+/pet - pet's status {0}
 /kitchen - feed your pet 🍕
 /work - to earn more gold 💰
-/reward - to earn daily bonus 🎁 
 /sleep - bedroom 🧸
 /gameroom entertainments 🎳
 /ranks - see the best pets! 👑
@@ -346,6 +357,12 @@ Therefore, visit your virtual friend more often 🧸
 /bathroom - clean your pet 🛁
 /referal - referral program 👩‍👩‍👧‍👦
 /rename - to change name 🌀
+
+/reward - &lt;i&gt;&lt;b&gt;to earn daily bonus&lt;/b&gt;&lt;/i&gt; 🎁 
+
+/changelog - official channel of Tamagotchi bot 🚀
+/language - language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺
+/help - FAQ 🆘
 
 There will be more in future!
 Stay tuned! 💝</value>
@@ -357,17 +374,18 @@ Stay tuned! 💝</value>
     <value>You have come to {0}, but all you see is an empty room and a note on the table:
 "My beloved friend {1}!
 It was very nice to spend time with you, but I've started feel not good.
-You should have kept an eye on me...😿"
+You should have kept an eye on me...❤️‍🩹"
 
 Your pet left because he lacked care 💔</value>
   </data>
   <data name="EpilogueText" xml:space="preserve">
     <value>It happens to everyone, but life goes on!
 Maybe you'll be lucky with a new pet 😼
+
 Try again? 🫶</value>
   </data>
   <data name="ReminderNotifyText1" xml:space="preserve">
-    <value>😺: You've come back!
+    <value>{0}: You've come back!
 I've missed you so much!
 I want to eat 🌭 and play with you 🪁
 
@@ -375,13 +393,13 @@ I want to eat 🌭 and play with you 🪁
 /gameroom for games 🏓</value>
   </data>
   <data name="quitText" xml:space="preserve">
-    <value>Quit</value>
+    <value>Quit ❌</value>
   </data>
   <data name="againText" xml:space="preserve">
-    <value>Again</value>
+    <value>Again 🍏</value>
   </data>
   <data name="statisticsText" xml:space="preserve">
-    <value>Statistics</value>
+    <value>Statistics 📊</value>
   </data>
   <data name="ConcedeText" xml:space="preserve">
     <value>Concede</value>
@@ -398,15 +416,15 @@ Can you outplay your pet and leave him a tasteless 🍏?</value>
     <value>{0} apples left</value>
   </data>
   <data name="appleGameSysEaten" xml:space="preserve">
-    <value>🐱: I ate apples - {0}</value>
+    <value>{0}: I ate apples - {1}</value>
   </data>
   <data name="appleGameLoseText" xml:space="preserve">
     <value>Your green apple remains
 
-🐱: Better luck next time 😉</value>
+{0}: Better luck next time 😉</value>
   </data>
   <data name="appleGameWinText" xml:space="preserve">
-    <value>🐱: You won, well done!</value>
+    <value>{0}: You won, well done!</value>
   </data>
   <data name="appleGameStatisticsCommand" xml:space="preserve">
     <value>📈STATISTICS📉
@@ -424,39 +442,42 @@ Surrendered: {2}</value>
     <value>You are in the gameroom ⚽️</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Update 1.4 has been released⚡️⚡️
+    <value>⚡️⚡️ Update 1.5 has been released⚡️⚡️
 
-🥳&lt;b&gt;Added&lt;/b&gt;🥳:
-🤹‍♂️&lt;b&gt;New job for a pet - distributing flyers&lt;/b&gt;
-  &lt;i&gt;Added for balance and variety of gameplay: you have to wait less for the end of work, but you also get less gold&lt;/i&gt;
-🌮&lt;b&gt;It’s now possible to feed other people’s pets&lt;/b&gt;
-  In general chat, just call the /feedpet command, then tag the desired player &lt;u&gt;(multiplayer only)&lt;/u&gt;
-🤼‍♀️&lt;b&gt;Now you can fight with pets (just like Pokemon :D)&lt;/b&gt;
-  &lt;i&gt;You need to add the bot to the general chat and call the /startduel command (Duel is possible &lt;u&gt;only in multiplayer&lt;/u&gt;)&lt;/i&gt;
+&lt;i&gt;&lt;b&gt;NEW:&lt;/b&gt;&lt;/i&gt;
+ 🧸 &lt;b&gt;New pet types have been added:&lt;/b&gt;
+       🦊 &lt;i&gt;Cool fox&lt;/i&gt;
+       🐶 &lt;i&gt;Loyal doggie&lt;/i&gt;
+       🐭 &lt;i&gt;Little Mouse&lt;/i&gt;
+       🐼 &lt;i&gt;Ambiguous panda&lt;/i&gt;
+       🐱 &lt;i&gt;Favorite cat&lt;/i&gt;
+       &lt;i&gt;To change a pet you need to have 5000💰&lt;/i&gt;
 
-😻&lt;b&gt;Corrections&lt;/b&gt;😻:
-👽&lt;b&gt;Rebalanced experience gain &lt;/b&gt;
-   &lt;i&gt;Now, with each new level you need more experience than the previous one. The level has also been recalculated for old players.&lt;/i&gt;
-😈&lt;b&gt;Pet may not like his new name&lt;/b&gt;
-   &lt;i&gt;Try to come up with appropriate and funny names&lt;/i&gt;
+🎮 &lt;b&gt;Added control buttons&lt;/b&gt; - now you can go to different locations (kitchen, nursery, work, etc.) using buttons instead of the keyboard
+🏕 &lt;b&gt;A new Farm location has been added&lt;/b&gt; - it will be possible to change the type of pet there.
+There will be even more fun here in the future 🥁
+🏆 &lt;b&gt;Added a table of Duel results for chats&lt;/b&gt;
+🎯 There are also a lot of little things, so there’s a reason to look for it yourself :)
 
-I would like to express my deep gratitude to everyone who helps with ideas and finds errors in the bot’s work ❤️
-(if you have something to say, then come to our chat https://t.me/chatvirtualpetbot, we will be glad to read it 😇)
+&lt;i&gt;&lt;b&gt;CHANGES:&lt;/b&gt;&lt;/i&gt;
+🧰 Now more information is shown in the “additional info”
+💻 Rewrote almost 20k lines in the bot - added multithreading, improved performance
 
-Special thanks to @SuankaSmirnova25, @glitchpavel and all the players
-Without you, this bot is nothing 🤍❤️🤍
+This patch turned out to be the most difficult: I had to optimize and rewrite a lot of things, but it was worth it😎
+
+After the patch is released, there may be problems with the bot, but I will quickly fix it :)
 
 Subscribe to our channel, where everything is about the bot:
 https://t.me/newsvirtualpetbot</value>
   </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
-    <value>🐱: Waiting for you here, come back
+    <value>{0}: Waiting for you here, come back
 
 /kitchen to feed 🍩
 /gameroom for games 🏓</value>
   </data>
   <data name="ReminderNotifyText3" xml:space="preserve">
-    <value>🐱: Sadness to be alone...
+    <value>{0}: Sadness to be alone...
 
 /kitchen to feed 🍩
 /gameroom for games 🏓</value>
@@ -541,7 +562,7 @@ Take it soon! 🎁</value>
   </data>
   <data name="RandomEventStomachache" xml:space="preserve">
     <value>❤️‍🔥Help your pet urgently!
-😾: my tummy hurts very much...
+{0}: my tummy hurts very much...
 
 -5% health 💊
 -15% satiety 🍕
@@ -617,13 +638,13 @@ But the pet accidentally stepped into a puddle 💦
     <value>To resurrect your pet? 🧬</value>
   </data>
   <data name="PetCameBackText" xml:space="preserve">
-    <value>After a long search and a lot of money for detectives, the pet was found! 😺
+    <value>After a long search and a lot of money for detectives, the pet was found! {0}
 You asked for forgiveness for a long time and promised not to forget about your pet again 🐣
 You both reconciled 💕
 
 /pet - check pet status</value>
   </data>
-  <data name="NotEnoughGoldToResurrect" xml:space="preserve">
+  <data name="NotEnoughGold" xml:space="preserve">
     <value>Unfortunately, you don't have enough money ☠️</value>
   </data>
   <data name="PetIsCleanEnoughAlert" xml:space="preserve">
@@ -649,10 +670,10 @@ Price: {2} gold 💰</value>
     <value>No ❌</value>
   </data>
   <data name="InviteGlobalMultiplayerButton" xml:space="preserve">
-    <value>😺 Get your own Tamagotchi</value>
+    <value>{0} Get your own Tamagotchi</value>
   </data>
   <data name="InviteReferalMultiplayerButton" xml:space="preserve">
-    <value>🐣 Become a friend for {0}</value>
+    <value>{0} Become a friend for {1}</value>
   </data>
   <data name="InviteGlobalMultiplayerText" xml:space="preserve">
     <value>{0}, you don’t have your Tamagotchi yet 🐧</value>
@@ -660,7 +681,7 @@ Price: {2} gold 💰</value>
   <data name="MultiplayerShowPet" xml:space="preserve">
     <value>{8}, here is your pet
 
-🐱 &lt;b&gt;{0}&lt;/b&gt;
+{9} &lt;b&gt;{0}&lt;/b&gt;
 💊 Health: {1}%
 🍕 Satiety: {2}%
 🛁 Hygiene: {3}%
@@ -701,7 +722,8 @@ Bot 🐾 Tamagotchi | Virtual Pet 🐾 provides the opportunity to have your own
 Available commands in chat:
 /show_pet - show your pet 🦁
 /start_duel - start a pet duel ⚔️
-/feed_pet - feed someone else’s pet 🥞</value>
+/feed_pet - feed someone else’s pet 🥞
+/ranks - Top-10 of Best 🏆</value>
   </data>
   <data name="changelogCommand" xml:space="preserve">
     <value>📢💬 You can view and discuss bot updates here:
@@ -715,14 +737,14 @@ Available commands in chat:
   </data>
   <data name="RandomEventNiceFlower" xml:space="preserve">
     <value>You took a walk through the botanical garden 🌷🌷🌷
-🐱 I liked it very much, we will definitely come back here!
+{0}: I liked it very much, we will definitely come back here!
 
 +10% joy 🎊
 
 /pet - check the status of the pet</value>
   </data>
   <data name="RandomEventWatermelon" xml:space="preserve">
-    <value>🐱: Delicious watermelon, I want more 🍉
+    <value>{0}: Delicious watermelon, I want more 🍉
 
 +15% satiety 🍕
 
@@ -736,7 +758,7 @@ Available commands in chat:
 /pet - check the status of the pet</value>
   </data>
   <data name="BadWordDetected" xml:space="preserve">
-    <value>Pet doesn't like his new name 😾
+    <value>Pet doesn't like his new name {0}:
 Suggest something else ⬇️</value>
   </data>
   <data name="StartDuelMPCommand" xml:space="preserve">
@@ -744,7 +766,8 @@ Suggest something else ⬇️</value>
   </data>
   <data name="DuelMPStartCommand" xml:space="preserve">
     <value>♨️{0} announces a pet duel!♨️
-"My {1}😼 kicks ass and takes names! Who will challenge us?!"</value>
+
+"My &lt;i&gt;&lt;b&gt;{2} {1}&lt;/b&gt;&lt;/i&gt; kicks ass and takes names! Who will challenge us?!"</value>
   </data>
   <data name="DuelMPAcceptButton" xml:space="preserve">
     <value>⚔️Accept the challenge</value>
@@ -754,13 +777,14 @@ Suggest something else ⬇️</value>
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕐🟥🟥🟥🟥
 
-{2} 🙀🛡          🗡😼{3}</value>
+{2} {4}🛡                    🗡{5}{3}</value>
   </data>
   <data name="DuelMPFighting2" xml:space="preserve">
     <value>🔰THE DUEL HAS BEGAN🔰
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕒🟥🟥🟥🟥
-{2} 🙀🛡        🗡😼{3}
+
+{2} {4}🛡               🗡{5}{3}
 
 ❕Pet {3} started attacking {2}!</value>
   </data>
@@ -769,7 +793,7 @@ Suggest something else ⬇️</value>
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕢🟥🟥🟥🟥
 
-{2} 🙀🛡     🗡😼{3}
+{2} {4}🛡          🗡{5}{3}
 
 ‼️Pet {3} is already very close to {2}!</value>
   </data>
@@ -778,7 +802,7 @@ Suggest something else ⬇️</value>
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕙🟥🟥🟥🟥
 
-{2} 🙀🛡  🗡😼{3}
+{2} {4}🛡   🗡{5}{3}
 
 💥Pet {3} hits {2}...</value>
   </data>
@@ -792,14 +816,16 @@ Suggest something else ⬇️</value>
 
 &lt;b&gt;Reward: {4}&lt;/b&gt;💰</value>
   </data>
-  <data name="DuelMPFightingEndingDefenderWin" xml:space="preserve">
-    <value>Pet {1} slipped and fell on his butt during an attack🧸
-😽{0} wins 🥇</value>
+  <data name="DuelMPFightingEnding1" xml:space="preserve">
+    <value>Pet {1}{3} slipped and fell on his butt during an attack🧸
+
+{2}{0} wins 🥇</value>
   </data>
-  <data name="DuelMPFightingEndingAttackerWin" xml:space="preserve">
-    <value>Pet {1} hits the shield with lightning speed💢
-{0} got scared and asked to stop the duel🙅‍♂️
-😽{1} wins 🥇</value>
+  <data name="DuelMPFightingEnding2" xml:space="preserve">
+    <value>Pet {1}{3} hits the shield with lightning speed💢
+{0}{2} got scared and asked to stop the duel🙅‍♂️
+
+{3}{1} wins 🥇</value>
   </data>
   <data name="DuelMPTimeout" xml:space="preserve">
     <value>No one accepted the duel from {0}
@@ -854,7 +880,7 @@ Wait another {2}🕑 before you can feed pet again</value>
   </data>
   <data name="FeedMPEndSuccess" xml:space="preserve">
     <value>Pet &lt;b&gt;{0}&lt;/b&gt; happily pounced on a huge burger 🍔 with fries 🍟
-😻: &lt;i&gt;Thank you very much! I'll tell the owner that he has a great friend!&lt;/i&gt;
+{2}&lt;b&gt;{3}&lt;/b&gt;: &lt;i&gt;Thank you very much! I'll tell the owner that he has a great friend!&lt;/i&gt;
 
 -{1}💰</value>
   </data>
@@ -882,5 +908,134 @@ You only have {2}%💊</value>
   <data name="NotEnoughHPForDuelCallback" xml:space="preserve">
     <value>To accept a duel you need {0}%💊 health
 You only have {1}%💊</value>
+  </data>
+  <data name="ShowChatRanksMPCommand" xml:space="preserve">
+    <value>Top 10 chat players 🎖</value>
+  </data>
+  <data name="ShowGlobalRanksMPCommand" xml:space="preserve">
+    <value>Top 10 players of all chats 🏆</value>
+  </data>
+  <data name="ShowChatRanksMPHeader" xml:space="preserve">
+    <value>🎖&lt;b&gt;Best chat duelists {0}&lt;/b&gt;🎖</value>
+  </data>
+  <data name="ShowGlobalRanksMPHeader" xml:space="preserve">
+    <value>🏆&lt;b&gt;The best duelists in the world&lt;/b&gt; 🏆</value>
+  </data>
+  <data name="ShowChatRanksMPButton" xml:space="preserve">
+    <value>Top 10 chat 🎖</value>
+  </data>
+  <data name="ShowGlobalRanksMPButton" xml:space="preserve">
+    <value>Top 10 world 🏆</value>
+  </data>
+  <data name="bathroomCommandMakePoo" xml:space="preserve">
+    <value>🧻Poop💩</value>
+  </data>
+  <data name="PetDoesntWantToPoo" xml:space="preserve">
+    <value>Pet doesn't want to poop 🗿</value>
+  </data>
+  <data name="farmCommandDescription" xml:space="preserve">
+    <value>Farm 🚜</value>
+  </data>
+  <data name="farmCommand" xml:space="preserve">
+    <value>👨‍🌾: Oh, who came to us! It's {0} with its owner!
+&lt;b&gt;How can I help?&lt;/b&gt;</value>
+  </data>
+  <data name="farmButtonChangeType" xml:space="preserve">
+    <value>Change your pet's appearance 🎩</value>
+  </data>
+  <data name="goAwayButton" xml:space="preserve">
+    <value>Say goodbye and leave 👋</value>
+  </data>
+  <data name="changeTypeButtonCommand" xml:space="preserve">
+    <value>👨‍🌾: I'm a &lt;i&gt;magic&lt;/i&gt;farmer, so I can change the appearance of your pet
+Choose whoever you want!
+
+Pet Shape: {0} gold 💰</value>
+  </data>
+  <data name="CatTypeText" xml:space="preserve">
+    <value>Kitty 🐱</value>
+  </data>
+  <data name="DogTypeText" xml:space="preserve">
+    <value>Doggie 🐶</value>
+  </data>
+  <data name="FoxTypeText" xml:space="preserve">
+    <value>Little fox 🦊</value>
+  </data>
+  <data name="PandaTypeText" xml:space="preserve">
+    <value>Panda 🐼</value>
+  </data>
+  <data name="MouseTypeText" xml:space="preserve">
+    <value>Little mouse 🐭</value>
+  </data>
+  <data name="changedTypeToCat" xml:space="preserve">
+    <value>😼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: WOW! I'm a cat now!</value>
+  </data>
+  <data name="changedTypeToDog" xml:space="preserve">
+    <value>🐶&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Woof-woof! What's wrong with my voice?
+And the tail is unusual...</value>
+  </data>
+  <data name="changedTypeToMouse" xml:space="preserve">
+    <value>🐭&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: How big you all are now, and I’m small!</value>
+  </data>
+  <data name="changedTypeToPanda" xml:space="preserve">
+    <value>🐼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: The world is not divided into black and white. But yes, pandas!</value>
+  </data>
+  <data name="changedTypeToFox" xml:space="preserve">
+    <value>🦊&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Oh, what a cozy and pleasant fur ❤️</value>
+  </data>
+  <data name="changeTypeErrorSameType" xml:space="preserve">
+    <value>Your pet already looks like this ❌</value>
+  </data>
+  <data name="petIsBusyForFarm" xml:space="preserve">
+    <value>You can't go to the farm because the pet is busy 🚫</value>
+  </data>
+  <data name="DuelMPFightingEnding3" xml:space="preserve">
+    <value>Pet {3}{1} bravely defended himself, blocking every attack with his shield 🛡️
+
+Pet {2}{0} eventually found the gap and won 🎉</value>
+  </data>
+  <data name="DuelMPFightingEnding4" xml:space="preserve">
+    <value>Pet {3}{1} withstood a series of powerful blows,
+but his strength began to fade and he succumbed to the attack of his pet {2}{0}
+
+Pet {2}{0} wins 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding5" xml:space="preserve">
+    <value>Pet {2}{0} was slow, but his patience and resilience allowed him to repel all attacks 🛡️
+Pet {3}{1} surrendered after seeing that his opponent would not yield
+
+Pet {2}{0} wins 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding6" xml:space="preserve">
+    <value>Pet {3}{1} was afraid of the attack and froze in place,
+allowing your opponent {2}{0} to win the battle 🏁
+
+Pet {2}{0} wins 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding7" xml:space="preserve">
+    <value>Pet {3}{1} jumped from side to side, avoiding every attack of its opponent 🦎
+However, pet {2}{0} found a weak spot and won 🎖️
+
+Pet {2}{0} wins 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding8" xml:space="preserve">
+    <value>Pet {3}{1} used its magical powers to create a shield that repelled attacks from its opponent {2}{0},
+but fatigue ultimately led to his defeat.
+
+Pet {2}{0} wins 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding9" xml:space="preserve">
+    <value>Pet {3}{1} ran at full speed, trying to dodge his opponent's attack {2}{0}
+but in the end he was defeated due to lack of concentration 🪫
+
+Pet {2}{0} wins 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding10" xml:space="preserve">
+    <value>Pet {3}{1} tried to dodge the attack, but his agility could not save him from a powerful blow 🥊
+
+Pet {2}{0} wins 🏆</value>
+  </data>
+  <data name="GoldCompensastionGotText" xml:space="preserve">
+    <value>Compensation credited: {0}💰</value>
   </data>
 </root>

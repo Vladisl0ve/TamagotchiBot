@@ -1,11 +1,8 @@
 ﻿using System.Globalization;
-using Extensions = TamagotchiBot.UserExtensions.Extensions;
 using TamagotchiBot.Services.Interfaces;
 using Telegram.Bot.Types;
-using static TamagotchiBot.Resources.Resources;
 using TamagotchiBot.Models.Answers;
 using Telegram.Bot.Types.ReplyMarkups;
-using static TamagotchiBot.UserExtensions.CallbackButtons;
 using Serilog;
 using System.Threading.Tasks;
 using System.Web;
@@ -15,23 +12,30 @@ using TamagotchiBot.Models;
 using System;
 using TamagotchiBot.Models.Mongo;
 using TamagotchiBot.UserExtensions;
+using System.Text;
+using Extensions = TamagotchiBot.UserExtensions.Extensions;
 using User = TamagotchiBot.Models.Mongo.User;
+using static TamagotchiBot.Resources.Resources;
+using static TamagotchiBot.UserExtensions.CallbackButtons;
+using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.Controllers
 {
     public class MultiplayerController
     {
-        private IApplicationServices _appServices;
+        private readonly IApplicationServices _appServices;
         private readonly Message _message = null;
         private readonly CallbackQuery _callback = null;
         private readonly long _userId;
         private readonly long _chatId;
         private readonly int? _msgThreadId;
         private readonly CultureInfo _userCulture;
+        private readonly PetType _userPetType;
 
         private readonly string _chatName;
         private readonly string _userName;
         private readonly string _userLogInfo;
+        private readonly string _userPetEmoji;
 
         public MultiplayerController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
         {
@@ -45,11 +49,13 @@ namespace TamagotchiBot.Controllers
 
             _userName = message?.From?.FirstName ?? callback?.From?.FirstName;
             _chatName = message?.Chat?.Title ?? callback?.Message.Chat.Title;
-            _userLogInfo = Extensions.GetLogUser(_appServices.UserService.Get(_userId) ?? new Models.Mongo.User() { UserId = _userId });
+            _userLogInfo = Extensions.GetLogUser(_appServices.UserService.Get(_userId) ?? new User() { UserId = _userId });
 
-            Culture = _userCulture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
+            _userCulture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
+            _userPetType = Extensions.GetEnumPetType(_appServices.PetService.Get(_userId)?.Type ?? -1);
+            _userPetEmoji = Extensions.GetTypeEmoji(_userPetType);
         }
-        public void CommandHandler(string botUsername, string customText = null)
+        public async Task CommandHandler(string botUsername, string customText = null)
         {
             string textReceived = customText ?? _message.Text;
             if (textReceived == null)
@@ -68,49 +74,63 @@ namespace TamagotchiBot.Controllers
             var petDB = _appServices.PetService.Get(_userId);
             var userDB = _appServices.UserService.Get(_userId);
 
-            if (textReceived == "/show_pet")
+            if (textReceived.FirstOrDefault() == '/')
+                textReceived = textReceived.Remove(0, 1);
+
+            if (textReceived == Constants.CommandsMP.ShowPetCommand)
             {
                 if (!IsUserAndPetRegisteredChecking(petDB, userDB))
                 {
-                    SendInviteForUnregistered();
+                    await SendInviteForUnregistered();
                     return;
                 }
 
-                ShowPetMP(petDB, userDB);
+                await ShowPetMP(petDB, userDB);
                 return;
             }
 
-            if (textReceived == "/start_duel")
+            if (textReceived == Constants.CommandsMP.StartDuelCommand)
             {
                 if (!IsUserAndPetRegisteredChecking(petDB, userDB))
                 {
-                    SendInviteForUnregistered();
+                    await SendInviteForUnregistered();
                     return;
                 }
 
-                StartDuel(petDB, userDB);
+                await StartDuel(petDB, userDB);
                 return;
             }
 
-            if (textReceived == "/feed_pet")
+            if (textReceived == Constants.CommandsMP.ShowChatRanksMPCommand)
             {
                 if (!IsUserAndPetRegisteredChecking(petDB, userDB))
                 {
-                    SendInviteForUnregistered();
+                    await SendInviteForUnregistered();
                     return;
                 }
 
-                SendFeedMPMessage(userDB);
+                await ShowRanksMP(userDB);
+                return;
+            }
+
+            if (textReceived == Constants.CommandsMP.FeedMPCommand)
+            {
+                if (!IsUserAndPetRegisteredChecking(petDB, userDB))
+                {
+                    await SendInviteForUnregistered();
+                    return;
+                }
+
+                await SendFeedMPMessage(userDB);
                 return;
             }
 
             if (IsMessageHasMentions())
             {
-                FeedByMentionPetMP(petDB, userDB);
-                return;
+                await FeedByMentionPetMP(petDB, userDB);
             }
         }
-        public void CallbackHandler()
+        public async Task CallbackHandler()
         {
             var userDB = _appServices.UserService.Get(_userId);
             var petDB = _appServices.PetService.Get(_userId);
@@ -118,12 +138,22 @@ namespace TamagotchiBot.Controllers
             if (userDB == null || petDB == null || petDB.IsGone || petDB.HP <= 0)
                 return;
 
-            if (_callback.Data.Contains(new DuelMuliplayerCommand().StartDuelMultiplayerButton.CallbackData))
+            if (_callback.Data.Contains(DuelMuliplayerCommand.StartDuelMultiplayerButton(_userCulture).CallbackData))
             {
-                AcceptDuel();
+                await AcceptDuel();
             }
 
-            async void AcceptDuel()
+            if (_callback.Data.Contains(RanksMultiplayerCommand.ShowChatRanksMP(_userCulture).CallbackData))
+            {
+                await ShowRanks();
+            }
+
+            if (_callback.Data.Contains(RanksMultiplayerCommand.ShowGlobalRanksMP(_userCulture).CallbackData))
+            {
+                await ShowRanks(true);
+            }
+
+            async Task AcceptDuel()
             {
                 var splittedData = _callback.Data.Split("_").ToList();
                 if (splittedData.Count != 3)
@@ -148,27 +178,24 @@ namespace TamagotchiBot.Controllers
 
                 if (petDB?.HP < Constants.Costs.DuelHP)
                 {
-                    Culture = new CultureInfo(userDB?.Culture ?? "ru");
-                    string notEnoughHPTextCallback = string.Format(NotEnoughHPForDuelCallback, Constants.Costs.DuelHP, petDB?.HP ?? 0);
-                    _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, notEnoughHPTextCallback, true);
+                    string notEnoughHPTextCallback = string.Format(nameof(NotEnoughHPForDuelCallback).UseCulture(_userCulture), Constants.Costs.DuelHP, petDB?.HP ?? 0);
+                    await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, notEnoughHPTextCallback, true);
                     Log.Debug($"MP: called callback AcceptDuel, but not enough HP by {_userLogInfo}");
                     return;
                 }
 
                 if (_userId == duelCreatorId)
                 {
-                    Culture = new CultureInfo(userDB?.Culture ?? "ru");
-                    string cannotYourselfText = string.Format(DuelMPErrorYourself);
-                    _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, cannotYourselfText, true);
+                    string cannotYourselfText = string.Format(nameof(DuelMPErrorYourself).UseCulture(_userCulture));
+                    await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, cannotYourselfText, true);
                     Log.Debug($"MP: called callback AcceptDuel, but can not accept own duel by {_userLogInfo}");
                     return;
                 }
 
-                if (userDB?.Gold < Constants.Costs.DuelGold)
+                if (userDB.Gold < Constants.Costs.DuelGold)
                 {
-                    Culture = new CultureInfo(userDB?.Culture ?? "ru");
-                    string notEnoughGoldTextCallback = string.Format(NotEnoughGoldForDuelCallback, userDB?.Gold ?? 0, Constants.Costs.DuelGold);
-                    _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, notEnoughGoldTextCallback, true);
+                    string notEnoughGoldTextCallback = string.Format(nameof(NotEnoughGoldForDuelCallback).UseCulture(_userCulture), userDB.Gold, Constants.Costs.DuelGold);
+                    await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, notEnoughGoldTextCallback, true);
                     Log.Debug($"MP: called callback AcceptDuel, but not enough gold by {_userLogInfo}");
                     return;
                 }
@@ -177,10 +204,9 @@ namespace TamagotchiBot.Controllers
                 var timeToWaitNextDuel = metaUserDB?.NextPossibleDuelTime - DateTime.UtcNow;
                 if (timeToWaitNextDuel != null && timeToWaitNextDuel > TimeSpan.Zero)
                 {
-                    var timeToWaitString = new DateTime(timeToWaitNextDuel?.Ticks ?? 0).ToString("HH:mm:ss");
-                    Culture = new CultureInfo(userDB?.Culture ?? "ru");
-                    string waitForDuelText = string.Format(DuelMPCooldownCallback, timeToWaitString);
-                    _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, waitForDuelText, true);
+                    var timeToWaitString = new DateTime(timeToWaitNextDuel.GetValueOrDefault().Ticks, DateTimeKind.Utc).ToString("HH:mm:ss");
+                    string waitForDuelText = string.Format(nameof(DuelMPCooldownCallback).UseCulture(_userCulture), timeToWaitString);
+                    await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, waitForDuelText, true);
                     Log.Debug($"MP: called callback AcceptDuel, but has to wait {timeToWaitString} by {_userLogInfo}");
                     return;
                 }
@@ -193,6 +219,14 @@ namespace TamagotchiBot.Controllers
                 _appServices.MetaUserService.UpdateMsgCreatorDuelId(duelCreatorId, -1);
                 _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.DuelGold);
 
+                var audCreator = _appServices.AllUsersDataService.Get(duelCreatorId);
+                audCreator.DuelsStartedCounter++;
+                _appServices.AllUsersDataService.Update(audCreator);
+
+                var audAccepter = _appServices.AllUsersDataService.Get(_userId);
+                audAccepter.DuelsAcceptedCounter++;
+                _appServices.AllUsersDataService.Update(audAccepter);
+
                 var petAttacker = _appServices.PetService.Get(_userId);
                 var petDefender = _appServices.PetService.Get(duelCreatorId);
 
@@ -200,69 +234,233 @@ namespace TamagotchiBot.Controllers
                 var personalLinkDuelAccepted = Extensions.GetPersonalLink(_userId, _userName);
                 var petAttackerName = "<b>" + HttpUtility.HtmlEncode(petAttacker?.Name ?? "attacker") + "</b>";
                 var petDefenderName = "<b>" + HttpUtility.HtmlEncode(petDefender?.Name ?? "defender") + "</b>";
+                var petDefenderEmoji = Extensions.GetTypeEmoji(petDefender?.Type ?? -1);
+                var petAttackerEmoji = Extensions.GetTypeEmoji(petAttacker?.Type ?? -1);
 
                 var userDBCreator = _appServices.UserService.Get(duelCreatorId);
-                Culture = new CultureInfo(userDBCreator?.Culture ?? "ru");
                 AnswerMessage answerMessage = new AnswerMessage()
                 {
                     StickerId = Constants.StickersId.MPDuelStarted,
                     ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                    Text = string.Format(DuelMPFighting1, personalLinkCreatorDuel, personalLinkDuelAccepted, petDefenderName, petAttackerName),
+                    Text = string.Format(
+                        nameof(DuelMPFighting1).UseCulture(_userCulture),
+                        personalLinkCreatorDuel,
+                        personalLinkDuelAccepted,
+                        petDefenderName,
+                        petAttackerName,
+                        petDefenderEmoji,
+                        petAttackerEmoji),
                     msgThreadId = _msgThreadId
                 };
 
                 Log.Debug($"MP: duel accepted by {_userLogInfo}");
-                Culture = new CultureInfo(userDBCreator?.Culture ?? "ru");
                 var fightingMsg = await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
+                if (fightingMsg == null)
+                {
+                    Log.Fatal("ERROR ON FIGHTING_MP #1");
+                    return;
+                }
 
                 await Task.Delay(3000);
-                Culture = new CultureInfo(userDBCreator?.Culture ?? "ru");
-                var fight2 = string.Format(DuelMPFighting2, personalLinkCreatorDuel, personalLinkDuelAccepted, petDefenderName, petAttackerName);
+                var fight2 = string.Format(
+                    nameof(DuelMPFighting2).UseCulture(_userCulture),
+                    personalLinkCreatorDuel,
+                    personalLinkDuelAccepted,
+                    petDefenderName,
+                    petAttackerName,
+                    petDefenderEmoji,
+                    petAttackerEmoji);
                 await _appServices.BotControlService.EditMessageTextAsync(_chatId, fightingMsg.MessageId, fight2, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
 
                 await Task.Delay(2000);
-                Culture = new CultureInfo(userDBCreator?.Culture ?? "ru");
-                var fight3 = string.Format(DuelMPFighting3, personalLinkCreatorDuel, personalLinkDuelAccepted, petDefenderName, petAttackerName);
+                var fight3 = string.Format(
+                    nameof(DuelMPFighting3).UseCulture(_userCulture),
+                    personalLinkCreatorDuel,
+                    personalLinkDuelAccepted,
+                    petDefenderName,
+                    petAttackerName,
+                    petDefenderEmoji,
+                    petAttackerEmoji);
                 await _appServices.BotControlService.EditMessageTextAsync(_chatId, fightingMsg.MessageId, fight3, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
 
                 await Task.Delay(2000);
-                Culture = new CultureInfo(userDBCreator?.Culture ?? "ru");
-                var fight4 = string.Format(DuelMPFighting4, personalLinkCreatorDuel, personalLinkDuelAccepted, petDefenderName, petAttackerName);
+                var fight4 = string.Format(nameof(DuelMPFighting4).UseCulture(_userCulture),
+                    personalLinkCreatorDuel,
+                    personalLinkDuelAccepted,
+                    petDefenderName,
+                    petAttackerName,
+                    petDefenderEmoji,
+                    petAttackerEmoji);
                 await _appServices.BotControlService.EditMessageTextAsync(_chatId, fightingMsg.MessageId, fight4, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
 
                 await Task.Delay(2000);
                 var random = new Random();
                 bool isDefenderWin = random.Next(2) == 1;
                 string fightingEndExplanation = isDefenderWin
-                    ? string.Format(DuelMPFightingEndingDefenderWin, petDefenderName, petAttackerName)
-                    : string.Format(DuelMPFightingEndingAttackerWin, petDefenderName, petAttackerName);
+                    ? RandomDuelEndExplanation(petDefenderName, petAttackerName, petDefenderEmoji, petAttackerEmoji)
+                    : RandomDuelEndExplanation(petAttackerName, petDefenderName, petAttackerEmoji, petDefenderEmoji);
                 string ownerWinnerName = isDefenderWin ? personalLinkCreatorDuel : personalLinkDuelAccepted;
                 if (isDefenderWin)
                 {
+                    var audDefender = _appServices.AllUsersDataService.Get(duelCreatorId);
+                    audDefender.DuelsWinCounter++;
+                    _appServices.AllUsersDataService.Update(audDefender);
+
+                    _appServices.ChatsMPService.AddDuelResult(_chatId, new DuelResultModel()
+                    {
+                        AttackerUserId = _userId,
+                        DefenderUserId = duelCreatorId,
+                        Revision = DateTime.UtcNow,
+                        WinnerUserId = duelCreatorId
+                    });
+
                     _appServices.UserService.UpdateGold(userDBCreator.UserId, userDBCreator.Gold + Constants.Rewards.WonDuel);
-                    _appServices.MetaUserService.UpdateNextPossibleDuelTime(_userId, DateTime.UtcNow + new Constants.TimesToWait().DuelCDToWait);
+                    _appServices.MetaUserService.UpdateNextPossibleDuelTime(_userId, DateTime.UtcNow + Constants.TimesToWait.DuelCDToWait);
                 }
                 else
                 {
+                    var audAttacker = _appServices.AllUsersDataService.Get(_userId);
+                    audAttacker.DuelsWinCounter++;
+                    _appServices.AllUsersDataService.Update(audAttacker);
+
+                    _appServices.ChatsMPService.AddDuelResult(_chatId, new DuelResultModel()
+                    {
+                        AttackerUserId = _userId,
+                        DefenderUserId = duelCreatorId,
+                        Revision = DateTime.UtcNow,
+                        WinnerUserId = _userId
+                    });
+
                     _appServices.UserService.UpdateGold(_userId, userDB.Gold + Constants.Rewards.WonDuel);
-                    _appServices.MetaUserService.UpdateNextPossibleDuelTime(userDBCreator.UserId, DateTime.UtcNow + new Constants.TimesToWait().DuelCDToWait);
+                    _appServices.MetaUserService.UpdateNextPossibleDuelTime(userDBCreator.UserId, DateTime.UtcNow + Constants.TimesToWait.DuelCDToWait);
                 }
 
-                var fightEnd = string.Format(DuelMPFightingEnd, personalLinkCreatorDuel, personalLinkDuelAccepted, ownerWinnerName, fightingEndExplanation, Constants.Rewards.WonDuel);
+                var fightEnd = string.Format(
+                    nameof(DuelMPFightingEnd).UseCulture(_userCulture),
+                    personalLinkCreatorDuel,
+                    personalLinkDuelAccepted,
+                    ownerWinnerName,
+                    fightingEndExplanation,
+                    Constants.Rewards.WonDuel);
                 await _appServices.BotControlService.EditMessageTextAsync(_chatId, fightingMsg.MessageId, fightEnd, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
             }
-        }
+            async Task ShowRanks(bool isGlobal = false)
+            {
+                string msgSenderId = _callback.Data.Split("_").LastOrDefault();
+                if (msgSenderId == null || msgSenderId != _userId.ToString())
+                    return;
 
-        public async void SendInviteForUnregistered()
+                var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+                string toShowText = isGlobal ? GetGlobalRanks() : GetChatRanks();
+                var replyMarkupToShow = new InlineKeyboardMarkup(
+                    new List<List<InlineKeyboardButton>>()
+                    {
+                        new List<InlineKeyboardButton>()
+                        {
+                            InlineKeyboardButton.WithCallbackData(RanksMultiplayerCommand.ShowChatRanksMP(_userCulture).Text,  RanksMultiplayerCommand.ShowChatRanksMP(_userCulture).CallbackData + $"_{_userId}"),
+                            InlineKeyboardButton.WithCallbackData(RanksMultiplayerCommand.ShowGlobalRanksMP(_userCulture).Text,  RanksMultiplayerCommand.ShowGlobalRanksMP(_userCulture).CallbackData + $"_{_userId}"),
+                        },
+                        new List<InlineKeyboardButton>()
+                        {
+                            InlineKeyboardButton.WithUrl(
+                                InviteMuliplayerCommand.InviteReferalMultiplayerButton(userDB.FirstName, _userCulture).Text,
+                                Extensions.GetReferalLink(_userId, botUsername)
+                                )
+                        }
+                    }
+                    );
+
+                await _appServices.BotControlService.EditMessageTextAsync(_chatId, _callback.Message.MessageId,
+                                                                          toShowText,
+                                                                          replyMarkup: replyMarkupToShow,
+                                                                          parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
+
+            }
+        }
+        private string RandomDuelEndExplanation(string winnerName, string loserName, string emojiWinner, string emojiLoser)
         {
-            string toSendText = string.Format(InviteGlobalMultiplayerText, "`personalLink`");
+            int rand = new Random().Next(11);
+            try
+            {
+                return rand switch
+                {
+                    0 => string.Format(nameof(DuelMPFightingEnding1).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    1 => string.Format(nameof(DuelMPFightingEnding2).UseCulture(_userCulture),
+                    loserName,
+                    winnerName,
+                    emojiLoser,
+                    emojiWinner),
+                    2 => string.Format(nameof(DuelMPFightingEnding3).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    3 => string.Format(nameof(DuelMPFightingEnding4).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    4 => string.Format(nameof(DuelMPFightingEnding5).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    5 => string.Format(nameof(DuelMPFightingEnding6).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    6 => string.Format(nameof(DuelMPFightingEnding7).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    7 => string.Format(nameof(DuelMPFightingEnding8).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    8 => string.Format(nameof(DuelMPFightingEnding9).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    9 => string.Format(nameof(DuelMPFightingEnding10).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser),
+                    _ => string.Format(nameof(DuelMPFightingEnding1).UseCulture(_userCulture),
+                    winnerName,
+                    loserName,
+                    emojiWinner,
+                    emojiLoser)
+                };
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal("Duel string proebal!", ex);
+                return string.Format(nameof(DuelMPFightingEnding1).UseCulture(_userCulture),
+                winnerName,
+                loserName,
+                emojiWinner,
+                emojiLoser);
+            }
+        }
+        public async Task SendInviteForUnregistered()
+        {
+            string toSendText = string.Format(nameof(InviteGlobalMultiplayerText).UseCulture(_userCulture), "`personalLink`");
             toSendText = HttpUtility.HtmlEncode(toSendText);
             toSendText = toSendText.Replace("`personalLink`", Extensions.GetPersonalLink(_userId, _userName));
             var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
 
             AnswerMessage answerMessage = new AnswerMessage()
             {
-                InlineKeyboardMarkup = new ( InlineKeyboardButton.WithUrl(new InviteMuliplayerCommand().InviteGlobalMultiplayerButton.Text, $"https://t.me/{botUsername}")),
+                InlineKeyboardMarkup = new ( InlineKeyboardButton.WithUrl(InviteMuliplayerCommand.InviteGlobalMultiplayerButton(_userCulture).Text, $"https://t.me/{botUsername}")),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
                 Text = toSendText,
                 msgThreadId = _msgThreadId
@@ -271,15 +469,15 @@ namespace TamagotchiBot.Controllers
             await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
             Log.Debug($"MP: called SendInviteForUnregistered by unregistered ID: {_userId}");
         }
-        public async void SendWelcomeMessageOnStart()
+        public async Task SendWelcomeMessageOnStart()
         {
             var encodedChatName = HttpUtility.HtmlEncode(_chatName);
-            string toSendText = string.Format(ShowWelcomeMessageMultiplayer, encodedChatName);
+            string toSendText = string.Format(nameof(ShowWelcomeMessageMultiplayer).UseCulture(_userCulture), encodedChatName);
             var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
 
             AnswerMessage answerMessage = new AnswerMessage()
             {
-                InlineKeyboardMarkup = new ( InlineKeyboardButton.WithUrl(new InviteMuliplayerCommand().InviteGlobalMultiplayerButton.Text, Extensions.GetReferalLink(_userId, botUsername))),
+                InlineKeyboardMarkup = new ( InlineKeyboardButton.WithUrl(InviteMuliplayerCommand.InviteGlobalMultiplayerButton(_userCulture).Text, Extensions.GetReferalLink(_userId, botUsername))),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
                 Text = toSendText,
                 msgThreadId = _msgThreadId
@@ -289,16 +487,48 @@ namespace TamagotchiBot.Controllers
             Log.Debug($"MP: called SendWelcomeMessageOnStart, invited by ID: {_userId}");
         }
 
-        private async void StartDuel(Pet petDB, User userDB)
+        private async Task ShowRanksMP(User userDB)
+        {
+            string msgToShow = GetChatRanks();
+
+            var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+            AnswerMessage answerMessage = new AnswerMessage()
+            {
+                InlineKeyboardMarkup =
+                new InlineKeyboardMarkup(
+                    new List<List<InlineKeyboardButton>>()
+                    {
+                        new List<InlineKeyboardButton>()
+                        {
+                            InlineKeyboardButton.WithCallbackData(RanksMultiplayerCommand.ShowChatRanksMP(_userCulture).Text,  RanksMultiplayerCommand.ShowChatRanksMP(_userCulture).CallbackData + $"_{_userId}"),
+                            InlineKeyboardButton.WithCallbackData(RanksMultiplayerCommand.ShowGlobalRanksMP(_userCulture).Text,  RanksMultiplayerCommand.ShowGlobalRanksMP(_userCulture).CallbackData + $"_{_userId}"),
+                        },
+                        new List<InlineKeyboardButton>()
+                        {
+                            InlineKeyboardButton.WithUrl(
+                                InviteMuliplayerCommand.InviteReferalMultiplayerButton(userDB.FirstName, _userCulture).Text,
+                                Extensions.GetReferalLink(_userId, botUsername)
+                                )
+                        }
+                    }
+                    ),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                Text = msgToShow,
+                msgThreadId = _msgThreadId
+            };
+
+            await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
+            Log.Debug($"MP: called showChatRanks by {_userLogInfo}");
+        }
+        private async Task StartDuel(Pet petDB, User userDB)
         {
             var personalLink = Extensions.GetPersonalLink(_userId, _userName);
             if (userDB?.Gold < Constants.Costs.DuelGold)
             {
-                Culture = new CultureInfo(userDB?.Culture ?? "ru");
                 AnswerMessage notEnoughGoldMsg = new AnswerMessage()
                 {
                     ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                    Text = string.Format(NotEnoughGoldForDuel, personalLink, userDB?.Gold ?? 0, Constants.Costs.DuelGold),
+                    Text = string.Format(nameof(NotEnoughGoldForDuel).UseCulture(_userCulture), personalLink, userDB.Gold, Constants.Costs.DuelGold),
                     msgThreadId = _msgThreadId
                 };
                 await _appServices.BotControlService.SendAnswerMessageGroupAsync(notEnoughGoldMsg, _chatId, false);
@@ -308,11 +538,10 @@ namespace TamagotchiBot.Controllers
 
             if (petDB?.HP < Constants.Costs.DuelHP)
             {
-                Culture = new CultureInfo(userDB?.Culture ?? "ru");
                 AnswerMessage notEnoughHPMsg = new AnswerMessage()
                 {
                     ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                    Text = string.Format(NotEnoughHPForDuel, personalLink, Constants.Costs.DuelHP, petDB?.HP ?? 0),
+                    Text = string.Format(nameof(NotEnoughHPForDuel).UseCulture(_userCulture), personalLink, Constants.Costs.DuelHP, petDB.HP),
                     msgThreadId = _msgThreadId
                 };
                 await _appServices.BotControlService.SendAnswerMessageGroupAsync(notEnoughHPMsg, _chatId, false);
@@ -324,12 +553,11 @@ namespace TamagotchiBot.Controllers
             var timeToWaitNextDuel = metaUserDB?.NextPossibleDuelTime - DateTime.UtcNow;
             if (timeToWaitNextDuel != null && timeToWaitNextDuel > TimeSpan.Zero)
             {
-                var waitTimeString = new DateTime(timeToWaitNextDuel?.Ticks ?? 0).ToString("HH:mm:ss");
-                Culture = new CultureInfo(userDB?.Culture ?? "ru");
+                var waitTimeString = new DateTime(timeToWaitNextDuel.GetValueOrDefault().Ticks, DateTimeKind.Utc).ToString("HH:mm:ss");
                 AnswerMessage waitForDuelText = new AnswerMessage()
                 {
                     ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                    Text = string.Format(DuelMPCooldown, waitTimeString, personalLink),
+                    Text = string.Format(nameof(DuelMPCooldown).UseCulture(_userCulture), waitTimeString, personalLink),
                     msgThreadId = _msgThreadId
                 };
                 await _appServices.BotControlService.SendAnswerMessageGroupAsync(waitForDuelText, _chatId, false);
@@ -337,9 +565,8 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            Culture = new CultureInfo(userDB?.Culture ?? "ru");
-            var customCallback = new DuelMuliplayerCommand().StartDuelMultiplayerButton;
-            customCallback.CallbackData += $"_{userDB.UserId}_{_message.MessageId}";
+            var customCallback = DuelMuliplayerCommand.StartDuelMultiplayerButton(_userCulture);
+            customCallback.CallbackData += $"_{userDB?.UserId}_{_message.MessageId}";
             AnswerMessage answerMessage = new AnswerMessage()
             {
                 InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
@@ -347,7 +574,7 @@ namespace TamagotchiBot.Controllers
                         customCallback
                     }),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                Text = string.Format(DuelMPStartCommand, personalLink, petDB.Name),
+                Text = string.Format(nameof(DuelMPStartCommand).UseCulture(_userCulture), personalLink, HttpUtility.HtmlEncode(petDB?.Name), Extensions.GetLongTypeEmoji(_userPetType, _userCulture)),
                 msgThreadId = _msgThreadId
             };
 
@@ -359,18 +586,23 @@ namespace TamagotchiBot.Controllers
             }
 
             var sentMsg = await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
+            if (sentMsg == null)
+            {
+                Log.Fatal("ERROR ON StartDuel #1");
+                return;
+            }
             _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.DuelGold);
-            _appServices.MetaUserService.UpdateMsgDuelId(_userId, sentMsg?.MessageId ?? -1);
+            _appServices.MetaUserService.UpdateMsgDuelId(_userId, sentMsg.MessageId);
             _appServices.MetaUserService.UpdateChatDuelId(_userId, _chatId);
             _appServices.MetaUserService.UpdateMsgCreatorDuelId(_userId, _message?.MessageId ?? -1);
             _appServices.MetaUserService.UpdateDuelStartTime(_userId, DateTime.UtcNow);
             Log.Debug($"MP: started duel by {_userLogInfo}");
         }
-        private async void ShowPetMP(Pet petDB, User userDB)
+        private async Task ShowPetMP(Pet petDB, User userDB)
         {
             var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
             var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
-            string toSendText = string.Format(MultiplayerShowPet,
+            string toSendText = string.Format(nameof(MultiplayerShowPet).UseCulture(_userCulture),
                                                   encodedPetName,
                                                   petDB.HP,
                                                   petDB.Satiety,
@@ -379,7 +611,8 @@ namespace TamagotchiBot.Controllers
                                                   petDB.Joy,
                                                   petDB.Level,
                                                   userDB.Gold,
-                                                  "`personalLink`");
+                                                  "`personalLink`",
+                                                  Extensions.GetLongTypeEmoji(_userPetType, _userCulture));
 
             toSendText = toSendText.Replace("`personalLink`", Extensions.GetPersonalLink(_userId, _userName));
 
@@ -387,7 +620,7 @@ namespace TamagotchiBot.Controllers
             {
                 InlineKeyboardMarkup = new (
                         InlineKeyboardButton.WithUrl(
-                            new InviteMuliplayerCommand().InviteReferalMultiplayerButton(userDB.FirstName).Text,
+                            InviteMuliplayerCommand.InviteReferalMultiplayerButton(userDB.FirstName, _userCulture).Text,
                             Extensions.GetReferalLink(_userId, botUsername)
                             )),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
@@ -398,7 +631,7 @@ namespace TamagotchiBot.Controllers
             await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
             Log.Debug($"MP: called showPet by {_userLogInfo}");
         }
-        public async void FeedByMentionPetMP(Pet petDB, User userDB)
+        public async Task FeedByMentionPetMP(Pet petDB, User userDB)
         {
             bool isError = false;
             var metaUserDB = _appServices.MetaUserService.Get(_userId);
@@ -409,7 +642,7 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            if (!CheckAndSendOnFailIsEnoughGoldAtFeeder(userDB))
+            if (!await CheckAndSendOnFailIsEnoughGoldAtFeeder(userDB))
             {
                 Log.Debug($"MP: called command FeedByMentionPetMP, but not enough gold by {_userLogInfo}");
                 goto ending;
@@ -436,7 +669,7 @@ namespace TamagotchiBot.Controllers
 
             if (userToFeedDB.UserId == _userId)
             {
-                SendCanNotFeedOwnPetMessage(userDB);
+                await SendCanNotFeedOwnPetMessage();
                 goto ending;
             }
 
@@ -448,15 +681,15 @@ namespace TamagotchiBot.Controllers
             }
 
             var spentTimeByLastPetFeeding = DateTime.UtcNow - petToFeedDB.LastMPFedTime;
-            if (spentTimeByLastPetFeeding < new Constants.TimesToWait().FeedMPCDToWait)
+            if (spentTimeByLastPetFeeding < Constants.TimesToWait.FeedMPCDToWait)
             {
-                string timeToWait = new DateTime((petToFeedDB.LastMPFedTime + new Constants.TimesToWait().FeedMPCDToWait - DateTime.UtcNow).Ticks).ToString("HH:mm:ss");
+                string timeToWait = new DateTime((petToFeedDB.LastMPFedTime + Constants.TimesToWait.FeedMPCDToWait - DateTime.UtcNow).Ticks).ToString("HH:mm:ss");
                 var persLink = Extensions.GetPersonalLink(_userId, _userName);
                 var petName = HttpUtility.HtmlEncode(petToFeedDB.Name);
                 petName = "<b>" + petName + "</b>";
                 await _appServices.BotControlService.SendAnswerMessageGroupAsync(new AnswerMessage()
                 {
-                    Text = string.Format(NotEnoughTimeSpentFeedMP, persLink, petName, timeToWait),
+                    Text = string.Format(nameof(NotEnoughTimeSpentFeedMP).UseCulture(_userCulture), persLink, petName, timeToWait),
                     replyToMsgId = _message.MessageId,
                     ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
                     msgThreadId = _msgThreadId,
@@ -473,7 +706,12 @@ namespace TamagotchiBot.Controllers
 
             await _appServices.BotControlService.SendAnswerMessageGroupAsync(new AnswerMessage()
             {
-                Text = string.Format(FeedMPEndSuccess, HttpUtility.HtmlEncode(petToFeedDB.Name), Constants.Costs.FeedMP),
+                Text = string.Format(
+                    nameof(FeedMPEndSuccess).UseCulture(_userCulture),
+                    HttpUtility.HtmlEncode(petToFeedDB.Name),
+                    Constants.Costs.FeedMP,
+                    Extensions.GetTypeEmoji(petToFeedDB.Type),
+                    HttpUtility.HtmlEncode(petToFeedDB.Name)),
                 replyToMsgId = _message.MessageId,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
                 msgThreadId = _msgThreadId,
@@ -486,7 +724,7 @@ namespace TamagotchiBot.Controllers
             {
                 await _appServices.BotControlService.SendAnswerMessageGroupAsync(new AnswerMessage()
                 {
-                    Text = FeedMPNotFound,
+                    Text = nameof(FeedMPNotFound).UseCulture(_userCulture),
                     replyToMsgId = _message?.MessageId,
                     msgThreadId = _msgThreadId
                 },
@@ -498,7 +736,6 @@ namespace TamagotchiBot.Controllers
             }
             _appServices.MetaUserService.UpdateIsFeedingMPStarted(_userId, false);
         }
-
 
         private bool IsUserAndPetRegisteredChecking(Pet petDB, Models.Mongo.User userDB)
         {
@@ -522,7 +759,6 @@ namespace TamagotchiBot.Controllers
 
             return true;
         }
-
         private bool IsMessageHasMentions()
         {
             if (_message?.Entities == null)
@@ -532,9 +768,9 @@ namespace TamagotchiBot.Controllers
                    || _message.Entities.Any(e => e.Type == Telegram.Bot.Types.Enums.MessageEntityType.Mention);
         }
 
-        private async void SendFeedMPMessage(Models.Mongo.User userDB)
+        private async Task SendFeedMPMessage(Models.Mongo.User userDB)
         {
-            if (!CheckAndSendOnFailIsEnoughGoldAtFeeder(userDB))
+            if (!await CheckAndSendOnFailIsEnoughGoldAtFeeder(userDB))
                 return;
 
             if (!await CheckAndSendOnFailSpentTimeByFeeder())
@@ -543,7 +779,7 @@ namespace TamagotchiBot.Controllers
             var persLink = Extensions.GetPersonalLink(_userId, _userName);
             await _appServices.BotControlService.SendAnswerMessageGroupAsync(new AnswerMessage()
             {
-                Text = string.Format(FeedMPStart, persLink),
+                Text = string.Format(nameof(FeedMPStart).UseCulture(_userCulture), persLink),
                 replyToMsgId = _message.MessageId,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
                 msgThreadId = _msgThreadId
@@ -552,12 +788,12 @@ namespace TamagotchiBot.Controllers
             false);
             _appServices.MetaUserService.UpdateIsFeedingMPStarted(_userId, true);
         }
-        private async void SendNotEnoughGoldForFeedMessage(Models.Mongo.User userDB)
+        private async Task SendNotEnoughGoldForFeedMessage(Models.Mongo.User userDB)
         {
             var persLink = Extensions.GetPersonalLink(_userId, _userName);
             await _appServices.BotControlService.SendAnswerMessageGroupAsync(new AnswerMessage()
             {
-                Text = string.Format(NotEnoughGoldForMPFeed, persLink, userDB.Gold, Constants.Costs.FeedMP),
+                Text = string.Format(nameof(NotEnoughGoldForMPFeed).UseCulture(_userCulture), persLink, userDB.Gold, Constants.Costs.FeedMP),
                 replyToMsgId = _message.MessageId,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
                 msgThreadId = _msgThreadId
@@ -565,11 +801,11 @@ namespace TamagotchiBot.Controllers
             _chatId,
             false);
         }
-        private async void SendCanNotFeedOwnPetMessage(Models.Mongo.User userDB)
+        private async Task SendCanNotFeedOwnPetMessage()
         {
             await _appServices.BotControlService.SendAnswerMessageGroupAsync(new AnswerMessage()
             {
-                Text = string.Format(FeedMPErrorFeedOwnPet),
+                Text = string.Format(nameof(FeedMPErrorFeedOwnPet).UseCulture(_userCulture)),
                 replyToMsgId = _message.MessageId,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
                 msgThreadId = _msgThreadId
@@ -578,7 +814,7 @@ namespace TamagotchiBot.Controllers
             false);
         }
 
-        private Models.Mongo.User GetUserFromEntity(MessageEntity entity)
+        private User GetUserFromEntity(MessageEntity entity)
         {
             if (entity == null)
                 return null;
@@ -596,19 +832,19 @@ namespace TamagotchiBot.Controllers
 
         private async Task<bool> CheckAndSendOnFailSpentTimeByFeeder()
         {
-            var metaUserFeeder = _appServices.MetaUserService.Get(_userId);
+            var metaUserFeeder = _appServices.MetaUserService.Get(_userId) ?? _appServices.MetaUserService.Create(new MetaUser() { UserId = _userId });
             if (metaUserFeeder == null)
             {
                 return false;
             }
             var spentTimeByLastUserFeeding = DateTime.UtcNow - metaUserFeeder.LastMPFeedingTime;
-            if (spentTimeByLastUserFeeding < new Constants.TimesToWait().FeedMPCDToWait)
+            if (spentTimeByLastUserFeeding < Constants.TimesToWait.FeedMPCDToWait)
             {
-                string timeToWait = new DateTime((metaUserFeeder.LastMPFeedingTime + new Constants.TimesToWait().FeedMPCDToWait - DateTime.UtcNow).Ticks).ToString("HH:mm:ss");
+                string timeToWait = new DateTime((metaUserFeeder.LastMPFeedingTime + Constants.TimesToWait.FeedMPCDToWait - DateTime.UtcNow).Ticks).ToString("HH:mm:ss");
                 var persLink = Extensions.GetPersonalLink(_userId, _userName);
                 await _appServices.BotControlService.SendAnswerMessageGroupAsync(new AnswerMessage()
                 {
-                    Text = string.Format(NotEnoughTimeSpentByLastMPFeed, persLink, timeToWait),
+                    Text = string.Format(nameof(NotEnoughTimeSpentByLastMPFeed).UseCulture(_userCulture), persLink, timeToWait),
                     replyToMsgId = _message.MessageId,
                     ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
                     msgThreadId = _msgThreadId
@@ -620,15 +856,111 @@ namespace TamagotchiBot.Controllers
 
             return true;
         }
-        private bool CheckAndSendOnFailIsEnoughGoldAtFeeder(Models.Mongo.User userDB)
+        private async Task<bool> CheckAndSendOnFailIsEnoughGoldAtFeeder(Models.Mongo.User userDB)
         {
             if (userDB.Gold < Constants.Costs.FeedMP)
             {
-                SendNotEnoughGoldForFeedMessage(userDB);
+                await SendNotEnoughGoldForFeedMessage(userDB);
                 return false;
             }
 
             return true;
+        }
+        private string GetChatRanks()
+        {
+            var duelResults = _appServices.ChatsMPService.Get(_chatId).DuelResults ?? new List<DuelResultModel>();
+            var groupByWinner = duelResults.GroupBy(d => d.WinnerUserId);
+
+            Dictionary<long, int> UserAndDuelWins = new Dictionary<long, int>();
+            foreach (var groupResult in groupByWinner)
+            {
+                var userId = groupResult.Key;
+                var wins = groupResult.Count();
+                UserAndDuelWins.Add(userId, wins);
+            }
+            var sortedUserAndDuelWins = UserAndDuelWins.OrderByDescending(u => u.Value)
+                                             .ToDictionary(p => p.Key, p => p.Value);
+
+            var encodedChatName = "<i>" + HttpUtility.HtmlEncode(_chatName) + "</i>";
+            StringBuilder msgToShow = new StringBuilder($"{string.Format(nameof(ShowChatRanksMPHeader).UseCulture(_userCulture), encodedChatName)}" +
+                $"{Environment.NewLine}");
+            int counter = 0;
+            foreach (var userDuel in sortedUserAndDuelWins)
+            {
+                if (counter == 10)
+                    break;
+
+                var userTmpDB = _appServices.UserService.Get(userDuel.Key);
+                if (userTmpDB == null)
+                    continue;
+
+                counter++;
+                msgToShow.Append($"{Environment.NewLine}");
+                if (counter == 1)
+                {
+                    msgToShow.Append($"🥇 {GetAlignedRank(userTmpDB.FirstName, userDuel.Value.ToString())}");
+                    msgToShow.Append($"{Environment.NewLine}");
+                    msgToShow.Append($"<code>----------</code>");
+                }
+                else if (counter == 2)
+                    msgToShow.Append($"🥈 {GetAlignedRank(userTmpDB.FirstName, userDuel.Value.ToString())}");
+                else if (counter == 3)
+                    msgToShow.Append($"🥉 {GetAlignedRank(userTmpDB.FirstName, userDuel.Value.ToString())}");
+                else
+                    msgToShow.Append($"{counter}. {GetAlignedRank(userTmpDB.FirstName, userDuel.Value.ToString())}");
+            }
+
+            return msgToShow.ToString();
+        }
+        private string GetGlobalRanks()
+        {
+            var topPlayers = _appServices.AllUsersDataService.GetAll().OrderByDescending(aud => aud.DuelsWinCounter).ToList();
+
+            StringBuilder msgToShow = new StringBuilder($"{nameof(ShowGlobalRanksMPHeader).UseCulture(_userCulture)}" +
+                $"{Environment.NewLine}");
+            int counter = 0;
+            foreach (var aud in topPlayers)
+            {
+                if (counter == 10)
+                    break;
+
+                var userTmpDB = _appServices.UserService.Get(aud.UserId);
+                if (userTmpDB == null)
+                    continue;
+
+                counter++;
+                msgToShow.Append($"{Environment.NewLine}");
+                if (counter == 1)
+                {
+                    msgToShow.Append($"🥇 {GetAlignedRank(userTmpDB.FirstName, aud.DuelsWinCounter.ToString())}");
+                    msgToShow.Append($"{Environment.NewLine}");
+                    msgToShow.Append($"<code>----------</code>");
+                }
+                else if (counter == 2)
+                    msgToShow.Append($"🥈 {GetAlignedRank(userTmpDB.FirstName, aud.DuelsWinCounter.ToString())}");
+                else if (counter == 3)
+                    msgToShow.Append($"🥉 {GetAlignedRank(userTmpDB.FirstName, aud.DuelsWinCounter.ToString())}");
+                else
+                    msgToShow.Append($"{counter}. {GetAlignedRank(userTmpDB.FirstName, aud.DuelsWinCounter.ToString())}");
+            }
+
+            return msgToShow.ToString();
+        }
+
+        private string GetAlignedRank(string username, string duelResult)
+        {
+            const int MAX_SYMBOLS = 20;
+            if (username.Length > MAX_SYMBOLS)
+                username = string.Concat(username.AsSpan(0, MAX_SYMBOLS - 3), "...");
+
+            if (username.Length < MAX_SYMBOLS)
+            {
+                while (username.Length < MAX_SYMBOLS)
+                    username = string.Concat(username, " ");
+            }
+
+            username = "<code>" + username + "</code>";
+            return $"{username} ⚔️{duelResult}";
         }
     }
 }

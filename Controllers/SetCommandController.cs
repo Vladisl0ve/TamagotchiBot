@@ -1,4 +1,7 @@
 ﻿using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using TamagotchiBot.Database;
 using TamagotchiBot.Services.Interfaces;
 using Telegram.Bot.Types;
 using static TamagotchiBot.UserExtensions.Constants;
@@ -8,68 +11,65 @@ namespace TamagotchiBot.Controllers
 {
     public class SetCommandController
     {
-
-        private IApplicationServices _appServices;
-        private readonly Message _message = null;
-        private readonly CallbackQuery _callback = null;
+        private readonly IApplicationServices _appServices;
+        private readonly IEnvsSettings _envs;
         private readonly long _userId;
         private readonly long _chatId;
 
-        public SetCommandController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
+        public SetCommandController(IApplicationServices services, IEnvsSettings envs, long userId, long chatId)
         {
-            _callback = callback;
-            _message = message;
-            _userId = callback?.From.Id ?? message.From.Id;
-            _chatId = callback?.Message?.Chat.Id ?? message.Chat.Id;
+            _userId = userId;
+            _chatId = chatId;
 
+            _envs = envs;
             _appServices = services;
-
-            Resources.Resources.Culture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
         }
-        public void UpdateCommands(MessageAudience messageAudience)
+        public async void UpdateCommands(MessageAudience messageAudience, string culture)
         {
-            var userDB = _appServices.UserService.Get(_userId);
-            var petDB = _appServices.PetService.Get(_userId);
-
-
-            Resources.Resources.Culture = new CultureInfo(userDB?.Culture ?? "ru");
-
             switch (messageAudience)
             {
                 case MessageAudience.Private:
                     {
-                        UpdateCommandsForPrivate(userDB, petDB);
+                        await UpdateCommandsForPrivate();
                         break;
                     }
                 case MessageAudience.Group:
                     {
-                        UpdateCommandsForGroup();
+                        await UpdateCommandsForGroup();
                         break;
                     }
             }
 
-            void UpdateCommandsForPrivate(Models.Mongo.User userDB, Models.Mongo.Pet petDB)
+            async Task UpdateCommandsForPrivate()
             {
-                if (petDB is not null && !userDB.IsInAppleGame)
+                var userDB = _appServices.UserService.Get(_userId);
+                var petDB = _appServices.PetService.Get(_userId);
+
+                if (userDB is not null && Extensions.ParseString(_envs.AlwaysNotifyUsers).Exists(u => u == userDB.UserId))
                 {
-                    _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetCommands(true),
+                    await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetCommandsAdmin(culture, true),
+                                                  scope: new BotCommandScopeChat() { ChatId = _userId });
+                }
+                else if (petDB is not null && !userDB.IsInAppleGame)
+                {
+                    await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetCommands(culture, true),
                                                                       scope: new BotCommandScopeChat() { ChatId = _userId });
                 }
                 else if (userDB?.IsInAppleGame ?? false)
                 {
-                    _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetInApplegameCommands(),
+                    await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetInApplegameCommands(culture),
                                                                       scope: new BotCommandScopeChat() { ChatId = _userId });
                 }
             }
-            void UpdateCommandsForGroup()
+            async Task UpdateCommandsForGroup()
             {
-                _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetMultiplayerCommands(),
+                await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetMultiplayerCommands(culture),
                                                   scope: new BotCommandScopeChatMember() { ChatId = _chatId, UserId = _userId });
             }
         }
-        public void UpdateCommandsForThisChat()
+        public async Task UpdateCommandsForThisChat(string culture)
         {
-            _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetMultiplayerCommands(),
+            await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetMultiplayerCommands(culture),
                                   scope: new BotCommandScopeChat() { ChatId = _chatId });
         }
     }

@@ -17,6 +17,8 @@ using TamagotchiBot.Services.Interfaces;
 using static TamagotchiBot.UserExtensions.Constants;
 using System.Linq;
 using TamagotchiBot.Database;
+using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace TamagotchiBot.Handlers
 {
@@ -24,14 +26,18 @@ namespace TamagotchiBot.Handlers
     {
         private readonly IApplicationServices _appServices;
         private readonly IEnvsSettings _envs;
+        private readonly ConcurrentDictionary<(long userId, long chatId), DateTime> lastMsgList = new ConcurrentDictionary<(long, long), DateTime>();
 
         public UpdateHandler(IApplicationServices services, IEnvsSettings envs)
         {
             _appServices = services;
             _envs = envs;
+#if !DEBUG && !DEBUG_NOTIFY
+            EmergencyUpdatePets();
+#endif
         }
 
-        public Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
+        public Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
             if (!ToContinueHandlingUpdateChecking(update))
                 return Task.CompletedTask;
@@ -44,12 +50,12 @@ namespace TamagotchiBot.Handlers
 
             HandleUpdate(update, msgAudience);
 
-            new SetCommandController(_appServices, messageFromUser, callbackFromUser).UpdateCommands(msgAudience);
+            new SetCommandController(_appServices, _envs, userId, chatId).UpdateCommands(msgAudience, _appServices.UserService.Get(userId)?.Culture ?? "ru");
 
             _appServices.SInfoService.UpdateLastGlobalUpdate();
             return Task.CompletedTask;
 
-            void HandleUpdate(Update update, MessageAudience messageAudience)
+            async void HandleUpdate(Update update, MessageAudience messageAudience)
             {
                 switch (messageAudience)
                 {
@@ -58,212 +64,245 @@ namespace TamagotchiBot.Handlers
                             switch (update.Type)
                             {
                                 case UpdateType.Message:
-                                    OnMessagePrivate(update.Message);
+                                    await OnMessagePrivate(update.Message);
                                     return;
                                 case UpdateType.CallbackQuery:
-                                    OnCallbackPrivate(update.CallbackQuery);
+                                    await OnCallbackPrivate(update.CallbackQuery);
                                     return;
                                 default:
                                     return;
-                            };
+                            }
                         }
                     case MessageAudience.Group:
                         {
                             switch (update.Type)
                             {
                                 case UpdateType.Message:
-                                    OnMessageGroup(update.Message);
+                                    await OnMessageGroup(update.Message, (await botClient.GetMeAsync(cancellationToken: cancellationToken)).Id);
                                     return;
                                 case UpdateType.CallbackQuery:
-                                    OnCallbackGroup(update.CallbackQuery);
+                                    await OnCallbackGroup(update.CallbackQuery);
                                     return;
                                 default:
                                     return;
-                            };
+                            }
                         }
                     default:
                         return;
                 }
             }
-            Task OnMessageGroup(Message message)
+        }
+
+        private async Task OnMessagePrivate(Message message)
+        {
+            var userId = message.From.Id;
+            if (IsAdminMessage(userId))
             {
-                return message.Type switch
-                {
-                    MessageType.ChatMembersAdded => OnChatMemberAdded(),
-                    MessageType.ChatMemberLeft => OnChatMemberLeft(),
-                    _ => OnTextMessageGroup(message, userId)
-                };
-
-                Task OnChatMemberAdded()
-                {
-                    if (message.NewChatMembers.Any(u => u.Id == bot.BotId))
-                    {
-                        _appServices.ChatsMPService.Create(new Models.Mongo.ChatsMP()
-                        {
-                            ChatId = message.Chat.Id,
-                            Name = message.Chat.Title
-                        });
-
-                        MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
-                        multiplayerController.SendWelcomeMessageOnStart();
-
-                        new SetCommandController(_appServices, messageFromUser, callbackFromUser).UpdateCommandsForThisChat();
-                        Log.Information($"Bot has been added to new chat #{message.Chat.Title}, ID:{message.Chat.Id} #");
-                    }
-
-                    return Task.CompletedTask;
-                }
-                Task OnChatMemberLeft()
-                {
-                    if (message.LeftChatMember.Id == bot.BotId)
-                    {
-                        _appServices.ChatsMPService.Remove(message.Chat.Id);
-
-                        Log.Information($"Bot has been deleted from chat #{message.Chat.Title}, ID:{message.Chat.Id} #");
-                    }
-
-                    return Task.CompletedTask;
-                }
-                async Task OnTextMessageGroup(Message message, long userId)
-                {
-                    var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username.ToLower();
-                    if (!message.Text.Contains($"@{botUsername}") && message.EntityValues == null)
-                        return;
-
-                    MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
-
-                    new CreatorController(_appServices, message).UpdateIndicators();
-                    new SynchroDBController(_appServices, message).SynchronizeWithDB(); //update user (username, names etc.) in DB
-                    new SynchroDBController(_appServices, message).SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
-
-                    multiplayerController.CommandHandler(botUsername);
-
+                var adminController = new AdminController(_appServices, _envs, message);
+                if (await adminController.ProcessMessage())
                     return;
-                }
             }
-            void OnCallbackGroup(CallbackQuery callbackQuery)
+
+            if (IsCooldown(userId, userId, message.Date))
             {
-                if (_appServices.UserService.Get(callbackQuery.From.Id) == null
-                    || _appServices.PetService.Get(callbackQuery.From.Id) == null)
-                {
-                    _appServices.BotControlService.AnswerCallbackQueryAsync(callbackQuery?.Id, callbackQuery.From.Id, Resources.Resources.MPNoPetCallbackAlert, true);
-                    return;
-                }
-
-                if (callbackQuery.Data == null)
-                    return;
-
-                new SynchroDBController(_appServices, callback: callbackQuery).SynchronizeWithDB(); //update user (username, names etc.) in DB
-                new SynchroDBController(_appServices, callback: callbackQuery).SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
-                MultiplayerController multiplayerController = new MultiplayerController(_appServices, callback: callbackQuery);
-
-                multiplayerController.CallbackHandler();
+                Log.Debug($"Cooldown for userId: {userId}");
                 return;
             }
 
-            async void OnMessagePrivate(Message message)
+            if (!IsUserAndPetRegisteredChecking(userId))
             {
-                if (!IsUserAndPetRegisteredChecking(userId))
-                {
-                    RegisterUserAndPet(message); //CreatorController
-                    return;
-                }
-
-                if (!DidUserChoseLanguage(userId))
-                {
-                    await new CreatorController(_appServices, message).ApplyNewLanguage(true);
-                    return;
-                }
-
-                if (DidUserConfirmNewPetName(userId) ?? false)
-                {
-                    new CreatorController(_appServices, message).ToRenamingAnswer();
-                    return;
-                }
-
-                if (DidUserChoseNewPetName(userId) ?? false)
-                {
-                    await new CreatorController(_appServices, message).AskToConfirmNewName();
-                    return;
-                }
-
-                new SynchroDBController(_appServices, message).SynchronizeWithDB(); //update user (username, names etc.) in DB
-                CreatorController creatorController = new CreatorController(_appServices, message);
-                creatorController.UpdateIndicators(); //update all pet's statistics
-
-                if (creatorController.CheckIsPetGone())
-                {
-                    creatorController.ToResurrectAnswer();
-                    return;
-                }
-
-                if (creatorController.CheckIsPetZeroHP())
-                {
-                    creatorController.AfterDeath();
-                    return;
-                }
-
-                // call this method wherever you want to show an ad,
-                // for example your bot just made its job and
-                // it's a great time to show an ad to a user
-                if (_appServices.PetService.Get(message.From.Id)?.Name != null)
-                    await SendPostToChat(message.From.Id);
-
-                if (_appServices.UserService.Get(message.From.Id)?.IsInAppleGame ?? false)
-                    await new AppleGameController(_appServices, message).Menu();
-                else
-                    await new MenuController(_appServices, message).ProcessMessage();
+                await RegisterUserAndPet(message); //CreatorController
+                return;
             }
-            async void OnCallbackPrivate(CallbackQuery callbackQuery)
+
+            if (!DidUserChoseLanguage(userId))
             {
-                var petDB = _appServices.PetService.Get(userId);
-                var userDB = _appServices.UserService.Get(userId);
-                if (userDB == null || petDB == null)
-                    return;
+                await new CreatorController(_appServices, message).ApplyNewLanguage(true);
+                return;
+            }
 
-                if (callbackQuery.Data == null)
-                    return;
+            if (DidUserConfirmNewPetName(userId) ?? false)
+            {
+                await new CreatorController(_appServices, message).ToRenamingAnswer();
+                return;
+            }
 
-                if (userDB.IsInAppleGame)
-                    return;
+            if (DidUserChoseNewPetName(userId) ?? false)
+            {
+                await new CreatorController(_appServices, message).AskToConfirmNewName();
+                return;
+            }
 
-                if (callbackQuery.Data == new CallbackButtons.GameroomCommand().GameroomCommandInlineAppleGame.CallbackData)
+            new SynchroDBController(_appServices, message.From, userId, message.Chat.Title).SynchronizeWithDB(); //update user (username, names etc.) in DB
+            CreatorController creatorController = new CreatorController(_appServices, message);
+            creatorController.UpdateIndicators(); //update all pet's statistics
+
+            if (creatorController.CheckIsPetGone())
+            {
+                await creatorController.ToResurrectAnswer();
+                return;
+            }
+
+            if (creatorController.CheckIsPetZeroHP())
+            {
+                await creatorController.AfterDeath();
+                return;
+            }
+
+            // call this method wherever you want to show an ad,
+            // for example your bot just made its job and
+            // it's a great time to show an ad to a user
+            if (_appServices.PetService.Get(message.From.Id)?.Name != null)
+                await SendPostToChat(message.From.Id);
+
+            if (_appServices.UserService.Get(message.From.Id)?.IsInAppleGame ?? false)
+                await new AppleGameController(_appServices, message).Menu();
+            else
+                await new MenuController(_appServices, message).ProcessMessage();
+        }
+        private async Task OnCallbackPrivate(CallbackQuery callbackQuery)
+        {
+            var userId = callbackQuery.From.Id;
+            var petDB = _appServices.PetService.Get(userId);
+            var userDB = _appServices.UserService.Get(userId);
+            if (userDB == null || petDB == null)
+                return;
+
+            if (callbackQuery.Data == null)
+                return;
+
+            if (userDB.IsInAppleGame)
+                return;
+
+            if (callbackQuery.Data == CallbackButtons.GameroomCommand.GameroomCommandInlineAppleGame.CallbackData)
+            {
+                await new AppleGameController(_appServices, callbackQuery).PreStart();
+                return;
+            }
+
+            // call this method wherever you want to show an ad,
+            // for example your bot just made its job and
+            // it's a great time to show an ad to a user
+
+            await SendPostToChat(callbackQuery.From.Id);
+
+            new SynchroDBController(_appServices, callbackQuery.From, userId, callbackQuery.Message.Chat.Title).SynchronizeWithDB(); //update user (username, names etc.) in DB
+            CreatorController creatorController = new CreatorController(_appServices, callback: callbackQuery);
+            creatorController.UpdateIndicators(); //update all pet's statistics
+
+            var controller = new MenuController(_appServices, callbackQuery);
+            await controller.CallbackHandler();
+        }
+        private async Task OnCallbackGroup(CallbackQuery callbackQuery)
+        {
+            if (_appServices.UserService.Get(callbackQuery.From.Id) == null
+                || _appServices.PetService.Get(callbackQuery.From.Id) == null)
+            {
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(callbackQuery.Id, callbackQuery.From.Id, nameof(Resources.Resources.MPNoPetCallbackAlert).UseCulture(callbackQuery.From.LanguageCode), true);
+                return;
+            }
+
+            if (callbackQuery.Data == null)
+                return;
+
+            var synchroController = new SynchroDBController(_appServices, callbackQuery.From, callbackQuery.Message.Chat.Id, callbackQuery.Message.Chat.Title);
+            synchroController.SynchronizeWithDB(); //update user (username, names etc.) in DB
+            synchroController.SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
+            MultiplayerController multiplayerController = new MultiplayerController(_appServices, callback: callbackQuery);
+
+            await multiplayerController.CallbackHandler();
+        }
+        private Task OnMessageGroup(Message message, long botId)
+        {
+            var userId = message.From.Id;
+            return message.Type switch
+            {
+                MessageType.ChatMembersAdded => OnChatMemberAdded(botId),
+                MessageType.ChatMemberLeft => OnChatMemberLeft(botId),
+                _ => OnTextMessageGroup(message)
+            };
+
+            async Task OnChatMemberAdded(long botId)
+            {
+                if (message.NewChatMembers.Any(u => u.Id == botId))
                 {
-                    await new AppleGameController(_appServices, callbackQuery).PreStart();
-                    return;
+                    _appServices.ChatsMPService.Create(new Models.Mongo.ChatsMP()
+                    {
+                        ChatId = message.Chat.Id,
+                        Name = message.Chat.Title
+                    });
+
+                    MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
+                    await multiplayerController.SendWelcomeMessageOnStart();
+
+                    await new SetCommandController(_appServices, _envs, userId, message.Chat.Id).UpdateCommandsForThisChat("ru");
+                    Log.Information($"Bot has been added to new chat #{message.Chat.Title}, ID:{message.Chat.Id} #");
+                }
+            }
+            Task OnChatMemberLeft(long botId)
+            {
+                if (message.LeftChatMember.Id == botId)
+                {
+                    _appServices.ChatsMPService.Remove(message.Chat.Id);
+
+                    Log.Information($"Bot has been deleted from chat #{message.Chat.Title}, ID:{message.Chat.Id} #");
                 }
 
-                // call this method wherever you want to show an ad,
-                // for example your bot just made its job and
-                // it's a great time to show an ad to a user
+                return Task.CompletedTask;
+            }
+            async Task OnTextMessageGroup(Message message)
+            {
+                var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username.ToLower();
+                if (!message.Text.Contains($"@{botUsername}") && message.EntityValues == null)
+                    return;
 
-                await SendPostToChat(callbackQuery.From.Id);
+                MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
 
-                new SynchroDBController(_appServices, callback: callbackQuery).SynchronizeWithDB(); //update user (username, names etc.) in DB
-                CreatorController creatorController = new CreatorController(_appServices, callback: callbackQuery);
-                creatorController.UpdateIndicators(); //update all pet's statistics
+                new CreatorController(_appServices, message).UpdateIndicators();
+                var synchroController =  new SynchroDBController(_appServices, message.From, message.Chat.Id, message.Chat.Title);
+                synchroController.SynchronizeWithDB(); //update user (username, names etc.) in DB
+                synchroController.SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
 
-                var controller = new MenuController(_appServices, callbackQuery);
-                controller.CallbackHandler();
+                await multiplayerController.CommandHandler(botUsername);
             }
         }
+
 
         /// <returns>true == handled update is acceptable to continue, otherwise must to stop</returns>
         private bool ToContinueHandlingUpdateChecking(Update update)
         {
-            if (update.Type == UpdateType.Message)
-                if (update.Message.Type == MessageType.Text || update.Message.Type == MessageType.ChatMembersAdded || update.Message.Type == MessageType.ChatMemberLeft)
-                    if (update.Message.From != null)
-                        if (update.Message.Chat?.Id != null && !_envs.ChatsToDevNotify.Any(c => update.Message.Chat.Id.ToString() == c))
-                            if (update.Message.ForwardDate == null)
-                                return true;
+            if ((update.Type == UpdateType.Message)
+                && (update.Message.Type == MessageType.Text || update.Message.Type == MessageType.ChatMembersAdded || update.Message.Type == MessageType.ChatMemberLeft)
+                && (update.Message.From != null)
+                && (update.Message.Chat?.Id != null && !_envs.ChatsToDevNotify.Any(c => update.Message.Chat.Id.ToString() == c))
+                && (update.Message.ForwardDate == null))
+                return true;
 
-            if (update.Type == UpdateType.CallbackQuery)
-                if (update.CallbackQuery.Message != null)
-                    if (update.CallbackQuery.Message.Chat?.Id != null && !_envs.ChatsToDevNotify.Any(c => update.CallbackQuery.Message.Chat.Id.ToString() == c))
-                        if (update.CallbackQuery.Message.ForwardDate == null)
-                            return true;
+            if ((update.Type == UpdateType.CallbackQuery)
+                && (update.CallbackQuery.Message != null)
+                && (update.CallbackQuery.Message.Chat?.Id != null && !_envs.ChatsToDevNotify.Any(c => update.CallbackQuery.Message.Chat.Id.ToString() == c))
+                && (update.CallbackQuery.Message.ForwardDate == null))
+                return true;
 
+            return false;
+        }
+
+        private bool IsCooldown(long userId, long chatId, DateTime sentMsgTime)
+        {
+            DateTime timeNow = DateTime.UtcNow;
+            if (!lastMsgList.ContainsKey((userId, chatId)))
+            {
+                lastMsgList.TryAdd((userId, chatId), timeNow);
+                return false;
+            }
+
+            if ((sentMsgTime + TimesToWait.OldMessageDelta) < timeNow)
+                return true;
+
+            if (timeNow < (lastMsgList[(userId, chatId)] + TimesToWait.CooldownOnMessage))
+                return true;
+
+            lastMsgList[(userId, chatId)] = timeNow;
             return false;
         }
         private bool DidUserChoseLanguage(long userId)
@@ -311,8 +350,43 @@ namespace TamagotchiBot.Handlers
 
             return true;
         }
+        private bool IsAdminMessage(long userId)
+        {
+            if (_envs?.AlwaysNotifyUsers == null)
+                return false;
 
-        private async void RegisterUserAndPet(Message message)
+            var chatsToNotify = new List<string>(_envs.AlwaysNotifyUsers);
+            return chatsToNotify.Exists(c => c == userId.ToString());
+        }
+        private void EmergencyUpdatePets()
+        {
+            DateTime lastUpdateTime = _appServices.SInfoService.GetLastAppChangeTime();
+            if (lastUpdateTime == DateTime.MinValue)
+            {
+                Log.Debug("No EmergencyUpdate: lastUpdateTime is null");
+                return;
+            }
+
+            var deltaTime = DateTime.UtcNow - lastUpdateTime;
+            if (deltaTime < new TimeSpan(0, 5, 0)) // delay 5 minutes
+            {
+                Log.Debug($"No EmergencyUpdate: delta time is {deltaTime}");
+                return;
+            }
+
+            var petsToUpdate = _appServices.PetService.GetAll();
+            foreach (var pet in petsToUpdate)
+            {
+                if (pet == null)
+                    continue;
+
+                pet.LastUpdateTime += deltaTime;
+                _appServices.PetService.Update(pet.UserId, pet);
+            }
+            Log.Fatal($"EmergencyUpdate: updated {petsToUpdate.Count} pets");
+        }
+
+        private async Task RegisterUserAndPet(Message message)
         {
             CreatorController creatorController;
             var userId = message.From.Id;
@@ -321,16 +395,16 @@ namespace TamagotchiBot.Handlers
             {
                 creatorController = new CreatorController(_appServices, message);
                 creatorController.CreateUser();
-                creatorController.AskALanguage();
+                await creatorController.AskALanguage();
             }
             else if (userDB.IsLanguageAskedOnCreate)
             {
                 creatorController = new CreatorController(_appServices, message);
                 if (!await creatorController.ApplyNewLanguage())
                     return;
-                creatorController.SendWelcomeText();
+                await creatorController.SendWelcomeText();
                 await Task.Delay(1000);
-                creatorController.AskForAPetName();
+                await creatorController.AskForAPetName();
             }
             else if (userDB.IsPetNameAskedOnCreate)
             {
@@ -380,14 +454,11 @@ namespace TamagotchiBot.Handlers
                 _ => exception.ToString()
             };
 
-            Log.Fatal(ErrorMessage);
+            Log.Fatal(exception, $"Polling error async {ErrorMessage}");
             await Task.Delay(1000, cancellationToken);
 
-            if (exception is ApiRequestException apiEx)
-            {
-                if (apiEx.ErrorCode == 409)
-                    Environment.Exit(-1);
-            }
+            if (exception is ApiRequestException apiEx && apiEx.ErrorCode == 409)
+                Environment.Exit(-1);
 
             int msToWait = 5000;
             Log.Warning($"Waiting {msToWait / 1000}s before restart...");

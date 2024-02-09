@@ -1,15 +1,11 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
-using System;
 
 namespace TamagotchiBot.Models.Mongo
 {
-    public class AllUsersData
+    public class AllUsersData : MongoModelBase
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId Id { get; set; }
-
+        #region Private
         [BsonElement("UserId")]
         public long UserId { get; set; }
 
@@ -79,6 +75,27 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("PetCommandCounter")]
         public long PetCommandCounter { get; set; }
 
+        [BsonElement("FarmCommandCounter")]
+        public long FarmCommandCounter { get; set; }
+
+        [BsonElement("ChangeTypeButtonCounter")]
+        public long ChangeTypeButtonCounter { get; set; }  
+        
+        [BsonElement("ChangedToCatCounter")]
+        public long ChangedToCatCounter { get; set; }
+
+        [BsonElement("ChangedToDogCounter")]
+        public long ChangedToDogCounter { get; set; }
+
+        [BsonElement("ChangedToFoxCounter")]
+        public long ChangedToFoxCounter { get; set; }
+
+        [BsonElement("ChangedToMouseCounter")]
+        public long ChangedToMouseCounter { get; set; }
+
+        [BsonElement("ChangedToPandaCounter")]
+        public long ChangedToPandaCounter { get; set; }
+
         [BsonElement("SleepCommandCounter")]
         public long SleepCommandCounter { get; set; }
 
@@ -111,13 +128,18 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("RenameCommandCounter")]
         public long RenameCommandCounter { get; set; }
+#endregion
 
-        [BsonElement("Created")]
-        public DateTime Created { get; set; }
+        #region MP
+        [BsonElement("DuelsStartedCounter")]
+        public long DuelsStartedCounter { get; set; }
+        
+        [BsonElement("DuelsAcceptedCounter")]
+        public long DuelsAcceptedCounter { get; set; }
+        
+        [BsonElement("DuelsWinCounter")]
+        public long DuelsWinCounter { get; set; }
 
-        [BsonElement("Updated")]
-        public DateTime Updated { get; set; }
-
-
+        #endregion
     }
 }

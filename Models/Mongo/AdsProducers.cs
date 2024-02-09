@@ -3,12 +3,8 @@ using MongoDB.Bson;
 
 namespace TamagotchiBot.Models.Mongo
 {
-    public class AdsProducers
+    public class AdsProducers : MongoModelBase
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public ObjectId Id { get; set; }
-
         [BsonElement("CompanyName")]
         public string CompanyName { get; set; }
 

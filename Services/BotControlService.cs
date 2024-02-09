@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TamagotchiBot.Models.Answers;
@@ -23,12 +24,14 @@ namespace TamagotchiBot.Services
         private AllUsersDataService _allUsersDataService;
         private ChatService _chatService;
         private AppleGameDataService _appleGameDataService;
+        private MetaUserService _metaUserService;
         public BotControlService(ITelegramBotClient bot,
                                  UserService userService,
                                  PetService petService,
                                  ChatService chatService,
                                  AppleGameDataService appleGameDataService,
-                                 AllUsersDataService allUsersDataService)
+                                 AllUsersDataService allUsersDataService,
+                                 MetaUserService metaUserService)
         {
             _botClient = bot;
             _userService = userService;
@@ -36,6 +39,7 @@ namespace TamagotchiBot.Services
             _chatService = chatService;
             _appleGameDataService = appleGameDataService;
             _allUsersDataService = allUsersDataService;
+            _metaUserService = metaUserService;
         }
 
         public async Task DeleteMessageAsync(long chatId, int msgId, bool toLog = true)
@@ -95,34 +99,30 @@ namespace TamagotchiBot.Services
         public async Task<Message> SendTextMessageAsync(long chatId,
                                                string text,
                                                int? msgThreadId = null,
-                                               IReplyMarkup replyMarkup = default,
+                                               IReplyMarkup inlineMarkup = default,
                                                CancellationToken cancellationToken = default,
                                                ParseMode? parseMode = null,
                                                bool toLog = true,
                                                int? replyToMsgId = null)
         {
             string logInfo;
-            Models.Mongo.User user = null;
             if (chatId < 0)
                 logInfo = $"chat id: {chatId}";
             else
             {
-                user = _userService.Get(chatId);
+                var user = _userService.Get(chatId);
                 logInfo = $"{Extensions.GetLogUser(user)}";
             }
-
-            Resources.Resources.Culture = new CultureInfo(user?.Culture ?? "ru");
 
             try
             {
                 if (toLog)
                     Log.Information($"Message sent to {logInfo}");
-
                 Log.Verbose($"Message sent to {logInfo}: {text.Replace("\r\n", " ")}");
                 return await _botClient.SendTextMessageAsync(chatId: chatId,
                                      text: text,
                                      messageThreadId: msgThreadId,
-                                     replyMarkup: replyMarkup,
+                                     replyMarkup: inlineMarkup,
                                      cancellationToken: cancellationToken,
                                      parseMode: parseMode,
                                      replyToMessageId: replyToMsgId);
@@ -136,6 +136,7 @@ namespace TamagotchiBot.Services
                     _petService.Remove(chatId);
                     _userService.Remove(chatId);
                     _appleGameDataService.Delete(chatId);
+                    _metaUserService.Remove(chatId);
                 }
                 Log.Warning($"{ex.Message} : {logInfo}");
                 return null;
@@ -147,10 +148,10 @@ namespace TamagotchiBot.Services
             }
         }
 
-        public async void SendStickerAsync(long chatId,
+        public async Task SendStickerAsync(long chatId,
                                            string stickerId,
                                            int? msgThreadId = null,
-                                           bool toRemoveKeyboard = false,
+                                           IReplyMarkup replyMarkup = null,
                                            CancellationToken cancellationToken = default,
                                            bool toLog = true)
         {
@@ -169,19 +170,12 @@ namespace TamagotchiBot.Services
                     Log.Information($"Sticker sent for {logInfo}");
 
                 Log.Verbose($"Sticker sent for {logInfo}");
-                if (toRemoveKeyboard)
-                {
-                    await _botClient.SendStickerAsync(chatId: chatId,
-                                                      sticker: new InputFileId(stickerId),
-                                                      messageThreadId: msgThreadId,
-                                                      replyMarkup: new ReplyKeyboardRemove(),
-                                                      cancellationToken: cancellationToken);
-                }
-                else
-                    await _botClient.SendStickerAsync(chatId: chatId,
-                                                      sticker: new InputFileId(stickerId),
-                                                      messageThreadId: msgThreadId,
-                                                      cancellationToken: cancellationToken);
+
+                await _botClient.SendStickerAsync(chatId: chatId,
+                                                  sticker: new InputFileId(stickerId),
+                                                  replyMarkup: replyMarkup,
+                                                  messageThreadId: msgThreadId,
+                                                  cancellationToken: cancellationToken);
             }
             catch (ApiRequestException ex)
             {
@@ -194,6 +188,7 @@ namespace TamagotchiBot.Services
                     _petService.Remove(chatId);
                     _userService.Remove(chatId);
                     _appleGameDataService.Delete(chatId);
+                    _metaUserService.Remove(chatId);
                 }
             }
             catch (Exception ex)
@@ -242,7 +237,7 @@ namespace TamagotchiBot.Services
                 Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException?.Message}, USER/CHAT: {logInfo}");
             }
         }
-        public async void EditMessageReplyMarkupAsync(ChatId chatId, long userId, int messageId, InlineKeyboardMarkup replyMarkup = default, CancellationToken cancellationToken = default)
+        public async Task EditMessageReplyMarkupAsync(ChatId chatId, long userId, int messageId, InlineKeyboardMarkup replyMarkup = default, CancellationToken cancellationToken = default)
         {
             var userDB = _userService.Get(userId);
             if (userDB == null)
@@ -259,7 +254,7 @@ namespace TamagotchiBot.Services
             }
         }
 
-        public async void AnswerCallbackQueryAsync(string callbackQueryId, long userId, string text = default, bool showAlert = false, CancellationToken cancellationToken = default, string url = default)
+        public async Task AnswerCallbackQueryAsync(string callbackQueryId, long userId, string text = default, bool showAlert = false, CancellationToken cancellationToken = default, string url = default)
         {
             var userDB = _userService.Get(userId);
             if (userDB == null)
@@ -286,13 +281,15 @@ namespace TamagotchiBot.Services
             }
         }
 
-        public async void SetMyCommandsAsync(IEnumerable<BotCommand> commands, BotCommandScope scope = default, CancellationToken cancellationToken = default)
+        public async Task SetMyCommandsAsync(IEnumerable<BotCommand> commands, BotCommandScope scope = default, CancellationToken cancellationToken = default)
         {
             try
             {
-                await _botClient.SetMyCommandsAsync(commands,
-                                                    scope: scope,
-                                                    cancellationToken: cancellationToken);
+                var currentCommands = await _botClient.GetMyCommandsAsync(scope: scope, cancellationToken: cancellationToken);
+                if (!currentCommands.IsEqual(commands.ToArray()))
+                    await _botClient.SetMyCommandsAsync(commands,
+                                                        scope: scope,
+                                                        cancellationToken: cancellationToken);
             }
             catch (Exception ex)
             {
@@ -300,7 +297,7 @@ namespace TamagotchiBot.Services
             }
         }
 
-        public async void SendChatActionAsync(ChatId chatId, ChatAction chatAction, CancellationToken cancellationToken = default)
+        public async Task SendChatActionAsync(ChatId chatId, ChatAction chatAction, CancellationToken cancellationToken = default)
         {
             var userDB = _allUsersDataService.Get(chatId.Identifier ?? -1);
 
@@ -324,100 +321,57 @@ namespace TamagotchiBot.Services
         public async Task<Message> SendAnswerMessageAsync(AnswerMessage toSend, long userId, bool toLog = true)
         {
             if (toSend == null)
-            {
-                //Log.Warning($"Nothing to send (null), userID: {userId}");
                 return null;
-            }
 
             if (toSend.StickerId != null)
-            {
-                SendStickerAsync(userId,
+                await SendStickerAsync(userId,
                                  toSend.StickerId,
                                  toSend.msgThreadId,
-                                 toSend.ReplyMarkup?.GetType() == typeof(ReplyKeyboardRemove),
+                                 toSend.ReplyMarkup,
                                  toLog: toLog);
-                await Task.Delay(50);
-            }
-
-            if (toSend.ReplyMarkup != null && toSend.ReplyMarkup?.GetType() != typeof(ReplyKeyboardRemove))
-            {
+            else if (toSend.ReplyMarkup is ReplyMarkupBase)
                 return await SendTextMessageAsync(userId,
-                                     toSend.Text,
-                                     replyMarkup: toSend.ReplyMarkup,
-                                     toLog: toLog,
-                                     parseMode: toSend.ParseMode);
-            }
-
-            if (toSend.InlineKeyboardMarkup != null)
-            {
+                             toSend.Text,
+                             inlineMarkup: toSend.ReplyMarkup,
+                             toLog: toLog,
+                             parseMode: toSend.ParseMode);
+            if (toSend.Text?.Length > 0)
                 return await SendTextMessageAsync(userId,
-                     toSend.Text,
-                     replyMarkup: toSend.InlineKeyboardMarkup,
-                     parseMode: toSend.ParseMode,
-                     toLog: toLog);
-            }
+                             toSend.Text,
+                             inlineMarkup: toSend.InlineKeyboardMarkup,
+                             toLog: toLog,
+                             parseMode: toSend.ParseMode);
 
-            if (!string.IsNullOrEmpty(toSend.Text))
-            {
-                return await SendTextMessageAsync(userId,
-                                     toSend.Text,
-                                     toLog: toLog,
-                                     parseMode: toSend.ParseMode);
-            }
             return null;
         }
         public async Task<Message> SendAnswerMessageGroupAsync(AnswerMessage toSend, long chatId, bool toLog = true)
         {
             if (toSend == null)
-            {
-                //Log.Warning($"Nothing to send (null), userID: {userId}");
                 return null;
-            }
 
             if (toSend.StickerId != null)
-            {
-                SendStickerAsync(chatId,
+                await SendStickerAsync(chatId,
                                  toSend.StickerId,
-                                 msgThreadId: toSend.msgThreadId,
-                                 toSend.ReplyMarkup?.GetType() == typeof(ReplyKeyboardRemove),
+                                 toSend.msgThreadId,
+                                 toSend.ReplyMarkup,
                                  toLog: toLog);
-                await Task.Delay(50);
-            }
-
-            if (toSend.ReplyMarkup != null && toSend.ReplyMarkup?.GetType() != typeof(ReplyKeyboardRemove))
-            {
+            else if (toSend.ReplyMarkup is ReplyMarkupBase)
                 return await SendTextMessageAsync(chatId,
-                                                  toSend.Text,
-                                                  msgThreadId: toSend.msgThreadId,
-                                                  replyMarkup: toSend.ReplyMarkup,
-                                                  toLog: toLog,
-                                                  replyToMsgId: toSend.replyToMsgId);
-            }
+                             toSend.Text,
+                             msgThreadId: toSend.msgThreadId,
+                             inlineMarkup: toSend.ReplyMarkup,
+                             toLog: toLog,
+                             parseMode: toSend.ParseMode);
 
-            if (toSend.InlineKeyboardMarkup != null)
-            {
-                return await SendTextMessageAsync(chatId: chatId,
-                                                  text: toSend.Text,
-                                                  msgThreadId: toSend.msgThreadId,
-                                                  replyMarkup: toSend.InlineKeyboardMarkup,
-                                                  parseMode: toSend.ParseMode,
-                                                  toLog: toLog,
-                                                  replyToMsgId: toSend.replyToMsgId);
-            }
-
-            if (!string.IsNullOrEmpty(toSend.Text))
-            {
-                return await SendTextMessageAsync(chatId: chatId,
-                                                  text: toSend.Text,
-                                                  msgThreadId: toSend.msgThreadId,
-                                                  parseMode: toSend.ParseMode,
-                                                  toLog: toLog,
-                                                  replyToMsgId: toSend.replyToMsgId);
-            }
-            return null;
+            return await SendTextMessageAsync(chatId,
+                         toSend.Text,
+                         msgThreadId: toSend.msgThreadId,
+                         inlineMarkup: toSend.InlineKeyboardMarkup,
+                         toLog: toLog,
+                         parseMode: toSend.ParseMode);
         }
 
-        public async void SendAnswerCallback(long userId, int messageToAnswerId, AnswerCallback toSend, bool toLog = true)
+        public async Task SendAnswerCallback(long userId, int messageToAnswerId, AnswerCallback toSend, bool toLog = true)
             => await EditMessageTextAsync(userId, messageToAnswerId, toSend.Text, toSend.InlineKeyboardMarkup, parseMode: toSend.ParseMode, toLog: toLog);
     }
 }

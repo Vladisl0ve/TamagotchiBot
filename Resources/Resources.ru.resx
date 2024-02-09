@@ -129,15 +129,19 @@
 Просто пришли его имя</value>
   </data>
   <data name="ConfirmedName" xml:space="preserve">
-    <value>🧃 Классно!
-Твой питомец {0} ждет 🐱
-Не забывай кормить и мыть его, играть в игры и просто любить ☺️
+    <value>🧃 Круть!
+Твой питомец &lt;b&gt;&lt;i&gt;{0}&lt;/i&gt;&lt;/b&gt; ждет 🐱
 
-Нажми /pet - состояние питомца
-Тыкни '/menu' чтобы увидеть больше возможностей</value>
+Распорядок дня:
+1️⃣ Позавтракать на кухне 🍳
+2️⃣ Почистить зубы и принять душ 🛁
+3️⃣ Поиграть в детской (питомец очень любит игру в Яблоко🍎)
+
+&lt;b&gt;Не забывай навещать питомца, иначе он может обидеться и уйти &lt;/b&gt;
+Развлекайтесь 🍿</value>
   </data>
   <data name="petCommand" xml:space="preserve">
-    <value>🐱 {0}
+    <value>&lt;i&gt;{11}&lt;/i&gt; {0}
 
 💊 Здоровье: {1}%
 🍕 Сытость: {4}%
@@ -167,10 +171,17 @@
     <value>Выбран русский язык 🇷🇺</value>
   </data>
   <data name="petCommandMoreInfo1" xml:space="preserve">
-    <value>🐱 {0}
+    <value>{0} {1}
 
-🎂 Дата рождения: {1}
-👫 Рефералов: {2}</value>
+🎂 Дата рождения: {2}
+👫 Рефералов: {3}
+
+🍗 Питомца кормили &lt;b&gt;&lt;i&gt;{4} раз&lt;/i&gt;&lt;/b&gt;
+🍎 Сыграно в Яблоко &lt;b&gt;&lt;i&gt;{5} раз&lt;/i&gt;&lt;/b&gt;
+🌙 Питомец проспал &lt;b&gt;&lt;i&gt;{6} минут&lt;/i&gt;&lt;/b&gt;
+🧰 &lt;b&gt;&lt;i&gt;{7} минут&lt;/i&gt;&lt;/b&gt; питомец работал
+
+🦭 Питомцу &lt;b&gt;&lt;i&gt;{8} дней&lt;/i&gt;&lt;/b&gt;</value>
   </data>
   <data name="petCommandInlineBasicInfo" xml:space="preserve">
     <value>Основная информация 📋</value>
@@ -218,9 +229,9 @@
     <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺</value>
   </data>
   <data name="sleepCommand" xml:space="preserve">
-    <value>🐱 {0}
-😴 Усталость: {1}%
-⚡️ Состояние: {2}</value>
+    <value>{0} {1}
+😴 Усталость: {2}%
+⚡️ Состояние: {3}</value>
   </data>
   <data name="sleepCommandDescription" xml:space="preserve">
     <value>Спальня 🛏</value>
@@ -282,7 +293,7 @@
   <data name="hospitalCommandHighHp" xml:space="preserve">
     <value>В здоровом теле - здоровый дух! 🏄🏄🏻‍♀️🏄
 Питомец здоров на {0}% ❤️‍🔥
-Ты молодец 😻</value>
+Ты молодец 🫵</value>
   </data>
   <data name="hospitalCommandMidHp" xml:space="preserve">
     <value>Здоровье превыше всего 🏥
@@ -299,7 +310,7 @@
   </data>
   <data name="PetCuringAnwserCallback" xml:space="preserve">
     <value>Питомец вылечен на {0}% 🌡
-Но малышу не нравятся таблетки 😿
+Но малышу не нравятся таблетки 🧸
 Радость изменилась на {1}%</value>
   </data>
   <data name="hospitalCommandDescription" xml:space="preserve">
@@ -338,10 +349,9 @@ FAQ:
   </data>
   <data name="menuCommand" xml:space="preserve">
     <value>Что делать с питомцем:
-/pet - состояние питомца 🐱
+/pet - состояние питомца {0}
 /kitchen - кушать тут 🍕
 /work - заработать денюшку (золото) для питомца 💰
-/reward - получить ежедневный бонус 🎁
 /sleep - спальня 🧸
 /gameroom - развлечения 🎳
 /ranks - лучшие из лучших! 👑
@@ -350,27 +360,34 @@ FAQ:
 /referal - бонусы за друзей 👩‍👩‍👧‍👦
 /rename - сменить имя питомца 🌀
 
+/reward - &lt;i&gt;&lt;b&gt;получить ежедневный бонус&lt;/b&gt;&lt;/i&gt; 🎁
+
+/changelog - официальный канал бота Тамагочи 🚀
+/language - смена языка 🇨🇦
+/help - FAQ (вопросы-ответ) 🆘
+
 В будущем будет больше!
 Следите за обновлениями! 💝</value>
   </data>
   <data name="menuCommandDescription" xml:space="preserve">
-    <value>Что можно делать 🎒</value>
+    <value>Прочее 🎒</value>
   </data>
   <data name="FarewellText" xml:space="preserve">
     <value>Ты заходишь к {0}, но видишь лишь пустую комнату и записку на столе:
 "Мой любимый друг {1}! 
 Было очень приятно проводить с тобой время, но моё здоровье начало хромать.
-Не уследили... 😿"
+Не уследили... ❤️‍🩹"
 
 Твой питомец ушёл, потому что ему не хватало заботы 💔</value>
   </data>
   <data name="EpilogueText" xml:space="preserve">
     <value>Бывает с каждым, но жизнь продолжается!
 Может с новым питомцем тебе повезёт 😼
+
 Давай сначала? 🫶</value>
   </data>
   <data name="ReminderNotifyText1" xml:space="preserve">
-    <value>😺: Ты вернулся!
+    <value>{0}: Ты вернулся!
 Мне тебя не хватало!
 Хочу кушать 🌭 и играть 🪁
 
@@ -378,13 +395,13 @@ FAQ:
 /gameroom гулять 🏓</value>
   </data>
   <data name="quitText" xml:space="preserve">
-    <value>Закончить игру</value>
+    <value>Закончить игру ❌</value>
   </data>
   <data name="againText" xml:space="preserve">
-    <value>Ещё раз</value>
+    <value>Ещё раз 🍏</value>
   </data>
   <data name="statisticsText" xml:space="preserve">
-    <value>Статистика</value>
+    <value>Статистика 📊</value>
   </data>
   <data name="ConcedeText" xml:space="preserve">
     <value>Сдаться</value>
@@ -401,15 +418,15 @@ FAQ:
     <value>Осталось {0} яблок</value>
   </data>
   <data name="appleGameSysEaten" xml:space="preserve">
-    <value>🐱: мною скушано яблок - {0}</value>
+    <value>{0}: мною скушано яблок - {1}</value>
   </data>
   <data name="appleGameLoseText" xml:space="preserve">
     <value>Осталось твоё зелёное яблочко
 
-🐱: Повезет в следующий раз 😉</value>
+{0}: Повезет в следующий раз 😉</value>
   </data>
   <data name="appleGameWinText" xml:space="preserve">
-    <value>🐱: Ты выиграл, молодец!</value>
+    <value>{0}: Ты выиграл, молодец!</value>
   </data>
   <data name="appleGameStatisticsCommand" xml:space="preserve">
     <value>📈СТАТИСТИКА📉
@@ -427,42 +444,42 @@ FAQ:
     <value>Вы снова в детской ⚽️</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Вышло обновление 1.4⚡️⚡️
+    <value>⚡️⚡️ Вышло обновление 1.5⚡️⚡️
 
-🥳&lt;b&gt;Добавлено&lt;/b&gt;🥳:
-🤹‍♂️&lt;b&gt;Новая работа для питомца - раздача флаеров&lt;/b&gt;
-  &lt;i&gt;Добавлено для баланса и разнообразия геймплея: надо меньше ждать окончания работы, но и золота получаешь тоже меньше&lt;/i&gt;
-🌮&lt;b&gt;Появилась возможность кормить чужих питомцев&lt;/b&gt; 
-  &lt;i&gt; В общем чате достаточно вызывать команду /feed_pet, затем тэгнуть нужного игрока &lt;u&gt;(только мультиплеер)&lt;/u&gt; &lt;/i&gt;
-🤼‍♀️&lt;b&gt;Теперь можно сражаться питомцами (прямо как Покемонами :D)&lt;/b&gt;
-  &lt;i&gt;Надо добавить бота в общий чат и вызывать команду /start_duel (Дуэль возможна &lt;u&gt;только в мультиплеере&lt;/u&gt;)&lt;/i&gt;
+&lt;i&gt;&lt;b&gt;НОВОЕ:&lt;/b&gt;&lt;/i&gt;
+ 🧸 &lt;b&gt;Добавлены новые типи питомцев:&lt;/b&gt;
+       🦊 &lt;i&gt;Крутая лисичка&lt;/i&gt;
+       🐶 &lt;i&gt;Верный пёсик&lt;/i&gt;
+       🐭 &lt;i&gt;Маленькая мышка&lt;/i&gt;
+       🐼 &lt;i&gt;Неоднозначная панда&lt;/i&gt;
+       🐱 &lt;i&gt;Любимый котик&lt;/i&gt;
+       &lt;i&gt;Для смены питомца нужно иметь 5000💰&lt;/i&gt;
 
-😻&lt;b&gt;Исправления&lt;/b&gt;😻:
-👽&lt;b&gt;Перебалансировано получение опыта &lt;/b&gt;
-   &lt;i&gt;Теперь с каждым новым уровнем нужно больше опыта, чем в предыдущем. Уровень был перерасчитан также для старых игроков.&lt;/i&gt;
-😈&lt;b&gt;Питомцу может не понравиться его новое имя&lt;/b&gt;
-   &lt;i&gt;Старайтесь придумывать адекватные и смешные имена&lt;/i&gt;
+🎮 &lt;b&gt;Добавлены кнопки для управления&lt;/b&gt; - теперь можно переходить в разные локации (кухня, детская, работа и тп.) с помощью кнопок вместо клавиатуры
+🏕 &lt;b&gt;Добавлена новая локация Ферма&lt;/b&gt; - на ней как раз можно будет и поменять тип питомца.
+В будущем здесь появится ещё больше приколюх 🥁
+🏆 &lt;b&gt;Добавлена таблица результатов Дуэлей для чатов&lt;/b&gt;
+🎯 По мелочи тоже появилось много, так что повод поискать самому :)
 
-Чтобы добавить бота в общий чат надо прописать команду /referal, а там уже найдёте кнопку "Добавить в новый чат"
-Если хотите, чтобы бот удалял некоторые свои сообщения, то добавьте его как администратора и дайте полномочия удалять сообщения
+&lt;i&gt;&lt;b&gt;ИЗМЕНЕНИЯ:&lt;/b&gt;&lt;/i&gt;
+🧰 Теперь показывается больше информации в "доп инфе"
+💻 Переписал в боте почти 20к строк - добавил многопоточность, улучшил производительность
 
-Хочется выразить огромную благодарность всем, кто помогает идеями и находит ошибки в работе бота ❤️ 
-(если есть что сказать, то заходи к нам в чатик https://t.me/chat_virtualpetbot, будем рады почитать 😇)
+Этот патч оказался самым сложным: пришлось много чего оптимизировать и переписывать, но это того стоило😎
 
-Отдельная благодарность @SuankaSmirnova25, @glitchpavel и всем-всем игрокам
-Без вас этот бот - ничто🤍❤️🤍
+После выхода патча могут быть проблемы с ботом, но я буду оперативно чинить :)
 
 Подписывайтесь на наш канал, где всё о боте:
 https://t.me/news_virtualpetbot</value>
   </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
-    <value>🐱: Жду тебя тут, возвращайся 
+    <value>{0}: Жду тебя тут, возвращайся 
 
 /kitchen покормить 🍩
 /gameroom гулять 🏓</value>
   </data>
   <data name="ReminderNotifyText3" xml:space="preserve">
-    <value>🐱: Сижу, скучаю, грусть прогоняю...
+    <value>{0}: Сижу, скучаю, грусть прогоняю...
 
 /kitchen покормить 🍩
 /gameroom гулять 🏓</value>
@@ -493,7 +510,7 @@ https://t.me/news_virtualpetbot</value>
 Подожди пока питомец закончит работу</value>
   </data>
   <data name="workCommandPCWorking" xml:space="preserve">
-    <value>Питомец сейчас на работает за компом 👩‍💻</value>
+    <value>Питомец сейчас на работе 👩‍💻</value>
   </data>
   <data name="workCommandInlineShowTime" xml:space="preserve">
     <value>Осталось работать: {0} ⏱</value>
@@ -547,7 +564,7 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="RandomEventStomachache" xml:space="preserve">
     <value>❤️‍🔥Срочно помоги своему питомцу!
-😾: животик очень сильно болит...
+{0}: животик очень сильно болит...
 
 -5% здоровья 💊
 -15% сытости 🍕
@@ -624,13 +641,13 @@ https://t.me/news_virtualpetbot</value>
     <value>Воскресить питомца? 🧬</value>
   </data>
   <data name="PetCameBackText" xml:space="preserve">
-    <value>После долгих поисков и кучи денег на детективов питомец нашёлся! 😺
+    <value>После долгих поисков и кучи денег на детективов питомец нашёлся! {0}
 Ты долго просил прощения и обещал больше не забывать про своего питомца 🐣
 Вы оба помирились 💕
 
 /pet - проверить состояние питомца</value>
   </data>
-  <data name="NotEnoughGoldToResurrect" xml:space="preserve">
+  <data name="NotEnoughGold" xml:space="preserve">
     <value>К сожалению у тебя слишком мало денег ☠️</value>
   </data>
   <data name="PetIsCleanEnoughAlert" xml:space="preserve">
@@ -656,10 +673,10 @@ https://t.me/news_virtualpetbot</value>
     <value>Да ✅</value>
   </data>
   <data name="InviteGlobalMultiplayerButton" xml:space="preserve">
-    <value>😺 Завести своего Тамагочи</value>
+    <value>{0} Завести своего Тамагочи</value>
   </data>
   <data name="InviteReferalMultiplayerButton" xml:space="preserve">
-    <value>🐣 Стать другом для {0}</value>
+    <value>{0} Стать другом для {1}</value>
   </data>
   <data name="InviteGlobalMultiplayerText" xml:space="preserve">
     <value>{0}, у тебя ещё нет своего Тамагочи 🐧</value>
@@ -667,7 +684,7 @@ https://t.me/news_virtualpetbot</value>
   <data name="MultiplayerShowPet" xml:space="preserve">
     <value>{8}, вот твой питомец
 
-🐱 &lt;b&gt;{0}&lt;/b&gt;
+&lt;i&gt;{9}&lt;/i&gt; &lt;b&gt;{0}&lt;/b&gt;
 💊 Здоровье: {1}%
 🍕 Сытость: {2}%
 🛁 Гигиена: {3}%
@@ -708,7 +725,8 @@ https://t.me/news_virtualpetbot</value>
 Доступные команды в чате:
 /show_pet - показать своего питомца 🦁
 /start_duel - начать дуэль питомцев ⚔️
-/feed_pet - покормить чужого питомца 🥞</value>
+/feed_pet - покормить чужого питомца 🥞
+/ranks - Топ-10 лучших 🏆</value>
   </data>
   <data name="changelogCommand" xml:space="preserve">
     <value>📢💬 Посмотреть и пообсуждать обновления бота можно тут:
@@ -722,14 +740,14 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="RandomEventNiceFlower" xml:space="preserve">
     <value>Вы погуляли по ботаническому саду 🌷🌷🌷
-🐱 Очень понравилось, обязательно ещё сюда вернёмся!
+{0}: Очень понравилось, обязательно ещё сюда вернёмся!
 
 +10% радость 🎊
 
 /pet - проверить состояние питомца</value>
   </data>
   <data name="RandomEventWatermelon" xml:space="preserve">
-    <value>🐱: Вкусный арбуз, хочу ещё 🍉
+    <value>{0}: Вкусный арбуз, хочу ещё 🍉
 
 +15% сытости 🍕
 
@@ -743,7 +761,7 @@ https://t.me/news_virtualpetbot</value>
 /pet - проверить состояние питомца</value>
   </data>
   <data name="BadWordDetected" xml:space="preserve">
-    <value>Питомцу не нравится его новое имя 😾
+    <value>Питомцу не нравится его новое имя {0}:
 Предложи другое ⬇️</value>
   </data>
   <data name="StartDuelMPCommand" xml:space="preserve">
@@ -751,7 +769,8 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="DuelMPStartCommand" xml:space="preserve">
     <value>♨️{0} объявляет дуэль питомцев!♨️
-"Мой {1}😼 порвёт всех как Тузик грелку! Кто бросит нам вызов?!"</value>
+
+"Мой &lt;i&gt;&lt;b&gt;{2} {1}&lt;/b&gt;&lt;/i&gt;  порвёт всех как Тузик грелку! Кто бросит нам вызов?!"</value>
   </data>
   <data name="DuelMPAcceptButton" xml:space="preserve">
     <value>⚔️Бросить вызов</value>
@@ -761,14 +780,14 @@ https://t.me/news_virtualpetbot</value>
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕐🟥🟥🟥🟥
 
-{2} 🙀🛡          🗡😼{3}</value>
+{2} {4}🛡                    🗡{5}{3}</value>
   </data>
   <data name="DuelMPFighting2" xml:space="preserve">
     <value>🔰ДУЭЛЬ НАЧАЛАСЬ🔰
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕒🟥🟥🟥🟥
 
-{2} 🙀🛡        🗡😼{3}
+{2} {4}🛡               🗡{5}{3}
 
 ❕Питомец {3} начал атаку на {2}!</value>
   </data>
@@ -777,7 +796,7 @@ https://t.me/news_virtualpetbot</value>
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕢🟥🟥🟥🟥
 
-{2} 🙀🛡     🗡😼{3}
+{2} {4}🛡          🗡{5}{3}
 
 ‼️Питомец {3} уже совсем близко к {2}!</value>
   </data>
@@ -786,7 +805,7 @@ https://t.me/news_virtualpetbot</value>
 {0} ⚔️ {1}
 🟥🟥🟥🟥🕙🟥🟥🟥🟥
 
-{2} 🙀🛡  🗡😼{3}
+{2} {4}🛡   🗡{5}{3}
 
 💥Питомец {3} наносит удар по {2}...</value>
   </data>
@@ -800,14 +819,16 @@ https://t.me/news_virtualpetbot</value>
 
 &lt;b&gt;Награда: {4}&lt;/b&gt;💰</value>
   </data>
-  <data name="DuelMPFightingEndingDefenderWin" xml:space="preserve">
-    <value>Питомец {1} поскользнулся и упал на попу прямо во время атаки🧸
-😽{0} побеждает 🥇</value>
+  <data name="DuelMPFightingEnding1" xml:space="preserve">
+    <value>Питомец {1}{3} поскользнулся и упал на попу прямо во время атаки🧸
+
+{2}{0} побеждает 🥇</value>
   </data>
-  <data name="DuelMPFightingEndingAttackerWin" xml:space="preserve">
-    <value>Питомец {1} молниеносно бьёт по щиту💢
-{0} испугался и попросил остановить дуэль🙅‍♂️
-😽{1} побеждает 🥇</value>
+  <data name="DuelMPFightingEnding2" xml:space="preserve">
+    <value>Питомец {1}{3} молниеносно бьёт по щиту💢
+{0}{2} испугался и попросил остановить дуэль🙅‍♂️
+
+{3}{1} побеждает 🥇</value>
   </data>
   <data name="DuelMPTimeout" xml:space="preserve">
     <value>Никто не принял дуэль от {0}
@@ -862,7 +883,7 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="FeedMPEndSuccess" xml:space="preserve">
     <value>Питомец &lt;b&gt;{0}&lt;/b&gt; с радостью накинулся на огромный бургер 🍔 с картошкой фри 🍟
-😻: &lt;i&gt;Спасибо большое! Я передам хозяину, что у него отличный друг!&lt;/i&gt;
+{2}&lt;b&gt;{3}&lt;/b&gt;: &lt;i&gt;Спасибо большое! Я передам хозяину, что у него отличный друг!&lt;/i&gt;
 
 -{1}💰</value>
   </data>
@@ -890,5 +911,134 @@ https://t.me/news_virtualpetbot</value>
   <data name="NotEnoughHPForDuelCallback" xml:space="preserve">
     <value>Чтобы принять дуэль надо {1}%💊 здоровья
 У тебя есть только {0}%💊</value>
+  </data>
+  <data name="ShowChatRanksMPCommand" xml:space="preserve">
+    <value>Топ-10 игроков чата 🎖</value>
+  </data>
+  <data name="ShowGlobalRanksMPCommand" xml:space="preserve">
+    <value>Топ-10 игроков всех чатов 🏆</value>
+  </data>
+  <data name="ShowChatRanksMPHeader" xml:space="preserve">
+    <value>🎖&lt;b&gt;Лучшие дуэлянты чата {0}&lt;/b&gt;🎖</value>
+  </data>
+  <data name="ShowGlobalRanksMPHeader" xml:space="preserve">
+    <value>🏆&lt;b&gt;Лучшие дуэлянты мира&lt;/b&gt; 🏆</value>
+  </data>
+  <data name="ShowChatRanksMPButton" xml:space="preserve">
+    <value>Топ-10 чата 🎖</value>
+  </data>
+  <data name="ShowGlobalRanksMPButton" xml:space="preserve">
+    <value>Топ-10 мира 🏆</value>
+  </data>
+  <data name="bathroomCommandMakePoo" xml:space="preserve">
+    <value>🧻Покакать💩</value>
+  </data>
+  <data name="PetDoesntWantToPoo" xml:space="preserve">
+    <value>Питомец не хочет какать 🗿</value>
+  </data>
+  <data name="farmCommandDescription" xml:space="preserve">
+    <value>Ферма 🚜</value>
+  </data>
+  <data name="farmCommand" xml:space="preserve">
+    <value>👨‍🌾: О, кто к нам пожаловал! Это же {0} со своим хозяином!
+&lt;b&gt;Чем могу быть полезен?&lt;/b&gt;</value>
+  </data>
+  <data name="farmButtonChangeType" xml:space="preserve">
+    <value>Сменить облик питомца 🎩</value>
+  </data>
+  <data name="goAwayButton" xml:space="preserve">
+    <value>Попрощаться и уйти 👋</value>
+  </data>
+  <data name="changeTypeButtonCommand" xml:space="preserve">
+    <value>👨‍🌾: Я же &lt;i&gt;волшебный&lt;/i&gt; фермер, поэтому могу сменить облик твоему питомцу
+Выбирай кого хочешь!
+
+Смена облика питомца: {0} золота 💰</value>
+  </data>
+  <data name="CatTypeText" xml:space="preserve">
+    <value>Котик 🐱</value>
+  </data>
+  <data name="DogTypeText" xml:space="preserve">
+    <value>Пёсик 🐶</value>
+  </data>
+  <data name="FoxTypeText" xml:space="preserve">
+    <value>Лисёнок 🦊</value>
+  </data>
+  <data name="PandaTypeText" xml:space="preserve">
+    <value>Панда 🐼</value>
+  </data>
+  <data name="MouseTypeText" xml:space="preserve">
+    <value>Мышёнок 🐭</value>
+  </data>
+  <data name="changedTypeToCat" xml:space="preserve">
+    <value>😼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: ОГО! Я теперь котик!</value>
+  </data>
+  <data name="changedTypeToDog" xml:space="preserve">
+    <value>🐶&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Гав-гав! Что это с моим голосом?
+И хвост непривычный...</value>
+  </data>
+  <data name="changedTypeToMouse" xml:space="preserve">
+    <value>🐭&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Какие же вы все большие теперь, а я маленькая!</value>
+  </data>
+  <data name="changedTypeToPanda" xml:space="preserve">
+    <value>🐼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Мир не разделён на чёрное и белое. А вот панды да!</value>
+  </data>
+  <data name="changedTypeToFox" xml:space="preserve">
+    <value>🦊&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Ой, какой же уютный и приятный мех ❤️</value>
+  </data>
+  <data name="changeTypeErrorSameType" xml:space="preserve">
+    <value>Твой питомец уже такого облика ❌</value>
+  </data>
+  <data name="petIsBusyForFarm" xml:space="preserve">
+    <value>Нельзя пойти на ферму, ведь питомец занят 🚫</value>
+  </data>
+  <data name="DuelMPFightingEnding10" xml:space="preserve">
+    <value>Питомец {3}{1} попытался увернуться от атаки, но его ловкость не спасла его от мощного удара 🥊
+
+Питомец {2}{0} побеждает 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding3" xml:space="preserve">
+    <value>{3}{1} смело защищался, блокируя каждую атаку своим щитом 🛡️ 
+
+{2}{0} в конечном итоге нашел щель и одержал победу 🎉</value>
+  </data>
+  <data name="DuelMPFightingEnding4" xml:space="preserve">
+    <value>Питомец {3}{1} выдержал серию мощных ударов, 
+но его сила начала угасать, и он уступил перед атакой питомца {2}{0}
+
+Питомец {2}{0} побеждает 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding5" xml:space="preserve">
+    <value>Питомец {2}{0} был медлительным, но его терпение и стойкость позволили ему отразить все атаки 🛡️ 
+Питомец {3}{1} сдался, увидев, что его противник не уступит
+
+Питомец {2}{0} побеждает 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding6" xml:space="preserve">
+    <value>Питомец {3}{1} испугался нападения и замер на месте, 
+позволяя своему противнику {2}{0} выиграть битву 🏁
+
+Питомец {2}{0} побеждает 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding7" xml:space="preserve">
+    <value>Питомец {3}{1} прыгал из стороны в сторону, избегая каждой атаки своего соперника 🦎 
+Однако питомец {2}{0} нашел слабое место и победил 🎖️
+
+Питомец {2}{0} побеждает 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding8" xml:space="preserve">
+    <value>Питомец {3}{1} использовал свою волшебную силу, чтобы создать щит, отражающий атаки своего противника {2}{0}, 
+но усталость в конце концов привела к его поражению.
+
+Питомец {2}{0} побеждает 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding9" xml:space="preserve">
+    <value>Питомец {3}{1} несся на полную скорость, пытаясь увернуться от атаки своего противника {2}{0}
+но в итоге потерпел поражение из-за недостатка концентрации 🪫
+
+Питомец {2}{0} побеждает 🏆</value>
+  </data>
+  <data name="GoldCompensastionGotText" xml:space="preserve">
+    <value>Зачислена компенсация: {0}💰</value>
   </data>
 </root>

@@ -11,21 +11,24 @@ using TamagotchiBot.Services.Interfaces;
 using Extensions = TamagotchiBot.UserExtensions.Extensions;
 using Serilog;
 using System.Threading.Tasks;
+using TamagotchiBot.Models.Mongo.Games;
+using System.Text;
 
 namespace TamagotchiBot.Controllers
 {
-    public class AppleGameController
+    public class AppleGameController : ControllerBase
     {
         private readonly IApplicationServices _appServices;
 
         private readonly Message _message;
         private readonly CallbackQuery _callback;
+        private readonly CultureInfo _userCulture;
 
         private readonly long _userId = 0;
 
         private const int APPLE_COUNTER_DEFAULT = 24;
 
-        private string _userInfo;
+        private readonly string _userInfo;
 
         private AppleGameController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
         {
@@ -36,7 +39,7 @@ namespace TamagotchiBot.Controllers
 
             _userInfo = Extensions.GetLogUser(_appServices.UserService.Get(_userId));
 
-            Culture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
+            _userCulture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
             AppleCounter = _appServices.AppleGameDataService.Get(_userId)?.CurrentAppleCounter ?? 1;
         }
 
@@ -51,17 +54,22 @@ namespace TamagotchiBot.Controllers
         }
 
         public int AppleCounter { get; set; }
-        private List<string> MenuCommands => new List<string>() { againText, statisticsText, quitText };
+        private List<string> MenuCommands => new()
+        {
+            nameof(againText).UseCulture(_userCulture),
+            nameof(statisticsText).UseCulture(_userCulture),
+            nameof(quitText).UseCulture(_userCulture)
+        };
         private List<string> ApplesToChoose
         {
             get
             {
                 return AppleCounter switch
                 {
-                    1 => new List<string>() { againText, statisticsText, quitText },
-                    2 => new List<string>() { "🍎", ConcedeText },
-                    3 => new List<string>() { "🍎", "🍎🍎", ConcedeText },
-                    _ => new List<string>() { "🍎", "🍎🍎", "🍎🍎🍎", ConcedeText },
+                    1 => MenuCommands,
+                    2 => new List<string>() { "🍎", nameof(ConcedeText).UseCulture(_userCulture) },
+                    3 => new List<string>() { "🍎", "🍎🍎", nameof(ConcedeText).UseCulture(_userCulture) },
+                    _ => new List<string>() { "🍎", "🍎🍎", "🍎🍎🍎", nameof(ConcedeText).UseCulture(_userCulture) },
                 };
             }
         }
@@ -73,12 +81,12 @@ namespace TamagotchiBot.Controllers
                 string greenApple = "🍏";
                 string redApple = "🍎";
 
-                string result = greenApple;
+                StringBuilder result = new(greenApple);
                 for (int i = 1; i < AppleCounter; i++)
                 {
-                    result += $"{redApple}";
+                    result.Append($"{redApple}");
                 }
-                return result;
+                return result.ToString();
             }
         }
 
@@ -90,7 +98,7 @@ namespace TamagotchiBot.Controllers
         private ReplyKeyboardMarkup KeyboardOptimizer(List<string> names)
         {
             int x = 2;
-            int y = (int)Math.Ceiling((double)(names.Count) / x);
+            int y = (int)Math.Ceiling((double)names.Count / x);
             int counter = 0;
 
             KeyboardButton[][] keyboard = new KeyboardButton[y][];
@@ -113,7 +121,7 @@ namespace TamagotchiBot.Controllers
             for (int i = 0; i < names.Count; i++)
                 keyboard[i / x][i % x] = names[i];
 
-            return new ReplyKeyboardMarkup(keyboard) { ResizeKeyboard = true, OneTimeKeyboard = true };
+            return new ReplyKeyboardMarkup(keyboard) { ResizeKeyboard = true };
         }
 
         public AnswerMessage StartGame()
@@ -123,7 +131,7 @@ namespace TamagotchiBot.Controllers
             AppleCounter = APPLE_COUNTER_DEFAULT;
             _appServices.AppleGameDataService.Update(appleDataToUpdate);
 
-            string text = $"{appleGameHelpText}\n\n{string.Format(remainingApplesText, AppleCounter)}\n{ApplesIcons}";
+            string text = $"{nameof(appleGameHelpText).UseCulture(_userCulture)}\n\n{string.Format(nameof(remainingApplesText).UseCulture(_userCulture), AppleCounter)}\n{ApplesIcons}";
             var keyboard = KeyboardOptimizer(ApplesToChoose);
             return new AnswerMessage()
             {
@@ -139,13 +147,17 @@ namespace TamagotchiBot.Controllers
             if (appleDataToUpdate == null)
             {
                 await _appServices.UserService.UpdateAppleGameStatus(_userId, false);
-                new MenuController(_appServices, _message).ProcessMessage("/pet");
+                await new MenuController(_appServices, _message).ProcessMessage("/pet");
                 return;
             }
 
-            if (_message.Text == statisticsText && appleDataToUpdate.IsGameOvered)
+            var msgText = _message.Text.ToLower();
+            if (msgText.StartsWith('/'))
+                msgText = msgText.Substring(1);
+
+            if (GetAllTranslatedAndLowered(nameof(statisticsText)).Contains(msgText) && appleDataToUpdate.IsGameOvered)
             {
-                var toSendText = string.Format(appleGameStatisticsCommand,
+                var toSendText = string.Format(nameof(appleGameStatisticsCommand).UseCulture(_userCulture),
                                                appleDataToUpdate.TotalWins,
                                                appleDataToUpdate.TotalLoses,
                                                appleDataToUpdate.TotalDraws);
@@ -158,17 +170,17 @@ namespace TamagotchiBot.Controllers
 
                 Log.Debug($"Ending AppleGame {_userInfo}");
 
-                _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
                 return;
             }
 
-            if (_message.Text == ConcedeText)
+            if (GetAllTranslatedAndLowered(nameof(ConcedeText)).Contains(msgText))
             {
                 appleDataToUpdate.TotalDraws += 1;
                 appleDataToUpdate.IsGameOvered = true;
                 _appServices.AppleGameDataService.Update(appleDataToUpdate);
 
-                string toSendText = $"{appleGameHelpText}";
+                string toSendText = $"{nameof(appleGameHelpText).UseCulture(_userCulture)}";
 
                 var toSend = new AnswerMessage()
                 {
@@ -178,11 +190,11 @@ namespace TamagotchiBot.Controllers
 
                 Log.Debug($"Conceded AppleGame {_userInfo}");
 
-                _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
                 return;
             }
 
-            if (_message.Text == quitText || _message.Text == "/quit")
+            if (GetAllTranslatedAndLowered(nameof(quitText)).Contains(msgText) || msgText == "quit")
             {
                 appleDataToUpdate.TotalLoses += 1;
                 appleDataToUpdate.IsGameOvered = true;
@@ -192,29 +204,29 @@ namespace TamagotchiBot.Controllers
 
                 Log.Debug($"Quit AppleGame {_userInfo}");
 
-                new MenuController(_appServices, _message).ProcessMessage("/gameroom");
+                await new MenuController(_appServices, _message).ProcessMessage("/gameroom");
                 return;
             }
 
-            if (_message.Text == againText)
+            if (GetAllTranslatedAndLowered(nameof(againText)).Contains(msgText))
             {
                 Log.Debug($"Play again AppleGame {_userInfo}");
 
-                _appServices.BotControlService.SendAnswerMessageAsync(StartGame(), _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(StartGame(), _userId, false);
                 return;
             }
 
-            if (_message.Text != "🍎" && _message.Text != "🍎🍎" && _message.Text != "🍎🍎🍎")
+            if (msgText != "🍎" && msgText != "🍎🍎" && msgText != "🍎🍎🍎")
             {
-                var toSend = new AnswerMessage() { Text = appleGameUndefiendText, ReplyMarkup = KeyboardOptimizer(ApplesToChoose) };
-                Log.Debug($"Wrong message {_message.Text} in AppleGame {_userInfo}");
+                var toSend = new AnswerMessage() { Text = nameof(appleGameUndefiendText).UseCulture(_userCulture), ReplyMarkup = KeyboardOptimizer(ApplesToChoose) };
+                Log.Debug($"Wrong message {msgText} in AppleGame {_userInfo}");
 
-                _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
                 return;
             }
 
             Log.Debug($"Make move in AppleGame {_userInfo}");
-            _appServices.BotControlService.SendAnswerMessageAsync(MakeMove(_message), _userId, false);
+            await _appServices.BotControlService.SendAnswerMessageAsync(MakeMove(_message), _userId, false);
         }
 
         public AnswerMessage MakeMove(Message message)
@@ -223,7 +235,14 @@ namespace TamagotchiBot.Controllers
             var petDB = _appServices.PetService.Get(_userId);
             var aud = _appServices.AllUsersDataService.Get(_userId);
 
-            int toRemove = message.Text == "🍎" ? 1 : message.Text == "🍎🍎" ? 2 : message.Text == "🍎🍎🍎" ? 3 : 0;
+            int toRemove = message.Text switch
+            {
+                "🍎"       => 1,
+                "🍎🍎"    => 2,
+                "🍎🍎🍎"  => 3,
+                _          => 0
+            };
+
             AppleCounter -= toRemove;
             int systemRemove = 0;
             string textToSay = "";
@@ -233,6 +252,8 @@ namespace TamagotchiBot.Controllers
                 case 1:
                     break;
                 case 2:
+                case 5:
+                case 6:
                     systemRemove = 1;
                     AppleCounter -= systemRemove;
                     break;
@@ -241,23 +262,12 @@ namespace TamagotchiBot.Controllers
                     AppleCounter -= systemRemove;
                     break;
                 case 4:
+                case 8:
                     systemRemove = 3;
-                    AppleCounter -= systemRemove;
-                    break;
-                case 5:
-                    systemRemove = 1;
-                    AppleCounter -= systemRemove;
-                    break;
-                case 6:
-                    systemRemove = 1;
                     AppleCounter -= systemRemove;
                     break;
                 case 7:
                     systemRemove = new Random().Next(1, 3);
-                    AppleCounter -= systemRemove;
-                    break;
-                case 8:
-                    systemRemove = 3;
                     AppleCounter -= systemRemove;
                     break;
                 default:
@@ -266,14 +276,18 @@ namespace TamagotchiBot.Controllers
                     break;
             }
 
-            textToSay += $"{string.Format(appleGameSysEaten, systemRemove)}";
+            textToSay += $"{string.Format(
+                nameof(appleGameSysEaten).UseCulture(_userCulture),
+                Extensions.GetTypeEmoji(petDB.Type),
+                systemRemove
+                )}";
 
             textToSay += $"\n\n{ApplesIcons}\n";
 
             switch (AppleCounter)
             {
                 case 1 when systemRemove != 0:
-                    textToSay += appleGameLoseText;
+                    textToSay += string.Format(nameof(appleGameLoseText).UseCulture(_userCulture), Extensions.GetTypeEmoji(petDB.Type));
                     appleDataToUpdate.TotalLoses += 1;
                     appleDataToUpdate.IsGameOvered = true;
 
@@ -290,7 +304,7 @@ namespace TamagotchiBot.Controllers
 
                     break;
                 case 1 when systemRemove == 0:
-                    textToSay += appleGameWinText;
+                    textToSay += string.Format(nameof(appleGameWinText).UseCulture(_userCulture), Extensions.GetTypeEmoji(petDB.Type));
                     appleDataToUpdate.TotalWins += 1;
                     appleDataToUpdate.IsGameOvered = true;
 
@@ -307,7 +321,7 @@ namespace TamagotchiBot.Controllers
 
                     break;
                 default:
-                    textToSay += string.Format(remainingApplesText, AppleCounter);
+                    textToSay += string.Format(nameof(remainingApplesText).UseCulture(_userCulture), AppleCounter);
                     appleDataToUpdate.CurrentAppleCounter = AppleCounter;
                     break;
             }
@@ -329,29 +343,29 @@ namespace TamagotchiBot.Controllers
             if (petDB == null || userDB == null)
                 return;
 
-            if (petDB?.Fatigue >= 100)
+            if (petDB.Fatigue >= 100)
             {
-                string anwser = string.Format(Resources.Resources.tooTiredText);
-                _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
+                string anwser = nameof(tooTiredText).UseCulture(_userCulture);
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
                                                                         _userId,
                                                                         anwser,
                                                                         true);
                 return;
             }
-            if (petDB?.Joy >= 100)
+            if (petDB.Joy >= 100)
             {
-                string anwser = string.Format(Resources.Resources.PetIsFullOfJoyText);
-                _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
+                string anwser = nameof(PetIsFullOfJoyText).UseCulture(_userCulture);
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
                                                                         _userId,
                                                                         anwser,
                                                                         true);
                 return;
             }
 
-            if (userDB?.Gold <= Constants.Costs.AppleGame)
+            if (userDB.Gold <= Costs.AppleGame)
             {
-                string anwser = string.Format(Resources.Resources.goldNotEnough);
-                _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
+                string anwser = nameof(goldNotEnough).UseCulture(_userCulture);
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
                                                                         _userId,
                                                                         anwser,
                                                                         true);
@@ -361,12 +375,12 @@ namespace TamagotchiBot.Controllers
             _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.AppleGame);
 
             await _appServices.UserService.UpdateAppleGameStatus(_userId, true);
-            _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetInApplegameCommands(),
+            await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetInApplegameCommands(_userCulture),
                                                               scope: new BotCommandScopeChat() { ChatId = _userId });
             var appleData = _appServices.AppleGameDataService.Get(_userId);
 
             if (appleData == null)
-                _appServices.AppleGameDataService.Create(new Models.Mongo.Games.AppleGameData()
+                _appServices.AppleGameDataService.Create(new AppleGameData()
                 {
                     UserId = _userId,
                     CurrentAppleCounter = 24,
@@ -379,9 +393,7 @@ namespace TamagotchiBot.Controllers
             var toSendAnswer = StartGame();
 
             Log.Debug($"Started AppleGame {_userInfo}");
-
-            _appServices.BotControlService.SendAnswerMessageAsync(toSendAnswer, _userId, false);
-            return;
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSendAnswer, _userId, false);
         }
     }
 }
