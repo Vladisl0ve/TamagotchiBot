@@ -67,7 +67,7 @@ namespace TamagotchiBot.Services
         }
         public void SetMPDuelsCheckingTimer()
         {
-            TimeSpan timeToWait = TimeSpan.FromSeconds(70);
+            TimeSpan timeToWait = TimeSpan.FromSeconds(100);
             Log.Information("MP duels timer set to wait for " + timeToWait.TotalSeconds + "s");
             _mpDuelsTimer = new Timer(timeToWait);
             _mpDuelsTimer.Elapsed += OnMPDuelsTimedEvent;
@@ -92,7 +92,7 @@ namespace TamagotchiBot.Services
             TimeSpan timeToWait = TimeSpan.FromSeconds(10);
 #else
 
-            TimeSpan timeToWait = TimeSpan.FromSeconds(307);
+            TimeSpan timeToWait = TimeSpan.FromSeconds(300);
 #endif
             Log.Information("DailyRewardNotification timer set to wait for " + timeToWait.TotalSeconds + "s");
             _dailyRewardTimer = new Timer(timeToWait);
@@ -105,7 +105,7 @@ namespace TamagotchiBot.Services
 #if DEBUG_NOTIFY
             TimeSpan timeToWait = TimeSpan.FromSeconds(7);
 #else
-            TimeSpan timeToWait = TimeSpan.FromSeconds(60);
+            TimeSpan timeToWait = TimeSpan.FromMinutes(10);
 #endif
             Log.Information("RandomEventNotification timer set to wait for " + timeToWait.TotalSeconds + "s");
             _randomEventRewardTimer = new Timer(timeToWait);
@@ -170,7 +170,7 @@ namespace TamagotchiBot.Services
                     counter++;
                     if (counter % 100 == 0)
                     {
-                        Log.Information("Delay 3s...");
+                        Log.Information("Daily: Delay 3s...");
                         await Task.Delay(3000);
                     }
                 }
