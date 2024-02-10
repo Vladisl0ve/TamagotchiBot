@@ -301,7 +301,7 @@ namespace TamagotchiBot.Controllers
 
                     aud.AppleGamePlayedCounter++;
                     _appServices.AllUsersDataService.Update(aud);
-
+                    _appServices.PetService.UpdateEXP(_userId, petDB.EXP + ExpForAction.PlayApple);
                     break;
                 case 1 when systemRemove == 0:
                     textToSay += string.Format(nameof(appleGameWinText).UseCulture(_userCulture), Extensions.GetTypeEmoji(petDB.Type));
@@ -318,7 +318,7 @@ namespace TamagotchiBot.Controllers
 
                     aud.AppleGamePlayedCounter++;
                     _appServices.AllUsersDataService.Update(aud);
-
+                    _appServices.PetService.UpdateEXP(_userId, petDB.EXP + (ExpForAction.PlayApple * 10));
                     break;
                 default:
                     textToSay += string.Format(nameof(remainingApplesText).UseCulture(_userCulture), AppleCounter);

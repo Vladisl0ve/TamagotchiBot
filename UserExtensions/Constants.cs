@@ -140,6 +140,22 @@ namespace TamagotchiBot.UserExtensions
             public const int ToRestMinLimitOfFatigue = 20;
         }
 
+        public struct ExpForAction
+        {
+            public const int FeedingBread = 20;
+            public const int FeedingApple = 20;
+
+            public const int PlayApple = 20;
+            public const int Play = 5;
+
+            public const int Hygiene = 10;
+
+            public const int Sleep = 30;
+
+            public const int WorkPC = 25;
+            public const int WorkFlyers = 10;
+        }
+
         public struct FoodFactors
         {
             public const double BreadHungerFactor = 50; //🍞

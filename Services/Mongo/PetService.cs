@@ -88,6 +88,15 @@ namespace TamagotchiBot.Services.Mongo
                 Update(userId, pet);
             }
         }
+        public void UpdateEXP(long userId, int newEXP)
+        {
+            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.EXP = newEXP;
+                Update(userId, pet);
+            }
+        }
         public void UpdateSatiety(long userId, double newSatiety, bool forcePush = false)
         {
             if (newSatiety > 100 && !forcePush)

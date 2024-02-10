@@ -1149,6 +1149,7 @@ namespace TamagotchiBot.Controllers
             newHygiene = newHygiene > 100 ? 100 : newHygiene;
 
             _appServices.PetService.UpdateHygiene(_userId, newHygiene);
+            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + ExpForAction.Hygiene);
 
             string anwser = string.Format(nameof(PetHygieneAnwserCallback).UseCulture(_userCulture), HygieneFactors.ShowerFactor);
             await SendAlertToUser(anwser);
@@ -1175,6 +1176,7 @@ namespace TamagotchiBot.Controllers
             newHygiene = newHygiene > 100 ? 100 : newHygiene;
 
             _appServices.PetService.UpdateHygiene(_userId, newHygiene);
+            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + ExpForAction.Hygiene);
 
             string anwser = string.Format(nameof(PetHygieneAnwserCallback).UseCulture(_userCulture), HygieneFactors.PoopFactor);
             await SendAlertToUser(anwser);
@@ -1201,6 +1203,7 @@ namespace TamagotchiBot.Controllers
             newHygiene = newHygiene > 100 ? 100 : newHygiene;
 
             _appServices.PetService.UpdateHygiene(_userId, newHygiene);
+            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + ExpForAction.Hygiene);
 
             string anwser = string.Format(nameof(PetHygieneAnwserCallback).UseCulture(_userCulture), HygieneFactors.TeethFactor);
             await SendAlertToUser(anwser);
@@ -1246,6 +1249,7 @@ namespace TamagotchiBot.Controllers
 
             _appServices.UserService.UpdateGold(_userId, newGold);
             _appServices.PetService.UpdateSatiety(_userId, newSatiety);
+            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + ExpForAction.FeedingBread);
             var aud = _appServices.AllUsersDataService.Get(_userId);
 
             aud.BreadEatenCounter++;
@@ -1277,6 +1281,7 @@ namespace TamagotchiBot.Controllers
 
             _appServices.UserService.UpdateGold(_userId, newGold);
             _appServices.PetService.UpdateSatiety(_userId, newSatiety);
+            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + ExpForAction.FeedingApple);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.AppleEatenCounter++;
@@ -1383,6 +1388,7 @@ namespace TamagotchiBot.Controllers
             petDB.StartSleepingTime = DateTime.UtcNow;
             petDB.ToWakeUpTime = DateTime.UtcNow + TimesToWait.SleepToWait;
             _appServices.PetService.Update(petDB.UserId, petDB);
+            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + ExpForAction.Sleep);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.SleepenTimesCounter++;
@@ -1482,6 +1488,7 @@ namespace TamagotchiBot.Controllers
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.CardsPlayedCounter++;
             _appServices.AllUsersDataService.Update(aud);
+            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + ExpForAction.Play);
 
             string toSendText = string.Format(nameof(gameroomCommand).UseCulture(_userCulture),
                                               newFatigue,
@@ -1533,6 +1540,7 @@ namespace TamagotchiBot.Controllers
             aud.DicePlayedCounter++;
             aud.GoldSpentCounter += Costs.DiceGame;
             _appServices.AllUsersDataService.Update(aud);
+            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + ExpForAction.Play);
 
             string anwser = string.Format(nameof(PetPlayingAnwserCallback).UseCulture(_userCulture), Factors.DiceGameJoyFactor);
             await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser);
@@ -2110,6 +2118,7 @@ namespace TamagotchiBot.Controllers
             _appServices.UserService.UpdateGold(_userId, _appServices.UserService.Get(_userId).Gold + Rewards.WorkOnPCGoldReward);
             _appServices.PetService.UpdateCurrentStatus(_userId, (int)CurrentStatus.Working);
             _appServices.PetService.UpdateCurrentJob(_userId, (int)JobType.WorkingOnPC);
+            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + ExpForAction.WorkPC);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.GoldEarnedCounter += Rewards.WorkOnPCGoldReward;
@@ -2178,6 +2187,7 @@ namespace TamagotchiBot.Controllers
             _appServices.UserService.UpdateGold(_userId, _appServices.UserService.Get(_userId).Gold + Rewards.FlyersDistributingGoldReward);
             _appServices.PetService.UpdateCurrentStatus(_userId, (int)CurrentStatus.Working);
             _appServices.PetService.UpdateCurrentJob(_userId, (int)JobType.FlyersDistributing);
+            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + ExpForAction.WorkFlyers);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.GoldEarnedCounter += Rewards.FlyersDistributingGoldReward;
