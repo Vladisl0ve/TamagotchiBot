@@ -418,6 +418,7 @@ namespace TamagotchiBot.Handlers
         }
         private async Task SendPostToChat(long chatId)
         {
+            const int TIMEOUT_SECONDS = 5;
 #if DEBUG
             return;
 #endif
@@ -425,7 +426,7 @@ namespace TamagotchiBot.Handlers
             {
                 using var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTIiLCJqdGkiOiJkOTYzYTZiYy1mNTc3LTQyZjYtYTkyOS02NzRhZTAwYjRlOWEiLCJuYW1lIjoi8J-QviDQotCw0LzQsNCz0L7Rh9C4IHwgVmlydHVhbCBQZXQg8J-QviIsImJvdGlkIjoiMjQxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxNTIiLCJuYmYiOjE2OTAzMTE5MDAsImV4cCI6MTY5MDUyMDcwMCwiaXNzIjoiU3R1Z25vdiIsImF1ZCI6IlVzZXJzIn0.hByX6S4UoV9J9G559wvvJUrid-_GZe4KLtbog7AV7HU");
-                client.Timeout = TimeSpan.FromSeconds(1);
+                client.Timeout = TimeSpan.FromSeconds(TIMEOUT_SECONDS);
 
                 var sendPostDto = new { SendToChatId = chatId };
                 var json = JsonConvert.SerializeObject(sendPostDto);
@@ -447,9 +448,13 @@ namespace TamagotchiBot.Handlers
                 Log.Information("==> Gramads: " + result);
 
             }
+            catch (TaskCanceledException)
+            {
+                Log.Error($"TIMEOUT GRAMADS - {TIMEOUT_SECONDS}s");
+            }
             catch (Exception ex)
             {
-                Log.Error(ex, ex.ToString());
+                Log.Error(ex, "Error GRAMADS HTTP: ");
             }
         }
 
