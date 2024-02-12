@@ -421,28 +421,35 @@ namespace TamagotchiBot.Handlers
 #if DEBUG
             return;
 #endif
-
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTIiLCJqdGkiOiJkOTYzYTZiYy1mNTc3LTQyZjYtYTkyOS02NzRhZTAwYjRlOWEiLCJuYW1lIjoi8J-QviDQotCw0LzQsNCz0L7Rh9C4IHwgVmlydHVhbCBQZXQg8J-QviIsImJvdGlkIjoiMjQxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxNTIiLCJuYmYiOjE2OTAzMTE5MDAsImV4cCI6MTY5MDUyMDcwMCwiaXNzIjoiU3R1Z25vdiIsImF1ZCI6IlVzZXJzIn0.hByX6S4UoV9J9G559wvvJUrid-_GZe4KLtbog7AV7HU");
-
-            var sendPostDto = new { SendToChatId = chatId };
-            var json = JsonConvert.SerializeObject(sendPostDto);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await client.PostAsync("https://api.gramads.net/ad/SendPost", content);
-
-            // or you can use the extension method "PostAsJson", for example:
-            // var response = await client.PostAsJsonAsync("https://api.gramads.net/ad/SendPost", sendPostDto);
-
-            var result = await response.Content.ReadAsStringAsync();
-
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                Log.Warning("==> Gramads:" + result);
-                return;
-            }
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTIiLCJqdGkiOiJkOTYzYTZiYy1mNTc3LTQyZjYtYTkyOS02NzRhZTAwYjRlOWEiLCJuYW1lIjoi8J-QviDQotCw0LzQsNCz0L7Rh9C4IHwgVmlydHVhbCBQZXQg8J-QviIsImJvdGlkIjoiMjQxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxNTIiLCJuYmYiOjE2OTAzMTE5MDAsImV4cCI6MTY5MDUyMDcwMCwiaXNzIjoiU3R1Z25vdiIsImF1ZCI6IlVzZXJzIn0.hByX6S4UoV9J9G559wvvJUrid-_GZe4KLtbog7AV7HU");
 
-            Log.Information("==> Gramads: " + result);
+                var sendPostDto = new { SendToChatId = chatId };
+                var json = JsonConvert.SerializeObject(sendPostDto);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync("https://api.gramads.net/ad/SendPost", content);
+
+                // or you can use the extension method "PostAsJson", for example:
+                // var response = await client.PostAsJsonAsync("https://api.gramads.net/ad/SendPost", sendPostDto);
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Log.Warning("==> Gramads:" + result);
+                    return;
+                }
+
+                Log.Information("==> Gramads: " + result);
+
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.ToString());
+            }
         }
 
         public async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
@@ -455,14 +462,14 @@ namespace TamagotchiBot.Handlers
             };
 
             Log.Fatal(exception, $"Polling error async {ErrorMessage}");
-            await Task.Delay(1000, cancellationToken);
+            await Task.Delay(1000);
 
             if (exception is ApiRequestException apiEx && apiEx.ErrorCode == 409)
                 Environment.Exit(-1);
 
             int msToWait = 5000;
             Log.Warning($"Waiting {msToWait / 1000}s before restart...");
-            await Task.Delay(msToWait, cancellationToken);
+            await Task.Delay(msToWait);
             Environment.Exit(-1);
         }
     }
