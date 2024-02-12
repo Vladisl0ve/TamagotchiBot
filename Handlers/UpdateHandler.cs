@@ -153,7 +153,7 @@ namespace TamagotchiBot.Handlers
             // for example your bot just made its job and
             // it's a great time to show an ad to a user
             if (_appServices.PetService.Get(message.From.Id)?.Name != null)
-                await SendPostToChat(message.From.Id);
+                SendPostToChat(message.From.Id);
 
             if (_appServices.UserService.Get(message.From.Id)?.IsInAppleGame ?? false)
                 await new AppleGameController(_appServices, message).Menu();
@@ -184,7 +184,7 @@ namespace TamagotchiBot.Handlers
             // for example your bot just made its job and
             // it's a great time to show an ad to a user
 
-            await SendPostToChat(callbackQuery.From.Id);
+            SendPostToChat(callbackQuery.From.Id);
 
             new SynchroDBController(_appServices, callbackQuery.From, userId, callbackQuery.Message.Chat.Title).SynchronizeWithDB(); //update user (username, names etc.) in DB
             CreatorController creatorController = new CreatorController(_appServices, callback: callbackQuery);
@@ -425,6 +425,7 @@ namespace TamagotchiBot.Handlers
             {
                 using var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTIiLCJqdGkiOiJkOTYzYTZiYy1mNTc3LTQyZjYtYTkyOS02NzRhZTAwYjRlOWEiLCJuYW1lIjoi8J-QviDQotCw0LzQsNCz0L7Rh9C4IHwgVmlydHVhbCBQZXQg8J-QviIsImJvdGlkIjoiMjQxIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIxNTIiLCJuYmYiOjE2OTAzMTE5MDAsImV4cCI6MTY5MDUyMDcwMCwiaXNzIjoiU3R1Z25vdiIsImF1ZCI6IlVzZXJzIn0.hByX6S4UoV9J9G559wvvJUrid-_GZe4KLtbog7AV7HU");
+                client.Timeout = TimeSpan.FromSeconds(1);
 
                 var sendPostDto = new { SendToChatId = chatId };
                 var json = JsonConvert.SerializeObject(sendPostDto);
