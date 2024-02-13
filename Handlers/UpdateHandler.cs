@@ -416,7 +416,7 @@ namespace TamagotchiBot.Handlers
                     return;
             }
         }
-        private async Task SendPostToChat(long chatId)
+        private async void SendPostToChat(long chatId)
         {
             const int TIMEOUT_SECONDS = 5;
 #if DEBUG
