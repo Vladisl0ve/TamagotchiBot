@@ -23,6 +23,9 @@ namespace Telegram.Bots.Example
     {
         public static void Main(string[] args)
         {
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(MyHandler);
+
             CreateGlobalLoggerConfiguration();
             if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + "config.json"))
             {
@@ -35,6 +38,13 @@ namespace Telegram.Bots.Example
             }
             Log.Information("Starting host");
             CreateHostBuilder(args).Build().Run();
+        }
+
+        static void MyHandler(object sender, UnhandledExceptionEventArgs args)
+        {
+            Exception e = (Exception) args.ExceptionObject;
+            Console.WriteLine("MyHandler caught : " + e.Message);
+            Console.WriteLine("Runtime terminating: {0}", args.IsTerminating);
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)

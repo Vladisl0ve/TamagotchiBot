@@ -375,6 +375,7 @@ namespace TamagotchiBot.Handlers
             }
 
             var petsToUpdate = _appServices.PetService.GetAll();
+            Log.Fatal($"EmergencyUpdate STARTED!    delta time is {deltaTime}");
             foreach (var pet in petsToUpdate)
             {
                 if (pet == null)
@@ -383,7 +384,7 @@ namespace TamagotchiBot.Handlers
                 pet.LastUpdateTime += deltaTime;
                 _appServices.PetService.Update(pet.UserId, pet);
             }
-            Log.Fatal($"EmergencyUpdate: updated {petsToUpdate.Count} pets");
+            Log.Fatal($"EmergencyUpdate: delta time is {deltaTime}, updated {petsToUpdate.Count} pets");
         }
 
         private async Task RegisterUserAndPet(Message message)
