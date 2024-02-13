@@ -253,6 +253,8 @@ namespace TamagotchiBot.UserExtensions
 
             public const string BannedSticker = "CAACAgIAAxkBAAEIn9VkPlGMflkimxiV4BhDptaNOBhgjgACmwUAAlOx9wNCvw--ehyldy8E";
 
+            public const string FlyerADSSticker = "CAACAgIAAxkBAAELWDFlw-nwTUsoBQJykSjLmv8aNpq3vgACKzMAArZHcEpkCdiTnaUfWjQE";
+
             public const string MPDuelStarted = "CAACAgIAAxkBAAEK0n9lY2dwZDww-D6OZW-5aD4SdN8BcgACGCUAAvYaiEvT6OrPxdApCzME";
 
             public static string GetStickerByType(string stickerName, int? petType)

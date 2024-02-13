@@ -184,8 +184,11 @@ namespace TamagotchiBot.Handlers
                 return;
             }
 
-            if (!await IsUserRegisteredFlyerCheck(userId)) //FLYER
+            if (!await IsUserRegisteredFlyerCheck(userId))//FLYER
+            {
+                await _appServices.BotControlService.SendStickerAsync(userId, StickersId.FlyerADSSticker);
                 return;
+            }
 
             new SynchroDBController(_appServices, message.From, userId, message.Chat.Title).SynchronizeWithDB(); //update user (username, names etc.) in DB
             CreatorController creatorController = new CreatorController(_appServices, message);
@@ -234,8 +237,11 @@ namespace TamagotchiBot.Handlers
                 return;
             }
 
-            if (!await IsUserRegisteredFlyerCheck(userId)) //FLYER
+            if (!await IsUserRegisteredFlyerCheck(userId))//FLYER
+            {
+                await _appServices.BotControlService.SendStickerAsync(userId, StickersId.FlyerADSSticker);
                 return;
+            }
 
             // call this method wherever you want to show an ad,
             // for example your bot just made its job and
