@@ -93,6 +93,57 @@ namespace TamagotchiBot.Handlers
             }
         }
 
+        private async Task<bool> IsUserRegisteredFlyerCheck(long userId)
+        {
+            const int TIMEOUT_SECONDS = 2;
+#if DEBUG || DEBUG_NOTIFY
+            return true; //true on DEBUG
+#endif
+            try
+            {
+                using var client = new HttpClient();
+                client.Timeout = TimeSpan.FromSeconds(TIMEOUT_SECONDS);
+
+                var sendPostDto = new { key = "FL-eWYKid-AEeWAG-ElIsea-FunlRj", user_id = userId };
+                var json = JsonConvert.SerializeObject(sendPostDto);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync("https://api.flyerservice.io/check", content);
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Log.Error("==> ERROR ON FLYER RESPONSE:" + result);
+                    return true;
+                }
+
+                if (result.Contains("\"skip\":false"))
+                {
+                    Log.Information($"Flyer ==> tasks not done, userId: {userId}");
+                    return false;
+                }
+                else if (result.Contains("\"skip\":true"))
+                {
+                    Log.Information($"Flyer ==> tasks done, userId: {userId}, result: {result}");
+                    return true;
+                }
+
+                Log.Fatal($"Flyer ==> wrong result: {result}");
+                return true; //true on error
+            }
+            catch (TaskCanceledException)
+            {
+                Log.Error($"TIMEOUT FLYER - {TIMEOUT_SECONDS}s");
+                return true; //true on error
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error FLYER HTTP: ");
+                return true; //true on error
+            }
+        }
+
         private async Task OnMessagePrivate(Message message)
         {
             var userId = message.From.Id;
@@ -132,6 +183,9 @@ namespace TamagotchiBot.Handlers
                 await new CreatorController(_appServices, message).AskToConfirmNewName();
                 return;
             }
+
+            if (!await IsUserRegisteredFlyerCheck(userId)) //FLYER
+                return;
 
             new SynchroDBController(_appServices, message.From, userId, message.Chat.Title).SynchronizeWithDB(); //update user (username, names etc.) in DB
             CreatorController creatorController = new CreatorController(_appServices, message);
@@ -179,6 +233,9 @@ namespace TamagotchiBot.Handlers
                 await new AppleGameController(_appServices, callbackQuery).PreStart();
                 return;
             }
+
+            if (!await IsUserRegisteredFlyerCheck(userId)) //FLYER
+                return;
 
             // call this method wherever you want to show an ad,
             // for example your bot just made its job and
