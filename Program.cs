@@ -37,7 +37,15 @@ namespace Telegram.Bots.Example
                 return;
             }
             Log.Information("Starting host");
-            CreateHostBuilder(args).Build().Run();
+
+            try
+            {
+                CreateHostBuilder(args).Build().Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "MAIN CATCHER: ");
+            }
         }
 
         static void MyHandler(object sender, UnhandledExceptionEventArgs args)
@@ -129,7 +137,7 @@ namespace Telegram.Bots.Example
                     PetsCollectionName = "Pets",
                     ServiceInfoCollectionName = "ServiceInfo",
                     UsersCollectionName = "Users",
-                    
+
                     ConnectionString = "",
                     DatabaseName = "TamagotchiDb"
                 },

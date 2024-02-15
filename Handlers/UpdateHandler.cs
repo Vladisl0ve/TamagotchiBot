@@ -524,11 +524,23 @@ namespace TamagotchiBot.Handlers
             var ErrorMessage = exception switch
             {
                 ApiRequestException apiRequestException
-                  => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
+                  => $"Telegram API Error: [{apiRequestException.ErrorCode}]{Environment.NewLine}{apiRequestException.Message}",
+                RequestException TGRequestException
+                  => $"TG RequestException Error: [{TGRequestException.HttpStatusCode}]{Environment.NewLine}{TGRequestException.Message}",
                 _ => exception.ToString()
             };
 
-            Log.Fatal(exception, $"Polling error async {ErrorMessage}");
+
+            Log.Fatal(exception, $"UH => {ErrorMessage}");
+
+            switch (exception)
+            {
+                case RequestException:
+                    await Task.Delay(3000);
+                    Log.Information($"WAITING 3s!");
+                    return;
+            }
+
             await Task.Delay(1000);
 
             if (exception is ApiRequestException apiEx && apiEx.ErrorCode == 409)
