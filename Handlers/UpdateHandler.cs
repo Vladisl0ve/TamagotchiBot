@@ -184,12 +184,6 @@ namespace TamagotchiBot.Handlers
                 return;
             }
 
-            if (!await IsUserRegisteredFlyerCheck(userId))//FLYER
-            {
-                await _appServices.BotControlService.SendStickerAsync(userId, StickersId.FlyerADSSticker);
-                return;
-            }
-
             new SynchroDBController(_appServices, message.From, userId, message.Chat.Title).SynchronizeWithDB(); //update user (username, names etc.) in DB
             CreatorController creatorController = new CreatorController(_appServices, message);
             creatorController.UpdateIndicators(); //update all pet's statistics
@@ -206,11 +200,14 @@ namespace TamagotchiBot.Handlers
                 return;
             }
 
-            // call this method wherever you want to show an ad,
-            // for example your bot just made its job and
-            // it's a great time to show an ad to a user
+            if (!await IsUserRegisteredFlyerCheck(userId))//FLYER
+            {
+                await _appServices.BotControlService.SendStickerAsync(userId, StickersId.FlyerADSSticker);
+                return;
+            }
+
             if (_appServices.PetService.Get(message.From.Id)?.Name != null)
-                SendPostToChat(message.From.Id);
+                SendGramadsPostToChat(message.From.Id);
 
             if (_appServices.UserService.Get(message.From.Id)?.IsInAppleGame ?? false)
                 await new AppleGameController(_appServices, message).Menu();
@@ -247,7 +244,7 @@ namespace TamagotchiBot.Handlers
             // for example your bot just made its job and
             // it's a great time to show an ad to a user
 
-            SendPostToChat(callbackQuery.From.Id);
+            SendGramadsPostToChat(callbackQuery.From.Id);
 
             new SynchroDBController(_appServices, callbackQuery.From, userId, callbackQuery.Message.Chat.Title).SynchronizeWithDB(); //update user (username, names etc.) in DB
             CreatorController creatorController = new CreatorController(_appServices, callback: callbackQuery);
@@ -480,7 +477,7 @@ namespace TamagotchiBot.Handlers
                     return;
             }
         }
-        private async void SendPostToChat(long chatId)
+        private async void SendGramadsPostToChat(long chatId)
         {
             const int TIMEOUT_SECONDS = 5;
 #if DEBUG
