@@ -95,7 +95,7 @@ namespace TamagotchiBot.Controllers
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
 
             await Task.Delay(2500);
-            await new MenuController(_appServices, _message).ProcessMessage("/pet");
+            await new MenuController(_appServices, null, _message).ProcessMessage("/pet");
             return true;
         }
         internal async Task<bool> AskToConfirmNewName()
@@ -361,7 +361,7 @@ namespace TamagotchiBot.Controllers
             {
                 _appServices.MetaUserService.UpdateIsPetNameAskedOnRename(_userId, false);
                 _appServices.MetaUserService.UpdateIsAskedToConfirmRenaming(_userId, false);
-                await new MenuController(_appServices, _message).ProcessMessage("/pet");
+                await new MenuController(_appServices, null, _message).ProcessMessage("/pet");
             }
         }
         internal async Task ToResurrectAnswer()

@@ -1,12 +1,14 @@
 ﻿using MongoDB.Driver.Linq;
+using OpenAI_API;
+using OpenAI_API.Models;
 using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using TamagotchiBot.Database;
 using TamagotchiBot.Models;
 using TamagotchiBot.Models.Answers;
 using TamagotchiBot.Models.Mongo;
@@ -25,6 +27,7 @@ namespace TamagotchiBot.Controllers
     public class MenuController : ControllerBase
     {
         private readonly IApplicationServices _appServices;
+        private readonly IEnvsSettings _envs;
         private readonly Message _message = null;
         private readonly CallbackQuery _callback = null;
         private readonly long _userId;
@@ -33,22 +36,25 @@ namespace TamagotchiBot.Controllers
         private readonly PetType _userPetType;
         private readonly string _userPetEmoji;
 
-        private MenuController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
+        private MenuController(IApplicationServices services, IEnvsSettings envs, Message message = null, CallbackQuery callback = null)
         {
             _callback = callback;
             _message = message;
             _userId = callback?.From.Id ?? message.From.Id;
+
             _appServices = services;
+            _envs = envs;
+
             _userInfo = Extensions.GetLogUser(_appServices.UserService.Get(_userId));
             _userCulture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
             _userPetType = Extensions.GetEnumPetType(_appServices.PetService.Get(_userId)?.Type ?? -1);
             _userPetEmoji = Extensions.GetTypeEmoji(_userPetType);
         }
-        public MenuController(IApplicationServices services, CallbackQuery callback) : this(services, null, callback)
+        public MenuController(IApplicationServices services, IEnvsSettings envs, CallbackQuery callback) : this(services, envs, callback: callback, message: null)
         {
         }
 
-        public MenuController(IApplicationServices services, Message message) : this(services, message, null)
+        public MenuController(IApplicationServices services, IEnvsSettings envs, Message message) : this(services, envs, message: message, callback: null)
         {
         }
 
@@ -197,7 +203,80 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
+            await AnswerByChatGPT(petDB);
+
             Log.Debug($"[MESSAGE] '{customText ?? _message.Text}' FROM {_userInfo}");
+        }
+
+        private async Task AnswerByChatGPT(Pet petDB)
+        {
+            string chatGptAnswer = $"{Extensions.GetLongTypeEmoji(_userPetType, _userCulture)} <b>{HttpUtility.HtmlEncode(petDB.Name)}</b>: ";
+            chatGptAnswer += await GetAnswerChatGPT(petDB.Name, Extensions.GetLongTypeEmoji(Extensions.GetEnumPetType(petDB.Type), new CultureInfo("en")));
+
+            var toSend = new AnswerMessage()
+            {
+                Text = chatGptAnswer,
+                //StickerId = StickersId.GetRandStickerChatGPT(),
+                replyToMsgId = _message.MessageId,
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+            };
+
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, true);
+        }
+
+        private async Task<string> GetAnswerChatGPT(string name, string type)
+        {
+            await _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
+            string result;
+
+            try
+            {
+                OpenAIAPI api = new OpenAIAPI(_envs.OpenAiApiKey);
+
+                var chat = api.Chat.CreateConversation();
+                chat.Model = Model.ChatGPTTurbo;
+                chat.RequestParameters.Temperature = 0.6;
+
+                /// give instruction as System
+                chat.AppendSystemMessage($"You're a pet, but virtual one. Your name is {name}. " +
+                    $"You are a little {type}. You are just like a real pet - you can run, jump, jog, run, swim. " +
+                    $"You love everyone, especially children. Show love in your answers, but don't tolerate injustice." +
+                    $"\r\nProbable age of client 6-15 years old (with a bias towards younger ages)." +
+                    $" You must answer in language what question was last asked." +
+                    $" Preferable languages are Russian, Belarusian, Polish, English." +
+                    $" You should use culture {_userCulture.EnglishName} if it is hard to identify language to answer" +
+                    $" You should use emoji." +
+                    $" You can not talk, but you can chat with your owner in Telegram");
+
+                // give a few examples as user and assistant
+                chat.AppendUserInput("Как тебя зовут?");
+                chat.AppendExampleChatbotOutput($"{name}, а тебя?");
+                chat.AppendUserInput("Ты настоящий?");
+                chat.AppendExampleChatbotOutput("Я твой виртуальный питомец и разумеется я настоящий🦾");   
+                chat.AppendUserInput("Ты умеешь говорить?");
+                chat.AppendExampleChatbotOutput("Нет, ведь же я животное, а не человек :) Но я умею переписываться с тобой в Телеграмме");
+
+                var previousQA = _appServices.MetaUserService.GetLastChatGPTQA(_userId);
+                foreach (var item in previousQA)
+                {
+                    chat.AppendUserInput(item.userQ);
+                    chat.AppendExampleChatbotOutput(item.chatGPTA);
+                }
+
+                chat.AppendUserInput($"{_message.Text}");
+
+                result = await chat.GetResponseFromChatbotAsync();
+                Log.Information($"CHATGPT USAGE ========> {chat.MostRecentApiResult.Model.ModelID}: TOTAL [{chat.MostRecentApiResult.Usage.TotalTokens}] = PROMPT [{chat.MostRecentApiResult.Usage.PromptTokens}] + COMPLETETION [{chat.MostRecentApiResult.Usage.CompletionTokens}]");
+
+                _appServices.MetaUserService.AppendNewChatGPTQA(_userId, _message.Text, result);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"CHATGPT ERROR");
+                result = nameof(ChatgptErrorAnswerText).UseCulture(_userCulture);
+            }
+
+            return result;
         }
 
         private async Task ChangeTypeToCatCMD(User userDB, Pet petDB)

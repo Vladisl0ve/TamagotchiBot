@@ -42,6 +42,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("IsFeedingMPStarted")]
         public bool IsFeedingMPStarted { get; set; }
 
+        [BsonElement("LastChatGptQA")]
+        public List<string> LastChatGptQA { get; set; }
+
         public MetaUser Clone(MetaUser toClone)
         {
             return new MetaUser()

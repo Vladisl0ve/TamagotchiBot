@@ -144,6 +144,7 @@ namespace Telegram.Bots.Example
                     TriggersEvery  = TimeSpan.FromSeconds(20),
                     AwakeWhenAFKFor = TimeSpan.FromMinutes(30),
                     BotstatApiKey = "",
+                    OpenAiApiKey = "",
                     TokenBot = ""
                 },
             };

@@ -212,7 +212,7 @@ namespace TamagotchiBot.Handlers
             if (_appServices.UserService.Get(message.From.Id)?.IsInAppleGame ?? false)
                 await new AppleGameController(_appServices, message).Menu();
             else
-                await new MenuController(_appServices, message).ProcessMessage();
+                await new MenuController(_appServices, _envs, message).ProcessMessage();
         }
         private async Task OnCallbackPrivate(CallbackQuery callbackQuery)
         {
@@ -250,7 +250,7 @@ namespace TamagotchiBot.Handlers
             CreatorController creatorController = new CreatorController(_appServices, callback: callbackQuery);
             creatorController.UpdateIndicators(); //update all pet's statistics
 
-            var controller = new MenuController(_appServices, callbackQuery);
+            var controller = new MenuController(_appServices, _envs, callbackQuery);
             await controller.CallbackHandler();
         }
         private async Task OnCallbackGroup(CallbackQuery callbackQuery)

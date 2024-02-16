@@ -117,7 +117,7 @@ namespace TamagotchiBot.Services
             try
             {
                 if (toLog)
-                    Log.Information($"Message sent to {logInfo}");
+                    Log.Information($"Message sent to {logInfo}, sent: {text.Replace("\r\n", " ")}");
                 Log.Verbose($"Message sent to {logInfo}: {text.Replace("\r\n", " ")}");
                 return await _botClient.SendTextMessageAsync(chatId: chatId,
                                      text: text,
