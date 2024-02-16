@@ -37,22 +37,13 @@ namespace Telegram.Bots.Example
                 return;
             }
             Log.Information("Starting host");
-
-            try
-            {
-                CreateHostBuilder(args).Build().Run();
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "MAIN CATCHER: ");
-            }
+            CreateHostBuilder(args).Build().Run();
         }
 
         static void MyHandler(object sender, UnhandledExceptionEventArgs args)
         {
             Exception e = (Exception) args.ExceptionObject;
-            Console.WriteLine("MyHandler caught : " + e.Message);
-            Console.WriteLine("Runtime terminating: {0}", args.IsTerminating);
+            Log.Fatal(e, "MyHandler caught!");
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)
