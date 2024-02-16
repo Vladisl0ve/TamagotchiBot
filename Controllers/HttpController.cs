@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Serilog;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -30,12 +30,12 @@ namespace TamagotchiBot.Controllers
             using var response = await httpClient.GetAsync(apiUrl);
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("Status checked successfully.");
+                Log.Information("Status checked successfully.");
                 return (response.StatusCode, await response.Content.ReadAsStringAsync());
             }
             else
             {
-                Console.WriteLine($"Error: {(int)response.StatusCode} - {response.ReasonPhrase}");
+                Log.Information($"Error: {(int)response.StatusCode} - {response.ReasonPhrase}");
                 return (response.StatusCode, await response.Content.ReadAsStringAsync());
             }
         }
@@ -56,12 +56,12 @@ namespace TamagotchiBot.Controllers
             using var response = await httpClient.PostAsync(apiUrl, content);
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine("Request sent successfully.");
+                Log.Information("Request sent successfully.");
                 return (response.StatusCode, await response.Content.ReadAsStringAsync());
             }
             else
             {
-                Console.WriteLine($"Error: {(int)response.StatusCode} - {response.ReasonPhrase}");
+                Log.Information($"Error: {(int)response.StatusCode} - {response.ReasonPhrase}");
                 return (response.StatusCode, await response.Content.ReadAsStringAsync());
             }
         }
