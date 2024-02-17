@@ -276,19 +276,23 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ⚡️⚡️ Update 1.5 has been released⚡️⚡️
+        ///   Looks up a localized string similar to ⚡️⚡️ Update 1.6 has been released⚡️⚡️
         ///
         ///&lt;i&gt;&lt;b&gt;NEW:&lt;/b&gt;&lt;/i&gt;
-        /// 🧸 &lt;b&gt;New pet types have been added:&lt;/b&gt;
-        ///       🦊 &lt;i&gt;Cool fox&lt;/i&gt;
-        ///       🐶 &lt;i&gt;Loyal doggie&lt;/i&gt;
-        ///       🐭 &lt;i&gt;Little Mouse&lt;/i&gt;
-        ///       🐼 &lt;i&gt;Ambiguous panda&lt;/i&gt;
-        ///       🐱 &lt;i&gt;Favorite cat&lt;/i&gt;
-        ///       &lt;i&gt;To change a pet you need to have 5000💰&lt;/i&gt;
+        /// 🧸 &lt;b&gt;Pet can now chat with you!&lt;/b&gt;
+        ///Just write him something and he will answer you!
         ///
-        ///🎮 &lt;b&gt;Added control buttons&lt;/b&gt; - now you can go to different locations (kitchen, nursery, work, etc.) using buttons instead of the keyboard
-        ///🏕 &lt;b&gt;A new Farm location has been added&lt;/b&gt; - it will  [rest of string was truncated]&quot;;.
+        ///After all, are you tired of doing nothing while your pet is at work or sleeping?
+        ///Chat with your pet:
+        ///📡 about the weather
+        ///🎁 what kind of gifts do you like?
+        ///⛏ how do you spend your day
+        ///❤️‍🔥 just talk
+        ///
+        ///You are your pet&apos;s best friend, so he will always wait for you 🩶
+        ///
+        ///Subscribe to our channel, where everything is about the bot:
+        ///https://t.me/newsvir [rest of string was truncated]&quot;;.
         /// </summary>
         public static string changelog1Text {
             get {
@@ -342,6 +346,15 @@ namespace TamagotchiBot.Resources {
         public static string changeTypeErrorSameType {
             get {
                 return ResourceManager.GetString("changeTypeErrorSameType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🛋 The pet is busy with its own business and does not pay attention to you.
+        /// </summary>
+        public static string ChatgptErrorAnswerText {
+            get {
+                return ResourceManager.GetString("ChatgptErrorAnswerText", resourceCulture);
             }
         }
         
@@ -1278,7 +1291,10 @@ namespace TamagotchiBot.Resources {
         ///✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
         ///
         ////gameroom - Play in Apple🍎
-        ////reward - Get your daily reward 🎁.
+        ////reward - Get your daily reward 🎁
+        ///
+        ///&lt;b&gt;&lt;i&gt;And you can chat with me right here!&lt;/i&gt;&lt;/b&gt;
+        ///{11}{0}: Hello! How are you doing?.
         /// </summary>
         public static string petCommand {
             get {

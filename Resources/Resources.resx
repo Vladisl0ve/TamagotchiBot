@@ -155,7 +155,10 @@ Have fun 🍿</value>
 ✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
 
 /gameroom - Play in Apple🍎
-/reward - Get your daily reward 🎁</value>
+/reward - Get your daily reward 🎁
+
+&lt;b&gt;&lt;i&gt;And you can chat with me right here!&lt;/i&gt;&lt;/b&gt;
+{11}{0}: Hello! How are you doing?</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>In developing, wait for next update 👾</value>
@@ -442,30 +445,20 @@ Surrendered: {2}</value>
     <value>You are in the gameroom ⚽️</value>
   </data>
   <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Update 1.5 has been released⚡️⚡️
+    <value>⚡️⚡️ Update 1.6 has been released⚡️⚡️
 
 &lt;i&gt;&lt;b&gt;NEW:&lt;/b&gt;&lt;/i&gt;
- 🧸 &lt;b&gt;New pet types have been added:&lt;/b&gt;
-       🦊 &lt;i&gt;Cool fox&lt;/i&gt;
-       🐶 &lt;i&gt;Loyal doggie&lt;/i&gt;
-       🐭 &lt;i&gt;Little Mouse&lt;/i&gt;
-       🐼 &lt;i&gt;Ambiguous panda&lt;/i&gt;
-       🐱 &lt;i&gt;Favorite cat&lt;/i&gt;
-       &lt;i&gt;To change a pet you need to have 5000💰&lt;/i&gt;
+ 🧸 &lt;b&gt;Pet can now chat with you!&lt;/b&gt;
+Just write him something and he will answer you!
 
-🎮 &lt;b&gt;Added control buttons&lt;/b&gt; - now you can go to different locations (kitchen, nursery, work, etc.) using buttons instead of the keyboard
-🏕 &lt;b&gt;A new Farm location has been added&lt;/b&gt; - it will be possible to change the type of pet there.
-There will be even more fun here in the future 🥁
-🏆 &lt;b&gt;Added a table of Duel results for chats&lt;/b&gt;
-🎯 There are also a lot of little things, so there’s a reason to look for it yourself :)
+After all, are you tired of doing nothing while your pet is at work or sleeping?
+Chat with your pet:
+📡 about the weather
+🎁 what kind of gifts do you like?
+⛏ how do you spend your day
+❤️‍🔥 just talk
 
-&lt;i&gt;&lt;b&gt;CHANGES:&lt;/b&gt;&lt;/i&gt;
-🧰 Now more information is shown in the “additional info”
-💻 Rewrote almost 20k lines in the bot - added multithreading, improved performance
-
-This patch turned out to be the most difficult: I had to optimize and rewrite a lot of things, but it was worth it😎
-
-After the patch is released, there may be problems with the bot, but I will quickly fix it :)
+You are your pet's best friend, so he will always wait for you 🩶
 
 Subscribe to our channel, where everything is about the bot:
 https://t.me/newsvirtualpetbot</value>
@@ -1037,5 +1030,8 @@ Pet {2}{0} wins 🏆</value>
   </data>
   <data name="GoldCompensastionGotText" xml:space="preserve">
     <value>Compensation credited: {0}💰</value>
+  </data>
+  <data name="ChatgptErrorAnswerText" xml:space="preserve">
+    <value>🛋 The pet is busy with its own business and does not pay attention to you</value>
   </data>
 </root>

@@ -236,7 +236,7 @@ namespace TamagotchiBot.Services
 
             Log.Warning($"DELETED USERS ON MAINTAIN: partly {usersDeletedPartly}; full {usersDeletedFull}");
 
-            int usersToCompens = 0;
+/*            int usersToCompens = 0;
             var allPetsDB = _appServices.PetService.GetAll();
             foreach (var pet in allPetsDB)
             {
@@ -261,6 +261,7 @@ namespace TamagotchiBot.Services
                     await Task.Delay(2000);
             }
             Log.Information($"Compensations have been sent: {usersToCompens} users");
+*/          
             Log.Information($"MAINTAINS ARE OVER");
         }
         private async void OnMPDuelsTimedEvent(object sender, ElapsedEventArgs e)
@@ -318,7 +319,7 @@ namespace TamagotchiBot.Services
             {
                 var petDB = _appServices.PetService.Get(userDB.UserId);
 
-                if (petDB == null || petDB.Name == null)
+                if (petDB == null)
                 {
                     _appServices.ChatService.Remove(userDB.UserId);
                     _appServices.PetService.Remove(userDB.UserId);

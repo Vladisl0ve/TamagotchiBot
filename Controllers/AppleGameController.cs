@@ -147,7 +147,7 @@ namespace TamagotchiBot.Controllers
             if (appleDataToUpdate == null)
             {
                 await _appServices.UserService.UpdateAppleGameStatus(_userId, false);
-                await new MenuController(_appServices, _message).ProcessMessage("/pet");
+                await new MenuController(_appServices, null, _message).ProcessMessage("/pet");
                 return;
             }
 
@@ -204,7 +204,7 @@ namespace TamagotchiBot.Controllers
 
                 Log.Debug($"Quit AppleGame {_userInfo}");
 
-                await new MenuController(_appServices, _message).ProcessMessage("/gameroom");
+                await new MenuController(_appServices, null, _message).ProcessMessage("/gameroom");
                 return;
             }
 

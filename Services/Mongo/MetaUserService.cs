@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,41 @@ namespace TamagotchiBot.Services.Mongo
 
         public List<MetaUser> GetAll() => _metausers.Find(u => true).ToList();
         public MetaUser Get(long userId) => _metausers.Find(u => u.UserId == userId).FirstOrDefault();
+
+        public List<(string userQ, string chatGPTA, DateTime revision)> GetLastChatGPTQA(long userId)
+        {
+            List<(string userQ, string chatGPTA, DateTime revision)> result = new List<(string userQ, string chatGPTA, DateTime revision)>();
+            List<string> resultChatGPT = GetLastChatGPTQA_RAW(userId);
+
+            foreach (var resultik in resultChatGPT)
+            {
+                var stringAiO = resultik.Split('|');
+                if (stringAiO.Length != 3)
+                {
+                    Log.Error($"BD ChatGPT answer is wrong! [{resultik}], userId: {userId}");
+                    continue;
+                }
+
+                //$"{userQ}|{chatGptA}|{DateTime.UtcNow:R}"
+                result.Add(new()
+                {
+                    userQ = stringAiO[0],
+                    chatGPTA = stringAiO[1],
+                    revision = DateTime.ParseExact(stringAiO[2], "R", System.Globalization.CultureInfo.InvariantCulture)
+                });
+            }
+
+            return result;
+        }
+        private List<string> GetLastChatGPTQA_RAW(long userId)
+        {
+            var result = _metausers.Find(u => u.UserId == userId).FirstOrDefault()?.LastChatGptQA;
+            if (result == null || result.Count <= 0)
+                return new List<string>();
+
+            return result;
+        }
+
         public MetaUser Update(long userId, MetaUser userIn)
         {
             userIn.Updated = DateTime.UtcNow;
@@ -114,6 +150,32 @@ namespace TamagotchiBot.Services.Mongo
             userDb.IsFeedingMPStarted = isStarted;
             userDb.Updated = DateTime.UtcNow;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
+            return true;
+        }
+
+        public bool AppendNewChatGPTQA(long userId, string userQ, string chatGptA)
+        {
+            return AppendNewChatGPTQA(userId, $"{userQ}|{chatGptA}|{DateTime.UtcNow:R}");
+        }
+
+        private bool AppendNewChatGPTQA(long userId, string newMsg)
+        {
+            var metauserDb = _metausers.Find(u => u.UserId == userId).FirstOrDefault();
+            metauserDb ??= Create(new MetaUser() { UserId = userId });
+
+            var result = new List<string>();
+
+            if (metauserDb.LastChatGptQA != null)
+                result.AddRange(metauserDb.LastChatGptQA);
+
+            result.Add(newMsg);
+
+            if (result.Count > 5)
+                result.RemoveAt(0);
+
+            metauserDb.LastChatGptQA = result;
+            metauserDb.Updated = DateTime.UtcNow;
+            _metausers.ReplaceOne(u => u.UserId == userId, metauserDb);
             return true;
         }
 
