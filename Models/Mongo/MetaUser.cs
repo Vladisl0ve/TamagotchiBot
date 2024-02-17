@@ -29,6 +29,8 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("ChatDuelId")]
         public long ChatDuelId { get; set; }
+        [BsonElement("DebugMessageThreadId")]
+        public int DebugMessageThreadId { get; set; }
 
         [BsonElement("DuelStartTime")]
         public DateTime DuelStartTime { get; set; }

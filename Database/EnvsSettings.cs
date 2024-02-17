@@ -16,7 +16,7 @@ namespace TamagotchiBot.Database
         public string TokenBot                  { get; set; }
         public string BotstatApiKey             { get; set; }
         public string OpenAiApiKey              { get; set; }
-
+        public long   ChatToForwardId            { get; set; }
     }
 
     public interface IEnvsSettings
@@ -32,5 +32,6 @@ namespace TamagotchiBot.Database
         string   TokenBot                { get; set; }
         string   BotstatApiKey           { get; set; }
         string   OpenAiApiKey            { get; set; }
+        long     ChatToForwardId          { get; set; }
     }
 }
