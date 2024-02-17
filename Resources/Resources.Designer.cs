@@ -359,6 +359,16 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pet {0}&lt;b&gt;{1}&lt;/b&gt; looks at you silently. He’s probably tired of talking and pretends he doesn’t understand you 🔇
+        ///Talk to him a little later 🕐.
+        /// </summary>
+        public static string ChatGPTTimeOutText {
+            get {
+                return ResourceManager.GetString("ChatGPTTimeOutText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🧸 First of all you need to name your new friend
         ///Just type it here.
         /// </summary>

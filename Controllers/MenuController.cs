@@ -210,8 +210,21 @@ namespace TamagotchiBot.Controllers
 
         private async Task AnswerByChatGPT(Pet petDB)
         {
-            string chatGptAnswer = $"{Extensions.GetLongTypeEmoji(_userPetType, _userCulture)} <b>{HttpUtility.HtmlEncode(petDB.Name)}</b>: ";
-            chatGptAnswer += await GetAnswerChatGPT(petDB, Extensions.GetLongTypeEmoji(Extensions.GetEnumPetType(petDB.Type), new CultureInfo("en")));
+            var previousQA = _appServices.MetaUserService.GetLastChatGPTQA(_userId);
+            string chatGptAnswer;
+            if (previousQA.Count > 4 && (DateTime.UtcNow - previousQA[0].revision) < new TimeSpan(0, 30, 0)) //30 minutes timeout
+            {
+                chatGptAnswer = string.Format(
+                    nameof(ChatGPTTimeOutText).UseCulture(_userCulture),
+                    Extensions.GetTypeEmoji(petDB.Type),
+                    HttpUtility.HtmlEncode(petDB.Name)
+                    );
+            }
+            else
+            {
+                chatGptAnswer = $"{Extensions.GetLongTypeEmoji(_userPetType, _userCulture)} <b>{HttpUtility.HtmlEncode(petDB.Name)}</b>: ";
+                chatGptAnswer += await GetAnswerChatGPT(petDB, Extensions.GetLongTypeEmoji(Extensions.GetEnumPetType(petDB.Type), new CultureInfo("en")));
+            }
 
             var toSend = new AnswerMessage()
             {
@@ -253,7 +266,7 @@ namespace TamagotchiBot.Controllers
                 chat.AppendUserInput("Как тебя зовут?");
                 chat.AppendExampleChatbotOutput($"{petDB.Name}, а тебя?");
                 chat.AppendUserInput("Ты настоящий?");
-                chat.AppendExampleChatbotOutput("Я твой виртуальный питомец и разумеется я настоящий🦾");   
+                chat.AppendExampleChatbotOutput("Я твой виртуальный питомец и разумеется я настоящий🦾");
                 chat.AppendUserInput("Ты умеешь говорить?");
                 chat.AppendExampleChatbotOutput("Нет, ведь же я животное, а не человек :) Но я умею переписываться с тобой в Телеграмме");
                 chat.AppendUserInput("Ты голодный?");

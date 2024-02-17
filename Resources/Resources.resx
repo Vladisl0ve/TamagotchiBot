@@ -1034,4 +1034,8 @@ Pet {2}{0} wins 🏆</value>
   <data name="ChatgptErrorAnswerText" xml:space="preserve">
     <value>🛋 The pet is busy with its own business and does not pay attention to you</value>
   </data>
+  <data name="ChatGPTTimeOutText" xml:space="preserve">
+    <value>Pet {0}&lt;b&gt;{1}&lt;/b&gt; looks at you silently. He’s probably tired of talking and pretends he doesn’t understand you 🔇
+Talk to him a little later 🕐</value>
+  </data>
 </root>

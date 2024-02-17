@@ -1036,4 +1036,8 @@ Jesteś najlepszym przyjacielem swojego zwierzaka, dlatego zawsze będzie na Cie
 Subskrybuj nasz kanał, na którym wszystko jest o bocie:
 https://t.me/newsvirtualpetbot</value>
   </data>
+  <data name="ChatGPTTimeOutText" xml:space="preserve">
+    <value>Zwierzak {0}&lt;b&gt;{1}&lt;/b&gt; patrzy na ciebie w milczeniu. Prawdopodobnie jest zmęczony mówieniem i udaje, że Cię nie rozumie 🔇
+Porozmawiaj z nim trochę później 🕐</value>
+  </data>
 </root>
