@@ -227,26 +227,25 @@ namespace TamagotchiBot.Controllers
         private async Task<string> GetAnswerChatGPT(string name, string type)
         {
             await _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
-            string result;
+            string openAiKey = _appServices.SInfoService.GetOpenAiKey();
 
+            string result;
             try
             {
-                OpenAIAPI api = new OpenAIAPI(_envs.OpenAiApiKey);
+                OpenAIAPI api = new OpenAIAPI(openAiKey ?? _envs.OpenAiApiKey);
 
                 var chat = api.Chat.CreateConversation();
                 chat.Model = Model.ChatGPTTurbo;
                 chat.RequestParameters.Temperature = 0.6;
 
                 /// give instruction as System
-                chat.AppendSystemMessage($"You're a pet, but virtual one. Your name is {name}. " +
-                    $"You are a little {type}. You are just like a real pet - you can run, jump, jog, run, swim. " +
-                    $"You love everyone, especially children. Show love in your answers, but don't tolerate injustice." +
-                    $"\r\nProbable age of client 6-15 years old (with a bias towards younger ages)." +
-                    $" You must answer in language what question was last asked." +
-                    $" Preferable languages are Russian, Belarusian, Polish, English." +
-                    $" You should use culture {_userCulture.EnglishName} if it is hard to identify language to answer" +
-                    $" You should use emoji." +
-                    $" You can not talk, but you can chat with your owner in Telegram");
+                chat.AppendSystemMessage($"Virtual pet {name}, mimics real {type}, adores all, especially kids." +
+                    $" Responds lovingly, stands against injustice." +
+                    $" Aimed at ages 6-15. Responds in the last language." +
+                    $" Prefers Russian, Belarusian, Polish, English." +
+                    $" Defaults to {_userCulture.EnglishName} if unsure." +
+                    $" Emojis encouraged. Communicates via Telegram." +
+                    $" Adjusts mood based on question tone: responds defensively to aggression, expresses gratitude and praise when praised.");
 
                 // give a few examples as user and assistant
                 chat.AppendUserInput("Как тебя зовут?");

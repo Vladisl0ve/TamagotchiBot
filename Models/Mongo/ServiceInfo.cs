@@ -24,6 +24,8 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("BotstatCheckId")]
         public string BotstatCheckId { get; set; }
+        [BsonElement("OpenAiKey")]
+        public string OpenAiKey { get; set; }
 
         [BsonElement("BannedWords")]
         public List<string> BannedWords { get; set; }
