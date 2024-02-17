@@ -211,7 +211,7 @@ namespace TamagotchiBot.Controllers
         private async Task AnswerByChatGPT(Pet petDB)
         {
             string chatGptAnswer = $"{Extensions.GetLongTypeEmoji(_userPetType, _userCulture)} <b>{HttpUtility.HtmlEncode(petDB.Name)}</b>: ";
-            chatGptAnswer += await GetAnswerChatGPT(petDB.Name, Extensions.GetLongTypeEmoji(Extensions.GetEnumPetType(petDB.Type), new CultureInfo("en")));
+            chatGptAnswer += await GetAnswerChatGPT(petDB, Extensions.GetLongTypeEmoji(Extensions.GetEnumPetType(petDB.Type), new CultureInfo("en")));
 
             var toSend = new AnswerMessage()
             {
@@ -224,7 +224,7 @@ namespace TamagotchiBot.Controllers
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, true);
         }
 
-        private async Task<string> GetAnswerChatGPT(string name, string type)
+        private async Task<string> GetAnswerChatGPT(Pet petDB, string type)
         {
             await _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
             string openAiKey = _appServices.SInfoService.GetOpenAiKey();
@@ -239,21 +239,33 @@ namespace TamagotchiBot.Controllers
                 chat.RequestParameters.Temperature = 0.6;
 
                 /// give instruction as System
-                chat.AppendSystemMessage($"Virtual pet {name}, mimics real {type}, adores all, especially kids." +
-                    $" Responds lovingly, stands against injustice." +
-                    $" Aimed at ages 6-15. Responds in the last language." +
-                    $" Prefers Russian, Belarusian, Polish, English." +
-                    $" Defaults to {_userCulture.EnglishName} if unsure." +
-                    $" Emojis encouraged. Communicates via Telegram." +
-                    $" Adjusts mood based on question tone: responds defensively to aggression, expresses gratitude and praise when praised.");
+                chat.AppendSystemMessage($"Meet {petDB.Name}, your virtual companion with real {type} traits," +
+                    $" adoring all, especially children. " +
+                    $"Opposes injustice, caters to ages 6-25. " +
+                    $"Responds in last language, prefers Russian, Belarusian, Polish, English, defaults to {_userCulture.EnglishName}. " +
+                    $"Uses emojis for Telegram chat. Mood adjusts to question tones. " +
+                    $"Monitor needs: {petDB.Satiety}% satiety (warn if low), " +
+                    $"{petDB.Hygiene}% Hygiene (warn if low), " +
+                    $"{petDB.Fatigue}% Fatigue (warn if high), " +
+                    $"{petDB.HP}% HP (warn if low).");
 
                 // give a few examples as user and assistant
                 chat.AppendUserInput("Как тебя зовут?");
-                chat.AppendExampleChatbotOutput($"{name}, а тебя?");
+                chat.AppendExampleChatbotOutput($"{petDB.Name}, а тебя?");
                 chat.AppendUserInput("Ты настоящий?");
                 chat.AppendExampleChatbotOutput("Я твой виртуальный питомец и разумеется я настоящий🦾");   
                 chat.AppendUserInput("Ты умеешь говорить?");
                 chat.AppendExampleChatbotOutput("Нет, ведь же я животное, а не человек :) Но я умею переписываться с тобой в Телеграмме");
+                chat.AppendUserInput("Ты голодный?");
+                chat.AppendExampleChatbotOutput(petDB.Satiety > 50 ? $"Не особо, я сыт на {petDB.Satiety}" : $"Можно и перекусить, ведь я сыт на {petDB.Satiety}");
+                chat.AppendUserInput("Хочешь кушать?");
+                chat.AppendExampleChatbotOutput(petDB.Satiety > 50 ? $"Не особо, я сыт на {petDB.Satiety}" : $"Можно и перекусить, ведь я сыт на {petDB.Satiety}");
+                chat.AppendUserInput("Ты чистый или грязный?");
+                chat.AppendExampleChatbotOutput(petDB.Hygiene > 50 ? $"Я чистый на {petDB.Hygiene}, всё хорошо" : $"Надо бы сходить в душ");
+                chat.AppendUserInput("Ты уставший?");
+                chat.AppendExampleChatbotOutput(petDB.Fatigue > 50 ? $"Не, я бодр" : $"Стоит отдохнуть, что-то у меня голова болеть начинает");
+                chat.AppendUserInput("Ты живой?");
+                chat.AppendExampleChatbotOutput(petDB.HP > 50 ? $"ДА, я полон сил! У меня {petDB.HP} здоровья" : $"Мне плохо, всё болит. Моё здоровье всего лишь {petDB.HP}");
 
                 var previousQA = _appServices.MetaUserService.GetLastChatGPTQA(_userId);
                 foreach (var item in previousQA)
