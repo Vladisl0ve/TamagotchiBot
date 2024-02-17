@@ -117,6 +117,16 @@ namespace TamagotchiBot.Controllers
                 return false;
             }
 
+            if (!string.IsNullOrEmpty(_message.Text)
+                && _message.Text.FirstOrDefault() == '/')
+            {
+                _appServices.MetaUserService.UpdateIsPetNameAskedOnRename(_userId, false);
+                _appServices.MetaUserService.UpdateIsAskedToConfirmRenaming(_userId, false);
+
+                await new MenuController(_appServices, null, _message).ProcessMessage("/pet");
+                return true;
+            }
+
             if (!await IsNicknameAcceptable())
                 return false;
 
@@ -129,7 +139,7 @@ namespace TamagotchiBot.Controllers
                 Text = string.Format(
                     nameof(AskToConfirmRenamingPet).UseCulture(_userCulture),
                     petDB.Name,
-                    msgText, 
+                    msgText,
                     Constants.Costs.RenamePet),
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.PetAskForConfirmNameSticker_Cat), Extensions.GetEnumPetType(petDB.Type)),
                 ReplyMarkup = new ReplyKeyboardMarkup(new List<KeyboardButton>()
