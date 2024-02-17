@@ -151,7 +151,7 @@ namespace TamagotchiBot.Services
             }
         }
 
-        public async Task SendStickerAsync(long chatId,
+        public async Task<Message> SendStickerAsync(long chatId,
                                            string stickerId,
                                            int? msgThreadId = null,
                                            IReplyMarkup replyMarkup = null,
@@ -174,7 +174,7 @@ namespace TamagotchiBot.Services
 
                 Log.Verbose($"Sticker sent for {logInfo}");
 
-                await _botClient.SendStickerAsync(chatId: chatId,
+                return await _botClient.SendStickerAsync(chatId: chatId,
                                                   sticker: new InputFileId(stickerId),
                                                   replyMarkup: replyMarkup,
                                                   messageThreadId: msgThreadId,
@@ -193,10 +193,12 @@ namespace TamagotchiBot.Services
                     _appleGameDataService.Delete(chatId);
                     _metaUserService.Remove(chatId);
                 }
+                return default;
             }
             catch (Exception ex)
             {
                 Log.Error($"MSG: {ex.Message}, InnerExeption: {ex.InnerException?.Message}, USER/CHAT: {logInfo}");
+                return default;
             }
         }
 
@@ -327,28 +329,53 @@ namespace TamagotchiBot.Services
                 return null;
 
             var userMsgThread = _metaUserService.GetDebugMessageThreadId(userId);
-            if (userMsgThread != 0)
-                ForwardAnswerMessageAsync(toSend, userMsgThread, false);
 
             if (toSend.StickerId != null)
-                await SendStickerAsync(userId,
-                                 toSend.StickerId,
-                                 toSend.msgThreadId,
-                                 toSend.ReplyMarkup,
-                                 toLog: toLog);
+            {
+                var resStiker = await SendStickerAsync(userId,
+                 toSend.StickerId,
+                 toSend.msgThreadId,
+                 toSend.ReplyMarkup,
+                 toLog: toLog);
+
+                if (userMsgThread != 0 && resStiker != default)
+                {
+                    await ForwardMessageToDebugChat(resStiker, userMsgThread);
+                }
+            }
+
+
             else if (toSend.ReplyMarkup is ReplyMarkupBase)
-                return await SendTextMessageAsync(userId,
+            {
+                var resTextR = await SendTextMessageAsync(userId,
                              toSend.Text,
                              inlineMarkup: toSend.ReplyMarkup,
                              toLog: toLog,
                              parseMode: toSend.ParseMode);
+
+                if (userMsgThread != 0 && resTextR != default)
+                {
+                    await ForwardMessageToDebugChat(resTextR, userMsgThread);
+                }
+
+                return resTextR;
+            }
             if (toSend.Text?.Length > 0)
-                return await SendTextMessageAsync(userId,
+            {
+                var resTextI = await SendTextMessageAsync(userId,
                              toSend.Text,
                              inlineMarkup: toSend.InlineKeyboardMarkup,
                              replyToMsgId: toSend.replyToMsgId,
                              toLog: toLog,
                              parseMode: toSend.ParseMode);
+
+                if (userMsgThread != 0 && resTextI != default)
+                {
+                    await ForwardMessageToDebugChat(resTextI, userMsgThread);
+                }
+
+                return resTextI;
+            }
 
             return null;
         }
@@ -414,7 +441,15 @@ namespace TamagotchiBot.Services
 
         internal async Task<Message> ForwardMessageToDebugChat(Message message, int messageThreadId)
         {
-            return await _botClient.ForwardMessageAsync(_envs.ChatToForwardId, message.Chat.Id, message.MessageId, messageThreadId);
+            try
+            {
+                return await _botClient.ForwardMessageAsync(_envs.ChatToForwardId, message.Chat.Id, message.MessageId, messageThreadId);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Forward ERROR");
+                return default;
+            }
         }
 
         internal async Task<int> CreateNewThreadInDebugChat(User from)
