@@ -213,7 +213,7 @@ namespace TamagotchiBot.Controllers
             var previousQA = _appServices.MetaUserService.GetLastChatGPTQA(_userId);
             bool isTimeOut;
             string chatGptAnswer;
-            if (previousQA.Count > 4 && (DateTime.UtcNow - previousQA[0].revision) < new TimeSpan(0, 30, 0)) //30 minutes timeout
+            if (previousQA.Count >= QA_MAX_COUNTER && (DateTime.UtcNow - previousQA[0].revision) < new TimeSpan(0, 30, 0)) //30 minutes timeout
             {
                 isTimeOut = true;
                 chatGptAnswer = string.Format(
@@ -286,7 +286,7 @@ namespace TamagotchiBot.Controllers
                 chat.AppendExampleChatbotOutput(petDB.HP > 50 ? $"ДА, я полон сил! У меня {petDB.HP} здоровья" : $"Мне плохо, всё болит. Моё здоровье всего лишь {petDB.HP}");
 
                 var previousQA = _appServices.MetaUserService.GetLastChatGPTQA(_userId);
-                foreach (var item in previousQA)
+                foreach (var item in previousQA.Skip(Math.Max(0, previousQA.Count - Constants.QA_TO_FEED_COUNTER)))
                 {
                     chat.AppendUserInput(item.userQ);
                     chat.AppendExampleChatbotOutput(item.chatGPTA);

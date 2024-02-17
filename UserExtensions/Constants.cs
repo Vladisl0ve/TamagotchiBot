@@ -11,6 +11,8 @@ namespace TamagotchiBot.UserExtensions
 {
     public static class Constants
     {
+        public const int QA_MAX_COUNTER = 20;
+        public const int QA_TO_FEED_COUNTER = 5;
         public enum Languages
         {
             [Display(ShortName = "🇨🇷", Name = "be")] Belarusian,

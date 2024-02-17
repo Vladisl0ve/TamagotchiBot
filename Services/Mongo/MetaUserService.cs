@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
-using Telegram.Bot.Types;
+using TamagotchiBot.UserExtensions;
 
 namespace TamagotchiBot.Services.Mongo
 {
@@ -171,7 +171,7 @@ namespace TamagotchiBot.Services.Mongo
 
             result.Add(newMsg);
 
-            if (result.Count > 5)
+            if (result.Count > Constants.QA_MAX_COUNTER)
                 result.RemoveAt(0);
 
             metauserDb.LastChatGptQA = result;
