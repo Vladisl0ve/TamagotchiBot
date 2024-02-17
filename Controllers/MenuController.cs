@@ -211,9 +211,11 @@ namespace TamagotchiBot.Controllers
         private async Task AnswerByChatGPT(Pet petDB)
         {
             var previousQA = _appServices.MetaUserService.GetLastChatGPTQA(_userId);
+            bool isTimeOut;
             string chatGptAnswer;
             if (previousQA.Count > 4 && (DateTime.UtcNow - previousQA[0].revision) < new TimeSpan(0, 30, 0)) //30 minutes timeout
             {
+                isTimeOut = true;
                 chatGptAnswer = string.Format(
                     nameof(ChatGPTTimeOutText).UseCulture(_userCulture),
                     Extensions.GetTypeEmoji(petDB.Type),
@@ -222,27 +224,30 @@ namespace TamagotchiBot.Controllers
             }
             else
             {
+                var (answer, isCanceled) = await GetAnswerChatGPT(petDB, Extensions.GetLongTypeEmoji(Extensions.GetEnumPetType(petDB.Type), new CultureInfo("en")));
                 chatGptAnswer = $"{Extensions.GetLongTypeEmoji(_userPetType, _userCulture)} <b>{HttpUtility.HtmlEncode(petDB.Name)}</b>: ";
-                chatGptAnswer += await GetAnswerChatGPT(petDB, Extensions.GetLongTypeEmoji(Extensions.GetEnumPetType(petDB.Type), new CultureInfo("en")));
+                chatGptAnswer += answer;
+                isTimeOut = isCanceled;
             }
 
             var toSend = new AnswerMessage()
             {
                 Text = chatGptAnswer,
-                //StickerId = StickersId.GetRandStickerChatGPT(),
                 replyToMsgId = _message.MessageId,
+                ReplyMarkup = isTimeOut ? ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture) : null,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, true);
         }
 
-        private async Task<string> GetAnswerChatGPT(Pet petDB, string type)
+        private async Task<(string answer, bool isCanceled)> GetAnswerChatGPT(Pet petDB, string type)
         {
             await _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
             string openAiKey = _appServices.SInfoService.GetOpenAiKey();
 
             string result;
+            bool isCanceled = false;
             try
             {
                 OpenAIAPI api = new OpenAIAPI(openAiKey ?? _envs.OpenAiApiKey);
@@ -297,10 +302,11 @@ namespace TamagotchiBot.Controllers
             catch (Exception ex)
             {
                 Log.Error(ex, $"CHATGPT ERROR");
+                isCanceled = true;
                 result = nameof(ChatgptErrorAnswerText).UseCulture(_userCulture);
             }
 
-            return result;
+            return (result, isCanceled);
         }
 
         private async Task ChangeTypeToCatCMD(User userDB, Pet petDB)

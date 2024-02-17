@@ -346,6 +346,7 @@ namespace TamagotchiBot.Services
                 return await SendTextMessageAsync(userId,
                              toSend.Text,
                              inlineMarkup: toSend.InlineKeyboardMarkup,
+                             replyToMsgId: toSend.replyToMsgId,
                              toLog: toLog,
                              parseMode: toSend.ParseMode);
 
