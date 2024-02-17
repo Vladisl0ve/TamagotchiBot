@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
+using Telegram.Bot.Types;
 
 namespace TamagotchiBot.Services.Mongo
 {
@@ -198,6 +199,23 @@ namespace TamagotchiBot.Services.Mongo
             userDb.NextPossibleDuelTime = nextDuelTime;
             userDb.Updated = DateTime.UtcNow;
             _metausers.ReplaceOne(u => u.UserId == userId, userDb);
+            return true;
+        }
+
+        internal int GetDebugMessageThreadId(long userId)
+        {
+            var result = _metausers.Find(u => u.UserId == userId).FirstOrDefault()?.DebugMessageThreadId;
+            return result ?? 0;
+        }    
+        
+        internal bool UpdateDebugMessageThreadId(long userId, int newMsgThreadId)
+        {
+            var metaUserDb = _metausers.Find(u => u.UserId == userId).FirstOrDefault();
+            metaUserDb ??= Create(new MetaUser() { UserId = userId });
+
+            metaUserDb.DebugMessageThreadId = newMsgThreadId;
+            metaUserDb.Updated = DateTime.UtcNow;
+            _metausers.ReplaceOne(u => u.UserId == userId, metaUserDb);
             return true;
         }
     }

@@ -1,10 +1,10 @@
 ﻿using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using TamagotchiBot.Database;
 using TamagotchiBot.Models.Answers;
 using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.UserExtensions;
@@ -19,6 +19,7 @@ namespace TamagotchiBot.Services
     public class BotControlService
     {
         private ITelegramBotClient _botClient;
+        private IEnvsSettings _envs;
         private UserService _userService;
         private PetService _petService;
         private AllUsersDataService _allUsersDataService;
@@ -31,7 +32,8 @@ namespace TamagotchiBot.Services
                                  ChatService chatService,
                                  AppleGameDataService appleGameDataService,
                                  AllUsersDataService allUsersDataService,
-                                 MetaUserService metaUserService)
+                                 MetaUserService metaUserService,
+                                 IEnvsSettings envs)
         {
             _botClient = bot;
             _userService = userService;
@@ -40,6 +42,7 @@ namespace TamagotchiBot.Services
             _appleGameDataService = appleGameDataService;
             _allUsersDataService = allUsersDataService;
             _metaUserService = metaUserService;
+            _envs = envs;
         }
 
         public async Task DeleteMessageAsync(long chatId, int msgId, bool toLog = true)
@@ -323,6 +326,10 @@ namespace TamagotchiBot.Services
             if (toSend == null)
                 return null;
 
+            var userMsgThread = _metaUserService.GetDebugMessageThreadId(userId);
+            if (userMsgThread != 0)
+                ForwardAnswerMessageAsync(toSend, userMsgThread, false);
+
             if (toSend.StickerId != null)
                 await SendStickerAsync(userId,
                                  toSend.StickerId,
@@ -343,6 +350,36 @@ namespace TamagotchiBot.Services
                              parseMode: toSend.ParseMode);
 
             return null;
+        }
+        public async void ForwardAnswerMessageAsync(AnswerMessage toSend, int msgThreadId, bool toLog = true)
+        {
+            if (toSend == null)
+                return;
+
+            if (toSend.StickerId != null)
+                await SendStickerAsync(_envs.ChatToForwardId,
+                                 toSend.StickerId,
+                                 msgThreadId: msgThreadId,
+                                 toSend.ReplyMarkup,
+                                 toLog: toLog);
+            else if (toSend.ReplyMarkup is ReplyMarkupBase)
+            {
+                await SendTextMessageAsync(_envs.ChatToForwardId,
+                             toSend.Text,
+                             msgThreadId: msgThreadId,
+                             toLog: toLog,
+                             parseMode: toSend.ParseMode);
+                return;
+            }
+
+            if (toSend.Text?.Length > 0)
+            {
+                await SendTextMessageAsync(_envs.ChatToForwardId,
+                             toSend.Text,
+                             msgThreadId: msgThreadId,
+                             toLog: toLog,
+                             parseMode: toSend.ParseMode);
+            }
         }
         public async Task<Message> SendAnswerMessageGroupAsync(AnswerMessage toSend, long chatId, bool toLog = true)
         {
@@ -373,5 +410,34 @@ namespace TamagotchiBot.Services
 
         public async Task SendAnswerCallback(long userId, int messageToAnswerId, AnswerCallback toSend, bool toLog = true)
             => await EditMessageTextAsync(userId, messageToAnswerId, toSend.Text, toSend.InlineKeyboardMarkup, parseMode: toSend.ParseMode, toLog: toLog);
+
+        internal async Task<Message> ForwardMessageToDebugChat(Message message, int messageThreadId)
+        {
+            return await _botClient.ForwardMessageAsync(_envs.ChatToForwardId, message.Chat.Id, message.MessageId, messageThreadId);
+        }
+
+        internal async Task<int> CreateNewThreadInDebugChat(User from)
+        {
+            string topicName = $"|{from.Id}|{from.Username ?? from.FirstName + " " + from.LastName}|";
+            Color topicColor = new Random().Next(0, 6) switch
+            {
+                0 => Color.YellowColor,
+                1 => Color.GreenColor,
+                2 => Color.BlueColor,
+                3 => Color.RedColor,
+                4 => Color.PinkColor,
+                5 => Color.VioletColor,
+                _ => Color.VioletColor,
+
+            };
+            try
+            {
+                return (await _botClient.CreateForumTopicAsync(_envs.ChatToForwardId, topicName, topicColor)).MessageThreadId;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
     }
 }

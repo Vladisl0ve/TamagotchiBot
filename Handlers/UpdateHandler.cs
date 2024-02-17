@@ -39,6 +39,10 @@ namespace TamagotchiBot.Handlers
 
         public Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
+#if !DEBUG && !DEBUG_NOTIFY
+            new ForwardController(_appServices, update).StartForwarding();
+#endif
+
             if (!ToContinueHandlingUpdateChecking(update))
                 return Task.CompletedTask;
 
