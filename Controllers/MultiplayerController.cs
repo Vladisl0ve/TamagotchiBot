@@ -701,7 +701,7 @@ namespace TamagotchiBot.Controllers
 
             _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.FeedMP);
             _appServices.MetaUserService.UpdateLastMPFeedingTime(_userId, DateTime.UtcNow);
-            _appServices.PetService.UpdateMPSatiety(petToFeedDB.UserId, petToFeedDB.MPSatiety + Constants.FoodFactors.MPFeed);
+            _appServices.PetService.UpdateMPSatiety(petToFeedDB.UserId, petToFeedDB.MPSatiety + Constants.FoodFactors.MPFeedFactor);
             _appServices.PetService.UpdateLastMPFedTime(userToFeedDB.UserId, DateTime.UtcNow);
 
             await _appServices.BotControlService.SendAnswerMessageGroupAsync(new AnswerMessage()

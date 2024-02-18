@@ -625,6 +625,7 @@ Cena: {2} złota 💰</value>
 Zaproś znajomych do wspólnego spędzania czasu, korzystając z linku polecającego i zdobądź za to nagrody! 🎁
 
 🚦Znajomy musi stworzyć własne Tamagotchi, aby nagrody trafiły na Twoje konto 🚦
+💰&lt;b&gt; Dostań {3} złota za każdego referała!&lt;/b&gt;
 
 🤼‍♀️ Masz polecenia: {0}
 Złoto zdobyte dzięki poleceniu: {1}💰
@@ -1039,5 +1040,8 @@ https://t.me/newsvirtualpetbot</value>
   <data name="ChatGPTTimeOutText" xml:space="preserve">
     <value>Zwierzak {0}&lt;b&gt;{1}&lt;/b&gt; patrzy na ciebie w milczeniu. Prawdopodobnie jest zmęczony mówieniem i udaje, że Cię nie rozumie 🔇
 Porozmawiaj z nim trochę później 🕐</value>
+  </data>
+  <data name="ReferalAddedMessageText" xml:space="preserve">
+    <value>💰 {0} złota przyznane za nowego przyjaciela {1}</value>
   </data>
 </root>

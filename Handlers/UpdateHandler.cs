@@ -477,7 +477,7 @@ namespace TamagotchiBot.Handlers
                 if (!await creatorController.IsNicknameAcceptable())
                     return;
 
-                if (!await creatorController.CreatePet())
+                if (!await creatorController.CreatePet(userDB))
                     return;
             }
         }

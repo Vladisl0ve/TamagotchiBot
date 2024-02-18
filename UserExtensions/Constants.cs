@@ -65,12 +65,11 @@ namespace TamagotchiBot.UserExtensions
         {
             public const int ExpFactor = 1;
             public const int ExpToLvl = 50;
-            public const double StarvingFactor = 0.2;
+            public const double StarvingFactor = 0.1;
             public const double FatigueFactor = 0.19;
             public const double RestFactor = 10;
             public const double JoyFactor = 0.3;
             public const double HygieneFactor = 0.11;
-            //public const double HygieneFactor = 5;
 
             public const int CardGameFatigueFactor = 20;
             public const int CardGameJoyFactor = 20;
@@ -88,10 +87,10 @@ namespace TamagotchiBot.UserExtensions
         {
             public const int WorkOnPCGoldReward = 100;
             public const int FlyersDistributingGoldReward = 40;
-            public const int DailyGoldReward = 100;
+            public const int DailyGoldReward = 250;
 
             //Referal
-            public const int ReferalAdded = 500;
+            public const int ReferalAdded = 1000;
 
             //Multiplayer
             public const int WonDuel = 150;
@@ -120,7 +119,7 @@ namespace TamagotchiBot.UserExtensions
 
             //Multiplayer
             public const int DuelGold = 100;
-            public const int DuelHP = 100;
+            public const int DuelHP = 100; //HP limit?
             public const int FeedMP = 20;
         }
 
@@ -166,7 +165,7 @@ namespace TamagotchiBot.UserExtensions
             public const double LollipopHungerFactor = 1; //🍭
 
             //Multiplayer
-            public const int MPFeed = 100; //🍭
+            public const int MPFeedFactor = 100; //🍭
         }
 
         public struct HygieneFactors

@@ -1668,10 +1668,20 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 💰 {0} gold credited for new friend {1}.
+        /// </summary>
+        public static string ReferalAddedMessageText {
+            get {
+                return ResourceManager.GetString("ReferalAddedMessageText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Walking together is much more fun, right? 👯‍♀️
         ///Invite your friends to hang out using your referral link and get prizes for it! 🎁
         ///
         ///🚦A friend must create his own Tamagotchi for the prizes to come to your account 🚦
+        ///💰&lt;b&gt; Get {3} gold for every new friend!&lt;/b&gt;
         ///
         ///🤼‍♀️ You have referrals: {0}
         ///Gold earned via referral: {1}💰

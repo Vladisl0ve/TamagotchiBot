@@ -695,6 +695,7 @@ Price: {2} gold 💰</value>
 Invite your friends to hang out using your referral link and get prizes for it! 🎁
 
 🚦A friend must create his own Tamagotchi for the prizes to come to your account 🚦
+💰&lt;b&gt; Get {3} gold for every new friend!&lt;/b&gt;
 
 🤼‍♀️ You have referrals: {0}
 Gold earned via referral: {1}💰
@@ -1037,5 +1038,8 @@ Pet {2}{0} wins 🏆</value>
   <data name="ChatGPTTimeOutText" xml:space="preserve">
     <value>Pet {0}&lt;b&gt;{1}&lt;/b&gt; looks at you silently. He’s probably tired of talking and pretends he doesn’t understand you 🔇
 Talk to him a little later 🕐</value>
+  </data>
+  <data name="ReferalAddedMessageText" xml:space="preserve">
+    <value>💰 {0} gold credited for new friend {1}</value>
   </data>
 </root>

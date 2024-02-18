@@ -56,7 +56,7 @@ namespace TamagotchiBot.Controllers
             _appServices.UserService.UpdateIsLanguageAskedOnCreate(_userId, true);
         }
 
-        internal async Task<bool> CreatePet()
+        internal async Task<bool> CreatePet(Models.Mongo.User userDB)
         {
             var msgText = _message?.Text;
             if (string.IsNullOrEmpty(msgText))
@@ -81,6 +81,18 @@ namespace TamagotchiBot.Controllers
 
             _appServices.UserService.UpdateIsPetNameAskedOnCreate(_userId, false);
             _appServices.ReferalInfoService.UpdateTaskDone(_userId, true);
+
+            var producerCulture = _appServices.UserService.Get(userDB.ReferaledBy)?.Culture ?? "ru";
+            await _appServices.BotControlService.SendAnswerMessageAsync(
+                new AnswerMessage()
+                {
+                    Text = string.Format(
+                        nameof(ReferalAddedMessageText).UseCulture(producerCulture),
+                        Rewards.ReferalAdded,
+                        userDB.Username is null ? $"{userDB.FirstName} {userDB.LastName}" : $"@{userDB.Username}"),
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                }, userDB.ReferaledBy);
+
 
             var toSend = new AnswerMessage()
             {
@@ -467,11 +479,11 @@ namespace TamagotchiBot.Controllers
                     _appServices.AdsProducersService.AddOrInsert(ads);
                 else
                 {
-                    var refAds = Extensions.GetReferalProducerFromStart(msg.Text);
-                    if (refAds != -1)
+                    var refProducer = Extensions.GetReferalProducerFromStart(msg.Text);
+                    if (refProducer != -1)
                     {
-                        _appServices.ReferalInfoService.AddNewReferal(refAds, _userId);
-                        Log.Information($"Added new referal for {refAds} with ID:{_userId}");
+                        _appServices.ReferalInfoService.AddNewReferal(refProducer, _userId);
+                        Log.Information($"Added new referal for {refProducer} with ID:{_userId}");
                     }
                 }
             }

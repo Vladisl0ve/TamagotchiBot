@@ -78,7 +78,7 @@ namespace TamagotchiBot.Services.Mongo
                     Update(creatorUserId, refInfoOfCreator);
 
                     if (isTaskDone)
-                        _userService.UpdateGold(creatorUserId, _userService.Get(creatorUserId).Gold + Rewards.ReferalAdded);
+                        _userService.UpdateGold(creatorUserId, _userService.Get(creatorUserId)?.Gold ?? 0 + Rewards.ReferalAdded);
 
                     return true;
                 }

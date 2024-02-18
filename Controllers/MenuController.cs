@@ -1052,7 +1052,12 @@ namespace TamagotchiBot.Controllers
             var refAmounts = _appServices.ReferalInfoService.GetDoneRefsAmount(_userId);
             var goldByRef = Rewards.ReferalAdded * refAmounts;
             var refLink = Extensions.GetReferalLink(_userId, botUsername);
-            string toSendText = string.Format(nameof(referalCommand).UseCulture(_userCulture), refAmounts, goldByRef, refLink);
+            string toSendText = string.Format(
+                nameof(referalCommand).UseCulture(_userCulture),
+                refAmounts,
+                goldByRef,
+                refLink,
+                Rewards.ReferalAdded);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.MenuCommandCounter++;
