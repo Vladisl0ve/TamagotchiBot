@@ -35,21 +35,21 @@ namespace TamagotchiBot.Controllers
             {
                 _ = update.Type switch
                 {
-                    UpdateType.Message => await ForwardMessage(update.Message),
-                    UpdateType.InlineQuery => false,
+                    UpdateType.Message            => await ForwardMessage(update.Message),
+                    UpdateType.InlineQuery        => false,
                     UpdateType.ChosenInlineResult => false,
-                    UpdateType.CallbackQuery => false,
-                    UpdateType.EditedMessage => false,
-                    UpdateType.ChannelPost => false,
-                    UpdateType.EditedChannelPost => false,
-                    UpdateType.ShippingQuery => false,
-                    UpdateType.PreCheckoutQuery => false,
-                    UpdateType.Poll => false,
-                    UpdateType.PollAnswer => false,
-                    UpdateType.MyChatMember => false,
-                    UpdateType.ChatMember => false,
-                    UpdateType.ChatJoinRequest => false,
-                    _ => false,
+                    UpdateType.CallbackQuery      => false,
+                    UpdateType.EditedMessage      => false,
+                    UpdateType.ChannelPost        => false,
+                    UpdateType.EditedChannelPost  => false,
+                    UpdateType.ShippingQuery      => false,
+                    UpdateType.PreCheckoutQuery   => false,
+                    UpdateType.Poll               => false,
+                    UpdateType.PollAnswer         => false,
+                    UpdateType.MyChatMember       => false,
+                    UpdateType.ChatMember         => false,
+                    UpdateType.ChatJoinRequest    => false,
+                    _                             => false,
                 };
 
             }
