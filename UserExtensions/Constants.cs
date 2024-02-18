@@ -235,7 +235,9 @@ namespace TamagotchiBot.UserExtensions
             public const string ChangeTypeErrorSticker = "CAACAgIAAxkBAAELUzVlwUL-5fyYwZJCGyjXYWDqDMPX3gACrUUAAgsn4En6llfN6C4pCjQE";
             public const string ChangeTypeErrorGoldSticker = "CAACAgIAAxkBAAELUzdlwUQlfiUpuAPpKwejhj8JUrtamAAC6z4AAr4b2UkCVdfVjLsgnDQE";
 
-            public const string ChangelogSticker = "CAACAgIAAxkBAAIoiWQfmY19TqmIZL38KrfWnSS9frV0AAIrKwACnQhYSBduaR-WJLE7LwQ";
+            //public const string ChangelogSticker = "CAACAgIAAxkBAAIoiWQfmY19TqmIZL38KrfWnSS9frV0AAIrKwACnQhYSBduaR-WJLE7LwQ"; //usual changelog panda jumps
+            public const string ChangelogSticker = "CAACAgIAAxkBAAELb2Rl0nuZd49DEzvd2J9VRgABL_CKEvQAAlwCAAKQWXYt3NXqzbbMLvU0BA"; //referal notify ring
+
             public const string MaintanceProblems = "CAACAgIAAxkBAAEK0sVlY46CnU9WiXGRp7t0MXqbkJhwvwAC6jUAAvnOCElTk5NEHcWxQjME";
             public const string DailyRewardSticker = "CAACAgIAAxkBAAEJz1Fkv8OAYwKlhmZ7CAvYJkg0EQ7Z-wAClhEAAv5tgEmdX9KNHziRpS8E";
 
