@@ -340,7 +340,7 @@ namespace TamagotchiBot.Services
 
                 if (userMsgThread != 0 && resStiker != default)
                 {
-                    await ForwardMessageToDebugChat(resStiker, userMsgThread);
+                    ForwardMessageToDebugChat(resStiker, userMsgThread);
                 }
             }
 
@@ -355,7 +355,7 @@ namespace TamagotchiBot.Services
 
                 if (userMsgThread != 0 && resTextR != default)
                 {
-                    await ForwardMessageToDebugChat(resTextR, userMsgThread);
+                    ForwardMessageToDebugChat(resTextR, userMsgThread);
                 }
 
                 return resTextR;
@@ -371,7 +371,7 @@ namespace TamagotchiBot.Services
 
                 if (userMsgThread != 0 && resTextI != default)
                 {
-                    await ForwardMessageToDebugChat(resTextI, userMsgThread);
+                    ForwardMessageToDebugChat(resTextI, userMsgThread);
                 }
 
                 return resTextI;
