@@ -276,23 +276,14 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ⚡️⚡️ Update 1.6 has been released⚡️⚡️
+        ///   Looks up a localized string similar to 👫 We remind you about the referral program 👭
         ///
-        ///&lt;i&gt;&lt;b&gt;NEW:&lt;/b&gt;&lt;/i&gt;
-        /// 🧸 &lt;b&gt;Pet can now chat with you!&lt;/b&gt;
-        ///Just write him something and he will answer you!
-        ///
-        ///After all, are you tired of doing nothing while your pet is at work or sleeping?
-        ///Chat with your pet:
-        ///📡 about the weather
-        ///🎁 what kind of gifts do you like?
-        ///⛏ how do you spend your day
-        ///❤️‍🔥 just talk
-        ///
-        ///You are your pet&apos;s best friend, so he will always wait for you 🩶
+        ///It&apos;s more fun together, so invite your friends to join us in 🐾&lt;b&gt;Tamagotchi🐾 Virtual GPT Pet&lt;/b&gt;🐾
+        ///You can get 1000💰 for every new friend!
+        ///➡️/referal
         ///
         ///Subscribe to our channel, where everything is about the bot:
-        ///https://t.me/newsvir [rest of string was truncated]&quot;;.
+        ///https://t.me/newsvirtualpetbot.
         /// </summary>
         public static string changelog1Text {
             get {

@@ -1018,30 +1018,21 @@ Zwierzak {2}{0} wygrywa 🏆</value>
   <data name="ChatgptErrorAnswerText" xml:space="preserve">
     <value>🛋 Zwierzak jest zajęty swoimi sprawami i nie zwraca na Ciebie uwagi</value>
   </data>
-  <data name="changelog1Text" xml:space="preserve">
-    <value>⚡️⚡️ Wydano aktualizację 1.6⚡️⚡️
-
-&lt;i&gt;&lt;b&gt;NOWOŚĆ:&lt;/b&gt;&lt;/i&gt;
- 🧸 &lt;b&gt;Zwierzak może teraz z Tobą rozmawiać!&lt;/b&gt;
-Po prostu napisz mu coś, a on ci odpowie!
-
-W końcu jesteś zmęczony nierobieniem niczego, gdy Twój zwierzak jest w pracy lub śpi?
-Porozmawiaj ze swoim zwierzakiem:
-📡 o pogodzie
-🎁 jakie prezenty lubisz?
-⛏ jak spędzasz dzień
-❤️‍🔥 po prostu pogadać
-
-Jesteś najlepszym przyjacielem swojego zwierzaka, dlatego zawsze będzie na Ciebie czekał 🩶
-
-Subskrybuj nasz kanał, na którym wszystko jest o bocie:
-https://t.me/newsvirtualpetbot</value>
-  </data>
   <data name="ChatGPTTimeOutText" xml:space="preserve">
     <value>Zwierzak {0}&lt;b&gt;{1}&lt;/b&gt; patrzy na ciebie w milczeniu. Prawdopodobnie jest zmęczony mówieniem i udaje, że Cię nie rozumie 🔇
 Porozmawiaj z nim trochę później 🕐</value>
   </data>
   <data name="ReferalAddedMessageText" xml:space="preserve">
     <value>💰 {0} złota przyznane za nowego przyjaciela {1}</value>
+  </data>
+  <data name="changelog1Text" xml:space="preserve">
+    <value>👫 Przypominamy o programie poleceń 👭
+
+Razem jest fajniej, więc zaproś znajomych, aby dołączyli do nas w 🐾&lt;b&gt;Tamagotchi Virtual GPT Pet&lt;/b&gt;🐾
+Za każdego nowego znajomego możesz otrzymać 1000💰!
+➡️/referal
+
+Subskrybuj nasz kanał, na którym wszystko jest o bocie:
+https://t.me/newsvirtualpetbot</value>
   </data>
 </root>
