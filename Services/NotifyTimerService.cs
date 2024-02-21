@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Web;
@@ -11,9 +10,7 @@ using TamagotchiBot.Models.Answers;
 using TamagotchiBot.Models.Mongo;
 using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.UserExtensions;
-using Telegram.Bot;
 using Telegram.Bot.Exceptions;
-using Telegram.Bot.Types;
 using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.Services
@@ -133,7 +130,15 @@ namespace TamagotchiBot.Services
                 if (user == null)
                     continue;
 
-                await DoRandomEvent(user);
+                try
+                {
+                    await DoRandomEvent(user);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, $"Error on RandomEvent for userId: {userId}");
+                }
+
 
                 counter++;
                 if (counter % 100 == 0)
@@ -236,32 +241,32 @@ namespace TamagotchiBot.Services
 
             Log.Warning($"DELETED USERS ON MAINTAIN: partly {usersDeletedPartly}; full {usersDeletedFull}");
 
-/*            int usersToCompens = 0;
-            var allPetsDB = _appServices.PetService.GetAll();
-            foreach (var pet in allPetsDB)
-            {
-                var userDB = _appServices.UserService.Get(pet.UserId);
-                var toCompensate = pet.Level * 100;
-                if (toCompensate <= 10)
-                    continue;
+            /*            int usersToCompens = 0;
+                        var allPetsDB = _appServices.PetService.GetAll();
+                        foreach (var pet in allPetsDB)
+                        {
+                            var userDB = _appServices.UserService.Get(pet.UserId);
+                            var toCompensate = pet.Level * 100;
+                            if (toCompensate <= 10)
+                                continue;
 
-                _appServices.UserService.UpdateGold(userDB.UserId, userDB.Gold + toCompensate);
-                usersToCompens++;
-                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
-                {
-                    Text = string.Format(
-                        nameof(Resources.Resources.GoldCompensastionGotText).UseCulture(userDB.Culture ?? "ru"),
-                        toCompensate)
-                }, userDB.UserId, false);
-                pet.Level = 0;
-                _appServices.PetService.Update(pet.UserId, pet);
+                            _appServices.UserService.UpdateGold(userDB.UserId, userDB.Gold + toCompensate);
+                            usersToCompens++;
+                            await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
+                            {
+                                Text = string.Format(
+                                    nameof(Resources.Resources.GoldCompensastionGotText).UseCulture(userDB.Culture ?? "ru"),
+                                    toCompensate)
+                            }, userDB.UserId, false);
+                            pet.Level = 0;
+                            _appServices.PetService.Update(pet.UserId, pet);
 
-                Log.Information($"Compensed {toCompensate} for user {userDB.UserId}");
-                if (usersToCompens % 100 == 0)
-                    await Task.Delay(2000);
-            }
-            Log.Information($"Compensations have been sent: {usersToCompens} users");
-*/          
+                            Log.Information($"Compensed {toCompensate} for user {userDB.UserId}");
+                            if (usersToCompens % 100 == 0)
+                                await Task.Delay(2000);
+                        }
+                        Log.Information($"Compensations have been sent: {usersToCompens} users");
+            */
             Log.Information($"MAINTAINS ARE OVER");
         }
         private async void OnMPDuelsTimedEvent(object sender, ElapsedEventArgs e)

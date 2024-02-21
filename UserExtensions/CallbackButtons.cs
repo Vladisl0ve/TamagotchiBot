@@ -169,7 +169,9 @@ namespace TamagotchiBot.UserExtensions
 
             public static CallbackModel RewardCommandInlineDailyReward(CultureInfo culture) => new CallbackModel()
             {
-                Text = nameof(Resources.Resources.rewardCommandInlineDailyReward).UseCulture(culture),
+                Text = string.Format(
+                    nameof(Resources.Resources.rewardCommandInlineDailyReward).UseCulture(culture),
+                    Rewards.DailyGoldReward),
                 CallbackData = nameof(RewardCommandInlineDailyReward)
             };
         }

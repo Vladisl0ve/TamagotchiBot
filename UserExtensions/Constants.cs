@@ -292,11 +292,6 @@ namespace TamagotchiBot.UserExtensions
                 }
             }
 
-            internal static string GetRandStickerChatGPT()
-            {
-                throw new NotImplementedException();
-            }
-
             public static readonly ILookup<string, string> PetDependedStickers = new Dictionary<string, string>()
             {
                 //CAT

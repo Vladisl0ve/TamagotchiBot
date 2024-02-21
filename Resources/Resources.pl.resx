@@ -452,7 +452,7 @@ Poczekaj aż zwierzak skończy pracę</value>
 Odbierz ją wkrótce! 🎁</value>
   </data>
   <data name="rewardCommandInlineDailyReward" xml:space="preserve">
-    <value>Codziennie 🎉(+100💰)</value>
+    <value>Codziennie 🎉(+{0}💰)</value>
   </data>
   <data name="DailyRewardAnwserCallback" xml:space="preserve">
     <value>Gratulacje, zdobyłeś +{0} złota! 🎈</value>

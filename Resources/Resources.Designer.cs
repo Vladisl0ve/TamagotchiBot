@@ -1834,7 +1834,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Daily 🎉(+100💰).
+        ///   Looks up a localized string similar to Daily 🎉(+{0}💰).
         /// </summary>
         public static string rewardCommandInlineDailyReward {
             get {

@@ -520,7 +520,7 @@ https://t.me/news_virtualpetbot</value>
 Забирай скорей! 🎁</value>
   </data>
   <data name="rewardCommandInlineDailyReward" xml:space="preserve">
-    <value>Ежедневка 🎉(+100💰)</value>
+    <value>Ежедневка 🎉(+{0}💰)</value>
   </data>
   <data name="DailyRewardAnwserCallback" xml:space="preserve">
     <value>Поздравляю, ты получил {0} золота! 🎈</value>
