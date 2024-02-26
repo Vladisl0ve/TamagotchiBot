@@ -588,7 +588,7 @@ namespace TamagotchiBot.Controllers
             var sentMsg = await _appServices.BotControlService.SendAnswerMessageGroupAsync(answerMessage, _chatId, false);
             if (sentMsg == null)
             {
-                Log.Fatal("ERROR ON StartDuel #1");
+                Log.Fatal($"ERROR ON StartDuel #1 chatId: {_chatId}");
                 return;
             }
             _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.DuelGold);

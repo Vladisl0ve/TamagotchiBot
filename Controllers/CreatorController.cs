@@ -82,17 +82,19 @@ namespace TamagotchiBot.Controllers
             _appServices.UserService.UpdateIsPetNameAskedOnCreate(_userId, false);
             _appServices.ReferalInfoService.UpdateTaskDone(_userId, true);
 
-            var producerCulture = _appServices.UserService.Get(userDB.ReferaledBy)?.Culture ?? "ru";
-            await _appServices.BotControlService.SendAnswerMessageAsync(
-                new AnswerMessage()
-                {
-                    Text = string.Format(
-                        nameof(ReferalAddedMessageText).UseCulture(producerCulture),
-                        Rewards.ReferalAdded,
-                        userDB.Username is null ? $"{userDB.FirstName} {userDB.LastName}" : $"@{userDB.Username}"),
-                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
-                }, userDB.ReferaledBy);
-
+            if (userDB.ReferaledBy != 0)
+            {
+                var producerCulture = _appServices.UserService.Get(userDB.ReferaledBy)?.Culture ?? "ru";
+                await _appServices.BotControlService.SendAnswerMessageAsync(
+                    new AnswerMessage()
+                    {
+                        Text = string.Format(
+                            nameof(ReferalAddedMessageText).UseCulture(producerCulture),
+                            Rewards.ReferalAdded,
+                            userDB.Username is null ? $"{userDB.FirstName} {userDB.LastName}" : $"@{userDB.Username}"),
+                        ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                    }, userDB.ReferaledBy);
+            }
 
             var toSend = new AnswerMessage()
             {
@@ -482,8 +484,10 @@ namespace TamagotchiBot.Controllers
                     var refProducer = Extensions.GetReferalProducerFromStart(msg.Text);
                     if (refProducer != -1)
                     {
-                        _appServices.ReferalInfoService.AddNewReferal(refProducer, _userId);
-                        Log.Information($"Added new referal for {refProducer} with ID:{_userId}");
+                        var (_, isSuccessRefAdded) = _appServices.ReferalInfoService.AddNewReferal(refProducer, _userId);
+
+                        if (isSuccessRefAdded)
+                            Log.Information($"Added new referal for {refProducer} with ID:{_userId}");
                     }
                 }
             }

@@ -35,8 +35,9 @@ namespace TamagotchiBot.Services.Mongo
             return refInfo;
         }
 
-        public ReferalInfo AddNewReferal(long creatorUserId, long newRefUserId)
+        public (ReferalInfo refResult, bool isSuccess) AddNewReferal(long creatorUserId, long newRefUserId)
         {
+            bool isSuccess = false;
             var refInfoDB = Get(creatorUserId);
             refInfoDB ??= Create(new ReferalInfo()
             {
@@ -44,7 +45,7 @@ namespace TamagotchiBot.Services.Mongo
                 RefUsers = new List<ReferalUserModel>()
             });
 
-            if (!refInfoDB.RefUsers.Exists(r => r.RefUserId == newRefUserId))
+            if (!refInfoDB.RefUsers.Exists(r => r.RefUserId == newRefUserId) && creatorUserId != newRefUserId)
             {
                 refInfoDB.RefUsers.Add(new ReferalUserModel()
                 {
@@ -53,9 +54,10 @@ namespace TamagotchiBot.Services.Mongo
                 });
                 Update(creatorUserId, refInfoDB);
                 _userService.UpdateReferaledBy(newRefUserId, creatorUserId);
+                isSuccess = true;
             }
 
-            return refInfoDB;
+            return (refInfoDB, isSuccess);
         }
 
         public bool UpdateTaskDone(long userId, bool isTaskDone)
