@@ -16,6 +16,7 @@ namespace TamagotchiBot.UserExtensions
         public enum Languages
         {
             [Display(ShortName = "🇨🇷", Name = "be")] Belarusian,
+            [Display(ShortName = "🇺🇦", Name = "uk")] Ukrainian,
             [Display(ShortName = "🇷🇺", Name = "ru")] Russian,
             [Display(ShortName = "🇺🇸", Name = "en")] English,
             [Display(ShortName = "🇵🇱", Name = "pl")] Polish,
@@ -229,6 +230,7 @@ namespace TamagotchiBot.UserExtensions
             public const string PolishLanguageSetSticker = "CAACAgIAAxkBAAEDHxVhcHU6BuzdT1sw-MZB0uBR35h5iAACKwEAAr8DyQQgsxfQYO--ECEE";
             public const string EnglishLanguageSetSticker = "CAACAgIAAxkBAAEDHxdhcHV4y14-CyrH_D1YujHDCBROUQAC6AADvwPJBGHtqaDNJtEyIQQ";
             public const string RussianLanguageSetSticker = "CAACAgIAAxkBAAEDHxlhcHWCiuvBtQ-IZJknE2hlBlZ-TwAC4gADvwPJBOLja80qqucgIQQ";
+            public const string UkrainianLanguageSetSticker = "CAACAgIAAxkBAAELj5Zl3OLG_wbkg3_IB0pPTym49SpAxwACCgAD3pSWESEndgrQxfhnNAQ";
             public const string BelarussianLanguageSetSticker = "CAACAgIAAxkBAAEDIdJhcyf3ErjEmUZRgDJgMsCtstPpGAACYQIAAladvQq0dN7WdBr5ViEE";
 
             public const string ChangeTypePetSticker = "CAACAgIAAxkBAAELUTFlv-y-GF6diGzs6trFkSR13nqCbwAC-RAAAjSLWwaVH1nmaD8TjDQE";

@@ -211,6 +211,7 @@ namespace TamagotchiBot.Controllers
                 Languages.English => StickersId.EnglishLanguageSetSticker,
                 Languages.Belarusian => StickersId.BelarussianLanguageSetSticker,
                 Languages.Russian => StickersId.RussianLanguageSetSticker,
+                Languages.Ukrainian => StickersId.UkrainianLanguageSetSticker,
                 _ => null,
             };
             var toSend = new AnswerMessage()

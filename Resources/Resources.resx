@@ -166,6 +166,7 @@ Have fun 🍿</value>
   <data name="ChangeLanguage" xml:space="preserve">
     <value>Choose new language:
 - Belarusian (беларуская) 🇨🇷
+- Ukrainian (українська) 🇺🇦
 - Russian (русский) 🇷🇺
 - English 🇺🇸
 - Polish (Polski) 🇵🇱</value>
@@ -229,7 +230,7 @@ Don't forget feed him 🐣</value>
     <value>Kitchen 🍽</value>
   </data>
   <data name="languageCommandDescription" xml:space="preserve">
-    <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺</value>
+    <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺 | мова 🇺🇦</value>
   </data>
   <data name="sleepCommand" xml:space="preserve">
     <value>{0} {1}

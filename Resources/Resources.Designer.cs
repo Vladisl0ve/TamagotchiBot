@@ -265,6 +265,7 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Choose new language:
         ///- Belarusian (беларуская) 🇨🇷
+        ///- Ukrainian (українська) 🇺🇦
         ///- Russian (русский) 🇷🇺
         ///- English 🇺🇸
         ///- Polish (Polski) 🇵🇱.
@@ -1076,7 +1077,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺.
+        ///   Looks up a localized string similar to language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺 | мова 🇺🇦.
         /// </summary>
         public static string languageCommandDescription {
             get {

@@ -154,6 +154,7 @@ Po prostu wpisz to tutaj</value>
   <data name="ChangeLanguage" xml:space="preserve">
     <value>Wybierz nowy język:
 - Belarusian (беларуская) 🇨🇷
+- Ukrainian (українська) 🇺🇦
 - Russian (русский) 🇷🇺
 - English 🇺🇸
 - Polish (Polski) 🇵🇱</value>
@@ -204,7 +205,7 @@ Nie zapominaj karmić zwierzaka 🐣</value>
     <value>Status zwierzaka ❤️‍🩹</value>
   </data>
   <data name="languageCommandDescription" xml:space="preserve">
-    <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺</value>
+    <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺 | мова 🇺🇦</value>
   </data>
   <data name="sleepCommand" xml:space="preserve">
     <value>{0} {1}
