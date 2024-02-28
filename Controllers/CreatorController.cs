@@ -80,9 +80,9 @@ namespace TamagotchiBot.Controllers
             Log.Information($"Pet of UserID: {_userId} has been added to Db");
 
             _appServices.UserService.UpdateIsPetNameAskedOnCreate(_userId, false);
-            _appServices.ReferalInfoService.UpdateTaskDone(_userId, true);
+            var resultRef = _appServices.ReferalInfoService.UpdateTaskDone(_userId, true);
 
-            if (userDB.ReferaledBy != 0)
+            if (userDB.ReferaledBy != 0 && resultRef)
             {
                 var producerCulture = _appServices.UserService.Get(userDB.ReferaledBy)?.Culture ?? "ru";
                 await _appServices.BotControlService.SendAnswerMessageAsync(
