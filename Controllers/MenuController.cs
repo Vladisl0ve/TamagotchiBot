@@ -226,7 +226,7 @@ namespace TamagotchiBot.Controllers
             {
                 var (answer, isCanceled) = await GetAnswerChatGPT(petDB, Extensions.GetLongTypeEmoji(Extensions.GetEnumPetType(petDB.Type), new CultureInfo("en")));
                 chatGptAnswer = $"{Extensions.GetLongTypeEmoji(_userPetType, _userCulture)} <b>{HttpUtility.HtmlEncode(petDB.Name)}</b>: ";
-                chatGptAnswer += answer;
+                chatGptAnswer += HttpUtility.HtmlEncode(answer);
                 isTimeOut = isCanceled;
             }
 

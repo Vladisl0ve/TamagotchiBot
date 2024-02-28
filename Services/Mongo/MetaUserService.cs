@@ -28,14 +28,14 @@ namespace TamagotchiBot.Services.Mongo
 
             foreach (var resultik in resultChatGPT)
             {
-                var stringAiO = resultik.Split('|');
+                var stringAiO = resultik.Split("|xxx|");
                 if (stringAiO.Length != 3)
                 {
                     Log.Error($"BD ChatGPT answer is wrong! [{resultik}], userId: {userId}");
                     continue;
                 }
 
-                //$"{userQ}|{chatGptA}|{DateTime.UtcNow:R}"
+                //$"{userQ}|xxx|{chatGptA}|xxx|{DateTime.UtcNow:R}"
                 result.Add(new()
                 {
                     userQ = stringAiO[0],
@@ -156,7 +156,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public bool AppendNewChatGPTQA(long userId, string userQ, string chatGptA)
         {
-            return AppendNewChatGPTQA(userId, $"{userQ}|{chatGptA}|{DateTime.UtcNow:R}");
+            return AppendNewChatGPTQA(userId, $"{userQ}|xxx|{chatGptA}|xxx|{DateTime.UtcNow:R}");
         }
 
         private bool AppendNewChatGPTQA(long userId, string newMsg)
