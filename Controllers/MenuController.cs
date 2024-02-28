@@ -226,7 +226,7 @@ namespace TamagotchiBot.Controllers
             {
                 var (answer, isCanceled) = await GetAnswerChatGPT(petDB, Extensions.GetLongTypeEmoji(Extensions.GetEnumPetType(petDB.Type), new CultureInfo("en")));
                 chatGptAnswer = $"{Extensions.GetLongTypeEmoji(_userPetType, _userCulture)} <b>{HttpUtility.HtmlEncode(petDB.Name)}</b>: ";
-                chatGptAnswer += HttpUtility.HtmlEncode(answer);
+                chatGptAnswer += answer;
                 isTimeOut = isCanceled;
             }
 
@@ -261,7 +261,9 @@ namespace TamagotchiBot.Controllers
                     $" adoring all, especially children. " +
                     $"Opposes injustice, caters to ages 6-25. " +
                     $"Responds in last language, prefers Russian, Belarusian, Polish, English, defaults to {_userCulture.EnglishName}. " +
-                    $"Uses emojis for Telegram chat. Mood adjusts to question tones. " +
+                    $"Use emojis for Telegram chat. Mood adjusts to question tones." +
+                    $"Use HTML style to format answer to bold, underling or italic." +
+                    $"Use '```' to mark text as fixed-width code." +
                     $"Monitor needs: {petDB.Satiety}% satiety (warn if low), " +
                     $"{petDB.Hygiene}% Hygiene (warn if low), " +
                     $"{petDB.Fatigue}% Fatigue (warn if high), " +
@@ -297,6 +299,7 @@ namespace TamagotchiBot.Controllers
                 result = await chat.GetResponseFromChatbotAsync();
                 Log.Information($"CHATGPT USAGE ========> {chat.MostRecentApiResult.Model.ModelID}: TOTAL [{chat.MostRecentApiResult.Usage.TotalTokens}] = PROMPT [{chat.MostRecentApiResult.Usage.PromptTokens}] + COMPLETETION [{chat.MostRecentApiResult.Usage.CompletionTokens}]");
 
+                result = FixHTMLEscaping(result);
                 _appServices.MetaUserService.AppendNewChatGPTQA(_userId, _message.Text, result);
             }
             catch (Exception ex)
@@ -307,6 +310,33 @@ namespace TamagotchiBot.Controllers
             }
 
             return (result, isCanceled);
+        }
+
+        private string FixHTMLEscaping(string toFix)
+        {
+            var result = toFix;
+            if (toFix.Contains("```"))
+            {
+                var chunks = toFix.Split("```");
+                if (chunks.Length == 0)
+                    return result;
+
+                if (chunks.Length  % 2 == 0)
+                    return result;
+
+                for (int i = 0; i < chunks.Length; i++)
+                {
+                    if (chunks[i] == chunks[0] || chunks[i] == chunks[^1])
+                        continue;
+
+                    if (i % 2 == 1)
+                        chunks[i] = "<pre>" + HttpUtility.HtmlEncode(chunks[i]) + "</pre>";
+                }
+
+                result = string.Join(" ", chunks);
+            }
+
+            return result;
         }
 
         private async Task ChangeTypeToCatCMD(User userDB, Pet petDB)
