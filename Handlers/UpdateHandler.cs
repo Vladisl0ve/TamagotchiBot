@@ -214,9 +214,32 @@ namespace TamagotchiBot.Handlers
                 SendGramadsPostToChat(message.From.Id);
 
             if (_appServices.UserService.Get(message.From.Id)?.IsInAppleGame ?? false)
-                await new AppleGameController(_appServices, message).Menu();
+            {
+                if (message.Text == "/reward")
+                    await OnRewardMsg(message);
+                else
+                    await new AppleGameController(_appServices, message).Menu();
+            }
             else
                 await new MenuController(_appServices, _envs, message).ProcessMessage();
+
+            async Task OnRewardMsg(Message message)
+            {
+                var appleDataToUpdate = _appServices.AppleGameDataService.Get(message.From.Id);
+                if (appleDataToUpdate == null || appleDataToUpdate.IsGameOvered)
+                {
+                    await _appServices.UserService.UpdateAppleGameStatus(message.From.Id, false);
+                    await new MenuController(_appServices, null, message).ProcessMessage("/reward");
+                }
+                else
+                {
+                    appleDataToUpdate.TotalDraws += 1;
+                    appleDataToUpdate.IsGameOvered = true;
+                    _appServices.AppleGameDataService.Update(appleDataToUpdate);
+                    await _appServices.UserService.UpdateAppleGameStatus(message.From.Id, false);
+                    await new MenuController(_appServices, null, message).ProcessMessage("/reward");
+                }
+            }
         }
         private async Task OnCallbackPrivate(CallbackQuery callbackQuery)
         {
