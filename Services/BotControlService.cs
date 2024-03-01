@@ -441,15 +441,36 @@ namespace TamagotchiBot.Services
 
         internal async Task<Message> ForwardMessageToDebugChat(Message message, int messageThreadId)
         {
-            try
+            int tryCounter = 0;
+            while (true)
             {
-                return await _botClient.ForwardMessageAsync(_envs.ChatToForwardId, message.Chat.Id, message.MessageId, messageThreadId);
-            }
-            catch (Exception e)
-            {
-               // Log.Error(e, "Forward ERROR");
-                Log.Warning($"Forward ERROR: {e.Message}");
-                return default;
+                try
+                {
+                    if (tryCounter > 0)
+                        Log.Warning($"Forward try #{tryCounter}, msgThreadId: {messageThreadId}");
+
+                    tryCounter++;
+                    return await _botClient.ForwardMessageAsync(_envs.ChatToForwardId, message.Chat.Id, message.MessageId, messageThreadId);
+                }
+                catch (ApiRequestException e)
+                {
+                    Log.Warning($"Forward ERROR [{e.ErrorCode}]: {e.Message}");
+
+                    var secondsToDelay = e.Parameters?.RetryAfter.HasValue == true ?
+                                            (int) e.Parameters.RetryAfter :
+                                            4;
+
+                    await Task.Delay(secondsToDelay * 1000);
+
+                    if (tryCounter > 10)
+                        return default;
+                }
+                catch (Exception e)
+                {
+                    //[19:44:48 WRN] Forward ERROR: Too Many Requests: retry after 3
+                    Log.Warning($"Forward ERROR: {e.Message}");
+                    return default;
+                }
             }
         }
 
