@@ -210,6 +210,8 @@ namespace TamagotchiBot.Controllers
 
         private async Task AnswerByChatGPT(Pet petDB)
         {
+            new ForwardController(_appServices, _message).StartForwarding();
+
             var previousQA = _appServices.MetaUserService.GetLastChatGPTQA(_userId);
             bool isTimeOut;
             string chatGptAnswer;
@@ -238,7 +240,7 @@ namespace TamagotchiBot.Controllers
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
 
-            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, true);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, true, true);
         }
 
         private async Task<(string answer, bool isCanceled)> GetAnswerChatGPT(Pet petDB, string type)
@@ -321,7 +323,7 @@ namespace TamagotchiBot.Controllers
                 if (chunks.Length == 0)
                     return result;
 
-                if (chunks.Length  % 2 == 0)
+                if (chunks.Length % 2 == 0)
                     return result;
 
                 for (int i = 0; i < chunks.Length; i++)

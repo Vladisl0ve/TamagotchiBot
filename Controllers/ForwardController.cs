@@ -10,7 +10,7 @@ namespace TamagotchiBot.Controllers
     internal class ForwardController : ControllerBase
     {
         private readonly IApplicationServices _appService;
-        private readonly Update update;
+        private readonly Update update = default;
 
         public ForwardController(IApplicationServices services, Update update)
         {
@@ -18,24 +18,33 @@ namespace TamagotchiBot.Controllers
             this.update = update;
         }
 
-        public void StartForwarding()
+        public ForwardController(IApplicationServices services, Message message)
+        {
+            _appService = services;
+            update = new Update()
+            {
+                Message = message
+            };
+        }
+
+        public void StartForwarding(bool noTextOnly = false)
         {
             try
             {
-                ForwardUpdate();
+                ForwardUpdate(noTextOnly);
             }
             catch (Exception ex)
             {
                 Log.Warning(ex, "Forwarding error");
             }
         }
-        private async void ForwardUpdate()
+        private async void ForwardUpdate(bool noTextOnly = false)
         {
             try
             {
                 _ = update.Type switch
                 {
-                    UpdateType.Message            => await ForwardMessage(update.Message),
+                    UpdateType.Message            => await ForwardMessage(update.Message, noTextOnly),
                     UpdateType.InlineQuery        => false,
                     UpdateType.ChosenInlineResult => false,
                     UpdateType.CallbackQuery      => false,
@@ -55,13 +64,16 @@ namespace TamagotchiBot.Controllers
             }
             catch (Exception ex)
             {
-                Log.Warning(ex, "Forwarding error");
+                Log.Warning(ex, $"[{nameof(ForwardUpdate)}] Forwarding error: ");
             }
         }
 
-        private async Task<bool> ForwardMessage(Message message)
+        private async Task<bool> ForwardMessage(Message message, bool noTextOnly = false)
         {
             if (message.Chat.Id <= 0)
+                return false;
+
+            if (noTextOnly && message.Text != null)
                 return false;
 
             var msgThread = _appService.MetaUserService.GetDebugMessageThreadId(update.Message.From.Id);

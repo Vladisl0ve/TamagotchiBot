@@ -323,7 +323,7 @@ namespace TamagotchiBot.Services
             }
         }
 
-        public async Task<Message> SendAnswerMessageAsync(AnswerMessage toSend, long userId, bool toLog = true)
+        public async Task<Message> SendAnswerMessageAsync(AnswerMessage toSend, long userId, bool toLog = true, bool toForward = false)
         {
             if (toSend == null)
                 return null;
@@ -338,7 +338,7 @@ namespace TamagotchiBot.Services
                  toSend.ReplyMarkup,
                  toLog: toLog);
 
-                if (userMsgThread != 0 && resStiker != default)
+                if (userMsgThread != 0 && resStiker != default && toForward)
                 {
                     ForwardMessageToDebugChat(resStiker, userMsgThread);
                 }
@@ -353,7 +353,7 @@ namespace TamagotchiBot.Services
                              toLog: toLog,
                              parseMode: toSend.ParseMode);
 
-                if (userMsgThread != 0 && resTextR != default)
+                if (userMsgThread != 0 && resTextR != default && toForward)
                 {
                     ForwardMessageToDebugChat(resTextR, userMsgThread);
                 }
@@ -369,7 +369,7 @@ namespace TamagotchiBot.Services
                              toLog: toLog,
                              parseMode: toSend.ParseMode);
 
-                if (userMsgThread != 0 && resTextI != default)
+                if (userMsgThread != 0 && resTextI != default && toForward)
                 {
                     ForwardMessageToDebugChat(resTextI, userMsgThread);
                 }
