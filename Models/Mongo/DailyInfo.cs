@@ -12,11 +12,8 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("UsersPlayed")]
         public int UsersPlayed { get; set; }
 
-        [BsonElement("MessagesSent")]
-        public long MessagesSent { get; set; }
-
-        [BsonElement("CallbacksSent")]
-        public long CallbacksSent { get; set; }
+        [BsonElement("PetPlayedLastWeek")]
+        public long PetPlayedLastWeek { get; set; }
 
         [BsonElement("TodayMessages")]
         public int TodayMessages { get; set; }
@@ -35,5 +32,11 @@ namespace TamagotchiBot.Models.Mongo
         
         [BsonElement("ReferalsCounter")]
         public long ReferalsCounter { get; set; }
+
+        [BsonElement("MessagesSent")]
+        public long MessagesSent { get; set; }
+
+        [BsonElement("CallbacksSent")]
+        public long CallbacksSent { get; set; }
     }
 }

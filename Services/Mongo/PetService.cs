@@ -198,5 +198,7 @@ namespace TamagotchiBot.Services.Mongo
             return true;
         }
         public void Remove(long userId) => _pets.DeleteOne(p => p.UserId == userId);
+
+        internal long CountLastWeekPlayed() => _pets.CountDocuments(p => p.LastUpdateTime > DateTime.UtcNow.AddDays(-7));
     }
 }

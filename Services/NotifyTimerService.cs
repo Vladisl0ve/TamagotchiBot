@@ -460,8 +460,9 @@ namespace TamagotchiBot.Services
             long registeredUsers = _appServices.UserService.Count();
             var allAUDUsers = _appServices.AllUsersDataService.CountAllAUD();
             var allRefUsers = _appServices.ReferalInfoService.CountAllRefUsers();
+            var allPetsLastWeek = _appServices.PetService.CountLastWeekPlayed(); //PetsLastWeek == PLW
 
-            string deltaUsers = "-", deltaPets = "-", deltaAUD = "-", deltaRef = "-";
+            string deltaUsers = "-", deltaPets = "-", deltaAUD = "-", deltaRef = "-", deltaPLW = "-";
             var prevDay = _appServices.DailyInfoService.GetPreviousDay();
             if (prevDay != default)
             {
@@ -469,6 +470,7 @@ namespace TamagotchiBot.Services
                 deltaUsers = (registeredUsers - prevDay.UserCounter).ToString();
                 deltaAUD = (allAUDUsers - prevDay.AUDCounter).ToString();
                 deltaRef = (allRefUsers - prevDay.ReferalsCounter).ToString();
+                deltaPLW = (allPetsLastWeek - prevDay.PetPlayedLastWeek).ToString();
             }
 
             dailyInfoDB.UsersPlayed = playedUsersToday;
@@ -481,17 +483,20 @@ namespace TamagotchiBot.Services
             dailyInfoDB.PetCounter = registeredPets;
             dailyInfoDB.AUDCounter = allAUDUsers;
             dailyInfoDB.ReferalsCounter = allRefUsers;
+            dailyInfoDB.PetPlayedLastWeek = allPetsLastWeek;
 
             _appServices.DailyInfoService.UpdateOrCreate(dailyInfoDB);
             string text = $"{dailyInfoDB.DateInfo:G}" + Environment.NewLine
-                        + $"Played   users  : {playedUsersToday}" + Environment.NewLine
-                        + $"Messages today: {messagesSentToday}" + Environment.NewLine
-                        + $"Callbacks today: {callbacksSentToday}" + Environment.NewLine
+                        + $"Played users TODAY: {playedUsersToday}" + Environment.NewLine
+                        + $"Played pets   WEEK: {allPetsLastWeek}" + Environment.NewLine + Environment.NewLine
+                        + $"Messages     TODAY: {messagesSentToday}" + Environment.NewLine
+                        + $"Callbacks    TODAY: {callbacksSentToday}" + Environment.NewLine
                         + $"------------------------" + Environment.NewLine
                         + $"ΔUsers: {deltaUsers}" + Environment.NewLine
                         + $"ΔPets: {deltaPets}" + Environment.NewLine
                         + Environment.NewLine
                         + $"ΔAUD: {deltaAUD}" + Environment.NewLine
+                        + $"ΔPLW: {deltaPLW}" + Environment.NewLine
                         + $"ΔReferals: {deltaRef}" + Environment.NewLine
                         + $"------------------------" + Environment.NewLine
                         + $"Messages sent: {messagesSent}" + Environment.NewLine
