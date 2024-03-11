@@ -214,6 +214,14 @@ namespace TamagotchiBot.Controllers
                 var metaUserDBCreator = _appServices.MetaUserService.Get(duelCreatorId);
                 await _appServices.BotControlService.DeleteMessageAsync(_chatId, metaUserDBCreator?.MsgDuelId ?? -1);
                 await _appServices.BotControlService.DeleteMessageAsync(_chatId, duelMsgId);
+
+                var userDBCreator = _appServices.UserService.Get(duelCreatorId);
+                if (userDBCreator == null)
+                {
+                    Log.Warning($"User {duelCreatorId} has been deleted from DB. Duel closed.");
+                    return;
+                }
+
                 _appServices.MetaUserService.UpdateMsgDuelId(duelCreatorId, -1);
                 _appServices.MetaUserService.UpdateChatDuelId(duelCreatorId, -1);
                 _appServices.MetaUserService.UpdateMsgCreatorDuelId(duelCreatorId, -1);
@@ -237,7 +245,6 @@ namespace TamagotchiBot.Controllers
                 var petDefenderEmoji = Extensions.GetTypeEmoji(petDefender?.Type ?? -1);
                 var petAttackerEmoji = Extensions.GetTypeEmoji(petAttacker?.Type ?? -1);
 
-                var userDBCreator = _appServices.UserService.Get(duelCreatorId);
                 AnswerMessage answerMessage = new AnswerMessage()
                 {
                     StickerId = Constants.StickersId.MPDuelStarted,
