@@ -202,11 +202,12 @@ namespace TamagotchiBot.Handlers
                 return;
             }
 
-            if (!await IsUserRegisteredFlyerCheck(userId))//FLYER
-            {
-                await _appServices.BotControlService.SendStickerAsync(userId, StickersId.FlyerADSSticker);
-                return;
-            }
+            //if(_appServices.UserService.Get(userId)?.Created < DateTime.UtcNow.AddDays(1))
+            //    if (!await IsUserRegisteredFlyerCheck(userId))//FLYER
+            //{
+            //    await _appServices.BotControlService.SendStickerAsync(userId, StickersId.FlyerADSSticker);
+            //    return;
+            //}
 
             if (_appServices.PetService.Get(message.From.Id)?.Name != null)
                 SendGramadsPostToChat(message.From.Id);
@@ -259,11 +260,11 @@ namespace TamagotchiBot.Handlers
                 return;
             }
 
-            if (!await IsUserRegisteredFlyerCheck(userId))//FLYER
-            {
-                await _appServices.BotControlService.SendStickerAsync(userId, StickersId.FlyerADSSticker);
-                return;
-            }
+            //if (!await IsUserRegisteredFlyerCheck(userId))//FLYER
+            //{
+            //    await _appServices.BotControlService.SendStickerAsync(userId, StickersId.FlyerADSSticker);
+            //    return;
+            //}
 
             // call this method wherever you want to show an ad,
             // for example your bot just made its job and
