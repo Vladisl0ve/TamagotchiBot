@@ -138,7 +138,6 @@ namespace Telegram.Bots.Example
                     AlwaysNotifyUsers  = new List<string>(),
                     ChatsToDevNotify = new List<string>(),
                     BannedRenamingUsers = new List<string>(),
-                    NotifyEvery = TimeSpan.FromHours(1),
                     DevNotifyEvery = TimeSpan.FromMinutes(1),
                     DevExtraNotifyEvery = TimeSpan.FromMinutes(5),
                     TriggersEvery  = TimeSpan.FromSeconds(20),

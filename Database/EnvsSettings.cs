@@ -8,7 +8,6 @@ namespace TamagotchiBot.Database
         public List<string> AlwaysNotifyUsers   { get; set; }
         public List<string> ChatsToDevNotify    { get; set; }
         public List<string> BannedRenamingUsers { get; set; }
-        public TimeSpan NotifyEvery             { get; set; }
         public TimeSpan DevNotifyEvery          { get; set; }
         public TimeSpan DevExtraNotifyEvery     { get; set; }
         public TimeSpan TriggersEvery           { get; set; }
@@ -24,7 +23,6 @@ namespace TamagotchiBot.Database
         List<string> AlwaysNotifyUsers   { get; set; }
         List<string> ChatsToDevNotify    { get; set; }
         List<string> BannedRenamingUsers { get; set; }
-        TimeSpan NotifyEvery             { get; set; }
         TimeSpan DevNotifyEvery          { get; set; }
         TimeSpan DevExtraNotifyEvery     { get; set; }
         TimeSpan TriggersEvery           { get; set; }
