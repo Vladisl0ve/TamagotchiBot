@@ -129,7 +129,7 @@ namespace Telegram.Bots.Example
                     ServiceInfoCollectionName = "ServiceInfo",
                     UsersCollectionName = "Users",
 
-                    ConnectionString = "",
+                    ConnectionString = "Instead of CS create next env variables: MongoUsername, MongoPass, MongoIP, MongoPort",
                     DatabaseName = "TamagotchiDb"
                 },
 
