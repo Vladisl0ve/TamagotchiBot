@@ -9,5 +9,11 @@ COPY . /app/TamagotchiBot
 EXPOSE 80
 EXPOSE 443
 
+#Add envs
+ENV MongoUsername="vladislove"
+ENV MongoPass="123"
+ENV MongoIP="127.0.0.1"
+ENV MongoPort="27017"
+
 # Command to run the application
 ENTRYPOINT ["dotnet", "/app/TamagotchiBot/TamagotchiBot.dll"]

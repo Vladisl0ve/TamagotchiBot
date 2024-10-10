@@ -21,7 +21,8 @@ namespace TamagotchiBot.Services.Mongo
                 try
                 {
                     restart = false;
-                    var databaseSettings = MongoClientSettings.FromConnectionString(TamagotchiDatabaseSettings.ConnectionString);
+
+                    var databaseSettings = MongoClientSettings.FromConnectionString(GetConnectStringFromEnv());
                     var client = new MongoClient(databaseSettings);
                     MongoDatabase = client.GetDatabase(TamagotchiDatabaseSettings.DatabaseName);
                 }
@@ -36,5 +37,24 @@ namespace TamagotchiBot.Services.Mongo
         }
 
         public virtual IMongoCollection<T> GetCollection<T>(string name = null) => MongoDatabase.GetCollection<T>(name ?? typeof(T).Name);
+
+        private string GetConnectStringFromEnv()
+        {
+            string username = Environment.GetEnvironmentVariable("MongoUsername", Environment.OSVersion.Platform == PlatformID.Win32NT ? EnvironmentVariableTarget.User : EnvironmentVariableTarget.Process);
+            string pass = Environment.GetEnvironmentVariable("MongoPass", Environment.OSVersion.Platform == PlatformID.Win32NT ? EnvironmentVariableTarget.User : EnvironmentVariableTarget.Process);
+            string ip = Environment.GetEnvironmentVariable("MongoIP", Environment.OSVersion.Platform == PlatformID.Win32NT ? EnvironmentVariableTarget.User : EnvironmentVariableTarget.Process);
+            string port = Environment.GetEnvironmentVariable("MongoPort", Environment.OSVersion.Platform == PlatformID.Win32NT ? EnvironmentVariableTarget.User : EnvironmentVariableTarget.Process);
+
+            if (ip == null || port == null)
+                return null;
+
+            if (username == null || pass == null)
+                return $"mongodb://{ip}:{port}";
+
+            if (username != null && pass != null)
+                return $"mongodb://{username}:{pass}@{ip}:{port}";
+
+            return null;
+        }
     }
 }
