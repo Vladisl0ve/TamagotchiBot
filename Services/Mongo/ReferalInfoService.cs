@@ -9,29 +9,22 @@ using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.Services.Mongo
 {
-    public class ReferalInfoService : MainConnectService
+    public class ReferalInfoService(ITamagotchiDatabaseSettings settings, UserService userService) : MongoServiceBase<ReferalInfo>(settings)
     {
-        private readonly IMongoCollection<ReferalInfo> _refInfos;
-        private readonly UserService _userService;
+        private readonly UserService _userService = userService;
 
-        public ReferalInfoService(ITamagotchiDatabaseSettings settings, UserService userService) : base(settings)
-        {
-            _userService = userService;
-            _refInfos = base.GetCollection<ReferalInfo>();
-        }
+        public List<ReferalInfo> GetAll() => _collection.Find(c => true).ToList();
 
-        public List<ReferalInfo> GetAll() => _refInfos.Find(c => true).ToList();
-
-        public ReferalInfo Get(long creatorUserId) => _refInfos.Find(c => c.CreatorUserId == creatorUserId).FirstOrDefault();
-        public int GetDoneRefsAmount(long creatorUserId) => _refInfos.Find(c => c.CreatorUserId == creatorUserId).FirstOrDefault()?.RefUsers.Count(r => r.IsTaskDone) ?? 0;
-        public long CountAllRefUsers() => _refInfos.Find(c => true).ToList().SelectMany(r => r.RefUsers).LongCount(r => r.IsTaskDone);
+        public ReferalInfo Get(long creatorUserId) => _collection.Find(c => c.CreatorUserId == creatorUserId).FirstOrDefault();
+        public int GetDoneRefsAmount(long creatorUserId) => _collection.Find(c => c.CreatorUserId == creatorUserId).FirstOrDefault()?.RefUsers.Count(r => r.IsTaskDone) ?? 0;
+        public long CountAllRefUsers() => _collection.Find(c => true).ToList().SelectMany(r => r.RefUsers).LongCount(r => r.IsTaskDone);
 
         public ReferalInfo Create(ReferalInfo refInfo)
         {
             refInfo.Created = DateTime.UtcNow;
 
             if (Get(refInfo.CreatorUserId) == null)
-                _refInfos.InsertOne(refInfo);
+                _collection.InsertOne(refInfo);
             return refInfo;
         }
 
@@ -91,10 +84,10 @@ namespace TamagotchiBot.Services.Mongo
         public ReferalInfo Update(long creatorUserId, ReferalInfo refInfo)
         {
             refInfo.Updated = DateTime.UtcNow;
-            _refInfos.ReplaceOne(c => c.CreatorUserId == creatorUserId, refInfo);
+            _collection.ReplaceOne(c => c.CreatorUserId == creatorUserId, refInfo);
             return refInfo;
         }
 
-        public void Remove(long creatorUserId) => _refInfos.DeleteOne(u => u.CreatorUserId == creatorUserId);
+        public void Remove(long creatorUserId) => _collection.DeleteOne(u => u.CreatorUserId == creatorUserId);
     }
 }

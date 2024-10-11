@@ -7,14 +7,12 @@ using TamagotchiBot.Services.Interfaces;
 
 namespace TamagotchiBot.Services.Mongo
 {
-    public class MainConnectService : IMainConnectService
+    public abstract class MongoServiceBase<T> : IMainConnectService
     {
+        protected readonly IMongoCollection<T> _collection;
         readonly IMongoDatabase MongoDatabase;
-        readonly ITamagotchiDatabaseSettings TamagotchiDatabaseSettings;
-        public MainConnectService(ITamagotchiDatabaseSettings settings)
+        public MongoServiceBase(ITamagotchiDatabaseSettings settings)
         {
-            TamagotchiDatabaseSettings = settings;
-
             bool restart;
             do
             {
@@ -22,9 +20,9 @@ namespace TamagotchiBot.Services.Mongo
                 {
                     restart = false;
 
-                    var databaseSettings = MongoClientSettings.FromConnectionString(GetConnectStringFromEnv());
-                    var client = new MongoClient(databaseSettings);
-                    MongoDatabase = client.GetDatabase(TamagotchiDatabaseSettings.DatabaseName);
+                    _collection = new MongoClient(MongoClientSettings.FromConnectionString(GetConnectStringFromEnv()))
+                        .GetDatabase(settings.DatabaseName)
+                        .GetCollection<T>(typeof(T).Name);
                 }
                 catch (Exception ex)
                 {
@@ -35,8 +33,6 @@ namespace TamagotchiBot.Services.Mongo
             }
             while (restart);
         }
-
-        public virtual IMongoCollection<T> GetCollection<T>(string name = null) => MongoDatabase.GetCollection<T>(name ?? typeof(T).Name);
 
         private string GetConnectStringFromEnv()
         {

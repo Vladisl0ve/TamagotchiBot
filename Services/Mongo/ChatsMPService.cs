@@ -8,35 +8,28 @@ using TamagotchiBot.Models.Mongo;
 
 namespace TamagotchiBot.Services.Mongo
 {
-    public class ChatsMPService : MainConnectService
+    public class ChatsMPService(ITamagotchiDatabaseSettings settings) : MongoServiceBase<ChatsMP>(settings)
     {
-        readonly IMongoCollection<ChatsMP> _chats;
+        public List<ChatsMP> GetAll() => _collection.Find(c => true).ToList();
 
-        public ChatsMPService(ITamagotchiDatabaseSettings settings) : base(settings)
-        {
-            _chats = base.GetCollection<ChatsMP>(settings.ChatsMPCollectionName);
-        }
-
-        public List<ChatsMP> GetAll() => _chats.Find(c => true).ToList();
-
-        public ChatsMP Get(long chatId) => _chats.Find(c => c.ChatId == chatId).FirstOrDefault();
+        public ChatsMP Get(long chatId) => _collection.Find(c => c.ChatId == chatId).FirstOrDefault();
 
         public ChatsMP Create(ChatsMP chat)
         {
             chat.Created = DateTime.UtcNow;
             if (Get(chat.ChatId) == null)
-                _chats.InsertOne(chat);
+                _collection.InsertOne(chat);
             return chat;
         }
 
         public ChatsMP Update(long chatId, ChatsMP chat)
         {
             chat.Updated = DateTime.UtcNow;
-            _chats.ReplaceOne(c => c.ChatId == chatId, chat);
+            _collection.ReplaceOne(c => c.ChatId == chatId, chat);
             return chat;
         }
 
-        public void Remove(long chatId) => _chats.DeleteOne(u => u.ChatId == chatId);
+        public void Remove(long chatId) => _collection.DeleteOne(u => u.ChatId == chatId);
 
         public void AddDuelResult(long chatId, DuelResultModel duelResult)
         {

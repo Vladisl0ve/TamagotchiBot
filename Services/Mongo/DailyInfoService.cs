@@ -7,27 +7,23 @@ using TamagotchiBot.Models.Mongo;
 
 namespace TamagotchiBot.Services.Mongo
 {
-    public class DailyInfoService : MainConnectService
+    public class DailyInfoService : MongoServiceBase<DailyInfo>
     {
-        private readonly IMongoCollection<DailyInfo> _dailyInfo;
-
         public DailyInfoService(ITamagotchiDatabaseSettings settings) : base(settings)
         {
-            _dailyInfo = base.GetCollection<DailyInfo>(settings.DailyInfoCollectionName);
-
-            if (_dailyInfo.CountDocuments(u => true) == 0)
+            if (_collection.CountDocuments(u => true) == 0)
                 CreateDefault();
         }
 
-        public DailyInfo Get(DateTime dateIndex) => _dailyInfo.Find(x => x.DateInfo == dateIndex).FirstOrDefault();
-        public List<DailyInfo> GetAll() => _dailyInfo.Find(x => true).ToList();
+        public DailyInfo Get(DateTime dateIndex) => _collection.Find(x => x.DateInfo == dateIndex).FirstOrDefault();
+        public List<DailyInfo> GetAll() => _collection.Find(x => true).ToList();
         public DailyInfo GetToday() => GetAll().Find(x => x.DateInfo.Date == DateTime.UtcNow.Date);
         public DailyInfo GetPreviousDay() => GetAll().LastOrDefault(d => d.DateInfo.Date < DateTime.UtcNow.Date);
 
         public void Create(DailyInfo dateIndex)
         {
             dateIndex.Created = DateTime.UtcNow;
-            _dailyInfo.InsertOne(dateIndex);
+            _collection.InsertOne(dateIndex);
         }
 
         public DailyInfo CreateDefault()
@@ -42,7 +38,7 @@ namespace TamagotchiBot.Services.Mongo
                 TodayMessages = 0,
                 Created = DateTime.UtcNow
         };
-            _dailyInfo.InsertOne(d);
+            _collection.InsertOne(d);
 
             return d;
         }
@@ -54,7 +50,7 @@ namespace TamagotchiBot.Services.Mongo
                 return;
 
             dateIndex.Updated = DateTime.UtcNow;
-            _dailyInfo.ReplaceOne(u => u.DateInfo == userDataDB.DateInfo, dateIndex);
+            _collection.ReplaceOne(u => u.DateInfo == userDataDB.DateInfo, dateIndex);
         }
 
         public void UpdateOrCreate(DailyInfo dateIndex)

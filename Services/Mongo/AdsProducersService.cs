@@ -7,33 +7,27 @@ using TamagotchiBot.Models.Mongo;
 
 namespace TamagotchiBot.Services.Mongo
 {
-    public class AdsProducersService : MainConnectService
+    public class AdsProducersService(ITamagotchiDatabaseSettings settings) : MongoServiceBase<AdsProducers>(settings)
     {
-        private readonly IMongoCollection<AdsProducers> _adsProducers;
+        public List<AdsProducers> GetAll() => _collection.Find(u => true).ToList();
 
-        public AdsProducersService(ITamagotchiDatabaseSettings settings) : base(settings)
-        {
-            _adsProducers = base.GetCollection<AdsProducers>();
-        }
-        public List<AdsProducers> GetAll() => _adsProducers.Find(u => true).ToList();
-
-        public AdsProducers Get(string company, string producer) => _adsProducers.Find(u => u.ProducerName == producer
+        public AdsProducers Get(string company, string producer) => _collection.Find(u => u.ProducerName == producer
                                                                                             && u.CompanyName == company).FirstOrDefault();
 
-        public AdsProducers Get(AdsProducers ads) => _adsProducers.Find(u => u.ProducerName == ads.ProducerName
+        public AdsProducers Get(AdsProducers ads) => _collection.Find(u => u.ProducerName == ads.ProducerName
                                                                                             && u.CompanyName == ads.CompanyName).FirstOrDefault();
 
         private void Create(AdsProducers ads)
         {
             ads.Counter = 1;
             ads.Created = DateTime.UtcNow;
-            _adsProducers.InsertOne(ads);
+            _collection.InsertOne(ads);
         }
 
         public AdsProducers Update(AdsProducers adsProducersIn)
         {
             adsProducersIn.Updated = DateTime.UtcNow;
-            _adsProducers.ReplaceOne(u => u.CompanyName == adsProducersIn.CompanyName && u.ProducerName == adsProducersIn.ProducerName, adsProducersIn);
+            _collection.ReplaceOne(u => u.CompanyName == adsProducersIn.CompanyName && u.ProducerName == adsProducersIn.ProducerName, adsProducersIn);
             return adsProducersIn;
         }
 
@@ -41,7 +35,7 @@ namespace TamagotchiBot.Services.Mongo
         {
             AdsProducers adsProducer = new(){ CompanyName = company, ProducerName = producer };
             adsProducer.Created = DateTime.UtcNow;
-            _adsProducers.InsertOne(adsProducer);
+            _collection.InsertOne(adsProducer);
             return adsProducer;
         }
 

@@ -8,35 +8,29 @@ using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.Services.Mongo
 {
-    public class PetService : MainConnectService
+    public class PetService(ITamagotchiDatabaseSettings settings) : MongoServiceBase<Pet>(settings)
     {
-        private readonly IMongoCollection<Pet> _pets;
-        public PetService(ITamagotchiDatabaseSettings settings) : base(settings)
-        {
-            _pets = base.GetCollection<Pet>(settings.PetsCollectionName);
-        }
+        public List<Pet> GetAll() => _collection.Find(p => true).ToList();
 
-        public List<Pet> GetAll() => _pets.Find(p => true).ToList();
-
-        public Pet Get(long userId) => _pets.Find(p => p.UserId == userId).FirstOrDefault();
-        public long Count() => _pets.CountDocuments(p => true);
+        public Pet Get(long userId) => _collection.Find(p => p.UserId == userId).FirstOrDefault();
+        public long Count() => _collection.CountDocuments(p => true);
 
         public Pet Create(Pet pet)
         {
             pet.Created = DateTime.UtcNow;
-            _pets.InsertOne(pet);
+            _collection.InsertOne(pet);
             return pet;
         }
 
         public void Update(long userId, Pet petIn)
         {
             petIn.Updated = DateTime.UtcNow;
-            _pets.ReplaceOne(p => p.UserId == userId, petIn);
+            _collection.ReplaceOne(p => p.UserId == userId, petIn);
         }
 
         public void UpdateName(long userId, string newName)
         {
-            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
                 pet.Name = newName;
@@ -45,7 +39,7 @@ namespace TamagotchiBot.Services.Mongo
         }
         public void UpdateCurrentStatus(long userId, int newStatus)
         {
-            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
                 pet.CurrentStatus = newStatus;
@@ -54,7 +48,7 @@ namespace TamagotchiBot.Services.Mongo
         }
         public void UpdateCurrentJob(long userId, int newJob)
         {
-            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
                 pet.CurrentJob = newJob;
@@ -63,7 +57,7 @@ namespace TamagotchiBot.Services.Mongo
         }
         public void UpdateLastMPFedTime(long userId, DateTime newLastMPFed)
         {
-            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
                 pet.LastMPFedTime = newLastMPFed;
@@ -72,7 +66,7 @@ namespace TamagotchiBot.Services.Mongo
         }      
         public void UpdateType(long userId, PetType newType)
         {
-            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
                 pet.Type = (int)newType;
@@ -81,7 +75,7 @@ namespace TamagotchiBot.Services.Mongo
         } 
         public void UpdateMPSatiety(long userId, int newMPSatiety)
         {
-            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
                 pet.MPSatiety = newMPSatiety;
@@ -90,7 +84,7 @@ namespace TamagotchiBot.Services.Mongo
         }
         public void UpdateEXP(long userId, int newEXP)
         {
-            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
                 pet.EXP = newEXP;
@@ -104,7 +98,7 @@ namespace TamagotchiBot.Services.Mongo
             else if (newSatiety < 0 && !forcePush)
                 newSatiety = 0;
 
-            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
                 pet.Satiety = newSatiety;
@@ -114,7 +108,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public void UpdateStartWorkingTime(long userId, DateTime newStartTime)
         {
-            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
                 pet.StartWorkingTime = newStartTime;
@@ -124,7 +118,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public void UpdateGotRandomEventTime(long userId, DateTime newStartTime)
         {
-            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
                 pet.GotRandomEventTime = newStartTime;
@@ -134,7 +128,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public void UpdateFatigue(long userId, int newFatigue)
         {
-            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
                 pet.Fatigue = newFatigue;
@@ -149,7 +143,7 @@ namespace TamagotchiBot.Services.Mongo
             else if (newHygiene < 0 && !forcePush)
                 newHygiene = 0;
 
-            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
                 pet.Hygiene = newHygiene;
@@ -163,7 +157,7 @@ namespace TamagotchiBot.Services.Mongo
             else if (newHP < 0 && !forcePush)
                 newHP = 0;
 
-            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
                 pet.HP = newHP;
@@ -178,7 +172,7 @@ namespace TamagotchiBot.Services.Mongo
             else if (newJoy < 0 && !forcePush)
                 newJoy = 0;
 
-            var pet = _pets.Find(p => p.UserId == userId).FirstOrDefault();
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
                 pet.Joy = newJoy;
@@ -188,17 +182,17 @@ namespace TamagotchiBot.Services.Mongo
 
         public bool UpdateNextRandomEventNotificationTime(long userId, DateTime nextNotify)
         {
-            var petDb = _pets.Find(u => u.UserId == userId).FirstOrDefault();
+            var petDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
             if (petDb == null)
                 return false;
 
             petDb.NextRandomEventNotificationTime = nextNotify;
             petDb.Updated = DateTime.UtcNow;
-            _pets.ReplaceOne(u => u.UserId == userId, petDb);
+            _collection.ReplaceOne(u => u.UserId == userId, petDb);
             return true;
         }
-        public void Remove(long userId) => _pets.DeleteOne(p => p.UserId == userId);
+        public void Remove(long userId) => _collection.DeleteOne(p => p.UserId == userId);
 
-        internal long CountLastWeekPlayed() => _pets.CountDocuments(p => p.LastUpdateTime > DateTime.UtcNow.AddDays(-7));
+        internal long CountLastWeekPlayed() => _collection.CountDocuments(p => p.LastUpdateTime > DateTime.UtcNow.AddDays(-7));
     }
 }

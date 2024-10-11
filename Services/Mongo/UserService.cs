@@ -8,25 +8,18 @@ using TamagotchiBot.Models.Mongo;
 
 namespace TamagotchiBot.Services.Mongo
 {
-    public class UserService : MainConnectService
+    public class UserService(ITamagotchiDatabaseSettings settings) : MongoServiceBase<User>(settings)
     {
-        private readonly IMongoCollection<User> _users;
+        public List<User> GetAll() => _collection.Find(u => true).ToList();
 
-        public UserService(ITamagotchiDatabaseSettings settings) : base(settings)
-        {
-            _users = base.GetCollection<User>(settings.UsersCollectionName);
-        }
-
-        public List<User> GetAll() => _users.Find(u => true).ToList();
-
-        public User Get(long userId) => _users.Find(u => u.UserId == userId).FirstOrDefault();
-        public long Count() => _users.CountDocuments(u => true);
-        public User GetByUsername(string username) => _users.Find(u => u.Username == username).FirstOrDefault();
+        public User Get(long userId) => _collection.Find(u => u.UserId == userId).FirstOrDefault();
+        public long Count() => _collection.CountDocuments(u => true);
+        public User GetByUsername(string username) => _collection.Find(u => u.Username == username).FirstOrDefault();
 
         public User Create(User user)
         {
             user.Created = DateTime.UtcNow;
-            _users.InsertOne(user);
+            _collection.InsertOne(user);
             return user;
         }
 
@@ -47,37 +40,37 @@ namespace TamagotchiBot.Services.Mongo
 
         public bool UpdateReferaledBy(long userId, long referaledByUserId)
         {
-            var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
             if (userDb == null)
                 return false;
 
             userDb.Updated = DateTime.UtcNow;
             userDb.ReferaledBy = referaledByUserId;
-            _users.ReplaceOne(u => u.UserId == userId, userDb);
+            _collection.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
 
         public User Update(long userId, User userIn)
         {
             userIn.Updated = DateTime.UtcNow;
-            _users.ReplaceOne(u => u.UserId == userId, userIn);
+            _collection.ReplaceOne(u => u.UserId == userId, userIn);
             return userIn;
         }
 
         public async Task UpdateAppleGameStatus(long userId, bool isInAppleGame)
         {
-            var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
             if (userDb == null)
                 return;
 
             userDb.IsInAppleGame = isInAppleGame;
             userDb.Updated = DateTime.UtcNow;
-            await _users.ReplaceOneAsync(u => u.UserId == userId, userDb);
+            await _collection.ReplaceOneAsync(u => u.UserId == userId, userDb);
         }
 
         public void UpdateGold(long userId, int newGold)
         {
-            var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
             if (userDb != null)
             {
                 userDb.Gold = newGold;
@@ -87,7 +80,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public void UpdateDailyRewardTime(long userId, DateTime newStartTime)
         {
-            var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
             if (userDb != null)
             {
                 userDb.GotDailyRewardTime = newStartTime;
@@ -97,19 +90,19 @@ namespace TamagotchiBot.Services.Mongo
 
         public bool UpdateNextDailyRewardNotificationTime(long userId, DateTime nextNotify)
         {
-            var userDb = _users.Find(u => u.UserId == userId).FirstOrDefault();
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
             if (userDb == null)
                 return false;
 
             userDb.NextDailyRewardNotificationTime = nextNotify;
             userDb.Updated = DateTime.UtcNow;
-            _users.ReplaceOne(u => u.UserId == userId, userDb);
+            _collection.ReplaceOne(u => u.UserId == userId, userDb);
             return true;
         }
 
         public User UpdateLanguage(long userId, string newLanguage)
         {
-            var user = _users.Find(p => p.UserId == userId).FirstOrDefault();
+            var user = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (user != null)
             {
                 user.Culture = newLanguage;
@@ -121,7 +114,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public bool UpdateIsPetNameAskedOnCreate(long userId, bool isAsked)
         {
-            var user = _users.Find(p => p.UserId == userId).FirstOrDefault();
+            var user = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (user != null)
             {
                 user.IsPetNameAskedOnCreate = isAsked;
@@ -133,7 +126,7 @@ namespace TamagotchiBot.Services.Mongo
         }
         public bool UpdateIsLanguageAskedOnCreate(long userId, bool isAsked)
         {
-            var user = _users.Find(p => p.UserId == userId).FirstOrDefault();
+            var user = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (user != null)
             {
                 user.IsLanguageAskedOnCreate = isAsked;
@@ -146,7 +139,7 @@ namespace TamagotchiBot.Services.Mongo
 
         public User Update(long userId, Telegram.Bot.Types.User userIn)
         {
-            var oldUser = _users.Find(u => u.UserId == userId).First();
+            var oldUser = _collection.Find(u => u.UserId == userId).First();
             User newUser = new()
             {
                 Id = oldUser.Id,
@@ -157,10 +150,10 @@ namespace TamagotchiBot.Services.Mongo
                 Culture = oldUser.Culture,
                 Updated = DateTime.UtcNow
             };
-            _users.ReplaceOne(u => u.UserId == userId, newUser);
+            _collection.ReplaceOne(u => u.UserId == userId, newUser);
             return newUser;
         }
 
-        public void Remove(long userId) => _users.DeleteOne(u => u.UserId == userId);
+        public void Remove(long userId) => _collection.DeleteOne(u => u.UserId == userId);
     }
 }
