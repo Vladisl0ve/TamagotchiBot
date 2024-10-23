@@ -357,7 +357,7 @@ namespace TamagotchiBot.Controllers
                 if (msgSenderId == null || msgSenderId != _userId.ToString())
                     return;
 
-                var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+                var botUsername = (await _appServices.BotControlService.GetBotUserInfo()).Username;
                 string toShowText = isGlobal ? GetGlobalRanks() : GetChatRanks();
                 var replyMarkupToShow = new InlineKeyboardMarkup(
                     new List<List<InlineKeyboardButton>>()
@@ -463,7 +463,7 @@ namespace TamagotchiBot.Controllers
             string toSendText = string.Format(nameof(InviteGlobalMultiplayerText).UseCulture(_userCulture), "`personalLink`");
             toSendText = HttpUtility.HtmlEncode(toSendText);
             toSendText = toSendText.Replace("`personalLink`", Extensions.GetPersonalLink(_userId, _userName));
-            var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+            var botUsername = (await _appServices.BotControlService.GetBotUserInfo()).Username;
 
             AnswerMessage answerMessage = new AnswerMessage()
             {
@@ -480,7 +480,7 @@ namespace TamagotchiBot.Controllers
         {
             var encodedChatName = HttpUtility.HtmlEncode(_chatName);
             string toSendText = string.Format(nameof(ShowWelcomeMessageMultiplayer).UseCulture(_userCulture), encodedChatName);
-            var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+            var botUsername = (await _appServices.BotControlService.GetBotUserInfo()).Username;
 
             AnswerMessage answerMessage = new AnswerMessage()
             {
@@ -498,7 +498,7 @@ namespace TamagotchiBot.Controllers
         {
             string msgToShow = GetChatRanks();
 
-            var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+            var botUsername = (await _appServices.BotControlService.GetBotUserInfo()).Username;
             AnswerMessage answerMessage = new AnswerMessage()
             {
                 InlineKeyboardMarkup =
@@ -607,7 +607,7 @@ namespace TamagotchiBot.Controllers
         }
         private async Task ShowPetMP(Pet petDB, User userDB)
         {
-            var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+            var botUsername = (await _appServices.BotControlService.GetBotUserInfo()).Username;
             var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
             string toSendText = string.Format(nameof(MultiplayerShowPet).UseCulture(_userCulture),
                                                   encodedPetName,

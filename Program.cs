@@ -63,7 +63,6 @@ namespace Telegram.Bots.Example
                   {
                       services.AddHostedService<TelegramBotHostedService>();
                       services.AddTransient<IUpdateHandler, UpdateHandler>();
-                      services.AddTransient<ITelegramBotClient>(_ => new TelegramBotClient(context.Configuration.GetSection(nameof(EnvsSettings))["TokenBot"]));
 
                       services.Configure<TamagotchiDatabaseSettings>(context.Configuration.GetSection(nameof(TamagotchiDatabaseSettings)));
                       services.AddTransient<ITamagotchiDatabaseSettings>(sp => sp.GetRequiredService<IOptions<TamagotchiDatabaseSettings>>().Value);
@@ -87,6 +86,15 @@ namespace Telegram.Bots.Example
                       services.AddTransient<ReferalInfoService>();
 
                       services.AddLocalization(options => options.ResourcesPath = "Resources");
+                  })
+                  .ConfigureServices(services =>
+                  {
+                      services.AddTransient<ITelegramBotClient>(sp =>
+                      {
+                          var sInfoService = sp.GetRequiredService<SInfoService>();
+                          var token = sInfoService.GetBotToken();
+                          return new TelegramBotClient(token);
+                      });
                   });
 
             return builder;

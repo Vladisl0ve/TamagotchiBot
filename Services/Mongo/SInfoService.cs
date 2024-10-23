@@ -4,22 +4,20 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
-using Telegram.Bot;
 
 namespace TamagotchiBot.Services.Mongo
 {
-    public class SInfoService(ITamagotchiDatabaseSettings settings, ITelegramBotClient bot) : MongoServiceBase<ServiceInfo>(settings)
+    public class SInfoService(ITamagotchiDatabaseSettings settings) : MongoServiceBase<ServiceInfo>(settings)
     {
-        private readonly ITelegramBotClient _botClient = bot;
 
         public DateTime GetLastGlobalUpdate() => _collection.Find(si => true).FirstOrDefault()?.LastGlobalUpdate ?? DateTime.MinValue;
         public DateTime GetLastAppChangeTime() => _collection.Find(si => true).FirstOrDefault()?.Updated ?? DateTime.MinValue;
         public bool GetDoSendChangelogs() => _collection.Find(si => true).FirstOrDefault()?.DoSendChangelogs ?? false;
         public bool GetDoMaintainWorks() => _collection.Find(si => true).FirstOrDefault()?.DoMaintainWorks ?? false;
         public string GetOpenAiKey() => _collection.Find(si => true).FirstOrDefault()?.OpenAiKey;
+        public string GetBotToken() => _collection.Find(si => true).FirstOrDefault()?.TmgToken;
         public List<string> GetBadWords() => _collection.Find(si => true).FirstOrDefault()?.BannedWords ?? new List<string>();
         public string GetLastBotstatId() => _collection.Find(si => true).FirstOrDefault()?.BotstatCheckId;
         public DateTime GetNextNotify()
@@ -155,7 +153,5 @@ namespace TamagotchiBot.Services.Mongo
             info.Updated = DateTime.UtcNow;
             _collection.ReplaceOne(s => s.Id == sinfoDB.Id, info);
         }
-        public async Task<Telegram.Bot.Types.User> GetBotUserInfo() => await _botClient.GetMeAsync();
-
     }
 }

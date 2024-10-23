@@ -338,7 +338,7 @@ namespace TamagotchiBot.Handlers
             }
             async Task OnTextMessageGroup(Message message)
             {
-                var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username.ToLower();
+                var botUsername = (await _appServices.BotControlService.GetBotUserInfo()).Username.ToLower();
                 if (!message.Text.Contains($"@{botUsername}") && message.EntityValues == null)
                     return;
 

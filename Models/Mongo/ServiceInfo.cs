@@ -29,5 +29,8 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("BannedWords")]
         public List<string> BannedWords { get; set; }
+
+        [BsonElement("TmgToken")]
+        public string TmgToken { get; set; }
     }
 }

@@ -1,8 +1,11 @@
 ﻿using MongoDB.Driver;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using TamagotchiBot.Database;
+using TamagotchiBot.Models.Mongo;
+using TamagotchiBot.Models.Mongo.Games;
 using TamagotchiBot.Services.Interfaces;
 
 namespace TamagotchiBot.Services.Mongo
@@ -22,7 +25,10 @@ namespace TamagotchiBot.Services.Mongo
 
                     _collection = new MongoClient(MongoClientSettings.FromConnectionString(GetConnectStringFromEnv()))
                         .GetDatabase(settings.DatabaseName)
-                        .GetCollection<T>(typeof(T).Name);
+                        .GetCollection<T>
+                        (
+                            EditedClassNames.TryGetValue(typeof(T).Name, out string value) ? value : typeof(T).Name
+                        );
                 }
                 catch (Exception ex)
                 {
@@ -33,6 +39,14 @@ namespace TamagotchiBot.Services.Mongo
             }
             while (restart);
         }
+
+        private readonly Dictionary<string, string> EditedClassNames = new()
+        {
+                {nameof(AppleGameData), "AppleGame"},
+                {nameof(Chat), "Chats"},
+                {nameof(Pet), "Pets"},
+                {nameof(User), "Users"}
+        };
 
         private string GetConnectStringFromEnv()
         {

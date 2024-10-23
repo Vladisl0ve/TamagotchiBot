@@ -1079,7 +1079,7 @@ namespace TamagotchiBot.Controllers
         private async Task ShowReferalInfo()
         {
             Log.Debug($"Called /ShowReferalInfo for {_userInfo}");
-            var botUsername = (await _appServices.SInfoService.GetBotUserInfo()).Username;
+            var botUsername = (await _appServices.BotControlService.GetBotUserInfo()).Username;
 
             var refAmounts = _appServices.ReferalInfoService.GetDoneRefsAmount(_userId);
             var goldByRef = Rewards.ReferalAdded * refAmounts;

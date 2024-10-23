@@ -439,6 +439,8 @@ namespace TamagotchiBot.Services
         public async Task SendAnswerCallback(long userId, int messageToAnswerId, AnswerCallback toSend, bool toLog = true)
             => await EditMessageTextAsync(userId, messageToAnswerId, toSend.Text, toSend.InlineKeyboardMarkup, parseMode: toSend.ParseMode, toLog: toLog);
 
+        public async Task<User> GetBotUserInfo() => await _botClient.GetMeAsync();
+
         internal async Task<Message> ForwardMessageToDebugChat(Message message, int messageThreadId)
         {
             int tryCounter = 0;
