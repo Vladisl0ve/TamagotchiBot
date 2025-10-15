@@ -154,6 +154,17 @@ namespace TamagotchiBot.Services.Mongo
             return newUser;
         }
 
+        public bool AddGold(long userId, int goldToAdd)
+        {
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb == null)
+                return false;
+            userDb.Gold += goldToAdd;
+            userDb.Updated = DateTime.UtcNow;
+            _collection.ReplaceOne(u => u.UserId == userId, userDb);
+            return true;
+        }
+
         public void Remove(long userId) => _collection.DeleteOne(u => u.UserId == userId);
     }
 }

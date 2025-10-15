@@ -16,6 +16,8 @@ using TamagotchiBot.Services.Mongo;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
+using Quartz;
+using TamagotchiBot.Jobs;
 
 namespace Telegram.Bots.Example
 {
@@ -74,6 +76,7 @@ namespace Telegram.Bots.Example
                       services.AddTransient<UserService>();
                       services.AddTransient<AdsProducersService>();
                       services.AddTransient<PetService>();
+                      services.AddTransient<ArchiveUserInfoService>();
                       services.AddTransient<ChatService>();
                       services.AddTransient<SInfoService>();
                       services.AddTransient<AppleGameDataService>();
@@ -86,6 +89,19 @@ namespace Telegram.Bots.Example
                       services.AddTransient<ReferalInfoService>();
 
                       services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+                      // Quartz setup
+                      services.AddQuartz(q =>
+                      {
+                          var jobKey = new JobKey("ResetAllExpJob");
+                          q.AddJob<ResetAllExpJob>(opts => opts.WithIdentity(jobKey));
+                          q.AddTrigger(opts => opts
+                              .ForJob(jobKey)
+                              .WithIdentity("ResetAllExpJob-trigger")
+                              //.WithCronSchedule("0 0 1 1 * ?")); // At 01:00 on day 1 of every month
+                              .WithCronSchedule("0 * * * * ?")); // DEBUG
+                      });
+                      services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
                   })
                   .ConfigureServices(services =>
                   {

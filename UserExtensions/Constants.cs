@@ -142,6 +142,14 @@ namespace TamagotchiBot.UserExtensions
             public const int ToRestMinLimitOfFatigue = 20;
         }
 
+        public struct GoldForTopExpRanking
+        {
+            public const int Top1 = 1000;
+            public const int Top2 = 500;
+            public const int Top3 = 300;
+            public const int Top4_10 = 100;
+        }
+
         public struct ExpForAction
         {
             public const int FeedingBread = 20;

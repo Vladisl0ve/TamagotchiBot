@@ -194,5 +194,18 @@ namespace TamagotchiBot.Services.Mongo
         public void Remove(long userId) => _collection.DeleteOne(p => p.UserId == userId);
 
         internal long CountLastWeekPlayed() => _collection.CountDocuments(p => p.LastUpdateTime > DateTime.UtcNow.AddDays(-7));
+
+        public void ResetAllExpAndLevel()
+        {
+            var allPets = GetAll();
+
+            foreach (var pet in allPets)
+            {
+                pet.EXP = 0;
+                pet.Level = 1;
+                pet.Updated = DateTime.UtcNow;
+                _collection.ReplaceOne(p => p.UserId == pet.UserId, pet);
+            }
+        }
     }
 }
