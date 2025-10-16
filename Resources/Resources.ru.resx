@@ -1038,4 +1038,7 @@ https://t.me/news_virtualpetbot</value>
   <data name="ReferalAddedMessageText" xml:space="preserve">
     <value>💰 Зачислено {0} золота за нового друга {1}</value>
   </data>
+  <data name="MonthlyGoldReward" xml:space="preserve">
+    <value>🎉 Поздравляем! Ваш питомец поднялся до &lt;b&gt;{0}&lt;/b&gt; ранга месяца! Вся эта тренировка окупилась — вам начислено &lt;b&gt;{1} золота&lt;/b&gt; в качестве награды! 💰</value>
+  </data>
 </root>

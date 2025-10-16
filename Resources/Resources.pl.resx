@@ -1036,4 +1036,7 @@ Za każdego nowego znajomego możesz otrzymać 1000💰!
 Subskrybuj nasz kanał, na którym wszystko jest o bocie:
 https://t.me/newsvirtualpetbot</value>
   </data>
+  <data name="MonthlyGoldReward" xml:space="preserve">
+    <value>🎉 Gratulacje! Twój pupil osiągnął &lt;b&gt;{0}&lt;/b&gt; rangę miesiąca! Cały trening się opłacił — otrzymałeś &lt;b&gt;{1} złota&lt;/b&gt; jako nagrodę! 💰</value>
+  </data>
 </root>

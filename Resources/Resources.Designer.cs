@@ -1122,6 +1122,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🎉 Amazing! Your pet climbed to the &lt;b&gt;{0}&lt;/b&gt; rank this month! All that training paid off — you’ve received &lt;b&gt;{1} gold&lt;/b&gt; as a reward! 💰.
+        /// </summary>
+        public static string MonthlyGoldReward {
+            get {
+                return ResourceManager.GetString("MonthlyGoldReward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Little mouse 🐭.
         /// </summary>
         public static string MouseTypeText {

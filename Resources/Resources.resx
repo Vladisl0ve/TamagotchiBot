@@ -1034,4 +1034,7 @@ Talk to him a little later 🕐</value>
   <data name="ReferalAddedMessageText" xml:space="preserve">
     <value>💰 {0} gold credited for new friend {1}</value>
   </data>
+  <data name="MonthlyGoldReward" xml:space="preserve">
+    <value>🎉 Amazing! Your pet climbed to the &lt;b&gt;{0}&lt;/b&gt; rank this month! All that training paid off — you’ve received &lt;b&gt;{1} gold&lt;/b&gt; as a reward! 💰</value>
+  </data>
 </root>
