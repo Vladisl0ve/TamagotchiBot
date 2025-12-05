@@ -8,10 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TamagotchiBot.Resources {
+namespace TamagotchiBot.Resources
+{
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -22,246 +23,296 @@ namespace TamagotchiBot.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources {
-        
+    public class Resources
+    {
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Resources()
+        {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.ReferenceEquals(resourceMan, null)) {
+        public static global::System.Resources.ResourceManager ResourceManager
+        {
+            get
+            {
+                if (object.ReferenceEquals(resourceMan, null))
+                {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TamagotchiBot.Resources.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
-            get {
+        public static global::System.Globalization.CultureInfo Culture
+        {
+            get
+            {
                 return resourceCulture;
             }
-            set {
+            set
+            {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Again 🍏.
         /// </summary>
-        public static string againText {
-            get {
+        public static string againText
+        {
+            get
+            {
                 return ResourceManager.GetString("againText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The rules of the game are simple: the one who eats an unripe green apple will lose.
         ///You can choose to eat one 🍎, two 🍎🍎 or three 🍎🍎🍎 apples at a time
         ///Can you outplay your pet and leave him a tasteless 🍏?.
         /// </summary>
-        public static string appleGameHelpText {
-            get {
+        public static string appleGameHelpText
+        {
+            get
+            {
                 return ResourceManager.GetString("appleGameHelpText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Your green apple remains
         ///
         ///{0}: Better luck next time 😉.
         /// </summary>
-        public static string appleGameLoseText {
-            get {
+        public static string appleGameLoseText
+        {
+            get
+            {
                 return ResourceManager.GetString("appleGameLoseText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 📈STATISTICS📉
         ///Won: {0}
         ///Lost: {1}
         ///Surrendered: {2}.
         /// </summary>
-        public static string appleGameStatisticsCommand {
-            get {
+        public static string appleGameStatisticsCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("appleGameStatisticsCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0}: I ate apples - {1}.
         /// </summary>
-        public static string appleGameSysEaten {
-            get {
+        public static string appleGameSysEaten
+        {
+            get
+            {
                 return ResourceManager.GetString("appleGameSysEaten", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Choose one 🍎, two 🍎🍎 or three 🍎🍎🍎 apples to eat.
         /// </summary>
-        public static string appleGameUndefiendText {
-            get {
+        public static string appleGameUndefiendText
+        {
+            get
+            {
                 return ResourceManager.GetString("appleGameUndefiendText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0}: You won, well done!.
         /// </summary>
-        public static string appleGameWinText {
-            get {
+        public static string appleGameWinText
+        {
+            get
+            {
                 return ResourceManager.GetString("appleGameWinText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to change your pet&apos;s name from {0} to {1}? 🗃
         ///Price: {2} gold 💰.
         /// </summary>
-        public static string AskToConfirmRenamingPet {
-            get {
+        public static string AskToConfirmRenamingPet
+        {
+            get
+            {
                 return ResourceManager.GetString("AskToConfirmRenamingPet", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You are in the gameroom ⚽️.
         /// </summary>
-        public static string backToGameroomText {
-            get {
+        public static string backToGameroomText
+        {
+            get
+            {
                 return ResourceManager.GetString("backToGameroomText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet doesn&apos;t like his new name {0}:
         ///Suggest something else ⬇️.
         /// </summary>
-        public static string BadWordDetected {
-            get {
+        public static string BadWordDetected
+        {
+            get
+            {
                 return ResourceManager.GetString("BadWordDetected", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You&apos;re in the bathroom 🛁
         ///🚿 Hygiene: {0}%
         ///
         ///Remember to brush your teeth before going to bed🪥.
         /// </summary>
-        public static string bathroomCommand {
-            get {
+        public static string bathroomCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("bathroomCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🪥 Brush teeth.
         /// </summary>
-        public static string bathroomCommandBrushTeeth {
-            get {
+        public static string bathroomCommandBrushTeeth
+        {
+            get
+            {
                 return ResourceManager.GetString("bathroomCommandBrushTeeth", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Bathroom 🛁.
         /// </summary>
-        public static string bathroomCommandDescription {
-            get {
+        public static string bathroomCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("bathroomCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🧻Poop💩.
         /// </summary>
-        public static string bathroomCommandMakePoo {
-            get {
+        public static string bathroomCommandMakePoo
+        {
+            get
+            {
                 return ResourceManager.GetString("bathroomCommandMakePoo", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🛁Shower.
         /// </summary>
-        public static string bathroomCommandTakeShower {
-            get {
+        public static string bathroomCommandTakeShower
+        {
+            get
+            {
                 return ResourceManager.GetString("bathroomCommandTakeShower", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Kitty 🐱.
         /// </summary>
-        public static string CatTypeText {
-            get {
+        public static string CatTypeText
+        {
+            get
+            {
                 return ResourceManager.GetString("CatTypeText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 😼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: WOW! I&apos;m a cat now!.
         /// </summary>
-        public static string changedTypeToCat {
-            get {
+        public static string changedTypeToCat
+        {
+            get
+            {
                 return ResourceManager.GetString("changedTypeToCat", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🐶&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Woof-woof! What&apos;s wrong with my voice?
         ///And the tail is unusual....
         /// </summary>
-        public static string changedTypeToDog {
-            get {
+        public static string changedTypeToDog
+        {
+            get
+            {
                 return ResourceManager.GetString("changedTypeToDog", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🦊&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Oh, what a cozy and pleasant fur ❤️.
         /// </summary>
-        public static string changedTypeToFox {
-            get {
+        public static string changedTypeToFox
+        {
+            get
+            {
                 return ResourceManager.GetString("changedTypeToFox", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🐭&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: How big you all are now, and I’m small!.
         /// </summary>
-        public static string changedTypeToMouse {
-            get {
+        public static string changedTypeToMouse
+        {
+            get
+            {
                 return ResourceManager.GetString("changedTypeToMouse", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🐼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: The world is not divided into black and white. But yes, pandas!.
         /// </summary>
-        public static string changedTypeToPanda {
-            get {
+        public static string changedTypeToPanda
+        {
+            get
+            {
                 return ResourceManager.GetString("changedTypeToPanda", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Choose new language:
         ///- Belarusian (беларуская) 🇨🇷
@@ -270,12 +321,14 @@ namespace TamagotchiBot.Resources {
         ///- English 🇺🇸
         ///- Polish (Polski) 🇵🇱.
         /// </summary>
-        public static string ChangeLanguage {
-            get {
+        public static string ChangeLanguage
+        {
+            get
+            {
                 return ResourceManager.GetString("ChangeLanguage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 👫 We remind you about the referral program 👭
         ///
@@ -286,108 +339,130 @@ namespace TamagotchiBot.Resources {
         ///Subscribe to our channel, where everything is about the bot:
         ///https://t.me/newsvirtualpetbot.
         /// </summary>
-        public static string changelog1Text {
-            get {
+        public static string changelog1Text
+        {
+            get
+            {
                 return ResourceManager.GetString("changelog1Text", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 📢💬 You can view and discuss bot updates here:
         ///{0}.
         /// </summary>
-        public static string changelogCommand {
-            get {
+        public static string changelogCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("changelogCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 📲 Updates.
         /// </summary>
-        public static string changelogCommandDescription {
-            get {
+        public static string changelogCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("changelogCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🗳 Channel with updates.
         /// </summary>
-        public static string ChangelogGoToDicussChannelButton {
-            get {
+        public static string ChangelogGoToDicussChannelButton
+        {
+            get
+            {
                 return ResourceManager.GetString("ChangelogGoToDicussChannelButton", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 👨‍🌾: I&apos;m a &lt;i&gt;magic&lt;/i&gt;farmer, so I can change the appearance of your pet
         ///Choose whoever you want!
         ///
         ///Pet Shape: {0} gold 💰.
         /// </summary>
-        public static string changeTypeButtonCommand {
-            get {
+        public static string changeTypeButtonCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("changeTypeButtonCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Your pet already looks like this ❌.
         /// </summary>
-        public static string changeTypeErrorSameType {
-            get {
+        public static string changeTypeErrorSameType
+        {
+            get
+            {
                 return ResourceManager.GetString("changeTypeErrorSameType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🛋 The pet is busy with its own business and does not pay attention to you.
         /// </summary>
-        public static string ChatgptErrorAnswerText {
-            get {
+        public static string ChatgptErrorAnswerText
+        {
+            get
+            {
                 return ResourceManager.GetString("ChatgptErrorAnswerText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet {0}&lt;b&gt;{1}&lt;/b&gt; looks at you silently. He’s probably tired of talking and pretends he doesn’t understand you 🔇
         ///Talk to him a little later 🕐.
         /// </summary>
-        public static string ChatGPTTimeOutText {
-            get {
+        public static string ChatGPTTimeOutText
+        {
+            get
+            {
                 return ResourceManager.GetString("ChatGPTTimeOutText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🧸 First of all you need to name your new friend
         ///Just type it here.
         /// </summary>
-        public static string ChooseName {
-            get {
+        public static string ChooseName
+        {
+            get
+            {
                 return ResourceManager.GetString("ChooseName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Concede.
         /// </summary>
-        public static string ConcedeText {
-            get {
+        public static string ConcedeText
+        {
+            get
+            {
                 return ResourceManager.GetString("ConcedeText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Language was set to English 🇺🇸.
         /// </summary>
-        public static string ConfirmedLanguage {
-            get {
+        public static string ConfirmedLanguage
+        {
+            get
+            {
                 return ResourceManager.GetString("ConfirmedLanguage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🧃 Cool!
         ///Your pet {0} is waiting 🐱
@@ -400,122 +475,148 @@ namespace TamagotchiBot.Resources {
         ///Don&apos;t forget to visit your pet, otherwise he may get offended and leave
         ///Have fun 🍿.
         /// </summary>
-        public static string ConfirmedName {
-            get {
+        public static string ConfirmedName
+        {
+            get
+            {
                 return ResourceManager.GetString("ConfirmedName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to active 🌞.
         /// </summary>
-        public static string CurrentStatusActive {
-            get {
+        public static string CurrentStatusActive
+        {
+            get
+            {
                 return ResourceManager.GetString("CurrentStatusActive", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to sleeping 🌙.
         /// </summary>
-        public static string CurrentStatusSleeping {
-            get {
+        public static string CurrentStatusSleeping
+        {
+            get
+            {
                 return ResourceManager.GetString("CurrentStatusSleeping", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to on work 🧰.
         /// </summary>
-        public static string CurrentStatusWorking {
-            get {
+        public static string CurrentStatusWorking
+        {
+            get
+            {
                 return ResourceManager.GetString("CurrentStatusWorking", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Congratulations, you got +{0} gold! 🎈.
         /// </summary>
-        public static string DailyRewardAnwserCallback {
-            get {
+        public static string DailyRewardAnwserCallback
+        {
+            get
+            {
                 return ResourceManager.GetString("DailyRewardAnwserCallback", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You can not come in: pet is sleeping 🌙.
         /// </summary>
-        public static string denyAccessSleeping {
-            get {
+        public static string denyAccessSleeping
+        {
+            get
+            {
                 return ResourceManager.GetString("denyAccessSleeping", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You can not come in: pet is on work 💻.
         /// </summary>
-        public static string denyAccessWorking {
-            get {
+        public static string denyAccessWorking
+        {
+            get
+            {
                 return ResourceManager.GetString("denyAccessWorking", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to In developing, wait for next update 👾.
         /// </summary>
-        public static string DevelopWarning {
-            get {
+        public static string DevelopWarning
+        {
+            get
+            {
                 return ResourceManager.GetString("DevelopWarning", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Doggie 🐶.
         /// </summary>
-        public static string DogTypeText {
-            get {
+        public static string DogTypeText
+        {
+            get
+            {
                 return ResourceManager.GetString("DogTypeText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ⚔️Accept the challenge.
         /// </summary>
-        public static string DuelMPAcceptButton {
-            get {
+        public static string DuelMPAcceptButton
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPAcceptButton", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {1}, Your pet is resting after losing the last duel🥷
         ///Just wait {0}.
         /// </summary>
-        public static string DuelMPCooldown {
-            get {
+        public static string DuelMPCooldown
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPCooldown", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Your pet is resting after losing the last duel🥷
         ///It remains to wait {0}.
         /// </summary>
-        public static string DuelMPCooldownCallback {
-            get {
+        public static string DuelMPCooldownCallback
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPCooldownCallback", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You can&apos;t accept your own duels 🙈.
         /// </summary>
-        public static string DuelMPErrorYourself {
-            get {
+        public static string DuelMPErrorYourself
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPErrorYourself", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🔰THE DUEL HAS BEGAN🔰
         ///{0} ⚔️ {1}
@@ -523,12 +624,14 @@ namespace TamagotchiBot.Resources {
         ///
         ///{2} {4}🛡                    🗡{5}{3}.
         /// </summary>
-        public static string DuelMPFighting1 {
-            get {
+        public static string DuelMPFighting1
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPFighting1", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🔰THE DUEL HAS BEGAN🔰
         ///{0} ⚔️ {1}
@@ -538,12 +641,14 @@ namespace TamagotchiBot.Resources {
         ///
         ///❕Pet {3} started attacking {2}!.
         /// </summary>
-        public static string DuelMPFighting2 {
-            get {
+        public static string DuelMPFighting2
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPFighting2", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🔰THE DUEL HAS BEGAN🔰
         ///{0} ⚔️ {1}
@@ -553,12 +658,14 @@ namespace TamagotchiBot.Resources {
         ///
         ///‼️Pet {3} is already very close to {2}!.
         /// </summary>
-        public static string DuelMPFighting3 {
-            get {
+        public static string DuelMPFighting3
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPFighting3", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🔰THE DUEL HAS BEGAN🔰
         ///{0} ⚔️ {1}
@@ -568,12 +675,14 @@ namespace TamagotchiBot.Resources {
         ///
         ///💥Pet {3} hits {2}....
         /// </summary>
-        public static string DuelMPFighting4 {
-            get {
+        public static string DuelMPFighting4
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPFighting4", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🎌&lt;b&gt;THE DUEL IS OVER&lt;/b&gt;🎌
         ///{0} ⚔️ {1}
@@ -584,164 +693,192 @@ namespace TamagotchiBot.Resources {
         ///
         ///&lt;b&gt;Reward: {4}&lt;/b&gt;💰.
         /// </summary>
-        public static string DuelMPFightingEnd {
-            get {
+        public static string DuelMPFightingEnd
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPFightingEnd", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet {1}{3} slipped and fell on his butt during an attack🧸
         ///
         ///{2}{0} wins 🥇.
         /// </summary>
-        public static string DuelMPFightingEnding1 {
-            get {
+        public static string DuelMPFightingEnding1
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPFightingEnding1", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet {3}{1} tried to dodge the attack, but his agility could not save him from a powerful blow 🥊
         ///
         ///Pet {2}{0} wins 🏆.
         /// </summary>
-        public static string DuelMPFightingEnding10 {
-            get {
+        public static string DuelMPFightingEnding10
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPFightingEnding10", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet {1}{3} hits the shield with lightning speed💢
         ///{0}{2} got scared and asked to stop the duel🙅‍♂️
         ///
         ///{3}{1} wins 🥇.
         /// </summary>
-        public static string DuelMPFightingEnding2 {
-            get {
+        public static string DuelMPFightingEnding2
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPFightingEnding2", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet {3}{1} bravely defended himself, blocking every attack with his shield 🛡️
         ///
         ///Pet {2}{0} eventually found the gap and won 🎉.
         /// </summary>
-        public static string DuelMPFightingEnding3 {
-            get {
+        public static string DuelMPFightingEnding3
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPFightingEnding3", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet {3}{1} withstood a series of powerful blows,
         ///but his strength began to fade and he succumbed to the attack of his pet {2}{0}
         ///
         ///Pet {2}{0} wins 🏆.
         /// </summary>
-        public static string DuelMPFightingEnding4 {
-            get {
+        public static string DuelMPFightingEnding4
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPFightingEnding4", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet {2}{0} was slow, but his patience and resilience allowed him to repel all attacks 🛡️
         ///Pet {3}{1} surrendered after seeing that his opponent would not yield
         ///
         ///Pet {2}{0} wins 🏆.
         /// </summary>
-        public static string DuelMPFightingEnding5 {
-            get {
+        public static string DuelMPFightingEnding5
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPFightingEnding5", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet {3}{1} was afraid of the attack and froze in place,
         ///allowing your opponent {2}{0} to win the battle 🏁
         ///
         ///Pet {2}{0} wins 🏆.
         /// </summary>
-        public static string DuelMPFightingEnding6 {
-            get {
+        public static string DuelMPFightingEnding6
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPFightingEnding6", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet {3}{1} jumped from side to side, avoiding every attack of its opponent 🦎
         ///However, pet {2}{0} found a weak spot and won 🎖️
         ///
         ///Pet {2}{0} wins 🏆.
         /// </summary>
-        public static string DuelMPFightingEnding7 {
-            get {
+        public static string DuelMPFightingEnding7
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPFightingEnding7", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet {3}{1} used its magical powers to create a shield that repelled attacks from its opponent {2}{0},
         ///but fatigue ultimately led to his defeat.
         ///
         ///Pet {2}{0} wins 🏆.
         /// </summary>
-        public static string DuelMPFightingEnding8 {
-            get {
+        public static string DuelMPFightingEnding8
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPFightingEnding8", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet {3}{1} ran at full speed, trying to dodge his opponent&apos;s attack {2}{0}
         ///but in the end he was defeated due to lack of concentration 🪫
         ///
         ///Pet {2}{0} wins 🏆.
         /// </summary>
-        public static string DuelMPFightingEnding9 {
-            get {
+        public static string DuelMPFightingEnding9
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPFightingEnding9", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ♨️{0} announces a pet duel!♨️
         ///
         ///&quot;My &lt;i&gt;&lt;b&gt;{2} {1}&lt;/b&gt;&lt;/i&gt; kicks ass and takes names! Who will challenge us?!&quot;.
         /// </summary>
-        public static string DuelMPStartCommand {
-            get {
+        public static string DuelMPStartCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPStartCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to No one accepted the duel from {0}
         ///&lt;i&gt;So everyone is afraid of pet {1}&lt;/i&gt; 🌚
         ///
         ///The contribution in the amount of {2}💰 was returned to the account.
         /// </summary>
-        public static string DuelMPTimeout {
-            get {
+        public static string DuelMPTimeout
+        {
+            get
+            {
                 return ResourceManager.GetString("DuelMPTimeout", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to It happens to everyone, but life goes on!
         ///Maybe you&apos;ll be lucky with a new pet 😼
         ///
         ///Try again? 🫶.
         /// </summary>
-        public static string EpilogueText {
-            get {
+        public static string EpilogueText
+        {
+            get
+            {
                 return ResourceManager.GetString("EpilogueText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You have come to {0}, but all you see is an empty room and a note on the table:
         ///&quot;My beloved friend {1}!
@@ -750,143 +887,173 @@ namespace TamagotchiBot.Resources {
         ///
         ///Your pet left because he lacked care 💔.
         /// </summary>
-        public static string FarewellText {
-            get {
+        public static string FarewellText
+        {
+            get
+            {
                 return ResourceManager.GetString("FarewellText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Change your pet&apos;s appearance 🎩.
         /// </summary>
-        public static string farmButtonChangeType {
-            get {
+        public static string farmButtonChangeType
+        {
+            get
+            {
                 return ResourceManager.GetString("farmButtonChangeType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 👨‍🌾: Oh, who came to us! It&apos;s {0} with its owner!
         ///&lt;b&gt;How can I help?&lt;/b&gt;.
         /// </summary>
-        public static string farmCommand {
-            get {
+        public static string farmCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("farmCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Farm 🚜.
         /// </summary>
-        public static string farmCommandDescription {
-            get {
+        public static string farmCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("farmCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to fresh.
         /// </summary>
-        public static string FatigueFresh {
-            get {
+        public static string FatigueFresh
+        {
+            get
+            {
                 return ResourceManager.GetString("FatigueFresh", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to rested.
         /// </summary>
-        public static string FatigueRested {
-            get {
+        public static string FatigueRested
+        {
+            get
+            {
                 return ResourceManager.GetString("FatigueRested", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to sleepy.
         /// </summary>
-        public static string FatigueSleepy {
-            get {
+        public static string FatigueSleepy
+        {
+            get
+            {
                 return ResourceManager.GetString("FatigueSleepy", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to slightly tired.
         /// </summary>
-        public static string FatigueSlightlyTired {
-            get {
+        public static string FatigueSlightlyTired
+        {
+            get
+            {
                 return ResourceManager.GetString("FatigueSlightlyTired", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to tired.
         /// </summary>
-        public static string FatigueTired {
-            get {
+        public static string FatigueTired
+        {
+            get
+            {
                 return ResourceManager.GetString("FatigueTired", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Feed someone else&apos;s pet 🍔.
         /// </summary>
-        public static string FeedMPCommand {
-            get {
+        public static string FeedMPCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("FeedMPCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet &lt;b&gt;{0}&lt;/b&gt; happily pounced on a huge burger 🍔 with fries 🍟
         ///{2}&lt;b&gt;{3}&lt;/b&gt;: &lt;i&gt;Thank you very much! I&apos;ll tell the owner that he has a great friend!&lt;/i&gt;
         ///
         ///-{1}💰.
         /// </summary>
-        public static string FeedMPEndSuccess {
-            get {
+        public static string FeedMPEndSuccess
+        {
+            get
+            {
                 return ResourceManager.GetString("FeedMPEndSuccess", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You can feed your pet only via PM bot 🤷‍♂️.
         /// </summary>
-        public static string FeedMPErrorFeedOwnPet {
-            get {
+        public static string FeedMPErrorFeedOwnPet
+        {
+            get
+            {
                 return ResourceManager.GetString("FeedMPErrorFeedOwnPet", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to No such players found 👀.
         /// </summary>
-        public static string FeedMPNotFound {
-            get {
+        public static string FeedMPNotFound
+        {
+            get
+            {
                 return ResourceManager.GetString("FeedMPNotFound", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0}, send the nickname of which pet you want to feed 🍽
         ///&lt;i&gt;Hint: start typing &apos;@&apos; and select a player &lt;/i&gt;.
         /// </summary>
-        public static string FeedMPStart {
-            get {
+        public static string FeedMPStart
+        {
+            get
+            {
                 return ResourceManager.GetString("FeedMPStart", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Little fox 🦊.
         /// </summary>
-        public static string FoxTypeText {
-            get {
+        public static string FoxTypeText
+        {
+            get
+            {
                 return ResourceManager.GetString("FoxTypeText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You are in the gameroom
         ///
@@ -899,48 +1066,69 @@ namespace TamagotchiBot.Resources {
         ///
         ///Do not play so much and safety first! 🧗‍♀️.
         /// </summary>
-        public static string gameroomCommand {
-            get {
+        public static string gameroomCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("gameroomCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Gameroom ⚽️.
         /// </summary>
-        public static string gameroomCommandDescription {
-            get {
+        public static string gameroomCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("gameroomCommandDescription", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Gemini 🤖.
+        /// </summary>
+        public static string geminiCommandDescription
+        {
+            get
+            {
+                return ResourceManager.GetString("geminiCommandDescription", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Say goodbye and leave 👋.
         /// </summary>
-        public static string goAwayButton {
-            get {
+        public static string goAwayButton
+        {
+            get
+            {
                 return ResourceManager.GetString("goAwayButton", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Compensation credited: {0}💰.
         /// </summary>
-        public static string GoldCompensastionGotText {
-            get {
+        public static string GoldCompensastionGotText
+        {
+            get
+            {
                 return ResourceManager.GetString("GoldCompensastionGotText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Need more gold 💰.
         /// </summary>
-        public static string goldNotEnough {
-            get {
+        public static string goldNotEnough
+        {
+            get
+            {
                 return ResourceManager.GetString("goldNotEnough", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🌈 Welcome to the world of Tamagotchi! 🌈
         ///Here you can make yourself a new virtual friend 🐩🐈🐈‍⬛🐕
@@ -957,98 +1145,118 @@ namespace TamagotchiBot.Resources {
         ///1. How does the 🏅 level accumulate?
         ///- 1 experience = 1 minute of pe [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string helpCommand {
-            get {
+        public static string helpCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("helpCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to About the game ❓.
         /// </summary>
-        public static string helpCommandDescription {
-            get {
+        public static string helpCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("helpCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Take the pills 💊💊💊.
         /// </summary>
-        public static string hospitalCommandCurePills {
-            get {
+        public static string hospitalCommandCurePills
+        {
+            get
+            {
                 return ResourceManager.GetString("hospitalCommandCurePills", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Hospital 🏥.
         /// </summary>
-        public static string hospitalCommandDescription {
-            get {
+        public static string hospitalCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("hospitalCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to A healthy pet is the key to success 🏄🏄🏻‍♀️🏄
         ///Good job, your pet is full of energy: {0}% ❤️‍🔥.
         /// </summary>
-        public static string hospitalCommandHighHp {
-            get {
+        public static string hospitalCommandHighHp
+        {
+            get
+            {
                 return ResourceManager.GetString("hospitalCommandHighHp", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Jesus Christ! Your pet is one foot in the grave! ☠️
         ///Help him now! 🚑
         ///Health: {0}%.
         /// </summary>
-        public static string hospitalCommandLowHp {
-            get {
+        public static string hospitalCommandLowHp
+        {
+            get
+            {
                 return ResourceManager.GetString("hospitalCommandLowHp", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Safety first 🏥
         ///Do not forget feed your pet! 🤕
         ///Health is middle level: {0}%.
         /// </summary>
-        public static string hospitalCommandMidHp {
-            get {
+        public static string hospitalCommandMidHp
+        {
+            get
+            {
                 return ResourceManager.GetString("hospitalCommandMidHp", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} Get your own Tamagotchi.
         /// </summary>
-        public static string InviteGlobalMultiplayerButton {
-            get {
+        public static string InviteGlobalMultiplayerButton
+        {
+            get
+            {
                 return ResourceManager.GetString("InviteGlobalMultiplayerButton", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0}, you don’t have your Tamagotchi yet 🐧.
         /// </summary>
-        public static string InviteGlobalMultiplayerText {
-            get {
+        public static string InviteGlobalMultiplayerText
+        {
+            get
+            {
                 return ResourceManager.GetString("InviteGlobalMultiplayerText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} Become a friend for {1}.
         /// </summary>
-        public static string InviteReferalMultiplayerButton {
-            get {
+        public static string InviteReferalMultiplayerButton
+        {
+            get
+            {
                 return ResourceManager.GetString("InviteReferalMultiplayerButton", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You are in the kitchen 🥦
         ///🍕 Pet&apos;s satiety: {0}%
@@ -1061,30 +1269,36 @@ namespace TamagotchiBot.Resources {
         ///
         ///Don&apos;t forget feed him 🐣.
         /// </summary>
-        public static string kitchenCommand {
-            get {
+        public static string kitchenCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("kitchenCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Kitchen 🍽.
         /// </summary>
-        public static string kitchenCommandDescription {
-            get {
+        public static string kitchenCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("kitchenCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺 | мова 🇺🇦.
         /// </summary>
-        public static string languageCommandDescription {
-            get {
+        public static string languageCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("languageCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to What to do with pet:
         ////pet - pet&apos;s status {0}
@@ -1106,48 +1320,58 @@ namespace TamagotchiBot.Resources {
         ///
         ///There  [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string menuCommand {
-            get {
+        public static string menuCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("menuCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Actions with pet 🎒.
         /// </summary>
-        public static string menuCommandDescription {
-            get {
+        public static string menuCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("menuCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🎉 Amazing! Your pet climbed to the &lt;b&gt;{0}&lt;/b&gt; rank this month! All that training paid off — you’ve received &lt;b&gt;{1} gold&lt;/b&gt; as a reward! 💰.
         /// </summary>
-        public static string MonthlyGoldReward {
-            get {
+        public static string MonthlyGoldReward
+        {
+            get
+            {
                 return ResourceManager.GetString("MonthlyGoldReward", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Little mouse 🐭.
         /// </summary>
-        public static string MouseTypeText {
-            get {
+        public static string MouseTypeText
+        {
+            get
+            {
                 return ResourceManager.GetString("MouseTypeText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to To participate you must have a pet 🪿.
         /// </summary>
-        public static string MPNoPetCallbackAlert {
-            get {
+        public static string MPNoPetCallbackAlert
+        {
+            get
+            {
                 return ResourceManager.GetString("MPNoPetCallbackAlert", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {8}, here is your pet
         ///
@@ -1161,119 +1385,143 @@ namespace TamagotchiBot.Resources {
         ///🏅 {6} level
         ///💰 Gold: {7} 💴.
         /// </summary>
-        public static string MultiplayerShowPet {
-            get {
+        public static string MultiplayerShowPet
+        {
+            get
+            {
                 return ResourceManager.GetString("MultiplayerShowPet", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Unfortunately, you don&apos;t have enough money ☠️.
         /// </summary>
-        public static string NotEnoughGold {
-            get {
+        public static string NotEnoughGold
+        {
+            get
+            {
                 return ResourceManager.GetString("NotEnoughGold", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} to start a duel you need {2}💰gold
         ///You only have {1}💰.
         /// </summary>
-        public static string NotEnoughGoldForDuel {
-            get {
+        public static string NotEnoughGoldForDuel
+        {
+            get
+            {
                 return ResourceManager.GetString("NotEnoughGoldForDuel", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to To accept a duel you need {1}💰gold
         ///You only have {0}💰.
         /// </summary>
-        public static string NotEnoughGoldForDuelCallback {
-            get {
+        public static string NotEnoughGoldForDuelCallback
+        {
+            get
+            {
                 return ResourceManager.GetString("NotEnoughGoldForDuelCallback", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} to feed friend&apos;s pet you need {2}💰gold
         ///You only have {1}💰.
         /// </summary>
-        public static string NotEnoughGoldForMPFeed {
-            get {
+        public static string NotEnoughGoldForMPFeed
+        {
+            get
+            {
                 return ResourceManager.GetString("NotEnoughGoldForMPFeed", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} to start a duel you need {1}%💊 health
         ///You only have {2}%💊.
         /// </summary>
-        public static string NotEnoughHPForDuel {
-            get {
+        public static string NotEnoughHPForDuel
+        {
+            get
+            {
                 return ResourceManager.GetString("NotEnoughHPForDuel", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to To accept a duel you need {0}%💊 health
         ///You only have {1}%💊.
         /// </summary>
-        public static string NotEnoughHPForDuelCallback {
-            get {
+        public static string NotEnoughHPForDuelCallback
+        {
+            get
+            {
                 return ResourceManager.GetString("NotEnoughHPForDuelCallback", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0}, you have to wait another {1}🕑 to feed someone else’s pet🍗.
         /// </summary>
-        public static string NotEnoughTimeSpentByLastMPFeed {
-            get {
+        public static string NotEnoughTimeSpentByLastMPFeed
+        {
+            get
+            {
                 return ResourceManager.GetString("NotEnoughTimeSpentByLastMPFeed", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0}, too little time has passed 🍕
         ///Pet {1} didn’t want to eat🐣
         ///
         ///Wait another {2}🕑 before you can feed pet again.
         /// </summary>
-        public static string NotEnoughTimeSpentFeedMP {
-            get {
+        public static string NotEnoughTimeSpentFeedMP
+        {
+            get
+            {
                 return ResourceManager.GetString("NotEnoughTimeSpentFeedMP", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
-        public static string NoText {
-            get {
+        public static string NoText
+        {
+            get
+            {
                 return ResourceManager.GetString("NoText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to No ❌.
         /// </summary>
-        public static string NoTextEmoji {
-            get {
+        public static string NoTextEmoji
+        {
+            get
+            {
                 return ResourceManager.GetString("NoTextEmoji", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Panda 🐼.
         /// </summary>
-        public static string PandaTypeText {
-            get {
+        public static string PandaTypeText
+        {
+            get
+            {
                 return ResourceManager.GetString("PandaTypeText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to After a long search and a lot of money for detectives, the pet was found! {0}
         ///You asked for forgiveness for a long time and promised not to forget about your pet again 🐣
@@ -1281,12 +1529,14 @@ namespace TamagotchiBot.Resources {
         ///
         ////pet - check pet status.
         /// </summary>
-        public static string PetCameBackText {
-            get {
+        public static string PetCameBackText
+        {
+            get
+            {
                 return ResourceManager.GetString("PetCameBackText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {11} {0}
         ///
@@ -1307,39 +1557,47 @@ namespace TamagotchiBot.Resources {
         ///&lt;b&gt;&lt;i&gt;And you can chat with me right here!&lt;/i&gt;&lt;/b&gt;
         ///{11}{0}: Hello! How are you doing?.
         /// </summary>
-        public static string petCommand {
-            get {
+        public static string petCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("petCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet&apos;s status ❤️‍🩹.
         /// </summary>
-        public static string petCommandDescription {
-            get {
+        public static string petCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("petCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Basic info 📋.
         /// </summary>
-        public static string petCommandInlineBasicInfo {
-            get {
+        public static string petCommandInlineBasicInfo
+        {
+            get
+            {
                 return ResourceManager.GetString("petCommandInlineBasicInfo", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Extra info 📝.
         /// </summary>
-        public static string petCommandInlineExtraInfo {
-            get {
+        public static string petCommandInlineExtraInfo
+        {
+            get
+            {
                 return ResourceManager.GetString("petCommandInlineExtraInfo", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} {1}
         ///
@@ -1353,132 +1611,160 @@ namespace TamagotchiBot.Resources {
         ///
         ///🦭 Pet is &lt;b&gt;&lt;i&gt;{8} days old&lt;/i&gt;&lt;/b&gt;.
         /// </summary>
-        public static string petCommandMoreInfo1 {
-            get {
+        public static string petCommandMoreInfo1
+        {
+            get
+            {
                 return ResourceManager.GetString("petCommandMoreInfo1", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Your pet has been cured on {0}% 🌡
         ///🧸 But joy decreased on {1}%.
         /// </summary>
-        public static string PetCuringAnwserCallback {
-            get {
+        public static string PetCuringAnwserCallback
+        {
+            get
+            {
                 return ResourceManager.GetString("PetCuringAnwserCallback", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet doesn&apos;t want to poop 🗿.
         /// </summary>
-        public static string PetDoesntWantToPoo {
-            get {
+        public static string PetDoesntWantToPoo
+        {
+            get
+            {
                 return ResourceManager.GetString("PetDoesntWantToPoo", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Your pet has satisfied hunger on {0}%.
         /// </summary>
-        public static string PetFeedingAnwserCallback {
-            get {
+        public static string PetFeedingAnwserCallback
+        {
+            get
+            {
                 return ResourceManager.GetString("PetFeedingAnwserCallback", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Hygiene +{0}%.
         /// </summary>
-        public static string PetHygieneAnwserCallback {
-            get {
+        public static string PetHygieneAnwserCallback
+        {
+            get
+            {
                 return ResourceManager.GetString("PetHygieneAnwserCallback", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You can&apos;t go to the farm because the pet is busy 🚫.
         /// </summary>
-        public static string petIsBusyForFarm {
-            get {
+        public static string petIsBusyForFarm
+        {
+            get
+            {
                 return ResourceManager.GetString("petIsBusyForFarm", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The pet is clean enough 💦.
         /// </summary>
-        public static string PetIsCleanEnoughAlert {
-            get {
+        public static string PetIsCleanEnoughAlert
+        {
+            get
+            {
                 return ResourceManager.GetString("PetIsCleanEnoughAlert", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The pet has already played enough ⛹️‍♀️.
         /// </summary>
-        public static string PetIsFullOfJoyText {
-            get {
+        public static string PetIsFullOfJoyText
+        {
+            get
+            {
                 return ResourceManager.GetString("PetIsFullOfJoyText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Joy increased by {0}% 🎊.
         /// </summary>
-        public static string PetPlayingAnwserCallback {
-            get {
+        public static string PetPlayingAnwserCallback
+        {
+            get
+            {
                 return ResourceManager.GetString("PetPlayingAnwserCallback", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Your pet is sleeping now 💤.
         /// </summary>
-        public static string PetSleepingAlreadyAnwserCallback {
-            get {
+        public static string PetSleepingAlreadyAnwserCallback
+        {
+            get
+            {
                 return ResourceManager.GetString("PetSleepingAlreadyAnwserCallback", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet doesn&apos;t want to sleep yet 🌞.
         /// </summary>
-        public static string PetSleepingDoesntWantYetAnwserCallback {
-            get {
+        public static string PetSleepingDoesntWantYetAnwserCallback
+        {
+            get
+            {
                 return ResourceManager.GetString("PetSleepingDoesntWantYetAnwserCallback", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Gold +{1} 💰
         ///The pet is tired at +{0}% 😓
         ///Wait until the pet finishes work.
         /// </summary>
-        public static string PetWorkingAnswerCallback {
-            get {
+        public static string PetWorkingAnswerCallback
+        {
+            get
+            {
                 return ResourceManager.GetString("PetWorkingAnswerCallback", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 📛 Quit Mini-game.
         /// </summary>
-        public static string quitCommandDescription {
-            get {
+        public static string quitCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("quitCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Quit ❌.
         /// </summary>
-        public static string quitText {
-            get {
+        public static string quitText
+        {
+            get
+            {
                 return ResourceManager.GetString("quitText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You went to watch the fireworks 🎇
         ///But the pet accidentally stepped into a puddle 💦
@@ -1489,12 +1775,14 @@ namespace TamagotchiBot.Resources {
         ///
         ////pet - check pet&apos;s status.
         /// </summary>
-        public static string RandomEventFireworks {
-            get {
+        public static string RandomEventFireworks
+        {
+            get
+            {
                 return ResourceManager.GetString("RandomEventFireworks", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Walking with a pet in the city, you met an old friend of Lionko🦁
         ///
@@ -1503,12 +1791,14 @@ namespace TamagotchiBot.Resources {
         ///
         ////pet - check pet&apos;s status.
         /// </summary>
-        public static string RandomEventFriendMet {
-            get {
+        public static string RandomEventFriendMet
+        {
+            get
+            {
                 return ResourceManager.GetString("RandomEventFriendMet", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🌭 You were asked to rate a new hot dog recipe 🧑‍🍳
         ///
@@ -1517,12 +1807,14 @@ namespace TamagotchiBot.Resources {
         ///
         ////pet - check pet&apos;s status.
         /// </summary>
-        public static string RandomEventHotdog {
-            get {
+        public static string RandomEventHotdog
+        {
+            get
+            {
                 return ResourceManager.GetString("RandomEventHotdog", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You took a walk through the botanical garden 🌷🌷🌷
         ///{0}: I liked it very much, we will definitely come back here!
@@ -1531,12 +1823,14 @@ namespace TamagotchiBot.Resources {
         ///
         ////pet - check the status of the pet.
         /// </summary>
-        public static string RandomEventNiceFlower {
-            get {
+        public static string RandomEventNiceFlower
+        {
+            get
+            {
                 return ResourceManager.GetString("RandomEventNiceFlower", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🎮 You and your pet had a great time playing on the computer
         ///
@@ -1544,12 +1838,14 @@ namespace TamagotchiBot.Resources {
         ///
         ////pet - check the status of the pet.
         /// </summary>
-        public static string RandomEventPlayComputerGames {
-            get {
+        public static string RandomEventPlayComputerGames
+        {
+            get
+            {
                 return ResourceManager.GetString("RandomEventPlayComputerGames", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🌈 You saw the rainbow after the rain 🌦
         ///
@@ -1557,12 +1853,14 @@ namespace TamagotchiBot.Resources {
         ///
         ////pet - check pet&apos;s status.
         /// </summary>
-        public static string RandomEventRainbow {
-            get {
+        public static string RandomEventRainbow
+        {
+            get
+            {
                 return ResourceManager.GetString("RandomEventRainbow", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🧑‍🌾Some passerby stepped on the pet&apos;s foot 🗣
         ///
@@ -1571,12 +1869,14 @@ namespace TamagotchiBot.Resources {
         ///
         ////pet - check pet&apos;s status.
         /// </summary>
-        public static string RandomEventStepOnFoot {
-            get {
+        public static string RandomEventStepOnFoot
+        {
+            get
+            {
                 return ResourceManager.GetString("RandomEventStepOnFoot", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ❤️‍🔥Help your pet urgently!
         ///{0}: my tummy hurts very much...
@@ -1586,12 +1886,14 @@ namespace TamagotchiBot.Resources {
         ///
         ////hospital - you have to run to the clinic!.
         /// </summary>
-        public static string RandomEventStomachache {
-            get {
+        public static string RandomEventStomachache
+        {
+            get
+            {
                 return ResourceManager.GetString("RandomEventStomachache", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0}: Delicious watermelon, I want more 🍉
         ///
@@ -1599,84 +1901,102 @@ namespace TamagotchiBot.Resources {
         ///
         ////pet - check the status of the pet.
         /// </summary>
-        public static string RandomEventWatermelon {
-            get {
+        public static string RandomEventWatermelon
+        {
+            get
+            {
                 return ResourceManager.GetString("RandomEventWatermelon", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🌈⭐️ Top 10 Experience⭐️🌈.
         /// </summary>
-        public static string ranksCommand {
-            get {
+        public static string ranksCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("ranksCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🍎⭐️ Top 10 in apples game ⭐️🍎.
         /// </summary>
-        public static string ranksCommandApples {
-            get {
+        public static string ranksCommandApples
+        {
+            get
+            {
                 return ResourceManager.GetString("ranksCommandApples", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Rating 🏆.
         /// </summary>
-        public static string ranksCommandDescription {
-            get {
+        public static string ranksCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("ranksCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 💰⭐️ Top 10 in gold ⭐️💰.
         /// </summary>
-        public static string ranksCommandGold {
-            get {
+        public static string ranksCommandGold
+        {
+            get
+            {
                 return ResourceManager.GetString("ranksCommandGold", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🍎Apples.
         /// </summary>
-        public static string ranksCommandInlineApples {
-            get {
+        public static string ranksCommandInlineApples
+        {
+            get
+            {
                 return ResourceManager.GetString("ranksCommandInlineApples", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 💰 Gold.
         /// </summary>
-        public static string ranksCommandInlineGold {
-            get {
+        public static string ranksCommandInlineGold
+        {
+            get
+            {
                 return ResourceManager.GetString("ranksCommandInlineGold", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🏅Experience.
         /// </summary>
-        public static string ranksCommandInlineLevel {
-            get {
+        public static string ranksCommandInlineLevel
+        {
+            get
+            {
                 return ResourceManager.GetString("ranksCommandInlineLevel", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 💰 {0} gold credited for new friend {1}.
         /// </summary>
-        public static string ReferalAddedMessageText {
-            get {
+        public static string ReferalAddedMessageText
+        {
+            get
+            {
                 return ResourceManager.GetString("ReferalAddedMessageText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Walking together is much more fun, right? 👯‍♀️
         ///Invite your friends to hang out using your referral link and get prizes for it! 🎁
@@ -1690,30 +2010,36 @@ namespace TamagotchiBot.Resources {
         ///Your referral link:
         ///{2}.
         /// </summary>
-        public static string referalCommand {
-            get {
+        public static string referalCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("referalCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 👬 Prizes for a friend.
         /// </summary>
-        public static string referalCommandDescription {
-            get {
+        public static string referalCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("referalCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} apples left.
         /// </summary>
-        public static string remainingApplesText {
-            get {
+        public static string remainingApplesText
+        {
+            get
+            {
                 return ResourceManager.GetString("remainingApplesText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0}: You&apos;ve come back!
         ///I&apos;ve missed you so much!
@@ -1722,209 +2048,253 @@ namespace TamagotchiBot.Resources {
         ////kitchen to feed 🍩
         ////gameroom for games 🏓.
         /// </summary>
-        public static string ReminderNotifyText1 {
-            get {
+        public static string ReminderNotifyText1
+        {
+            get
+            {
                 return ResourceManager.GetString("ReminderNotifyText1", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0}: Waiting for you here, come back
         ///
         ////kitchen to feed 🍩
         ////gameroom for games 🏓.
         /// </summary>
-        public static string ReminderNotifyText2 {
-            get {
+        public static string ReminderNotifyText2
+        {
+            get
+            {
                 return ResourceManager.GetString("ReminderNotifyText2", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0}: Sadness to be alone...
         ///
         ////kitchen to feed 🍩
         ////gameroom for games 🏓.
         /// </summary>
-        public static string ReminderNotifyText3 {
-            get {
+        public static string ReminderNotifyText3
+        {
+            get
+            {
                 return ResourceManager.GetString("ReminderNotifyText3", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to No access to do this.
         /// </summary>
-        public static string renameBannedCommand {
-            get {
+        public static string renameBannedCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("renameBannedCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Type new name for pet 🗯️.
         /// </summary>
-        public static string renameCommand {
-            get {
+        public static string renameCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("renameCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to New name ✏️.
         /// </summary>
-        public static string renameCommandDescription {
-            get {
+        public static string renameCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("renameCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dropped pet {0} 💔.
         /// </summary>
-        public static string restartCommand {
-            get {
+        public static string restartCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("restartCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to No ⁉️.
         /// </summary>
-        public static string ResurrectNoText {
-            get {
+        public static string ResurrectNoText
+        {
+            get
+            {
                 return ResourceManager.GetString("ResurrectNoText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Yes (-1000 💰).
         /// </summary>
-        public static string ResurrectYesText {
-            get {
+        public static string ResurrectYesText
+        {
+            get
+            {
                 return ResourceManager.GetString("ResurrectYesText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to There&apos;s a daily reward waiting for you! 💸
         ///Take it soon! 🎁.
         /// </summary>
-        public static string rewardCommand {
-            get {
+        public static string rewardCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("rewardCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You have already got your daily reward today 🫶🏻.
         /// </summary>
-        public static string rewardCommandDailyRewardGotten {
-            get {
+        public static string rewardCommandDailyRewardGotten
+        {
+            get
+            {
                 return ResourceManager.GetString("rewardCommandDailyRewardGotten", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Until the next award: {0} ⏱.
         /// </summary>
-        public static string rewardCommandDailyRewardInlineShowTime {
-            get {
+        public static string rewardCommandDailyRewardInlineShowTime
+        {
+            get
+            {
                 return ResourceManager.GetString("rewardCommandDailyRewardInlineShowTime", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Reward 🎁.
         /// </summary>
-        public static string rewardCommandDescription {
-            get {
+        public static string rewardCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("rewardCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Daily 🎉(+{0}💰).
         /// </summary>
-        public static string rewardCommandInlineDailyReward {
-            get {
+        public static string rewardCommandInlineDailyReward
+        {
+            get
+            {
                 return ResourceManager.GetString("rewardCommandInlineDailyReward", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🎁 Come on for your daily bonus 🎉
         ////reward 🎁.
         /// </summary>
-        public static string rewardNotification {
-            get {
+        public static string rewardNotification
+        {
+            get
+            {
                 return ResourceManager.GetString("rewardNotification", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Top 10 chat 🎖.
         /// </summary>
-        public static string ShowChatRanksMPButton {
-            get {
+        public static string ShowChatRanksMPButton
+        {
+            get
+            {
                 return ResourceManager.GetString("ShowChatRanksMPButton", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Top 10 chat players 🎖.
         /// </summary>
-        public static string ShowChatRanksMPCommand {
-            get {
+        public static string ShowChatRanksMPCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("ShowChatRanksMPCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🎖&lt;b&gt;Best chat duelists {0}&lt;/b&gt;🎖.
         /// </summary>
-        public static string ShowChatRanksMPHeader {
-            get {
+        public static string ShowChatRanksMPHeader
+        {
+            get
+            {
                 return ResourceManager.GetString("ShowChatRanksMPHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Top 10 world 🏆.
         /// </summary>
-        public static string ShowGlobalRanksMPButton {
-            get {
+        public static string ShowGlobalRanksMPButton
+        {
+            get
+            {
                 return ResourceManager.GetString("ShowGlobalRanksMPButton", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Top 10 players of all chats 🏆.
         /// </summary>
-        public static string ShowGlobalRanksMPCommand {
-            get {
+        public static string ShowGlobalRanksMPCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("ShowGlobalRanksMPCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🏆&lt;b&gt;The best duelists in the world&lt;/b&gt; 🏆.
         /// </summary>
-        public static string ShowGlobalRanksMPHeader {
-            get {
+        public static string ShowGlobalRanksMPHeader
+        {
+            get
+            {
                 return ResourceManager.GetString("ShowGlobalRanksMPHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🦁 Show your pet.
         /// </summary>
-        public static string ShowPetMPCommand {
-            get {
+        public static string ShowPetMPCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("ShowPetMPCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Hello everyone in the {0} chat!
         ///Bot 🐾 Tamagotchi | Virtual Pet 🐾 provides the opportunity to have your own pet directly in Telegram
@@ -1935,161 +2305,195 @@ namespace TamagotchiBot.Resources {
         ////feed_pet - feed someone else’s pet 🥞
         ////ranks - Top-10 of Best 🏆.
         /// </summary>
-        public static string ShowWelcomeMessageMultiplayer {
-            get {
+        public static string ShowWelcomeMessageMultiplayer
+        {
+            get
+            {
                 return ResourceManager.GetString("ShowWelcomeMessageMultiplayer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} {1}
         ///😴 Fatigue: {2}%
         ///⚡️ Status: {3}.
         /// </summary>
-        public static string sleepCommand {
-            get {
+        public static string sleepCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("sleepCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Bedroom 🛏.
         /// </summary>
-        public static string sleepCommandDescription {
-            get {
+        public static string sleepCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("sleepCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Put to sleep 🛌.
         /// </summary>
-        public static string sleepCommandInlinePutToSleep {
-            get {
+        public static string sleepCommandInlinePutToSleep
+        {
+            get
+            {
                 return ResourceManager.GetString("sleepCommandInlinePutToSleep", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Remains to sleep: {0} 🌚.
         /// </summary>
-        public static string sleepCommandInlineShowTime {
-            get {
+        public static string sleepCommandInlineShowTime
+        {
+            get
+            {
                 return ResourceManager.GetString("sleepCommandInlineShowTime", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Start a pet battle! ⚔️.
         /// </summary>
-        public static string StartDuelMPCommand {
-            get {
+        public static string StartDuelMPCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("StartDuelMPCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Statistics 📊.
         /// </summary>
-        public static string statisticsText {
-            get {
+        public static string statisticsText
+        {
+            get
+            {
                 return ResourceManager.GetString("statisticsText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Test value.
         /// </summary>
-        public static string Test {
-            get {
+        public static string Test
+        {
+            get
+            {
                 return ResourceManager.GetString("Test", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🚀 Add to new chat.
         /// </summary>
-        public static string ToAddToNewGroupReferalCommand {
-            get {
+        public static string ToAddToNewGroupReferalCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("ToAddToNewGroupReferalCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet is good now. Enough to eat 🤢.
         /// </summary>
-        public static string tooManyStarvingCommand {
-            get {
+        public static string tooManyStarvingCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("tooManyStarvingCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pet doesn&apos;t want to hand out flyers 🫧
         ///To do this job you need to have no more than {0}😴 fatigue.
         /// </summary>
-        public static string tooTiredForJobFlyers {
-            get {
+        public static string tooTiredForJobFlyers
+        {
+            get
+            {
                 return ResourceManager.GetString("tooTiredForJobFlyers", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The pet doesn&apos;t want to work on the computer 🫧
         ///To do this job you need to have no more than {0}😴 fatigue.
         /// </summary>
-        public static string tooTiredForJobPC {
-            get {
+        public static string tooTiredForJobPC
+        {
+            get
+            {
                 return ResourceManager.GetString("tooTiredForJobPC", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Your pet is too tired, he should sleep 💤.
         /// </summary>
-        public static string tooTiredText {
-            get {
+        public static string tooTiredText
+        {
+            get
+            {
                 return ResourceManager.GetString("tooTiredText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to To resurrect your pet? 🧬.
         /// </summary>
-        public static string ToResurrectQuestion {
-            get {
+        public static string ToResurrectQuestion
+        {
+            get
+            {
                 return ResourceManager.GetString("ToResurrectQuestion", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 📩 Share link.
         /// </summary>
-        public static string ToShareReferalCommand {
-            get {
+        public static string ToShareReferalCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("ToShareReferalCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 🎮 Welcome to Tamagotchi Bot! Here you can raise your own virtual pet, play with him and compete with another players 🎮
         ///Let&apos;s start!.
         /// </summary>
-        public static string Welcome {
-            get {
+        public static string Welcome
+        {
+            get
+            {
                 return ResourceManager.GetString("Welcome", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Let&apos;s go! 😻.
         /// </summary>
-        public static string WelcomeStatusButton {
-            get {
+        public static string WelcomeStatusButton
+        {
+            get
+            {
                 return ResourceManager.GetString("WelcomeStatusButton", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Choose what your pet will be doing 💡
         ///
@@ -2098,80 +2502,98 @@ namespace TamagotchiBot.Resources {
         ///Programing 💻 -{0}⌛️, +{1} golds 💰
         ///Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} gold 💰.
         /// </summary>
-        public static string workCommand {
-            get {
+        public static string workCommand
+        {
+            get
+            {
                 return ResourceManager.GetString("workCommand", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Jobs 💰.
         /// </summary>
-        public static string workCommandDescription {
-            get {
+        public static string workCommandDescription
+        {
+            get
+            {
                 return ResourceManager.GetString("workCommandDescription", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The pet is now handing out leaflets 🤹‍♀️.
         /// </summary>
-        public static string workCommandFlyersWorking {
-            get {
+        public static string workCommandFlyersWorking
+        {
+            get
+            {
                 return ResourceManager.GetString("workCommandFlyersWorking", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Distribute leaflets 🤹‍♀️.
         /// </summary>
-        public static string workCommandInlineFlyers {
-            get {
+        public static string workCommandInlineFlyers
+        {
+            get
+            {
                 return ResourceManager.GetString("workCommandInlineFlyers", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Program 💻.
         /// </summary>
-        public static string workCommandInlinePC {
-            get {
+        public static string workCommandInlinePC
+        {
+            get
+            {
                 return ResourceManager.GetString("workCommandInlinePC", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Remains to work: {0} ⏱.
         /// </summary>
-        public static string workCommandInlineShowTime {
-            get {
+        public static string workCommandInlineShowTime
+        {
+            get
+            {
                 return ResourceManager.GetString("workCommandInlineShowTime", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to The pet is currently working at the computer 👩‍💻.
         /// </summary>
-        public static string workCommandPCWorking {
-            get {
+        public static string workCommandPCWorking
+        {
+            get
+            {
                 return ResourceManager.GetString("workCommandPCWorking", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
-        public static string YesText {
-            get {
+        public static string YesText
+        {
+            get
+            {
                 return ResourceManager.GetString("YesText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Yes ✅.
         /// </summary>
-        public static string YesTextEmoji {
-            get {
+        public static string YesTextEmoji
+        {
+            get
+            {
                 return ResourceManager.GetString("YesTextEmoji", resourceCulture);
             }
         }

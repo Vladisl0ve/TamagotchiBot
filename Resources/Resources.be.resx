@@ -250,6 +250,9 @@
   <data name="gameroomCommandDescription" xml:space="preserve">
     <value>Дзіцячая ⚽️</value>
   </data>
+  <data name="geminiCommandDescription" xml:space="preserve">
+    <value>Gemini 🤖</value>
+  </data>
   <data name="denyAccessSleeping" xml:space="preserve">
     <value>Ты не можаш зайсці да пакою: твой гадаванец спіць 🌙</value>
   </data>

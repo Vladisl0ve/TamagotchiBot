@@ -17,8 +17,8 @@ namespace TamagotchiBot.Models.Mongo
         public DateTime NextDevNotify { get; set; }
 
         [BsonElement("DoSendChangelogs")]
-        public bool DoSendChangelogs { get; set; } 
-        
+        public bool DoSendChangelogs { get; set; }
+
         [BsonElement("DoMaintainWorks")]
         public bool DoMaintainWorks { get; set; }
 
@@ -32,5 +32,8 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("TmgToken")]
         public string TmgToken { get; set; }
+
+        [BsonElement("GeminiApiKey")]
+        public string GeminiApiKey { get; set; }
     }
 }

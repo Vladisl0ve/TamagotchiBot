@@ -248,6 +248,9 @@ Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
   <data name="gameroomCommandDescription" xml:space="preserve">
     <value>Pokój gier ⚽️</value>
   </data>
+  <data name="geminiCommandDescription" xml:space="preserve">
+    <value>Gemini 🤖</value>
+  </data>
   <data name="denyAccessSleeping" xml:space="preserve">
     <value>Brak możliwości wejścia do pokoju: zwierzak śpi 🌙</value>
   </data>

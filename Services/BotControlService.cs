@@ -459,7 +459,7 @@ namespace TamagotchiBot.Services
                     Log.Warning($"Forward ERROR [{e.ErrorCode}]: {e.Message}");
 
                     var secondsToDelay = e.Parameters?.RetryAfter.HasValue == true ?
-                                            ((int) e.Parameters.RetryAfter) * 20 : //x2 waiting on PROD
+                                            ((int)e.Parameters.RetryAfter) * 20 : //x2 waiting on PROD
                                             4;
 
                     await Task.Delay(secondsToDelay * 1000);

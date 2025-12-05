@@ -69,4 +69,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\Prompts\GeminiPetRoleplay.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

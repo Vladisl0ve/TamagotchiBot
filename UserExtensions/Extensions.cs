@@ -272,6 +272,12 @@ namespace TamagotchiBot.UserExtensions
                 {
                     Command = Commands.ChangelogCommand,
                     Description = nameof(Resources.Resources.changelogCommandDescription).UseCulture(culture)
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.GeminiCommand,
+                    Description = nameof(Resources.Resources.geminiCommandDescription).UseCulture(culture)
                 }
             };
 
@@ -371,6 +377,12 @@ namespace TamagotchiBot.UserExtensions
                 {
                     Command = Commands.ChangelogCommand,
                     Description = nameof(Resources.Resources.changelogCommandDescription).UseCulture(culture)
+                },
+
+                new BotCommand()
+                {
+                    Command = Commands.GeminiCommand,
+                    Description = nameof(Resources.Resources.geminiCommandDescription).UseCulture(culture)
                 }
             };
             List<BotCommand> resultAdmin = new List<BotCommand>()
@@ -642,7 +654,7 @@ namespace TamagotchiBot.UserExtensions
         }
         public static List<int> ParseString(List<string> toParse)
         {
-            List<int> result = new List<int> ();
+            List<int> result = new List<int>();
 
             if (toParse == null || toParse.Count == 0)
                 return result;

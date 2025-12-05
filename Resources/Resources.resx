@@ -273,6 +273,9 @@ Do not play so much and safety first! 🧗‍♀️</value>
   <data name="gameroomCommandDescription" xml:space="preserve">
     <value>Gameroom ⚽️</value>
   </data>
+  <data name="geminiCommandDescription" xml:space="preserve">
+    <value>Gemini 🤖</value>
+  </data>
   <data name="PetPlayingAnwserCallback" xml:space="preserve">
     <value>Joy increased by {0}% 🎊</value>
   </data>

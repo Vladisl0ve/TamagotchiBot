@@ -17,6 +17,7 @@ namespace TamagotchiBot.Services.Mongo
         public bool GetDoSendChangelogs() => _collection.Find(si => true).FirstOrDefault()?.DoSendChangelogs ?? false;
         public bool GetDoMaintainWorks() => _collection.Find(si => true).FirstOrDefault()?.DoMaintainWorks ?? false;
         public string GetOpenAiKey() => _collection.Find(si => true).FirstOrDefault()?.OpenAiKey;
+        public string GetGeminiKey() => _collection.Find(si => true).FirstOrDefault()?.GeminiApiKey;
         public string GetBotToken() => _collection.Find(si => true).FirstOrDefault()?.TmgToken;
         public List<string> GetBadWords() => _collection.Find(si => true).FirstOrDefault()?.BannedWords ?? new List<string>();
         public string GetLastBotstatId() => _collection.Find(si => true).FirstOrDefault()?.BotstatCheckId;

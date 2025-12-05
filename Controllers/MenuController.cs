@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using System.Web;
 using TamagotchiBot.Database;
@@ -127,6 +129,11 @@ namespace TamagotchiBot.Controllers
             if (textReceived == Commands.ChangelogCommand || GetAllTranslatedAndLowered(nameof(changelogCommandDescription)).Contains(textReceived))
             {
                 await ShowChangelogsInfo();
+                return;
+            }
+            if (textReceived.StartsWith(Commands.GeminiCommand))
+            {
+                await SendGeminiMessage(petDB, userDB);
                 return;
             }
             if (textReceived == Commands.MenuCommand || GetAllTranslatedAndLowered(nameof(menuCommandDescription)).Contains(textReceived))
@@ -753,6 +760,117 @@ namespace TamagotchiBot.Controllers
             Log.Debug($"Called /ChangeLanugage for {_userInfo}");
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
+
+        private async Task<(string answer, bool isCanceled)> GetAnswerGemini(string textToAnswer, Pet petDB, User userDB)
+        {
+            await _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
+            var geminiKey = _appServices.SInfoService.GetGeminiKey();
+            if (string.IsNullOrEmpty(geminiKey))
+                return ("Gemini API key is not set", true);
+
+            string result;
+            bool isCanceled = false;
+            try
+            {
+                string promptPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Prompts", "GeminiPetRoleplay.txt");
+                string systemPrompt = await System.IO.File.ReadAllTextAsync(promptPath);
+
+                systemPrompt = systemPrompt
+                    .Replace("{{Name}}", petDB.Name)
+                    .Replace("{{HP}}", petDB.HP.ToString())
+                    .Replace("{{Satiety}}", petDB.Satiety.ToString("F0"))
+                    .Replace("{{Hygiene}}", petDB.Hygiene.ToString())
+                    .Replace("{{Fatigue}}", petDB.Fatigue.ToString())
+                    .Replace("{{Joy}}", petDB.Joy.ToString())
+                    .Replace("{{Level}}", petDB.Level.ToString())
+                    .Replace("{{CurrentStatus}}", Extensions.GetCurrentStatus(petDB.CurrentStatus, _userCulture))
+                    .Replace("{{Gold}}", userDB.Gold.ToString());
+
+                var prompt = new
+                {
+                    systemInstruction = new
+                    {
+                        parts = new[] { new { text = systemPrompt } }
+                    },
+                    contents = new[]
+                    {
+                        new { parts = new[] { new { text = textToAnswer } } }
+                    }
+                };
+
+                using var client = new HttpClient();
+                var response = await client.PostAsJsonAsync(
+                    $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key={geminiKey}",
+                    prompt);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseString = await response.Content.ReadAsStringAsync();
+                    var jsonDoc = System.Text.Json.JsonDocument.Parse(responseString);
+                    result = jsonDoc.RootElement
+                        .GetProperty("candidates")[0]
+                        .GetProperty("content")
+                        .GetProperty("parts")[0]
+                        .GetProperty("text")
+                        .GetString();
+                }
+                else
+                {
+                    result = $"Error: {response.StatusCode}";
+                    isCanceled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "GEMINI ERROR");
+                isCanceled = true;
+                result = nameof(ChatgptErrorAnswerText).UseCulture(_userCulture);
+            }
+
+            return (result, isCanceled);
+        }
+
+        private async Task SendGeminiMessage(Pet petDB, User userDB)
+        {
+            string question = _message.Text
+                .Replace("/gemini", "")
+                .Replace("@test_tmg_bot", "") //hardcoded for now as it is not critical
+                .Trim();
+
+            if (string.IsNullOrEmpty(question))
+            {
+                var toSend = new AnswerMessage()
+                {
+                    Text = "daroŭ",
+                    StickerId = null,
+                    ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
+                    InlineKeyboardMarkup = null
+                };
+                Log.Debug($"Called /gemini for {_userInfo}");
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+                return;
+            }
+
+            var (answer, isCanceled) = await GetAnswerGemini(question, petDB, userDB);
+
+            if (isCanceled)
+            {
+                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
+                {
+                    Text = answer,
+                    ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+                }, _userId, false);
+            }
+            else
+            {
+                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
+                {
+                    Text = answer,
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Markdown,
+                    ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+                }, _userId, false);
+            }
+        }
         private async Task ShowPetInfo(Pet petDB)
         {
             var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
@@ -921,17 +1039,17 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            string commandHospital =  petDB.HP switch
+            string commandHospital = petDB.HP switch
             {
                 >= 80 => nameof(hospitalCommandHighHp).UseCulture(_userCulture),
-                >20 and < 80 => nameof(hospitalCommandMidHp).UseCulture(_userCulture),
+                > 20 and < 80 => nameof(hospitalCommandMidHp).UseCulture(_userCulture),
                 _ => nameof(hospitalCommandLowHp).UseCulture(_userCulture)
             };
 
-            string stickerHospital =  petDB.HP switch
+            string stickerHospital = petDB.HP switch
             {
                 >= 80 => StickersId.GetStickerByType(nameof(StickersId.PetHospitalHighHPSticker_Cat), _userPetType),
-                >20 and < 80 => StickersId.GetStickerByType(nameof(StickersId.PetHospitalMidHPSticker_Cat), _userPetType),
+                > 20 and < 80 => StickersId.GetStickerByType(nameof(StickersId.PetHospitalMidHPSticker_Cat), _userPetType),
                 _ => StickersId.GetStickerByType(nameof(StickersId.PetHospitalLowHPSticker_Cat), _userPetType),
             };
 
@@ -1212,7 +1330,7 @@ namespace TamagotchiBot.Controllers
 
             var petWasFetTimes = audUser.ChocolateEatenCounter +
                                  audUser.AppleEatenCounter +
-                                 audUser.BreadEatenCounter+
+                                 audUser.BreadEatenCounter +
                                  audUser.LollypopEatenCounter;
 
             var petWasSleptMinutes = (int)(audUser.SleepenTimesCounter * Constants.TimesToWait.SleepToWait.TotalMinutes);
@@ -1901,10 +2019,10 @@ namespace TamagotchiBot.Controllers
             string anwser = string.Format(nameof(PetCuringAnwserCallback).UseCulture(_userCulture), Factors.PillHPFactor, Factors.PillJoyFactor);
             await SendAlertToUser(anwser, true);
 
-            string commandHospital =  newHP switch
+            string commandHospital = newHP switch
             {
                 >= 80 => nameof(hospitalCommandHighHp).UseCulture(_userCulture),
-                >20 and < 80 => nameof(hospitalCommandMidHp).UseCulture(_userCulture),
+                > 20 and < 80 => nameof(hospitalCommandMidHp).UseCulture(_userCulture),
                 _ => nameof(hospitalCommandLowHp).UseCulture(_userCulture)
             };
 
@@ -2075,7 +2193,7 @@ namespace TamagotchiBot.Controllers
 
                 if (!topApples.Any(a => a.UserId == _userId))
                 {
-                    var currentUserApple =_appServices.AppleGameDataService.Get(_userId);
+                    var currentUserApple = _appServices.AppleGameDataService.Get(_userId);
 
                     anwserRating += "\n______________________________";
                     var counterN = _appServices.AppleGameDataService.GetAll()
@@ -2100,7 +2218,7 @@ namespace TamagotchiBot.Controllers
                 var topPets = _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
                 p => p.UserId,
                 u => u.UserId,
-                (pet, user) => new {user.UserId, user.Gold, pet.Name, pet.LastUpdateTime, pet.Type})
+                (pet, user) => new { user.UserId, user.Gold, pet.Name, pet.LastUpdateTime, pet.Type })
                 .OrderByDescending(p => p.Gold)
                 .ThenByDescending(p => p.LastUpdateTime)
                 .Take(10); //First 10 top-gold pets
