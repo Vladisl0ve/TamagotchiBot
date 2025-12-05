@@ -39,9 +39,42 @@ namespace TamagotchiBot.Services.Mongo
 
             return result;
         }
+
+        public List<(string userQ, string geminiA, DateTime revision)> GetLastGeminiQA(long userId)
+        {
+            List<(string userQ, string geminiA, DateTime revision)> result = new List<(string userQ, string geminiA, DateTime revision)>();
+            List<string> resultGemini = GetLastGeminiQA_RAW(userId);
+
+            foreach (var resultik in resultGemini)
+            {
+                var stringAiO = resultik.Split("|xxx|");
+                if (stringAiO.Length != 3)
+                {
+                    Log.Error($"BD Gemini answer is wrong! [{resultik}], userId: {userId}");
+                    continue;
+                }
+
+                result.Add(new()
+                {
+                    userQ = stringAiO[0],
+                    geminiA = stringAiO[1],
+                    revision = DateTime.ParseExact(stringAiO[2], "R", System.Globalization.CultureInfo.InvariantCulture)
+                });
+            }
+
+            return result;
+        }
         private List<string> GetLastChatGPTQA_RAW(long userId)
         {
             var result = _collection.Find(u => u.UserId == userId).FirstOrDefault()?.LastChatGptQA;
+            if (result == null || result.Count <= 0)
+                return new List<string>();
+
+            return result;
+        }
+        private List<string> GetLastGeminiQA_RAW(long userId)
+        {
+            var result = _collection.Find(u => u.UserId == userId).FirstOrDefault()?.LastGeminiQA;
             if (result == null || result.Count <= 0)
                 return new List<string>();
 
@@ -152,6 +185,11 @@ namespace TamagotchiBot.Services.Mongo
             return AppendNewChatGPTQA(userId, $"{userQ}|xxx|{chatGptA}|xxx|{DateTime.UtcNow:R}");
         }
 
+        public bool AppendNewGeminiQA(long userId, string userQ, string geminiA, int maxLimits)
+        {
+            return AppendNewGeminiQA(userId, $"{userQ}|xxx|{geminiA}|xxx|{DateTime.UtcNow:R}", maxLimits);
+        }
+
         private bool AppendNewChatGPTQA(long userId, string newMsg)
         {
             var metauserDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
@@ -168,6 +206,27 @@ namespace TamagotchiBot.Services.Mongo
                 result.RemoveAt(0);
 
             metauserDb.LastChatGptQA = result;
+            metauserDb.Updated = DateTime.UtcNow;
+            _collection.ReplaceOne(u => u.UserId == userId, metauserDb);
+            return true;
+        }
+
+        private bool AppendNewGeminiQA(long userId, string newMsg, int maxLimits)
+        {
+            var metauserDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
+            metauserDb ??= Create(new MetaUser() { UserId = userId });
+
+            var result = new List<string>();
+
+            if (metauserDb.LastGeminiQA != null)
+                result.AddRange(metauserDb.LastGeminiQA);
+
+            result.Add(newMsg);
+
+            if (result.Count > maxLimits)
+                result.RemoveAt(0);
+
+            metauserDb.LastGeminiQA = result;
             metauserDb.Updated = DateTime.UtcNow;
             _collection.ReplaceOne(u => u.UserId == userId, metauserDb);
             return true;
@@ -199,8 +258,8 @@ namespace TamagotchiBot.Services.Mongo
         {
             var result = _collection.Find(u => u.UserId == userId).FirstOrDefault()?.DebugMessageThreadId;
             return result ?? 0;
-        }    
-        
+        }
+
         internal bool UpdateDebugMessageThreadId(long userId, int newMsgThreadId)
         {
             var metaUserDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();

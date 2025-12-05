@@ -21,6 +21,9 @@ namespace TamagotchiBot.Services.Mongo
         public string GetBotToken() => _collection.Find(si => true).FirstOrDefault()?.TmgToken;
         public List<string> GetBadWords() => _collection.Find(si => true).FirstOrDefault()?.BannedWords ?? new List<string>();
         public string GetLastBotstatId() => _collection.Find(si => true).FirstOrDefault()?.BotstatCheckId;
+
+        public int GetGeminiMaxHistory() => _collection.Find(si => true).FirstOrDefault()?.MaxGeminiHistory ?? 20;
+
         public DateTime GetNextNotify()
         {
             bool isMongoAlive;

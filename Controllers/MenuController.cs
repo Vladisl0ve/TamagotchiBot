@@ -210,7 +210,8 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            await AnswerByChatGPT(petDB);
+            //await AnswerByChatGPT(petDB);
+            await AnswerByGemini(petDB, userDB);
 
             Log.Debug($"[MESSAGE] '{customText ?? _message.Text}' FROM {_userInfo}");
         }
@@ -761,9 +762,37 @@ namespace TamagotchiBot.Controllers
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
 
-        private async Task<(string answer, bool isCanceled)> GetAnswerGemini(string textToAnswer, Pet petDB, User userDB)
+        private async Task AnswerByGemini(Pet petDB, User userDB)
         {
             await _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
+
+            var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
+            bool isTimeOut;
+            string geminiAnswer;
+
+            //Limit history check (e.g. 50 messages max for now, or time based)
+
+            //We will simple check if we can proceed.
+            //For now, let's just proceed.
+
+            var (answer, isCanceled) = await GetAnswerGemini(_message.Text, petDB, userDB);
+            geminiAnswer = $"{Extensions.GetLongTypeEmoji(_userPetType, _userCulture)} <b>{HttpUtility.HtmlEncode(petDB.Name)}</b>: ";
+            geminiAnswer += answer;
+            isTimeOut = isCanceled;
+
+            var toSend = new AnswerMessage()
+            {
+                Text = geminiAnswer,
+                replyToMsgId = _message.MessageId,
+                ReplyMarkup = isTimeOut ? ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture) : null,
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+            };
+
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, true, true);
+        }
+
+        private async Task<(string answer, bool isCanceled)> GetAnswerGemini(string textToAnswer, Pet petDB, User userDB)
+        {
             var geminiKey = _appServices.SInfoService.GetGeminiKey();
             if (string.IsNullOrEmpty(geminiKey))
                 return ("Gemini API key is not set", true);
@@ -784,7 +813,24 @@ namespace TamagotchiBot.Controllers
                     .Replace("{{Joy}}", petDB.Joy.ToString())
                     .Replace("{{Level}}", petDB.Level.ToString())
                     .Replace("{{CurrentStatus}}", Extensions.GetCurrentStatus(petDB.CurrentStatus, _userCulture))
-                    .Replace("{{Gold}}", userDB.Gold.ToString());
+                    .Replace("{{Gold}}", userDB.Gold.ToString())
+                    .Replace("{{Language}}", _userCulture.DisplayName);
+
+                var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
+                int historyLimit = _appServices.SInfoService.GetGeminiMaxHistory();
+
+                var contentsList = new List<object>();
+
+                //Add history
+                //Skipping older ones if we want to limit context window sent to API, similar to ChatGPT QA_TO_FEED_COUNTER
+                foreach (var item in previousQA.Skip(Math.Max(0, previousQA.Count - Constants.QA_TO_FEED_COUNTER)))
+                {
+                    contentsList.Add(new { role = "user", parts = new[] { new { text = item.userQ } } });
+                    contentsList.Add(new { role = "model", parts = new[] { new { text = item.geminiA } } });
+                }
+
+                //Add current message
+                contentsList.Add(new { role = "user", parts = new[] { new { text = textToAnswer } } });
 
                 var prompt = new
                 {
@@ -792,10 +838,7 @@ namespace TamagotchiBot.Controllers
                     {
                         parts = new[] { new { text = systemPrompt } }
                     },
-                    contents = new[]
-                    {
-                        new { parts = new[] { new { text = textToAnswer } } }
-                    }
+                    contents = contentsList.ToArray()
                 };
 
                 using var client = new HttpClient();
@@ -813,6 +856,9 @@ namespace TamagotchiBot.Controllers
                         .GetProperty("parts")[0]
                         .GetProperty("text")
                         .GetString();
+
+                    //Save to history
+                    _appServices.MetaUserService.AppendNewGeminiQA(_userId, textToAnswer, result, historyLimit);
                 }
                 else
                 {
@@ -851,6 +897,7 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
+            await _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
             var (answer, isCanceled) = await GetAnswerGemini(question, petDB, userDB);
 
             if (isCanceled)

@@ -14,9 +14,9 @@ namespace TamagotchiBot.Models.Mongo
         public long UserId { get; set; }
 
         [BsonElement("IsPetNameAskedOnRename")]
-        public bool IsPetNameAskedOnRename { get; set; } 
+        public bool IsPetNameAskedOnRename { get; set; }
         [BsonElement("IsConfirmedPetRenaming")]
-        public bool IsAskedToConfirmRenaming { get; set; }  
+        public bool IsAskedToConfirmRenaming { get; set; }
 
         [BsonElement("TmpPetName")]
         public string TmpPetName { get; set; }
@@ -36,8 +36,8 @@ namespace TamagotchiBot.Models.Mongo
         public DateTime DuelStartTime { get; set; }
 
         [BsonElement("NextPossibleDuelTime")]
-        public DateTime NextPossibleDuelTime { get; set; } 
-        
+        public DateTime NextPossibleDuelTime { get; set; }
+
         [BsonElement("LastMPFeedingTime")]
         public DateTime LastMPFeedingTime { get; set; }
 
@@ -46,6 +46,9 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("LastChatGptQA")]
         public List<string> LastChatGptQA { get; set; }
+
+        [BsonElement("LastGeminiQA")]
+        public List<string> LastGeminiQA { get; set; }
 
         public MetaUser Clone(MetaUser toClone)
         {
