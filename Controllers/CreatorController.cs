@@ -228,7 +228,7 @@ namespace TamagotchiBot.Controllers
         }
         internal async Task SendWelcomeText()
         {
-            var toSend =  new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = nameof(Welcome).UseCulture(_userCulture),
                 StickerId = StickersId.WelcomeSticker,
@@ -241,7 +241,7 @@ namespace TamagotchiBot.Controllers
         internal async Task AskForAPetName()
         {
             var petDB = _appServices.PetService.Get(_userId);
-            var toSend =  new AnswerMessage()
+            var toSend = new AnswerMessage()
             {
                 Text = nameof(ChooseName).UseCulture(_userCulture),
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.PetChooseNameSticker_Cat), Extensions.GetEnumPetType(petDB?.Type ?? new Random().Next(5))),
@@ -261,7 +261,7 @@ namespace TamagotchiBot.Controllers
             if (userFromMsg == null || petDB == null || petDB.IsGone || petDB.HP <= 0)
                 return;
 
-            var petResult =  Pet.Clone(petDB);
+            var petResult = Pet.Clone(petDB);
 
             int minuteCounter = (int)(DateTime.UtcNow - petDB.LastUpdateTime).TotalMinutes;
 
@@ -288,7 +288,7 @@ namespace TamagotchiBot.Controllers
             //Sleeping
             if (petDB.CurrentStatus == (int)CurrentStatus.Sleeping)
             {
-                var sleepResult =  UpdateIndicatorSleeping(petDB);
+                var sleepResult = UpdateIndicatorSleeping(petDB);
                 var currentStatus = sleepResult.Item1;
                 var currentFatigue = sleepResult.Item2;
 
@@ -525,6 +525,7 @@ namespace TamagotchiBot.Controllers
             petDB.Satiety = 100;
             petDB.Fatigue = 50;
             userDB.Gold -= Costs.ResurrectPet;
+            petDB.LastUpdateTime = DateTime.UtcNow;
             _appServices.PetService.Update(_userId, petDB);
             _appServices.UserService.Update(_userId, userDB);
 
