@@ -44,7 +44,7 @@ namespace Telegram.Bots.Example
 
         static void MyHandler(object sender, UnhandledExceptionEventArgs args)
         {
-            Exception e = (Exception) args.ExceptionObject;
+            Exception e = (Exception)args.ExceptionObject;
             Log.Fatal(e, "MyHandler caught!");
         }
 
@@ -99,7 +99,7 @@ namespace Telegram.Bots.Example
                               .ForJob(jobKey)
                               .WithIdentity("ResetAllExpJob-trigger")
                               //.WithCronSchedule("0 0 1 1 * ?")); // At 01:00 on day 1 of every month
-                              .WithCronSchedule("0 * * * * ?")); // DEBUG
+                              .WithCronSchedule("0 0 1 1 * ?"));
                       });
                       services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
                   })
@@ -159,12 +159,12 @@ namespace Telegram.Bots.Example
 
                 EnvsSettings = new EnvsSettings()
                 {
-                    AlwaysNotifyUsers  = new List<string>(),
+                    AlwaysNotifyUsers = new List<string>(),
                     ChatsToDevNotify = new List<string>(),
                     BannedRenamingUsers = new List<string>(),
                     DevNotifyEvery = TimeSpan.FromMinutes(1),
                     DevExtraNotifyEvery = TimeSpan.FromMinutes(5),
-                    TriggersEvery  = TimeSpan.FromSeconds(20),
+                    TriggersEvery = TimeSpan.FromSeconds(20),
                     AwakeWhenAFKFor = TimeSpan.FromMinutes(30),
                     BotstatApiKey = "",
                     OpenAiApiKey = "",

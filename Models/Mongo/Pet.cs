@@ -37,8 +37,8 @@ namespace TamagotchiBot.Models.Mongo
         public DateTime NextRandomEventNotificationTime { get; set; }
 
         [BsonElement("CurrentStatus")]
-        public int CurrentStatus { get; set; } 
-        
+        public int CurrentStatus { get; set; }
+
         [BsonElement("CurrentJob")]
         public int CurrentJob { get; set; }
 
@@ -50,7 +50,7 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("Satiety")]
         public double Satiety { get; set; }
-        
+
         [BsonElement("MPSatiety")]
         public int MPSatiety { get; set; }
 
@@ -75,32 +75,36 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("Level")]
         public int Level { get; set; }
 
+        [BsonElement("LevelAllGame")]
+        public int LevelAllGame { get; set; }
+
         public static Pet Clone(Pet petToClone)
         {
             Pet clone = new()
             {
-                BirthDateTime                   = petToClone.BirthDateTime,
-                CurrentStatus                   = petToClone.CurrentStatus,
-                EXP                             = petToClone.EXP,
-                Fatigue                         = petToClone.Fatigue,
-                Level                           = petToClone.Level,
-                GotRandomEventTime              = petToClone.GotRandomEventTime,
-                HP                              = petToClone.HP,
-                Hygiene                         = petToClone.Hygiene,
-                Id                              = petToClone.Id,
-                Joy                             = petToClone.Joy,
-                LastUpdateTime                  = petToClone.LastUpdateTime,
-                Name                            = petToClone.Name,
+                BirthDateTime = petToClone.BirthDateTime,
+                CurrentStatus = petToClone.CurrentStatus,
+                EXP = petToClone.EXP,
+                Fatigue = petToClone.Fatigue,
+                Level = petToClone.Level,
+                GotRandomEventTime = petToClone.GotRandomEventTime,
+                HP = petToClone.HP,
+                Hygiene = petToClone.Hygiene,
+                Id = petToClone.Id,
+                Joy = petToClone.Joy,
+                LastUpdateTime = petToClone.LastUpdateTime,
+                Name = petToClone.Name,
                 NextRandomEventNotificationTime = petToClone.NextRandomEventNotificationTime,
-                Satiety                         = petToClone.Satiety,
-                StartSleepingTime               = petToClone.StartSleepingTime,
-                StartWorkingTime                = petToClone.StartWorkingTime,
-                Type                            = petToClone.Type,
-                UserId                          = petToClone.UserId,
-                ToWakeUpTime                    = petToClone.ToWakeUpTime,
-                IsGone                          = petToClone.IsGone,
-                MPSatiety                       = petToClone.MPSatiety,
-                CurrentJob                      = petToClone.CurrentJob,
+                Satiety = petToClone.Satiety,
+                StartSleepingTime = petToClone.StartSleepingTime,
+                StartWorkingTime = petToClone.StartWorkingTime,
+                Type = petToClone.Type,
+                UserId = petToClone.UserId,
+                ToWakeUpTime = petToClone.ToWakeUpTime,
+                IsGone = petToClone.IsGone,
+                MPSatiety = petToClone.MPSatiety,
+                CurrentJob = petToClone.CurrentJob,
+                LevelAllGame = petToClone.LevelAllGame,
             };
 
             return clone;

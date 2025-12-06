@@ -63,7 +63,7 @@ namespace TamagotchiBot.Services.Mongo
                 pet.LastMPFedTime = newLastMPFed;
                 Update(userId, pet);
             }
-        }      
+        }
         public void UpdateType(long userId, PetType newType)
         {
             var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
@@ -72,7 +72,7 @@ namespace TamagotchiBot.Services.Mongo
                 pet.Type = (int)newType;
                 Update(userId, pet);
             }
-        } 
+        }
         public void UpdateMPSatiety(long userId, int newMPSatiety)
         {
             var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
@@ -202,6 +202,7 @@ namespace TamagotchiBot.Services.Mongo
             foreach (var pet in allPets)
             {
                 pet.EXP = 0;
+                pet.LevelAllGame += pet.Level;
                 pet.Level = 1;
                 pet.Updated = DateTime.UtcNow;
                 _collection.ReplaceOne(p => p.UserId == pet.UserId, pet);
