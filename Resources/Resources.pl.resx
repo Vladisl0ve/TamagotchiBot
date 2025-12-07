@@ -128,6 +128,18 @@ Startujemy!</value>
     <value>🧸 Przede wszystkim musisz nazwać swojego nowego przyjaciela
 Po prostu wpisz to tutaj</value>
   </data>
+  <data name="ConfirmedName" xml:space="preserve">
+    <value>🧃 Świetnie!
+Twój zwierzak {0} czeka 🐱
+
+Harmonogram:
+1️⃣ Zjedz śniadanie w kuchni 🍳
+2️⃣ Umyj zęby i weź prysznic 🛁
+3️⃣ Baw się w pokoju gier (zwierzak naprawdę uwielbia bawić się Apple🍎)
+
+Nie zapomnij odwiedzić swojego zwierzaka, w przeciwnym razie może się obrazić i odejść
+Miłej zabawy 🍿</value>
+  </data>
   <data name="petCommand" xml:space="preserve">
     <value>{11} {0}
 
@@ -141,6 +153,8 @@ Po prostu wpisz to tutaj</value>
 ⚡️ Status: {6}
 🏅 &lt;b&gt;Pioziom: {3} &lt;/b&gt;
 ✨ &lt;i&gt;Doświadczenie {2}/{10}&lt;/i&gt;
+
+{12}
 
 /gameroom - zagraj w Jabłko🍎
 /reward - codzienna nagroda 🎁
@@ -161,6 +175,19 @@ Po prostu wpisz to tutaj</value>
   </data>
   <data name="ConfirmedLanguage" xml:space="preserve">
     <value>Został wybrany język Polski 🇵🇱</value>
+  </data>
+  <data name="petCommandMoreInfo1" xml:space="preserve">
+    <value>{0} {1}
+
+🎂 Data urodzenia: {2}
+👫 Polecenia: {3}
+
+🍗 Zwierzę zostało nakarmione &lt;b&gt;&lt;i&gt;{4} razy&lt;/i&gt;&lt;/b&gt;
+🍎 Grałeś w Apple &lt;b&gt;&lt;i&gt;{5} razy&lt;/i&gt;&lt;/b&gt;
+🌙 Zwierzę spało przez &lt;b&gt;&lt;i&gt;{6} minut&lt;/i&gt;&lt;/b&gt;
+🧰 &lt;b&gt;&lt;i&gt;{7} minut&lt;/i&gt;&lt;/b&gt; zwierzak pracował
+
+🦭 Zwierzę ma &lt;b&gt;&lt;i&gt;{8} dni&lt;/i&gt;&lt;/b&gt;</value>
   </data>
   <data name="petCommandInlineBasicInfo" xml:space="preserve">
     <value>Informacja podstawowa 📋</value>
@@ -198,11 +225,11 @@ Nie zapominaj karmić zwierzaka 🐣</value>
   <data name="FatigueSleepy" xml:space="preserve">
     <value>zaspany</value>
   </data>
-  <data name="kitchenCommandDescription" xml:space="preserve">
-    <value>Kuchnia 🍽</value>
-  </data>
   <data name="petCommandDescription" xml:space="preserve">
     <value>Status zwierzaka ❤️‍🩹</value>
+  </data>
+  <data name="kitchenCommandDescription" xml:space="preserve">
+    <value>Kuchnia 🍽</value>
   </data>
   <data name="languageCommandDescription" xml:space="preserve">
     <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺 | мова 🇺🇦</value>
@@ -251,6 +278,9 @@ Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
   <data name="geminiCommandDescription" xml:space="preserve">
     <value>Gemini 🤖</value>
   </data>
+  <data name="PetPlayingAnwserCallback" xml:space="preserve">
+    <value>Radość wzrosła o {0}% 🎊</value>
+  </data>
   <data name="denyAccessSleeping" xml:space="preserve">
     <value>Brak możliwości wejścia do pokoju: zwierzak śpi 🌙</value>
   </data>
@@ -260,11 +290,11 @@ Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Ranking 🏆</value>
   </data>
-  <data name="renameCommand" xml:space="preserve">
-    <value>Wprowadź nowe imię dla zwierzaka 🗯️</value>
-  </data>
   <data name="restartCommand" xml:space="preserve">
     <value>ДРОПНУЎ ГАДА {0} 💔</value>
+  </data>
+  <data name="renameCommand" xml:space="preserve">
+    <value>Wprowadź nowe imię dla zwierzaka 🗯️</value>
   </data>
   <data name="renameCommandDescription" xml:space="preserve">
     <value>Nowe imię ✏️</value>
@@ -296,6 +326,31 @@ Ale radość spadła o {1}%</value>
   </data>
   <data name="bathroomCommandDescription" xml:space="preserve">
     <value>Łazienka 🛁</value>
+  </data>
+  <data name="helpCommand" xml:space="preserve">
+    <value>🌈 Witamy w świecie Tamagotchi! 🌈
+Tutaj możesz zyskać nowego wirtualnego przyjaciela 🐩🐈🐈‍⬛🐕
+Pamiętaj, aby śledzić postępy swojego zwierzaka:
+▫️graj z nim w różne gry ⚽️
+▫️karm pyszne 🍕🍳🍫
+▫️zaopiekuj się nim 🍼
+▫️ dbaj i po prostu kochaj 😻
+
+W menu poleceń znajdziesz wszystko, czego potrzebuje Twój pupil 🌻
+Odwiedzaj częściej swojego zwierzaka, bo on też Cię kocha i bardzo chętnie zabierze Cię na spacer 🤍❤️🤍
+
+Często zadawane pytania:
+1. Jak gromadzi się poziom 🏅?
+- 1 doświadczenie = 1 minuta życia zwierzaka. Wystarczy nie zapomnieć o swoim zwierzaku🦩
+
+2. Jak zarabiać pieniądze 💰?
+- Złoto zdobywa się w pracy (/work)
+
+3. Czy zwierzę może umrzeć 💀?
+- Niestety zarówno w życiu jak i w Tamagotchi zwierzak może się bardzo obrazić i zostawić 💔
+Dlatego częściej odwiedzaj swojego wirtualnego przyjaciela 🧸
+
+/menu - znajdują się tu prawie wszystkie możliwe polecenia</value>
   </data>
   <data name="helpCommandDescription" xml:space="preserve">
     <value>Pomoc ❓</value>
@@ -396,6 +451,16 @@ Poddania: {2}</value>
   <data name="backToGameroomText" xml:space="preserve">
     <value>Znowu jesteś w pokoju gier ⚽️</value>
   </data>
+  <data name="changelog1Text" xml:space="preserve">
+    <value>👫 Przypominamy o programie poleceń 👭
+
+Razem jest fajniej, więc zaproś znajomych, aby dołączyli do nas w 🐾&lt;b&gt;Tamagotchi Virtual GPT Pet&lt;/b&gt;🐾
+Za każdego nowego znajomego możesz otrzymać 1000💰!
+➡️/referal
+
+Subskrybuj nasz kanał, na którym wszystko jest o bocie:
+https://t.me/newsvirtualpetbot</value>
+  </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
     <value>{0}: Czekam tu na Ciebie, wróć
 
@@ -432,6 +497,9 @@ Rozdawać ulotki 🤹‍♀️ -{3}⌛️, +{4} złota 💰</value>
     <value>Złoto +{1} 💰
 Zwierzę jest zmęczone na +{0}% 😓
 Poczekaj aż zwierzak skończy pracę</value>
+  </data>
+  <data name="workCommandPCWorking" xml:space="preserve">
+    <value>Zwierzak obecnie pracuje przy komputerze 👩‍💻</value>
   </data>
   <data name="workCommandInlineShowTime" xml:space="preserve">
     <value>Pozostało do pracy: {0} ⏱</value>
@@ -470,12 +538,6 @@ Odbierz ją wkrótce! 🎁</value>
   <data name="ranksCommandInlineLevel" xml:space="preserve">
     <value>🏅Poziomy</value>
   </data>
-  <data name="ranksCommandInlineLevelAll" xml:space="preserve">
-    <value>⭐️Poziomy wszech czasów</value>
-  </data>
-  <data name="ranksCommandLevelAll" xml:space="preserve">
-    <value>⭐️ Top 10 poziomów (wszech czasów) ⭐️</value>
-  </data>
   <data name="rewardNotification" xml:space="preserve">
     <value>🎁 Wejdź po bonus codzienny 🎉
 /reward 🎁</value>
@@ -485,6 +547,12 @@ Odbierz ją wkrótce! 🎁</value>
   </data>
   <data name="ranksCommandInlineApples" xml:space="preserve">
     <value>🍎Jabłka</value>
+  </data>
+  <data name="ranksCommandInlineLevelAll" xml:space="preserve">
+    <value>⭐️Poziomy wszech czasów</value>
+  </data>
+  <data name="ranksCommandLevelAll" xml:space="preserve">
+    <value>⭐️ Top 10 poziomów (wszech czasów) ⭐️</value>
   </data>
   <data name="ranksCommandApples" xml:space="preserve">
     <value>🍎⭐️ Top 10 w grze w jabłka ⭐️🍎</value>
@@ -583,8 +651,9 @@ Pogodziliście się 💕
   <data name="PetIsFullOfJoyText" xml:space="preserve">
     <value>Zwierzak już się wystarczająco pobawił ⛹️‍♀️</value>
   </data>
-  <data name="PetPlayingAnwserCallback" xml:space="preserve">
-    <value>Radość wzrosła o {0}% 🎊</value>
+  <data name="AskToConfirmRenamingPet" xml:space="preserve">
+    <value>Czy na pewno chcesz zmienić imię swojego zwierzaka z {0} na {1}? 🗃
+Cena: {2} złota 💰</value>
   </data>
   <data name="YesText" xml:space="preserve">
     <value>Tak</value>
@@ -597,10 +666,6 @@ Pogodziliście się 💕
   </data>
   <data name="NoTextEmoji" xml:space="preserve">
     <value>Nie ❌</value>
-  </data>
-  <data name="AskToConfirmRenamingPet" xml:space="preserve">
-    <value>Czy na pewno chcesz zmienić imię swojego zwierzaka z {0} na {1}? 🗃
-Cena: {2} złota 💰</value>
   </data>
   <data name="InviteGlobalMultiplayerButton" xml:space="preserve">
     <value>{0} Zdobądź własne Tamagotchi</value>
@@ -668,31 +733,6 @@ Dostępne polecenia na czacie:
   </data>
   <data name="changelogCommandDescription" xml:space="preserve">
     <value>📲 Aktualizacje</value>
-  </data>
-  <data name="helpCommand" xml:space="preserve">
-    <value>🌈 Witamy w świecie Tamagotchi! 🌈
-Tutaj możesz zyskać nowego wirtualnego przyjaciela 🐩🐈🐈‍⬛🐕
-Pamiętaj, aby śledzić postępy swojego zwierzaka:
-▫️graj z nim w różne gry ⚽️
-▫️karm pyszne 🍕🍳🍫
-▫️zaopiekuj się nim 🍼
-▫️ dbaj i po prostu kochaj 😻
-
-W menu poleceń znajdziesz wszystko, czego potrzebuje Twój pupil 🌻
-Odwiedzaj częściej swojego zwierzaka, bo on też Cię kocha i bardzo chętnie zabierze Cię na spacer 🤍❤️🤍
-
-Często zadawane pytania:
-1. Jak gromadzi się poziom 🏅?
-- 1 doświadczenie = 1 minuta życia zwierzaka. Wystarczy nie zapomnieć o swoim zwierzaku🦩
-
-2. Jak zarabiać pieniądze 💰?
-- Złoto zdobywa się w pracy (/work)
-
-3. Czy zwierzę może umrzeć 💀?
-- Niestety zarówno w życiu jak i w Tamagotchi zwierzak może się bardzo obrazić i zostawić 💔
-Dlatego częściej odwiedzaj swojego wirtualnego przyjaciela 🧸
-
-/menu - znajdują się tu prawie wszystkie możliwe polecenia</value>
   </data>
   <data name="RandomEventNiceFlower" xml:space="preserve">
     <value>Wybraliście się na spacer po ogrodzie botanicznym 🌷🌷🌷
@@ -786,6 +826,12 @@ Zaproponuj coś innego ⬇️</value>
 
 {3}{1} wygrywa 🥇</value>
   </data>
+  <data name="DuelMPTimeout" xml:space="preserve">
+    <value>Nikt nie przyjął pojedynku od {0}
+&lt;i&gt;Więc wszyscy boją się zwierzaka {1}&lt;/i&gt; 🌚
+
+Wpłata w kwocie {2}💰 została zwrócona na konto</value>
+  </data>
   <data name="MPNoPetCallbackAlert" xml:space="preserve">
     <value>Aby wziąć udział musisz mieć zwierzaka 🪿</value>
   </data>
@@ -796,12 +842,6 @@ Masz tylko {1}💰</value>
   <data name="NotEnoughGoldForDuelCallback" xml:space="preserve">
     <value>Aby przyjąć pojedynek potrzebujesz {1}💰złota
 Masz tylko {0}💰</value>
-  </data>
-  <data name="DuelMPTimeout" xml:space="preserve">
-    <value>Nikt nie przyjął pojedynku od {0}
-&lt;i&gt;Więc wszyscy boją się zwierzaka {1}&lt;/i&gt; 🌚
-
-Wpłata w kwocie {2}💰 została zwrócona na konto</value>
   </data>
   <data name="DuelMPCooldownCallback" xml:space="preserve">
     <value>Twój zwierzak odpoczywa po przegranym ostatnim pojedynku🥷
@@ -857,9 +897,6 @@ Aby wykonać tę pracę, nie musisz odczuwać więcej niż {0}😴 zmęczenia</v
     <value>Zwierzak nie chce rozdawać ulotek 🫧
 Aby wykonać tę pracę, nie musisz odczuwać więcej niż {0}😴 zmęczenia</value>
   </data>
-  <data name="workCommandPCWorking" xml:space="preserve">
-    <value>Zwierzak obecnie pracuje przy komputerze 👩‍💻</value>
-  </data>
   <data name="workCommandFlyersWorking" xml:space="preserve">
     <value>Zwierzak rozdaje teraz ulotki 🤹‍♀️</value>
   </data>
@@ -889,18 +926,6 @@ Masz tylko {0}%💊</value>
   <data name="ShowGlobalRanksMPButton" xml:space="preserve">
     <value>10 najlepszych na świecie 🏆</value>
   </data>
-  <data name="ConfirmedName" xml:space="preserve">
-    <value>🧃 Świetnie!
-Twój zwierzak {0} czeka 🐱
-
-Harmonogram:
-1️⃣ Zjedz śniadanie w kuchni 🍳
-2️⃣ Umyj zęby i weź prysznic 🛁
-3️⃣ Baw się w pokoju gier (zwierzak naprawdę uwielbia bawić się Apple🍎)
-
-Nie zapomnij odwiedzić swojego zwierzaka, w przeciwnym razie może się obrazić i odejść
-Miłej zabawy 🍿</value>
-  </data>
   <data name="bathroomCommandMakePoo" xml:space="preserve">
     <value>🧻Kupa💩</value>
   </data>
@@ -910,8 +935,13 @@ Miłej zabawy 🍿</value>
   <data name="farmCommandDescription" xml:space="preserve">
     <value>Farma 🚜</value>
   </data>
-  <data name="farmCommand" xml:space="preserve">
+  <data name="farmCommand_ENABLED" xml:space="preserve">
     <value>👨‍🌾: Och, kto do nas przyszedł! To {0} ze swoim właścicielem!
+
+Ładunki automatycznego karmnika: {1} ⚡️
+Status automatycznego karmnika: &lt;b&gt;{4}&lt;/b&gt;
+Następne użycie automatycznego karmnika za: {2}h i {3}min 🕗
+
 &lt;b&gt;Jak mogę pomóc?&lt;/b&gt;</value>
   </data>
   <data name="farmButtonChangeType" xml:space="preserve">
@@ -963,11 +993,6 @@ A ogon jest niezwykły...</value>
   <data name="petIsBusyForFarm" xml:space="preserve">
     <value>Nie możesz iść na farmę, bo zwierzak jest zajęty 🚫</value>
   </data>
-  <data name="DuelMPFightingEnding10" xml:space="preserve">
-    <value>Zwierzak {3}{1} próbował uniknąć ataku, ale jego zwinność nie była w stanie uchronić go przed potężnym ciosem 🥊
-
-Zwierzak {2}{0} wygrywa 🏆</value>
-  </data>
   <data name="DuelMPFightingEnding3" xml:space="preserve">
     <value>Zwierzak {3}{1} dzielnie się bronił, blokując tarczą każdy atak 🛡️
 
@@ -1009,21 +1034,13 @@ ale ostatecznie został pokonany przez brak koncentracji 🪫
 
 Zwierzak {2}{0} wygrywa 🏆</value>
   </data>
+  <data name="DuelMPFightingEnding10" xml:space="preserve">
+    <value>Zwierzak {3}{1} próbował uniknąć ataku, ale jego zwinność nie była w stanie uchronić go przed potężnym ciosem 🥊
+
+Zwierzak {2}{0} wygrywa 🏆</value>
+  </data>
   <data name="GoldCompensastionGotText" xml:space="preserve">
     <value>Przyznane odszkodowanie: {0}💰</value>
-  </data>
-  <data name="petCommandMoreInfo1" xml:space="preserve">
-    <value>{0} {1}
-
-🎂 Data urodzenia: {2}
-👫 Polecenia: {3}
-
-🍗 Zwierzę zostało nakarmione &lt;b&gt;&lt;i&gt;{4} razy&lt;/i&gt;&lt;/b&gt;
-🍎 Grałeś w Apple &lt;b&gt;&lt;i&gt;{5} razy&lt;/i&gt;&lt;/b&gt;
-🌙 Zwierzę spało przez &lt;b&gt;&lt;i&gt;{6} minut&lt;/i&gt;&lt;/b&gt;
-🧰 &lt;b&gt;&lt;i&gt;{7} minut&lt;/i&gt;&lt;/b&gt; zwierzak pracował
-
-🦭 Zwierzę ma &lt;b&gt;&lt;i&gt;{8} dni&lt;/i&gt;&lt;/b&gt;</value>
   </data>
   <data name="ChatgptErrorAnswerText" xml:space="preserve">
     <value>🛋 Zwierzak jest zajęty swoimi sprawami i nie zwraca na Ciebie uwagi</value>
@@ -1035,17 +1052,37 @@ Porozmawiaj z nim trochę później 🕐</value>
   <data name="ReferalAddedMessageText" xml:space="preserve">
     <value>💰 {0} złota przyznane za nowego przyjaciela {1}</value>
   </data>
-  <data name="changelog1Text" xml:space="preserve">
-    <value>👫 Przypominamy o programie poleceń 👭
-
-Razem jest fajniej, więc zaproś znajomych, aby dołączyli do nas w 🐾&lt;b&gt;Tamagotchi Virtual GPT Pet&lt;/b&gt;🐾
-Za każdego nowego znajomego możesz otrzymać 1000💰!
-➡️/referal
-
-Subskrybuj nasz kanał, na którym wszystko jest o bocie:
-https://t.me/newsvirtualpetbot</value>
-  </data>
   <data name="MonthlyGoldReward" xml:space="preserve">
     <value>🎉 Gratulacje! Twój pupil osiągnął &lt;b&gt;{0}&lt;/b&gt; rangę miesiąca! Cały trening się opłacił — otrzymałeś &lt;b&gt;{1} złota&lt;/b&gt; jako nagrodę! 💰</value>
+  </data>
+  <data name="farmButtonAutoFeed" xml:space="preserve">
+    <value>Buy Auto-feeder 🤖</value>
+  </data>
+  <data name="autoFeedBought" xml:space="preserve">
+    <value>Karmnik automatyczny kupiony! Masz {0} ładunków</value>
+  </data>
+  <data name="autoFeedEnabled" xml:space="preserve">
+    <value>Automatyczne karmienie włączone 🪺</value>
+  </data>
+  <data name="autoFeedDisabled" xml:space="preserve">
+    <value>Automatyczne karmienie wyłączone. Wymagane ładowanie ⚡️</value>
+  </data>
+  <data name="turnedOn_F" xml:space="preserve">
+    <value>włączone</value>
+  </data>
+  <data name="turnedOff_F" xml:space="preserve">
+    <value>wyłączone</value>
+  </data>
+  <data name="autoFeederUserStatus" xml:space="preserve">
+    <value>🍱 Status automatycznego karmnika: &lt;b&gt;{0}&lt;/b&gt;, 
+🍽 Pozostało ładunków: {1}</value>
+  </data>
+  <data name="farmCommand_DISABLED" xml:space="preserve">
+    <value>👨‍🌾: Och, kto do nas przyszedł! To {0} ze swoim właścicielem!
+
+Ładunki automatycznego karmnika: {1} ⚡️
+Status automatycznego karmnika: &lt;b&gt;{2}&lt;/b&gt;
+
+&lt;b&gt;Jak mogę pomóc?&lt;/b&gt;</value>
   </data>
 </root>

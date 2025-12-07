@@ -147,6 +147,7 @@ namespace TamagotchiBot.UserExtensions
             return new List<string>()
             {
                 nameof(Resources.Resources.farmButtonChangeType).UseCulture(culture),
+                nameof(Resources.Resources.farmButtonAutoFeed).UseCulture(culture),
                 nameof(Resources.Resources.goAwayButton).UseCulture(culture),
             };
         }

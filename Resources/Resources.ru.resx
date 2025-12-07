@@ -154,6 +154,8 @@
 🏅 &lt;b&gt;{3} уровень&lt;/b&gt; 
 ✨ &lt;i&gt;Опыт: {2}/{10}&lt;/i&gt;
 
+{12}
+
 /gameroom - попробуй игру Яблоко🍎
 /reward - ежедневный бонус 🎁
 
@@ -935,9 +937,14 @@ https://t.me/news_virtualpetbot</value>
   <data name="farmCommandDescription" xml:space="preserve">
     <value>Ферма 🚜</value>
   </data>
-  <data name="farmCommand" xml:space="preserve">
-    <value>👨‍🌾: О, кто к нам пожаловал! Это же {0} со своим хозяином!
-&lt;b&gt;Чем могу быть полезен?&lt;/b&gt;</value>
+  <data name="farmCommand_ENABLED" xml:space="preserve">
+    <value>👨‍🌾: О, кто же к нам пришёл! Это {0} со своим хозяином!
+
+Заряды автокормилки: {1} ⚡️
+Статус автокормилки: &lt;b&gt;{4}&lt;/b&gt;
+Следующее использование автокормилки через: {2}ч и {3}мин 🕗
+
+&lt;b&gt;Чем я могу помочь?&lt;/b&gt;</value>
   </data>
   <data name="farmButtonChangeType" xml:space="preserve">
     <value>Сменить облик питомца 🎩</value>
@@ -1049,5 +1056,35 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="MonthlyGoldReward" xml:space="preserve">
     <value>🎉 Поздравляем! Ваш питомец поднялся до &lt;b&gt;{0}&lt;/b&gt; ранга месяца! Вся эта тренировка окупилась — вам начислено &lt;b&gt;{1} золота&lt;/b&gt; в качестве награды! 💰</value>
+  </data>
+  <data name="farmButtonAutoFeed" xml:space="preserve">
+    <value>Купить автокормилку 🤖</value>
+  </data>
+  <data name="autoFeedBought" xml:space="preserve">
+    <value>Автокормилка куплена! У вас осталось {0} зарядов</value>
+  </data>
+  <data name="autoFeedEnabled" xml:space="preserve">
+    <value>Автокормилка включена 🪺</value>
+  </data>
+  <data name="autoFeedDisabled" xml:space="preserve">
+    <value>Автокормилка выключена. Потребна зарядка ⚡️</value>
+  </data>
+  <data name="turnedOn_F" xml:space="preserve">
+    <value>включена</value>
+  </data>
+  <data name="turnedOff_F" xml:space="preserve">
+    <value>выключена</value>
+  </data>
+  <data name="autoFeederUserStatus" xml:space="preserve">
+    <value>🍱 Статус автокормилки: &lt;b&gt;{0}&lt;/b&gt;, 
+🍽 Осталось зарядов: {1}</value>
+  </data>
+  <data name="farmCommand_DISABLED" xml:space="preserve">
+    <value>👨‍🌾: О, кто же к нам пришёл! Это {0} со своим хозяином!
+
+Заряды автокормилки: {1} ⚡️
+Статус автокормилки: &lt;b&gt;{2}&lt;/b&gt;
+
+&lt;b&gt;Чем я могу помочь?&lt;/b&gt;</value>
   </data>
 </root>

@@ -154,6 +154,8 @@ Have fun 🍿</value>
 🏅 &lt;b&gt;{3} level &lt;/b&gt;
 ✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
 
+{12}
+
 /gameroom - Play in Apple🍎
 /reward - Get your daily reward 🎁
 
@@ -931,8 +933,13 @@ You only have {1}%💊</value>
   <data name="farmCommandDescription" xml:space="preserve">
     <value>Farm 🚜</value>
   </data>
-  <data name="farmCommand" xml:space="preserve">
+  <data name="farmCommand_ENABLED" xml:space="preserve">
     <value>👨‍🌾: Oh, who came to us! It's {0} with its owner!
+
+Auto-Feeder charges: {1} ⚡️
+Auto-Feeder status: &lt;b&gt;{4}&lt;/b&gt;
+Next auto-feeder use in: {2}H and {3}mins 🕗
+
 &lt;b&gt;How can I help?&lt;/b&gt;</value>
   </data>
   <data name="farmButtonChangeType" xml:space="preserve">
@@ -1045,5 +1052,35 @@ Talk to him a little later 🕐</value>
   </data>
   <data name="MonthlyGoldReward" xml:space="preserve">
     <value>🎉 Amazing! Your pet climbed to the &lt;b&gt;{0}&lt;/b&gt; rank this month! All that training paid off — you’ve received &lt;b&gt;{1} gold&lt;/b&gt; as a reward! 💰</value>
+  </data>
+  <data name="farmButtonAutoFeed" xml:space="preserve">
+    <value>Buy Auto-feeder 🤖</value>
+  </data>
+  <data name="autoFeedBought" xml:space="preserve">
+    <value>Auto-feeder bought! You have {0} charges</value>
+  </data>
+  <data name="autoFeedEnabled" xml:space="preserve">
+    <value>Auto-feeding enabled 🪺</value>
+  </data>
+  <data name="autoFeedDisabled" xml:space="preserve">
+    <value>Auto-feeding disabled. Recharge required ⚡️</value>
+  </data>
+  <data name="turnedOn_F" xml:space="preserve">
+    <value>turned on</value>
+  </data>
+  <data name="turnedOff_F" xml:space="preserve">
+    <value>turned off</value>
+  </data>
+  <data name="autoFeederUserStatus" xml:space="preserve">
+    <value>🍱 Auto-Feeder status: &lt;b&gt;{0}&lt;/b&gt;, 
+🍽 Auto-Feeder charges left: {1}</value>
+  </data>
+  <data name="farmCommand_DISABLED" xml:space="preserve">
+    <value>👨‍🌾: Oh, who came to us! It's {0} with its owner!
+
+Auto-Feeder charges: {1} ⚡️
+Auto-Feeder status: &lt;b&gt;{2}&lt;/b&gt;
+
+&lt;b&gt;How can I help?&lt;/b&gt;</value>
   </data>
 </root>

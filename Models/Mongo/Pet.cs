@@ -63,6 +63,7 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("Fatigue")]
         public int Fatigue { get; set; }
 
+        [Obsolete]
         [BsonElement("IsNew")]
         public bool IsNew { get; set; }
 
@@ -77,6 +78,9 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("LevelAllGame")]
         public int LevelAllGame { get; set; }
+
+        [BsonElement("IsAutoFeedEnabled")]
+        public bool IsAutoFeedEnabled { get; set; }
 
         public static Pet Clone(Pet petToClone)
         {
@@ -105,6 +109,7 @@ namespace TamagotchiBot.Models.Mongo
                 MPSatiety = petToClone.MPSatiety,
                 CurrentJob = petToClone.CurrentJob,
                 LevelAllGame = petToClone.LevelAllGame,
+                IsAutoFeedEnabled = petToClone.IsAutoFeedEnabled
             };
 
             return clone;

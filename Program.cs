@@ -99,7 +99,15 @@ namespace Telegram.Bots.Example
                               .ForJob(jobKey)
                               .WithIdentity("ResetAllExpJob-trigger")
                               //.WithCronSchedule("0 0 1 1 * ?")); // At 01:00 on day 1 of every month
+                              //.WithCronSchedule("0 * * * * ?")); // Debug purpose: every minute
                               .WithCronSchedule("0 0 1 1 * ?"));
+
+                          var autoFeedJobKey = new JobKey("AutoFeedJob");
+                          q.AddJob<AutoFeedJob>(opts => opts.WithIdentity(autoFeedJobKey));
+                          q.AddTrigger(opts => opts
+                              .ForJob(autoFeedJobKey)
+                              .WithIdentity("AutoFeedJob-trigger")
+                              .WithCronSchedule("0 0 0 * * ?")); // Every day at midnight
                       });
                       services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
                   })

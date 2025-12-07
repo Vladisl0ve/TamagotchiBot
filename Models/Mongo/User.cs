@@ -29,7 +29,7 @@ namespace TamagotchiBot.Models.Mongo
         public bool IsLanguageAskedOnCreate { get; set; }
 
         [BsonElement("IsPetNameAskedOnCreate")]
-        public bool IsPetNameAskedOnCreate { get; set; }      
+        public bool IsPetNameAskedOnCreate { get; set; }
 
         [BsonElement("Culture")]
         public string Culture { get; set; }
@@ -41,10 +41,13 @@ namespace TamagotchiBot.Models.Mongo
         public DateTime GotDailyRewardTime { get; set; }
 
         [BsonElement("Gold")]
-        public int Gold { get; set; } 
-        
+        public int Gold { get; set; }
+
         [BsonElement("ReferaledBy")]
         public long ReferaledBy { get; set; }
+
+        [BsonElement("AutoFeedCharges")]
+        public int AutoFeedCharges { get; set; }
 
         public static User Clone(User userToClone)
         {

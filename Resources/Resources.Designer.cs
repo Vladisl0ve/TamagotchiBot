@@ -141,6 +141,43 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto-feeder bought! You have {0} charges.
+        /// </summary>
+        public static string autoFeedBought {
+            get {
+                return ResourceManager.GetString("autoFeedBought", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-feeding disabled. Recharge required ⚡️.
+        /// </summary>
+        public static string autoFeedDisabled {
+            get {
+                return ResourceManager.GetString("autoFeedDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-feeding enabled 🪺.
+        /// </summary>
+        public static string autoFeedEnabled {
+            get {
+                return ResourceManager.GetString("autoFeedEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🍱 Auto-Feeder status: &lt;b&gt;{0}&lt;/b&gt;, 
+        ///🍽 Auto-Feeder charges left: {1}.
+        /// </summary>
+        public static string autoFeederUserStatus {
+            get {
+                return ResourceManager.GetString("autoFeederUserStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are in the gameroom ⚽️.
         /// </summary>
         public static string backToGameroomText {
@@ -757,6 +794,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Buy Auto-feeder 🤖.
+        /// </summary>
+        public static string farmButtonAutoFeed {
+            get {
+                return ResourceManager.GetString("farmButtonAutoFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change your pet&apos;s appearance 🎩.
         /// </summary>
         public static string farmButtonChangeType {
@@ -767,11 +813,30 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 👨‍🌾: Oh, who came to us! It&apos;s {0} with its owner!
+        ///
+        ///Auto-Feeder charges: {1} ⚡️
+        ///Auto-Feeder status: &lt;b&gt;{2}&lt;/b&gt;
+        ///
         ///&lt;b&gt;How can I help?&lt;/b&gt;.
         /// </summary>
-        public static string farmCommand {
+        public static string farmCommand_DISABLED {
             get {
-                return ResourceManager.GetString("farmCommand", resourceCulture);
+                return ResourceManager.GetString("farmCommand_DISABLED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 👨‍🌾: Oh, who came to us! It&apos;s {0} with its owner!
+        ///
+        ///Auto-Feeder charges: {1} ⚡️
+        ///Auto-Feeder status: &lt;b&gt;{4}&lt;/b&gt;
+        ///Next auto-feeder use in: {2}H and {3}mins 🕗
+        ///
+        ///&lt;b&gt;How can I help?&lt;/b&gt;.
+        /// </summary>
+        public static string farmCommand_ENABLED {
+            get {
+                return ResourceManager.GetString("farmCommand_ENABLED", resourceCulture);
             }
         }
         
@@ -1309,6 +1374,8 @@ namespace TamagotchiBot.Resources {
         ///⚡️ Status: {6}
         ///🏅 &lt;b&gt;{3} level &lt;/b&gt;
         ///✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
+        ///
+        ///{12}
         ///
         ////gameroom - Play in Apple🍎
         ////reward - Get your daily reward 🎁
@@ -2095,6 +2162,24 @@ namespace TamagotchiBot.Resources {
         public static string ToShareReferalCommand {
             get {
                 return ResourceManager.GetString("ToShareReferalCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to turned off.
+        /// </summary>
+        public static string turnedOff_F {
+            get {
+                return ResourceManager.GetString("turnedOff_F", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to turned on.
+        /// </summary>
+        public static string turnedOn_F {
+            get {
+                return ResourceManager.GetString("turnedOn_F", resourceCulture);
             }
         }
         

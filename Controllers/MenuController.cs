@@ -171,6 +171,11 @@ namespace TamagotchiBot.Controllers
                 await ChangeTypeCMD();
                 return;
             }
+            if (GetAllTranslatedAndLowered(nameof(farmButtonAutoFeed)).Contains(textReceived))
+            {
+                await BuyAutoFeedCMD(userDB, petDB);
+                return;
+            }
             if (GetAllTranslatedAndLowered(nameof(CatTypeText)).Contains(textReceived))
             {
                 await ChangeTypeToCatCMD(userDB, petDB);
@@ -691,8 +696,21 @@ namespace TamagotchiBot.Controllers
             var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
             encodedPetName = "<b>" + encodedPetName + "</b>";
 
-            string toSendText = string.Format(nameof(farmCommand).UseCulture(_userCulture),
-                                              encodedPetName);
+            var userDB = _appServices.UserService.Get(_userId);
+            var nextMidnight = DateTime.UtcNow.Date.AddDays(1);
+            var timeRemaining = nextMidnight - DateTime.UtcNow;
+
+            string toSendText = petDB.IsAutoFeedEnabled 
+                    ? string.Format(nameof(farmCommand_ENABLED).UseCulture(_userCulture),
+                                              encodedPetName,
+                                              userDB.AutoFeedCharges,
+                                              (int)timeRemaining.TotalHours,
+                                              timeRemaining.Minutes,
+                                              string.Format(nameof(turnedOn_F).UseCulture(_userCulture)))
+                    : string.Format(nameof(farmCommand_DISABLED).UseCulture(_userCulture),
+                                              encodedPetName,
+                                              userDB.AutoFeedCharges,
+                                              string.Format(nameof(turnedOff_F).UseCulture(_userCulture)));
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.FarmCommandCounter++;
@@ -795,6 +813,31 @@ namespace TamagotchiBot.Controllers
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, true, true);
+        }
+
+        private async Task BuyAutoFeedCMD(User userDB, Pet petDB)
+        {
+            if (userDB.Gold < Constants.Costs.AutoFeedCost)
+            {
+                var toSendErr = new AnswerMessage()
+                {
+                    Text = nameof(NotEnoughGold).UseCulture(_userCulture),
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                };
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSendErr, _userId, false);
+                return;
+            }
+
+            _appServices.UserService.UpdateGold(_userId, userDB.Gold - Constants.Costs.AutoFeedCost);
+            _appServices.UserService.UpdateAutoFeedCharges(_userId, userDB.AutoFeedCharges + Constants.AutoFeed.AutoFeedChargesInitial);
+            _appServices.PetService.UpdateIsAutoFeedEnabled(_userId, true);
+
+            var toSend = new AnswerMessage()
+            {
+                Text = string.Format(nameof(autoFeedBought).UseCulture(_userCulture), userDB.AutoFeedCharges + Constants.AutoFeed.AutoFeedChargesInitial),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+            };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
 
         private async Task<(string answer, bool isCanceled)> GetAnswerGemini(string textToAnswer, Pet petDB, User userDB)
@@ -929,6 +972,7 @@ namespace TamagotchiBot.Controllers
             var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
             encodedPetName = "<b>" + encodedPetName + "</b>";
 
+            var userDB = _appServices.UserService.Get(_userId);
             string toSendText = string.Format(nameof(petCommand).UseCulture(_userCulture),
                                               encodedPetName,
                                               petDB.HP,
@@ -938,10 +982,14 @@ namespace TamagotchiBot.Controllers
                                               petDB.Fatigue,
                                               Extensions.GetCurrentStatus(petDB.CurrentStatus, _userCulture),
                                               petDB.Joy,
-                                              _appServices.UserService.Get(_userId).Gold,
+                                              userDB.Gold,
                                               petDB.Hygiene,
                                               petDB.Level * Factors.ExpToLvl,
-                                              Extensions.GetLongTypeEmoji(_userPetType, _userCulture));
+                                              Extensions.GetLongTypeEmoji(_userPetType, _userCulture),
+                                              petDB.IsAutoFeedEnabled 
+                                                ? string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOn_F).UseCulture(_userCulture)), userDB.AutoFeedCharges)
+                                                : string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOff_F).UseCulture(_userCulture)), userDB.AutoFeedCharges)
+                                                );
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.PetCommandCounter++;
@@ -1361,7 +1409,11 @@ namespace TamagotchiBot.Controllers
                                               userDB.Gold,
                                               petDB.Hygiene,
                                               petDB.Level * Factors.ExpToLvl,
-                                              Extensions.GetLongTypeEmoji(_userPetType, _userCulture));
+                                              Extensions.GetLongTypeEmoji(_userPetType, _userCulture),
+                                              petDB.IsAutoFeedEnabled
+                                                ? string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOn_F).UseCulture(_userCulture)), userDB.AutoFeedCharges)
+                                                : string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOff_F).UseCulture(_userCulture)), userDB.AutoFeedCharges)
+                                                );
 
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {

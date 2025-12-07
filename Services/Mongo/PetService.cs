@@ -208,5 +208,17 @@ namespace TamagotchiBot.Services.Mongo
                 _collection.ReplaceOne(p => p.UserId == pet.UserId, pet);
             }
         }
+
+        public void UpdateIsAutoFeedEnabled(long userId, bool isEnabled)
+        {
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.IsAutoFeedEnabled = isEnabled;
+                Update(userId, pet);
+            }
+        }
+
+        public List<Pet> GetAutoFeedingPets() => _collection.Find(p => p.IsAutoFeedEnabled).ToList();
     }
 }

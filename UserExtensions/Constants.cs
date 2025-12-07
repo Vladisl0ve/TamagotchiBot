@@ -122,6 +122,15 @@ namespace TamagotchiBot.UserExtensions
             public const int DuelGold = 100;
             public const int DuelHP = 100; //HP limit?
             public const int FeedMP = 20;
+
+            //AutoFeed
+            public const int AutoFeedCost = 500;
+        }
+
+        public struct AutoFeed
+        {
+            public const int AutoFeedAmount = 100;
+            public const int AutoFeedChargesInitial = 5;
         }
 
         public static class TimesToWait

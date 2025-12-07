@@ -154,6 +154,8 @@
 🏅 &lt;b&gt;{3} рівень&lt;/b&gt;
 ✨ &lt;i&gt;Досвід: {2}/{10}&lt;/i&gt;
 
+{12}
+
 /gameroom - спробуй гру Яблуко🍎
 /reward - щоденний бонус 🎁
 
@@ -932,9 +934,14 @@ https://t.me/news_virtualpetbot</value>
   <data name="farmCommandDescription" xml:space="preserve">
     <value>Ферма 🚜</value>
   </data>
-  <data name="farmCommand" xml:space="preserve">
-    <value>👨‍🌾: О, хто до нас завітав! Це ж {0} зі своїм господарем! 
-&lt;b&gt;Чим можу бути корисним?&lt;/b&gt;</value>
+  <data name="farmCommand_ENABLED" xml:space="preserve">
+    <value>👨‍🌾: О, хто це до нас завітав! Це {0} зі своїм власником!
+
+Заряди авто-годувальника: {1} ⚡️
+Статус авто-годувальника: &lt;b&gt;{4}&lt;/b&gt;
+Наступне використання авто-годувальника через: {2}год і {3}хв 🕗
+
+&lt;b&gt;Чим я можу допомогти?&lt;/b&gt;</value>
   </data>
   <data name="farmButtonChangeType" xml:space="preserve">
     <value>Змінити вигляд вихованця 🎩</value>
@@ -1046,5 +1053,35 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="MonthlyGoldReward" xml:space="preserve">
     <value>🎉 Вітаємо! Ваш улюбленець досяг &lt;b&gt;{0}&lt;/b&gt; рангу місяця! Усі тренування окупилися — вам нараховано &lt;b&gt;{1} золота&lt;/b&gt; як винагороду! 💰</value>
+  </data>
+  <data name="farmButtonAutoFeed" xml:space="preserve">
+    <value>Купи авто-годувальник 🤖</value>
+  </data>
+  <data name="autoFeedBought" xml:space="preserve">
+    <value>Автогодівницю придбано! У вас {0} зарядів</value>
+  </data>
+  <data name="autoFeedEnabled" xml:space="preserve">
+    <value>Автоматичне годування увімкнено 🪺</value>
+  </data>
+  <data name="autoFeedDisabled" xml:space="preserve">
+    <value>Автоматичне годування вимкнено. Потрібна зарядка ⚡️</value>
+  </data>
+  <data name="turnedOn_F" xml:space="preserve">
+    <value>увімкнена</value>
+  </data>
+  <data name="turnedOff_F" xml:space="preserve">
+    <value>вимкнена</value>
+  </data>
+  <data name="autoFeederUserStatus" xml:space="preserve">
+    <value>🍱 Статус авто-годувальника: &lt;b&gt;{0}&lt;/b&gt;, 
+🍽 Зарядів залишилось: {1}</value>
+  </data>
+  <data name="farmCommand_DISABLED" xml:space="preserve">
+    <value>👨‍🌾: О, хто це до нас завітав! Це {0} зі своїм власником!
+
+Заряди авто-годувальника: {1} ⚡️
+Статус авто-годувальника: &lt;b&gt;{2}&lt;/b&gt;
+
+&lt;b&gt;Чим я можу допомогти?&lt;/b&gt;</value>
   </data>
 </root>

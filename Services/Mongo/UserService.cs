@@ -34,7 +34,7 @@ namespace TamagotchiBot.Services.Mongo
                 Culture = user.LanguageCode,
                 Gold = 50,
                 ChatIds = new List<long>() { user.Id },
-                Created = DateTime.UtcNow                
+                Created = DateTime.UtcNow
             });
         }
 
@@ -166,5 +166,15 @@ namespace TamagotchiBot.Services.Mongo
         }
 
         public void Remove(long userId) => _collection.DeleteOne(u => u.UserId == userId);
+
+        public void UpdateAutoFeedCharges(long userId, int charges)
+        {
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb != null)
+            {
+                userDb.AutoFeedCharges = charges;
+                Update(userId, userDb);
+            }
+        }
     }
 }
