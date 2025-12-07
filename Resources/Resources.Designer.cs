@@ -178,6 +178,20 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🥫 Your pet &lt;b&gt;{0}&lt;/b&gt; has eaten from the auto-feeder
+        ///+{1}% fullness 🍕
+        ///
+        ///Auto-feeder charges left: {2}
+        ///
+        ///&lt;i&gt; Don’t forget to recharge the auto-feeder at the Farmer so your pet has something to eat 🥣&lt;/i&gt;.
+        /// </summary>
+        public static string autoFeedUsedNotification {
+            get {
+                return ResourceManager.GetString("autoFeedUsedNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are in the gameroom ⚽️.
         /// </summary>
         public static string backToGameroomText {
@@ -794,7 +808,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Buy Auto-feeder 🤖.
+        ///   Looks up a localized string similar to Buy Auto-feeder 5 charges 🤖.
         /// </summary>
         public static string farmButtonAutoFeed {
             get {

@@ -1056,7 +1056,7 @@ Porozmawiaj z nim trochę później 🕐</value>
     <value>🎉 Gratulacje! Twój pupil osiągnął &lt;b&gt;{0}&lt;/b&gt; rangę miesiąca! Cały trening się opłacił — otrzymałeś &lt;b&gt;{1} złota&lt;/b&gt; jako nagrodę! 💰</value>
   </data>
   <data name="farmButtonAutoFeed" xml:space="preserve">
-    <value>Buy Auto-feeder 🤖</value>
+    <value>Kup automatyczny karmnik z 5 ładunkami 🤖</value>
   </data>
   <data name="autoFeedBought" xml:space="preserve">
     <value>Karmnik automatyczny kupiony! Masz {0} ładunków</value>
@@ -1084,5 +1084,13 @@ Porozmawiaj z nim trochę później 🕐</value>
 Status automatycznego karmnika: &lt;b&gt;{2}&lt;/b&gt;
 
 &lt;b&gt;Jak mogę pomóc?&lt;/b&gt;</value>
+  </data>
+  <data name="autoFeedUsedNotification" xml:space="preserve">
+    <value>🥫 Twój pupil &lt;b&gt;{0}&lt;/b&gt; zjadł z automatycznego karmnika
++{1}% sytości 🍕
+
+Pozostało ładunków automatycznego karmnika: {2}
+
+&lt;i&gt; Nie zapominaj ładować karmnika u Farmera, aby pupil miał co jeść 🥣&lt;/i&gt;</value>
   </data>
 </root>

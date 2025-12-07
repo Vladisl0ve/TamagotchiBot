@@ -280,6 +280,8 @@ namespace TamagotchiBot.UserExtensions
 
             public const string FlyerADSSticker = "CAACAgIAAxkBAAELWDFlw-nwTUsoBQJykSjLmv8aNpq3vgACKzMAArZHcEpkCdiTnaUfWjQE";
 
+            public const string PetAutoFeederUsedSticker = "CAACAgUAAxkBAAEP8_FpNXhcKT04cEL1uKLU5qxFqUSQ8QAChwQAAs9WWFWOxvbq2XR8uTYE";
+
             public const string MPDuelStarted = "CAACAgIAAxkBAAEK0n9lY2dwZDww-D6OZW-5aD4SdN8BcgACGCUAAvYaiEvT6OrPxdApCzME";
 
             public static string GetStickerByType(string stickerName, int? petType)

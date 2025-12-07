@@ -1054,7 +1054,7 @@ Talk to him a little later 🕐</value>
     <value>🎉 Amazing! Your pet climbed to the &lt;b&gt;{0}&lt;/b&gt; rank this month! All that training paid off — you’ve received &lt;b&gt;{1} gold&lt;/b&gt; as a reward! 💰</value>
   </data>
   <data name="farmButtonAutoFeed" xml:space="preserve">
-    <value>Buy Auto-feeder 🤖</value>
+    <value>Buy Auto-feeder 5 charges 🤖</value>
   </data>
   <data name="autoFeedBought" xml:space="preserve">
     <value>Auto-feeder bought! You have {0} charges</value>
@@ -1082,5 +1082,13 @@ Auto-Feeder charges: {1} ⚡️
 Auto-Feeder status: &lt;b&gt;{2}&lt;/b&gt;
 
 &lt;b&gt;How can I help?&lt;/b&gt;</value>
+  </data>
+  <data name="autoFeedUsedNotification" xml:space="preserve">
+    <value>🥫 Your pet &lt;b&gt;{0}&lt;/b&gt; has eaten from the auto-feeder
++{1}% fullness 🍕
+
+Auto-feeder charges left: {2}
+
+&lt;i&gt; Don’t forget to recharge the auto-feeder at the Farmer so your pet has something to eat 🥣&lt;/i&gt;</value>
   </data>
 </root>

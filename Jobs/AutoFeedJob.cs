@@ -36,6 +36,15 @@ namespace TamagotchiBot.Jobs
 
                     Log.Information($"AutoFed pet {pet.Name} (User: {pet.UserId}). Charges left: {user.AutoFeedCharges - 1}");
 
+                    // Notify user
+                    var userCulture = new System.Globalization.CultureInfo(user.Culture ?? "ru");
+                    await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
+                    {
+                        Text = string.Format(nameof(Resources.Resources.autoFeedUsedNotification).UseCulture(userCulture), pet.Name, Constants.AutoFeed.AutoFeedAmount, user.AutoFeedCharges - 1),
+                        ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                        StickerId = Constants.StickersId.PetAutoFeederUsedSticker
+                    }, pet.UserId);
+
                     if (user.AutoFeedCharges - 1 == 0)
                     {
                         _appServices.PetService.UpdateIsAutoFeedEnabled(pet.UserId, false);
