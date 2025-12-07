@@ -1092,4 +1092,16 @@ https://t.me/news_virtualpetbot</value>
 
 &lt;i&gt; Не забувай заряджати авто-годувальник у Фермера, щоб у улюбленця була їжа 🥣&lt;/i&gt;</value>
   </data>
+  <data name="FarmCommandInlineEnableAutoFeed" xml:space="preserve">
+    <value>Увімкнути авто-годувальник</value>
+  </data>
+  <data name="FarmCommandInlineDisableAutoFeed" xml:space="preserve">
+    <value>Вимкнути авто-годувальник</value>
+  </data>
+  <data name="AutoFeedDisabledCallbackAnswer" xml:space="preserve">
+    <value>Авто-годувальник вимкнено!</value>
+  </data>
+  <data name="AutoFeedEnabledCallbackAnswer" xml:space="preserve">
+    <value>Авто-годувальник увімкнено!</value>
+  </data>
 </root>

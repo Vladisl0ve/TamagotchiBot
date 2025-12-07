@@ -49,6 +49,21 @@ namespace TamagotchiBot.UserExtensions
                 CallbackData = nameof(KitchenCommandInlineLollipop)
             };
         }
+
+        public static class FarmCommand
+        {
+            public static CallbackModel FarmCommandInlineEnableAutoFeed(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.FarmCommandInlineEnableAutoFeed).UseCulture(culture),
+                CallbackData = nameof(FarmCommandInlineEnableAutoFeed)
+            };
+
+            public static CallbackModel FarmCommandInlineDisableAutoFeed(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.FarmCommandInlineDisableAutoFeed).UseCulture(culture),
+                CallbackData = nameof(FarmCommandInlineDisableAutoFeed)
+            };
+        }
         public static class GameroomCommand
         {
             public static CallbackModel GameroomCommandInlineAppleGame { get => _gameroomCommandInlineAppleGame; }

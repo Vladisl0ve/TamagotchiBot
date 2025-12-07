@@ -1095,4 +1095,16 @@ https://t.me/news_virtualpetbot</value>
 
 &lt;i&gt; Не забывай заряжать автокормилку у Фермера, чтобы питомцу было что покушать 🥣&lt;/i&gt;</value>
   </data>
+  <data name="FarmCommandInlineEnableAutoFeed" xml:space="preserve">
+    <value>Включить автокормилку</value>
+  </data>
+  <data name="FarmCommandInlineDisableAutoFeed" xml:space="preserve">
+    <value>Выключить автокормилку</value>
+  </data>
+  <data name="AutoFeedDisabledCallbackAnswer" xml:space="preserve">
+    <value>Автокормилка выключена!</value>
+  </data>
+  <data name="AutoFeedEnabledCallbackAnswer" xml:space="preserve">
+    <value>Автокормилка включена!</value>
+  </data>
 </root>

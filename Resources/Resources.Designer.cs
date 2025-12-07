@@ -159,11 +159,29 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto-Feed disabled!.
+        /// </summary>
+        public static string AutoFeedDisabledCallbackAnswer {
+            get {
+                return ResourceManager.GetString("AutoFeedDisabledCallbackAnswer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto-feeding enabled 🪺.
         /// </summary>
         public static string autoFeedEnabled {
             get {
                 return ResourceManager.GetString("autoFeedEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-Feed enabled!.
+        /// </summary>
+        public static string AutoFeedEnabledCallbackAnswer {
+            get {
+                return ResourceManager.GetString("AutoFeedEnabledCallbackAnswer", resourceCulture);
             }
         }
         
@@ -860,6 +878,24 @@ namespace TamagotchiBot.Resources {
         public static string farmCommandDescription {
             get {
                 return ResourceManager.GetString("farmCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable Auto-Feed.
+        /// </summary>
+        public static string FarmCommandInlineDisableAutoFeed {
+            get {
+                return ResourceManager.GetString("FarmCommandInlineDisableAutoFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Auto-Feed.
+        /// </summary>
+        public static string FarmCommandInlineEnableAutoFeed {
+            get {
+                return ResourceManager.GetString("FarmCommandInlineEnableAutoFeed", resourceCulture);
             }
         }
         

@@ -1096,4 +1096,16 @@ https://t.me/newsvirtualpetbot</value>
 
 &lt;i&gt; Не забывай зараджаць аўтакармілку ў Фермера, каб гадаванец меў што паесці 🥣&lt;/i&gt;</value>
   </data>
+  <data name="FarmCommandInlineEnableAutoFeed" xml:space="preserve">
+    <value>Уключыць аўтакармілку</value>
+  </data>
+  <data name="FarmCommandInlineDisableAutoFeed" xml:space="preserve">
+    <value>Выключыць аўтакармілку</value>
+  </data>
+  <data name="AutoFeedDisabledCallbackAnswer" xml:space="preserve">
+    <value>Аўтакармілка выключана!</value>
+  </data>
+  <data name="AutoFeedEnabledCallbackAnswer" xml:space="preserve">
+    <value>Аўтакармілка ўключана!</value>
+  </data>
 </root>

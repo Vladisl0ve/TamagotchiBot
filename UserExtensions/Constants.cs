@@ -603,6 +603,13 @@ namespace TamagotchiBot.UserExtensions
 
         public static class InlineItems
         {
+            public static List<CallbackModel> InlineFarm(CultureInfo culture) => _inlineFarm(culture);
+            private static List<CallbackModel> _inlineFarm(CultureInfo culture) => new()
+            {
+                CallbackButtons.FarmCommand.FarmCommandInlineEnableAutoFeed(culture),
+                CallbackButtons.FarmCommand.FarmCommandInlineDisableAutoFeed(culture)
+            };
+
             public static List<CallbackModel> InlineFood => _inlineFood;
             private static List<CallbackModel> _inlineFood = new()
             {

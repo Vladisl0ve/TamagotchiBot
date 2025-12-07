@@ -1093,4 +1093,16 @@ Pozostało ładunków automatycznego karmnika: {2}
 
 &lt;i&gt; Nie zapominaj ładować karmnika u Farmera, aby pupil miał co jeść 🥣&lt;/i&gt;</value>
   </data>
+  <data name="FarmCommandInlineEnableAutoFeed" xml:space="preserve">
+    <value>Włączyć automatyczny karmnik</value>
+  </data>
+  <data name="FarmCommandInlineDisableAutoFeed" xml:space="preserve">
+    <value>Wyłączyć automatyczny karmnik</value>
+  </data>
+  <data name="AutoFeedDisabledCallbackAnswer" xml:space="preserve">
+    <value>Automatyczny karmnik wyłączony!</value>
+  </data>
+  <data name="AutoFeedEnabledCallbackAnswer" xml:space="preserve">
+    <value>Automatyczny karmnik włączony!</value>
+  </data>
 </root>

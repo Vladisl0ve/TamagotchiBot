@@ -1091,4 +1091,16 @@ Auto-feeder charges left: {2}
 
 &lt;i&gt; Don’t forget to recharge the auto-feeder at the Farmer so your pet has something to eat 🥣&lt;/i&gt;</value>
   </data>
+  <data name="FarmCommandInlineEnableAutoFeed" xml:space="preserve">
+    <value>Enable Auto-Feed</value>
+  </data>
+  <data name="FarmCommandInlineDisableAutoFeed" xml:space="preserve">
+    <value>Disable Auto-Feed</value>
+  </data>
+  <data name="AutoFeedDisabledCallbackAnswer" xml:space="preserve">
+    <value>Auto-Feed disabled!</value>
+  </data>
+  <data name="AutoFeedEnabledCallbackAnswer" xml:space="preserve">
+    <value>Auto-Feed enabled!</value>
+  </data>
 </root>

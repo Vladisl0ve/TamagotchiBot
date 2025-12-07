@@ -613,6 +613,18 @@ namespace TamagotchiBot.Controllers
                 await ShowRanksApples();
                 return;
             }
+
+            if (_callback.Data == CallbackButtons.FarmCommand.FarmCommandInlineEnableAutoFeed(_userCulture).CallbackData)
+            {
+                await SetAutoFeedStatus(petDb, true);
+                return;
+            }
+
+            if (_callback.Data == CallbackButtons.FarmCommand.FarmCommandInlineDisableAutoFeed(_userCulture).CallbackData)
+            {
+                await SetAutoFeedStatus(petDb, false);
+                return;
+            }
         }
 
         #region Message Answers
@@ -700,7 +712,7 @@ namespace TamagotchiBot.Controllers
             var nextMidnight = DateTime.UtcNow.Date.AddDays(1);
             var timeRemaining = nextMidnight - DateTime.UtcNow;
 
-            string toSendText = petDB.IsAutoFeedEnabled 
+            string toSendText = petDB.IsAutoFeedEnabled
                     ? string.Format(nameof(farmCommand_ENABLED).UseCulture(_userCulture),
                                               encodedPetName,
                                               userDB.AutoFeedCharges,
@@ -716,14 +728,64 @@ namespace TamagotchiBot.Controllers
             aud.FarmCommandCounter++;
             _appServices.AllUsersDataService.Update(aud);
 
+            InlineKeyboardMarkup toSendInline = userDB.AutoFeedCharges > 0
+                ? Extensions.InlineKeyboardOptimizer(InlineItems.InlineFarm(_userCulture), 1)
+                : null;
+
             var toSend = new AnswerMessage()
             {
                 Text = toSendText,
                 StickerId = StickersId.FarmSticker,
                 ReplyMarkup = ReplyKeyboardItems.FarmKeyboardMarkup(_userCulture),
+                InlineKeyboardMarkup = toSendInline,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
+
+        private async Task SetAutoFeedStatus(Pet pet, bool isEnabled)
+        {
+            var userDB = _appServices.UserService.Get(_userId);
+            if (userDB.AutoFeedCharges <= 0 && isEnabled)
+                return;
+
+            pet.IsAutoFeedEnabled = isEnabled;
+            _appServices.PetService.Update(_userId, pet);
+
+            string answerText = isEnabled
+                ? nameof(AutoFeedEnabledCallbackAnswer).UseCulture(_userCulture)
+                : nameof(AutoFeedDisabledCallbackAnswer).UseCulture(_userCulture);
+
+            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, answerText, false);
+
+            // Update message text
+            var encodedPetName = HttpUtility.HtmlEncode(pet.Name);
+            encodedPetName = "<b>" + encodedPetName + "</b>";
+
+            var nextMidnight = DateTime.UtcNow.Date.AddDays(1);
+            var timeRemaining = nextMidnight - DateTime.UtcNow;
+
+            string toSendText = isEnabled
+                    ? string.Format(nameof(farmCommand_ENABLED).UseCulture(_userCulture),
+                                              encodedPetName,
+                                              userDB.AutoFeedCharges,
+                                              (int)timeRemaining.TotalHours,
+                                              timeRemaining.Minutes,
+                                              string.Format(nameof(turnedOn_F).UseCulture(_userCulture)))
+                    : string.Format(nameof(farmCommand_DISABLED).UseCulture(_userCulture),
+                                              encodedPetName,
+                                              userDB.AutoFeedCharges,
+                                              string.Format(nameof(turnedOff_F).UseCulture(_userCulture)));
+
+            InlineKeyboardMarkup toSendInline = userDB.AutoFeedCharges > 0
+               ? Extensions.InlineKeyboardOptimizer(InlineItems.InlineFarm(_userCulture), 1)
+               : null;
+
+            await _appServices.BotControlService.EditMessageTextAsync(_userId,
+                                                                    _callback.Message.MessageId,
+                                                                    toSendText,
+                                                                    toSendInline,
+                                                                    parseMode: Telegram.Bot.Types.Enums.ParseMode.Html);
         }
 
         private async Task ShowRewardInfo(User userDB)
@@ -986,7 +1048,7 @@ namespace TamagotchiBot.Controllers
                                               petDB.Hygiene,
                                               petDB.Level * Factors.ExpToLvl,
                                               Extensions.GetLongTypeEmoji(_userPetType, _userCulture),
-                                              petDB.IsAutoFeedEnabled 
+                                              petDB.IsAutoFeedEnabled
                                                 ? string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOn_F).UseCulture(_userCulture)), userDB.AutoFeedCharges)
                                                 : string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOff_F).UseCulture(_userCulture)), userDB.AutoFeedCharges)
                                                 );
