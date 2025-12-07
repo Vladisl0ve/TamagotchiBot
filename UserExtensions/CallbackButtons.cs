@@ -13,7 +13,7 @@ namespace TamagotchiBot.UserExtensions
             {
                 get => _kitchenCommandInlineBread;
             }
-            private static CallbackModel _kitchenCommandInlineBread = new CallbackModel ()
+            private static CallbackModel _kitchenCommandInlineBread = new CallbackModel()
             {
                 Text = "🍞",
                 CallbackData = nameof(KitchenCommandInlineBread)
@@ -23,7 +23,7 @@ namespace TamagotchiBot.UserExtensions
             {
                 get => _kitchenCommandInlineRedApple;
             }
-            private static CallbackModel _kitchenCommandInlineRedApple = new CallbackModel ()
+            private static CallbackModel _kitchenCommandInlineRedApple = new CallbackModel()
             {
                 Text = "🍎",
                 CallbackData = nameof(KitchenCommandInlineRedApple)
@@ -33,17 +33,17 @@ namespace TamagotchiBot.UserExtensions
             {
                 get => _kitchenCommandInlineChocolate;
             }
-            private static CallbackModel _kitchenCommandInlineChocolate = new CallbackModel ()
+            private static CallbackModel _kitchenCommandInlineChocolate = new CallbackModel()
             {
                 Text = "🍫",
-                CallbackData = nameof (KitchenCommandInlineChocolate)
+                CallbackData = nameof(KitchenCommandInlineChocolate)
             };
 
             public static CallbackModel KitchenCommandInlineLollipop
             {
                 get => _kitchenCommandInlineLollipop;
             }
-            private static CallbackModel _kitchenCommandInlineLollipop = new CallbackModel ()
+            private static CallbackModel _kitchenCommandInlineLollipop = new CallbackModel()
             {
                 Text = "🍭",
                 CallbackData = nameof(KitchenCommandInlineLollipop)
@@ -52,14 +52,14 @@ namespace TamagotchiBot.UserExtensions
         public static class GameroomCommand
         {
             public static CallbackModel GameroomCommandInlineAppleGame { get => _gameroomCommandInlineAppleGame; }
-            private static CallbackModel _gameroomCommandInlineAppleGame = new CallbackModel ()
+            private static CallbackModel _gameroomCommandInlineAppleGame = new CallbackModel()
             {
                 Text = "🍏",
                 CallbackData = nameof(GameroomCommandInlineAppleGame)
             };
 
             public static CallbackModel GameroomCommandInlineDice { get => _gameroomCommandInlineDice; }
-            private static CallbackModel _gameroomCommandInlineDice = new CallbackModel ()
+            private static CallbackModel _gameroomCommandInlineDice = new CallbackModel()
             {
                 Text = "🎲",
                 CallbackData = nameof(GameroomCommandInlineDice)
@@ -145,6 +145,12 @@ namespace TamagotchiBot.UserExtensions
             {
                 Text = nameof(Resources.Resources.ranksCommandInlineLevel).UseCulture(culture),
                 CallbackData = nameof(RanksCommandInlineLevel)
+            };
+
+            public static CallbackModel RanksCommandInlineLevelAll(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.ranksCommandInlineLevelAll).UseCulture(culture),
+                CallbackData = nameof(RanksCommandInlineLevelAll)
             };
 
             public static CallbackModel RanksCommandInlineGold(CultureInfo culture) => new CallbackModel()

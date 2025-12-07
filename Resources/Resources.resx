@@ -283,7 +283,7 @@ Do not play so much and safety first! 🧗‍♀️</value>
     <value>You can not come in: pet is sleeping 🌙</value>
   </data>
   <data name="ranksCommand" xml:space="preserve">
-    <value>🌈⭐️ Top 10 Experience⭐️🌈</value>
+    <value>🌈⭐️ Top 10 Levels ⭐️🌈</value>
   </data>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Rating 🏆</value>
@@ -533,7 +533,7 @@ Take it soon! 🎁</value>
     <value>💰 Gold</value>
   </data>
   <data name="ranksCommandInlineLevel" xml:space="preserve">
-    <value>🏅Experience</value>
+    <value>🏅Level</value>
   </data>
   <data name="rewardNotification" xml:space="preserve">
     <value>🎁 Come on for your daily bonus 🎉
@@ -544,6 +544,12 @@ Take it soon! 🎁</value>
   </data>
   <data name="ranksCommandInlineApples" xml:space="preserve">
     <value>🍎Apples</value>
+  </data>
+  <data name="ranksCommandInlineLevelAll" xml:space="preserve">
+    <value>⭐️All-time Levels</value>
+  </data>
+  <data name="ranksCommandLevelAll" xml:space="preserve">
+    <value>⭐️ Top 10 Levels (All Time) ⭐️</value>
   </data>
   <data name="ranksCommandApples" xml:space="preserve">
     <value>🍎⭐️ Top 10 in apples game ⭐️🍎</value>

@@ -643,6 +643,7 @@ namespace TamagotchiBot.UserExtensions
                 CallbackButtons.RanksCommand.RanksCommandInlineLevel(culture),
                 CallbackButtons.RanksCommand.RanksCommandInlineGold(culture),
                 CallbackButtons.RanksCommand.RanksCommandInlineApples(culture),
+                CallbackButtons.RanksCommand.RanksCommandInlineLevelAll(culture),
             };
 
             public static List<CallbackModel> InlineRewards(CultureInfo culture) => _inlineRewards(culture);

@@ -255,7 +255,7 @@ Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
     <value>Brak możliwości wejścia do pokoju: zwierzak śpi 🌙</value>
   </data>
   <data name="ranksCommand" xml:space="preserve">
-    <value>🌈⭐️ Top 10 doświadczenia ⭐️🌈</value>
+    <value>🌈⭐️ Top 10 poziomów ⭐️🌈</value>
   </data>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Ranking 🏆</value>
@@ -468,7 +468,13 @@ Odbierz ją wkrótce! 🎁</value>
     <value>💰Złoto</value>
   </data>
   <data name="ranksCommandInlineLevel" xml:space="preserve">
-    <value>🏅Doświadczenie</value>
+    <value>🏅Poziomy</value>
+  </data>
+  <data name="ranksCommandInlineLevelAll" xml:space="preserve">
+    <value>⭐️Poziomy wszech czasów</value>
+  </data>
+  <data name="ranksCommandLevelAll" xml:space="preserve">
+    <value>⭐️ Top 10 poziomów (wszech czasów) ⭐️</value>
   </data>
   <data name="rewardNotification" xml:space="preserve">
     <value>🎁 Wejdź po bonus codzienny 🎉

@@ -223,11 +223,11 @@
   <data name="FatigueSleepy" xml:space="preserve">
     <value>хочет спать</value>
   </data>
-  <data name="kitchenCommandDescription" xml:space="preserve">
-    <value>Кухня 🍽</value>
-  </data>
   <data name="petCommandDescription" xml:space="preserve">
     <value>Состояние питомца ❤️‍🩹</value>
+  </data>
+  <data name="kitchenCommandDescription" xml:space="preserve">
+    <value>Кухня 🍽</value>
   </data>
   <data name="languageCommandDescription" xml:space="preserve">
     <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺 | мова 🇺🇦</value>
@@ -283,16 +283,16 @@
     <value>Нельзя войти в комнату: питомец спит 🌙</value>
   </data>
   <data name="ranksCommand" xml:space="preserve">
-    <value>🌈⭐️ Топ 10 по опыту ⭐️🌈</value>
+    <value>🌈⭐️ Топ 10 по уровням ⭐️🌈</value>
   </data>
   <data name="ranksCommandDescription" xml:space="preserve">
     <value>Рейтинг 🏆</value>
   </data>
-  <data name="renameCommand" xml:space="preserve">
-    <value>Введи новое имя для питомца 🗯️</value>
-  </data>
   <data name="restartCommand" xml:space="preserve">
     <value>ДРОПНУЎ ГАДА {0} 💔</value>
+  </data>
+  <data name="renameCommand" xml:space="preserve">
+    <value>Введи новое имя для питомца 🗯️</value>
   </data>
   <data name="renameCommandDescription" xml:space="preserve">
     <value>Смена имени ✏️</value>
@@ -532,11 +532,11 @@ https://t.me/news_virtualpetbot</value>
   <data name="ranksCommandGold" xml:space="preserve">
     <value>💰⭐️ Топ-10 по золоту ⭐️💰</value>
   </data>
-  <data name="ranksCommandInlineLevel" xml:space="preserve">
-    <value>🏅Опыт</value>
-  </data>
   <data name="ranksCommandInlineGold" xml:space="preserve">
     <value>💰Золото</value>
+  </data>
+  <data name="ranksCommandInlineLevel" xml:space="preserve">
+    <value>🏅Уровень</value>
   </data>
   <data name="rewardNotification" xml:space="preserve">
     <value>🎁 Беги за ежедневным бонусом 🎉
@@ -547,6 +547,12 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="ranksCommandInlineApples" xml:space="preserve">
     <value>🍎Яблоки</value>
+  </data>
+  <data name="ranksCommandInlineLevelAll" xml:space="preserve">
+    <value>⭐️Уровни за всё время</value>
+  </data>
+  <data name="ranksCommandLevelAll" xml:space="preserve">
+    <value>⭐️ Топ-10 по уровням за всё время ⭐️</value>
   </data>
   <data name="ranksCommandApples" xml:space="preserve">
     <value>🍎⭐️ Топ-10 побед в яблочной игре ⭐️🍎</value>
@@ -655,11 +661,11 @@ https://t.me/news_virtualpetbot</value>
   <data name="NoText" xml:space="preserve">
     <value>Нет</value>
   </data>
-  <data name="NoTextEmoji" xml:space="preserve">
-    <value>Нет ❌</value>
-  </data>
   <data name="YesTextEmoji" xml:space="preserve">
     <value>Да ✅</value>
+  </data>
+  <data name="NoTextEmoji" xml:space="preserve">
+    <value>Нет ❌</value>
   </data>
   <data name="InviteGlobalMultiplayerButton" xml:space="preserve">
     <value>{0} Завести своего Тамагочи</value>
@@ -982,11 +988,6 @@ https://t.me/news_virtualpetbot</value>
   <data name="petIsBusyForFarm" xml:space="preserve">
     <value>Нельзя пойти на ферму, ведь питомец занят 🚫</value>
   </data>
-  <data name="DuelMPFightingEnding10" xml:space="preserve">
-    <value>Питомец {3}{1} попытался увернуться от атаки, но его ловкость не спасла его от мощного удара 🥊
-
-Питомец {2}{0} побеждает 🏆</value>
-  </data>
   <data name="DuelMPFightingEnding3" xml:space="preserve">
     <value>{3}{1} смело защищался, блокируя каждую атаку своим щитом 🛡️ 
 
@@ -1025,6 +1026,11 @@ https://t.me/news_virtualpetbot</value>
   <data name="DuelMPFightingEnding9" xml:space="preserve">
     <value>Питомец {3}{1} несся на полную скорость, пытаясь увернуться от атаки своего противника {2}{0}
 но в итоге потерпел поражение из-за недостатка концентрации 🪫
+
+Питомец {2}{0} побеждает 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding10" xml:space="preserve">
+    <value>Питомец {3}{1} попытался увернуться от атаки, но его ловкость не спасла его от мощного удара 🥊
 
 Питомец {2}{0} побеждает 🏆</value>
   </data>

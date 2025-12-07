@@ -597,6 +597,12 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
+            if (_callback.Data == CallbackButtons.RanksCommand.RanksCommandInlineLevelAll(_userCulture).CallbackData)
+            {
+                await ShowRanksLevelAllGame();
+                return;
+            }
+
             if (_callback.Data == CallbackButtons.RanksCommand.RanksCommandInlineApples(_userCulture).CallbackData)
             {
                 await ShowRanksApples();
@@ -2089,7 +2095,7 @@ namespace TamagotchiBot.Controllers
             if (toSendText == null)
                 return;
 
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineRanks(_userCulture));
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineRanks(_userCulture), 3);
 
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
@@ -2103,13 +2109,89 @@ namespace TamagotchiBot.Controllers
             if (toSendText == null)
                 return;
 
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineRanks(_userCulture));
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineRanks(_userCulture), 3);
 
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
                                                               false);
         }
+        private async Task ShowRanksLevelAllGame()
+        {
+            Log.Debug($"Callbacked ShowRanksLevelAllGame for {_userInfo}");
+            string toSendText = GetRanksByLevelAllGame();
+            if (toSendText == null)
+                return;
+
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineRanks(_userCulture), 3);
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
+                                                              _callback?.Message?.MessageId ?? 0,
+                                                              new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
+                                                              false);
+        }
+
+        private string GetRanksByLevelAllGame()
+        {
+            try
+            {
+                var topPets = _appServices.PetService.GetAll()
+                .OrderByDescending(p => p.LevelAllGame)
+                .ThenByDescending(p => p.LastUpdateTime)
+                .Take(10); //First 10 top-level pets
+
+                string anwserRating = "";
+                var currentUser = _appServices.UserService.Get(_userId);
+                var currentPet = _appServices.PetService.Get(_userId);
+
+                int counter = 1;
+                foreach (var petDB in topPets)
+                {
+                    var userDB = _appServices.UserService.Get(petDB.UserId);
+                    string name = petDB.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
+
+                    if (counter == 1)
+                    {
+                        anwserRating += nameof(ranksCommandLevelAll).UseCulture(_userCulture) + "\n\n";
+                        if (currentUser.UserId == userDB.UserId)
+                            anwserRating += "<b>" + "🌟 " + (petDB.LevelAllGame + petDB.Level) + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
+                        else
+                            anwserRating += "🌟 " + (petDB.LevelAllGame + petDB.Level) + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name);
+                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
+                        counter++;
+                    }
+                    else
+                    {
+                        anwserRating += "\n";
+
+                        if (currentUser.UserId == userDB.UserId)
+                            anwserRating += "<b>" + counter + ". " + (petDB.LevelAllGame + petDB.Level) + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
+                        else
+                            anwserRating += counter + ". " + (petDB.LevelAllGame + petDB.Level) + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name);
+                        counter++;
+                    }
+                }
+
+                if (!topPets.Any(a => a.UserId == currentUser.UserId))
+                {
+                    string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
+
+                    anwserRating += "\n______________________________";
+                    anwserRating += "\n <b>" + (_appServices.PetService.GetAll()
+                    .OrderByDescending(p => p.LevelAllGame)
+                    .ThenByDescending(p => p.LastUpdateTime)
+                    .ToList()
+                    .FindIndex(a => a.UserId == currentUser.UserId) + 1) + ". " + (currentPet.LevelAllGame + currentPet.Level) + $" {Extensions.GetTypeEmoji(currentPet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
+                }
+
+                return anwserRating;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return null;
+            }
+        }
+
         private async Task ShowRanksLevel()
         {
             Log.Debug($"Callbacked ShowRanksLevel for {_userInfo}");
@@ -2117,7 +2199,7 @@ namespace TamagotchiBot.Controllers
             if (toSendText == null)
                 return;
 
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineRanks(_userCulture));
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineRanks(_userCulture), 3);
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
