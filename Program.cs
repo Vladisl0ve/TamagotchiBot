@@ -107,7 +107,7 @@ namespace Telegram.Bots.Example
                           q.AddTrigger(opts => opts
                               .ForJob(autoFeedJobKey)
                               .WithIdentity("AutoFeedJob-trigger")
-                              .WithCronSchedule("0 0 0 * * ?")); // Every day at midnight
+                              .WithCronSchedule(Constants.CronSchedule.AutoFeedCron));
                       });
                       services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
                   })

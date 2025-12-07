@@ -18,6 +18,7 @@ using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
+using Quartz;
 
 using static TamagotchiBot.Resources.Resources;
 using static TamagotchiBot.UserExtensions.Constants;
@@ -709,8 +710,8 @@ namespace TamagotchiBot.Controllers
             encodedPetName = "<b>" + encodedPetName + "</b>";
 
             var userDB = _appServices.UserService.Get(_userId);
-            var nextMidnight = DateTime.UtcNow.Date.AddDays(1);
-            var timeRemaining = nextMidnight - DateTime.UtcNow;
+            var nextFeed = new CronExpression(Constants.CronSchedule.AutoFeedCron).GetNextValidTimeAfter(DateTime.UtcNow) ?? DateTime.UtcNow;
+            var timeRemaining = nextFeed - DateTime.UtcNow;
 
             string toSendText = petDB.IsAutoFeedEnabled
                     ? string.Format(nameof(farmCommand_ENABLED).UseCulture(_userCulture),
@@ -762,8 +763,8 @@ namespace TamagotchiBot.Controllers
             var encodedPetName = HttpUtility.HtmlEncode(pet.Name);
             encodedPetName = "<b>" + encodedPetName + "</b>";
 
-            var nextMidnight = DateTime.UtcNow.Date.AddDays(1);
-            var timeRemaining = nextMidnight - DateTime.UtcNow;
+            var nextFeed = new CronExpression(Constants.CronSchedule.AutoFeedCron).GetNextValidTimeAfter(DateTime.UtcNow) ?? DateTime.UtcNow;
+            var timeRemaining = nextFeed - DateTime.UtcNow;
 
             string toSendText = isEnabled
                     ? string.Format(nameof(farmCommand_ENABLED).UseCulture(_userCulture),

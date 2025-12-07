@@ -133,6 +133,12 @@ namespace TamagotchiBot.UserExtensions
             public const int AutoFeedChargesInitial = 5;
         }
 
+        public struct CronSchedule
+        {
+            public const string AutoFeedCron = "0 0 1 1 * ?";
+            //public const string AutoFeedCron = "0 * * * * ?"; //DEBUG
+        }
+
         public static class TimesToWait
         {
             public readonly static TimeSpan WorkOnPCToWait = new(0, 2, 0);
