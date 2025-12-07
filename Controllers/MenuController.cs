@@ -132,11 +132,11 @@ namespace TamagotchiBot.Controllers
                 await ShowChangelogsInfo();
                 return;
             }
-            if (textReceived.StartsWith(Commands.GeminiCommand))
-            {
-                await SendGeminiMessage(petDB, userDB);
-                return;
-            }
+            //if (textReceived.StartsWith(Commands.GeminiCommand))
+            //{
+            //    await SendGeminiMessage(petDB, userDB);
+            //    return;
+            //}
             if (textReceived == Commands.MenuCommand || GetAllTranslatedAndLowered(nameof(menuCommandDescription)).Contains(textReceived))
             {
                 await ShowMenuInfo();
@@ -857,15 +857,23 @@ namespace TamagotchiBot.Controllers
             bool isTimeOut;
             string geminiAnswer;
 
-            //Limit history check (e.g. 50 messages max for now, or time based)
+            if (previousQA.Count >= QA_MAX_COUNTER && (DateTime.UtcNow - previousQA[0].revision) < new TimeSpan(0, 30, 0)) //30 minutes timeout
+            {
+                isTimeOut = true;
+                geminiAnswer = string.Format(
+                    nameof(ChatGPTTimeOutText).UseCulture(_userCulture),
+                    Extensions.GetTypeEmoji(petDB.Type),
+                    HttpUtility.HtmlEncode(petDB.Name)
+                    );
+            }
+            else
+            {
+                var (answer, isCanceled) = await GetAnswerGemini(_message.Text, petDB, userDB);
+                geminiAnswer = $"{Extensions.GetLongTypeEmoji(_userPetType, _userCulture)} <b>{HttpUtility.HtmlEncode(petDB.Name)}</b>: ";
+                geminiAnswer += answer;
+                isTimeOut = isCanceled;
+            }
 
-            //We will simple check if we can proceed.
-            //For now, let's just proceed.
-
-            var (answer, isCanceled) = await GetAnswerGemini(_message.Text, petDB, userDB);
-            geminiAnswer = $"{Extensions.GetLongTypeEmoji(_userPetType, _userCulture)} <b>{HttpUtility.HtmlEncode(petDB.Name)}</b>: ";
-            geminiAnswer += answer;
-            isTimeOut = isCanceled;
 
             var toSend = new AnswerMessage()
             {
@@ -988,6 +996,7 @@ namespace TamagotchiBot.Controllers
             return (result, isCanceled);
         }
 
+        [Obsolete]
         private async Task SendGeminiMessage(Pet petDB, User userDB)
         {
             string question = _message.Text

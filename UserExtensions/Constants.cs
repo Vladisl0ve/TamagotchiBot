@@ -135,7 +135,7 @@ namespace TamagotchiBot.UserExtensions
 
         public struct CronSchedule
         {
-            public const string AutoFeedCron = "0 0 1 1 * ?";
+            public const string AutoFeedCron = "0 0 * * * ?";
             //public const string AutoFeedCron = "0 * * * * ?"; //DEBUG
         }
 
