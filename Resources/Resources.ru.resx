@@ -141,26 +141,28 @@
 Развлекайтесь 🍿</value>
   </data>
   <data name="petCommand" xml:space="preserve">
-    <value>&lt;i&gt;{11}&lt;/i&gt; {0}
+    <value>{11} {0}
 
-💊 Здоровье: {1}%
+💊 HP: {1}%
 🍕 Сытость: {4}%
 🛁 Гигиена: {9}%
 😴 Усталость: {5}%
-🎊 Радость: {7}%
+🎊 Уровень радости: {7}%
 
 💰 Золото: {8} 💴
-⚡️ Состояние: {6}
-🏅 &lt;b&gt;{3} уровень&lt;/b&gt; 
-✨ &lt;i&gt;Опыт: {2}/{10}&lt;/i&gt;
+💎 Алмазы: {13} 💎
+
+⚡️ Статус: {6}
+🏅 &lt;b&gt;{3} уровень&lt;/b&gt;
+✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
 
 {12}
 
-/gameroom - попробуй игру Яблоко🍎
-/reward - ежедневный бонус 🎁
+{14}
 
-&lt;b&gt;&lt;i&gt;А можешь пообщаться со мной прямо тут!&lt;/i&gt;&lt;/b&gt;
-{11}{0}: Привет! Как твои дела?</value>
+&lt;b&gt;&lt;i&gt;И ты можешь общаться со мной прямо здесь!&lt;/i&gt;&lt;/b&gt;
+
+{11}{0}: {15}</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>В разработке, жди обновления 👾</value>
@@ -1067,7 +1069,7 @@ https://t.me/news_virtualpetbot</value>
     <value>Автокормилка включена 🪺</value>
   </data>
   <data name="autoFeedDisabled" xml:space="preserve">
-    <value>Автокормилка выключена. Потребна зарядка ⚡️</value>
+    <value>Автокормилка выключена. Нужна зарядка ⚡️</value>
   </data>
   <data name="turnedOn_F" xml:space="preserve">
     <value>включена</value>
@@ -1106,5 +1108,29 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="AutoFeedEnabledCallbackAnswer" xml:space="preserve">
     <value>Автокормилка включена!</value>
+  </data>
+  <data name="ranksCommandDiamonds" xml:space="preserve">
+    <value>💎⭐️ Топ-10 по алмазам ⭐️💎</value>
+  </data>
+  <data name="ranksCommandInlineDiamonds" xml:space="preserve">
+    <value>💎 Алмазы</value>
+  </data>
+  <data name="notEnoughDiamonds" xml:space="preserve">
+    <value>У тебя недостаточно алмазов 💎</value>
+  </data>
+  <data name="petCommand_ads_1" xml:space="preserve">
+    <value>/reward - ежедневный бонус 🎁</value>
+  </data>
+  <data name="petCommand_ads_2" xml:space="preserve">
+    <value>/gameroom - попробуй игру Яблоко🍎</value>
+  </data>
+  <data name="petCommand_ads_3" xml:space="preserve">
+    <value>/work – Отправь питомца на работу и заработайте золото 💼</value>
+  </data>
+  <data name="petCommand_ads_4" xml:space="preserve">
+    <value>/ranks – Узнай, какой питомец на вершине топа 🏆</value>
+  </data>
+  <data name="petCommand_ads_5" xml:space="preserve">
+    <value>/referal – Приглашай друзей и становись богаче 🤝</value>
   </data>
 </root>

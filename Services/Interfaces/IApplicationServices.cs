@@ -21,5 +21,6 @@ namespace TamagotchiBot.Services.Interfaces
         MetaUserService MetaUserService { get; }
         BotControlService BotControlService { get; }
         ReferalInfoService ReferalInfoService { get; }
+        DiamondService DiamondService { get; }
     }
 }

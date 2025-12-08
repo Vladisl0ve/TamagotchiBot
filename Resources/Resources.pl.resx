@@ -143,24 +143,26 @@ Miłej zabawy 🍿</value>
   <data name="petCommand" xml:space="preserve">
     <value>{11} {0}
 
-💊 Zdrowie: {1}%
+💊 HP: {1}%
 🍕 Sytość: {4}%
 🛁 Higiena: {9}%
 😴 Zmęczenie: {5}%
-🎊 Radość: {7}%
+🎊 Poziom radości: {7}%
 
 💰 Złoto: {8} 💴
+💎 Diamenty: {13} 💎
+
 ⚡️ Status: {6}
-🏅 &lt;b&gt;Pioziom: {3} &lt;/b&gt;
-✨ &lt;i&gt;Doświadczenie {2}/{10}&lt;/i&gt;
+🏅 &lt;b&gt;{3} poziom&lt;/b&gt;
+✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
 
 {12}
 
-/gameroom - zagraj w Jabłko🍎
-/reward - codzienna nagroda 🎁
+{14}
 
-&lt;b&gt;&lt;i&gt;Możesz ze mną porozmawiać tutaj!&lt;/i&gt;&lt;/b&gt;
-{11}{0}: Witam! Jak się masz?</value>
+&lt;b&gt;&lt;i&gt;Możesz pogadać ze mną właśnie tutaj!&lt;/i&gt;&lt;/b&gt;
+
+{11}{0}: {15}</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>W trakcie rozwoju, poczekaj na następną aktualizację 👾</value>
@@ -1104,5 +1106,29 @@ Pozostało ładunków automatycznego karmnika: {2}
   </data>
   <data name="AutoFeedEnabledCallbackAnswer" xml:space="preserve">
     <value>Automatyczny karmnik włączony!</value>
+  </data>
+  <data name="ranksCommandDiamonds" xml:space="preserve">
+    <value>💎⭐️ Top-10 według diamentów ⭐️💎</value>
+  </data>
+  <data name="ranksCommandInlineDiamonds" xml:space="preserve">
+    <value>💎 Diamenty</value>
+  </data>
+  <data name="notEnoughDiamonds" xml:space="preserve">
+    <value>Masz za mało diamentów 💎</value>
+  </data>
+  <data name="petCommand_ads_1" xml:space="preserve">
+    <value>/reward - codzienna nagroda 🎁</value>
+  </data>
+  <data name="petCommand_ads_2" xml:space="preserve">
+    <value>/gameroom - zagraj w Jabłko🍎</value>
+  </data>
+  <data name="petCommand_ads_3" xml:space="preserve">
+    <value>/work – Wyślij swojego pupila do pracy i zarabiaj złoto 💼</value>
+  </data>
+  <data name="petCommand_ads_4" xml:space="preserve">
+    <value>/ranks – Sprawdź, który pupil jest na szczycie 🏆</value>
+  </data>
+  <data name="petCommand_ads_5" xml:space="preserve">
+    <value>/referal – Zaproś znajomych i wzbogacaj się 🤝</value>
   </data>
 </root>

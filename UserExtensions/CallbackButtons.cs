@@ -174,6 +174,12 @@ namespace TamagotchiBot.UserExtensions
                 CallbackData = nameof(RanksCommandInlineGold)
             };
 
+            public static CallbackModel RanksCommandInlineDiamonds(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.ranksCommandInlineDiamonds).UseCulture(culture),
+                CallbackData = nameof(RanksCommandInlineDiamonds)
+            };
+
             public static CallbackModel RanksCommandInlineApples(CultureInfo culture) => new CallbackModel()
             {
                 Text = nameof(Resources.Resources.ranksCommandInlineApples).UseCulture(culture),

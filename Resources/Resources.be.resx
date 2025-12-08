@@ -142,26 +142,28 @@
 Забаўляйцеся 🍿</value>
   </data>
   <data name="petCommand" xml:space="preserve">
-    <value>&lt;i&gt;{11} {0}&lt;/i&gt;
+    <value>{11} {0}
 
 💊 Здароўе: {1}%
 🍕 Сытасць: {4}%
 🛁 Гігіена: {9}%
-😴 Стомленасць: {5}%
-🎊 Радасць: {7}%
+😴 Стамленне: {5}%
+🎊 Узровень радасці: {7}%
 
 💰 Золата: {8} 💴
-⚡️ Стан: {6}
-🏅 &lt;b&gt;{3} ўзровень&lt;/b&gt;
-✨ &lt;i&gt;Вопыт {2}/{10}&lt;/i&gt;
+💎 Дыяменты: {13} 💎
+
+⚡️ Статус: {6}
+🏅 &lt;b&gt;{3} узровень&lt;/b&gt;
+✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
 
 {12}
 
-/gameroom - пайдзем гуляць у Яблык🍎
-/reward - атрымай штодзённую ўзнагароду 🎁
+{14}
 
-&lt;b&gt;&lt;i&gt;А можаш пагутарыць са мной прама тут!&lt;/i&gt;&lt;/b&gt;
-{11}{0}: Прывітанне! Як твае справы?</value>
+&lt;b&gt;&lt;i&gt;Таксама можаш размаўляць са мной прама тут!&lt;/i&gt;&lt;/b&gt;
+
+{11}{0}: {15}</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>У распрацоўцы, чакай наступнага абнаўлення 👾</value>
@@ -1107,5 +1109,29 @@ https://t.me/newsvirtualpetbot</value>
   </data>
   <data name="AutoFeedEnabledCallbackAnswer" xml:space="preserve">
     <value>Аўтакармілка ўключана!</value>
+  </data>
+  <data name="ranksCommandDiamonds" xml:space="preserve">
+    <value>💎⭐️ Топ-10 па дыяментах ⭐️💎</value>
+  </data>
+  <data name="ranksCommandInlineDiamonds" xml:space="preserve">
+    <value>💎 Дыяменты</value>
+  </data>
+  <data name="notEnoughDiamonds" xml:space="preserve">
+    <value>У цябе недастаткова дыяментаў 💎</value>
+  </data>
+  <data name="petCommand_ads_1" xml:space="preserve">
+    <value>/reward - атрымай штодзённую ўзнагароду 🎁</value>
+  </data>
+  <data name="petCommand_ads_2" xml:space="preserve">
+    <value>/gameroom - пайдзем гуляць у Яблык🍎</value>
+  </data>
+  <data name="petCommand_ads_3" xml:space="preserve">
+    <value>/work – Адправіць гадаванца на працу і зарабляйце золата 💼</value>
+  </data>
+  <data name="petCommand_ads_4" xml:space="preserve">
+    <value>/ranks – Правер, хто з’яўляецца топ-гадованцам 🏆</value>
+  </data>
+  <data name="petCommand_ads_5" xml:space="preserve">
+    <value>/referal – Запрашай сяброў і стань багатым 🤝</value>
   </data>
 </root>

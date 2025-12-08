@@ -87,6 +87,7 @@ namespace Telegram.Bots.Example
                       services.AddTransient<MetaUserService>();
                       services.AddTransient<ChatsMPService>();
                       services.AddTransient<ReferalInfoService>();
+                      services.AddTransient<DiamondService>();
 
                       services.AddLocalization(options => options.ResourcesPath = "Resources");
 

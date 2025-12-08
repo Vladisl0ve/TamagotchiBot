@@ -43,6 +43,7 @@ namespace TamagotchiBot.Services
                                    MetaUserService metaUserService,
                                    ChatsMPService chatsMPService,
                                    ReferalInfoService referalInfoService,
+                                   DiamondService diamondService,
                                    BotControlService botControlService)
         {
             AdsProducersService = adsProducersService;
@@ -58,6 +59,9 @@ namespace TamagotchiBot.Services
             BotControlService = botControlService;
             ChatsMPService = chatsMPService;
             ReferalInfoService = referalInfoService;
+            DiamondService = diamondService;
         }
+
+        public DiamondService DiamondService { get; }
     }
 }

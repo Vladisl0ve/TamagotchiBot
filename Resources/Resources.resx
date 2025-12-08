@@ -150,17 +150,19 @@ Have fun 🍿</value>
 🎊 Joy level: {7}%
 
 💰 Gold: {8} 💴
+💎 Diamonds: {13} 💎
+
 ⚡️ Status: {6}
-🏅 &lt;b&gt;{3} level &lt;/b&gt;
+🏅 &lt;b&gt;{3} level&lt;/b&gt;
 ✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
 
 {12}
 
-/gameroom - Play in Apple🍎
-/reward - Get your daily reward 🎁
+{14}
 
 &lt;b&gt;&lt;i&gt;And you can chat with me right here!&lt;/i&gt;&lt;/b&gt;
-{11}{0}: Hello! How are you doing?</value>
+
+{11}{0}: {15}</value>
   </data>
   <data name="DevelopWarning" xml:space="preserve">
     <value>In developing, wait for next update 👾</value>
@@ -1102,5 +1104,29 @@ Auto-feeder charges left: {2}
   </data>
   <data name="AutoFeedEnabledCallbackAnswer" xml:space="preserve">
     <value>Auto-Feed enabled!</value>
+  </data>
+  <data name="ranksCommandDiamonds" xml:space="preserve">
+    <value>💎⭐️ Top 10 by Diamonds ⭐️💎</value>
+  </data>
+  <data name="ranksCommandInlineDiamonds" xml:space="preserve">
+    <value>💎 Diamonds</value>
+  </data>
+  <data name="notEnoughDiamonds" xml:space="preserve">
+    <value>You don't have enough diamonds 💎</value>
+  </data>
+  <data name="petCommand_ads_1" xml:space="preserve">
+    <value>/reward - Get your daily reward 🎁</value>
+  </data>
+  <data name="petCommand_ads_2" xml:space="preserve">
+    <value>/gameroom - Play in Apple🍎</value>
+  </data>
+  <data name="petCommand_ads_3" xml:space="preserve">
+    <value>/work - Send your pet to work and earn gold 💼</value>
+  </data>
+  <data name="petCommand_ads_4" xml:space="preserve">
+    <value>/ranks - Check who is the top pet 🏆</value>
+  </data>
+  <data name="petCommand_ads_5" xml:space="preserve">
+    <value>/referal - Invite friends and get rich 🤝</value>
   </data>
 </root>

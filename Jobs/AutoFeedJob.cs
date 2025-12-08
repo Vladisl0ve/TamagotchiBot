@@ -50,7 +50,7 @@ namespace TamagotchiBot.Jobs
                         _appServices.PetService.UpdateIsAutoFeedEnabled(pet.UserId, false);
                         await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
                         {
-                            Text = Resources.Resources.autoFeedDisabled,
+                            Text = nameof(Resources.Resources.autoFeedDisabled).UseCulture(userCulture),
                             ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
                         }, pet.UserId);
                     }

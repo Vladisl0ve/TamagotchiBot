@@ -1292,6 +1292,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have enough diamonds 💎.
+        /// </summary>
+        public static string notEnoughDiamonds {
+            get {
+                return ResourceManager.GetString("notEnoughDiamonds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unfortunately, you don&apos;t have enough money ☠️.
         /// </summary>
         public static string NotEnoughGold {
@@ -1421,21 +1430,68 @@ namespace TamagotchiBot.Resources {
         ///🎊 Joy level: {7}%
         ///
         ///💰 Gold: {8} 💴
+        ///💎 Diamonds: {13} 💎
+        ///
         ///⚡️ Status: {6}
-        ///🏅 &lt;b&gt;{3} level &lt;/b&gt;
+        ///🏅 &lt;b&gt;{3} level&lt;/b&gt;
         ///✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
         ///
         ///{12}
         ///
-        ////gameroom - Play in Apple🍎
-        ////reward - Get your daily reward 🎁
+        ///{14}
         ///
         ///&lt;b&gt;&lt;i&gt;And you can chat with me right here!&lt;/i&gt;&lt;/b&gt;
-        ///{11}{0}: Hello! How are you doing?.
+        ///
+        ///{11}{0}: {15}.
         /// </summary>
         public static string petCommand {
             get {
                 return ResourceManager.GetString("petCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /reward - Get your daily reward 🎁.
+        /// </summary>
+        public static string petCommand_ads_1 {
+            get {
+                return ResourceManager.GetString("petCommand_ads_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /gameroom - Play in Apple🍎.
+        /// </summary>
+        public static string petCommand_ads_2 {
+            get {
+                return ResourceManager.GetString("petCommand_ads_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /work - Send your pet to work and earn gold 💼.
+        /// </summary>
+        public static string petCommand_ads_3 {
+            get {
+                return ResourceManager.GetString("petCommand_ads_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /ranks - Check who is the top pet 🏆.
+        /// </summary>
+        public static string petCommand_ads_4 {
+            get {
+                return ResourceManager.GetString("petCommand_ads_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /referal - Invite friends and get rich 🤝.
+        /// </summary>
+        public static string petCommand_ads_5 {
+            get {
+                return ResourceManager.GetString("petCommand_ads_5", resourceCulture);
             }
         }
         
@@ -1759,6 +1815,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 💎⭐️ Top 10 by Diamonds ⭐️💎.
+        /// </summary>
+        public static string ranksCommandDiamonds {
+            get {
+                return ResourceManager.GetString("ranksCommandDiamonds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 💰⭐️ Top 10 in gold ⭐️💰.
         /// </summary>
         public static string ranksCommandGold {
@@ -1773,6 +1838,15 @@ namespace TamagotchiBot.Resources {
         public static string ranksCommandInlineApples {
             get {
                 return ResourceManager.GetString("ranksCommandInlineApples", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💎 Diamonds.
+        /// </summary>
+        public static string ranksCommandInlineDiamonds {
+            get {
+                return ResourceManager.GetString("ranksCommandInlineDiamonds", resourceCulture);
             }
         }
         

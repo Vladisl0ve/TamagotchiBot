@@ -125,6 +125,7 @@ namespace TamagotchiBot.UserExtensions
 
             //AutoFeed
             public const int AutoFeedCost = 500;
+            public const int AutoFeedCostDiamonds = 100;
         }
 
         public struct AutoFeed
@@ -666,6 +667,7 @@ namespace TamagotchiBot.UserExtensions
             {
                 CallbackButtons.RanksCommand.RanksCommandInlineLevel(culture),
                 CallbackButtons.RanksCommand.RanksCommandInlineGold(culture),
+                CallbackButtons.RanksCommand.RanksCommandInlineDiamonds(culture),
                 CallbackButtons.RanksCommand.RanksCommandInlineApples(culture),
                 CallbackButtons.RanksCommand.RanksCommandInlineLevelAll(culture),
             };

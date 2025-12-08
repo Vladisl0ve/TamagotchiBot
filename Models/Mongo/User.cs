@@ -43,6 +43,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("Gold")]
         public int Gold { get; set; }
 
+        [BsonElement("Diamonds")]
+        public int Diamonds { get; set; }
+
         [BsonElement("ReferaledBy")]
         public long ReferaledBy { get; set; }
 
