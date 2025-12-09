@@ -147,7 +147,7 @@ Have fun 🍿</value>
 🍕 Satiety: {4}%
 🛁 Hygiene: {9}%
 😴 Fatigue: {5}%
-🎊 Joy level: {7}%
+🎊 Joy: {7}%
 
 💰 Gold: {8} 💴
 💎 Diamonds: {13} 💎
@@ -1128,5 +1128,23 @@ Auto-feeder charges left: {2}
   </data>
   <data name="petCommand_ads_5" xml:space="preserve">
     <value>/referal - Invite friends and get rich 🤝</value>
+  </data>
+  <data name="petCommand_phrase_1" xml:space="preserve">
+    <value>Hi there! I’ve been waiting for you — how’s your day going so far?</value>
+  </data>
+  <data name="petCommand_phrase_2" xml:space="preserve">
+    <value>Hello! I stretched my paws and I’m ready for fun. How are you doing today?</value>
+  </data>
+  <data name="petCommand_phrase_3" xml:space="preserve">
+    <value>Hi! I’m so happy to see you again. How are you feeling right now?</value>
+  </data>
+  <data name="petCommand_phrase_4" xml:space="preserve">
+    <value>Hello! I was just thinking about you. Ready to spend some time together?</value>
+  </data>
+  <data name="petCommand_phrase_5" xml:space="preserve">
+    <value>Hey there! I’ve been practicing being cute — how am I doing? And how are you?</value>
+  </data>
+  <data name="petCommand_phrase_6" xml:space="preserve">
+    <value>Hi! Your favorite pet reporting for duty! How are things on your end?</value>
   </data>
 </root>

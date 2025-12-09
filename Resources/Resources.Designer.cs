@@ -1427,7 +1427,7 @@ namespace TamagotchiBot.Resources {
         ///🍕 Satiety: {4}%
         ///🛁 Hygiene: {9}%
         ///😴 Fatigue: {5}%
-        ///🎊 Joy level: {7}%
+        ///🎊 Joy: {7}%
         ///
         ///💰 Gold: {8} 💴
         ///💎 Diamonds: {13} 💎
@@ -1492,6 +1492,60 @@ namespace TamagotchiBot.Resources {
         public static string petCommand_ads_5 {
             get {
                 return ResourceManager.GetString("petCommand_ads_5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hi there! I’ve been waiting for you — how’s your day going so far?.
+        /// </summary>
+        public static string petCommand_phrase_1 {
+            get {
+                return ResourceManager.GetString("petCommand_phrase_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hello! I stretched my paws and I’m ready for fun. How are you doing today?.
+        /// </summary>
+        public static string petCommand_phrase_2 {
+            get {
+                return ResourceManager.GetString("petCommand_phrase_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hi! I’m so happy to see you again. How are you feeling right now?.
+        /// </summary>
+        public static string petCommand_phrase_3 {
+            get {
+                return ResourceManager.GetString("petCommand_phrase_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hello! I was just thinking about you. Ready to spend some time together?.
+        /// </summary>
+        public static string petCommand_phrase_4 {
+            get {
+                return ResourceManager.GetString("petCommand_phrase_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hey there! I’ve been practicing being cute — how am I doing? And how are you?.
+        /// </summary>
+        public static string petCommand_phrase_5 {
+            get {
+                return ResourceManager.GetString("petCommand_phrase_5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hi! Your favorite pet reporting for duty! How are things on your end?.
+        /// </summary>
+        public static string petCommand_phrase_6 {
+            get {
+                return ResourceManager.GetString("petCommand_phrase_6", resourceCulture);
             }
         }
         

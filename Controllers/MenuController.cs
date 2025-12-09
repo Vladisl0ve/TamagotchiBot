@@ -863,7 +863,7 @@ namespace TamagotchiBot.Controllers
             bool isTimeOut;
             string geminiAnswer;
 
-            if (previousQA.Count >= QA_MAX_COUNTER && (DateTime.UtcNow - previousQA[0].revision) < new TimeSpan(0, 30, 0)) //30 minutes timeout
+            if (IsGeminiTimeout(previousQA))
             {
                 isTimeOut = true;
                 geminiAnswer = string.Format(
@@ -1045,15 +1045,36 @@ namespace TamagotchiBot.Controllers
                 }, _userId, false);
             }
         }
-        private async Task ShowPetInfo(Pet petDB)
+        private string BuildPetInfoText(Pet petDB, User userDB, string randomAd, string randomPetPhrase)
         {
             var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
             encodedPetName = "<b>" + encodedPetName + "</b>";
 
-            var userDB = _appServices.UserService.Get(_userId);
-            var dateTimeWhenOver = userDB.GotDailyRewardTime.Add(TimesToWait.DailyRewardToWait);
-            bool isDailyRewardOnCooldown = dateTimeWhenOver > DateTime.UtcNow;
+            return string.Format(
+                nameof(petCommand).UseCulture(_userCulture),
+                encodedPetName,
+                petDB.HP,
+                petDB.EXP,
+                petDB.Level,
+                petDB.Satiety,
+                petDB.Fatigue,
+                Extensions.GetCurrentStatus(petDB.CurrentStatus, _userCulture),
+                petDB.Joy,
+                userDB.Gold,
+                petDB.Hygiene,
+                petDB.Level * Factors.ExpToLvl,
+                Extensions.GetLongTypeEmoji(_userPetType, _userCulture),
+                petDB.IsAutoFeedEnabled
+                    ? string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOn_F).UseCulture(_userCulture)), userDB.AutoFeedCharges)
+                    : string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOff_F).UseCulture(_userCulture)), userDB.AutoFeedCharges),
+                userDB.Diamonds,
+                randomAd,
+                randomPetPhrase
+            );
+        }
 
+        private string GetRandomAd(bool isDailyRewardOnCooldown)
+        {
             var ads = new List<string>
             {
                 nameof(petCommand_ads_1).UseCulture(_userCulture),
@@ -1066,34 +1087,26 @@ namespace TamagotchiBot.Controllers
             if (isDailyRewardOnCooldown)
                 ads.Remove(nameof(petCommand_ads_1).UseCulture(_userCulture));
 
-            var randomAd = ads[new Random().Next(ads.Count)];
+            return ads[new Random().Next(ads.Count)];
+        }
 
-            string toSendText = string.Format(nameof(petCommand).UseCulture(_userCulture),
-                                              encodedPetName,
-                                              petDB.HP,
-                                              petDB.EXP,
-                                              petDB.Level,
-                                              petDB.Satiety,
-                                              petDB.Fatigue,
-                                      Extensions.GetCurrentStatus(petDB.CurrentStatus, _userCulture),
-                                              petDB.Joy,
-                                              userDB.Gold,
-                                              petDB.Hygiene,
-                                              petDB.Level * Factors.ExpToLvl,
-                                              Extensions.GetLongTypeEmoji(_userPetType, _userCulture),
-                                              petDB.IsAutoFeedEnabled
-                                                ? string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOn_F).UseCulture(_userCulture)), userDB.AutoFeedCharges)
-                                                : string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOff_F).UseCulture(_userCulture)), userDB.AutoFeedCharges),
-                                              userDB.Diamonds,
-                                              randomAd,
-                                              "BBB"
-                                              );
+        private async Task ShowPetInfo(Pet petDB)
+        {
+            var userDB = _appServices.UserService.Get(_userId);
+            var dateTimeWhenOver = userDB.GotDailyRewardTime.Add(TimesToWait.DailyRewardToWait);
+            bool isDailyRewardOnCooldown = dateTimeWhenOver > DateTime.UtcNow;
+            var randomAd = GetRandomAd(isDailyRewardOnCooldown);
+
+            var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
+            var randomPetPhrase = IsGeminiTimeout(previousQA) ? "..." : GetRandomPetPhrase();
+
+            string toSendText = BuildPetInfoText(petDB, userDB, randomAd, randomPetPhrase);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.PetCommandCounter++;
             _appServices.AllUsersDataService.Update(aud);
 
-            var toSend = new AnswerMessage()
+            var toSend = new AnswerMessage
             {
                 Text = toSendText,
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.PetInfoSticker_Cat), _userPetType),
@@ -1104,6 +1117,22 @@ namespace TamagotchiBot.Controllers
             Log.Debug($"Called /ShowPetInfo for {_userInfo}");
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
+
+        private string GetRandomPetPhrase()
+        {
+            var phrases = new List<string>
+            {
+                nameof(petCommand_phrase_1).UseCulture(_userCulture),
+                nameof(petCommand_phrase_2).UseCulture(_userCulture),
+                nameof(petCommand_phrase_3).UseCulture(_userCulture),
+                nameof(petCommand_phrase_4).UseCulture(_userCulture),
+                nameof(petCommand_phrase_5).UseCulture(_userCulture),
+                nameof(petCommand_phrase_6).UseCulture(_userCulture)
+            };
+
+            return phrases[new Random().Next(phrases.Count)];
+        }
+
         private AnswerMessage CheckStatusIsInactiveOrNull(Pet petDB, bool IsGoToSleepCommand = false, bool IsGoToWorkCommand = false)
         {
             if (petDB.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
@@ -1492,57 +1521,26 @@ namespace TamagotchiBot.Controllers
         #region Inline Answers
         private async Task ShowBasicInfoInline(Pet petDB)
         {
-            var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
-            encodedPetName = "<b>" + encodedPetName + "</b>";
             var userDB = _appServices.UserService.Get(_userId);
             var dateTimeWhenOver = userDB.GotDailyRewardTime.Add(TimesToWait.DailyRewardToWait);
             bool isDailyRewardOnCooldown = dateTimeWhenOver > DateTime.UtcNow;
+            var randomAd = GetRandomAd(isDailyRewardOnCooldown);
+            var randomPetPhrase = GetRandomPetPhrase();
 
-            var ads = new List<string>
-            {
-                nameof(petCommand_ads_1).UseCulture(_userCulture),
-                nameof(petCommand_ads_2).UseCulture(_userCulture),
-                nameof(petCommand_ads_3).UseCulture(_userCulture),
-                nameof(petCommand_ads_4).UseCulture(_userCulture),
-                nameof(petCommand_ads_5).UseCulture(_userCulture)
-            };
+            string toSendText = BuildPetInfoText(petDB, userDB, randomAd, randomPetPhrase);
 
-            if (isDailyRewardOnCooldown)
-                ads.Remove(nameof(petCommand_ads_1).UseCulture(_userCulture));
-
-            var randomAd = ads[new Random().Next(ads.Count)];
-
-            string toSendText = string.Format(nameof(petCommand).UseCulture(_userCulture),
-                                              encodedPetName,
-                                              petDB.HP,
-                                              petDB.EXP,
-                                              petDB.Level,
-                                              petDB.Satiety,
-                                              petDB.Fatigue,
-                                      Extensions.GetCurrentStatus(petDB.CurrentStatus, _userCulture),
-                                              petDB.Joy,
-                                              userDB.Gold,
-                                              petDB.Hygiene,
-                                              petDB.Level * Factors.ExpToLvl,
-                                              Extensions.GetLongTypeEmoji(_userPetType, _userCulture),
-                                              petDB.IsAutoFeedEnabled
-                                                ? string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOn_F).UseCulture(_userCulture)), userDB.AutoFeedCharges)
-                                                : string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOff_F).UseCulture(_userCulture)), userDB.AutoFeedCharges),
-                                              userDB.Diamonds,
-                                              randomAd,
-                                              "BBB"
-                                              );
-
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>
             {
                 CallbackButtons.PetCommand.PetCommandInlineExtraInfo(_userCulture)
             });
 
             Log.Debug($"Callbacked ShowBasicInfoInline for {_userInfo}");
-            await _appServices.BotControlService.SendAnswerCallback(_userId,
-                                                              _callback?.Message?.MessageId ?? 0,
-                                                              new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
-                                                              false);
+            await _appServices.BotControlService.SendAnswerCallback(
+                _userId,
+                _callback?.Message?.MessageId ?? 0,
+                new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
+                false
+            );
         }
         private async Task ShowExtraInfoInline(Pet petDB)
         {
@@ -2878,6 +2876,14 @@ namespace TamagotchiBot.Controllers
                                                               _callback?.Message?.MessageId ?? 0,
                                                               await ShowRemainedTimeJobFlyersCallback(remainsTime),
                                                               false);
+        }
+
+        private bool IsGeminiTimeout(List<(string userQ, string geminiA, DateTime revision)> previousQA)
+        {
+            if (previousQA == null || previousQA.Count < Constants.QA_MAX_COUNTER)
+                return false;
+
+            return (DateTime.UtcNow - previousQA[0].revision) < Constants.TimesToWait.GeminiTimeout;
         }
     }
 }

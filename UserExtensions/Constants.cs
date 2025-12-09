@@ -151,6 +151,7 @@ namespace TamagotchiBot.UserExtensions
 
             public readonly static TimeSpan CooldownOnMessage = new TimeSpan(0, 0, 0, 0, 500);
             public readonly static TimeSpan OldMessageDelta = new TimeSpan(0, 0, 30);
+            public readonly static TimeSpan GeminiTimeout = new TimeSpan(0, 30, 0);
         }
 
         public struct Limits

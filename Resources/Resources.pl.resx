@@ -147,7 +147,7 @@ Miłej zabawy 🍿</value>
 🍕 Sytość: {4}%
 🛁 Higiena: {9}%
 😴 Zmęczenie: {5}%
-🎊 Poziom radości: {7}%
+🎊 Radość: {7}%
 
 💰 Złoto: {8} 💴
 💎 Diamenty: {13} 💎
@@ -1130,5 +1130,23 @@ Pozostało ładunków automatycznego karmnika: {2}
   </data>
   <data name="petCommand_ads_5" xml:space="preserve">
     <value>/referal – Zaproś znajomych i wzbogacaj się 🤝</value>
+  </data>
+  <data name="petCommand_phrase_1" xml:space="preserve">
+    <value>Cześć! Czekałem na Ciebie. Jak mija Twój dzień?</value>
+  </data>
+  <data name="petCommand_phrase_2" xml:space="preserve">
+    <value>Hej! Porozciągałem łapki i jestem gotów na zabawę. Jak się dziś czujesz?</value>
+  </data>
+  <data name="petCommand_phrase_3" xml:space="preserve">
+    <value>Cześć! Super znowu Cię widzieć. Jak się teraz czujesz?</value>
+  </data>
+  <data name="petCommand_phrase_4" xml:space="preserve">
+    <value>Hej! Właśnie o Tobie myślałem. Spędzimy trochę czasu razem?</value>
+  </data>
+  <data name="petCommand_phrase_5" xml:space="preserve">
+    <value>Hej! Ćwiczyłem bycie jeszcze słodszym. Jak mi idzie? A co u Ciebie?</value>
+  </data>
+  <data name="petCommand_phrase_6" xml:space="preserve">
+    <value>Cześć! Twój ulubiony pupil melduje się! Jak tam u Ciebie?</value>
   </data>
 </root>
