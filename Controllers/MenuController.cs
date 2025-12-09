@@ -1239,7 +1239,9 @@ namespace TamagotchiBot.Controllers
                                               Factors.CardGameJoyFactor,
                                               Costs.AppleGame,
                                               Factors.DiceGameJoyFactor,
-                                              Costs.DiceGame);
+                                              Costs.DiceGame,
+                                              Factors.TicTacToeGameJoyFactor,
+                                              Costs.TicTacToeGame);
 
             List<CallbackModel> inlineParts = InlineItems.InlineGames;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -1984,7 +1986,9 @@ namespace TamagotchiBot.Controllers
                                               Factors.CardGameJoyFactor,
                                               Costs.AppleGame,
                                               Factors.DiceGameJoyFactor,
-                                              Costs.DiceGame);
+                                              Costs.DiceGame,
+                                              Factors.TicTacToeGameJoyFactor,
+                                              Costs.TicTacToeGame);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineGames, 3);
 
             Log.Debug($"Callbacked PlayCardInline for {_userInfo}");
@@ -2038,7 +2042,9 @@ namespace TamagotchiBot.Controllers
                                               Factors.CardGameJoyFactor,
                                               Costs.AppleGame,
                                               Factors.DiceGameJoyFactor,
-                                              Costs.DiceGame);
+                                              Costs.DiceGame,
+                                              Factors.TicTacToeGameJoyFactor,
+                                              Costs.TicTacToeGame);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineGames, 3);
 
             Log.Debug($"Callbacked PlayDiceInline for {_userInfo}");
@@ -2878,6 +2884,12 @@ namespace TamagotchiBot.Controllers
                                                               await ShowRemainedTimeJobFlyersCallback(remainsTime),
                                                               false);
         }
+
+        //private async Task PlayTicTacToeInline()
+        //{
+        //    Log.Debug($"Called PlayTicTacToeInline for {_userInfo}");
+        //    await new TicTacToeGameController(_appServices, null, _callback).PreStart();
+        //}
 
         private bool IsGeminiTimeout(List<(string userQ, string geminiA, DateTime revision)> previousQA)
         {

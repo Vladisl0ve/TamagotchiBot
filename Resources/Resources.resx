@@ -271,6 +271,7 @@ Don't forget feed him 🐣</value>
 
 🍏 Apple Game = +{3}🎊 | -{4}💰
 🎲 Dice Game = +{5}🎊 | -{6}💰
+❌⭕️ Tic-Tac-Toe: +{7}🎊 | -{8}💰
 
 Do not play so much and safety first! 🧗‍♀️</value>
   </data>
@@ -1146,5 +1147,33 @@ Auto-feeder charges left: {2}
   </data>
   <data name="petCommand_phrase_6" xml:space="preserve">
     <value>Hi! Your favorite pet reporting for duty! How are things on your end?</value>
+  </data>
+  <data name="startGameTicTacToeText" xml:space="preserve">
+    <value>New Game! You play as ❌</value>
+  </data>
+  <data name="InvalidMove_text" xml:space="preserve">
+    <value>Invalid move ⛔️</value>
+  </data>
+  <data name="YourTurn_text" xml:space="preserve">
+    <value>{0}: Your turn!</value>
+  </data>
+  <data name="YouWon" xml:space="preserve">
+    <value>{0}: You won 🏆</value>
+  </data>
+  <data name="YouLost_TicTakToe" xml:space="preserve">
+    <value>{0}: You lost! 📸
+But I won 😎</value>
+  </data>
+  <data name="Draw_TicTakToe" xml:space="preserve">
+    <value>{0}: It's a draw! 🤝</value>
+  </data>
+  <data name="PlayAgain_TicTakToe" xml:space="preserve">
+    <value>Play Again ❌⭕️</value>
+  </data>
+  <data name="TicTakToeGameStatisticsCommand" xml:space="preserve">
+    <value>📈STATISTICS TIC TAK TOE📉
+Won: {0}
+Lost: {1}
+Surrendered: {2}</value>
   </data>
 </root>

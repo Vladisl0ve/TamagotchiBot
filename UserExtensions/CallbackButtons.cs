@@ -79,6 +79,13 @@ namespace TamagotchiBot.UserExtensions
                 Text = "🎲",
                 CallbackData = nameof(GameroomCommandInlineDice)
             };
+
+            public static CallbackModel GameroomCommandInlineTicTacToe { get => _gameroomCommandInlineTicTacToe; }
+            private static CallbackModel _gameroomCommandInlineTicTacToe = new CallbackModel()
+            {
+                Text = "❌⭕",
+                CallbackData = nameof(GameroomCommandInlineTicTacToe)
+            };
         }
         public static class SleepCommand
         {

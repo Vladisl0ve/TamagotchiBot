@@ -548,6 +548,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}: It&apos;s a draw! 🤝.
+        /// </summary>
+        public static string Draw_TicTakToe {
+            get {
+                return ResourceManager.GetString("Draw_TicTakToe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ⚔️Accept the challenge.
         /// </summary>
         public static string DuelMPAcceptButton {
@@ -1011,6 +1020,7 @@ namespace TamagotchiBot.Resources {
         ///
         ///🍏 Apple Game = +{3}🎊 | -{4}💰
         ///🎲 Dice Game = +{5}🎊 | -{6}💰
+        ///❌⭕️ Tic-Tac-Toe: +{7}🎊 | -{8}💰
         ///
         ///Do not play so much and safety first! 🧗‍♀️.
         /// </summary>
@@ -1143,6 +1153,15 @@ namespace TamagotchiBot.Resources {
         public static string hospitalCommandMidHp {
             get {
                 return ResourceManager.GetString("hospitalCommandMidHp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid move ⛔️.
+        /// </summary>
+        public static string InvalidMove_text {
+            get {
+                return ResourceManager.GetString("InvalidMove_text", resourceCulture);
             }
         }
         
@@ -1694,6 +1713,15 @@ namespace TamagotchiBot.Resources {
         public static string PetWorkingAnswerCallback {
             get {
                 return ResourceManager.GetString("PetWorkingAnswerCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play Again ❌⭕️.
+        /// </summary>
+        public static string PlayAgain_TicTakToe {
+            get {
+                return ResourceManager.GetString("PlayAgain_TicTakToe", resourceCulture);
             }
         }
         
@@ -2261,6 +2289,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Game! You play as ❌.
+        /// </summary>
+        public static string startGameTicTacToeText {
+            get {
+                return ResourceManager.GetString("startGameTicTacToeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Statistics 📊.
         /// </summary>
         public static string statisticsText {
@@ -2275,6 +2312,18 @@ namespace TamagotchiBot.Resources {
         public static string Test {
             get {
                 return ResourceManager.GetString("Test", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📈STATISTICS TIC TAK TOE📉
+        ///Won: {0}
+        ///Lost: {1}
+        ///Surrendered: {2}.
+        /// </summary>
+        public static string TicTakToeGameStatisticsCommand {
+            get {
+                return ResourceManager.GetString("TicTakToeGameStatisticsCommand", resourceCulture);
             }
         }
         
@@ -2463,6 +2512,34 @@ namespace TamagotchiBot.Resources {
         public static string YesTextEmoji {
             get {
                 return ResourceManager.GetString("YesTextEmoji", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: You lost! 📸
+        ///But I won 😎.
+        /// </summary>
+        public static string YouLost_TicTakToe {
+            get {
+                return ResourceManager.GetString("YouLost_TicTakToe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: Your turn!.
+        /// </summary>
+        public static string YourTurn_text {
+            get {
+                return ResourceManager.GetString("YourTurn_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: You won 🏆.
+        /// </summary>
+        public static string YouWon {
+            get {
+                return ResourceManager.GetString("YouWon", resourceCulture);
             }
         }
     }

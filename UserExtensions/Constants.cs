@@ -76,6 +76,8 @@ namespace TamagotchiBot.UserExtensions
             public const int CardGameJoyFactor = 20;
             public const int DiceGameFatigueFactor = 5;
             public const int DiceGameJoyFactor = 10;
+            public const int TicTacToeGameFatigueFactor = 5;
+            public const int TicTacToeGameJoyFactor = 20;
 
             public const int WorkOnPCFatigueFactor = 50;
             public const int FlyersDistributingFatigueFactor = 20;
@@ -108,6 +110,7 @@ namespace TamagotchiBot.UserExtensions
             //Games
             public const int AppleGame = 20;
             public const int DiceGame = 5;
+            public const int TicTacToeGame = 25;
 
             //Resurrect
             public const int ResurrectPet = 1000;
@@ -638,7 +641,8 @@ namespace TamagotchiBot.UserExtensions
             private static List<CallbackModel> _inlineGames = new()
             {
                 CallbackButtons.GameroomCommand.GameroomCommandInlineAppleGame,
-                CallbackButtons.GameroomCommand.GameroomCommandInlineDice
+                CallbackButtons.GameroomCommand.GameroomCommandInlineDice,
+                CallbackButtons.GameroomCommand.GameroomCommandInlineTicTacToe
             };
 
 

@@ -219,6 +219,13 @@ namespace TamagotchiBot.Handlers
                 else
                     await new AppleGameController(_appServices, message).Menu();
             }
+            else if (_appServices.UserService.Get(message.From.Id)?.IsInTicTacToeGame ?? false)
+            {
+                if (message.Text == "/reward")
+                    await OnRewardMsg(message);
+                else
+                    await new TicTacToeGameController(_appServices, message).Menu();
+            }
             else
                 await new MenuController(_appServices, _envs, message).ProcessMessage();
 
@@ -254,9 +261,18 @@ namespace TamagotchiBot.Handlers
             if (userDB.IsInAppleGame)
                 return;
 
+            if (userDB.IsInTicTacToeGame)
+                return;
+
             if (callbackQuery.Data == CallbackButtons.GameroomCommand.GameroomCommandInlineAppleGame.CallbackData)
             {
                 await new AppleGameController(_appServices, callbackQuery).PreStart();
+                return;
+            }
+
+            if (callbackQuery.Data == CallbackButtons.GameroomCommand.GameroomCommandInlineTicTacToe.CallbackData)
+            {
+                await new TicTacToeGameController(_appServices, null, callbackQuery).PreStart();
                 return;
             }
 
@@ -345,7 +361,7 @@ namespace TamagotchiBot.Handlers
                 MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
 
                 new CreatorController(_appServices, message).UpdateIndicators();
-                var synchroController =  new SynchroDBController(_appServices, message.From, message.Chat.Id, message.Chat.Title);
+                var synchroController = new SynchroDBController(_appServices, message.From, message.Chat.Id, message.Chat.Title);
                 synchroController.SynchronizeWithDB(); //update user (username, names etc.) in DB
                 synchroController.SynchronizeMPWithDB(); //update chatMP (name) in DB for MP
 

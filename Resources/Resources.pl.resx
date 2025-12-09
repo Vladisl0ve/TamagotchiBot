@@ -271,6 +271,7 @@ Nie zapominaj karmić zwierzaka 🐣</value>
 
 🍏 Apple Game = +{3}🎊 | -{4}💰
 🎲 Gra w kości = +{5}🎊 | -{6}💰
+❌⭕️ Kółko i krzyżyk: +{7}🎊 | -{8}💰
 
 Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
   </data>
@@ -439,7 +440,7 @@ Czy możesz ograć swojego zwierzaka i zostawić mu niesmaczny 🍏?</value>
     <value>{0}: Wygrałeś, brawo!</value>
   </data>
   <data name="appleGameStatisticsCommand" xml:space="preserve">
-    <value>📈STATYSTYKI📉
+    <value>📈STATYSTYKI JABŁKA📉
 Wygrane: {0}
 Przegrane: {1}
 Poddania: {2}</value>
@@ -1148,5 +1149,33 @@ Pozostało ładunków automatycznego karmnika: {2}
   </data>
   <data name="petCommand_phrase_6" xml:space="preserve">
     <value>Cześć! Twój ulubiony pupil melduje się! Jak tam u Ciebie?</value>
+  </data>
+  <data name="startGameTicTacToeText" xml:space="preserve">
+    <value>Nowa gra! Grasz jako ❌</value>
+  </data>
+  <data name="InvalidMove_text" xml:space="preserve">
+    <value>Nieprawidłowy ruch ⛔️</value>
+  </data>
+  <data name="YourTurn_text" xml:space="preserve">
+    <value>{0}: Twoja kolej!</value>
+  </data>
+  <data name="YouWon" xml:space="preserve">
+    <value>{0}: Twoje zwycięstwo 🏆</value>
+  </data>
+  <data name="YouLost_TicTakToe" xml:space="preserve">
+    <value>{0}: Przegrałeś! 📸
+Ale ja wygrałem 😎</value>
+  </data>
+  <data name="Draw_TicTakToe" xml:space="preserve">
+    <value>{0}: Remis! 🤝</value>
+  </data>
+  <data name="PlayAgain_TicTakToe" xml:space="preserve">
+    <value>Zagraj ponownie ❌⭕️</value>
+  </data>
+  <data name="TicTakToeGameStatisticsCommand" xml:space="preserve">
+    <value>📈STATYSTYKI KÓŁKA I KRZYRZYKÓW📉
+Wygrane: {0}
+Przegrane: {1}
+Poddania: {2}</value>
   </data>
 </root>

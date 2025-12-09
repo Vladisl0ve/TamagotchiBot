@@ -68,6 +68,17 @@ namespace TamagotchiBot.Services.Mongo
             await _collection.ReplaceOneAsync(u => u.UserId == userId, userDb);
         }
 
+        public async Task UpdateTicTacToeGameStatus(long userId, bool isInTicTacToeGame)
+        {
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb == null)
+                return;
+
+            userDb.IsInTicTacToeGame = isInTicTacToeGame;
+            userDb.Updated = DateTime.UtcNow;
+            await _collection.ReplaceOneAsync(u => u.UserId == userId, userDb);
+        }
+
         public void UpdateGold(long userId, int newGold)
         {
             var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();

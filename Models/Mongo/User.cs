@@ -25,6 +25,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("IsInAppleGame")]
         public bool IsInAppleGame { get; set; }
 
+        [BsonElement("IsInTicTacToeGame")]
+        public bool IsInTicTacToeGame { get; set; }
+
         [BsonElement("IsLanguageAskedOnCreate")]
         public bool IsLanguageAskedOnCreate { get; set; }
 

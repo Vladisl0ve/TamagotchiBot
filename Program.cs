@@ -80,6 +80,7 @@ namespace Telegram.Bots.Example
                       services.AddTransient<ChatService>();
                       services.AddTransient<SInfoService>();
                       services.AddTransient<AppleGameDataService>();
+                      services.AddTransient<TicTacToeGameDataService>();
                       services.AddTransient<BotControlService>();
                       services.AddTransient<AllUsersDataService>();
                       services.AddTransient<DailyInfoService>();

@@ -272,6 +272,7 @@
 
 🍏 Яблычная гульня = +{3}🎊 | -{4}💰
 🎲 Гульня ў карты = +{5}🎊 | -{6}💰
+❌⭕️ Крыжыкі-Нулікі: +{7}🎊 | -{8}💰
 
 Гульня, ды не штодня 🧗‍♀️</value>
   </data>
@@ -441,7 +442,7 @@ FAQ:
     <value>{0}: Ты выйграў, малайчына!</value>
   </data>
   <data name="appleGameStatisticsCommand" xml:space="preserve">
-    <value>📈СТАТЫСТЫКА📉
+    <value>📈СТАТЫСТЫКА ЯБЛЫКА📉
 Выйграна: {0}
 Прайграна: {1}
 Здаўся раз: {2}</value>
@@ -1153,5 +1154,33 @@ https://t.me/newsvirtualpetbot</value>
   </data>
   <data name="petCommand_phrase_6" xml:space="preserve">
     <value>Вітанкі! Твой любімы жэўжык на сувязі! Як у цябе справы?</value>
+  </data>
+  <data name="startGameTicTacToeText" xml:space="preserve">
+    <value>Новая гульня! Ты гуляеш за ❌</value>
+  </data>
+  <data name="InvalidMove_text" xml:space="preserve">
+    <value>Некарэктны ход ⛔️</value>
+  </data>
+  <data name="YourTurn_text" xml:space="preserve">
+    <value>{0}: Твой ход!</value>
+  </data>
+  <data name="YouWon" xml:space="preserve">
+    <value>{0}: Перамога твая 🏆</value>
+  </data>
+  <data name="YouLost_TicTakToe" xml:space="preserve">
+    <value>{0}: Ты прайграў! 📸
+А я выйграў 😎</value>
+  </data>
+  <data name="Draw_TicTakToe" xml:space="preserve">
+    <value>{0}: Нічыя! 🤝</value>
+  </data>
+  <data name="PlayAgain_TicTakToe" xml:space="preserve">
+    <value>Згуляць зноў ❌⭕️</value>
+  </data>
+  <data name="TicTakToeGameStatisticsCommand" xml:space="preserve">
+    <value>📈СТАТЫСТЫКА КРЫЖЫКАЎ-НУЛІКАЎ📉
+Выйграна: {0}
+Прайграна: {1}
+Здаўся раз: {2}</value>
   </data>
 </root>
