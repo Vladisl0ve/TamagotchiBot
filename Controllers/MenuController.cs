@@ -940,7 +940,8 @@ namespace TamagotchiBot.Controllers
                     .Replace("{{Level}}", petDB.Level.ToString())
                     .Replace("{{CurrentStatus}}", Extensions.GetCurrentStatus(petDB.CurrentStatus, _userCulture))
                     .Replace("{{Gold}}", userDB.Gold.ToString())
-                    .Replace("{{Language}}", _userCulture.DisplayName);
+                    .Replace("{{Language}}", _userCulture.DisplayName)
+                    .Replace("{{Diamonds}}", userDB.Diamonds.ToString());
 
                 var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
                 int historyLimit = _appServices.SInfoService.GetGeminiMaxHistory();
