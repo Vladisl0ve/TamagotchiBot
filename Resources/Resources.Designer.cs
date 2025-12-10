@@ -1515,6 +1515,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /gameroom - play Tic-Tak-Toe ❌⭕️.
+        /// </summary>
+        public static string petCommand_ads_6 {
+            get {
+                return ResourceManager.GetString("petCommand_ads_6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hi there! I’ve been waiting for you — how’s your day going so far?.
         /// </summary>
         public static string petCommand_phrase_1 {

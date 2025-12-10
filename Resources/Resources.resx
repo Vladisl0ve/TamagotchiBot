@@ -1176,4 +1176,7 @@ Won: {0}
 Lost: {1}
 Surrendered: {2}</value>
   </data>
+  <data name="petCommand_ads_6" xml:space="preserve">
+    <value>/gameroom - play Tic-Tak-Toe ❌⭕️</value>
+  </data>
 </root>

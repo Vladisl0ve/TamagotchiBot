@@ -1178,4 +1178,7 @@ Wygrane: {0}
 Przegrane: {1}
 Poddania: {2}</value>
   </data>
+  <data name="petCommand_ads_6" xml:space="preserve">
+    <value>/gameroom - zagraj w kółko i krzyżyk ❌⭕️</value>
+  </data>
 </root>

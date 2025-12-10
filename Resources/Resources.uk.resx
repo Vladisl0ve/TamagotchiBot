@@ -1179,4 +1179,7 @@ https://t.me/news_virtualpetbot</value>
 Програно: {1}
 Здався: {2}</value>
   </data>
+  <data name="petCommand_ads_6" xml:space="preserve">
+    <value>/gameroom - го в хрестики-нулики ❌⭕️</value>
+  </data>
 </root>

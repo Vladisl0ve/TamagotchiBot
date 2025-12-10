@@ -1082,7 +1082,8 @@ namespace TamagotchiBot.Controllers
                 nameof(petCommand_ads_2).UseCulture(_userCulture),
                 nameof(petCommand_ads_3).UseCulture(_userCulture),
                 nameof(petCommand_ads_4).UseCulture(_userCulture),
-                nameof(petCommand_ads_5).UseCulture(_userCulture)
+                nameof(petCommand_ads_5).UseCulture(_userCulture),
+                nameof(petCommand_ads_6).UseCulture(_userCulture),
             };
 
             if (isDailyRewardOnCooldown)

@@ -1183,4 +1183,7 @@ https://t.me/newsvirtualpetbot</value>
 Прайграна: {1}
 Здаўся раз: {2}</value>
   </data>
+  <data name="petCommand_ads_6" xml:space="preserve">
+    <value>/gameroom - можа у хрэсьцікі-нулікі? ❌⭕️</value>
+  </data>
 </root>

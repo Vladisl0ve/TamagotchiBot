@@ -1182,4 +1182,7 @@ https://t.me/news_virtualpetbot</value>
 Проиграно: {1}
 Сдался раз: {2}</value>
   </data>
+  <data name="petCommand_ads_6" xml:space="preserve">
+    <value>/gameroom - может поиграть в крестики-нолики ❌⭕️ ?</value>
+  </data>
 </root>
