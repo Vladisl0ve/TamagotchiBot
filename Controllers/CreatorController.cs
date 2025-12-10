@@ -299,9 +299,9 @@ namespace TamagotchiBot.Controllers
             //Work
             if (petDB.CurrentStatus == (int)CurrentStatus.Working)
             {
-                var resultWork = UpdateIndicatorWork(petDB);
-                petResult.CurrentStatus = resultWork.currentStatus;
-                petResult.CurrentJob = resultWork.currentJob;
+                var (currentStatus, currentJob) = UpdateIndicatorWork(petDB);
+                petResult.CurrentStatus = currentStatus;
+                petResult.CurrentJob = currentJob;
             }
 
             petResult.LastUpdateTime = DateTime.UtcNow;

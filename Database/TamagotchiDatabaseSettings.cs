@@ -13,6 +13,11 @@
         public string AllUsersDataCollectionName { get; set; }
         public string AppleGameDataCollectionName { get; set; }
         public string BannedUsersCollectionName { get; set; }
+        public string AdsProducersCollectionName { get; set; }
+        public string MetaUsersCollectionName { get; set; }
+        public string ReferalInfoCollectionName { get; set; }
+        public string ArchiveUserInfoCollectionName { get; set; }
+        public string TicTacToeGameDataCollectionName { get; set; }
     }
 
 
@@ -29,5 +34,10 @@
         string DatabaseName { get; set; }
         string AllUsersDataCollectionName { get; set; }
         string BannedUsersCollectionName { get; set; }
+        string AdsProducersCollectionName { get; set; }
+        string MetaUsersCollectionName { get; set; }
+        string ReferalInfoCollectionName { get; set; }
+        string ArchiveUserInfoCollectionName { get; set; }
+        string TicTacToeGameDataCollectionName { get; set; }
     }
 }

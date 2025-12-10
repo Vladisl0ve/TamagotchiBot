@@ -164,7 +164,12 @@ namespace Telegram.Bots.Example
                     UsersCollectionName = "Users",
 
                     ConnectionString = "Instead of CS create next env variables: MongoUsername, MongoPass, MongoIP, MongoPort",
-                    DatabaseName = "TamagotchiDb"
+                    DatabaseName = "TamagotchiDb",
+                    AdsProducersCollectionName = "AdsProducers",
+                    MetaUsersCollectionName = "MetaUser",
+                    ReferalInfoCollectionName = "ReferalInfo",
+                    ArchiveUserInfoCollectionName = "ArchiveUserInfo",
+                    TicTacToeGameDataCollectionName = "TicTacToeGameData"
                 },
 
                 EnvsSettings = new EnvsSettings()
