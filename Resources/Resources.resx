@@ -160,7 +160,7 @@ Have fun 🍿</value>
 
 {14}
 
-&lt;b&gt;&lt;i&gt;And you can chat with me right here!&lt;/i&gt;&lt;/b&gt;
+&lt;b&gt;&lt;i&gt;And you can chat with me right here!&lt;/i&gt;&lt;/b&gt; {16}
 
 {11}{0}: {15}</value>
   </data>
@@ -272,6 +272,8 @@ Don't forget feed him 🐣</value>
 🍏 Apple Game = +{3}🎊 | -{4}💰
 🎲 Dice Game = +{5}🎊 | -{6}💰
 ❌⭕️ Tic-Tac-Toe: +{7}🎊 | -{8}💰
+😵 Hangman [RU only]: +{9}🎊 | -{10}💰
+
 
 Do not play so much and safety first! 🧗‍♀️</value>
   </data>
@@ -1178,5 +1180,58 @@ Surrendered: {2}</value>
   </data>
   <data name="petCommand_ads_6" xml:space="preserve">
     <value>/gameroom - play Tic-Tak-Toe ❌⭕️</value>
+  </data>
+  <data name="hangmanGameStart" xml:space="preserve">
+    <value>🎮 Hangman Game Started!
+Guess the word!
+    
+{0}
+    
+Errors: {1}/{2}</value>
+  </data>
+  <data name="hangmanGameWin" xml:space="preserve">
+    <value>🎉 You Won!
+The word was: {0}
+    
+The pet received +{1} joy 🎊 for the victory</value>
+  </data>
+  <data name="hangmanGameLose" xml:space="preserve">
+    <value>💀 You Lost!
+The word was: {0}
+    
+Better luck next time!</value>
+  </data>
+  <data name="hangmanGameGuessLetter" xml:space="preserve">
+    <value>Guess a letter</value>
+  </data>
+  <data name="hangmanGameAlreadyGuessed" xml:space="preserve">
+    <value>You already guessed that letter!</value>
+  </data>
+  <data name="hangmanGameInvalidGuess" xml:space="preserve">
+    <value>Invalid guess! Please enter a single letter.</value>
+  </data>
+  <data name="hangmanGameWordStatus" xml:space="preserve">
+    <value>Word: {0}</value>
+  </data>
+  <data name="PlayAgain_Hangman" xml:space="preserve">
+    <value>Again 😵</value>
+  </data>
+  <data name="hangmanFooter" xml:space="preserve">
+    <value>{0}
+
+Term: {1}
+Errors: {2}/7</value>
+  </data>
+  <data name="HangmanGameStatisticsCommand" xml:space="preserve">
+    <value>📈STATISTICS HANGMAN 📉
+Won: {0}
+Lost: {1}</value>
+  </data>
+  <data name="petCommand_isPetSilenced" xml:space="preserve">
+    <value>
+🕟 Actually, the pet will stay silent for another {0} minutes</value>
+  </data>
+  <data name="PetIsFullOfHealth" xml:space="preserve">
+    <value>💬 Your pet isn’t sick anyway</value>
   </data>
 </root>

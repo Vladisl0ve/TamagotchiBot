@@ -45,12 +45,19 @@ namespace TamagotchiBot.Controllers
                 var userDB = _appServices.UserService.Get(_userId);
                 var petDB = _appServices.PetService.Get(_userId);
 
-                if (userDB is not null && !userDB.IsInAppleGame && !userDB.IsInTicTacToeGame && Extensions.ParseString(_envs.AlwaysNotifyUsers).Exists(u => u == userDB.UserId))
+                if (userDB is not null &&
+                    !userDB.IsInAppleGame &&
+                    !userDB.IsInTicTacToeGame &&
+                    !userDB.IsInHangmanGame &&
+                    Extensions.ParseString(_envs.AlwaysNotifyUsers).Exists(u => u == userDB.UserId))
                 {
                     await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetCommandsAdmin(culture, true),
                                                   scope: new BotCommandScopeChat() { ChatId = _userId });
                 }
-                else if (petDB is not null && !userDB.IsInAppleGame && !userDB.IsInTicTacToeGame)
+                else if (petDB is not null &&
+                    !userDB.IsInAppleGame &&
+                    !userDB.IsInHangmanGame &&
+                    !userDB.IsInTicTacToeGame)
                 {
                     await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetCommands(culture, true),
                                                                       scope: new BotCommandScopeChat() { ChatId = _userId });
@@ -63,6 +70,11 @@ namespace TamagotchiBot.Controllers
                 else if (userDB?.IsInTicTacToeGame ?? false)
                 {
                     await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetInTicTacToeGameCommands(culture),
+                                                                      scope: new BotCommandScopeChat() { ChatId = _userId });
+                }
+                else if (userDB?.IsInHangmanGame ?? false)
+                {
+                    await _appServices.BotControlService.SetMyCommandsAsync(Extensions.GetInHangmanGameCommands(culture),
                                                                       scope: new BotCommandScopeChat() { ChatId = _userId });
                 }
             }

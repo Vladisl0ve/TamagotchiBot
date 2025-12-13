@@ -160,7 +160,7 @@
 
 {14}
 
-&lt;b&gt;&lt;i&gt;И ты можешь общаться со мной прямо здесь!&lt;/i&gt;&lt;/b&gt;
+&lt;b&gt;&lt;i&gt;И ты можешь общаться со мной прямо здесь!&lt;/i&gt;&lt;/b&gt; {16}
 
 {11}{0}: {15}</value>
   </data>
@@ -272,6 +272,7 @@
 🍏 Яблочная игра = +{3}🎊 | -{4}💰
 🎲 Игра в кости = +{5}🎊 | -{6}💰
 ❌⭕️ Крестики-нолики: +{7}🎊 | -{8}💰
+😵 Виселица: +{9}🎊 | -{10}💰
 
 Делу время - потехе час 🧗‍♀️</value>
   </data>
@@ -1184,5 +1185,58 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="petCommand_ads_6" xml:space="preserve">
     <value>/gameroom - может поиграть в крестики-нолики ❌⭕️ ?</value>
+  </data>
+  <data name="hangmanGameStart" xml:space="preserve">
+    <value>🎮 Игра «Виселица» началась!
+Угадай слово по буквам!
+    
+{0}
+    
+Ошибки: {1}/{2}</value>
+  </data>
+  <data name="hangmanGameWin" xml:space="preserve">
+    <value>🎉Вы выиграли!
+Слово было: {0}
+
+Питомец получил +{1} радости 🎊 за победу</value>
+  </data>
+  <data name="hangmanGameLose" xml:space="preserve">
+    <value>💀Вы проиграли!
+Слово было: {0}
+    
+Удачи в следующий раз!</value>
+  </data>
+  <data name="hangmanGameGuessLetter" xml:space="preserve">
+    <value>Угадай букву</value>
+  </data>
+  <data name="hangmanGameAlreadyGuessed" xml:space="preserve">
+    <value>Вы уже угадывали эту букву!</value>
+  </data>
+  <data name="hangmanGameInvalidGuess" xml:space="preserve">
+    <value>Неверное предположение! Пожалуйста, введите одну букву.</value>
+  </data>
+  <data name="hangmanGameWordStatus" xml:space="preserve">
+    <value>Слово: {0}</value>
+  </data>
+  <data name="PlayAgain_Hangman" xml:space="preserve">
+    <value>Сыграть заново 😵</value>
+  </data>
+  <data name="hangmanFooter" xml:space="preserve">
+    <value>{0}
+
+Слово: {1}
+Ошибки: {2}/7</value>
+  </data>
+  <data name="HangmanGameStatisticsCommand" xml:space="preserve">
+    <value>📈СТАТИСТИКА ВИСЕЛИЦА 📉
+Выиграно: {0} 
+Проиграно: {1}</value>
+  </data>
+  <data name="petCommand_isPetSilenced" xml:space="preserve">
+    <value>
+🕟 Правда, питомец будет молчать ещё {0} минут</value>
+  </data>
+  <data name="PetIsFullOfHealth" xml:space="preserve">
+    <value>💬 Твой питомец и так не болеет</value>
   </data>
 </root>

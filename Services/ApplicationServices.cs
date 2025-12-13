@@ -45,6 +45,7 @@ namespace TamagotchiBot.Services
                                    ReferalInfoService referalInfoService,
                                    DiamondService diamondService,
                                    TicTacToeGameDataService ticTacToeGameDataService,
+                                   HangmanGameDataService hangmanGameDataService,
                                    BotControlService botControlService)
         {
             AdsProducersService = adsProducersService;
@@ -62,9 +63,11 @@ namespace TamagotchiBot.Services
             ReferalInfoService = referalInfoService;
             DiamondService = diamondService;
             TicTacToeGameDataService = ticTacToeGameDataService;
+            HangmanGameDataService = hangmanGameDataService;
         }
 
         public DiamondService DiamondService { get; }
         public TicTacToeGameDataService TicTacToeGameDataService { get; }
+        public HangmanGameDataService HangmanGameDataService { get; }
     }
 }

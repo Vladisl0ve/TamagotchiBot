@@ -18,6 +18,7 @@
         public string ReferalInfoCollectionName { get; set; }
         public string ArchiveUserInfoCollectionName { get; set; }
         public string TicTacToeGameDataCollectionName { get; set; }
+        public string HangmanGameDataCollectionName { get; set; }
     }
 
 
@@ -39,5 +40,6 @@
         string ReferalInfoCollectionName { get; set; }
         string ArchiveUserInfoCollectionName { get; set; }
         string TicTacToeGameDataCollectionName { get; set; }
+        string HangmanGameDataCollectionName { get; set; }
     }
 }

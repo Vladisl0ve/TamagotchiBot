@@ -161,7 +161,7 @@
 
 {14}
 
-&lt;b&gt;&lt;i&gt;Таксама можаш размаўляць са мной прама тут!&lt;/i&gt;&lt;/b&gt;
+&lt;b&gt;&lt;i&gt;Таксама можаш размаўляць са мной прама тут!&lt;/i&gt;&lt;/b&gt; {16}
 
 {11}{0}: {15}</value>
   </data>
@@ -273,6 +273,7 @@
 🍏 Яблычная гульня = +{3}🎊 | -{4}💰
 🎲 Гульня ў карты = +{5}🎊 | -{6}💰
 ❌⭕️ Крыжыкі-Нулікі: +{7}🎊 | -{8}💰
+😵 Шыбеніца [RU]: +{9}🎊 | -{10}💰
 
 Гульня, ды не штодня 🧗‍♀️</value>
   </data>
@@ -1185,5 +1186,58 @@ https://t.me/newsvirtualpetbot</value>
   </data>
   <data name="petCommand_ads_6" xml:space="preserve">
     <value>/gameroom - можа у хрэсьцікі-нулікі? ❌⭕️</value>
+  </data>
+  <data name="hangmanGameStart" xml:space="preserve">
+    <value>🎮 Гульня "Шыбеніца" пачалася!
+Адгадай слова!
+    
+{0}
+    
+Памылкі: {1}/{2}</value>
+  </data>
+  <data name="hangmanGameWin" xml:space="preserve">
+    <value>🎉 Вы выйгралі!
+Было слова: {0}
+
+Гадаванец атрымаў +{1} радасці 🎊 за перамогу</value>
+  </data>
+  <data name="hangmanGameLose" xml:space="preserve">
+    <value>💀 Вы прайгралі!
+Было слова: {0}
+    
+Поспехаў наступным разам!</value>
+  </data>
+  <data name="hangmanGameGuessLetter" xml:space="preserve">
+    <value>Адгадай літару</value>
+  </data>
+  <data name="hangmanGameAlreadyGuessed" xml:space="preserve">
+    <value>Вы ўжо здагадаліся пра гэтую літару!</value>
+  </data>
+  <data name="hangmanGameInvalidGuess" xml:space="preserve">
+    <value>Няправільная здагадка! Калі ласка, увядзіце адну літару.</value>
+  </data>
+  <data name="hangmanGameWordStatus" xml:space="preserve">
+    <value>Слова: {0}</value>
+  </data>
+  <data name="PlayAgain_Hangman" xml:space="preserve">
+    <value>Згуляць яшчэ 😵</value>
+  </data>
+  <data name="hangmanFooter" xml:space="preserve">
+    <value>{0}
+
+Слова: {1}
+Памылкі: {2}/7</value>
+  </data>
+  <data name="HangmanGameStatisticsCommand" xml:space="preserve">
+    <value>📈СТАТЫСТЫКА ШЫБЕНІЦА 📉
+Выйграна: {0}
+Прайграна: {1}</value>
+  </data>
+  <data name="petCommand_isPetSilenced" xml:space="preserve">
+    <value>
+🕟 Праўда, гадаванец будзе маўчаць яшчэ {0} хвілін</value>
+  </data>
+  <data name="PetIsFullOfHealth" xml:space="preserve">
+    <value>💬 Твой гадаванец і так не хварэе</value>
   </data>
 </root>

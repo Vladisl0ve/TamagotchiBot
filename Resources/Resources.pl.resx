@@ -160,7 +160,7 @@ Miłej zabawy 🍿</value>
 
 {14}
 
-&lt;b&gt;&lt;i&gt;Możesz pogadać ze mną właśnie tutaj!&lt;/i&gt;&lt;/b&gt;
+&lt;b&gt;&lt;i&gt;Możesz pogadać ze mną właśnie tutaj!&lt;/i&gt;&lt;/b&gt; {16}
 
 {11}{0}: {15}</value>
   </data>
@@ -272,6 +272,7 @@ Nie zapominaj karmić zwierzaka 🐣</value>
 🍏 Apple Game = +{3}🎊 | -{4}💰
 🎲 Gra w kości = +{5}🎊 | -{6}💰
 ❌⭕️ Kółko i krzyżyk: +{7}🎊 | -{8}💰
+😵 Wisielec [RU]: +{9}🎊 | -{10}💰
 
 Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
   </data>
@@ -1180,5 +1181,58 @@ Poddania: {2}</value>
   </data>
   <data name="petCommand_ads_6" xml:space="preserve">
     <value>/gameroom - zagraj w kółko i krzyżyk ❌⭕️</value>
+  </data>
+  <data name="hangmanGameStart" xml:space="preserve">
+    <value>🎮 Rozpoczęła się gra Wisielec!
+Odgadnij słowo!
+    
+{0}
+    
+Błędy: {1}/{2}</value>
+  </data>
+  <data name="hangmanGameWin" xml:space="preserve">
+    <value>🎉 Wygrałeś!
+Słowo brzmiało: {0}
+
+Pupil otrzymał +{1} radości 🎊 za zwycięstwo</value>
+  </data>
+  <data name="hangmanGameLose" xml:space="preserve">
+    <value>💀 Przegrałeś!
+Słowo brzmiało: {0}
+    
+Więcej szczęścia następnym razem!</value>
+  </data>
+  <data name="hangmanGameGuessLetter" xml:space="preserve">
+    <value>Zgadnij literę</value>
+  </data>
+  <data name="hangmanGameAlreadyGuessed" xml:space="preserve">
+    <value>Już odgadłeś tę literę!</value>
+  </data>
+  <data name="hangmanGameInvalidGuess" xml:space="preserve">
+    <value>Nieprawidłowe przypuszczenie! Proszę wpisać jedną literę.</value>
+  </data>
+  <data name="hangmanGameWordStatus" xml:space="preserve">
+    <value>Słowo: {0}</value>
+  </data>
+  <data name="PlayAgain_Hangman" xml:space="preserve">
+    <value>Zagrać ponownie 😵</value>
+  </data>
+  <data name="hangmanFooter" xml:space="preserve">
+    <value>{0}
+
+Słowo: {1}
+Błędy: {2}/7</value>
+  </data>
+  <data name="HangmanGameStatisticsCommand" xml:space="preserve">
+    <value>📈STATYSTYKI WISIELEC 📉
+Wygrane: {0}
+Przegrane: {1}</value>
+  </data>
+  <data name="petCommand_isPetSilenced" xml:space="preserve">
+    <value>
+🕟 Prawdę mówiąc, pupil będzie milczał jeszcze {0} minut</value>
+  </data>
+  <data name="PetIsFullOfHealth" xml:space="preserve">
+    <value>💬 Twój pupil i tak nie choruje</value>
   </data>
 </root>

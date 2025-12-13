@@ -214,17 +214,15 @@ namespace TamagotchiBot.Handlers
 
             if (_appServices.UserService.Get(message.From.Id)?.IsInAppleGame ?? false)
             {
-                if (message.Text == "/reward")
-                    await OnRewardMsg(message);
-                else
-                    await new AppleGameController(_appServices, message).Menu();
+                await new AppleGameController(_appServices, message).Menu();
             }
             else if (_appServices.UserService.Get(message.From.Id)?.IsInTicTacToeGame ?? false)
             {
-                if (message.Text == "/reward")
-                    await OnRewardMsg(message);
-                else
-                    await new TicTacToeGameController(_appServices, message).Menu();
+                await new TicTacToeGameController(_appServices, message).Menu();
+            }
+            else if (_appServices.UserService.Get(message.From.Id)?.IsInHangmanGame ?? false)
+            {
+                await new HangmanGameController(_appServices, message).Menu();
             }
             else
                 await new MenuController(_appServices, _envs, message).ProcessMessage();
@@ -264,6 +262,9 @@ namespace TamagotchiBot.Handlers
             if (userDB.IsInTicTacToeGame)
                 return;
 
+            if (userDB.IsInHangmanGame)
+                return;
+
             if (callbackQuery.Data == CallbackButtons.GameroomCommand.GameroomCommandInlineAppleGame.CallbackData)
             {
                 await new AppleGameController(_appServices, callbackQuery).PreStart();
@@ -273,6 +274,12 @@ namespace TamagotchiBot.Handlers
             if (callbackQuery.Data == CallbackButtons.GameroomCommand.GameroomCommandInlineTicTacToe.CallbackData)
             {
                 await new TicTacToeGameController(_appServices, null, callbackQuery).PreStart();
+                return;
+            }
+
+            if (callbackQuery.Data == CallbackButtons.GameroomCommand.GameroomCommandInlineHangman.CallbackData)
+            {
+                await new HangmanGameController(_appServices, null, callbackQuery).PreStart();
                 return;
             }
 

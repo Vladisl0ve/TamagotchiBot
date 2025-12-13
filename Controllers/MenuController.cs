@@ -1051,6 +1051,8 @@ namespace TamagotchiBot.Controllers
             var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
             encodedPetName = "<b>" + encodedPetName + "</b>";
 
+            var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
+            
             return string.Format(
                 nameof(petCommand).UseCulture(_userCulture),
                 encodedPetName,
@@ -1070,7 +1072,9 @@ namespace TamagotchiBot.Controllers
                     : string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOff_F).UseCulture(_userCulture)), userDB.AutoFeedCharges),
                 userDB.Diamonds,
                 randomAd,
-                randomPetPhrase
+                randomPetPhrase,
+                IsGeminiTimeout(previousQA) ? string.Format(nameof(petCommand_isPetSilenced).UseCulture(_userCulture), GetGeminiTimeout(previousQA))
+                                            : string.Empty
             );
         }
 
@@ -1242,7 +1246,9 @@ namespace TamagotchiBot.Controllers
                                               Factors.DiceGameJoyFactor,
                                               Costs.DiceGame,
                                               Factors.TicTacToeGameJoyFactor,
-                                              Costs.TicTacToeGame);
+                                              Costs.TicTacToeGame,
+                                              Factors.HangmanGameJoyFactor,
+                                              Costs.HangmanGame);
 
             List<CallbackModel> inlineParts = InlineItems.InlineGames;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -2230,8 +2236,16 @@ namespace TamagotchiBot.Controllers
         private async Task CureWithPill(Pet petDB)
         {
             Log.Debug($"Callbacked CureWithPill for {_userInfo}");
+
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineHospital(_userCulture));
+            if (petDB.HP >= 100)
+            {
+                await SendAlertToUser(nameof(PetIsFullOfHealth).UseCulture(_userCulture), true);
+                return;
+            }
+
             var newHP = petDB.HP + Factors.PillHPFactor;
-            if (newHP > 100)
+            if (newHP > 100) 
                 newHP = 100;
 
             var newJoy = petDB.Joy + Factors.PillJoyFactor;
@@ -2256,7 +2270,6 @@ namespace TamagotchiBot.Controllers
             };
 
             string toSendText = string.Format(commandHospital, newHP);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineHospital(_userCulture));
 
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
@@ -2892,12 +2905,16 @@ namespace TamagotchiBot.Controllers
         //    await new TicTacToeGameController(_appServices, null, _callback).PreStart();
         //}
 
-        private bool IsGeminiTimeout(List<(string userQ, string geminiA, DateTime revision)> previousQA)
+        private static bool IsGeminiTimeout(List<(string userQ, string geminiA, DateTime revision)> previousQA)
         {
             if (previousQA == null || previousQA.Count < Constants.QA_MAX_COUNTER)
                 return false;
 
             return (DateTime.UtcNow - previousQA[0].revision) < Constants.TimesToWait.GeminiTimeout;
+        }
+        private static int GetGeminiTimeout(List<(string userQ, string geminiA, DateTime revision)> previousQA)
+        {
+            return Math.Abs((int)(DateTime.UtcNow - previousQA[0].revision - Constants.TimesToWait.GeminiTimeout).TotalMinutes);
         }
     }
 }

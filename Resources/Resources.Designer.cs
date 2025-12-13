@@ -1021,6 +1021,8 @@ namespace TamagotchiBot.Resources {
         ///🍏 Apple Game = +{3}🎊 | -{4}💰
         ///🎲 Dice Game = +{5}🎊 | -{6}💰
         ///❌⭕️ Tic-Tac-Toe: +{7}🎊 | -{8}💰
+        ///😵 Hangman [RU only]: +{9}🎊 | -{10}💰
+        ///
         ///
         ///Do not play so much and safety first! 🧗‍♀️.
         /// </summary>
@@ -1072,6 +1074,103 @@ namespace TamagotchiBot.Resources {
         public static string goldNotEnough {
             get {
                 return ResourceManager.GetString("goldNotEnough", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}
+        ///
+        ///Term: {1}
+        ///Errors: {2}/7.
+        /// </summary>
+        public static string hangmanFooter {
+            get {
+                return ResourceManager.GetString("hangmanFooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You already guessed that letter!.
+        /// </summary>
+        public static string hangmanGameAlreadyGuessed {
+            get {
+                return ResourceManager.GetString("hangmanGameAlreadyGuessed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guess a letter.
+        /// </summary>
+        public static string hangmanGameGuessLetter {
+            get {
+                return ResourceManager.GetString("hangmanGameGuessLetter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid guess! Please enter a single letter..
+        /// </summary>
+        public static string hangmanGameInvalidGuess {
+            get {
+                return ResourceManager.GetString("hangmanGameInvalidGuess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💀 You Lost!
+        ///The word was: {0}
+        ///    
+        ///Better luck next time!.
+        /// </summary>
+        public static string hangmanGameLose {
+            get {
+                return ResourceManager.GetString("hangmanGameLose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🎮 Hangman Game Started!
+        ///Guess the word!
+        ///    
+        ///{0}
+        ///    
+        ///Errors: {1}/{2}.
+        /// </summary>
+        public static string hangmanGameStart {
+            get {
+                return ResourceManager.GetString("hangmanGameStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📈STATISTICS HANGMAN 📉
+        ///Won: {0}
+        ///Lost: {1}.
+        /// </summary>
+        public static string HangmanGameStatisticsCommand {
+            get {
+                return ResourceManager.GetString("HangmanGameStatisticsCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🎉 You Won!
+        ///The word was: {0}
+        ///    
+        ///The pet received +{1} joy 🎊 for the victory.
+        /// </summary>
+        public static string hangmanGameWin {
+            get {
+                return ResourceManager.GetString("hangmanGameWin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Word: {0}.
+        /// </summary>
+        public static string hangmanGameWordStatus {
+            get {
+                return ResourceManager.GetString("hangmanGameWordStatus", resourceCulture);
             }
         }
         
@@ -1459,7 +1558,7 @@ namespace TamagotchiBot.Resources {
         ///
         ///{14}
         ///
-        ///&lt;b&gt;&lt;i&gt;And you can chat with me right here!&lt;/i&gt;&lt;/b&gt;
+        ///&lt;b&gt;&lt;i&gt;And you can chat with me right here!&lt;/i&gt;&lt;/b&gt; {16}
         ///
         ///{11}{0}: {15}.
         /// </summary>
@@ -1520,6 +1619,16 @@ namespace TamagotchiBot.Resources {
         public static string petCommand_ads_6 {
             get {
                 return ResourceManager.GetString("petCommand_ads_6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///🕟 Actually, the pet will stay silent for another {0} minutes.
+        /// </summary>
+        public static string petCommand_isPetSilenced {
+            get {
+                return ResourceManager.GetString("petCommand_isPetSilenced", resourceCulture);
             }
         }
         
@@ -1679,6 +1788,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 💬 Your pet isn’t sick anyway.
+        /// </summary>
+        public static string PetIsFullOfHealth {
+            get {
+                return ResourceManager.GetString("PetIsFullOfHealth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The pet has already played enough ⛹️‍♀️.
         /// </summary>
         public static string PetIsFullOfJoyText {
@@ -1722,6 +1840,15 @@ namespace TamagotchiBot.Resources {
         public static string PetWorkingAnswerCallback {
             get {
                 return ResourceManager.GetString("PetWorkingAnswerCallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Again 😵.
+        /// </summary>
+        public static string PlayAgain_Hangman {
+            get {
+                return ResourceManager.GetString("PlayAgain_Hangman", resourceCulture);
             }
         }
         

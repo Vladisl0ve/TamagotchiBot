@@ -81,6 +81,7 @@ namespace Telegram.Bots.Example
                       services.AddTransient<SInfoService>();
                       services.AddTransient<AppleGameDataService>();
                       services.AddTransient<TicTacToeGameDataService>();
+                      services.AddTransient<HangmanGameDataService>();
                       services.AddTransient<BotControlService>();
                       services.AddTransient<AllUsersDataService>();
                       services.AddTransient<DailyInfoService>();
@@ -169,7 +170,8 @@ namespace Telegram.Bots.Example
                     MetaUsersCollectionName = "MetaUser",
                     ReferalInfoCollectionName = "ReferalInfo",
                     ArchiveUserInfoCollectionName = "ArchiveUserInfo",
-                    TicTacToeGameDataCollectionName = "TicTacToeGameData"
+                    TicTacToeGameDataCollectionName = "TicTacToeGameData",
+                    HangmanGameDataCollectionName = "HangmanGameData"
                 },
 
                 EnvsSettings = new EnvsSettings()

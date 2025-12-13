@@ -507,6 +507,33 @@ namespace TamagotchiBot.UserExtensions
 
             return result;
         }
+        public static List<BotCommand> GetInHangmanGameCommands(string culture)
+        {
+            CultureInfo tmpCult;
+            try
+            {
+                tmpCult = new CultureInfo(culture);
+            }
+            catch
+            {
+                return new List<BotCommand>();
+            }
+
+            return GetInHangmanGameCommands(tmpCult);
+        }
+        public static List<BotCommand> GetInHangmanGameCommands(CultureInfo culture)
+        {
+            List<BotCommand> result = new()
+            {
+                new BotCommand()
+                {
+                    Command = Commands.QuitCommand,
+                    Description = nameof(Resources.Resources.quitCommandDescription).UseCulture(culture)
+                }
+            };
+
+            return result;
+        }
 
         public static string GetFatigue(int fatigue, CultureInfo culture)
         {

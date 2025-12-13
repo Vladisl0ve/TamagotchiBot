@@ -1,17 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Web;
+using System.Threading.Tasks;
 using TamagotchiBot.Models.Answers;
+using TamagotchiBot.Models.Mongo.Games;
+using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.UserExtensions.Constants;
-using TamagotchiBot.Services.Interfaces;
 using Extensions = TamagotchiBot.UserExtensions.Extensions;
-using Serilog;
-using System.Threading.Tasks;
-using TamagotchiBot.Models.Mongo.Games;
 
 namespace TamagotchiBot.Controllers
 {
@@ -125,12 +123,33 @@ namespace TamagotchiBot.Controllers
         public async Task PreStart()
         {
             var userDB = _appServices.UserService.Get(_userId);
+            var petDB = _appServices.PetService.Get(_userId);
             if (userDB.Gold < Costs.TicTacToeGame)
             {
                 string anwser = nameof(Resources.Resources.NotEnoughGold).UseCulture(_userCulture);
                 await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser, true);
                 return;
             }
+
+            if (petDB.Fatigue >= 100)
+            {
+                string anwser = nameof(Resources.Resources.tooTiredText).UseCulture(_userCulture);
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
+                                                                        _userId,
+                                                                        anwser,
+                                                                        true);
+                return;
+            }
+            if (petDB.Joy >= 100)
+            {
+                string anwser = nameof(Resources.Resources.PetIsFullOfJoyText).UseCulture(_userCulture);
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
+                                                                        _userId,
+                                                                        anwser,
+                                                                        true);
+                return;
+            }
+
 
             _appServices.UserService.UpdateGold(_userId, userDB.Gold - Costs.TicTacToeGame);
             await _appServices.UserService.UpdateTicTacToeGameStatus(_userId, true);
