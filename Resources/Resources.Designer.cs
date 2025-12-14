@@ -826,7 +826,13 @@ namespace TamagotchiBot.Resources {
         ///It was very nice to spend time with you, but I&apos;ve started feel not good.
         ///You should have kept an eye on me...❤️‍🩹&quot;
         ///
-        ///Your pet left because he lacked care 💔.
+        ///Your pet left because he lacked care 💔
+        ///
+        ///&lt;b&gt;⚠️ WARNING: IF YOU DO NOTHING, YOU WILL LOSE YOUR PET ☠️&lt;/b&gt;
+        ///
+        ///You have:
+        ///&lt;b&gt;{2}&lt;/b&gt; 💰 gold
+        ///&lt;b&gt;{3} &lt;/b&gt;💎 diamonds.
         /// </summary>
         public static string FarewellText {
             get {
@@ -835,7 +841,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Buy Auto-feeder 5 charges 🤖.
+        ///   Looks up a localized string similar to 🤖 Buy Auto-feeder 5 charges 🤖.
         /// </summary>
         public static string farmButtonAutoFeed {
             get {
@@ -844,7 +850,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change your pet&apos;s appearance 🎩.
+        ///   Looks up a localized string similar to 🎩 Change your pet&apos;s appearance 🎩.
         /// </summary>
         public static string farmButtonChangeType {
             get {
@@ -1051,7 +1057,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Say goodbye and leave 👋.
+        ///   Looks up a localized string similar to 👋 Say goodbye and leave 👋.
         /// </summary>
         public static string goAwayButton {
             get {

@@ -322,11 +322,14 @@ namespace TamagotchiBot.Controllers
             string textToSend = string.Format(
                 nameof(FarewellText).UseCulture(_userCulture),
                 petResult.Name,
-                userDB.Username);
+                userDB.Username,
+                userDB.Gold,
+                userDB.Diamonds);
 
             var toSend = new AnswerMessage()
             {
                 Text = textToSend,
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.PetGoneSticker_Cat), petResult.Type),
             };
 

@@ -390,7 +390,13 @@ Czekaj na dalsze informacje! 💝</value>
 Bardzo miło było spędzić z tobą czas, ale zacząłem się źle czuć.
 Potrzebuję więcej uwagi...❤️‍🩹
 
-Twój pupil odszedł, bo brakowało mu opieki💔</value>
+Twój pupil odszedł, bo brakowało mu opieki💔
+
+&lt;b&gt;⚠️ UWAGA: JEŚLI NIC NIE ZROBISZ, STRACISZ PUPILA ☠️&lt;/b&gt;
+
+Masz:
+&lt;b&gt;{2}&lt;/b&gt; 💰 złota
+&lt;b&gt;{3} &lt;/b&gt;💎 diamentów</value>
   </data>
   <data name="EpilogueText" xml:space="preserve">
     <value>Każdemu się to zdarza, ale życie toczy się dalej!
@@ -949,10 +955,10 @@ Następne użycie automatycznego karmnika za: {2}h i {3}min 🕗
 &lt;b&gt;Jak mogę pomóc?&lt;/b&gt;</value>
   </data>
   <data name="farmButtonChangeType" xml:space="preserve">
-    <value>Zmień wygląd swojego zwierzaka 🎩</value>
+    <value>🎩 Zmień wygląd swojego zwierzaka 🎩</value>
   </data>
   <data name="goAwayButton" xml:space="preserve">
-    <value>Pożegnaj się i odejdź 👋</value>
+    <value>👋 Pożegnaj się i odejdź 👋</value>
   </data>
   <data name="changeTypeButtonCommand" xml:space="preserve">
     <value>👨‍🌾: Jestem &lt;i&gt;magicznym&lt;/i&gt;rolnikiem, więc mogę zmienić wygląd Twojego zwierzaka
@@ -1060,7 +1066,7 @@ Porozmawiaj z nim trochę później 🕐</value>
     <value>🎉 Gratulacje! Twój pupil osiągnął &lt;b&gt;{0}&lt;/b&gt; rangę miesiąca! Cały trening się opłacił — otrzymałeś &lt;b&gt;{1} złota&lt;/b&gt; jako nagrodę! 💰</value>
   </data>
   <data name="farmButtonAutoFeed" xml:space="preserve">
-    <value>Kup automatyczny karmnik z 5 ładunkami 🤖</value>
+    <value>🤖 Kup automatyczny karmnik z 5 ładunkami 🤖</value>
   </data>
   <data name="autoFeedBought" xml:space="preserve">
     <value>Karmnik automatyczny kupiony! Masz {0} ładunków</value>
