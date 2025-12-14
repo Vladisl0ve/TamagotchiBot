@@ -53,7 +53,7 @@ namespace TamagotchiBot.Services
                     Log.Information($"Deleting message {msgId} from chat {chatId}");
 
                 Log.Verbose($"Deleting message {msgId} from chat {chatId}");
-                await _botClient.DeleteMessageAsync(chatId, msgId);
+                await _botClient.DeleteMessage(chatId, msgId);
             }
             catch (Exception ex)
             {
@@ -63,7 +63,7 @@ namespace TamagotchiBot.Services
 
         public async Task<Message> SendDiceMessageAsync(long chatId,
                                                         int msgThreadId,
-                                                        Emoji emoji,
+                                                        Dice emoji,
                                                         bool toLog = true)
         {
             string logInfo;
@@ -83,10 +83,10 @@ namespace TamagotchiBot.Services
             try
             {
                 if (toLog)
-                    Log.Information($"Dice {emoji} sent to {logInfo}");
+                    Log.Information($"Dice {emoji.Value} sent to {logInfo}");
 
-                Log.Verbose($"Dice {emoji} sent to {logInfo}");
-                return await _botClient.SendDiceAsync(chatId, messageThreadId: msgThreadId, emoji: emoji);
+                Log.Verbose($"Dice {emoji.Value} sent to {logInfo}");
+                return await _botClient.SendDice(chatId, messageThreadId: msgThreadId, emoji: emoji.Emoji);
             }
             catch (ApiRequestException ex)
             {
@@ -102,7 +102,7 @@ namespace TamagotchiBot.Services
         public async Task<Message> SendTextMessageAsync(long chatId,
                                                string text,
                                                int? msgThreadId = null,
-                                               IReplyMarkup inlineMarkup = default,
+                                               ReplyMarkup inlineMarkup = default,
                                                CancellationToken cancellationToken = default,
                                                ParseMode? parseMode = null,
                                                bool toLog = true,
@@ -122,13 +122,13 @@ namespace TamagotchiBot.Services
                 if (toLog)
                     Log.Information($"Message sent to {logInfo}, sent: {text.Replace("\r\n", " ")}");
                 Log.Verbose($"Message sent to {logInfo}: {text.Replace("\r\n", " ")}");
-                return await _botClient.SendTextMessageAsync(chatId: chatId,
+                return await _botClient.SendMessage(chatId: chatId,
                                      text: text,
                                      messageThreadId: msgThreadId,
                                      replyMarkup: inlineMarkup,
                                      cancellationToken: cancellationToken,
-                                     parseMode: parseMode,
-                                     replyToMessageId: replyToMsgId);
+                                     parseMode: parseMode ?? default,
+                                     replyParameters: replyToMsgId);
             }
             catch (ApiRequestException ex)
             {
@@ -154,7 +154,7 @@ namespace TamagotchiBot.Services
         public async Task<Message> SendStickerAsync(long chatId,
                                            string stickerId,
                                            int? msgThreadId = null,
-                                           IReplyMarkup replyMarkup = null,
+                                           ReplyMarkup replyMarkup = null,
                                            CancellationToken cancellationToken = default,
                                            bool toLog = true)
         {
@@ -174,7 +174,7 @@ namespace TamagotchiBot.Services
 
                 Log.Verbose($"Sticker sent for {logInfo}");
 
-                return await _botClient.SendStickerAsync(chatId: chatId,
+                return await _botClient.SendSticker(chatId: chatId,
                                                   sticker: new InputFileId(stickerId),
                                                   replyMarkup: replyMarkup,
                                                   messageThreadId: msgThreadId,
@@ -225,12 +225,12 @@ namespace TamagotchiBot.Services
 
                 Log.Verbose($"Message edited for {logInfo}: {text.Replace("\r\n", " ")}");
 
-                await _botClient.EditMessageTextAsync(chatId,
+                await _botClient.EditMessageText(chatId,
                                                messageId,
                                                text,
                                                replyMarkup: replyMarkup,
                                                cancellationToken: cancellationToken,
-                                               parseMode: parseMode);
+                                               parseMode: parseMode ?? default);
             }
             catch (ApiRequestException ex)
             {
@@ -251,7 +251,7 @@ namespace TamagotchiBot.Services
             try
             {
                 Log.Information($"Message reply edited for {Extensions.GetLogUser(userDB)}");
-                await _botClient.EditMessageReplyMarkupAsync(chatId, messageId, replyMarkup: replyMarkup, cancellationToken: cancellationToken);
+                await _botClient.EditMessageReplyMarkup(chatId, messageId, replyMarkup: replyMarkup, cancellationToken: cancellationToken);
             }
             catch (Exception ex)
             {
@@ -274,7 +274,7 @@ namespace TamagotchiBot.Services
             try
             {
                 Log.Verbose($"Answered callback for {Extensions.GetLogUser(userDB)}: {text.Replace("\r\n", " ")}");
-                await _botClient.AnswerCallbackQueryAsync(callbackQueryId,
+                await _botClient.AnswerCallbackQuery(callbackQueryId,
                                                text: text,
                                                showAlert: showAlert,
                                                url: url,
@@ -290,9 +290,9 @@ namespace TamagotchiBot.Services
         {
             try
             {
-                var currentCommands = await _botClient.GetMyCommandsAsync(scope: scope, cancellationToken: cancellationToken);
+                var currentCommands = await _botClient.GetMyCommands(scope: scope, cancellationToken: cancellationToken);
                 if (!currentCommands.IsEqual(commands.ToArray()))
-                    await _botClient.SetMyCommandsAsync(commands,
+                    await _botClient.SetMyCommands(commands,
                                                         scope: scope,
                                                         cancellationToken: cancellationToken);
             }
@@ -311,7 +311,7 @@ namespace TamagotchiBot.Services
 
             try
             {
-                await _botClient.SendChatActionAsync(chatId, chatAction, cancellationToken: cancellationToken);
+                await _botClient.SendChatAction(chatId, chatAction, cancellationToken: cancellationToken);
             }
             catch (ApiRequestException ex)
             {
@@ -354,7 +354,7 @@ namespace TamagotchiBot.Services
                     if (toLog)
                         Log.Information($"Photo sent for {Extensions.GetLogUser(_userService.Get(userId))}");
 
-                    var resPhoto = await _botClient.SendPhotoAsync(userId,
+                    var resPhoto = await _botClient.SendPhoto(userId,
                                              inputOnlineFile,
                                              caption: toSend.Text, // Optional: put main text as caption
                                              messageThreadId: toSend.msgThreadId,
@@ -378,7 +378,7 @@ namespace TamagotchiBot.Services
             }
 
 
-            else if (toSend.ReplyMarkup is ReplyMarkupBase)
+            else if (toSend.ReplyMarkup is ReplyMarkup)
             {
                 var resTextR = await SendTextMessageAsync(userId,
                              toSend.Text,
@@ -423,7 +423,7 @@ namespace TamagotchiBot.Services
                                  msgThreadId: msgThreadId,
                                  toSend.ReplyMarkup,
                                  toLog: toLog);
-            else if (toSend.ReplyMarkup is ReplyMarkupBase)
+            else if (toSend.ReplyMarkup is ReplyMarkup)
             {
                 await SendTextMessageAsync(_envs.ChatToForwardId,
                              toSend.Text,
@@ -453,7 +453,7 @@ namespace TamagotchiBot.Services
                                  toSend.msgThreadId,
                                  toSend.ReplyMarkup,
                                  toLog: toLog);
-            else if (toSend.ReplyMarkup is ReplyMarkupBase)
+            else if (toSend.ReplyMarkup is ReplyMarkup)
                 return await SendTextMessageAsync(chatId,
                              toSend.Text,
                              msgThreadId: toSend.msgThreadId,
@@ -472,7 +472,7 @@ namespace TamagotchiBot.Services
         public async Task SendAnswerCallback(long userId, int messageToAnswerId, AnswerCallback toSend, bool toLog = true)
             => await EditMessageTextAsync(userId, messageToAnswerId, toSend.Text, toSend.InlineKeyboardMarkup, parseMode: toSend.ParseMode, toLog: toLog);
 
-        public async Task<User> GetBotUserInfo() => await _botClient.GetMeAsync();
+        public async Task<User> GetBotUserInfo() => await _botClient.GetMe();
 
         internal async Task<Message> ForwardMessageToDebugChat(Message message, int messageThreadId)
         {
@@ -485,7 +485,7 @@ namespace TamagotchiBot.Services
                         Log.Warning($"Forward try #{tryCounter}, msgThreadId: {messageThreadId}");
 
                     tryCounter++;
-                    return await _botClient.ForwardMessageAsync(_envs.ChatToForwardId, message.Chat.Id, message.MessageId, messageThreadId);
+                    return await _botClient.ForwardMessage(_envs.ChatToForwardId, message.Chat.Id, message.MessageId, messageThreadId);
                 }
                 catch (ApiRequestException e)
                 {
@@ -512,7 +512,7 @@ namespace TamagotchiBot.Services
         internal async Task<int> CreateNewThreadInDebugChat(User from)
         {
             string topicName = $"|{from.Id}|{from.Username ?? from.FirstName + " " + from.LastName}|";
-            Color topicColor = new Random().Next(0, 6) switch
+            int topicColor = new Random().Next(0, 6) switch
             {
                 0 => Color.YellowColor,
                 1 => Color.GreenColor,
@@ -525,7 +525,7 @@ namespace TamagotchiBot.Services
             };
             try
             {
-                return (await _botClient.CreateForumTopicAsync(_envs.ChatToForwardId, topicName, topicColor)).MessageThreadId;
+                return (await _botClient.CreateForumTopic(_envs.ChatToForwardId, topicName, iconColor: topicColor)).MessageThreadId;
             }
             catch
             {

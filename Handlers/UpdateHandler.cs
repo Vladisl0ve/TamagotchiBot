@@ -80,7 +80,7 @@ namespace TamagotchiBot.Handlers
                             switch (update.Type)
                             {
                                 case UpdateType.Message:
-                                    await OnMessageGroup(update.Message, (await botClient.GetMeAsync(cancellationToken: cancellationToken)).Id);
+                                    await OnMessageGroup(update.Message, (await botClient.GetMe(cancellationToken: cancellationToken)).Id);
                                     return;
                                 case UpdateType.CallbackQuery:
                                     await OnCallbackGroup(update.CallbackQuery);
@@ -326,8 +326,8 @@ namespace TamagotchiBot.Handlers
             var userId = message.From.Id;
             return message.Type switch
             {
-                MessageType.ChatMembersAdded => OnChatMemberAdded(botId),
-                MessageType.ChatMemberLeft => OnChatMemberLeft(botId),
+                MessageType.NewChatMembers => OnChatMemberAdded(botId),
+                MessageType.LeftChatMember => OnChatMemberLeft(botId),
                 _ => OnTextMessageGroup(message)
             };
 
@@ -381,7 +381,7 @@ namespace TamagotchiBot.Handlers
         private bool ToContinueHandlingUpdateChecking(Update update)
         {
             if ((update.Type == UpdateType.Message)
-                && (update.Message.Type == MessageType.Text || update.Message.Type == MessageType.ChatMembersAdded || update.Message.Type == MessageType.ChatMemberLeft)
+                && (update.Message.Type == MessageType.Text || update.Message.Type == MessageType.NewChatMembers || update.Message.Type == MessageType.LeftChatMember)
                 && (update.Message.From != null)
                 && (update.Message.Chat?.Id != null && !_envs.ChatsToDevNotify.Any(c => update.Message.Chat.Id.ToString() == c))
                 && (update.Message.ForwardDate == null))
@@ -568,7 +568,7 @@ namespace TamagotchiBot.Handlers
             }
         }
 
-        public async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+        public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, HandleErrorSource source, CancellationToken cancellationToken)
         {
             var ErrorMessage = exception switch
             {
