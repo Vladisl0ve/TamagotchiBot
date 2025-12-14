@@ -49,7 +49,7 @@ namespace TamagotchiBot.Controllers
             // Handle Post-Game Menu
             if (gameData.IsGameOver)
             {
-                if (msgText.Contains(nameof(Resources.Resources.againText).UseCulture(_userCulture)))
+                if (msgText.Contains(nameof(Resources.Resources.PlayAgain_Hangman).UseCulture(_userCulture)))
                 {
                     await PreStart();
                     return;
@@ -57,7 +57,7 @@ namespace TamagotchiBot.Controllers
 
                 if (msgText == nameof(Resources.Resources.statisticsText).UseCulture(_userCulture))
                 {
-                    string stats = string.Format(nameof(Resources.Resources.HangmanGameStatisticsCommand).UseCulture(_userCulture), 
+                    string stats = string.Format(nameof(Resources.Resources.HangmanGameStatisticsCommand).UseCulture(_userCulture),
                                                         gameData.TotalWins,
                                                         gameData.TotalLoses,
                                                         "");
@@ -266,7 +266,8 @@ namespace TamagotchiBot.Controllers
         {
             gameData.IsGameOver = true;
             string message;
-
+            string hiddenWord = GetHiddenWord(gameData);
+            int errors = GetWrongGuessesCount(gameData);
             if (win)
             {
                 gameData.TotalWins++;
@@ -276,11 +277,14 @@ namespace TamagotchiBot.Controllers
                 _appServices.PetService.UpdateJoy(_userId, newJoy);
 
                 message = string.Format(nameof(Resources.Resources.hangmanGameWin).UseCulture(_userCulture), gameData.Word, Factors.HangmanGameJoyFactor);
+                hiddenWord = gameData.Word.ToUpper();
             }
             else
             {
                 gameData.TotalLoses++;
                 message = string.Format(nameof(Resources.Resources.hangmanGameLose).UseCulture(_userCulture), gameData.Word);
+                hiddenWord = gameData.Word.ToUpper();
+                errors = 7;
             }
 
             _appServices.HangmanGameDataService.Update(gameData);
@@ -288,7 +292,8 @@ namespace TamagotchiBot.Controllers
             await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
             {
                 Text = message,
-                ReplyMarkup = GetPostGameKeyboard()
+                ReplyMarkup = GetPostGameKeyboard(),
+                PhotoStream = TamagotchiBot.Services.Helpers.HangmanImageGenerator.GenerateImage(errors, hiddenWord)
             }, _userId, false);
         }
 
@@ -318,7 +323,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = text,
                 ReplyMarkup = GetGameKeyboard(),
-                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                PhotoStream = TamagotchiBot.Services.Helpers.HangmanImageGenerator.GenerateImage(errors, wordStatus)
             }, _userId, false);
         }
 

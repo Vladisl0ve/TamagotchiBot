@@ -22,5 +22,6 @@ namespace TamagotchiBot.Models.Answers
         public ParseMode? ParseMode { get; set; } = null;
         public int? replyToMsgId { get; set; } = null;
         public int? msgThreadId { get; set; } = null;
+        public System.IO.Stream? PhotoStream { get; set; } = null;
     }
 }

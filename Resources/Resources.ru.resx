@@ -228,7 +228,7 @@
     <value>хочет спать</value>
   </data>
   <data name="petCommandDescription" xml:space="preserve">
-    <value>Состояние питомца ❤️‍🩹</value>
+    <value>Статы питомца ❤️‍🩹</value>
   </data>
   <data name="kitchenCommandDescription" xml:space="preserve">
     <value>Кухня 🍽</value>

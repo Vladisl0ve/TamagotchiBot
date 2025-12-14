@@ -340,7 +340,40 @@ namespace TamagotchiBot.Services
 
                 if (userMsgThread != 0 && resStiker != default && toForward)
                 {
-                    ForwardMessageToDebugChat(resStiker, userMsgThread);
+                    await ForwardMessageToDebugChat(resStiker, userMsgThread);
+                }
+            }
+
+
+            else if (toSend.PhotoStream != null)
+            {
+                var inputOnlineFile = new InputFileStream(toSend.PhotoStream, "hangman_status.png");
+
+                try
+                {
+                    if (toLog)
+                        Log.Information($"Photo sent for {Extensions.GetLogUser(_userService.Get(userId))}");
+
+                    var resPhoto = await _botClient.SendPhotoAsync(userId,
+                                             inputOnlineFile,
+                                             caption: toSend.Text, // Optional: put main text as caption
+                                             messageThreadId: toSend.msgThreadId,
+                                             replyMarkup: toSend.ReplyMarkup,
+                                             parseMode: toSend.ParseMode);
+
+                    if (userMsgThread != 0 && resPhoto != default && toForward)
+                    {
+                        await ForwardMessageToDebugChat(resPhoto, userMsgThread);
+                    }
+                    return resPhoto;
+                }
+                catch (ApiRequestException ex)
+                {
+                    Log.Error($"PHOTO MSG: {ex.Message}, CODE: {ex.ErrorCode}");
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"PHOTO MSG: {ex.Message}");
                 }
             }
 
@@ -355,7 +388,7 @@ namespace TamagotchiBot.Services
 
                 if (userMsgThread != 0 && resTextR != default && toForward)
                 {
-                    ForwardMessageToDebugChat(resTextR, userMsgThread);
+                    await ForwardMessageToDebugChat(resTextR, userMsgThread);
                 }
 
                 return resTextR;
@@ -371,7 +404,7 @@ namespace TamagotchiBot.Services
 
                 if (userMsgThread != 0 && resTextI != default && toForward)
                 {
-                    ForwardMessageToDebugChat(resTextI, userMsgThread);
+                    await ForwardMessageToDebugChat(resTextI, userMsgThread);
                 }
 
                 return resTextI;
