@@ -1778,6 +1778,16 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /gameroom - play Hangman[RU] 😵
+        ///.
+        /// </summary>
+        public static string petCommand_ads_7 {
+            get {
+                return ResourceManager.GetString("petCommand_ads_7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 
         ///🕟 Actually, the pet will stay silent for another {0} minutes.
         /// </summary>
@@ -2725,12 +2735,29 @@ namespace TamagotchiBot.Resources {
         ///
         ///😴 Fatigue: {2}%
         ///
+        ///Food Delivery 🎒 -{7}⌛️, +{8} golds 💰
+        ///McDonalds 🍔 -{5}⌛️, +{6} golds 💰
+        ///Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} gold 💰
+        ///
+        ///Engineer 🛠 -{11}⌛️, +{12} golds 💰
+        ///Make-up Artist 💄 -{9}⌛️, +{10} golds 💰
+        ///
         ///Programing 💻 -{0}⌛️, +{1} golds 💰
-        ///Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} gold 💰.
+        ///Accountant 📔 -{13}⌛️, +{14} golds 💰
+        ///Pilot ✈️ -{15}⌛️, +{16} golds 💰.
         /// </summary>
         public static string workCommand {
             get {
                 return ResourceManager.GetString("workCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🏛 Your pet has started working as {0}.
+        /// </summary>
+        public static string workCommand_Working {
+            get {
+                return ResourceManager.GetString("workCommand_Working", resourceCulture);
             }
         }
         
@@ -2753,7 +2780,25 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distribute leaflets 🤹‍♀️.
+        ///   Looks up a localized string similar to 📔 Accountant.
+        /// </summary>
+        public static string workCommandInlineAccountant {
+            get {
+                return ResourceManager.GetString("workCommandInlineAccountant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🛠 Engineer.
+        /// </summary>
+        public static string workCommandInlineEngineer {
+            get {
+                return ResourceManager.GetString("workCommandInlineEngineer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🤹‍♀️ Distribute leaflets.
         /// </summary>
         public static string workCommandInlineFlyers {
             get {
@@ -2762,11 +2807,47 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Program 💻.
+        ///   Looks up a localized string similar to 🎒 Food Delivery.
+        /// </summary>
+        public static string workCommandInlineFoodDelivery {
+            get {
+                return ResourceManager.GetString("workCommandInlineFoodDelivery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💄 Make-up Artist.
+        /// </summary>
+        public static string workCommandInlineMakeUpArtist {
+            get {
+                return ResourceManager.GetString("workCommandInlineMakeUpArtist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🍔 McDonalds Staff.
+        /// </summary>
+        public static string workCommandInlineMcDonalds {
+            get {
+                return ResourceManager.GetString("workCommandInlineMcDonalds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💻 Program.
         /// </summary>
         public static string workCommandInlinePC {
             get {
                 return ResourceManager.GetString("workCommandInlinePC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ✈️ Pilot.
+        /// </summary>
+        public static string workCommandInlinePilot {
+            get {
+                return ResourceManager.GetString("workCommandInlinePilot", resourceCulture);
             }
         }
         

@@ -34,7 +34,13 @@ namespace TamagotchiBot.UserExtensions
         {
             None = 0,
             WorkingOnPC = 1,
-            FlyersDistributing = 2
+            FlyersDistributing = 2,
+            McDonalds = 3,
+            MakeUpArtist = 4,
+            FoodDelivery = 5,
+            Accountant = 6,
+            Engineer = 7,
+            Pilot = 8
         }
 
         public enum EducationLevel
@@ -90,8 +96,16 @@ namespace TamagotchiBot.UserExtensions
             public const int HangmanGameFatigueFactor = 5;
             public const int HangmanGameJoyFactor = 20;
 
-            public const int WorkOnPCFatigueFactor = 50;
-            public const int FlyersDistributingFatigueFactor = 20;
+            public const int WorkOnPCFatigueFactor = 40;
+            public const int FlyersDistributingFatigueFactor = 60;
+
+            //New Jobs
+            public const int McDonaldsFatigueFactor = 60;
+            public const int MakeUpArtistFatigueFactor = 50;
+            public const int EngineerFatigueFactor = 50;
+            public const int FoodDeliveryFatigueFactor = 60;
+            public const int AccountantFatigueFactor = 40;
+            public const int PilotFatigueFactor = 40;
 
             public const int EducationFatigueFactor = 60;
 
@@ -102,7 +116,15 @@ namespace TamagotchiBot.UserExtensions
         public struct Rewards //in gold
         {
             public const int WorkOnPCGoldReward = 100;
-            public const int FlyersDistributingGoldReward = 40;
+            public const int FlyersDistributingGoldReward = 60;
+
+            //New Jobs
+            public const int McDonaldsGoldReward = 60;
+            public const int MakeUpArtistGoldReward = 80;
+            public const int EngineerGoldReward = 80;
+            public const int FoodDeliveryGoldReward = 60;
+            public const int AccountantGoldReward = 100;
+            public const int PilotGoldReward = 100;
             public const int DailyGoldReward = 250;
 
             //Referal
@@ -173,8 +195,16 @@ namespace TamagotchiBot.UserExtensions
 
         public static class TimesToWait
         {
-            public readonly static TimeSpan WorkOnPCToWait = new(0, 2, 0);
-            public readonly static TimeSpan FlyersDistToWait = new(0, 0, 30);
+            public readonly static TimeSpan WorkOnPCToWait = new(0, 1, 0);
+            public readonly static TimeSpan FlyersDistToWait = new(0, 3, 0);
+
+            //New Jobs
+            public readonly static TimeSpan McDonaldsToWait = new(0, 3, 0);
+            public readonly static TimeSpan MakeUpArtistToWait = new(0, 2, 0);
+            public readonly static TimeSpan EngineerToWait = new(0, 2, 0);
+            public readonly static TimeSpan FoodDeliveryToWait = new(0, 3, 0);
+            public readonly static TimeSpan AccountantToWait = new(0, 1, 0);
+            public readonly static TimeSpan PilotToWait = new(0, 1, 0);
             public readonly static TimeSpan DailyRewardToWait = new(24, 0, 0);
             public readonly static TimeSpan SleepToWait = new(0, 10, 0);
             public readonly static TimeSpan DuelCDToWait = new(0, 5, 0);
@@ -214,8 +244,16 @@ namespace TamagotchiBot.UserExtensions
 
             public const int Sleep = 30;
 
-            public const int WorkPC = 25;
-            public const int WorkFlyers = 10;
+            public const int WorkPC = 1000; //High
+            public const int WorkFlyers = 50; //Primary
+
+            //New Jobs
+            public const int WorkMcDonalds = 50; //Primary
+            public const int WorkMakeUpArtist = 300; //Middle
+            public const int WorkEngineer = 300; //Middle
+            public const int WorkFoodDelivery = 50; //Primary
+            public const int WorkAccountant = 1000; //High
+            public const int WorkPilot = 1000; //High
         }
 
         public struct FoodFactors
@@ -255,8 +293,6 @@ namespace TamagotchiBot.UserExtensions
             public const string WorkCommand = "work";
             public const string QuitCommand = "quit";
             public const string ChangelogCommand = "changelog";
-
-            public const string GeminiCommand = "gemini";
 
             //ADMIN
             public const string CheckCommand = "check";
@@ -378,6 +414,12 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetWorkSticker_Cat), PetWorkSticker_Cat },
                 {nameof(PetWorkOnPCSticker_Cat), PetWorkOnPCSticker_Cat },
                 {nameof(PetFlyersJobSticker_Cat), PetFlyersJobSticker_Cat },
+                {nameof(PetMcDonaldsSticker_Cat), PetMcDonaldsSticker_Cat },
+                {nameof(PetMakeUpArtistSticker_Cat), PetMakeUpArtistSticker_Cat },
+                {nameof(PetFoodDeliverySticker_Cat), PetFoodDeliverySticker_Cat },
+                {nameof(PetAccountantSticker_Cat), PetAccountantSticker_Cat },
+                {nameof(PetEngineerSticker_Cat), PetEngineerSticker_Cat },
+                {nameof(PetPilotSticker_Cat), PetPilotSticker_Cat },
                 {nameof(PetRanksSticker_Cat), PetRanksSticker_Cat },
                 {nameof(PetStartStudyingSticker_Cat), PetStartStudyingSticker_Cat },
                 {nameof(PetHospitalLowHPSticker_Cat), PetHospitalLowHPSticker_Cat },
@@ -408,6 +450,12 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetWorkSticker_Dog), PetWorkSticker_Dog },
                 {nameof(PetWorkOnPCSticker_Dog), PetWorkOnPCSticker_Dog },
                 {nameof(PetFlyersJobSticker_Dog), PetFlyersJobSticker_Dog },
+                {nameof(PetMcDonaldsSticker_Dog), PetMcDonaldsSticker_Dog },
+                {nameof(PetMakeUpArtistSticker_Dog), PetMakeUpArtistSticker_Dog },
+                {nameof(PetFoodDeliverySticker_Dog), PetFoodDeliverySticker_Dog },
+                {nameof(PetAccountantSticker_Dog), PetAccountantSticker_Dog },
+                {nameof(PetEngineerSticker_Dog), PetEngineerSticker_Dog },
+                {nameof(PetPilotSticker_Dog), PetPilotSticker_Dog },
                 {nameof(PetStartStudyingSticker_Dog), PetStartStudyingSticker_Dog },
                 {nameof(PetRanksSticker_Dog), PetRanksSticker_Dog },
                 {nameof(PetHospitalLowHPSticker_Dog), PetHospitalLowHPSticker_Dog },
@@ -438,6 +486,12 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetWorkSticker_Fox), PetWorkSticker_Fox },
                 {nameof(PetWorkOnPCSticker_Fox), PetWorkOnPCSticker_Fox },
                 {nameof(PetFlyersJobSticker_Fox), PetFlyersJobSticker_Fox },
+                {nameof(PetMcDonaldsSticker_Fox), PetMcDonaldsSticker_Fox },
+                {nameof(PetMakeUpArtistSticker_Fox), PetMakeUpArtistSticker_Fox },
+                {nameof(PetFoodDeliverySticker_Fox), PetFoodDeliverySticker_Fox },
+                {nameof(PetAccountantSticker_Fox), PetAccountantSticker_Fox },
+                {nameof(PetEngineerSticker_Fox), PetEngineerSticker_Fox },
+                {nameof(PetPilotSticker_Fox), PetPilotSticker_Fox },
                 {nameof(PetRanksSticker_Fox), PetRanksSticker_Fox },
                 {nameof(PetStartStudyingSticker_Fox), PetStartStudyingSticker_Fox },
                 {nameof(PetHospitalLowHPSticker_Fox), PetHospitalLowHPSticker_Fox },
@@ -468,6 +522,12 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetWorkSticker_Panda), PetWorkSticker_Panda },
                 {nameof(PetWorkOnPCSticker_Panda), PetWorkOnPCSticker_Panda },
                 {nameof(PetFlyersJobSticker_Panda), PetFlyersJobSticker_Panda },
+                {nameof(PetMcDonaldsSticker_Panda), PetMcDonaldsSticker_Panda },
+                {nameof(PetMakeUpArtistSticker_Panda), PetMakeUpArtistSticker_Panda },
+                {nameof(PetFoodDeliverySticker_Panda), PetFoodDeliverySticker_Panda },
+                {nameof(PetAccountantSticker_Panda), PetAccountantSticker_Panda },
+                {nameof(PetEngineerSticker_Panda), PetEngineerSticker_Panda },
+                {nameof(PetPilotSticker_Panda), PetPilotSticker_Panda },
                 {nameof(PetStartStudyingSticker_Panda), PetStartStudyingSticker_Panda },
                 {nameof(PetRanksSticker_Panda), PetRanksSticker_Panda },
                 {nameof(PetHospitalLowHPSticker_Panda), PetHospitalLowHPSticker_Panda },
@@ -498,6 +558,12 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetWorkSticker_Mouse), PetWorkSticker_Mouse },
                 {nameof(PetWorkOnPCSticker_Mouse), PetWorkOnPCSticker_Mouse },
                 {nameof(PetFlyersJobSticker_Mouse), PetFlyersJobSticker_Mouse },
+                {nameof(PetMcDonaldsSticker_Mouse), PetMcDonaldsSticker_Mouse },
+                {nameof(PetMakeUpArtistSticker_Mouse), PetMakeUpArtistSticker_Mouse },
+                {nameof(PetFoodDeliverySticker_Mouse), PetFoodDeliverySticker_Mouse },
+                {nameof(PetAccountantSticker_Mouse), PetAccountantSticker_Mouse },
+                {nameof(PetEngineerSticker_Mouse), PetEngineerSticker_Mouse },
+                {nameof(PetPilotSticker_Mouse), PetPilotSticker_Mouse },
                 {nameof(PetStartStudyingSticker_Mouse), PetStartStudyingSticker_Mouse },
                 {nameof(PetRanksSticker_Mouse), PetRanksSticker_Mouse },
                 {nameof(PetHospitalLowHPSticker_Mouse), PetHospitalLowHPSticker_Mouse },
@@ -531,6 +597,12 @@ namespace TamagotchiBot.UserExtensions
             public const string PetWorkSticker_Cat = "CAACAgIAAxkBAAEK1yBlZlxHrCC3KI92GdDnsv7ml2BpyAACbxgAAh1UyUtNxQKfdLqZ7zME";
             public const string PetWorkOnPCSticker_Cat = "CAACAgIAAxkBAAEK1xxlZlWln8UKh7QT3VELzQPUB3ORyQAC9RgAAk91yUtrMUFsJhd4XjME";
             public const string PetFlyersJobSticker_Cat = "CAACAgIAAxkBAAEK1x5lZlXZ6mDQC3ZYi6TeTiijYz-fFgACbhgAAsUnyUsEceKwVvyxWjME";
+            public const string PetMcDonaldsSticker_Cat = "CAACAgIAAxkBAAEQAttpQHpXoix59ljglFEgaREcTiHEGAACoUYAAspVYUgfCcVI2EJH8jYE";
+            public const string PetMakeUpArtistSticker_Cat = "CAACAgIAAxkBAAEQAuVpQHth92rrA-7vix8QyM-I9WM2pwACxEIAAoF1YUhubbn0K0ub9jYE";
+            public const string PetFoodDeliverySticker_Cat = "CAACAgIAAxkBAAEQAt9pQHsPsSdkWeM2_3PelzhtaOjHhAACZzkAAnmKwUv7fhaXVQPk9zYE";
+            public const string PetAccountantSticker_Cat = "CAACAgIAAxkBAAEQAuNpQHtOi9CLclOqe257hJauNgmsawAC3RIAAsngQUrQNf4Mt1ehCDYE";
+            public const string PetEngineerSticker_Cat = "CAACAgIAAxkBAAEQAudpQHuWQNj1H5GxWzf6Y3txD6HOLwACE3cAAkz3OEpZ26dR4q3yVzYE";
+            public const string PetPilotSticker_Cat = "CAACAgIAAxkBAAEQAulpQHxYVYf7q3BQlgVxr0gSF1KRoAAC1AwAAskK0EhIwN-Sb2CauTYE";
             public const string PetRanksSticker_Cat = "CAACAgIAAxkBAAEDuydh6-QrBh7ZWsJ08P5JPbuhEbhIlAAC6hAAAowt_QeFBFvPjWUsjyME";
             public const string PetStartStudyingSticker_Cat = "CAACAgUAAxkBAAEQARNpPyP_PDZLZdcVBCnZlUem_NmVhAACkwgAAp88cVWTXgABjtFJe6A2BA";
             public const string PetHospitalLowHPSticker_Cat = "CAACAgIAAxkBAAEIEa1kCkgUfc3lvy1OnyY5LneOAz3tQwAC2hAAAowt_QeJ21KeBteIlS8E";
@@ -562,6 +634,12 @@ namespace TamagotchiBot.UserExtensions
             public const string PetWorkSticker_Dog = "CAACAgIAAxkBAAELVwplw8u40zElGtBJV-cJrbPS9rn6VgACaQkAAhhC7gia--ItXVObQjQE";
             public const string PetWorkOnPCSticker_Dog = "CAACAgIAAxkBAAELVwxlw8vPpPt2UoCdoyXw1moOX-y8hwAC1QQAAs9fiwesDLS1kbvcOzQE";
             public const string PetFlyersJobSticker_Dog = "CAACAgIAAxkBAAELVxNlw8vezGQ_b-oatdxGUuBGaOELjQAC8AQAAs9fiweXrmTGtaCl9DQE";
+            public const string PetMcDonaldsSticker_Dog = "CAACAgEAAxkBAAEQAvFpQH0u6ZLSn4VW0y3es7lB7_0QZAACGwIAAipz9xRte0yf6feQ_TYE";
+            public const string PetMakeUpArtistSticker_Dog = "CAACAgIAAxkBAAEQAu9pQHzpwtf6BzqbEU1Gl9_z62XEMwACLxUAAlyO-EgzxmEsznSR8TYE";
+            public const string PetFoodDeliverySticker_Dog = "CAACAgIAAxkBAAEQAvNpQH1cVOI6WKnI0QEDWpH1dwfmLwACFWYAAtkuCUpdWUqLV7M3szYE";
+            public const string PetAccountantSticker_Dog = "CAACAgIAAxkBAAEQAuFpQHsmiyJR_XDdj2qcnzAIHJ_FKwACyUAAAr5sEEgMQFhAO8zizTYE";
+            public const string PetEngineerSticker_Dog = "CAACAgIAAxkBAAEQAutpQHyf0zMG2ZccQ8pTEadNVItz-wACWnIAAps8CEoTjq1HmX4W_DYE";
+            public const string PetPilotSticker_Dog = "CAACAgIAAxkBAAEQAu1pQHzXacCuQpBvyFopi3r0SoHaPwACLxUAAvNX-Uh50ktk1_--MjYE";
             public const string PetRanksSticker_Dog = "CAACAgIAAxkBAAELVxVlw8vzncNi6KBh17QNmMAoVnhJvQACXgkAAhhC7ggHlhjlQIXYVTQE";
             public const string PetStartStudyingSticker_Dog = "CAACAgIAAxkBAAEQARVpPySeTfR_p1m3gzS8JN7dOYLsKAAC_xUAAmrOAUkrj57T7EywxTYE";
             public const string PetHospitalLowHPSticker_Dog = "CAACAgIAAxkBAAELVxdlw8wEokh8Iv_ojDPLRdyeVPNjaAACaAkAAhhC7ghoeeMl5GfTeDQE";
@@ -594,6 +672,12 @@ namespace TamagotchiBot.UserExtensions
             public const string PetWorkSticker_Fox = "CAACAgIAAxkBAAELV2dlw9A2xiTHxoxTFHTkP9KQOsicrwACmTIAAtLuIEhPwQSfYQe0ljQE";
             public const string PetWorkOnPCSticker_Fox = "CAACAgIAAxkBAAELV2Vlw9AnYXhXlN5NHDUdDLijfQ345wACyjgAAqU_KEiFGxKHX9QFGTQE";
             public const string PetFlyersJobSticker_Fox = "CAACAgIAAxkBAAELV1Nlw8-Rj0VefwUtl8ckXNv5L4D6-QAC3DYAAtd5IEgAAas3A37LoaI0BA";
+            public const string PetMcDonaldsSticker_Fox = "CAACAgIAAxkBAAEQAv9pQH4S0bpXAAFB7xils-E-3rtSV6sAAgkzAAI1wSFI3N1p8P20O5U2BA";
+            public const string PetMakeUpArtistSticker_Fox = "CAACAgIAAxkBAAEQAvtpQH3tQjE5D54CaRn3Pn63JbZ2QAACuBsAApGImUutjQG1uHnPLjYE";
+            public const string PetFoodDeliverySticker_Fox = "CAACAgIAAxkBAAEQAv1pQH4D__NfM5YwVkumAmpd5FQPGAAC3DYAAtd5IEgAAas3A37LoaI2BA";
+            public const string PetAccountantSticker_Fox = "CAACAgIAAxkBAAEQAvVpQH2Co4Q3mZjANoEHGATuoIxvagACdWcAArn9WEulegyQfhxWtDYE";
+            public const string PetEngineerSticker_Fox = "CAACAgIAAxkBAAEQAvlpQH3P6ozruQWYgh24w64YL9pfJQACcBcAAg5tmEupePiU6dCq_TYE";
+            public const string PetPilotSticker_Fox = "CAACAgIAAxkBAAEQAvdpQH3Czm9yA38Ms57O4MO9NfEEywACZxgAAnmjkUsFgyqWhE096jYE";
             public const string PetStartStudyingSticker_Fox = "CAACAgIAAxkBAAEQARdpPyU58H83rcYAAVGuXZlkouRTpWEAAqFsAAJSrFlLpzACfXRlvOE2BA";
             public const string PetRanksSticker_Fox = "CAACAgIAAxkBAAELV1llw8-qdahZPqqmyUznzCLJnpc1HQACCTMAAjXBIUjc3Wnw_bQ7lTQE";
             public const string PetHospitalLowHPSticker_Fox = "CAACAgIAAxkBAAELV1tlw8_GSqjcGiS6yIgPlR4ggvF2iQACdkMAAn3PGErI1rWOGZygsDQE";
@@ -626,6 +710,12 @@ namespace TamagotchiBot.UserExtensions
             public const string PetWorkSticker_Panda = "CAACAgIAAxkBAAELV4llw9OFVOWfE7gq7yucNFv-qJ17agACEAIAAladvQrPLbC7PfSjKTQE";
             public const string PetWorkOnPCSticker_Panda = "CAACAgIAAxkBAAELV4tlw9OuTGBrkUlScqSlS58zzE502wACIgIAAladvQoWnIBwuI2eCjQE";
             public const string PetFlyersJobSticker_Panda = "CAACAgIAAxkBAAELV41lw9PCaDTalY00_OvjxnfvPKbuPQACEQIAAladvQqSi9pRqYNsWzQE";
+            public const string PetMcDonaldsSticker_Panda = "CAACAgIAAxkBAAEQAwtpQH7IPMyXBhT3wtDCGoWtnpocRgACS1AAAp7OCwABJLIgCMIpzwY2BA";
+            public const string PetMakeUpArtistSticker_Panda = "CAACAgIAAxkBAAEQAwlpQH7AAAHnJUMNVXVVNKxgGhUBYK0AAkpQAAKezgsAAUepPRf3N-kFNgQ";
+            public const string PetFoodDeliverySticker_Panda = "CAACAgIAAxkBAAEQAw9pQH7imYSaFyoqfDoB-Jswo0PTggAC5h0AAs0G2Et4sYoGT0OJBTYE";
+            public const string PetAccountantSticker_Panda = "CAACAgQAAxkBAAEQAwVpQH54K_nVoXrWHiIRAY-zODT4lgACYwoAAuIUIVC7-A67nxFs8DYE";
+            public const string PetEngineerSticker_Panda = "CAACAgQAAxkBAAEQAwdpQH5_91ce3QGAhMTjIPtUAmVEdQACKQwAAvJYIVDx4-kHVFLLKjYE";
+            public const string PetPilotSticker_Panda = "CAACAgIAAxkBAAEQAwNpQH5QWveJh0rSSmNPSs03PQGw4AACTVAAAp7OCwABnIZ2zxmAC5E2BA";
             public const string PetStartStudyingSticker_Panda = "CAACAgIAAxkBAAEQARlpPyVj8WfIEIZPnUJKBzjvb-In8QACCR8AAgVj2Uugqg0cGOfPlTYE";
             public const string PetRanksSticker_Panda = "CAACAgIAAxkBAAELV49lw9Pblq6IHaSNYcFJkA_9R3LDYwACMQIAAladvQoi_qohWhUl5jQE";
             public const string PetHospitalLowHPSticker_Panda = "CAACAgIAAxkBAAELV5Nlw9Puus6he2DM3YjR5LY7ymbNEAACJAIAAladvQp7NaMbcOWxxzQE";
@@ -658,6 +748,12 @@ namespace TamagotchiBot.UserExtensions
             public const string PetWorkSticker_Mouse = "CAACAgIAAxkBAAELV6Flw9VdRrE90S9GpgfeRl5rqBpBPAACATsAAkpmcUog3oB_4pcCLTQE";
             public const string PetWorkOnPCSticker_Mouse = "CAACAgIAAxkBAAELV59lw9VRYEE8LW73swz4IU8tNJDd_QACdzoAAkNQcUpFU-um8ulorjQE";
             public const string PetFlyersJobSticker_Mouse = "CAACAgIAAxkBAAELV6Nlw9VrtcPlFwxYdH9jJOJKje6rKgACYDkAAn6tcEqIVAmi8sIp0zQE";
+            public const string PetMcDonaldsSticker_Mouse = "CAACAgIAAxkBAAEQAxlpQH9XpjlTPbqYhbA0Qu-0cvyBGAACqjQAAkFScUo2IckSOZ5rWTYE";
+            public const string PetMakeUpArtistSticker_Mouse = "CAACAgIAAxkBAAEQAxdpQH9LMBN9kVCKRaWP4I6xx-EsGAACczQAAteMcEqzRnfCqtdqRTYE";
+            public const string PetFoodDeliverySticker_Mouse = "CAACAgIAAxkBAAEQAxVpQH87CDPZoIAx7tug__FCnLcdPgACUDcAAoZHcUrPpoUU1vP37TYE";
+            public const string PetAccountantSticker_Mouse = "CAACAgIAAxkBAAEQAxtpQH9nY0jNUv4qXQwSiwSqDaUBBAACbTYAArA7cEpKo0jlbled5jYE";
+            public const string PetEngineerSticker_Mouse = "CAACAgIAAxkBAAEQAxNpQH8x0hlg6N9Ud_ZCKWipUWhhfgACdzoAAkNQcUpFU-um8ulorjYE";
+            public const string PetPilotSticker_Mouse = "CAACAgIAAxkBAAEQAxFpQH8bNZwulK-EZJG-b1F9_GxUlQACvVQAAsIUeUqt0q4FAyNeRTYE";
             public const string PetStartStudyingSticker_Mouse = "CAACAgIAAxkBAAEQARtpPyW9qkwdWadpFfHvLY-VXZnncQACrBkAAo8j2UgSRI4tkSPp3TYE";
             public const string PetRanksSticker_Mouse = "CAACAgIAAxkBAAELV6Vlw9WJo1PsighSMbO4Dksqzj3laQACUDwAAu94cEpu3NybwaQe2jQE";
             public const string PetHospitalLowHPSticker_Mouse = "CAACAgIAAxkBAAELV7plw9Y3XDOGE-g5fK21jKi4lsd0zgACXzQAAveLcUosNxJuBHNtjzQE";
@@ -729,8 +825,14 @@ namespace TamagotchiBot.UserExtensions
             public static List<CallbackModel> InlineWork(CultureInfo culture) => _inlineWork(culture);
             private static List<CallbackModel> _inlineWork(CultureInfo culture) => new()
             {
-                CallbackButtons.WorkCommand.WorkCommandInlineWorkOnPC(culture),
+                CallbackButtons.WorkCommand.WorkCommandInlineFoodDelivery(culture), //primary
+                CallbackButtons.WorkCommand.WorkCommandInlineMcDonalds(culture),
                 CallbackButtons.WorkCommand.WorkCommandInlineDistributeFlyers(culture),
+                CallbackButtons.WorkCommand.WorkCommandInlineEngineer(culture), //middle
+                CallbackButtons.WorkCommand.WorkCommandInlineMakeUpArtist(culture),
+                CallbackButtons.WorkCommand.WorkCommandInlineWorkOnPC(culture), //high
+                CallbackButtons.WorkCommand.WorkCommandInlineAccountant(culture),
+                CallbackButtons.WorkCommand.WorkCommandInlinePilot(culture),
             };
 
             public static List<CallbackModel> InlineRanks(CultureInfo culture) => _inlineRanks(culture);

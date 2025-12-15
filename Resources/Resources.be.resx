@@ -495,15 +495,23 @@ https://t.me/newsvirtualpetbot</value>
     <value>Ты не можаш зайсці да пакою: твой гадаванец на працы 💻</value>
   </data>
   <data name="workCommand" xml:space="preserve">
-    <value>Выберы чым будзе займацца твой гадаванец 💡
+    <value>Выберыце, чым будзе займацца ваш гадаванец 💡
 
 😴 Стомленасць: {2}%
 
-Праграмаванне 💻 -{0}⌛️ , +{1} золата 💰
-Раздаваць улёткі 🤹‍♀️ -{3}⌛️, +{4} золата 💰</value>
+Дастаўка ежы 🎒 -{7}⌛️, +{8} залатых 💰
+Макдональдс 🍔 -{5}⌛️, +{6} залатых 💰
+Раздача ўлётак 🤹‍♀️ -{3}⌛️, +{4} залатых 💰
+
+Інжынер 🛠 -{11}⌛️, +{12} залатых 💰
+Візажыст 💄 -{9}⌛️, +{10} залатых 💰
+
+Праграмаванне 💻 -{0}⌛️, +{1} залатых 💰
+Бухгалтар 📔 -{13}⌛️, +{14} залатых 💰
+Пілот ✈️ -{15}⌛️, +{16} залатых 💰</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
-    <value>Кодзіць 💻</value>
+    <value>💻Кодзіць</value>
   </data>
   <data name="workCommandDescription" xml:space="preserve">
     <value>Праца 💰</value>
@@ -902,7 +910,7 @@ https://t.me/newsvirtualpetbot</value>
     <value>Свайго гадаванца можна карміць толькі ў ЛС боту 🤷‍♂️</value>
   </data>
   <data name="workCommandInlineFlyers" xml:space="preserve">
-    <value>Раздаваць улёткі 🤹‍♀️</value>
+    <value>🤹‍♀️ Раздаваць улёткі</value>
   </data>
   <data name="tooTiredForJobPC" xml:space="preserve">
     <value>Гадаванец не хоча працаваць за кампутарам 🫧
@@ -1304,5 +1312,29 @@ https://t.me/newsvirtualpetbot</value>
     <value>
 
 🎉 &lt;b&gt;Віншуем з атрыманнем новай ступені навучання для гадаванца&lt;/b&gt;: &lt;i&gt;{0}&lt;/i&gt;</value>
+  </data>
+  <data name="workCommand_Working" xml:space="preserve">
+    <value>🏛 Ваш гадаванец пачаў працаваць як {0}</value>
+  </data>
+  <data name="workCommandInlineMcDonalds" xml:space="preserve">
+    <value>🍔 Персанал Макдональдса</value>
+  </data>
+  <data name="workCommandInlineMakeUpArtist" xml:space="preserve">
+    <value>💄 Візажыст</value>
+  </data>
+  <data name="workCommandInlineFoodDelivery" xml:space="preserve">
+    <value>🎒 Дастаўка ежы</value>
+  </data>
+  <data name="workCommandInlineAccountant" xml:space="preserve">
+    <value>📔 Бухгалтар</value>
+  </data>
+  <data name="workCommandInlineEngineer" xml:space="preserve">
+    <value>🛠 Інжынер</value>
+  </data>
+  <data name="workCommandInlinePilot" xml:space="preserve">
+    <value>✈️ Пілот</value>
+  </data>
+  <data name="petCommand_ads_7" xml:space="preserve">
+    <value>/gameroom - гуляць у Шыбеніцу [RU] 😵</value>
   </data>
 </root>

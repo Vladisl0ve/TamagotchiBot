@@ -275,11 +275,6 @@ namespace TamagotchiBot.UserExtensions
                     Description = nameof(Resources.Resources.changelogCommandDescription).UseCulture(culture)
                 },
 
-                new BotCommand()
-                {
-                    Command = Commands.GeminiCommand,
-                    Description = nameof(Resources.Resources.geminiCommandDescription).UseCulture(culture)
-                }
             };
 
             resultExtra.AddRange(result);
@@ -378,12 +373,6 @@ namespace TamagotchiBot.UserExtensions
                 {
                     Command = Commands.ChangelogCommand,
                     Description = nameof(Resources.Resources.changelogCommandDescription).UseCulture(culture)
-                },
-
-                new BotCommand()
-                {
-                    Command = Commands.GeminiCommand,
-                    Description = nameof(Resources.Resources.geminiCommandDescription).UseCulture(culture)
                 }
             };
             List<BotCommand> resultAdmin = new List<BotCommand>()
@@ -832,6 +821,37 @@ namespace TamagotchiBot.UserExtensions
                 EducationLevel.Middle => Constants.ExpRewards.MiddleEducation,
                 EducationLevel.High => Constants.ExpRewards.HighEducation,
                 _ => Constants.ExpRewards.PrimaryEducation
+            };
+        }
+        public static EducationLevel GetEducationRequirement(this JobType jobType)
+        {
+            return jobType switch
+            {
+                JobType.FlyersDistributing => EducationLevel.Primary,
+                JobType.McDonalds => EducationLevel.Primary,
+                JobType.FoodDelivery => EducationLevel.Primary,
+                JobType.MakeUpArtist => EducationLevel.Middle,
+                JobType.Engineer => EducationLevel.Middle,
+                JobType.WorkingOnPC => EducationLevel.High,
+                JobType.Accountant => EducationLevel.High,
+                JobType.Pilot => EducationLevel.High,
+                _ => EducationLevel.Primary
+            };
+        }
+
+        public static TimeSpan GetTimeToWait(this JobType jobType)
+        {
+            return jobType switch
+            {
+                JobType.FlyersDistributing => Constants.TimesToWait.FlyersDistToWait,
+                JobType.McDonalds => Constants.TimesToWait.McDonaldsToWait,
+                JobType.FoodDelivery => Constants.TimesToWait.FoodDeliveryToWait,
+                JobType.MakeUpArtist => Constants.TimesToWait.MakeUpArtistToWait,
+                JobType.Engineer => Constants.TimesToWait.EngineerToWait,
+                JobType.WorkingOnPC => Constants.TimesToWait.WorkOnPCToWait,
+                JobType.Accountant => Constants.TimesToWait.AccountantToWait,
+                JobType.Pilot => Constants.TimesToWait.PilotToWait,
+                _ => TimeSpan.Zero
             };
         }
     }

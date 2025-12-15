@@ -772,12 +772,7 @@ namespace TamagotchiBot.Controllers
         }
         private (int currentStatus, int currentJob) UpdateIndicatorWork(Pet petDB)
         {
-            TimeSpan workTime = (JobType)petDB.CurrentJob switch
-            {
-                JobType.WorkingOnPC => TimesToWait.WorkOnPCToWait,
-                JobType.FlyersDistributing => TimesToWait.FlyersDistToWait,
-                _ => new TimeSpan(0)
-            };
+            TimeSpan workTime = ((JobType)petDB.CurrentJob).GetTimeToWait();
             TimeSpan remainsTime = workTime - (DateTime.UtcNow - petDB.StartWorkingTime);
 
             //if _callback handled when time of work is over

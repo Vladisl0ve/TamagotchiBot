@@ -150,6 +150,37 @@ namespace TamagotchiBot.UserExtensions
                         Text = string.Format(nameof(Resources.Resources.workCommandInlineShowTime).UseCulture(culture), timeToShow),
                         CallbackData = nameof(WorkCommandInlineShowTime)
                     },
+                    JobType.McDonalds => new CallbackModel()
+                    {
+                        Text = string.Format(nameof(Resources.Resources.workCommandInlineShowTime).UseCulture(culture), timeToShow),
+                        CallbackData = nameof(WorkCommandInlineShowTime)
+                    },
+                    JobType.MakeUpArtist => new CallbackModel()
+                    {
+                        Text = string.Format(nameof(Resources.Resources.workCommandInlineShowTime).UseCulture(culture), timeToShow),
+                        CallbackData = nameof(WorkCommandInlineShowTime)
+                    },
+                    JobType.FoodDelivery => new CallbackModel()
+                    {
+                        Text = string.Format(nameof(Resources.Resources.workCommandInlineShowTime).UseCulture(culture), timeToShow),
+                        CallbackData = nameof(WorkCommandInlineShowTime)
+                    },
+                    JobType.Accountant => new CallbackModel()
+                    {
+                        Text = string.Format(nameof(Resources.Resources.workCommandInlineShowTime).UseCulture(culture), timeToShow),
+                        CallbackData = nameof(WorkCommandInlineShowTime)
+                    },
+                    JobType.Engineer => new CallbackModel()
+                    {
+                        Text = string.Format(nameof(Resources.Resources.workCommandInlineShowTime).UseCulture(culture), timeToShow),
+                        CallbackData = nameof(WorkCommandInlineShowTime)
+                    },
+                    JobType.Pilot => new CallbackModel()
+                    {
+                        Text = string.Format(nameof(Resources.Resources.workCommandInlineShowTime).UseCulture(culture), timeToShow),
+                        CallbackData = nameof(WorkCommandInlineShowTime)
+                    },
+
                     _ => new CallbackModel()
                     {
                         Text = "ERROR",
@@ -166,6 +197,36 @@ namespace TamagotchiBot.UserExtensions
             {
                 Text = nameof(Resources.Resources.workCommandInlineFlyers).UseCulture(culture),
                 CallbackData = nameof(WorkCommandInlineDistributeFlyers)
+            };
+            public static CallbackModel WorkCommandInlineMcDonalds(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.workCommandInlineMcDonalds).UseCulture(culture),
+                CallbackData = nameof(WorkCommandInlineMcDonalds)
+            };
+            public static CallbackModel WorkCommandInlineMakeUpArtist(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.workCommandInlineMakeUpArtist).UseCulture(culture),
+                CallbackData = nameof(WorkCommandInlineMakeUpArtist)
+            };
+            public static CallbackModel WorkCommandInlineFoodDelivery(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.workCommandInlineFoodDelivery).UseCulture(culture),
+                CallbackData = nameof(WorkCommandInlineFoodDelivery)
+            };
+            public static CallbackModel WorkCommandInlineAccountant(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.workCommandInlineAccountant).UseCulture(culture),
+                CallbackData = nameof(WorkCommandInlineAccountant)
+            };
+            public static CallbackModel WorkCommandInlineEngineer(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.workCommandInlineEngineer).UseCulture(culture),
+                CallbackData = nameof(WorkCommandInlineEngineer)
+            };
+            public static CallbackModel WorkCommandInlinePilot(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.workCommandInlinePilot).UseCulture(culture),
+                CallbackData = nameof(WorkCommandInlinePilot)
             };
         }
         public static class RanksCommand

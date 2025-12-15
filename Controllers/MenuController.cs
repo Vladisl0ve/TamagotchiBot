@@ -546,25 +546,56 @@ namespace TamagotchiBot.Controllers
 
             if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineWorkOnPC(_userCulture).CallbackData)
             {
-                await StartWorkInline(petDb, JobType.WorkingOnPC);
-                return;
-            }
-
-            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineShowTime(default, JobType.WorkingOnPC, _userCulture).CallbackData)
-            {
-                await StartWorkInline(petDb, JobType.WorkingOnPC);
+                await StartJob(JobType.WorkingOnPC);
                 return;
             }
 
             if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineDistributeFlyers(_userCulture).CallbackData)
             {
-                await StartWorkInline(petDb, JobType.FlyersDistributing);
+                await StartJob(JobType.FlyersDistributing);
                 return;
             }
 
-            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineShowTime(default, JobType.FlyersDistributing, _userCulture).CallbackData)
+            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineMcDonalds(_userCulture).CallbackData)
             {
-                await StartWorkInline(petDb, JobType.FlyersDistributing);
+                await StartJob(JobType.McDonalds);
+                return;
+            }
+
+            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineMakeUpArtist(_userCulture).CallbackData)
+            {
+                await StartJob(JobType.MakeUpArtist);
+                return;
+            }
+
+            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineFoodDelivery(_userCulture).CallbackData)
+            {
+                await StartJob(JobType.FoodDelivery);
+                return;
+            }
+
+            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineEngineer(_userCulture).CallbackData)
+            {
+                await StartJob(JobType.Engineer);
+                return;
+            }
+
+            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineAccountant(_userCulture).CallbackData)
+            {
+                await StartJob(JobType.Accountant);
+                return;
+            }
+
+            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlinePilot(_userCulture).CallbackData)
+            {
+                await StartJob(JobType.Pilot);
+                return;
+            }
+
+            // Generic Show Time Handler
+            if (_callback.Data == nameof(CallbackButtons.WorkCommand.WorkCommandInlineShowTime))
+            {
+                await ServeJob(petDb);
                 return;
             }
 
@@ -702,7 +733,19 @@ namespace TamagotchiBot.Controllers
                                        Rewards.WorkOnPCGoldReward,
                                        petDB.Fatigue,
                                        new DateTime(TimesToWait.FlyersDistToWait.Ticks).ToString("HH:mm:ss"),
-                                       Rewards.FlyersDistributingGoldReward);
+                                       Rewards.FlyersDistributingGoldReward,
+                                       new DateTime(TimesToWait.McDonaldsToWait.Ticks).ToString("HH:mm:ss"),
+                                       Rewards.McDonaldsGoldReward,
+                                       new DateTime(TimesToWait.FoodDeliveryToWait.Ticks).ToString("HH:mm:ss"),
+                                       Rewards.FoodDeliveryGoldReward,
+                                       new DateTime(TimesToWait.MakeUpArtistToWait.Ticks).ToString("HH:mm:ss"),
+                                       Rewards.MakeUpArtistGoldReward,
+                                       new DateTime(TimesToWait.EngineerToWait.Ticks).ToString("HH:mm:ss"),
+                                       Rewards.EngineerGoldReward,
+                                       new DateTime(TimesToWait.AccountantToWait.Ticks).ToString("HH:mm:ss"),
+                                       Rewards.AccountantGoldReward,
+                                       new DateTime(TimesToWait.PilotToWait.Ticks).ToString("HH:mm:ss"),
+                                       Rewards.PilotGoldReward);
 
             List<CallbackModel> inlineParts = InlineItems.InlineWork(_userCulture);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -2107,7 +2150,9 @@ namespace TamagotchiBot.Controllers
                                               Factors.DiceGameJoyFactor,
                                               Costs.DiceGame,
                                               Factors.TicTacToeGameJoyFactor,
-                                              Costs.TicTacToeGame);
+                                              Costs.TicTacToeGame,
+                                              Factors.HangmanGameJoyFactor,
+                                              Costs.HangmanGame);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineGames, 3);
 
             Log.Debug($"Callbacked PlayDiceInline for {_userInfo}");
@@ -2115,39 +2160,6 @@ namespace TamagotchiBot.Controllers
                                                               _callback.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
-        }
-        private async Task StartWorkInline(Pet petDB, JobType jobType)
-        {
-            if (petDB == null)
-                return;
-
-            if (petDB.CurrentStatus == (int)CurrentStatus.Active)
-            {
-                if (jobType == JobType.WorkingOnPC)
-                {
-                    await StartWorkOnPC(petDB);
-                    return;
-                }
-
-                if (jobType == JobType.FlyersDistributing)
-                {
-                    await StartJobFlyers(petDB);
-                    return;
-                }
-            }
-            else if (petDB.CurrentStatus == (int)CurrentStatus.Working)
-            {
-                if (petDB.CurrentJob == (int)JobType.WorkingOnPC)
-                {
-                    await ServeWorkOnPC(petDB);
-                    return;
-                }
-                if (petDB.CurrentJob == (int)JobType.FlyersDistributing)
-                {
-                    await ServeJobFlyers(petDB);
-                    return;
-                }
-            }
         }
 
         private async Task GetDailyRewardInline(User userDB)
@@ -2183,29 +2195,46 @@ namespace TamagotchiBot.Controllers
 
         private AnswerMessage GetRemainedTimeWork(TimeSpan remainedTime, JobType job)
         {
-            AnswerMessage result = job switch
+            string stickerName = job switch
             {
-                JobType.WorkingOnPC => new AnswerMessage()
-                {
-                    InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
-                    {
-                        CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainedTime, JobType.WorkingOnPC, _userCulture)
-                    }),
-                    Text = string.Format(nameof(workCommandPCWorking).UseCulture(_userCulture)),
-                    StickerId = StickersId.GetStickerByType(nameof(StickersId.PetWorkOnPCSticker_Cat), _userPetType)
-                },
-                //DEFAULT, also Flyers job
-                _ => new AnswerMessage()
-                {
-                    InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
-                    {
-                        CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainedTime, JobType.FlyersDistributing, _userCulture)
-                    }),
-                    Text = string.Format(nameof(workCommandFlyersWorking).UseCulture(_userCulture)),
-                    StickerId = StickersId.GetStickerByType(nameof(StickersId.PetFlyersJobSticker_Cat), _userPetType)
-                },
+                JobType.WorkingOnPC => nameof(StickersId.PetWorkOnPCSticker_Cat),
+                JobType.FlyersDistributing => nameof(StickersId.PetFlyersJobSticker_Cat),
+                JobType.McDonalds => nameof(StickersId.PetMcDonaldsSticker_Cat),
+                JobType.MakeUpArtist => nameof(StickersId.PetMakeUpArtistSticker_Cat),
+                JobType.FoodDelivery => nameof(StickersId.PetFoodDeliverySticker_Cat),
+                JobType.Accountant => nameof(StickersId.PetAccountantSticker_Cat),
+                JobType.Engineer => nameof(StickersId.PetEngineerSticker_Cat),
+                JobType.Pilot => nameof(StickersId.PetPilotSticker_Cat),
+                _ => nameof(StickersId.PetWorkOnPCSticker_Cat)
             };
-            return result;
+
+            string jobName = job switch
+            {
+                JobType.McDonalds => nameof(Resources.Resources.workCommandInlineMcDonalds).UseCulture(_userCulture),
+                JobType.MakeUpArtist => nameof(Resources.Resources.workCommandInlineMakeUpArtist).UseCulture(_userCulture),
+                JobType.FoodDelivery => nameof(Resources.Resources.workCommandInlineFoodDelivery).UseCulture(_userCulture),
+                JobType.Engineer => nameof(Resources.Resources.workCommandInlineEngineer).UseCulture(_userCulture),
+                JobType.Accountant => nameof(Resources.Resources.workCommandInlineAccountant).UseCulture(_userCulture),
+                JobType.Pilot => nameof(Resources.Resources.workCommandInlinePilot).UseCulture(_userCulture),
+                _ => ""
+            };
+
+            string text = job switch
+            {
+                JobType.WorkingOnPC => nameof(Resources.Resources.workCommandPCWorking).UseCulture(_userCulture),
+                JobType.FlyersDistributing => nameof(Resources.Resources.workCommandFlyersWorking).UseCulture(_userCulture),
+                _ => string.Format(nameof(Resources.Resources.workCommand_Working).UseCulture(_userCulture), jobName)
+            };
+
+            return new AnswerMessage()
+            {
+                InlineKeyboardMarkup = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
+                {
+                    CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainedTime, job, _userCulture)
+                }),
+                Text = text,
+                StickerId = StickersId.GetStickerByType(stickerName, _userPetType)
+            };
         }
         private async Task<AnswerCallback> ShowRemainedTimeWorkOnPCCallback(TimeSpan remainedTime = default)
         {
@@ -2737,20 +2766,206 @@ namespace TamagotchiBot.Controllers
 
         private async Task UpdateWorkOnPCButtonToDefault(Pet petDB)
         {
-            string toSendTextIfTimeOver = string.Format(nameof(workCommand).UseCulture(_userCulture),
-                                                        new DateTime(TimesToWait.WorkOnPCToWait.Ticks).ToString("HH:mm:ss"),
-                                                        Rewards.WorkOnPCGoldReward,
-                                                        petDB.Fatigue,
-                                                        new DateTime(TimesToWait.FlyersDistToWait.Ticks).ToString("HH:mm:ss"),
-                                                        Rewards.FlyersDistributingGoldReward);
+            try
+            {
+                var workButtons = InlineItems.InlineWork(_userCulture);
+                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(workButtons, 3);
 
-            List<CallbackModel> inlineParts = InlineItems.InlineWork(_userCulture);
-            InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+                string toSendText = nameof(workCommand).UseCulture(_userCulture);
+                toSendText = string.Format(toSendText,
+                                           new DateTime(TimesToWait.WorkOnPCToWait.Ticks).ToString("HH:mm:ss"),
+                                           Rewards.WorkOnPCGoldReward,
+                                           petDB.Fatigue,
+                                           new DateTime(TimesToWait.FlyersDistToWait.Ticks).ToString("HH:mm:ss"),
+                                           Rewards.FlyersDistributingGoldReward,
+                                           new DateTime(TimesToWait.McDonaldsToWait.Ticks).ToString("HH:mm:ss"),
+                                           Rewards.McDonaldsGoldReward,
+                                           new DateTime(TimesToWait.FoodDeliveryToWait.Ticks).ToString("HH:mm:ss"),
+                                           Rewards.FoodDeliveryGoldReward,
+                                           new DateTime(TimesToWait.MakeUpArtistToWait.Ticks).ToString("HH:mm:ss"),
+                                           Rewards.MakeUpArtistGoldReward,
+                                           new DateTime(TimesToWait.EngineerToWait.Ticks).ToString("HH:mm:ss"),
+                                           Rewards.EngineerGoldReward,
+                                           new DateTime(TimesToWait.AccountantToWait.Ticks).ToString("HH:mm:ss"),
+                                           Rewards.AccountantGoldReward,
+                                           new DateTime(TimesToWait.PilotToWait.Ticks).ToString("HH:mm:ss"),
+                                           Rewards.PilotGoldReward);
 
-            Log.Debug($"Callbacked UpdateWorkOnPCButtonToDefault for {_userInfo}");
+                Log.Debug($"Callbacked UpdateWorkOnPCButtonToDefault (GENERIC REFACTORED) for {_userInfo}");
+                await _appServices.BotControlService.SendAnswerCallback(_userId,
+                                                                  _callback?.Message?.MessageId ?? 0,
+                                                                  new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
+                                                                  false);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error in UpdateWorkOnPCButtonToDefault");
+            }
+        }
+
+        private async Task<bool> CheckJobAccess(Pet pet, JobType job)
+        {
+            var educationRequirement = job.GetEducationRequirement();
+            var petEducation = pet.EducationLevel.GetActualEducationLevel();
+
+            Log.Debug($"CheckJobAccess: Job {job} requires {educationRequirement}, Pet has {petEducation}");
+
+            if (petEducation < educationRequirement)
+            {
+                await SendAlertToUser(string.Format(nameof(Resources.Resources.denyAccessWorking).UseCulture(_userCulture)), true);
+                return false;
+            }
+
+            int requiredFatigue = 0;
+            switch (job)
+            {
+                case JobType.WorkingOnPC:
+                    requiredFatigue = Constants.Factors.WorkOnPCFatigueFactor;
+                    break;
+                case JobType.FlyersDistributing:
+                    requiredFatigue = Constants.Factors.FlyersDistributingFatigueFactor;
+                    break;
+                case JobType.McDonalds:
+                    requiredFatigue = Constants.Factors.McDonaldsFatigueFactor;
+                    break;
+                case JobType.MakeUpArtist:
+                    requiredFatigue = Constants.Factors.MakeUpArtistFatigueFactor;
+                    break;
+                case JobType.FoodDelivery:
+                    requiredFatigue = Constants.Factors.FoodDeliveryFatigueFactor;
+                    break;
+                case JobType.Engineer:
+                    requiredFatigue = Constants.Factors.EngineerFatigueFactor;
+                    break;
+                case JobType.Accountant:
+                    requiredFatigue = Constants.Factors.AccountantFatigueFactor;
+                    break;
+                case JobType.Pilot:
+                    requiredFatigue = Constants.Factors.PilotFatigueFactor;
+                    break;
+            }
+
+            if (pet.Fatigue + requiredFatigue > 100)
+            {
+                await SendAlertToUser(nameof(tooTiredText).UseCulture(_userCulture), true);
+                return false;
+            }
+
+            return true;
+        }
+
+        private async Task StartJob(JobType job)
+        {
+            var petDB = _appServices.PetService.Get(_userId);
+            if (await CheckStatusIsInactive(petDB)) return;
+            if (!await CheckJobAccess(petDB, job)) return;
+
+            //Calculate rewards and time
+            int fatigueFactor = 0;
+            int goldReward = 0;
+            int expReward = 0;
+            TimeSpan timeToWait = TimeSpan.Zero;
+            string jobName = "";
+
+            switch (job)
+            {
+                case JobType.WorkingOnPC:
+                    fatigueFactor = Constants.Factors.WorkOnPCFatigueFactor;
+                    goldReward = Constants.Rewards.WorkOnPCGoldReward;
+                    timeToWait = job.GetTimeToWait();
+                    expReward = Constants.ExpForAction.WorkPC;
+                    jobName = nameof(Resources.Resources.workCommandInlinePC).UseCulture(_userCulture);
+                    break;
+                case JobType.FlyersDistributing:
+                    fatigueFactor = Constants.Factors.FlyersDistributingFatigueFactor;
+                    goldReward = Constants.Rewards.FlyersDistributingGoldReward;
+                    timeToWait = job.GetTimeToWait();
+                    expReward = Constants.ExpForAction.WorkFlyers;
+                    jobName = nameof(Resources.Resources.workCommandInlineFlyers).UseCulture(_userCulture);
+                    break;
+                case JobType.McDonalds:
+                    fatigueFactor = Constants.Factors.McDonaldsFatigueFactor;
+                    goldReward = Constants.Rewards.McDonaldsGoldReward;
+                    timeToWait = job.GetTimeToWait();
+                    expReward = Constants.ExpForAction.WorkMcDonalds;
+                    jobName = nameof(Resources.Resources.workCommandInlineMcDonalds).UseCulture(_userCulture);
+                    break;
+                case JobType.MakeUpArtist:
+                    fatigueFactor = Constants.Factors.MakeUpArtistFatigueFactor;
+                    goldReward = Constants.Rewards.MakeUpArtistGoldReward;
+                    timeToWait = job.GetTimeToWait();
+                    expReward = Constants.ExpForAction.WorkMakeUpArtist;
+                    jobName = nameof(Resources.Resources.workCommandInlineMakeUpArtist).UseCulture(_userCulture);
+                    break;
+                case JobType.FoodDelivery:
+                    fatigueFactor = Constants.Factors.FoodDeliveryFatigueFactor;
+                    goldReward = Constants.Rewards.FoodDeliveryGoldReward;
+                    timeToWait = job.GetTimeToWait();
+                    expReward = Constants.ExpForAction.WorkFoodDelivery;
+                    jobName = nameof(Resources.Resources.workCommandInlineFoodDelivery).UseCulture(_userCulture);
+                    break;
+                case JobType.Engineer:
+                    fatigueFactor = Constants.Factors.EngineerFatigueFactor;
+                    goldReward = Constants.Rewards.EngineerGoldReward;
+                    timeToWait = job.GetTimeToWait();
+                    expReward = Constants.ExpForAction.WorkEngineer;
+                    jobName = nameof(Resources.Resources.workCommandInlineEngineer).UseCulture(_userCulture);
+                    break;
+                case JobType.Accountant:
+                    fatigueFactor = Constants.Factors.AccountantFatigueFactor;
+                    goldReward = Constants.Rewards.AccountantGoldReward;
+                    timeToWait = job.GetTimeToWait();
+                    expReward = Constants.ExpForAction.WorkAccountant;
+                    jobName = nameof(Resources.Resources.workCommandInlineAccountant).UseCulture(_userCulture);
+                    break;
+                case JobType.Pilot:
+                    fatigueFactor = Constants.Factors.PilotFatigueFactor;
+                    goldReward = Constants.Rewards.PilotGoldReward;
+                    timeToWait = job.GetTimeToWait();
+                    expReward = Constants.ExpForAction.WorkPilot;
+                    jobName = nameof(Resources.Resources.workCommandInlinePilot).UseCulture(_userCulture);
+                    break;
+            }
+
+            //Update Pet
+            petDB.Fatigue += fatigueFactor;
+            petDB.StartWorkingTime = DateTime.UtcNow;
+            petDB.CurrentStatus = (int)CurrentStatus.Working;
+            petDB.CurrentJob = (int)job;
+
+            _appServices.PetService.Update(_userId, petDB);
+            _appServices.UserService.UpdateGold(_userId, _appServices.UserService.Get(_userId).Gold + goldReward);
+            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + expReward);
+
+
+            string toSendText = string.Format(nameof(Resources.Resources.workCommand_Working).UseCulture(_userCulture), jobName);
+            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback?.Id, _userId, toSendText, false);
+
+            await ServeJob(petDB);
+        }
+
+        private async Task ServeJob(Pet petDB)
+        {
+            JobType job = (JobType)petDB.CurrentJob;
+            TimeSpan timeToWait = job.GetTimeToWait();
+
+            TimeSpan remainsTime = timeToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
+
+            if (remainsTime <= TimeSpan.Zero)
+            {
+                await EditMessageToDefaultWorkCommand(petDB);
+                return;
+            }
+
+            string timeStr = new DateTime(remainsTime.Ticks).ToString("mm:ss");
+            string text = string.Format(nameof(Resources.Resources.workCommandInlineShowTime).UseCulture(_userCulture), timeStr);
+
+            var button = CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainsTime, job, _userCulture);
+            var inlineMarkup = Extensions.InlineKeyboardOptimizer(new List<CallbackModel> { button });
+
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
-                                                              new AnswerCallback(toSendTextIfTimeOver, toSendInlineIfTimeOver),
+                                                              new AnswerCallback(text, inlineMarkup),
                                                               false);
         }
         private async Task ServeWorkCommandPetStillWorking(Pet petDB, JobType job)
@@ -2759,6 +2974,12 @@ namespace TamagotchiBot.Controllers
             {
                 JobType.WorkingOnPC => TimesToWait.WorkOnPCToWait,
                 JobType.FlyersDistributing => TimesToWait.FlyersDistToWait,
+                JobType.McDonalds => TimesToWait.McDonaldsToWait,
+                JobType.MakeUpArtist => TimesToWait.MakeUpArtistToWait,
+                JobType.Engineer => TimesToWait.EngineerToWait,
+                JobType.Pilot => TimesToWait.PilotToWait,
+                JobType.FoodDelivery => TimesToWait.FoodDeliveryToWait,
+                JobType.Accountant => TimesToWait.AccountantToWait,
                 _ => new TimeSpan(0)
             };
             TimeSpan remainsTime = timeToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
@@ -2806,7 +3027,19 @@ namespace TamagotchiBot.Controllers
                                                         Rewards.WorkOnPCGoldReward,
                                                         petDB.Fatigue,
                                                         new DateTime(TimesToWait.FlyersDistToWait.Ticks).ToString("HH:mm:ss"),
-                                                        Rewards.FlyersDistributingGoldReward);
+                                                        Rewards.FlyersDistributingGoldReward,
+                                                        new DateTime(TimesToWait.McDonaldsToWait.Ticks).ToString("HH:mm:ss"),
+                                                        Rewards.McDonaldsGoldReward,
+                                                        new DateTime(TimesToWait.FoodDeliveryToWait.Ticks).ToString("HH:mm:ss"),
+                                                        Rewards.FoodDeliveryGoldReward,
+                                                        new DateTime(TimesToWait.MakeUpArtistToWait.Ticks).ToString("HH:mm:ss"),
+                                                        Rewards.MakeUpArtistGoldReward,
+                                                        new DateTime(TimesToWait.EngineerToWait.Ticks).ToString("HH:mm:ss"),
+                                                        Rewards.EngineerGoldReward,
+                                                        new DateTime(TimesToWait.AccountantToWait.Ticks).ToString("HH:mm:ss"),
+                                                        Rewards.AccountantGoldReward,
+                                                        new DateTime(TimesToWait.PilotToWait.Ticks).ToString("HH:mm:ss"),
+                                                        Rewards.PilotGoldReward);
             List<CallbackModel> inlineParts = InlineItems.InlineWork(_userCulture);
             InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
@@ -2814,56 +3047,6 @@ namespace TamagotchiBot.Controllers
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendTextIfTimeOver, toSendInlineIfTimeOver),
-                                                              false);
-        }
-        private async Task StartWorkOnPC(Pet petDB)
-        {
-            InlineKeyboardMarkup toSendInline;
-            string toSendText;
-
-            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineShowTime(default, JobType.WorkingOnPC, _userCulture).CallbackData)
-            {
-                await UpdateWorkOnPCButtonToDefault(petDB);
-                return;
-            }
-
-            var newFatigue = petDB.Fatigue + Factors.WorkOnPCFatigueFactor;
-            if (newFatigue > 100)
-            {
-                await PetIsTooTired(JobType.WorkingOnPC);
-                return;
-            }
-
-            _appServices.PetService.UpdateFatigue(_userId, newFatigue);
-            _appServices.UserService.UpdateGold(_userId, _appServices.UserService.Get(_userId).Gold + Rewards.WorkOnPCGoldReward);
-            _appServices.PetService.UpdateCurrentStatus(_userId, (int)CurrentStatus.Working);
-            _appServices.PetService.UpdateCurrentJob(_userId, (int)JobType.WorkingOnPC);
-            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + ExpForAction.WorkPC);
-
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.GoldEarnedCounter += Rewards.WorkOnPCGoldReward;
-            aud.WorkOnPCCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            var startWorkingTime = DateTime.UtcNow;
-            _appServices.PetService.UpdateStartWorkingTime(_userId, startWorkingTime);
-
-            string anwser = string.Format(nameof(PetWorkingAnswerCallback).UseCulture(_userCulture), Factors.WorkOnPCFatigueFactor, Rewards.WorkOnPCGoldReward);
-            await SendAlertToUser(anwser, true);
-
-            toSendText = string.Format(nameof(workCommandPCWorking).UseCulture(_userCulture));
-
-            TimeSpan remainsTime = TimesToWait.WorkOnPCToWait - (DateTime.UtcNow - startWorkingTime);
-
-            toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
-                {
-                    CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainsTime, JobType.WorkingOnPC, _userCulture)
-                });
-
-            Log.Debug($"Callbacked StartWorkOnPC for {_userInfo}");
-            await _appServices.BotControlService.SendAnswerCallback(_userId,
-                                                              _callback?.Message?.MessageId ?? 0,
-                                                              new AnswerCallback(toSendText, toSendInline),
                                                               false);
         }
 
@@ -3009,7 +3192,7 @@ namespace TamagotchiBot.Controllers
 
                 string educationInfo = string.Format(nameof(Resources.Resources.educationCommand).UseCulture(_userCulture),
                                            currentLevel.GetActualEducationLevelTranslatedString(_userCulture),
-                                           currentLevel == EducationLevel.CompletedHigh 
+                                           currentLevel == EducationLevel.CompletedHigh
                                                         ? totalStages
                                                         : petDB.EducationStage,
                                            totalStages,
@@ -3108,81 +3291,6 @@ namespace TamagotchiBot.Controllers
                                                               await ShowRemainedTimeWorkOnPCCallback(remainsTime),
                                                               false);
         }
-        private async Task StartJobFlyers(Pet petDB)
-        {
-            InlineKeyboardMarkup toSendInline;
-            string toSendText;
-
-            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineShowTime(default, JobType.FlyersDistributing, _userCulture).CallbackData)
-            {
-                await UpdateWorkOnPCButtonToDefault(petDB);
-                return;
-            }
-
-            var newFatigue = petDB.Fatigue + Factors.FlyersDistributingFatigueFactor;
-            if (newFatigue > 100)
-            {
-                await PetIsTooTired(JobType.FlyersDistributing);
-                return;
-            }
-
-            _appServices.PetService.UpdateFatigue(_userId, newFatigue);
-            _appServices.UserService.UpdateGold(_userId, _appServices.UserService.Get(_userId).Gold + Rewards.FlyersDistributingGoldReward);
-            _appServices.PetService.UpdateCurrentStatus(_userId, (int)CurrentStatus.Working);
-            _appServices.PetService.UpdateCurrentJob(_userId, (int)JobType.FlyersDistributing);
-            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + ExpForAction.WorkFlyers);
-
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.GoldEarnedCounter += Rewards.FlyersDistributingGoldReward;
-            aud.WorkFlyersCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            var startWorkingTime = DateTime.UtcNow;
-            _appServices.PetService.UpdateStartWorkingTime(_userId, startWorkingTime);
-
-            string anwser = string.Format(nameof(PetWorkingAnswerCallback).UseCulture(_userCulture), Factors.FlyersDistributingFatigueFactor, Rewards.FlyersDistributingGoldReward);
-            await SendAlertToUser(anwser, true);
-
-            toSendText = string.Format(nameof(workCommandFlyersWorking).UseCulture(_userCulture));
-
-            TimeSpan remainsTime = TimesToWait.FlyersDistToWait - (DateTime.UtcNow - startWorkingTime);
-
-            toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
-                {
-                    CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainsTime, JobType.FlyersDistributing, _userCulture)
-                });
-
-            Log.Debug($"Callbacked StartJobFlyers for {_userInfo}");
-            await _appServices.BotControlService.SendAnswerCallback(_userId,
-                                                              _callback?.Message?.MessageId ?? 0,
-                                                              new AnswerCallback(toSendText, toSendInline),
-                                                              false);
-        }
-        private async Task ServeJobFlyers(Pet petDB)
-        {
-            TimeSpan remainsTime = TimesToWait.FlyersDistToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
-
-            //if _callback handled when time of work is over
-            if (remainsTime <= TimeSpan.Zero)
-            {
-                await EditMessageToDefaultWorkCommand(petDB);
-                return;
-            }
-
-            Log.Debug($"Callbacked ServeJobFlyers (still working) for {_userInfo}");
-
-            //if _callback handled when pet is still working
-            await _appServices.BotControlService.SendAnswerCallback(_userId,
-                                                              _callback?.Message?.MessageId ?? 0,
-                                                              await ShowRemainedTimeJobFlyersCallback(remainsTime),
-                                                              false);
-        }
-
-        //private async Task PlayTicTacToeInline()
-        //{
-        //    Log.Debug($"Called PlayTicTacToeInline for {_userInfo}");
-        //    await new TicTacToeGameController(_appServices, null, _callback).PreStart();
-        //}
 
         private static bool IsGeminiTimeout(List<(string userQ, string geminiA, DateTime revision)> previousQA)
         {

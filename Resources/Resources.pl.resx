@@ -492,15 +492,23 @@ https://t.me/newsvirtualpetbot</value>
     <value>Brak możliwości wejścia do pokoju: zwierzak pracuje 💻</value>
   </data>
   <data name="workCommand" xml:space="preserve">
-    <value>Wybierz, co zrobi Twój zwierzak 💡
+    <value>Wybierz, co będzie robił Twój pupil 💡
 
 😴 Zmęczenie: {2}%
 
-Programowanie 💻 -{0}⌛️, +{1} zł 💰
-Rozdawać ulotki 🤹‍♀️ -{3}⌛️, +{4} złota 💰</value>
+Dostawa jedzenia 🎒 -{7}⌛️, +{8} złotych 💰
+McDonalds 🍔 -{5}⌛️, +{6} złotych 💰
+Roznoszenie ulotek 🤹‍♀️ -{3}⌛️, +{4} złotych 💰
+
+Inżynier 🛠 -{11}⌛️, +{12} złotych 💰
+Wizażystka 💄 -{9}⌛️, +{10} złotych 💰
+
+Programowanie 💻 -{0}⌛️, +{1} złotych 💰
+Księgowy 📔 -{13}⌛️, +{14} złotych 💰
+Pilot ✈️ -{15}⌛️, +{16} złotych 💰</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
-    <value>Programowanie 💻</value>
+    <value>💻Programowanie</value>
   </data>
   <data name="workCommandDescription" xml:space="preserve">
     <value>Praca 💰</value>
@@ -899,7 +907,7 @@ Poczekaj jeszcze {2}🕑, zanim będziesz mógł ponownie nakarmić zwierzaka</v
     <value>Karmić swojego zwierzaka możesz wyłącznie poprzez bota PM 🤷‍♂️</value>
   </data>
   <data name="workCommandInlineFlyers" xml:space="preserve">
-    <value>Rozdawaj ulotki 🤹‍♀️</value>
+    <value>🤹‍♀️ Rozdawaj ulotki</value>
   </data>
   <data name="tooTiredForJobPC" xml:space="preserve">
     <value>Zwierzak nie chce pracować na komputerze 🫧
@@ -1299,5 +1307,29 @@ Pozostałe: {0} 🕔</value>
     <value>
 
 🎉 &lt;b&gt;Gratulujemy zdobycia nowego stopnia nauki dla pupila&lt;/b&gt;: &lt;i&gt;{0}&lt;/i&gt;</value>
+  </data>
+  <data name="workCommand_Working" xml:space="preserve">
+    <value>🏛 Twój pupil zaczął pracować jako {0}</value>
+  </data>
+  <data name="workCommandInlineMcDonalds" xml:space="preserve">
+    <value>🍔 Pracownik McDonald's</value>
+  </data>
+  <data name="workCommandInlineMakeUpArtist" xml:space="preserve">
+    <value>💄 Wizażystka</value>
+  </data>
+  <data name="workCommandInlineFoodDelivery" xml:space="preserve">
+    <value>🎒 Dostawa jedzenia</value>
+  </data>
+  <data name="workCommandInlineAccountant" xml:space="preserve">
+    <value>📔 Księgowy</value>
+  </data>
+  <data name="workCommandInlineEngineer" xml:space="preserve">
+    <value>🛠 Inżynier</value>
+  </data>
+  <data name="workCommandInlinePilot" xml:space="preserve">
+    <value>✈️ Pilot</value>
+  </data>
+  <data name="petCommand_ads_7" xml:space="preserve">
+    <value>/gameroom - zagraj w Hangmana [RU] 😵</value>
   </data>
 </root>

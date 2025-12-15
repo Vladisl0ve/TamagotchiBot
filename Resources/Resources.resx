@@ -496,11 +496,19 @@ https://t.me/newsvirtualpetbot</value>
 
 😴 Fatigue: {2}%
 
+Food Delivery 🎒 -{7}⌛️, +{8} golds 💰
+McDonalds 🍔 -{5}⌛️, +{6} golds 💰
+Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} gold 💰
+
+Engineer 🛠 -{11}⌛️, +{12} golds 💰
+Make-up Artist 💄 -{9}⌛️, +{10} golds 💰
+
 Programing 💻 -{0}⌛️, +{1} golds 💰
-Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} gold 💰</value>
+Accountant 📔 -{13}⌛️, +{14} golds 💰
+Pilot ✈️ -{15}⌛️, +{16} golds 💰</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
-    <value>Program 💻</value>
+    <value>💻 Program</value>
   </data>
   <data name="workCommandDescription" xml:space="preserve">
     <value>Jobs 💰</value>
@@ -898,7 +906,7 @@ Wait another {2}🕑 before you can feed pet again</value>
     <value>You can feed your pet only via PM bot 🤷‍♂️</value>
   </data>
   <data name="workCommandInlineFlyers" xml:space="preserve">
-    <value>Distribute leaflets 🤹‍♀️</value>
+    <value>🤹‍♀️ Distribute leaflets</value>
   </data>
   <data name="tooTiredForJobPC" xml:space="preserve">
     <value>The pet doesn't want to work on the computer 🫧
@@ -1298,5 +1306,30 @@ Remaining: {0} 🕔</value>
     <value>
 
 🎉 &lt;b&gt;Congratulations on unlocking a new education level for your pet&lt;/b&gt;: &lt;i&gt;{0}&lt;/i&gt;</value>
+  </data>
+  <data name="workCommand_Working" xml:space="preserve">
+    <value>🏛 Your pet has started working as {0}</value>
+  </data>
+  <data name="workCommandInlineMcDonalds" xml:space="preserve">
+    <value>🍔 McDonalds Staff</value>
+  </data>
+  <data name="workCommandInlineMakeUpArtist" xml:space="preserve">
+    <value>💄 Make-up Artist</value>
+  </data>
+  <data name="workCommandInlineFoodDelivery" xml:space="preserve">
+    <value>🎒 Food Delivery</value>
+  </data>
+  <data name="workCommandInlineAccountant" xml:space="preserve">
+    <value>📔 Accountant</value>
+  </data>
+  <data name="workCommandInlineEngineer" xml:space="preserve">
+    <value>🛠 Engineer</value>
+  </data>
+  <data name="workCommandInlinePilot" xml:space="preserve">
+    <value>✈️ Pilot</value>
+  </data>
+  <data name="petCommand_ads_7" xml:space="preserve">
+    <value>/gameroom - play Hangman[RU] 😵
+</value>
   </data>
 </root>
