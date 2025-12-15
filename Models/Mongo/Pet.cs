@@ -82,6 +82,15 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("IsAutoFeedEnabled")]
         public bool IsAutoFeedEnabled { get; set; }
 
+        [BsonElement("EducationLevel")]
+        public int EducationLevel { get; set; } = 1;
+
+        [BsonElement("EducationStage")]
+        public int EducationStage { get; set; } = 0;
+
+        [BsonElement("StartStudyingTime")]
+        public DateTime StartStudyingTime { get; set; }
+
         public static Pet Clone(Pet petToClone)
         {
             Pet clone = new()
@@ -109,7 +118,10 @@ namespace TamagotchiBot.Models.Mongo
                 MPSatiety = petToClone.MPSatiety,
                 CurrentJob = petToClone.CurrentJob,
                 LevelAllGame = petToClone.LevelAllGame,
-                IsAutoFeedEnabled = petToClone.IsAutoFeedEnabled
+                IsAutoFeedEnabled = petToClone.IsAutoFeedEnabled,
+                EducationLevel = petToClone.EducationLevel,
+                EducationStage = petToClone.EducationStage,
+                StartStudyingTime = petToClone.StartStudyingTime
             };
 
             return clone;

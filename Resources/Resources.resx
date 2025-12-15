@@ -152,7 +152,9 @@ Have fun 🍿</value>
 💰 Gold: {8} 💴
 💎 Diamonds: {13} 💎
 
-⚡️ Status: {6}
+⚡️ Status: &lt;b&gt;{6}&lt;/b&gt;
+🎓 Education: {17}
+
 🏅 &lt;b&gt;{3} level&lt;/b&gt;
 ✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
 
@@ -1239,5 +1241,62 @@ Lost: {1}</value>
   </data>
   <data name="PetIsFullOfHealth" xml:space="preserve">
     <value>💬 Your pet isn’t sick anyway</value>
+  </data>
+  <data name="educationCommandDescription" xml:space="preserve">
+    <value>Education 🎓</value>
+  </data>
+  <data name="educationCommand" xml:space="preserve">
+    <value>Choose education stage 
+
+🎓Current Level: {0}
+Current Stage: {1}/{2}
+
++{3}% fatigue 😴</value>
+  </data>
+  <data name="educationCommand_Primary" xml:space="preserve">
+    <value>Primary School 👶</value>
+  </data>
+  <data name="educationCommand_Middle" xml:space="preserve">
+    <value>Middle School 🧒</value>
+  </data>
+  <data name="educationCommand_High" xml:space="preserve">
+    <value>University 🧑‍🎓</value>
+  </data>
+  <data name="educationCommandShowTime" xml:space="preserve">
+    <value>Studying time left: {0} 🕔</value>
+  </data>
+  <data name="educationCommand_InProgress" xml:space="preserve">
+    <value>Pet is studying! 📚
+
+Remaining: {0} 🕔</value>
+  </data>
+  <data name="educationCommand_NeedFinishPrevious" xml:space="preserve">
+    <value>Pet need to finish previous level first</value>
+  </data>
+  <data name="educationCommand_Finished" xml:space="preserve">
+    <value>Pet has finished this level!</value>
+  </data>
+  <data name="educationCommand_NotifyFinished" xml:space="preserve">
+    <value>Pet finished studying! 
+
++{0} stage 🎓
++{1} EXP ✨</value>
+  </data>
+  <data name="educationCommand_CheckTime" xml:space="preserve">
+    <value>🕝 Check time left</value>
+  </data>
+  <data name="CurrentStatusStudying" xml:space="preserve">
+    <value>studying 📚</value>
+  </data>
+  <data name="educationCommand_CompletedHigh" xml:space="preserve">
+    <value>Completed University 🧑‍🔬</value>
+  </data>
+  <data name="educationCommand_OveredAllEducationLevels" xml:space="preserve">
+    <value>The pet has completed all education levels 🧑‍🎓</value>
+  </data>
+  <data name="educationCommand_newLevelCompleted" xml:space="preserve">
+    <value>
+
+🎉 &lt;b&gt;Congratulations on unlocking a new education level for your pet&lt;/b&gt;: &lt;i&gt;{0}&lt;/i&gt;</value>
   </data>
 </root>

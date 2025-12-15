@@ -102,6 +102,31 @@ namespace TamagotchiBot.Controllers
                 await GoToBathroom(petDB);
                 return;
             }
+            if (textReceived == Commands.EducationCommand || GetAllTranslatedAndLowered(nameof(educationCommandDescription)).Contains(textReceived))
+            {
+                await ShowEducationInfo(petDB);
+                return;
+            }
+            if (GetAllTranslatedAndLowered(nameof(Resources.Resources.educationCommand_CheckTime)).Contains(textReceived))
+            {
+                await ShowEducationLeftTime(petDB);
+                return;
+            }
+            if (GetAllTranslatedAndLowered(nameof(Resources.Resources.educationCommand_Primary)).Contains(textReceived))
+            {
+                await StartStudying(petDB, EducationLevel.Primary);
+                return;
+            }
+            if (GetAllTranslatedAndLowered(nameof(Resources.Resources.educationCommand_Middle)).Contains(textReceived))
+            {
+                await StartStudying(petDB, EducationLevel.Middle);
+                return;
+            }
+            if (GetAllTranslatedAndLowered(nameof(Resources.Resources.educationCommand_High)).Contains(textReceived))
+            {
+                await StartStudying(petDB, EducationLevel.High);
+                return;
+            }
             if (textReceived == Commands.KitchenCommand || GetAllTranslatedAndLowered(nameof(kitchenCommandDescription)).Contains(textReceived))
             {
                 await GoToKitchen(petDB, userDB);
@@ -1052,7 +1077,7 @@ namespace TamagotchiBot.Controllers
             encodedPetName = "<b>" + encodedPetName + "</b>";
 
             var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
-            
+
             return string.Format(
                 nameof(petCommand).UseCulture(_userCulture),
                 encodedPetName,
@@ -1074,7 +1099,8 @@ namespace TamagotchiBot.Controllers
                 randomAd,
                 randomPetPhrase,
                 IsGeminiTimeout(previousQA) ? string.Format(nameof(petCommand_isPetSilenced).UseCulture(_userCulture), GetGeminiTimeout(previousQA))
-                                            : string.Empty
+                                            : string.Empty,
+                petDB.EducationLevel.GetActualEducationLevelTranslatedString(_userCulture)
             );
         }
 
@@ -1139,7 +1165,7 @@ namespace TamagotchiBot.Controllers
             return phrases[new Random().Next(phrases.Count)];
         }
 
-        private AnswerMessage CheckStatusIsInactiveOrNull(Pet petDB, bool IsGoToSleepCommand = false, bool IsGoToWorkCommand = false)
+        private AnswerMessage CheckStatusIsInactiveOrNull(Pet petDB, bool IsGoToSleepCommand = false, bool IsGoToWorkCommand = false, bool isShowEducationLeftTime = false)
         {
             if (petDB.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
             {
@@ -1147,6 +1173,7 @@ namespace TamagotchiBot.Controllers
                 return new AnswerMessage()
                 {
                     Text = denyText,
+                    replyToMsgId = _message?.Id,
                     StickerId = StickersId.GetStickerByType(nameof(StickersId.PetBusySticker_Cat), _userPetType),
                 };
             }
@@ -1157,7 +1184,28 @@ namespace TamagotchiBot.Controllers
                 return new AnswerMessage()
                 {
                     Text = denyText,
+                    replyToMsgId = _message?.Id,
                     StickerId = StickersId.GetStickerByType(nameof(StickersId.PetBusySticker_Cat), _userPetType),
+                };
+            }
+
+            if (petDB.CurrentStatus == (int)CurrentStatus.Studying && !isShowEducationLeftTime)
+            {
+                string denyText = nameof(Resources.Resources.educationCommand_InProgress).UseCulture(_userCulture);
+                EducationLevel currentLevel = petDB.EducationLevel.GetActualEducationLevel();
+                TimeSpan timeToWait = Extensions.GetEducationTime(currentLevel);
+
+                var remainsTime = timeToWait - (DateTime.UtcNow - petDB.StartStudyingTime);
+                if (remainsTime < TimeSpan.Zero) remainsTime = TimeSpan.Zero;
+
+                denyText = string.Format(denyText, new DateTime(remainsTime.Ticks).ToString("HH:mm:ss"));
+
+                return new AnswerMessage()
+                {
+                    Text = denyText,
+                    StickerId = StickersId.GetStickerByType(nameof(StickersId.PetBusySticker_Cat), _userPetType),
+                    replyToMsgId = _message?.Id,
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
                 };
             }
 
@@ -1611,7 +1659,7 @@ namespace TamagotchiBot.Controllers
             await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal, true);
         }
 
-        private async Task PetIsTooTired(JobType job = JobType.None)
+        private async Task PetIsTooTired(JobType job = JobType.None, bool isMessage = false)
         {
             Log.Debug($"Sent alert PetIsTooTired for {_userInfo}");
 
@@ -1621,7 +1669,15 @@ namespace TamagotchiBot.Controllers
                 JobType.FlyersDistributing => string.Format(nameof(tooTiredForJobFlyers).UseCulture(_userCulture), Factors.FlyersDistributingFatigueFactor),
                 _ => string.Format(nameof(tooTiredText).UseCulture(_userCulture))
             };
-            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal, true);
+
+            if (!isMessage)
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwserLocal, true);
+            else
+                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
+                {
+                    Text = anwserLocal,
+                    StickerId = StickersId.GetStickerByType(nameof(StickersId.PetTooTiredSticker_Cat), _userPetType)
+                }, _userId, false);
         }
 
         private async Task PetIsFullOfJoy()
@@ -2245,7 +2301,7 @@ namespace TamagotchiBot.Controllers
             }
 
             var newHP = petDB.HP + Factors.PillHPFactor;
-            if (newHP > 100) 
+            if (newHP > 100)
                 newHP = 100;
 
             var newJoy = petDB.Joy + Factors.PillJoyFactor;
@@ -2809,6 +2865,229 @@ namespace TamagotchiBot.Controllers
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
                                                               false);
+        }
+
+        private async Task ShowEducationInfo(Pet petDB)
+        {
+            Log.Debug($"Called /ShowEducationInfo for {_userInfo}");
+
+            var currentLevel = petDB.EducationLevel.GetActualEducationLevel();
+
+            if (petDB.CurrentStatus == (int)CurrentStatus.Studying)
+            {
+                // Show analyzing message (Check time keyboard)
+                string text = nameof(Resources.Resources.educationCommand_InProgress).UseCulture(_userCulture);
+                TimeSpan timeToWait = Extensions.GetEducationTime(currentLevel);
+
+                var remainsTime = timeToWait - (DateTime.UtcNow - petDB.StartStudyingTime);
+                if (remainsTime < TimeSpan.Zero) remainsTime = TimeSpan.Zero;
+
+                text = string.Format(text, new DateTime(remainsTime.Ticks).ToString("HH:mm:ss"));
+
+                var toSendStudying = new AnswerMessage()
+                {
+                    Text = text,
+                    StickerId = StickersId.GetStickerByType(nameof(StickersId.PetStartStudyingSticker_Cat), _userPetType),
+                    ReplyMarkup = ReplyKeyboardItems.EducationStudyingKeyboardMarkup(_userCulture),
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                };
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSendStudying, _userId, false);
+                return;
+            }
+
+            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            if (accessCheck != null)
+            {
+                Log.Debug($"Pet is busy for {_userInfo}");
+                await _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId, false);
+                return;
+            }
+
+            string toSendText;
+            ReplyMarkup toSendReplyMarkup;
+            if (petDB.EducationLevel.GetActualEducationLevel() == EducationLevel.CompletedHigh)
+            {
+                toSendText = nameof(Resources.Resources.educationCommand_OveredAllEducationLevels).UseCulture(_userCulture);
+                toSendReplyMarkup = ReplyKeyboardItems.EducationAllCompletedKeyboardMarkup(_userCulture);
+            }
+            else
+            {
+                int totalStages = currentLevel.GetStagesNeeded();
+                toSendText = string.Format(nameof(Resources.Resources.educationCommand).UseCulture(_userCulture),
+                                           currentLevel.GetActualEducationLevelTranslatedString(_userCulture),
+                                           petDB.EducationStage,
+                                           totalStages,
+                                           Constants.Factors.EducationFatigueFactor);
+
+                toSendReplyMarkup = ReplyKeyboardItems.EducationKeyboardMarkup(_userCulture);
+            }
+
+            var toSend = new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetEducationInfoSticker_Cat), _userPetType),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                ReplyMarkup = toSendReplyMarkup
+            };
+
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
+
+        private async Task FinishStudying(Pet petDB)
+        {
+            petDB.CurrentStatus = (int)CurrentStatus.Active;
+            petDB.EducationStage++;
+            var currentLevel = petDB.EducationLevel.GetActualEducationLevel();
+
+            // Leveling logic
+            int stagesNeeded = currentLevel.GetStagesNeeded();
+            if (petDB.EducationStage >= stagesNeeded)
+            {
+                petDB.EducationStage = 0;
+                petDB.EducationLevel = (int)(currentLevel + 1);
+            }
+
+            int expReward = currentLevel.GetEducationExpReward();
+            petDB.EXP += expReward;
+
+            // Update DB
+            _appServices.PetService.UpdateCurrentStatus(_userId, (int)CurrentStatus.Active);
+            _appServices.PetService.UpdateEducationStage(_userId, petDB.EducationStage);
+            _appServices.PetService.UpdateEducationLevel(_userId, petDB.EducationLevel);
+            _appServices.PetService.UpdateEXP(_userId, petDB.EXP);
+
+            // AllUsersData
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.EducationStagesPassedCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            string text = string.Format(nameof(Resources.Resources.educationCommand_NotifyFinished).UseCulture(_userCulture), 1, expReward);
+
+            await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
+            {
+                Text = text,
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetInfoSticker_Cat), _userPetType), // Happy sticker
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+            }, _userId, false);
+
+            // Provide next options
+            await ShowEducationInfo(petDB);
+        }
+
+        private async Task StartStudying(Pet petDB, EducationLevel type)
+        {
+            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            if (accessCheck != null)
+            {
+                Log.Debug($"Pet is busy for {_userInfo}");
+                await _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId, false);
+                return;
+            }
+
+            var newFatigue = petDB.Fatigue + Factors.EducationFatigueFactor;
+            if (newFatigue > 100)
+            {
+                await PetIsTooTired(isMessage: true);
+                return;
+            }
+
+            var currentLevel = petDB.EducationLevel.GetActualEducationLevel();
+
+            if (currentLevel != type)
+            {
+                string statusText;
+                if (currentLevel < type)
+                {
+                    statusText = "❗️" + nameof(Resources.Resources.educationCommand_NeedFinishPrevious).UseCulture(_userCulture);
+                }
+                else
+                {
+                    statusText = "❗️" + nameof(Resources.Resources.educationCommand_Finished).UseCulture(_userCulture);
+                }
+
+                int totalStages = currentLevel.GetStagesNeeded();
+
+                string educationInfo = string.Format(nameof(Resources.Resources.educationCommand).UseCulture(_userCulture),
+                                           currentLevel.GetActualEducationLevelTranslatedString(_userCulture),
+                                           currentLevel == EducationLevel.CompletedHigh 
+                                                        ? totalStages
+                                                        : petDB.EducationStage,
+                                           totalStages,
+                                           Constants.Factors.EducationFatigueFactor);
+
+                string finalMessage = $"{statusText}\n\n{educationInfo}";
+
+                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
+                {
+                    Text = finalMessage,
+                    StickerId = StickersId.GetStickerByType(nameof(StickersId.PetEducationInfoSticker_Cat), _userPetType),
+                    ReplyMarkup = ReplyKeyboardItems.EducationKeyboardMarkup(_userCulture),
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                }, _userId, false);
+
+                return;
+            }
+
+            // Start
+            petDB.CurrentStatus = (int)CurrentStatus.Studying;
+            petDB.StartStudyingTime = DateTime.UtcNow;
+
+            _appServices.PetService.UpdateFatigue(_userId, newFatigue);
+            _appServices.PetService.UpdateCurrentStatus(_userId, (int)CurrentStatus.Studying);
+            _appServices.PetService.UpdateStartStudyingTime(_userId, petDB.StartStudyingTime);
+
+            // Send confirmation (update message to show timer)
+            TimeSpan timeToWait = Extensions.GetEducationTime(currentLevel);
+
+            string toSendText = string.Format(nameof(Resources.Resources.educationCommandShowTime).UseCulture(_userCulture), new DateTime(timeToWait.Ticks).ToString("HH:mm:ss"));
+
+            await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetStartStudyingSticker_Cat), _userPetType),
+                replyToMsgId = _message?.Id,
+                ReplyMarkup = ReplyKeyboardItems.EducationStudyingKeyboardMarkup(_userCulture),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+            }, _userId);
+        }
+
+        private async Task ShowEducationLeftTime(Pet petDB)
+        {
+            if (petDB.CurrentStatus == (int)CurrentStatus.Active)
+            {
+                await ShowEducationInfo(petDB);
+                return;
+            }
+
+            var accessCheck = CheckStatusIsInactiveOrNull(petDB, isShowEducationLeftTime: true);
+            if (accessCheck != null)
+            {
+                Log.Debug($"Pet is busy for {_userInfo}");
+                await _appServices.BotControlService.SendAnswerMessageAsync(accessCheck, _userId, false);
+                return;
+            }
+
+            var currentLevel = petDB.EducationLevel.GetActualEducationLevel();
+
+            TimeSpan timeToWait = Extensions.GetEducationTime(currentLevel);
+            TimeSpan remainsTime = timeToWait - (DateTime.UtcNow - petDB.StartStudyingTime);
+
+            if (remainsTime <= TimeSpan.Zero)
+            {
+                // Finished
+                await FinishStudying(petDB);
+                return;
+            }
+
+            string toSendText = string.Format(nameof(Resources.Resources.educationCommandShowTime).UseCulture(_userCulture), new DateTime(remainsTime.Ticks).ToString("HH:mm:ss"));
+
+            await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
+            {
+                Text = toSendText,
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetStartStudyingSticker_Cat), _userPetType),
+                replyToMsgId = _message?.Id,
+                ReplyMarkup = ReplyKeyboardItems.EducationStudyingKeyboardMarkup(_userCulture),
+            }, _userId, false);
         }
         private async Task ServeWorkOnPC(Pet petDB)
         {

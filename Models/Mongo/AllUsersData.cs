@@ -52,8 +52,8 @@ namespace TamagotchiBot.Models.Mongo
         public long DicePlayedCounter { get; set; }
 
         [BsonElement("WorkOnPCCounter")]
-        public long WorkOnPCCounter { get; set; } 
-        
+        public long WorkOnPCCounter { get; set; }
+
         [BsonElement("WorkFlyersCounter")]
         public long WorkFlyersCounter { get; set; }
 
@@ -79,8 +79,8 @@ namespace TamagotchiBot.Models.Mongo
         public long FarmCommandCounter { get; set; }
 
         [BsonElement("ChangeTypeButtonCounter")]
-        public long ChangeTypeButtonCounter { get; set; }  
-        
+        public long ChangeTypeButtonCounter { get; set; }
+
         [BsonElement("ChangedToCatCounter")]
         public long ChangedToCatCounter { get; set; }
 
@@ -128,15 +128,18 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("RenameCommandCounter")]
         public long RenameCommandCounter { get; set; }
-#endregion
+
+        [BsonElement("EducationStagesPassedCounter")]
+        public long EducationStagesPassedCounter { get; set; }
+        #endregion
 
         #region MP
         [BsonElement("DuelsStartedCounter")]
         public long DuelsStartedCounter { get; set; }
-        
+
         [BsonElement("DuelsAcceptedCounter")]
         public long DuelsAcceptedCounter { get; set; }
-        
+
         [BsonElement("DuelsWinCounter")]
         public long DuelsWinCounter { get; set; }
 

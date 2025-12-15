@@ -26,7 +26,8 @@ namespace TamagotchiBot.UserExtensions
         {
             Active,
             Sleeping,
-            Working
+            Working,
+            Studying
         }
 
         public enum JobType
@@ -34,6 +35,14 @@ namespace TamagotchiBot.UserExtensions
             None = 0,
             WorkingOnPC = 1,
             FlyersDistributing = 2
+        }
+
+        public enum EducationLevel
+        {
+            Primary = 1,
+            Middle = 2,
+            High = 3,
+            CompletedHigh = 4,
         }
 
         public enum PetType
@@ -84,6 +93,8 @@ namespace TamagotchiBot.UserExtensions
             public const int WorkOnPCFatigueFactor = 50;
             public const int FlyersDistributingFatigueFactor = 20;
 
+            public const int EducationFatigueFactor = 60;
+
             public const int PillHPFactor = 20;
             public const int PillJoyFactor = -10;
         }
@@ -99,6 +110,13 @@ namespace TamagotchiBot.UserExtensions
 
             //Multiplayer
             public const int WonDuel = 150;
+        }
+
+        public struct ExpRewards
+        {
+            public const int PrimaryEducation = 50;
+            public const int MiddleEducation = 100;
+            public const int HighEducation = 200;
         }
 
         public struct Costs //in gold
@@ -140,6 +158,13 @@ namespace TamagotchiBot.UserExtensions
             public const int AutoFeedChargesInitial = 5;
         }
 
+        public struct Education
+        {
+            public const int PrimarySchoolStages = 3;
+            public const int MiddleSchoolStages = 5;
+            public const int HighSchoolStages = 10;
+        }
+
         public struct CronSchedule
         {
             public const string AutoFeedCron = "0 0 0/4 * * ?";
@@ -158,6 +183,10 @@ namespace TamagotchiBot.UserExtensions
             public readonly static TimeSpan CooldownOnMessage = new TimeSpan(0, 0, 0, 0, 500);
             public readonly static TimeSpan OldMessageDelta = new TimeSpan(0, 0, 30);
             public readonly static TimeSpan GeminiTimeout = new TimeSpan(0, 30, 0);
+
+            public readonly static TimeSpan EducationPrimaryToWait = new(0, 1, 0);
+            public readonly static TimeSpan EducationMiddleToWait = new(0, 5, 0);
+            public readonly static TimeSpan EducationHighToWait = new(0, 10, 0);
         }
 
         public struct Limits
@@ -236,6 +265,7 @@ namespace TamagotchiBot.UserExtensions
             public const string GoldCommand = "gold";
             public const string StartBotstatCheckCommand = "start_botstat_check";
             public const string StatusBotstatCheckCommand = "status_botstat_check";
+            public const string EducationCommand = "education";
         }
 
         public struct CommandsMP
@@ -269,6 +299,8 @@ namespace TamagotchiBot.UserExtensions
             public const string ChangeTypePetSticker = "CAACAgIAAxkBAAELUTFlv-y-GF6diGzs6trFkSR13nqCbwAC-RAAAjSLWwaVH1nmaD8TjDQE";
             public const string ChangeTypeErrorSticker = "CAACAgIAAxkBAAELUzVlwUL-5fyYwZJCGyjXYWDqDMPX3gACrUUAAgsn4En6llfN6C4pCjQE";
             public const string ChangeTypeErrorGoldSticker = "CAACAgIAAxkBAAELUzdlwUQlfiUpuAPpKwejhj8JUrtamAAC6z4AAr4b2UkCVdfVjLsgnDQE";
+
+            //public const string EducationReferenceSticker = "CAACAgIAAxkBAAEQAAFTaT72Bsw9rMlGpouwUtw9dMCFNRIAApsQAAJ4GUhKooazklII5ak2BA";
 
             //public const string ChangelogSticker = "CAACAgIAAxkBAAIoiWQfmY19TqmIZL38KrfWnSS9frV0AAIrKwACnQhYSBduaR-WJLE7LwQ"; //usual changelog panda jumps
             public const string ChangelogSticker = "CAACAgIAAxkBAAELb2Rl0nuZd49DEzvd2J9VRgABL_CKEvQAAlwCAAKQWXYt3NXqzbbMLvU0BA"; //referal notify ring
@@ -347,6 +379,7 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetWorkOnPCSticker_Cat), PetWorkOnPCSticker_Cat },
                 {nameof(PetFlyersJobSticker_Cat), PetFlyersJobSticker_Cat },
                 {nameof(PetRanksSticker_Cat), PetRanksSticker_Cat },
+                {nameof(PetStartStudyingSticker_Cat), PetStartStudyingSticker_Cat },
                 {nameof(PetHospitalLowHPSticker_Cat), PetHospitalLowHPSticker_Cat },
                 {nameof(PetHospitalMidHPSticker_Cat), PetHospitalMidHPSticker_Cat },
                 {nameof(PetHospitalHighHPSticker_Cat), PetHospitalHighHPSticker_Cat },
@@ -358,6 +391,8 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetDailyRewardSticker_Cat), PetDailyRewardSticker_Cat },
                 {nameof(RandomEventStepOnFootSticker_Cat), RandomEventStepOnFootSticker_Cat },
                 {nameof(RandomEventPlayComputerSticker_Cat), RandomEventPlayComputerSticker_Cat },
+                {nameof(PetEducationInfoSticker_Cat), PetEducationInfoSticker_Cat },
+                {nameof(PetTooTiredSticker_Cat), PetTooTiredSticker_Cat },
 
                 //DOG
                 {nameof(PetCreatedSticker_Dog), PetCreatedSticker_Dog },
@@ -373,6 +408,7 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetWorkSticker_Dog), PetWorkSticker_Dog },
                 {nameof(PetWorkOnPCSticker_Dog), PetWorkOnPCSticker_Dog },
                 {nameof(PetFlyersJobSticker_Dog), PetFlyersJobSticker_Dog },
+                {nameof(PetStartStudyingSticker_Dog), PetStartStudyingSticker_Dog },
                 {nameof(PetRanksSticker_Dog), PetRanksSticker_Dog },
                 {nameof(PetHospitalLowHPSticker_Dog), PetHospitalLowHPSticker_Dog },
                 {nameof(PetHospitalMidHPSticker_Dog), PetHospitalMidHPSticker_Dog },
@@ -385,6 +421,8 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetDailyRewardSticker_Dog), PetDailyRewardSticker_Dog },
                 {nameof(RandomEventStepOnFootSticker_Dog), RandomEventStepOnFootSticker_Dog },
                 {nameof(RandomEventPlayComputerSticker_Dog), RandomEventPlayComputerSticker_Dog },
+                {nameof(PetEducationInfoSticker_Dog), PetEducationInfoSticker_Dog },
+                {nameof(PetTooTiredSticker_Dog), PetTooTiredSticker_Dog },
 
                 //FOX
                 {nameof(PetCreatedSticker_Fox), PetCreatedSticker_Fox },
@@ -401,6 +439,7 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetWorkOnPCSticker_Fox), PetWorkOnPCSticker_Fox },
                 {nameof(PetFlyersJobSticker_Fox), PetFlyersJobSticker_Fox },
                 {nameof(PetRanksSticker_Fox), PetRanksSticker_Fox },
+                {nameof(PetStartStudyingSticker_Fox), PetStartStudyingSticker_Fox },
                 {nameof(PetHospitalLowHPSticker_Fox), PetHospitalLowHPSticker_Fox },
                 {nameof(PetHospitalMidHPSticker_Fox), PetHospitalMidHPSticker_Fox },
                 {nameof(PetHospitalHighHPSticker_Fox), PetHospitalHighHPSticker_Fox },
@@ -412,6 +451,8 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetDailyRewardSticker_Fox), PetDailyRewardSticker_Fox },
                 {nameof(RandomEventStepOnFootSticker_Fox), RandomEventStepOnFootSticker_Fox },
                 {nameof(RandomEventPlayComputerSticker_Fox), RandomEventPlayComputerSticker_Fox },
+                {nameof(PetEducationInfoSticker_Fox), PetEducationInfoSticker_Fox },
+                {nameof(PetTooTiredSticker_Fox), PetTooTiredSticker_Fox },
 
                 //PANDA                
                 {nameof(PetCreatedSticker_Panda), PetCreatedSticker_Panda },
@@ -427,6 +468,7 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetWorkSticker_Panda), PetWorkSticker_Panda },
                 {nameof(PetWorkOnPCSticker_Panda), PetWorkOnPCSticker_Panda },
                 {nameof(PetFlyersJobSticker_Panda), PetFlyersJobSticker_Panda },
+                {nameof(PetStartStudyingSticker_Panda), PetStartStudyingSticker_Panda },
                 {nameof(PetRanksSticker_Panda), PetRanksSticker_Panda },
                 {nameof(PetHospitalLowHPSticker_Panda), PetHospitalLowHPSticker_Panda },
                 {nameof(PetHospitalMidHPSticker_Panda), PetHospitalMidHPSticker_Panda },
@@ -439,6 +481,8 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetDailyRewardSticker_Panda), PetDailyRewardSticker_Panda },
                 {nameof(RandomEventStepOnFootSticker_Panda), RandomEventStepOnFootSticker_Panda },
                 {nameof(RandomEventPlayComputerSticker_Panda), RandomEventPlayComputerSticker_Panda },
+                {nameof(PetEducationInfoSticker_Panda), PetEducationInfoSticker_Panda },
+                {nameof(PetTooTiredSticker_Panda), PetTooTiredSticker_Panda },
                 
                 //MOUSE
                 {nameof(PetCreatedSticker_Mouse), PetCreatedSticker_Mouse },
@@ -454,6 +498,7 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetWorkSticker_Mouse), PetWorkSticker_Mouse },
                 {nameof(PetWorkOnPCSticker_Mouse), PetWorkOnPCSticker_Mouse },
                 {nameof(PetFlyersJobSticker_Mouse), PetFlyersJobSticker_Mouse },
+                {nameof(PetStartStudyingSticker_Mouse), PetStartStudyingSticker_Mouse },
                 {nameof(PetRanksSticker_Mouse), PetRanksSticker_Mouse },
                 {nameof(PetHospitalLowHPSticker_Mouse), PetHospitalLowHPSticker_Mouse },
                 {nameof(PetHospitalMidHPSticker_Mouse), PetHospitalMidHPSticker_Mouse },
@@ -466,12 +511,15 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetDailyRewardSticker_Mouse), PetDailyRewardSticker_Mouse },
                 {nameof(RandomEventStepOnFootSticker_Mouse), RandomEventStepOnFootSticker_Mouse },
                 {nameof(RandomEventPlayComputerSticker_Mouse), RandomEventPlayComputerSticker_Mouse },
+                {nameof(PetEducationInfoSticker_Mouse), PetEducationInfoSticker_Mouse },
+                {nameof(PetTooTiredSticker_Mouse), PetTooTiredSticker_Mouse },
 
             }.ToLookup(x => x.Key, x => x.Value);
 
             #region Cat
             public const string PetCreatedSticker_Cat = "CAACAgIAAxkBAAEDHvlhcG2oG4rLAAGPvREkKoykMsNnYzsAAlsQAAKlvUhKsth-8cNoWVghBA";
             public const string PetInfoSticker_Cat = "CAACAgIAAxkBAAEDHwFhcG3C-_owIcuMOR9GTlE4MeoTOAACvRIAAhxUSUo2xUCLEnwQHiEE";
+            public const string PetEducationInfoSticker_Cat = "CAACAgIAAxkBAAEQAAFTaT72Bsw9rMlGpouwUtw9dMCFNRIAApsQAAJ4GUhKooazklII5ak2BA";
             public const string PetChooseNameSticker_Cat = "CAACAgIAAxkBAAEDHwthcG-wxtTfvF_S-6mqam-KwksPnQAC5RAAAowt_QftGb7TeRsiTyEE";
             public const string PetConfirmedNameSticker_Cat = "CAACAgIAAxkBAAEDHw1hcHBpvQQti1cmSC1LVKRNOtV3FwACjBIAAtJ0SUqCGw6E9UM1giEE";
             public const string PetAskForConfirmNameSticker_Cat = "CAACAgIAAxkBAAEKOGJk9hzg8ZHelRKjXjRGuFAvNp3BOQACVBgAAsk7iUnMmgikdCwdijAE";
@@ -484,6 +532,7 @@ namespace TamagotchiBot.UserExtensions
             public const string PetWorkOnPCSticker_Cat = "CAACAgIAAxkBAAEK1xxlZlWln8UKh7QT3VELzQPUB3ORyQAC9RgAAk91yUtrMUFsJhd4XjME";
             public const string PetFlyersJobSticker_Cat = "CAACAgIAAxkBAAEK1x5lZlXZ6mDQC3ZYi6TeTiijYz-fFgACbhgAAsUnyUsEceKwVvyxWjME";
             public const string PetRanksSticker_Cat = "CAACAgIAAxkBAAEDuydh6-QrBh7ZWsJ08P5JPbuhEbhIlAAC6hAAAowt_QeFBFvPjWUsjyME";
+            public const string PetStartStudyingSticker_Cat = "CAACAgUAAxkBAAEQARNpPyP_PDZLZdcVBCnZlUem_NmVhAACkwgAAp88cVWTXgABjtFJe6A2BA";
             public const string PetHospitalLowHPSticker_Cat = "CAACAgIAAxkBAAEIEa1kCkgUfc3lvy1OnyY5LneOAz3tQwAC2hAAAowt_QeJ21KeBteIlS8E";
             public const string PetHospitalMidHPSticker_Cat = "CAACAgIAAxkBAAEIEbFkCkhUqHOSaEfmY85yxF98gaUZhwAC7BAAAowt_QdvxODKmdLpri8E";
             public const string PetHospitalHighHPSticker_Cat = "CAACAgIAAxkBAAEIEbVkCkhxJUXWAkJ0yUyghSK6L2C5kgAC6xAAAowt_QdeNV1SjgQwPi8E";
@@ -495,11 +544,13 @@ namespace TamagotchiBot.UserExtensions
             public const string PetDailyRewardSticker_Cat = "CAACAgIAAxkBAAELWBBlw91kJ672n4H0GYXs1y4FCI4BOwACjEQAAuCL2Ek0FIIAAXscqIw0BA";
             public const string RandomEventStepOnFootSticker_Cat = "CAACAgIAAxkBAAEJ4a1kyVY4a-KjYopDd5RsJ8--GavNKgACbh8AAtZFYUroJ9qKMdWRaC8E";
             public const string RandomEventPlayComputerSticker_Cat = "CAACAgIAAxkBAAEKbMdlGLDluFHYtgK0ETXFm_3aV1YDBAACWCMAAlDEYUoc38PCUwS5CDAE";
+            public const string PetTooTiredSticker_Cat = "CAACAgIAAxkBAAEQArBpQF260bPYMH3an20eIkqFsD3R3gACsxIAAmvtSEobknidtG9cEDYE";
 
             #endregion
             #region Dog
             public const string PetCreatedSticker_Dog = "CAACAgIAAxkBAAELVudlw8RIbryAKKzBCZ9WzlPcQMN4VQAC-TYAAlPFkEvv4r2vj754UzQE";
             public const string PetInfoSticker_Dog = "CAACAgIAAxkBAAELVwRlw8tSloMuB5MO4hq8lEa7LjHCWAACcAkAAhhC7ggNwYQs9skKgzQE";
+            public const string PetEducationInfoSticker_Dog = "CAACAgIAAxkBAAEQAUxpPz_npSVHlSXBWp1WhYZ2asWSdAACK20AAhwgOUrYWxHlZga6sDYE";
             public const string PetChooseNameSticker_Dog = "CAACAgIAAxkBAAELVvplw8pKDRQZO_D0ox1TRleEa4bWiAACZQkAAhhC7ghRNmsqi1F8QDQE";
             public const string PetConfirmedNameSticker_Dog = "CAACAgIAAxkBAAELVv5lw8pwBXF2_87ZfQxGe2FF_GKgYAACXAkAAhhC7gh5RWRhM3yStDQE";
             public const string PetAskForConfirmNameSticker_Dog = "CAACAgIAAxkBAAELVvxlw8pVoqK3hN6r0QqVg-U1d-3fNgACYAkAAhhC7ggkkrp5Mwb6BzQE";
@@ -512,6 +563,7 @@ namespace TamagotchiBot.UserExtensions
             public const string PetWorkOnPCSticker_Dog = "CAACAgIAAxkBAAELVwxlw8vPpPt2UoCdoyXw1moOX-y8hwAC1QQAAs9fiwesDLS1kbvcOzQE";
             public const string PetFlyersJobSticker_Dog = "CAACAgIAAxkBAAELVxNlw8vezGQ_b-oatdxGUuBGaOELjQAC8AQAAs9fiweXrmTGtaCl9DQE";
             public const string PetRanksSticker_Dog = "CAACAgIAAxkBAAELVxVlw8vzncNi6KBh17QNmMAoVnhJvQACXgkAAhhC7ggHlhjlQIXYVTQE";
+            public const string PetStartStudyingSticker_Dog = "CAACAgIAAxkBAAEQARVpPySeTfR_p1m3gzS8JN7dOYLsKAAC_xUAAmrOAUkrj57T7EywxTYE";
             public const string PetHospitalLowHPSticker_Dog = "CAACAgIAAxkBAAELVxdlw8wEokh8Iv_ojDPLRdyeVPNjaAACaAkAAhhC7ghoeeMl5GfTeDQE";
             public const string PetHospitalMidHPSticker_Dog = "CAACAgIAAxkBAAELVx1lw8w02bLj_IjyPRrrQcVmFEoOaAACbgkAAhhC7gjgnqdbZMkyTTQE";
             public const string PetHospitalHighHPSticker_Dog = "CAACAgIAAxkBAAELVxtlw8wfcUtiRJ-WbVAfeOEQJPVeTgACXwkAAhhC7ghT5M1UMfGUOjQE";
@@ -523,12 +575,14 @@ namespace TamagotchiBot.UserExtensions
             public const string PetDailyRewardSticker_Dog = "CAACAgIAAxkBAAELWA5lw91FJRKHCGXW7aJW29wWeXYleAAC2gQAAs9fiweFFmx0EB9FSTQE";
             public const string RandomEventStepOnFootSticker_Dog = "CAACAgIAAxkBAAELWBJlw-Nuah1Wy8gpZ8PMwAYS5hBlrAACagkAAhhC7gic251gxtCu3zQE";
             public const string RandomEventPlayComputerSticker_Dog = "CAACAgIAAxkBAAELWCVlw-faKdImb2InG8m6-W1Mly28ogAC6TAAAvENkUveMT_i_hxFOzQE";
+            public const string PetTooTiredSticker_Dog = "CAACAgIAAxkBAAEQArJpQF5UQrIigl9FF_Nks5QTgm5UsQACbAkAAhhC7ggQ76mmibN2TDYE";
 
 
             #endregion
             #region Fox
             public const string PetCreatedSticker_Fox = "CAACAgIAAxkBAAELVy9lw846uXHGdDtR9Ejpw525CfzpTwACjDQAAuVOKEjSWphPrEvBrTQE";
             public const string PetInfoSticker_Fox = "CAACAgIAAxkBAAELVzFlw85XzmdMfTYFfk9DtApSL0OcRAACyTIAAp97IUh9cYYuOL2rYjQE";
+            public const string PetEducationInfoSticker_Fox = "CAACAgIAAxkBAAEQAU5pP0Ax_8IZTLMFQLGwKKc0l5ypxAACg04AAhfisEnjtT4IWjQGmjYE";
             public const string PetChooseNameSticker_Fox = "CAACAgIAAxkBAAELVzVlw85p4U-qledsCLnyVwUkT4tEFQACiy0AAuyJIEjYsj1KXl5jjTQE";
             public const string PetConfirmedNameSticker_Fox = "CAACAgIAAxkBAAELV0Flw87G0m4c6dOLCctMJbZgTwbtygAC8jgAAgjoIEj6LRO2YpityzQE";
             public const string PetAskForConfirmNameSticker_Fox = "CAACAgIAAxkBAAELVz9lw86mz3fMv61pf_xg7xPwwfe9fgACUjQAAgawIEgxzp-hTaRq5TQE";
@@ -540,6 +594,7 @@ namespace TamagotchiBot.UserExtensions
             public const string PetWorkSticker_Fox = "CAACAgIAAxkBAAELV2dlw9A2xiTHxoxTFHTkP9KQOsicrwACmTIAAtLuIEhPwQSfYQe0ljQE";
             public const string PetWorkOnPCSticker_Fox = "CAACAgIAAxkBAAELV2Vlw9AnYXhXlN5NHDUdDLijfQ345wACyjgAAqU_KEiFGxKHX9QFGTQE";
             public const string PetFlyersJobSticker_Fox = "CAACAgIAAxkBAAELV1Nlw8-Rj0VefwUtl8ckXNv5L4D6-QAC3DYAAtd5IEgAAas3A37LoaI0BA";
+            public const string PetStartStudyingSticker_Fox = "CAACAgIAAxkBAAEQARdpPyU58H83rcYAAVGuXZlkouRTpWEAAqFsAAJSrFlLpzACfXRlvOE2BA";
             public const string PetRanksSticker_Fox = "CAACAgIAAxkBAAELV1llw8-qdahZPqqmyUznzCLJnpc1HQACCTMAAjXBIUjc3Wnw_bQ7lTQE";
             public const string PetHospitalLowHPSticker_Fox = "CAACAgIAAxkBAAELV1tlw8_GSqjcGiS6yIgPlR4ggvF2iQACdkMAAn3PGErI1rWOGZygsDQE";
             public const string PetHospitalMidHPSticker_Fox = "CAACAgIAAxkBAAELV11lw8_ZY_Rsm12O7IOMnbJFoM22TQACCkUAAm_QEUrlsSa9AAFo8000BA";
@@ -552,12 +607,14 @@ namespace TamagotchiBot.UserExtensions
             public const string PetDailyRewardSticker_Fox = "CAACAgIAAxkBAAELWAxlw90RYCIGfuZuM_NY8mgruq7fZwACoTwAArrqIEhnwKvheEoTmjQE";
             public const string RandomEventStepOnFootSticker_Fox = "CAACAgIAAxkBAAELWBRlw-OwQIXoyP1pwLpg5iu3702WXQACUDUAAjvJKUjS0uOZC4eeAAE0BA";
             public const string RandomEventPlayComputerSticker_Fox = "CAACAgIAAxkBAAELWCllw-hJh_aKF-UsNyc-lPTkPlCM5QACI0MAAvLpEErnN_bAYHUR3jQE";
+            public const string PetTooTiredSticker_Fox = "CAACAgIAAxkBAAEQArRpQF6bqJpEVMAYW4GuY-l-Wbd4OwACvDIAAqgNKUgL_A8a7XVrKjYE";
 
 
             #endregion
             #region Panda
             public const string PetCreatedSticker_Panda = "CAACAgIAAxkBAAELV3tlw9HfCljgKy6GgOUvFFOu8NgoDQACAhYAAiIRyUsmEzdJ6qGvSjQE";
             public const string PetInfoSticker_Panda = "CAACAgIAAxkBAAELV29lw9E9Bo8lPR9-exu_cnErM_8NwAACAxsAAridwEuPy6kILdeN-DQE";
+            public const string PetEducationInfoSticker_Panda = "CAACAgIAAxkBAAEQAVJpP0CMAAH8UIZ8z51snR-MpV6VVKkAApwkAAISO-FL3JPssLL_hs42BA";
             public const string PetChooseNameSticker_Panda = "CAACAgIAAxkBAAELV3Vlw9GHccRbFFqgrM_IJa9t81EzfgACQRQAAk0FyUspWF-hdBjmWjQE";
             public const string PetConfirmedNameSticker_Panda = "CAACAgIAAxkBAAELV3Flw9FOqXJzYAo3wYBH0Dt48HKFqAACySEAAhdewUszxCTvFpaaajQE";
             public const string PetAskForConfirmNameSticker_Panda = "CAACAgIAAxkBAAELV3dlw9GXeh9at2d0ULqUPuYtMwE61wACchYAAtd6yEtnHlJCZwzT8DQE";
@@ -569,6 +626,7 @@ namespace TamagotchiBot.UserExtensions
             public const string PetWorkSticker_Panda = "CAACAgIAAxkBAAELV4llw9OFVOWfE7gq7yucNFv-qJ17agACEAIAAladvQrPLbC7PfSjKTQE";
             public const string PetWorkOnPCSticker_Panda = "CAACAgIAAxkBAAELV4tlw9OuTGBrkUlScqSlS58zzE502wACIgIAAladvQoWnIBwuI2eCjQE";
             public const string PetFlyersJobSticker_Panda = "CAACAgIAAxkBAAELV41lw9PCaDTalY00_OvjxnfvPKbuPQACEQIAAladvQqSi9pRqYNsWzQE";
+            public const string PetStartStudyingSticker_Panda = "CAACAgIAAxkBAAEQARlpPyVj8WfIEIZPnUJKBzjvb-In8QACCR8AAgVj2Uugqg0cGOfPlTYE";
             public const string PetRanksSticker_Panda = "CAACAgIAAxkBAAELV49lw9Pblq6IHaSNYcFJkA_9R3LDYwACMQIAAladvQoi_qohWhUl5jQE";
             public const string PetHospitalLowHPSticker_Panda = "CAACAgIAAxkBAAELV5Nlw9Puus6he2DM3YjR5LY7ymbNEAACJAIAAladvQp7NaMbcOWxxzQE";
             public const string PetHospitalMidHPSticker_Panda = "CAACAgIAAxkBAAELV5llw9QWCIrJboEkPiBsGDv20w_ZRQACNAIAAladvQoxjc5OT0KBdzQE";
@@ -581,12 +639,14 @@ namespace TamagotchiBot.UserExtensions
             public const string PetDailyRewardSticker_Panda = "CAACAgIAAxkBAAELWAplw9zoVdoglLRbnCrefkM7KOvXSQACMwIAAladvQoLbxjsYc379DQE";
             public const string RandomEventStepOnFootSticker_Panda = "CAACAgIAAxkBAAELWBZlw-Ph9SK7Ffrjp0Roe7vxBqFiWwACER4AAjkiwUvvGJjJX5c0XTQE";
             public const string RandomEventPlayComputerSticker_Panda = "CAACAgIAAxkBAAELWCtlw-hiRr9DYsPgfZ8oplKsmb4WAwACLgIAAladvQoci82eqDtHYTQE";
+            public const string PetTooTiredSticker_Panda = "CAACAgIAAxkBAAEQArhpQF7eet1TnhAjufYOuIgSTlzluQACvh8AAsOz4EsytAy72genOjYE";
 
 
             #endregion
             #region Mouse
             public const string PetCreatedSticker_Mouse = "CAACAgIAAxkBAAELV51lw9VBwPOT7XRw9JhSopFzR8oDzAACTDgAAmykcUrbULO1DqewbjQE";
             public const string PetInfoSticker_Mouse = "CAACAgIAAxkBAAELV9Blw9bfTRMXc8xm8bcyrm-Thfy_CQACjzYAAlapcUoUS_qTvshwQTQE";
+            public const string PetEducationInfoSticker_Mouse = "CAACAgIAAxkBAAEQAVZpP0DIfvS5CjR5zON78U6L2dg8JQACRDQAAtvccUpLnf6FkEVcAAE2BA";
             public const string PetChooseNameSticker_Mouse = "CAACAgIAAxkBAAELV85lw9bKXHac6L8dJQS2d-GFT-s6_wACDGoAAsX7cUoHXwLrefy1TzQE";
             public const string PetConfirmedNameSticker_Mouse = "CAACAgIAAxkBAAELV8xlw9a_fz2b83Gmhsj4EAwQbCD59QACBzUAAoqacUoz1Bfk5ZxumjQE";
             public const string PetAskForConfirmNameSticker_Mouse = "CAACAgIAAxkBAAELV8plw9anwJt6p7Uf2mt4itDFupsi-gACPzoAAtamcErakNy0_MI_0DQE";
@@ -598,6 +658,7 @@ namespace TamagotchiBot.UserExtensions
             public const string PetWorkSticker_Mouse = "CAACAgIAAxkBAAELV6Flw9VdRrE90S9GpgfeRl5rqBpBPAACATsAAkpmcUog3oB_4pcCLTQE";
             public const string PetWorkOnPCSticker_Mouse = "CAACAgIAAxkBAAELV59lw9VRYEE8LW73swz4IU8tNJDd_QACdzoAAkNQcUpFU-um8ulorjQE";
             public const string PetFlyersJobSticker_Mouse = "CAACAgIAAxkBAAELV6Nlw9VrtcPlFwxYdH9jJOJKje6rKgACYDkAAn6tcEqIVAmi8sIp0zQE";
+            public const string PetStartStudyingSticker_Mouse = "CAACAgIAAxkBAAEQARtpPyW9qkwdWadpFfHvLY-VXZnncQACrBkAAo8j2UgSRI4tkSPp3TYE";
             public const string PetRanksSticker_Mouse = "CAACAgIAAxkBAAELV6Vlw9WJo1PsighSMbO4Dksqzj3laQACUDwAAu94cEpu3NybwaQe2jQE";
             public const string PetHospitalLowHPSticker_Mouse = "CAACAgIAAxkBAAELV7plw9Y3XDOGE-g5fK21jKi4lsd0zgACXzQAAveLcUosNxJuBHNtjzQE";
             public const string PetHospitalMidHPSticker_Mouse = "CAACAgIAAxkBAAELV7hlw9YnnK50ofbJNjzm3QF-aq93dQACXUEAAkECcEomrYovwfDw7DQE";
@@ -610,6 +671,7 @@ namespace TamagotchiBot.UserExtensions
             public const string PetDailyRewardSticker_Mouse = "CAACAgIAAxkBAAELWDFlw-nwTUsoBQJykSjLmv8aNpq3vgACKzMAArZHcEpkCdiTnaUfWjQE";
             public const string RandomEventStepOnFootSticker_Mouse = "CAACAgIAAxkBAAELWBhlw-QFXhuKQSXSyec3yiaUx3ltvAACIEEAAkxQcEqGPo78f8IK5TQE";
             public const string RandomEventPlayComputerSticker_Mouse = "CAACAgIAAxkBAAELWC9lw-jVG8F1DFEqxMm-pHJ9ZGFdzwACEjYAAhJzcUp1235GLY3NNzQE";
+            public const string PetTooTiredSticker_Mouse = "CAACAgIAAxkBAAEQArxpQF8_LAlVeJmPCIX56J3EimNKVAACDGoAAsX7cUoHXwLrefy1TzYE";
 
 
             #endregion
@@ -709,6 +771,30 @@ namespace TamagotchiBot.UserExtensions
 
         public static class ReplyKeyboardItems
         {
+            public static ReplyKeyboardMarkup EducationKeyboardMarkup(CultureInfo culture) => _educationKeyboardMarkup(culture);
+            private static ReplyKeyboardMarkup _educationKeyboardMarkup(CultureInfo culture) =>
+            Extensions.ReplyKeyboardOptimizer(
+                Extensions.GetEducationButtons(culture),
+                columnCounter: 3,
+                isOneTimeKeyboard: false
+                );
+
+            public static ReplyKeyboardMarkup EducationAllCompletedKeyboardMarkup(CultureInfo culture) => _educationAllCompletedKeyboardMarkup(culture);
+            private static ReplyKeyboardMarkup _educationAllCompletedKeyboardMarkup(CultureInfo culture) =>
+            Extensions.ReplyKeyboardOptimizer(
+                Extensions.GetEducationAllCompletedButtons(culture),
+                columnCounter: 1,
+                isOneTimeKeyboard: false
+                );
+
+            public static ReplyKeyboardMarkup EducationStudyingKeyboardMarkup(CultureInfo culture) => _educationStudyingKeyboardMarkup(culture);
+            private static ReplyKeyboardMarkup _educationStudyingKeyboardMarkup(CultureInfo culture) =>
+            Extensions.ReplyKeyboardOptimizer(
+                Extensions.GetEducationStudyingButtons(culture),
+                columnCounter: 1,
+                isOneTimeKeyboard: false
+                );
+
             public static ReplyKeyboardMarkup ChangeTypeKeyboardMarkup(CultureInfo culture) => _changeTypeKeyboardMarkup(culture);
             private static ReplyKeyboardMarkup _changeTypeKeyboardMarkup(CultureInfo culture) =>
             Extensions.ReplyKeyboardOptimizer(

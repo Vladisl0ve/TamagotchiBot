@@ -69,6 +69,8 @@ namespace TamagotchiBot.Controllers
                 Level = 1,
                 BirthDateTime = DateTime.UtcNow,
                 LastUpdateTime = DateTime.UtcNow,
+                EducationLevel = 1,
+                EducationStage = 0,
                 NextRandomEventNotificationTime = DateTime.UtcNow.AddMinutes(25),
                 EXP = 0,
                 HP = 100,
@@ -253,7 +255,7 @@ namespace TamagotchiBot.Controllers
             _appServices.UserService.UpdateIsPetNameAskedOnCreate(_userId, true);
         }
 
-        internal void UpdateIndicators()
+        internal async Task UpdateIndicators()
         {
             Telegram.Bot.Types.User userFromMsg = _message?.From ?? _callback?.From;
             var petDB = _appServices.PetService.Get(_userId);
@@ -304,9 +306,62 @@ namespace TamagotchiBot.Controllers
                 petResult.CurrentJob = currentJob;
             }
 
+            //Education
+            if (petDB.CurrentStatus == (int)CurrentStatus.Studying)
+            {
+                var aud = _appServices.AllUsersDataService.Get(_userId);
+                await UpdateIndicatorStudying(petResult, aud);
+                _appServices.AllUsersDataService.Update(aud);
+            }
+
             petResult.LastUpdateTime = DateTime.UtcNow;
             _appServices.PetService.Update(userFromMsg.Id, petResult);
         }
+
+        private async Task UpdateIndicatorStudying(Pet petResult, AllUsersData aud)
+        {
+            var currentLevel = petResult.EducationLevel.GetActualEducationLevel();
+            bool isLevelCompleted = false;
+
+            var timeLeft = petResult.StartStudyingTime + Extensions.GetEducationTime(currentLevel) - DateTime.UtcNow;
+
+            if (timeLeft > TimeSpan.Zero)
+                return;
+
+            petResult.CurrentStatus = (int)CurrentStatus.Active;
+            petResult.EducationStage++;
+
+            // Leveling logic
+            var stagesNeeded = currentLevel.GetStagesNeeded();
+
+            if (petResult.EducationStage >= stagesNeeded)
+            {
+                petResult.EducationStage = 0;
+                petResult.EducationLevel = (int)(currentLevel + 1);
+
+                isLevelCompleted = true;
+            }
+
+            int expReward = currentLevel.GetEducationExpReward();
+            petResult.EXP += expReward;
+            aud.EducationStagesPassedCounter++;
+
+            string text = string.Format(nameof(Resources.Resources.educationCommand_NotifyFinished).UseCulture(_userCulture), 1, expReward);
+
+            if (isLevelCompleted)
+            {
+                text += string.Format(nameof(Resources.Resources.educationCommand_newLevelCompleted).UseCulture(_userCulture), petResult.EducationLevel.GetActualEducationLevelTranslatedString(_userCulture));
+            }
+
+            await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
+            {
+                Text = text,
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                //StickerId = StickersId.GetStickerByType(nameof(StickersId.PetInfoSticker_Cat), petResult.Type),
+                //ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+            }, _userId, false);
+        }
+
         internal bool CheckIsPetZeroHP() => _appServices.PetService.Get(_userId)?.HP <= 0;
         internal bool CheckIsPetGone() => _appServices.PetService.Get(_userId)?.IsGone ?? false;
         internal async Task AfterDeath()

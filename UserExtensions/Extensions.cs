@@ -173,7 +173,7 @@ namespace TamagotchiBot.UserExtensions
 
                 nameof(Resources.Resources.sleepCommandDescription).UseCulture(culture),
                 nameof(Resources.Resources.gameroomCommandDescription).UseCulture(culture),
-                nameof(Resources.Resources.bathroomCommandDescription).UseCulture(culture),
+                nameof(Resources.Resources.educationCommandDescription).UseCulture(culture),
 
                 nameof(Resources.Resources.ranksCommandDescription).UseCulture(culture),
                 nameof(Resources.Resources.farmCommandDescription).UseCulture(culture),
@@ -564,6 +564,7 @@ namespace TamagotchiBot.UserExtensions
                     CurrentStatus.Active => nameof(Resources.Resources.CurrentStatusActive).UseCulture(culture),
                     CurrentStatus.Sleeping => nameof(Resources.Resources.CurrentStatusSleeping).UseCulture(culture),
                     CurrentStatus.Working => nameof(Resources.Resources.CurrentStatusWorking).UseCulture(culture),
+                    CurrentStatus.Studying => nameof(Resources.Resources.CurrentStatusStudying).UseCulture(culture),
                     _ => null,
                 };
             }
@@ -722,6 +723,34 @@ namespace TamagotchiBot.UserExtensions
             }
             return result;
         }
+        public static List<string> GetEducationButtons(CultureInfo culture)
+        {
+            return new List<string>()
+            {
+                nameof(Resources.Resources.educationCommand_Primary).UseCulture(culture),
+                nameof(Resources.Resources.educationCommand_Middle).UseCulture(culture),
+                nameof(Resources.Resources.educationCommand_High).UseCulture(culture),
+                nameof(Resources.Resources.goAwayButton).UseCulture(culture)
+            };
+        }
+
+        public static List<string> GetEducationAllCompletedButtons(CultureInfo culture)
+        {
+            return new List<string>()
+            {
+                nameof(Resources.Resources.goAwayButton).UseCulture(culture)
+            };
+        }
+
+        public static List<string> GetEducationStudyingButtons(CultureInfo culture)
+        {
+            return new List<string>()
+            {
+                nameof(Resources.Resources.educationCommand_CheckTime).UseCulture(culture),
+                nameof(Resources.Resources.goAwayButton).UseCulture(culture)
+            };
+        }
+
         public static string UseCulture(this string toTranslate, CultureInfo culture)
         {
             if (culture == null || string.IsNullOrEmpty(toTranslate))
@@ -748,5 +777,62 @@ namespace TamagotchiBot.UserExtensions
             return toTranslate.UseCulture(cultureInfo);
         }
 
+
+
+        public static TimeSpan GetEducationTime(EducationLevel level)
+        {
+            return level switch
+            {
+                EducationLevel.Primary => TimesToWait.EducationPrimaryToWait,
+                EducationLevel.Middle => TimesToWait.EducationMiddleToWait,
+                EducationLevel.High => TimesToWait.EducationHighToWait,
+                _ => TimesToWait.EducationHighToWait
+            };
+        }
+
+
+        public static EducationLevel GetActualEducationLevel(this int level)
+        {
+            return level == 0 ? EducationLevel.Primary : (EducationLevel)level;
+        }
+
+        public static string GetActualEducationLevelTranslatedString(this int level, CultureInfo culture)
+        {
+            return level.GetActualEducationLevel() switch
+            {
+                EducationLevel.Primary => nameof(Resources.Resources.educationCommand_Primary).UseCulture(culture),
+                EducationLevel.Middle => nameof(Resources.Resources.educationCommand_Middle).UseCulture(culture),
+                EducationLevel.High => nameof(Resources.Resources.educationCommand_High).UseCulture(culture),
+                EducationLevel.CompletedHigh => nameof(Resources.Resources.educationCommand_CompletedHigh).UseCulture(culture),
+                _ => nameof(Resources.Resources.educationCommand_Primary).UseCulture(culture)
+            };
+        }
+
+        public static string GetActualEducationLevelTranslatedString(this EducationLevel level, CultureInfo culture)
+        {
+            return ((int)level).GetActualEducationLevelTranslatedString(culture);
+        }
+
+        public static int GetStagesNeeded(this EducationLevel level)
+        {
+            return level switch
+            {
+                EducationLevel.Primary => Education.PrimarySchoolStages,
+                EducationLevel.Middle => Education.MiddleSchoolStages,
+                EducationLevel.High => Education.HighSchoolStages,
+                _ => Education.HighSchoolStages
+            };
+        }
+
+        public static int GetEducationExpReward(this EducationLevel level)
+        {
+            return level switch
+            {
+                EducationLevel.Primary => Constants.ExpRewards.PrimaryEducation,
+                EducationLevel.Middle => Constants.ExpRewards.MiddleEducation,
+                EducationLevel.High => Constants.ExpRewards.HighEducation,
+                _ => Constants.ExpRewards.PrimaryEducation
+            };
+        }
     }
 }

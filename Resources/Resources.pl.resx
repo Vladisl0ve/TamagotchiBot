@@ -152,7 +152,9 @@ Miłej zabawy 🍿</value>
 💰 Złoto: {8} 💴
 💎 Diamenty: {13} 💎
 
-⚡️ Status: {6}
+⚡️ Status: &lt;b&gt;{6}&lt;/b&gt;
+🎓 Edukacja: {17}
+
 🏅 &lt;b&gt;{3} poziom&lt;/b&gt;
 ✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
 
@@ -1240,5 +1242,62 @@ Przegrane: {1}</value>
   </data>
   <data name="PetIsFullOfHealth" xml:space="preserve">
     <value>💬 Twój pupil i tak nie choruje</value>
+  </data>
+  <data name="educationCommandDescription" xml:space="preserve">
+    <value>Edukacja 🎓</value>
+  </data>
+  <data name="educationCommand" xml:space="preserve">
+    <value>&lt;b&gt;Wybierz  stopień edukacji &lt;/b&gt;
+
+🎓Aktualny stopień: {0}
+Bieżący etap: {1}/{2}
+
++{3}% Zmęczenie 😴</value>
+  </data>
+  <data name="educationCommand_Primary" xml:space="preserve">
+    <value>Szkoła Podstawowa 👶</value>
+  </data>
+  <data name="educationCommand_Middle" xml:space="preserve">
+    <value>Gimnazjum 🧒</value>
+  </data>
+  <data name="educationCommand_High" xml:space="preserve">
+    <value>Uniwersytet 🧑‍🎓</value>
+  </data>
+  <data name="educationCommandShowTime" xml:space="preserve">
+    <value>Pozostały czas nauki: {0} 🕔</value>
+  </data>
+  <data name="educationCommand_InProgress" xml:space="preserve">
+    <value>Zwierzak teraz się uczy 📚
+
+Pozostałe: {0} 🕔</value>
+  </data>
+  <data name="educationCommand_NeedFinishPrevious" xml:space="preserve">
+    <value>Najpierw zwierzak musi ukończyć poprzedni stopień!</value>
+  </data>
+  <data name="educationCommand_Finished" xml:space="preserve">
+    <value>Zwierzak juź skończył  ten stopień</value>
+  </data>
+  <data name="educationCommand_NotifyFinished" xml:space="preserve">
+    <value>Pet skończył naukę! 
+
++{0} etap 🎓
++{1} EXP ✨</value>
+  </data>
+  <data name="educationCommand_CheckTime" xml:space="preserve">
+    <value>🕝 Sprawdź, ile czasu pozostało</value>
+  </data>
+  <data name="CurrentStatusStudying" xml:space="preserve">
+    <value>studiuje 📚</value>
+  </data>
+  <data name="educationCommand_CompletedHigh" xml:space="preserve">
+    <value>Ukończone studia wyższe 🧑‍🔬</value>
+  </data>
+  <data name="educationCommand_OveredAllEducationLevels" xml:space="preserve">
+    <value>Pupil ukończył wszystkie stopnie nauki 🧑‍🎓</value>
+  </data>
+  <data name="educationCommand_newLevelCompleted" xml:space="preserve">
+    <value>
+
+🎉 &lt;b&gt;Gratulujemy zdobycia nowego stopnia nauki dla pupila&lt;/b&gt;: &lt;i&gt;{0}&lt;/i&gt;</value>
   </data>
 </root>

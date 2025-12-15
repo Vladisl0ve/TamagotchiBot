@@ -494,6 +494,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to studying 📚.
+        /// </summary>
+        public static string CurrentStatusStudying {
+            get {
+                return ResourceManager.GetString("CurrentStatusStudying", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to on work 🧰.
         /// </summary>
         public static string CurrentStatusWorking {
@@ -805,6 +814,144 @@ namespace TamagotchiBot.Resources {
         public static string DuelMPTimeout {
             get {
                 return ResourceManager.GetString("DuelMPTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose education stage 
+        ///
+        ///🎓Current Level: {0}
+        ///Current Stage: {1}/{2}
+        ///
+        ///+{3}% fatigue 😴.
+        /// </summary>
+        public static string educationCommand {
+            get {
+                return ResourceManager.GetString("educationCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🕝 Check time left.
+        /// </summary>
+        public static string educationCommand_CheckTime {
+            get {
+                return ResourceManager.GetString("educationCommand_CheckTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Completed University 🧑‍🔬.
+        /// </summary>
+        public static string educationCommand_CompletedHigh {
+            get {
+                return ResourceManager.GetString("educationCommand_CompletedHigh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet has finished this level!.
+        /// </summary>
+        public static string educationCommand_Finished {
+            get {
+                return ResourceManager.GetString("educationCommand_Finished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to University 🧑‍🎓.
+        /// </summary>
+        public static string educationCommand_High {
+            get {
+                return ResourceManager.GetString("educationCommand_High", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet is studying! 📚
+        ///
+        ///Remaining: {0} 🕔.
+        /// </summary>
+        public static string educationCommand_InProgress {
+            get {
+                return ResourceManager.GetString("educationCommand_InProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Middle School 🧒.
+        /// </summary>
+        public static string educationCommand_Middle {
+            get {
+                return ResourceManager.GetString("educationCommand_Middle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet need to finish previous level first.
+        /// </summary>
+        public static string educationCommand_NeedFinishPrevious {
+            get {
+                return ResourceManager.GetString("educationCommand_NeedFinishPrevious", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///
+        ///🎉 &lt;b&gt;Congratulations on unlocking a new education level for your pet&lt;/b&gt;: &lt;i&gt;{0}&lt;/i&gt;.
+        /// </summary>
+        public static string educationCommand_newLevelCompleted {
+            get {
+                return ResourceManager.GetString("educationCommand_newLevelCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pet finished studying! 
+        ///
+        ///+{0} stage 🎓
+        ///+{1} EXP ✨.
+        /// </summary>
+        public static string educationCommand_NotifyFinished {
+            get {
+                return ResourceManager.GetString("educationCommand_NotifyFinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The pet has completed all education levels 🧑‍🎓.
+        /// </summary>
+        public static string educationCommand_OveredAllEducationLevels {
+            get {
+                return ResourceManager.GetString("educationCommand_OveredAllEducationLevels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Primary School 👶.
+        /// </summary>
+        public static string educationCommand_Primary {
+            get {
+                return ResourceManager.GetString("educationCommand_Primary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Education 🎓.
+        /// </summary>
+        public static string educationCommandDescription {
+            get {
+                return ResourceManager.GetString("educationCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Studying time left: {0} 🕔.
+        /// </summary>
+        public static string educationCommandShowTime {
+            get {
+                return ResourceManager.GetString("educationCommandShowTime", resourceCulture);
             }
         }
         
@@ -1556,7 +1703,9 @@ namespace TamagotchiBot.Resources {
         ///💰 Gold: {8} 💴
         ///💎 Diamonds: {13} 💎
         ///
-        ///⚡️ Status: {6}
+        ///⚡️ Status: &lt;b&gt;{6}&lt;/b&gt;
+        ///🎓 Education: {17}
+        ///
         ///🏅 &lt;b&gt;{3} level&lt;/b&gt;
         ///✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
         ///

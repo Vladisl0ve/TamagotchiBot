@@ -153,7 +153,9 @@
 💰 Золата: {8} 💴
 💎 Дыяменты: {13} 💎
 
-⚡️ Статус: {6}
+⚡️ Статус:&lt;b&gt; {6}&lt;/b&gt;
+🎓 Адукацыя: {17}
+
 🏅 &lt;b&gt;{3} узровень&lt;/b&gt;
 ✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
 
@@ -1245,5 +1247,62 @@ https://t.me/newsvirtualpetbot</value>
   </data>
   <data name="PetIsFullOfHealth" xml:space="preserve">
     <value>💬 Твой гадаванец і так не хварэе</value>
+  </data>
+  <data name="educationCommandDescription" xml:space="preserve">
+    <value>Адукацыя 🎓</value>
+  </data>
+  <data name="educationCommand" xml:space="preserve">
+    <value>&lt;b&gt;Выберыце ступень адукацыі &lt;/b&gt;
+
+🎓Бягучая ступень: {0}
+Бягучы этап: {1}/{2}
+
++{3}% Стамленне 😴</value>
+  </data>
+  <data name="educationCommand_Primary" xml:space="preserve">
+    <value>Пачатковая школа 👶</value>
+  </data>
+  <data name="educationCommand_Middle" xml:space="preserve">
+    <value>Сярэдняя школа 🧒</value>
+  </data>
+  <data name="educationCommand_High" xml:space="preserve">
+    <value>Універсітэт 🧑‍🎓</value>
+  </data>
+  <data name="educationCommandShowTime" xml:space="preserve">
+    <value>Засталося часу навучання: {0} 🕔</value>
+  </data>
+  <data name="educationCommand_InProgress" xml:space="preserve">
+    <value>Гадаванец цяпер вучыцца 📚
+
+Засталося: {0} 🕔</value>
+  </data>
+  <data name="educationCommand_NeedFinishPrevious" xml:space="preserve">
+    <value>Вам трэба спачатку скончыць папярэдні ўзровень</value>
+  </data>
+  <data name="educationCommand_Finished" xml:space="preserve">
+    <value>Гадаванец ужо скончыў гэтую ступень</value>
+  </data>
+  <data name="educationCommand_NotifyFinished" xml:space="preserve">
+    <value>Гадаванец скончыў вучыцца!
+
++{0} этап 🎓
++{1} EXP ✨</value>
+  </data>
+  <data name="educationCommand_CheckTime" xml:space="preserve">
+    <value>🕝 Праверыць, колькі часу засталося</value>
+  </data>
+  <data name="CurrentStatusStudying" xml:space="preserve">
+    <value>вучыцца 📚</value>
+  </data>
+  <data name="educationCommand_CompletedHigh" xml:space="preserve">
+    <value>Скончаны універсітэт 🧑‍🔬</value>
+  </data>
+  <data name="educationCommand_OveredAllEducationLevels" xml:space="preserve">
+    <value>Гадаванец скончыў усе ступені навучання 🧑‍🎓</value>
+  </data>
+  <data name="educationCommand_newLevelCompleted" xml:space="preserve">
+    <value>
+
+🎉 &lt;b&gt;Віншуем з атрыманнем новай ступені навучання для гадаванца&lt;/b&gt;: &lt;i&gt;{0}&lt;/i&gt;</value>
   </data>
 </root>

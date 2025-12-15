@@ -220,5 +220,35 @@ namespace TamagotchiBot.Services.Mongo
         }
 
         public List<Pet> GetAutoFeedingPets() => _collection.Find(p => p.IsAutoFeedEnabled).ToList();
+
+        public void UpdateEducationStage(long userId, int newStage)
+        {
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.EducationStage = newStage;
+                Update(userId, pet);
+            }
+        }
+
+        public void UpdateStartStudyingTime(long userId, DateTime newStartTime)
+        {
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.StartStudyingTime = newStartTime;
+                Update(userId, pet);
+            }
+        }
+
+        public void UpdateEducationLevel(long userId, int newLevel)
+        {
+            var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
+            if (pet != null)
+            {
+                pet.EducationLevel = newLevel;
+                Update(userId, pet);
+            }
+        }
     }
 }

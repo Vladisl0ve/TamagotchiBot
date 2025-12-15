@@ -152,7 +152,9 @@
 💰 Золото: {8} 💴
 💎 Алмазы: {13} 💎
 
-⚡️ Статус: {6}
+⚡️ Статус: &lt;b&gt;{6}&lt;/b&gt;
+🎓 Образование: {17}
+
 🏅 &lt;b&gt;{3} уровень&lt;/b&gt;
 ✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
 
@@ -1244,5 +1246,62 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="PetIsFullOfHealth" xml:space="preserve">
     <value>💬 Твой питомец и так не болеет</value>
+  </data>
+  <data name="educationCommandDescription" xml:space="preserve">
+    <value>Образование 🎓</value>
+  </data>
+  <data name="educationCommand" xml:space="preserve">
+    <value>&lt;b&gt;Выберите ступень обучения &lt;/b&gt;
+
+🎓Текущая ступень: {0}
+Текущий этап: {1}/{2}
+
++{3}% Усталость 😴</value>
+  </data>
+  <data name="educationCommand_Primary" xml:space="preserve">
+    <value>Начальная школа 👶</value>
+  </data>
+  <data name="educationCommand_Middle" xml:space="preserve">
+    <value>Средняя школа 🧒</value>
+  </data>
+  <data name="educationCommand_High" xml:space="preserve">
+    <value>Университет 🧑‍🎓</value>
+  </data>
+  <data name="educationCommandShowTime" xml:space="preserve">
+    <value>Осталось времени на учебу: {0} 🕔</value>
+  </data>
+  <data name="educationCommand_InProgress" xml:space="preserve">
+    <value>Питомец сейчас на учёбе 📚
+
+Осталось: {0} 🕔</value>
+  </data>
+  <data name="educationCommand_NeedFinishPrevious" xml:space="preserve">
+    <value>Сначала питомцу надо закончить предыдущую ступень!</value>
+  </data>
+  <data name="educationCommand_Finished" xml:space="preserve">
+    <value>Питомец уже здесь учился</value>
+  </data>
+  <data name="educationCommand_NotifyFinished" xml:space="preserve">
+    <value>Питомец закончил учиться! 
+
++{0} этап 🎓
++{1} опыта ✨</value>
+  </data>
+  <data name="educationCommand_CheckTime" xml:space="preserve">
+    <value>🕝 Проверить, сколько времени осталось</value>
+  </data>
+  <data name="CurrentStatusStudying" xml:space="preserve">
+    <value>учится 📚</value>
+  </data>
+  <data name="educationCommand_CompletedHigh" xml:space="preserve">
+    <value>Окончен университет 🧑‍🔬</value>
+  </data>
+  <data name="educationCommand_OveredAllEducationLevels" xml:space="preserve">
+    <value>Питомец окончил все ступени обучения 🧑‍🎓</value>
+  </data>
+  <data name="educationCommand_newLevelCompleted" xml:space="preserve">
+    <value>
+
+🎉 &lt;b&gt;Поздравляем с получением новой ступени обучения для питомца&lt;/b&gt;: &lt;i&gt;{0}&lt;/i&gt;</value>
   </data>
 </root>

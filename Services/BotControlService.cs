@@ -332,7 +332,7 @@ namespace TamagotchiBot.Services
 
             if (toSend.StickerId != null)
             {
-                var resStiker = await SendStickerAsync(userId,
+                var resStiker = await SendStickerAsync(userId, //TODO: bug - no keyboard if no sticker is uploading too
                  toSend.StickerId,
                  toSend.msgThreadId,
                  toSend.ReplyMarkup,
