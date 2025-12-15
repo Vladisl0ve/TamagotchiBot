@@ -1299,7 +1299,15 @@ namespace TamagotchiBot.Controllers
             string toSendText = string.Format(
                 nameof(kitchenCommand).UseCulture(_userCulture),
                 petDB.Satiety,
-                userDB.Gold);
+                userDB.Gold,
+                FoodFactors.BreadHungerFactor,
+                Costs.Bread,
+                FoodFactors.RedAppleHungerFactor,
+                Costs.Apple,
+                FoodFactors.LollipopHungerFactor,
+                Costs.Lollipop,
+                FoodFactors.ChocolateHungerFactor,
+                Costs.Chocolate);
 
             List<CallbackModel> inlineParts = InlineItems.InlineFood;
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -1853,7 +1861,17 @@ namespace TamagotchiBot.Controllers
             string anwser = string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)FoodFactors.BreadHungerFactor);
             await SendAlertToUser(anwser);
 
-            string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture), newSatiety, newGold);
+            string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture),
+                newSatiety,
+                newGold,
+                FoodFactors.BreadHungerFactor,
+                Costs.Bread,
+                FoodFactors.RedAppleHungerFactor,
+                Costs.Apple,
+                FoodFactors.LollipopHungerFactor,
+                Costs.Lollipop,
+                FoodFactors.ChocolateHungerFactor,
+                Costs.Chocolate);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
 
             Log.Debug($"Callbacked FeedWithBreadInline for {_userInfo}");
@@ -1884,7 +1902,17 @@ namespace TamagotchiBot.Controllers
 
             await SendAlertToUser(string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)FoodFactors.RedAppleHungerFactor));
 
-            string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture), newSatiety, newGold);
+            string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture),
+                newSatiety,
+                newGold,
+                FoodFactors.BreadHungerFactor,
+                Costs.Bread,
+                FoodFactors.RedAppleHungerFactor,
+                Costs.Apple,
+                FoodFactors.LollipopHungerFactor,
+                Costs.Lollipop,
+                FoodFactors.ChocolateHungerFactor,
+                Costs.Chocolate);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
 
             Log.Debug($"Callbacked FeedWithAppleInline for {_userInfo}");
@@ -1914,7 +1942,17 @@ namespace TamagotchiBot.Controllers
             string anwser = string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)FoodFactors.ChocolateHungerFactor);
             await SendAlertToUser(anwser);
 
-            string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture), newSatiety, newGold);
+            string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture),
+                newSatiety,
+                newGold,
+                FoodFactors.BreadHungerFactor,
+                Costs.Bread,
+                FoodFactors.RedAppleHungerFactor,
+                Costs.Apple,
+                FoodFactors.LollipopHungerFactor,
+                Costs.Lollipop,
+                FoodFactors.ChocolateHungerFactor,
+                Costs.Chocolate);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
 
             Log.Debug($"Callbacked FeedWithChocolateInline for {_userInfo}");
@@ -1945,7 +1983,17 @@ namespace TamagotchiBot.Controllers
             string anwser = string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)FoodFactors.LollipopHungerFactor);
             await SendAlertToUser(anwser);
 
-            string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture), newSatiety, newGold);
+            string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture),
+                newSatiety,
+                newGold,
+                FoodFactors.BreadHungerFactor,
+                Costs.Bread,
+                FoodFactors.RedAppleHungerFactor,
+                Costs.Apple,
+                FoodFactors.LollipopHungerFactor,
+                Costs.Lollipop,
+                FoodFactors.ChocolateHungerFactor,
+                Costs.Chocolate);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
 
             Log.Debug($"Callbacked FeedWithLollipopInline for {_userInfo}");
