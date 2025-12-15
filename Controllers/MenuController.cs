@@ -1840,147 +1840,67 @@ namespace TamagotchiBot.Controllers
         }
         private async Task FeedWithBreadInline(Pet petDB)
         {
-            var userDB = _appServices.UserService.Get(_userId);
-
-            if (!await ToContinueFeedingPet(petDB, userDB, Costs.Bread))
-                return;
-
-            var newGold = userDB.Gold - Costs.Bread;
-            var newSatiety = Math.Round(petDB.Satiety + FoodFactors.BreadHungerFactor, 2);
-            newSatiety = newSatiety > 100 ? 100 : newSatiety;
-
-            _appServices.UserService.UpdateGold(_userId, newGold);
-            _appServices.PetService.UpdateSatiety(_userId, newSatiety);
-            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + ExpForAction.FeedingBread);
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-
-            aud.BreadEatenCounter++;
-            aud.GoldSpentCounter += Costs.Bread;
-            _appServices.AllUsersDataService.Update(aud);
-
-            string anwser = string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)FoodFactors.BreadHungerFactor);
-            await SendAlertToUser(anwser);
-
-            string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture),
-                newSatiety,
-                newGold,
-                FoodFactors.BreadHungerFactor,
+            await FeedWithFoodInline(
+                petDB,
                 Costs.Bread,
-                FoodFactors.RedAppleHungerFactor,
-                Costs.Apple,
-                FoodFactors.LollipopHungerFactor,
-                Costs.Lollipop,
-                FoodFactors.ChocolateHungerFactor,
-                Costs.Chocolate);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
-
-            Log.Debug($"Callbacked FeedWithBreadInline for {_userInfo}");
-            await _appServices.BotControlService.SendAnswerCallback(_userId,
-                                                              _callback?.Message?.MessageId ?? 0,
-                                                              new AnswerCallback(toSendText, toSendInline),
-                                                              false);
+                FoodFactors.BreadHungerFactor,
+                ExpForAction.FeedingBread,
+                aud => aud.BreadEatenCounter++);
         }
+
         private async Task FeedWithAppleInline(Pet petDB)
         {
-            var userDB = _appServices.UserService.Get(_userId);
-
-            if (!await ToContinueFeedingPet(petDB, userDB, Costs.Apple))
-                return;
-
-            var newGold = userDB.Gold - Constants.Costs.Apple;
-            var newSatiety = Math.Round(petDB.Satiety + FoodFactors.RedAppleHungerFactor, 2);
-            newSatiety = newSatiety > 100 ? 100 : newSatiety;
-
-            _appServices.UserService.UpdateGold(_userId, newGold);
-            _appServices.PetService.UpdateSatiety(_userId, newSatiety);
-            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + ExpForAction.FeedingApple);
-
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.AppleEatenCounter++;
-            aud.GoldSpentCounter += Costs.Apple;
-            _appServices.AllUsersDataService.Update(aud);
-
-            await SendAlertToUser(string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)FoodFactors.RedAppleHungerFactor));
-
-            string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture),
-                newSatiety,
-                newGold,
-                FoodFactors.BreadHungerFactor,
-                Costs.Bread,
-                FoodFactors.RedAppleHungerFactor,
+            await FeedWithFoodInline(
+                petDB,
                 Costs.Apple,
-                FoodFactors.LollipopHungerFactor,
-                Costs.Lollipop,
-                FoodFactors.ChocolateHungerFactor,
-                Costs.Chocolate);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
-
-            Log.Debug($"Callbacked FeedWithAppleInline for {_userInfo}");
-            await _appServices.BotControlService.SendAnswerCallback(_userId,
-                                                              _callback?.Message?.MessageId ?? 0,
-                                                              new AnswerCallback(toSendText, toSendInline),
-                                                              false);
+                FoodFactors.RedAppleHungerFactor,
+                ExpForAction.FeedingApple,
+                aud => aud.AppleEatenCounter++);
         }
+
         private async Task FeedWithChocolateInline(Pet petDB)
         {
-            var userDB = _appServices.UserService.Get(_userId);
-
-            if (!await ToContinueFeedingPet(petDB, userDB, Costs.Chocolate))
-                return;
-
-            var newGold = userDB.Gold - Constants.Costs.Chocolate;
-            var newSatiety = Math.Round(petDB.Satiety + FoodFactors.ChocolateHungerFactor, 2);
-            newSatiety = newSatiety > 100 ? 100 : newSatiety;
-
-            _appServices.UserService.UpdateGold(_userId, newGold);
-            _appServices.PetService.UpdateSatiety(_userId, newSatiety);
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChocolateEatenCounter++;
-            aud.GoldSpentCounter += Constants.Costs.Chocolate;
-            _appServices.AllUsersDataService.Update(aud);
-
-            string anwser = string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)FoodFactors.ChocolateHungerFactor);
-            await SendAlertToUser(anwser);
-
-            string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture),
-                newSatiety,
-                newGold,
-                FoodFactors.BreadHungerFactor,
-                Costs.Bread,
-                FoodFactors.RedAppleHungerFactor,
-                Costs.Apple,
-                FoodFactors.LollipopHungerFactor,
-                Costs.Lollipop,
+            await FeedWithFoodInline(
+                petDB,
+                Costs.Chocolate,
                 FoodFactors.ChocolateHungerFactor,
-                Costs.Chocolate);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
-
-            Log.Debug($"Callbacked FeedWithChocolateInline for {_userInfo}");
-            await _appServices.BotControlService.SendAnswerCallback(_userId,
-                                                              _callback?.Message?.MessageId ?? 0,
-                                                              new AnswerCallback(toSendText, toSendInline),
-                                                              false);
+                0, // No specific EXP reward constant found for Chocolate in snippet, assuming 0 or need to check if it uses generic feeding exp? 
+                   // Checked code: FeedWithChocolateInline does NOT add EXP in the original code!
+                aud => aud.ChocolateEatenCounter++);
         }
+
         private async Task FeedWithLollipopInline(Pet petDB)
+        {
+            await FeedWithFoodInline(
+                petDB,
+                Costs.Lollipop,
+                FoodFactors.LollipopHungerFactor,
+                0, // Checked code: FeedWithLollipopInline does NOT add EXP in the original code!
+                aud => aud.LollypopEatenCounter++);
+        }
+
+        private async Task FeedWithFoodInline(Pet petDB, int cost, double hungerFactor, int expReward, Action<AllUsersData> updateCounter)
         {
             var userDB = _appServices.UserService.Get(_userId);
 
-            if (!await ToContinueFeedingPet(petDB, userDB, Costs.Lollipop))
+            if (!await ToContinueFeedingPet(petDB, userDB, cost))
                 return;
 
-            var newGold = userDB.Gold - Constants.Costs.Lollipop;
-            var newSatiety = Math.Round(petDB.Satiety + FoodFactors.LollipopHungerFactor, 2);
+            var newGold = userDB.Gold - cost;
+            var newSatiety = Math.Round(petDB.Satiety + hungerFactor, 2);
             newSatiety = newSatiety > 100 ? 100 : newSatiety;
 
             _appServices.UserService.UpdateGold(_userId, newGold);
             _appServices.PetService.UpdateSatiety(_userId, newSatiety);
+            if (expReward > 0)
+                _appServices.PetService.UpdateEXP(_userId, petDB.EXP + expReward);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.LollypopEatenCounter++;
-            aud.GoldSpentCounter += Costs.Lollipop;
+            updateCounter(aud);
+            aud.GoldSpentCounter += cost;
             _appServices.AllUsersDataService.Update(aud);
 
-            string anwser = string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)FoodFactors.LollipopHungerFactor);
+            string anwser = string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)hungerFactor);
             await SendAlertToUser(anwser);
 
             string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture),
@@ -1996,7 +1916,7 @@ namespace TamagotchiBot.Controllers
                 Costs.Chocolate);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
 
-            Log.Debug($"Callbacked FeedWithLollipopInline for {_userInfo}");
+            Log.Debug($"Callbacked FeedWithFoodInline ({hungerFactor} hunger) for {_userInfo}");
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(toSendText, toSendInline),
