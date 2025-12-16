@@ -92,8 +92,9 @@ namespace TamagotchiBot.Controllers
                     {
                         Text = string.Format(
                             nameof(ReferalAddedMessageText).UseCulture(producerCulture),
-                            Rewards.ReferalAdded,
-                            userDB.Username is null ? $"{userDB.FirstName} {userDB.LastName}" : $"@{userDB.Username}"),
+                            Rewards.ReferalAddedGold,
+                            userDB.Username is null ? $"{userDB.FirstName} {userDB.LastName}" : $"@{userDB.Username}",
+                            Rewards.ReferalAddedDiamonds),
                         ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
                     }, userDB.ReferaledBy);
             }

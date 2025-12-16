@@ -198,5 +198,15 @@ namespace TamagotchiBot.Services.Mongo
                 Update(userId, userDb);
             }
         }
+
+        public void UpdateDiamonds(long userId, int newDiamonds)
+        {
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb != null)
+            {
+                userDb.Diamonds = newDiamonds;
+                Update(userId, userDb);
+            }
+        }
     }
 }

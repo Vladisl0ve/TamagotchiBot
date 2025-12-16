@@ -137,7 +137,8 @@ namespace TamagotchiBot.UserExtensions
             public const int DailyGoldReward = 250;
 
             //Referal
-            public const int ReferalAdded = 1000;
+            public const int ReferalAddedGold = 1000;
+            public const int ReferalAddedDiamonds = 20;
 
             //Multiplayer
             public const int WonDuel = 150;

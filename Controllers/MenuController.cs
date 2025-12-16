@@ -994,7 +994,7 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            _appServices.DiamondService.UpdateDiamonds(_userId, userDB.Diamonds - Constants.Costs.AutoFeedCostDiamonds);
+            _appServices.UserService.UpdateDiamonds(_userId, userDB.Diamonds - Constants.Costs.AutoFeedCostDiamonds);
             _appServices.UserService.UpdateAutoFeedCharges(_userId, userDB.AutoFeedCharges + Constants.AutoFeed.AutoFeedChargesInitial);
             _appServices.PetService.UpdateIsAutoFeedEnabled(_userId, true);
 
@@ -1558,14 +1558,17 @@ namespace TamagotchiBot.Controllers
             var botUsername = (await _appServices.BotControlService.GetBotUserInfo()).Username;
 
             var refAmounts = _appServices.ReferalInfoService.GetDoneRefsAmount(_userId);
-            var goldByRef = Rewards.ReferalAdded * refAmounts;
+            var goldByRef = Rewards.ReferalAddedGold * refAmounts;
+            var diamondsByRef = Rewards.ReferalAddedDiamonds * refAmounts;
             var refLink = Extensions.GetReferalLink(_userId, botUsername);
             string toSendText = string.Format(
                 nameof(referalCommand).UseCulture(_userCulture),
                 refAmounts,
                 goldByRef,
                 refLink,
-                Rewards.ReferalAdded);
+                Rewards.ReferalAddedGold,
+                Rewards.ReferalAddedDiamonds,
+                diamondsByRef);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.MenuCommandCounter++;

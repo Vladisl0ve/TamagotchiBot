@@ -72,8 +72,11 @@ namespace TamagotchiBot.Services.Mongo
                     refInfoOfCreator.RefUsers = refUsers;
                     Update(creatorUserId, refInfoOfCreator);
 
-                    if (isTaskDone)
-                        _userService.UpdateGold(creatorUserId, (_userService.Get(creatorUserId)?.Gold ?? 0) + Rewards.ReferalAdded);
+                    if (isTaskDone) 
+                    { 
+                        _userService.UpdateGold(creatorUserId, (_userService.Get(creatorUserId)?.Gold ?? 0) + Rewards.ReferalAddedGold);
+                        _userService.UpdateDiamonds(creatorUserId, (_userService.Get(creatorUserId)?.Diamonds ?? 0) + Rewards.ReferalAddedDiamonds);
+                    }
 
                     return true;
                 }

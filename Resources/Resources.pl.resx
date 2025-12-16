@@ -716,16 +716,18 @@ Cena: {2} złota 💰</value>
     <value>👬 Nagrody dla przyjaciela</value>
   </data>
   <data name="referalCommand" xml:space="preserve">
-    <value>Wspólne spacery są o wiele przyjemniejsze, prawda? 👯‍♀️
-Zaproś znajomych do wspólnego spędzania czasu, korzystając z linku polecającego i zdobądź za to nagrody! 🎁
+    <value>Chodzenie razem jest o wiele fajniejsze, prawda? 👯‍♀️
+Zaproś znajomych do wspólnej zabawy za pomocą swojego linku polecającego i zdobywaj nagrody! 🎁
 
 🚦Znajomy musi stworzyć własne Tamagotchi, aby nagrody trafiły na Twoje konto 🚦
-💰&lt;b&gt; Dostań {3} złota za każdego referała!&lt;/b&gt;
+💰&lt;b&gt; Otrzymasz {3} złota za każdego nowego znajomego!&lt;/b&gt;
+💎&lt;b&gt; Oraz {4} diamentów!&lt;/b&gt;
 
-🤼‍♀️ Masz polecenia: {0}
-Złoto zdobyte dzięki poleceniu: {1}💰
+🤼‍♀️ Twoje polecenia: {0}
+Złoto zdobyte z poleceń: {1}💰
+Diamenty zdobyte z poleceń: {5}💎
 
-Twój link referencyjny:
+Twój link polecający:
 {2}</value>
   </data>
   <data name="ToShareReferalCommand" xml:space="preserve">
@@ -1072,7 +1074,7 @@ Zwierzak {2}{0} wygrywa 🏆</value>
 Porozmawiaj z nim trochę później 🕐</value>
   </data>
   <data name="ReferalAddedMessageText" xml:space="preserve">
-    <value>💰 {0} złota przyznane za nowego przyjaciela {1}</value>
+    <value>💎 {2} diamentów oraz 💰 {0} złota przyznano za nowego znajomego {1}</value>
   </data>
   <data name="MonthlyGoldReward" xml:space="preserve">
     <value>🎉 Gratulacje! Twój pupil osiągnął &lt;b&gt;{0}&lt;/b&gt; rangę miesiąca! Cały trening się opłacił — otrzymałeś &lt;b&gt;{1} złota&lt;/b&gt; jako nagrodę! 💰</value>

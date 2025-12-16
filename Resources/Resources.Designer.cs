@@ -2303,7 +2303,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 💰 {0} gold credited for new friend {1}.
+        ///   Looks up a localized string similar to 💎 {2} Diamons and 💰 {0} gold credited for new friend {1}.
         /// </summary>
         public static string ReferalAddedMessageText {
             get {
@@ -2317,9 +2317,11 @@ namespace TamagotchiBot.Resources {
         ///
         ///🚦A friend must create his own Tamagotchi for the prizes to come to your account 🚦
         ///💰&lt;b&gt; Get {3} gold for every new friend!&lt;/b&gt;
+        ///💎&lt;b&gt; And {4} Diamonds!&lt;/b&gt;
         ///
         ///🤼‍♀️ You have referrals: {0}
         ///Gold earned via referral: {1}💰
+        ///Diamonds earned via referral: {5}💎
         ///
         ///Your referral link:
         ///{2}.
