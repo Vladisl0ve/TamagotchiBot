@@ -25,6 +25,12 @@ namespace TamagotchiBot.Services
         {
 #if DEBUG
             Log.Information("DEBUG: Telegram Bot Hosted Service started");
+#elif STAGING
+            Log.Information("STAGING: Telegram Bot Hosted Service started");
+#elif DEBUG_HOTFIX
+            Log.Information("DEBUG_HOTFIX: Telegram Bot Hosted Service started");
+#elif DEBUG_NOTIFY
+            Log.Information("DEBUG_NOTIFY: Telegram Bot Hosted Service started");
 #else
             Log.Information("RELEASE: Telegram Bot Hosted Service started");
 #endif

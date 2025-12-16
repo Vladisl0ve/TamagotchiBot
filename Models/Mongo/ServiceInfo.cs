@@ -25,18 +25,18 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("BotstatCheckId")]
         public string BotstatCheckId { get; set; }
         [BsonElement("OpenAiKey")]
-        public string OpenAiKey { get; set; }
+        public string OpenAiKey { get; set; } = string.Empty;
 
         [BsonElement("BannedWords")]
         public List<string> BannedWords { get; set; }
 
         [BsonElement("TmgToken")]
-        public string TmgToken { get; set; }
+        public string TmgToken { get; set; } = string.Empty;
 
         [BsonElement("GeminiApiKey")]
-        public string GeminiApiKey { get; set; }
+        public string GeminiApiKey { get; set; } = string.Empty;
 
         [BsonElement("MaxGeminiHistory")]
-        public int MaxGeminiHistory { get; set; }
+        public int MaxGeminiHistory { get; set; } = 10;
     }
 }

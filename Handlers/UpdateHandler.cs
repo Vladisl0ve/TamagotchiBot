@@ -32,7 +32,7 @@ namespace TamagotchiBot.Handlers
         {
             _appServices = services;
             _envs = envs;
-#if !DEBUG && !DEBUG_NOTIFY
+#if !DEBUG && !DEBUG_NOTIFY && !STAGING
             EmergencyUpdatePets();
 #endif
         }
@@ -98,7 +98,7 @@ namespace TamagotchiBot.Handlers
         private async Task<bool> IsUserRegisteredFlyerCheck(long userId)
         {
             const int TIMEOUT_SECONDS = 2;
-#if DEBUG || DEBUG_NOTIFY
+#if DEBUG || DEBUG_NOTIFY || STAGING
             return true; //true on DEBUG
 #endif
             try
@@ -529,7 +529,7 @@ namespace TamagotchiBot.Handlers
         private async void SendGramadsPostToChat(long chatId)
         {
             const int TIMEOUT_SECONDS = 5;
-#if DEBUG
+#if DEBUG || STAGING || DEBUG_NOTIFY
             return;
 #endif
             try
