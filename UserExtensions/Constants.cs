@@ -81,11 +81,11 @@ namespace TamagotchiBot.UserExtensions
         {
             public const int ExpFactor = 1;
             public const int ExpToLvl = 50;
-            public const double StarvingFactor = 0.1;
+            public const double StarvingFactor = 0.08;
             public const double FatigueFactor = 0.19;
             public const double RestFactor = 10;
-            public const double JoyFactor = 0.3;
-            public const double HygieneFactor = 0.11;
+            public const double JoyFactor = 0.2;
+            public const double HygieneFactor = 0.1;
 
             public const int CardGameFatigueFactor = 20;
             public const int CardGameJoyFactor = 20;
@@ -96,16 +96,24 @@ namespace TamagotchiBot.UserExtensions
             public const int HangmanGameFatigueFactor = 5;
             public const int HangmanGameJoyFactor = 20;
 
-            public const int WorkOnPCFatigueFactor = 40;
-            public const int FlyersDistributingFatigueFactor = 60;
+            public const int WorkOnPCFatigueFactor = 15;
+            public const int WorkOnPCJoyFactor = -5;
+            public const int FlyersDistributingFatigueFactor = 30;
+            public const int FlyersDistributingJoyFactor = -15;
 
             //New Jobs
-            public const int McDonaldsFatigueFactor = 60;
-            public const int MakeUpArtistFatigueFactor = 50;
-            public const int EngineerFatigueFactor = 50;
-            public const int FoodDeliveryFatigueFactor = 60;
-            public const int AccountantFatigueFactor = 40;
-            public const int PilotFatigueFactor = 40;
+            public const int McDonaldsFatigueFactor = 30;
+            public const int McDonaldsJoyFactor = -15;
+            public const int MakeUpArtistFatigueFactor = 20;
+            public const int MakeUpArtistJoyFactor = -10;
+            public const int EngineerFatigueFactor = 20;
+            public const int EngineerJoyFactor = -10;
+            public const int FoodDeliveryFatigueFactor = 30;
+            public const int FoodDeliveryJoyFactor = -15;
+            public const int AccountantFatigueFactor = 15;
+            public const int AccountantJoyFactor = -5;
+            public const int PilotFatigueFactor = 15;
+            public const int PilotJoyFactor = -5;
 
             public const int EducationFatigueFactor = 60;
 
@@ -116,13 +124,13 @@ namespace TamagotchiBot.UserExtensions
         public struct Rewards //in gold
         {
             public const int WorkOnPCGoldReward = 100;
-            public const int FlyersDistributingGoldReward = 60;
+            public const int FlyersDistributingGoldReward = 40;
 
             //New Jobs
-            public const int McDonaldsGoldReward = 60;
-            public const int MakeUpArtistGoldReward = 80;
-            public const int EngineerGoldReward = 80;
-            public const int FoodDeliveryGoldReward = 60;
+            public const int McDonaldsGoldReward = 40;
+            public const int MakeUpArtistGoldReward = 70;
+            public const int EngineerGoldReward = 70;
+            public const int FoodDeliveryGoldReward = 40;
             public const int AccountantGoldReward = 100;
             public const int PilotGoldReward = 100;
             public const int DailyGoldReward = 250;
@@ -206,7 +214,7 @@ namespace TamagotchiBot.UserExtensions
             public readonly static TimeSpan AccountantToWait = new(0, 1, 0);
             public readonly static TimeSpan PilotToWait = new(0, 1, 0);
             public readonly static TimeSpan DailyRewardToWait = new(24, 0, 0);
-            public readonly static TimeSpan SleepToWait = new(0, 10, 0);
+            public readonly static TimeSpan SleepToWait = new(0, 2, 0);
             public readonly static TimeSpan DuelCDToWait = new(0, 5, 0);
             public readonly static TimeSpan FeedMPCDToWait = new(6, 0, 0);
 

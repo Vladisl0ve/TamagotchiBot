@@ -2830,6 +2830,7 @@ namespace TamagotchiBot.Controllers
 
             //Calculate rewards and time
             int fatigueFactor = 0;
+            int joyFactor = 0;
             int goldReward = 0;
             int expReward = 0;
             TimeSpan timeToWait = TimeSpan.Zero;
@@ -2839,6 +2840,7 @@ namespace TamagotchiBot.Controllers
             {
                 case JobType.WorkingOnPC:
                     fatigueFactor = Constants.Factors.WorkOnPCFatigueFactor;
+                    joyFactor = Constants.Factors.WorkOnPCJoyFactor;
                     goldReward = Constants.Rewards.WorkOnPCGoldReward;
                     timeToWait = job.GetTimeToWait();
                     expReward = Constants.ExpForAction.WorkPC;
@@ -2846,6 +2848,7 @@ namespace TamagotchiBot.Controllers
                     break;
                 case JobType.FlyersDistributing:
                     fatigueFactor = Constants.Factors.FlyersDistributingFatigueFactor;
+                    joyFactor = Constants.Factors.FlyersDistributingJoyFactor;
                     goldReward = Constants.Rewards.FlyersDistributingGoldReward;
                     timeToWait = job.GetTimeToWait();
                     expReward = Constants.ExpForAction.WorkFlyers;
@@ -2853,6 +2856,7 @@ namespace TamagotchiBot.Controllers
                     break;
                 case JobType.McDonalds:
                     fatigueFactor = Constants.Factors.McDonaldsFatigueFactor;
+                    joyFactor = Constants.Factors.McDonaldsJoyFactor;
                     goldReward = Constants.Rewards.McDonaldsGoldReward;
                     timeToWait = job.GetTimeToWait();
                     expReward = Constants.ExpForAction.WorkMcDonalds;
@@ -2860,6 +2864,7 @@ namespace TamagotchiBot.Controllers
                     break;
                 case JobType.MakeUpArtist:
                     fatigueFactor = Constants.Factors.MakeUpArtistFatigueFactor;
+                    joyFactor = Constants.Factors.MakeUpArtistJoyFactor;
                     goldReward = Constants.Rewards.MakeUpArtistGoldReward;
                     timeToWait = job.GetTimeToWait();
                     expReward = Constants.ExpForAction.WorkMakeUpArtist;
@@ -2867,6 +2872,7 @@ namespace TamagotchiBot.Controllers
                     break;
                 case JobType.FoodDelivery:
                     fatigueFactor = Constants.Factors.FoodDeliveryFatigueFactor;
+                    joyFactor = Constants.Factors.FoodDeliveryJoyFactor;
                     goldReward = Constants.Rewards.FoodDeliveryGoldReward;
                     timeToWait = job.GetTimeToWait();
                     expReward = Constants.ExpForAction.WorkFoodDelivery;
@@ -2874,6 +2880,7 @@ namespace TamagotchiBot.Controllers
                     break;
                 case JobType.Engineer:
                     fatigueFactor = Constants.Factors.EngineerFatigueFactor;
+                    joyFactor = Constants.Factors.EngineerJoyFactor;
                     goldReward = Constants.Rewards.EngineerGoldReward;
                     timeToWait = job.GetTimeToWait();
                     expReward = Constants.ExpForAction.WorkEngineer;
@@ -2881,6 +2888,7 @@ namespace TamagotchiBot.Controllers
                     break;
                 case JobType.Accountant:
                     fatigueFactor = Constants.Factors.AccountantFatigueFactor;
+                    joyFactor = Constants.Factors.AccountantJoyFactor;
                     goldReward = Constants.Rewards.AccountantGoldReward;
                     timeToWait = job.GetTimeToWait();
                     expReward = Constants.ExpForAction.WorkAccountant;
@@ -2888,6 +2896,7 @@ namespace TamagotchiBot.Controllers
                     break;
                 case JobType.Pilot:
                     fatigueFactor = Constants.Factors.PilotFatigueFactor;
+                    joyFactor = Constants.Factors.PilotJoyFactor;
                     goldReward = Constants.Rewards.PilotGoldReward;
                     timeToWait = job.GetTimeToWait();
                     expReward = Constants.ExpForAction.WorkPilot;
@@ -2897,6 +2906,9 @@ namespace TamagotchiBot.Controllers
 
             //Update Pet
             petDB.Fatigue += fatigueFactor;
+            petDB.Joy += joyFactor;
+            if (petDB.Joy < 0)
+                petDB.Joy = 0;
             petDB.StartWorkingTime = DateTime.UtcNow;
             petDB.CurrentStatus = (int)CurrentStatus.Working;
             petDB.CurrentJob = (int)job;
