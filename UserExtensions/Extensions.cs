@@ -160,6 +160,7 @@ namespace TamagotchiBot.UserExtensions
                 nameof(Resources.Resources.MouseTypeText).UseCulture(culture),
                 nameof(Resources.Resources.FoxTypeText).UseCulture(culture),
                 nameof(Resources.Resources.PandaTypeText).UseCulture(culture),
+                nameof(Resources.Resources.MonkeyTypeText).UseCulture(culture),
                 nameof(Resources.Resources.goAwayButton).UseCulture(culture),
             };
         }
@@ -637,6 +638,7 @@ namespace TamagotchiBot.UserExtensions
                 PetType.Mouse => "🐭",
                 PetType.Fox => "🦊",
                 PetType.Panda => "🐼",
+                PetType.Monkey => "🐒",
                 _ => "🐽"
             };
         }
@@ -649,6 +651,7 @@ namespace TamagotchiBot.UserExtensions
                 PetType.Mouse => nameof(Resources.Resources.MouseTypeText).UseCulture(culture),
                 PetType.Fox => nameof(Resources.Resources.FoxTypeText).UseCulture(culture),
                 PetType.Panda => nameof(Resources.Resources.PandaTypeText).UseCulture(culture),
+                PetType.Monkey => nameof(Resources.Resources.MonkeyTypeText).UseCulture(culture),
                 _ => "⭕️"
             };
         }

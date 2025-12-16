@@ -286,6 +286,17 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;Congratulations, your pet has a new look!&lt;/b&gt;
+        ///
+        ///.
+        /// </summary>
+        public static string changedTypeHeader {
+            get {
+                return ResourceManager.GetString("changedTypeHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 😼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: WOW! I&apos;m a cat now!.
         /// </summary>
         public static string changedTypeToCat {
@@ -310,6 +321,15 @@ namespace TamagotchiBot.Resources {
         public static string changedTypeToFox {
             get {
                 return ResourceManager.GetString("changedTypeToFox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🐒&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: I AM MONKEY KING!.
+        /// </summary>
+        public static string changedTypeToMonkey {
+            get {
+                return ResourceManager.GetString("changedTypeToMonkey", resourceCulture);
             }
         }
         
@@ -1011,6 +1031,8 @@ namespace TamagotchiBot.Resources {
         ///Auto-Feeder charges: {1} ⚡️
         ///Auto-Feeder status: &lt;b&gt;{2}&lt;/b&gt;
         ///
+        ///Auto-Feeder 5 charges: {3} 💎
+        ///
         ///&lt;b&gt;How can I help?&lt;/b&gt;.
         /// </summary>
         public static string farmCommand_DISABLED {
@@ -1025,6 +1047,8 @@ namespace TamagotchiBot.Resources {
         ///Auto-Feeder charges: {1} ⚡️
         ///Auto-Feeder status: &lt;b&gt;{4}&lt;/b&gt;
         ///Next auto-feeder use in: {2}H and {3}mins 🕗
+        ///
+        ///Auto-Feeder 5 charges: {5} 💎
         ///
         ///&lt;b&gt;How can I help?&lt;/b&gt;.
         /// </summary>
@@ -1513,6 +1537,15 @@ namespace TamagotchiBot.Resources {
         public static string menuCommandDescription {
             get {
                 return ResourceManager.GetString("menuCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monkey 🐒.
+        /// </summary>
+        public static string MonkeyTypeText {
+            get {
+                return ResourceManager.GetString("MonkeyTypeText", resourceCulture);
             }
         }
         

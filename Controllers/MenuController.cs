@@ -227,6 +227,11 @@ namespace TamagotchiBot.Controllers
                 await ChangeTypeToPandaCMD(userDB, petDB);
                 return;
             }
+            if (GetAllTranslatedAndLowered(nameof(MonkeyTypeText)).Contains(textReceived))
+            {
+                await ChangeTypeToMonkeyCMD(userDB, petDB);
+                return;
+            }
             if (textReceived == "test")
             {
                 Log.Debug($"Called /test for {_userInfo}");
@@ -390,7 +395,7 @@ namespace TamagotchiBot.Controllers
             await ChangePetTypeCMD(userDB,
                                    petDB,
                                    PetType.Cat,
-                                   string.Format(
+                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
                                        nameof(changedTypeToCat).UseCulture(_userCulture),
                                        HttpUtility.HtmlEncode(petDB.Name)));
         }
@@ -405,7 +410,7 @@ namespace TamagotchiBot.Controllers
                 userDB,
                 petDB,
                 PetType.Dog,
-                string.Format(
+                nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
                     nameof(changedTypeToDog).UseCulture(_userCulture),
                     HttpUtility.HtmlEncode(petDB.Name)));
         }
@@ -419,8 +424,22 @@ namespace TamagotchiBot.Controllers
             await ChangePetTypeCMD(userDB,
                                    petDB,
                                    PetType.Panda,
-                                   string.Format(
+                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
                                        nameof(changedTypeToPanda).UseCulture(_userCulture),
+                                       HttpUtility.HtmlEncode(petDB.Name)));
+        }
+        private async Task ChangeTypeToMonkeyCMD(User userDB, Pet petDB)
+        {
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.ChangedToMonkeyCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            Log.Debug($"Called /ChangeTypeToMonkeyCMD for {_userInfo}");
+            await ChangePetTypeCMD(userDB,
+                                   petDB,
+                                   PetType.Monkey,
+                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
+                                       nameof(changedTypeToMonkey).UseCulture(_userCulture),
                                        HttpUtility.HtmlEncode(petDB.Name)));
         }
         private async Task ChangeTypeToFoxCMD(User userDB, Pet petDB)
@@ -433,7 +452,7 @@ namespace TamagotchiBot.Controllers
             await ChangePetTypeCMD(userDB,
                                    petDB,
                                    PetType.Fox,
-                                   string.Format(
+                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
                                        nameof(changedTypeToFox).UseCulture(_userCulture),
                                        HttpUtility.HtmlEncode(petDB.Name)));
         }
@@ -447,7 +466,7 @@ namespace TamagotchiBot.Controllers
             await ChangePetTypeCMD(userDB,
                                    petDB,
                                    PetType.Mouse,
-                                   string.Format(
+                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
                                        nameof(changedTypeToMouse).UseCulture(_userCulture),
                                        HttpUtility.HtmlEncode(petDB.Name)));
         }
@@ -793,11 +812,13 @@ namespace TamagotchiBot.Controllers
                                               userDB.AutoFeedCharges,
                                               (int)timeRemaining.TotalHours,
                                               timeRemaining.Minutes,
-                                              string.Format(nameof(turnedOn_F).UseCulture(_userCulture)))
+                                              string.Format(nameof(turnedOn_F).UseCulture(_userCulture)),
+                                              Costs.AutoFeedCostDiamonds)
                     : string.Format(nameof(farmCommand_DISABLED).UseCulture(_userCulture),
                                               encodedPetName,
                                               userDB.AutoFeedCharges,
-                                              string.Format(nameof(turnedOff_F).UseCulture(_userCulture)));
+                                              string.Format(nameof(turnedOff_F).UseCulture(_userCulture)),
+                                              Costs.AutoFeedCostDiamonds);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.FarmCommandCounter++;

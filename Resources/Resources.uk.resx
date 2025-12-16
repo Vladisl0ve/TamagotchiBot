@@ -961,6 +961,8 @@ https://t.me/news_virtualpetbot</value>
 Статус авто-годувальника: &lt;b&gt;{4}&lt;/b&gt;
 Наступне використання авто-годувальника через: {2}год і {3}хв 🕗
 
+Авто-годувальник на 5 зарядів: {5} 💎
+
 &lt;b&gt;Чим я можу допомогти?&lt;/b&gt;</value>
   </data>
   <data name="farmButtonChangeType" xml:space="preserve">
@@ -1101,6 +1103,8 @@ https://t.me/news_virtualpetbot</value>
 
 Заряди авто-годувальника: {1} ⚡️
 Статус авто-годувальника: &lt;b&gt;{2}&lt;/b&gt;
+
+Авто-годувальник на 5 зарядів: {3} 💎
 
 &lt;b&gt;Чим я можу допомогти?&lt;/b&gt;</value>
   </data>
@@ -1332,5 +1336,16 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="petCommand_ads_7" xml:space="preserve">
     <value>/gameroom - грати в Шибеницю [RU] 😵</value>
+  </data>
+  <data name="MonkeyTypeText" xml:space="preserve">
+    <value>Мавпа 🐒</value>
+  </data>
+  <data name="changedTypeToMonkey" xml:space="preserve">
+    <value>🐒&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Я КОРОЛЬ МАВП!</value>
+  </data>
+  <data name="changedTypeHeader" xml:space="preserve">
+    <value>&lt;b&gt;Вітаю, у твого улюбленця новий вигляд!&lt;/b&gt;
+
+</value>
   </data>
 </root>

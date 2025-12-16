@@ -964,6 +964,8 @@ https://t.me/news_virtualpetbot</value>
 Статус автокормилки: &lt;b&gt;{4}&lt;/b&gt;
 Следующее использование автокормилки через: {2}ч и {3}мин 🕗
 
+Автокормилка на 5 зарядов: {5} 💎
+
 &lt;b&gt;Чем я могу помочь?&lt;/b&gt;</value>
   </data>
   <data name="farmButtonChangeType" xml:space="preserve">
@@ -1104,6 +1106,8 @@ https://t.me/news_virtualpetbot</value>
 
 Заряды автокормилки: {1} ⚡️
 Статус автокормилки: &lt;b&gt;{2}&lt;/b&gt;
+
+Автокормилка на 5 зарядов: {3} 💎
 
 &lt;b&gt;Чем я могу помочь?&lt;/b&gt;</value>
   </data>
@@ -1335,5 +1339,16 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="petCommand_ads_7" xml:space="preserve">
     <value>/gameroom - сыграйте в "Виселицу" [RU] 😵</value>
+  </data>
+  <data name="MonkeyTypeText" xml:space="preserve">
+    <value>Обезьяна 🐒</value>
+  </data>
+  <data name="changedTypeToMonkey" xml:space="preserve">
+    <value>🐒&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Я КОРОЛЬ ОБЕЗЬЯН!</value>
+  </data>
+  <data name="changedTypeHeader" xml:space="preserve">
+    <value>&lt;b&gt;Поздравляю, у твоего питомца новый облик!&lt;/b&gt;
+
+</value>
   </data>
 </root>

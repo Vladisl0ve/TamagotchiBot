@@ -58,7 +58,8 @@ namespace TamagotchiBot.UserExtensions
             Dog = 1,
             Mouse = 2,
             Fox = 3,
-            Panda = 4
+            Panda = 4,
+            Monkey = 5
         }
 
         public enum Fatigue
@@ -394,6 +395,7 @@ namespace TamagotchiBot.UserExtensions
                     PetType.Fox => nameof(PetType.Fox),
                     PetType.Panda => nameof(PetType.Panda),
                     PetType.Mouse => nameof(PetType.Mouse),
+                    PetType.Monkey => nameof(PetType.Monkey),
                     _ => nameof(PetType.UNKNOWN)
                 };
 
@@ -551,7 +553,7 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(RandomEventPlayComputerSticker_Panda), RandomEventPlayComputerSticker_Panda },
                 {nameof(PetEducationInfoSticker_Panda), PetEducationInfoSticker_Panda },
                 {nameof(PetTooTiredSticker_Panda), PetTooTiredSticker_Panda },
-                
+
                 //MOUSE
                 {nameof(PetCreatedSticker_Mouse), PetCreatedSticker_Mouse },
                 {nameof(PetInfoSticker_Mouse), PetInfoSticker_Mouse },
@@ -587,6 +589,43 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(RandomEventPlayComputerSticker_Mouse), RandomEventPlayComputerSticker_Mouse },
                 {nameof(PetEducationInfoSticker_Mouse), PetEducationInfoSticker_Mouse },
                 {nameof(PetTooTiredSticker_Mouse), PetTooTiredSticker_Mouse },
+
+                
+                //MONKEY
+                {nameof(PetCreatedSticker_Monkey), PetCreatedSticker_Monkey },
+                {nameof(PetInfoSticker_Monkey), PetInfoSticker_Monkey },
+                {nameof(PetChooseNameSticker_Monkey), PetChooseNameSticker_Monkey },
+                {nameof(PetConfirmedNameSticker_Monkey), PetConfirmedNameSticker_Monkey },
+                {nameof(PetAskForConfirmNameSticker_Monkey), PetAskForConfirmNameSticker_Monkey },
+                {nameof(PetKitchenSticker_Monkey), PetKitchenSticker_Monkey },
+                {nameof(PetBathroomSticker_Monkey), PetBathroomSticker_Monkey },
+                {nameof(PetGameroomSticker_Monkey), PetGameroomSticker_Monkey },
+                {nameof(PetSleepSticker_Monkey), PetSleepSticker_Monkey },
+                {nameof(PetBusySticker_Monkey), PetBusySticker_Monkey },
+                {nameof(PetWorkSticker_Monkey), PetWorkSticker_Monkey },
+                {nameof(PetWorkOnPCSticker_Monkey), PetWorkOnPCSticker_Monkey },
+                {nameof(PetFlyersJobSticker_Monkey), PetFlyersJobSticker_Monkey },
+                {nameof(PetMcDonaldsSticker_Monkey), PetMcDonaldsSticker_Monkey },
+                {nameof(PetMakeUpArtistSticker_Monkey), PetMakeUpArtistSticker_Monkey },
+                {nameof(PetFoodDeliverySticker_Monkey), PetFoodDeliverySticker_Monkey },
+                {nameof(PetAccountantSticker_Monkey), PetAccountantSticker_Monkey },
+                {nameof(PetEngineerSticker_Monkey), PetEngineerSticker_Monkey },
+                {nameof(PetPilotSticker_Monkey), PetPilotSticker_Monkey },
+                {nameof(PetStartStudyingSticker_Monkey), PetStartStudyingSticker_Monkey },
+                {nameof(PetRanksSticker_Monkey), PetRanksSticker_Monkey },
+                {nameof(PetHospitalLowHPSticker_Monkey), PetHospitalLowHPSticker_Monkey },
+                {nameof(PetHospitalMidHPSticker_Monkey), PetHospitalMidHPSticker_Monkey },
+                {nameof(PetHospitalHighHPSticker_Monkey), PetHospitalHighHPSticker_Monkey },
+                {nameof(PetGoneSticker_Monkey), PetGoneSticker_Monkey },
+                {nameof(PetBoredSticker_Monkey), PetBoredSticker_Monkey },
+                {nameof(PetEpilogueSticker_Monkey), PetEpilogueSticker_Monkey },
+                {nameof(PetChangeTypeSticker_Monkey), PetChangeTypeSticker_Monkey },
+                {nameof(PetResurrectedSticker_Monkey), PetResurrectedSticker_Monkey },
+                {nameof(PetDailyRewardSticker_Monkey), PetDailyRewardSticker_Monkey },
+                {nameof(RandomEventStepOnFootSticker_Monkey), RandomEventStepOnFootSticker_Monkey },
+                {nameof(RandomEventPlayComputerSticker_Monkey), RandomEventPlayComputerSticker_Monkey },
+                {nameof(PetEducationInfoSticker_Monkey), PetEducationInfoSticker_Monkey },
+                {nameof(PetTooTiredSticker_Monkey), PetTooTiredSticker_Monkey },
 
             }.ToLookup(x => x.Key, x => x.Value);
 
@@ -740,7 +779,7 @@ namespace TamagotchiBot.UserExtensions
             public const string PetTooTiredSticker_Panda = "CAACAgIAAxkBAAEQArhpQF7eet1TnhAjufYOuIgSTlzluQACvh8AAsOz4EsytAy72genOjYE";
 
 
-            #endregion
+            #endregion            
             #region Mouse
             public const string PetCreatedSticker_Mouse = "CAACAgIAAxkBAAELV51lw9VBwPOT7XRw9JhSopFzR8oDzAACTDgAAmykcUrbULO1DqewbjQE";
             public const string PetInfoSticker_Mouse = "CAACAgIAAxkBAAELV9Blw9bfTRMXc8xm8bcyrm-Thfy_CQACjzYAAlapcUoUS_qTvshwQTQE";
@@ -779,6 +818,44 @@ namespace TamagotchiBot.UserExtensions
 
 
             #endregion
+            #region Monkey
+            public const string PetCreatedSticker_Monkey = "CAACAgIAAxkBAAEQBMxpQdAP-TEnouBN8XSQEvCSTMIQPAAC31EAAnPHsEswbF8RZkwq4TYE";
+            public const string PetInfoSticker_Monkey = "CAACAgIAAxkBAAEQBMppQc_9Vy2Mb-wb2IsBI8HLaPzF3wACXlYAAtMduEtPZyy8_pYwHTYE";
+            public const string PetEducationInfoSticker_Monkey = "CAACAgIAAxkBAAEQBM5pQdCPMbSXaVEAAT5zYX4kp5lGfyUAApw_AAKoiGhKKMd6lKyF8FU2BA";
+            public const string PetChooseNameSticker_Monkey = "CAACAgIAAxkBAAEQBNBpQdCbzxRjzu3YoZdYNpeRvgM6KAAC1RoAAs-WCUiVoYsB2EsVKTYE";
+            public const string PetConfirmedNameSticker_Monkey = "CAACAgIAAxkBAAEQBNJpQdCkn9GfTVGVFOHGMw0n4AI1AgACgBsAAh_bCEiFAAFPtO34OT82BA";
+            public const string PetAskForConfirmNameSticker_Monkey = "CAACAgIAAxkBAAEQBNRpQdC47fThWCEYILd09FE1WKp_WgACchYAAmrwEEjdLYfVmcj2wTYE";
+            public const string PetKitchenSticker_Monkey = "CAACAgIAAxkBAAEQBNppQdEdZA4mP2V5BbtlbyaiLX3HQgACUVsAAlaesUtNWqV8LbBfojYE";
+            public const string PetBathroomSticker_Monkey = "CAACAgIAAxkBAAEQBNhpQdD3J_5Tmh6tfFSLFA0UTBKlgAACaVgAAnXHsEs_Qr9NuoAzgTYE";
+            public const string PetGameroomSticker_Monkey = "CAACAgIAAxkBAAEQBNxpQdEnRg5HTFF21KNe9RCqsrSLdgAC5U8AAv16sUssakb1dKnhlDYE";
+            public const string PetSleepSticker_Monkey = "CAACAgIAAxkBAAEQBOBpQdE6BxlMsfmE1o-EY1OQOFmRmQACb1MAAl10sUtynMgu5pIJdDYE";
+            public const string PetBusySticker_Monkey = "CAACAgIAAxkBAAEQBOJpQdFOn0Ea-S5e3CJ25HfqzmEuNQACAVYAAqoGsEsmba0eVfV-HjYE";
+            public const string PetWorkSticker_Monkey = "CAACAgIAAxkBAAEQBORpQdFxofwavGU8XQJOuKLyTeAHGgACYVMAAnKE2EuJLdN1Z4bMhDYE";
+            public const string PetWorkOnPCSticker_Monkey = "CAACAgIAAxkBAAEQBQJpQdLHXuyNpnSWFoSccjOv1UVo-AACHGgAApWP-EoSkTyarXf3QTYE";
+            public const string PetFlyersJobSticker_Monkey = "CAACAgIAAxkBAAEQBOhpQdGpT9iSqOBlfpYvD009QVvhhwACVBkAAh4WCUgsZevs8hHIHjYE";
+            public const string PetMcDonaldsSticker_Monkey = "CAACAgIAAxkBAAEQBOppQdHu46DSI0Z6nFDj51dWQMkxfgAC5zcAAma8aEqItdGRM8_oZzYE";
+            public const string PetMakeUpArtistSticker_Monkey = "CAACAgIAAxkBAAEQBOxpQdIdhjPXieISKcGx5lJPZlBoVwAC81sAAqah2UvETMfdEY9ErjYE";
+            public const string PetFoodDeliverySticker_Monkey = "CAACAgIAAxkBAAEQBO5pQdIoNkt10uFprn1ySjY9ub6T3QACkBgAAv7qYEh5s6D2KCF8vjYE";
+            public const string PetAccountantSticker_Monkey = "CAACAgIAAxkBAAEQBPBpQdI5pIzoXRvZ8e1a9TG-OhXJLQACrF8AAr4ciUktVcY2ez8dczYE";
+            public const string PetEngineerSticker_Monkey = "CAACAgIAAxkBAAEQBPJpQdJvcbt9A5qAbIgAAewJpDU1nPMAAt5VAALJAbBLSlATGx42HNg2BA";
+            public const string PetPilotSticker_Monkey = "CAACAgIAAxkBAAEQBPRpQdJ3o7PpbibCLaVLF5x4Nd0YLwACG1sAAmhYsEvFNtNft_gOgzYE";
+            public const string PetStartStudyingSticker_Monkey = "CAACAgIAAxkBAAEQBPZpQdKGUT_7hck7pBZXu_vMVd7NdgAC7GMAAtchuUnjIYeuhCBylDYE";
+            public const string PetRanksSticker_Monkey = "CAACAgIAAxkBAAEQBPhpQdKTGTBuy7Oq8C0nIVPXVekQsAAC4UcAAp2SwUtIfp_u7xKQgDYE";
+            public const string PetHospitalLowHPSticker_Monkey = "CAACAgIAAxkBAAEQBN5pQdE0ZJeOEcod4u-p6uzq4-mHogACdWoAAoMBsEu2pGPePcT9MjYE";
+            public const string PetHospitalMidHPSticker_Monkey = "CAACAgIAAxkBAAEQBPxpQdKmVL0M4i1YTSuCyrUsgAxkAgACr1cAAh8NuUtfIe3FdKFSojYE";
+            public const string PetHospitalHighHPSticker_Monkey = "CAACAgIAAxkBAAEQBQABaUHSry5wyht15JgiY_2DoOG5yHsAApRhAAIwnbhL8gslpmGWFJI2BA";
+            public const string PetGoneSticker_Monkey = "CAACAgIAAxkBAAEQBQhpQdL9x10SiyoDA8QSA94eMMb26QACoGAAAqKwuUvEyBwwMZP1HjYE";
+            public const string PetBoredSticker_Monkey = "CAACAgIAAxkBAAEQBQRpQdLbb5rSOw0mWVe0Xmf9Sjbi9gACuFQAAl8YsUs-OyjSmoj_2zYE";
+            public const string PetEpilogueSticker_Monkey = "CAACAgIAAxkBAAEQBQppQdMOKbdNu9XB7Agr6pTTGardfAACZlEAAkY0sUufhYJDV550PjYE";
+            public const string PetChangeTypeSticker_Monkey = "CAACAgIAAxkBAAEQBQxpQdMen5FfEYHeztdYJ1Ha1cHcSAACNVwAAgWSqEmuThOY_6kLgzYE";
+            public const string PetResurrectedSticker_Monkey = "CAACAgIAAxkBAAEQBQ5pQdMoh2OHrESlAfUvYQTeGdYjEQACZFUAAvvBsUvFIZyTUDgXpjYE";
+            public const string PetDailyRewardSticker_Monkey = "CAACAgIAAxkBAAEQBRBpQdMxIBLcY09xJzr6AtF_zC78BQACXVQAAlWruEubN9E1MakD5DYE";
+            public const string RandomEventStepOnFootSticker_Monkey = "CAACAgIAAxkBAAEQBRJpQdNZtjOAHQ0DLGrqK2BI-TbyyQACPFsAAg5GwEtaGFjQ1osRhjYE";
+            public const string RandomEventPlayComputerSticker_Monkey = "CAACAgIAAxkBAAEQBRRpQdNqpEReZtxF53MWetuniIr5wwACmpQAAiNGWEvbZ5_jKM3fWTYE";
+            public const string PetTooTiredSticker_Monkey = "CAACAgIAAxkBAAEQBRZpQdOfGctehO9xXM6PDHdl0M1KVAAC9xsAAqwEYEjzEWUpSGGxDDYE";
+
+            #endregion
+
         }
 
         public static class InlineItems

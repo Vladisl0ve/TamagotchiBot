@@ -961,6 +961,8 @@ Auto-Feeder charges: {1} ⚡️
 Auto-Feeder status: &lt;b&gt;{4}&lt;/b&gt;
 Next auto-feeder use in: {2}H and {3}mins 🕗
 
+Auto-Feeder 5 charges: {5} 💎
+
 &lt;b&gt;How can I help?&lt;/b&gt;</value>
   </data>
   <data name="farmButtonChangeType" xml:space="preserve">
@@ -1101,6 +1103,8 @@ Talk to him a little later 🕐</value>
 
 Auto-Feeder charges: {1} ⚡️
 Auto-Feeder status: &lt;b&gt;{2}&lt;/b&gt;
+
+Auto-Feeder 5 charges: {3} 💎
 
 &lt;b&gt;How can I help?&lt;/b&gt;</value>
   </data>
@@ -1330,6 +1334,17 @@ Remaining: {0} 🕔</value>
   </data>
   <data name="petCommand_ads_7" xml:space="preserve">
     <value>/gameroom - play Hangman[RU] 😵
+</value>
+  </data>
+  <data name="MonkeyTypeText" xml:space="preserve">
+    <value>Monkey 🐒</value>
+  </data>
+  <data name="changedTypeToMonkey" xml:space="preserve">
+    <value>🐒&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: I AM MONKEY KING!</value>
+  </data>
+  <data name="changedTypeHeader" xml:space="preserve">
+    <value>&lt;b&gt;Congratulations, your pet has a new look!&lt;/b&gt;
+
 </value>
   </data>
 </root>
