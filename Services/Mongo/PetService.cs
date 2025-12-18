@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -249,6 +250,29 @@ namespace TamagotchiBot.Services.Mongo
                 pet.EducationLevel = newLevel;
                 Update(userId, pet);
             }
+        }
+        public List<Pet> GetTop10PetsByLevelAllGame()
+        {
+            var collection = _collection;
+            var pipeline = new EmptyPipelineDefinition<Pet>()
+                .AppendStage<Pet, Pet, Pet>(BsonDocument.Parse("{ $addFields: { totalLevel: { $add: ['$LevelAllGame', '$Level'] } } }"))
+                .Sort(Builders<Pet>.Sort.Descending("totalLevel").Descending(p => p.LastUpdateTime))
+                .Limit(10)
+                .AppendStage<Pet, Pet, Pet>(BsonDocument.Parse("{ $unset: 'totalLevel' }"));
+
+            return collection.Aggregate(pipeline).ToList();
+        }
+
+        public long CountPetsWithHigherLevel(int myTotalLevel, DateTime myLastUpdate)
+        {
+            var collection = _collection;
+            var pipeline = new EmptyPipelineDefinition<Pet>()
+                .AppendStage<Pet, Pet, Pet>(BsonDocument.Parse("{ $addFields: { totalLevel: { $add: ['$LevelAllGame', '$Level'] } } }"))
+                .Match(BsonDocument.Parse($"{{ $or: [ {{ totalLevel: {{ $gt: {myTotalLevel} }} }}, {{ $and: [ {{ totalLevel: {{ $eq: {myTotalLevel} }} }}, {{ LastUpdateTime: {{ $gt: ISODate('{myLastUpdate:yyyy-MM-ddTHH:mm:ss.000Z}') }} }} ] }} ] }}"))
+                .Group(BsonDocument.Parse("{ _id: null, count: { $sum: 1 } }"));
+
+            var result = collection.Aggregate(pipeline).FirstOrDefault();
+            return result == null ? 0 : result.GetValue("count").AsInt32;
         }
     }
 }

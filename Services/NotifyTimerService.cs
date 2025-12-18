@@ -45,7 +45,10 @@ namespace TamagotchiBot.Services
             Log.Information("Triggers every " + _triggerNTEvery.TotalSeconds + "s");
             Log.Information("DevNotify timer set to wait for " + _notifyDevEvery.TotalSeconds + "s");
 
-            _notifyTimer = new Timer(TimeSpan.FromSeconds(3));
+            _notifyTimer = new Timer(TimeSpan.FromSeconds(60));
+#if STAGING || DEBUG_HOTFIX
+            _notifyTimer = new Timer(TimeSpan.FromDays(10));
+#endif
             _notifyTimer.Elapsed += OnNotifyTimedEvent;
             _notifyTimer.AutoReset = true;
             _notifyTimer.Enabled = true;
@@ -87,8 +90,9 @@ namespace TamagotchiBot.Services
         {
 #if DEBUG_NOTIFY
             TimeSpan timeToWait = TimeSpan.FromSeconds(10);
+#elif STAGING || DEBUG_HOTFIX
+            TimeSpan timeToWait = TimeSpan.FromDays(10);
 #else
-
             TimeSpan timeToWait = TimeSpan.FromSeconds(300);
 #endif
             Log.Information("DailyRewardNotification timer set to wait for " + timeToWait.TotalSeconds + "s");
@@ -101,6 +105,8 @@ namespace TamagotchiBot.Services
         {
 #if DEBUG_NOTIFY
             TimeSpan timeToWait = TimeSpan.FromSeconds(7);
+#elif STAGING || DEBUG_HOTFIX
+            TimeSpan timeToWait = TimeSpan.FromDays(10);
 #else
             TimeSpan timeToWait = TimeSpan.FromMinutes(10);
 #endif

@@ -1353,4 +1353,9 @@ https://t.me/news_virtualpetbot</value>
 
 </value>
   </data>
+  <data name="MonthlyRewardAdditionalDiamonds" xml:space="preserve">
+    <value>
+
+А также за высокий уровень питомца вы получаете {0} 💎</value>
+  </data>
 </root>

@@ -1354,4 +1354,9 @@ https://t.me/newsvirtualpetbot</value>
 
 </value>
   </data>
+  <data name="MonthlyRewardAdditionalDiamonds" xml:space="preserve">
+    <value>
+
+А таксама за высокі ўзровень гадаванца вы атрымліваеце {0} 💎</value>
+  </data>
 </root>

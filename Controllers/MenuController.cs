@@ -2414,10 +2414,7 @@ namespace TamagotchiBot.Controllers
         {
             try
             {
-                var topPets = _appServices.PetService.GetAll()
-                .OrderByDescending(p => p.LevelAllGame)
-                .ThenByDescending(p => p.LastUpdateTime)
-                .Take(10); //First 10 top-level pets
+                var topPets = _appServices.PetService.GetTop10PetsByLevelAllGame();
 
                 string anwserRating = "";
                 var currentUser = _appServices.UserService.Get(_userId);
@@ -2456,11 +2453,7 @@ namespace TamagotchiBot.Controllers
                     string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
 
                     anwserRating += "\n______________________________";
-                    anwserRating += "\n <b>" + (_appServices.PetService.GetAll()
-                    .OrderByDescending(p => p.LevelAllGame)
-                    .ThenByDescending(p => p.LastUpdateTime)
-                    .ToList()
-                    .FindIndex(a => a.UserId == currentUser.UserId) + 1) + ". " + (currentPet.LevelAllGame + currentPet.Level) + $" {Extensions.GetTypeEmoji(currentPet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
+                    anwserRating += "\n <b>" + (_appServices.PetService.CountPetsWithHigherLevel(currentPet.LevelAllGame + currentPet.Level, currentPet.LastUpdateTime) + 1) + ". " + (currentPet.LevelAllGame + currentPet.Level) + $" {Extensions.GetTypeEmoji(currentPet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
                 }
 
                 return anwserRating;

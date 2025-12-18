@@ -1349,4 +1349,9 @@ Remaining: {0} 🕔</value>
 
 </value>
   </data>
+  <data name="MonthlyRewardAdditionalDiamonds" xml:space="preserve">
+    <value>
+
+And you also receive {0} 💎 for your pet’s high level</value>
+  </data>
 </root>

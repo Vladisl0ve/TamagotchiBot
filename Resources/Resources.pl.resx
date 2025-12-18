@@ -1349,4 +1349,9 @@ Pozostałe: {0} 🕔</value>
 
 </value>
   </data>
+  <data name="MonthlyRewardAdditionalDiamonds" xml:space="preserve">
+    <value>
+
+A także za wysoki poziom pupila otrzymujesz {0} 💎</value>
+  </data>
 </root>

@@ -1559,6 +1559,17 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 
+        ///
+        ///And you also receive {0} 💎 for your pet’s high level.
+        /// </summary>
+        public static string MonthlyRewardAdditionalDiamonds {
+            get {
+                return ResourceManager.GetString("MonthlyRewardAdditionalDiamonds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Little mouse 🐭.
         /// </summary>
         public static string MouseTypeText {
