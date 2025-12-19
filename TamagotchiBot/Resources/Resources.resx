@@ -335,28 +335,44 @@ Health: {0}%</value>
   </data>
   <data name="helpCommand" xml:space="preserve">
     <value>🌈 Welcome to the world of Tamagotchi! 🌈
-Here you can make yourself a new virtual friend 🐩🐈🐈‍⬛🐕
-Be sure to keep track of your pet's progress:
-▫️ play different games with him ⚽️
-▫️feed yummy 🍕🍳🍫
-▫️ take care of him 🍼
-▫️ take care and just love 😻
+Here you can get a new virtual friend 🐩🐈🐈‍⬛🐕
+Make sure to keep an eye on your pet’s progress:
+▫️ play mini-games with it ⚽️
+▫️ feed it tasty treats 🍕🍳🍫
+▫️ take care of it 🍼
+▫️ groom and simply love it 😻
 
-In the command menu you will find everything your pet needs 🌻
-Visit your pet more often, because he loves you too and will be very happy to take you for a walk 🤍❤️🤍
+In the commands menu, you’ll find everything your pet needs 🌻
+Visit your pet often, because it loves you too and will be happy to play 🤍❤️🤍
 
 FAQ:
-1. How does the 🏅 level accumulate?
-- 1 experience = 1 minute of pet’s life. It’s enough not to forget about your pet 🦩
 
-2. How to make money 💰?
-- Gold is earned at work (/work)
+How is level earned 🏅?
 
-3. Can a pet die 💀?
-- Unfortunately, both in life and in Tamagotchi, a pet can be very offended and leave you 💔
-Therefore, visit your virtual friend more often 🧸
+1 XP = 1 minute of pet’s life. Just remember your pet 🦩
 
-/menu - almost all possible commands are here</value>
+How to earn money 💰?
+
+Gold is earned by working (/work)
+
+Can the pet die 💀?
+
+Unfortunately, just like in real life, a pet in Tamagotchi can get very upset and leave 💔
+So visit your virtual friend often 🧸
+
+How to get Diamonds 💎?
+
+For now, only via the referral program (/referal) or by ranking in the TOP-3 pets by level at the end of the month.
+
+Every month my pet’s levels reset. Why?
+
+Yes, each month pet levels reset. Pets in the TOP-10 get prizes. TOP-3 get both gold💰 and diamonds💎!
+
+How does the AUTO-FEEDER work?
+
+On the Farm you can turn the auto-feeder on/off. If turned on, the pet feeds itself every 4 hours (SATIETY can even exceed 100) and consumes one charge. You can recharge the auto-feeder on the Farm.
+
+/ menu – here are almost all possible commands</value>
   </data>
   <data name="helpCommandDescription" xml:space="preserve">
     <value>About the game ❓</value>
@@ -464,9 +480,7 @@ Surrendered: {2}</value>
     <value>You are in the gameroom ⚽️</value>
   </data>
   <data name="changelog_onPatch_17" xml:space="preserve">
-    <value>English
-
-⚡️⚡️ &lt;b&gt;Update 1.7 Released&lt;/b&gt; ⚡️⚡️
+    <value>⚡️⚡️ &lt;b&gt;Update 1.7 Released&lt;/b&gt; ⚡️⚡️
 
 &lt;b&gt;NEW:&lt;/b&gt;
 🧸 &lt;b&gt;Added new pet types:&lt;/b&gt;
@@ -481,6 +495,7 @@ Surrendered: {2}</value>
 💎 &lt;b&gt;New currency added – DIAMONDS&lt;/b&gt;💎. Can be earned by inviting friends to play Tamagotchi via the referral program
 ⚽️ &lt;b&gt;New games in the Kids Room&lt;/b&gt; – ❌⭕️ &lt;i&gt;Tic-Tac-Toe&lt;/i&gt; and &lt;i&gt;Hangman [RU]&lt;/i&gt; (&lt;i&gt;Word Builder&lt;/i&gt;) 😵
 🏆 &lt;b&gt;New Rankings added&lt;/b&gt;
+📆 &lt;b&gt;Monthly Level Ranking Update&lt;/b&gt; – now every month pets reset their levels. &lt;i&gt;Prizes 🎁 are awarded for making it into the TOP-10 for the month&lt;/i&gt;
 🤖 &lt;b&gt;Auto-Feeder added&lt;/b&gt; – a device that feeds your pet while you are offline. &lt;i&gt;Purchasable only with diamonds💎&lt;/i&gt;
 
 &lt;b&gt;CHANGES:&lt;/b&gt;

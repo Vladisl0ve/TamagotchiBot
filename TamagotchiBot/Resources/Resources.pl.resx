@@ -334,29 +334,45 @@ Ale radość spadła o {1}%</value>
     <value>Łazienka 🛁</value>
   </data>
   <data name="helpCommand" xml:space="preserve">
-    <value>🌈 Witamy w świecie Tamagotchi! 🌈
-Tutaj możesz zyskać nowego wirtualnego przyjaciela 🐩🐈🐈‍⬛🐕
-Pamiętaj, aby śledzić postępy swojego zwierzaka:
-▫️graj z nim w różne gry ⚽️
-▫️karm pyszne 🍕🍳🍫
-▫️zaopiekuj się nim 🍼
-▫️ dbaj i po prostu kochaj 😻
+    <value>🌈 Witaj w świecie Tamagotchi! 🌈
+Tutaj możesz założyć sobie nowego wirtualnego przyjaciela 🐩🐈🐈‍⬛🐕
+Pamiętaj, aby dbać o swojego pupila:
+▫️ graj z nim w różne gry ⚽️
+▫️ karm pysznym jedzeniem 🍕🍳🍫
+▫️ troszcz się o niego 🍼
+▫️ pielęgnuj i po prostu kochaj 😻
 
-W menu poleceń znajdziesz wszystko, czego potrzebuje Twój pupil 🌻
-Odwiedzaj częściej swojego zwierzaka, bo on też Cię kocha i bardzo chętnie zabierze Cię na spacer 🤍❤️🤍
+W menu znajdziesz wszystkie potrzebne komendy dla pupila 🌻
+Odwiedzaj pupila często, bo on też cię kocha i będzie szczęśliwy mogąc się bawić 🤍❤️🤍
 
-Często zadawane pytania:
-1. Jak gromadzi się poziom 🏅?
-- 1 doświadczenie = 1 minuta życia zwierzaka. Wystarczy nie zapomnieć o swoim zwierzaku🦩
+FAQ:
 
-2. Jak zarabiać pieniądze 💰?
-- Złoto zdobywa się w pracy (/work)
+Jak zdobywa się poziom 🏅?
 
-3. Czy zwierzę może umrzeć 💀?
-- Niestety zarówno w życiu jak i w Tamagotchi zwierzak może się bardzo obrazić i zostawić 💔
-Dlatego częściej odwiedzaj swojego wirtualnego przyjaciela 🧸
+1 doświadczenie = 1 minuta życia pupila. Wystarczy pamiętać o swoim pupilu 🦩
 
-/menu - znajdują się tu prawie wszystkie możliwe polecenia</value>
+Jak zarabiać pieniądze 💰?
+
+Złoto zarabia się w pracy (/work)
+
+Czy pupil może umrzeć 💀?
+
+Niestety, tak jak w życiu, tak i w Tamagotchi pupil może się bardzo zdenerwować i odejść 💔
+Dlatego odwiedzaj swojego wirtualnego przyjaciela częściej 🧸
+
+Jak zdobyć Diamenty 💎?
+
+Na razie tylko przez program referencyjny (/referal) lub zajmując TOP-3 pod względem poziomu na koniec miesiąca.
+
+Co miesiąc znikają mi poziomy pupila. Dlaczego?
+
+Tak, co miesiąc poziomy pupila są resetowane. Pupile z TOP-10 dostają nagrody. TOP-3 otrzymują zarówno złoto💰, jak i diamenty💎!
+
+Jak działa AUTOMATYCZNY KARMIK?
+
+Na Farmie można włączać/wyłączać automatyczny karmnik. Jeśli włączysz, co 4 godziny pupil karmi się sam (SYTOŚĆ może być nawet powyżej 100) i zużywa się jeden ładunek. Ładować karmnik można na Farmie.
+
+/menu – tu prawie wszystkie możliwe komendy</value>
   </data>
   <data name="helpCommandDescription" xml:space="preserve">
     <value>Pomoc ❓</value>
@@ -479,6 +495,7 @@ Poddania: {2}</value>
 💎 &lt;b&gt;Dodano nową walutę – DIAMENTY&lt;/b&gt;💎. Można je zdobyć, zapraszając znajomych do gry w Tamagotchi w programie referencyjnym
 ⚽️ &lt;b&gt;Nowe gry w pokoju dziecięcym&lt;/b&gt; – ❌⭕️ &lt;i&gt;Kółko i krzyżyk&lt;/i&gt; i &lt;i&gt;Wisielec [RU]&lt;/i&gt; (&lt;i&gt;Balda&lt;/i&gt;) 😵
 🏆 &lt;b&gt;Dodano nowe Rankingi&lt;/b&gt;
+📆 &lt;b&gt;Miesięczna aktualizacja Rankingu Poziomów&lt;/b&gt; – teraz co miesiąc pupile resetują swoje poziomy. &lt;i&gt;Za wejście do TOP-10 w miesiącu przewidziane są nagrody 🎁 &lt;/i&gt;
 🤖 &lt;b&gt;Dodano AUTOMATYCZNY KARMIK&lt;/b&gt; – urządzenie pozwalające karmić pupila, gdy jesteś offline. &lt;i&gt;Kupowane tylko za diamenty💎&lt;/i&gt;
 
 &lt;b&gt;ZMIANY:&lt;/b&gt;

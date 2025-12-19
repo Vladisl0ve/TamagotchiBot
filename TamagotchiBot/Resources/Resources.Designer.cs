@@ -395,9 +395,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to English
-        ///
-        ///⚡️⚡️ &lt;b&gt;Update 1.7 Released&lt;/b&gt; ⚡️⚡️
+        ///   Looks up a localized string similar to ⚡️⚡️ &lt;b&gt;Update 1.7 Released&lt;/b&gt; ⚡️⚡️
         ///
         ///&lt;b&gt;NEW:&lt;/b&gt;
         ///🧸 &lt;b&gt;Added new pet types:&lt;/b&gt;
@@ -409,7 +407,7 @@ namespace TamagotchiBot.Resources {
         ///
         ///🎓 &lt;b&gt;Education&lt;/b&gt; – there are different levels of education; you need to study each in order
         ///💡 &lt;b&gt;New jobs&lt;/b&gt;, which depend on the pet’s education
-        ///💎 &lt;b&gt;New currency added – DIAMONDS&lt;/b&gt;💎. Can be earned by inviting friends to pla [rest of string was truncated]&quot;;.
+        ///💎 &lt;b&gt;New currency added – DIAMONDS&lt;/b&gt;💎. Can be earned by inviting friends to play Tamagot [rest of string was truncated]&quot;;.
         /// </summary>
         public static string changelog_onPatch_17 {
             get {
@@ -1403,19 +1401,25 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 🌈 Welcome to the world of Tamagotchi! 🌈
-        ///Here you can make yourself a new virtual friend 🐩🐈🐈‍⬛🐕
-        ///Be sure to keep track of your pet&apos;s progress:
-        ///▫️ play different games with him ⚽️
-        ///▫️feed yummy 🍕🍳🍫
-        ///▫️ take care of him 🍼
-        ///▫️ take care and just love 😻
+        ///Here you can get a new virtual friend 🐩🐈🐈‍⬛🐕
+        ///Make sure to keep an eye on your pet’s progress:
+        ///▫️ play mini-games with it ⚽️
+        ///▫️ feed it tasty treats 🍕🍳🍫
+        ///▫️ take care of it 🍼
+        ///▫️ groom and simply love it 😻
         ///
-        ///In the command menu you will find everything your pet needs 🌻
-        ///Visit your pet more often, because he loves you too and will be very happy to take you for a walk 🤍❤️🤍
+        ///In the commands menu, you’ll find everything your pet needs 🌻
+        ///Visit your pet often, because it loves you too and will be happy to play 🤍❤️🤍
         ///
         ///FAQ:
-        ///1. How does the 🏅 level accumulate?
-        ///- 1 experience = 1 minute of pe [rest of string was truncated]&quot;;.
+        ///
+        ///How is level earned 🏅?
+        ///
+        ///1 XP = 1 minute of pet’s life. Just remember your pet 🦩
+        ///
+        ///How to earn money 💰?
+        ///
+        ///G [rest of string was truncated]&quot;;.
         /// </summary>
         public static string helpCommand {
             get {
