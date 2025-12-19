@@ -1641,7 +1641,8 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.HelpCommandSticker,
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             Log.Debug($"Called /ShowHelpInfo for {_userInfo}");
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);

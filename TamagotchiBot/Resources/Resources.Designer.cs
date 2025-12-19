@@ -1400,26 +1400,21 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🌈 Welcome to the world of Tamagotchi! 🌈
+        ///   Looks up a localized string similar to 🌈 &lt;b&gt;Welcome to the world of Tamagotchi!&lt;/b&gt; 🌈
         ///Here you can get a new virtual friend 🐩🐈🐈‍⬛🐕
         ///Make sure to keep an eye on your pet’s progress:
-        ///▫️ play mini-games with it ⚽️
-        ///▫️ feed it tasty treats 🍕🍳🍫
-        ///▫️ take care of it 🍼
-        ///▫️ groom and simply love it 😻
+        ///▫️ &lt;b&gt;play various games with it&lt;/b&gt; ⚽️
+        ///▫️ &lt;b&gt;feed it tasty treats&lt;/b&gt; 🍕🍳🍫
+        ///▫️ &lt;b&gt;take care of it&lt;/b&gt; 🍼
+        ///▫️ &lt;b&gt;groom and simply love it&lt;/b&gt; 😻
         ///
         ///In the commands menu, you’ll find everything your pet needs 🌻
-        ///Visit your pet often, because it loves you too and will be happy to play 🤍❤️🤍
+        ///&lt;i&gt;Visit your pet often, because it loves you too and will be happy to play&lt;/i&gt; 🤍❤️🤍
         ///
-        ///FAQ:
+        ///&lt;b&gt;FAQ:&lt;/b&gt;
         ///
-        ///How is level earned 🏅?
-        ///
-        ///1 XP = 1 minute of pet’s life. Just remember your pet 🦩
-        ///
-        ///How to earn money 💰?
-        ///
-        ///G [rest of string was truncated]&quot;;.
+        ///&lt;b&gt;How is level earned 🏅?&lt;/b&gt;
+        ///&lt;i&gt;1 XP = 1 minute of pe [rest of string was truncated]&quot;;.
         /// </summary>
         public static string helpCommand {
             get {
