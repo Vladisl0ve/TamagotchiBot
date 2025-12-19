@@ -463,15 +463,36 @@ Surrendered: {2}</value>
   <data name="backToGameroomText" xml:space="preserve">
     <value>You are in the gameroom ⚽️</value>
   </data>
-  <data name="changelog1Text" xml:space="preserve">
-    <value>👫 We remind you about the referral program 👭
+  <data name="changelog_onPatch_17" xml:space="preserve">
+    <value>English
 
-It's more fun together, so invite your friends to join us in 🐾&lt;b&gt;Tamagotchi🐾 Virtual GPT Pet&lt;/b&gt;🐾
-You can get 1000💰 for every new friend!
-➡️/referal
+⚡️⚡️ &lt;b&gt;Update 1.7 Released&lt;/b&gt; ⚡️⚡️
 
-Subscribe to our channel, where everything is about the bot:
-https://t.me/newsvirtualpetbot</value>
+&lt;b&gt;NEW:&lt;/b&gt;
+🧸 &lt;b&gt;Added new pet types:&lt;/b&gt;
+🐒 &lt;i&gt;Adorable Monkey&lt;/i&gt;
+🐯 &lt;i&gt;Brutal Tiger Cub&lt;/i&gt;
+🦁 &lt;i&gt;Majestic Lion Cub&lt;/i&gt;
+
+&lt;i&gt;Lion and Tiger Cub are purchased once, so after buying you can switch back to their look for free&lt;/i&gt;
+
+🎓 &lt;b&gt;Education&lt;/b&gt; – there are different levels of education; you need to study each in order
+💡 &lt;b&gt;New jobs&lt;/b&gt;, which depend on the pet’s education
+💎 &lt;b&gt;New currency added – DIAMONDS&lt;/b&gt;💎. Can be earned by inviting friends to play Tamagotchi via the referral program
+⚽️ &lt;b&gt;New games in the Kids Room&lt;/b&gt; – ❌⭕️ &lt;i&gt;Tic-Tac-Toe&lt;/i&gt; and &lt;i&gt;Hangman [RU]&lt;/i&gt; (&lt;i&gt;Word Builder&lt;/i&gt;) 😵
+🏆 &lt;b&gt;New Rankings added&lt;/b&gt;
+🤖 &lt;b&gt;Auto-Feeder added&lt;/b&gt; – a device that feeds your pet while you are offline. &lt;i&gt;Purchasable only with diamonds💎&lt;/i&gt;
+
+&lt;b&gt;CHANGES:&lt;/b&gt;
+🍽 &lt;b&gt;Satiety balance changed&lt;/b&gt;
+💰 &lt;b&gt;Jobs&lt;/b&gt; – earnings and waiting times changed
+🛏 &lt;b&gt;Bedroom&lt;/b&gt; – sleep duration reduced from 10 minutes to 2 minutes
+🌻 Many more changes that I forgot, but you will see them in the bot :)
+
+For now, I’ve paused work on the graphical interface, but decided to compensate with new fun features 🦩
+
+🎄&lt;b&gt;HAPPY HOLIDAYS TO EVERYONE!&lt;/b&gt;🎄
+&lt;i&gt;May the New Year bring more happiness and luck, may problems and negativity stay away, may your dreams come true. Have a great holiday season and Happy New Year!&lt;/i&gt; ⭐️</value>
   </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
     <value>{0}: Waiting for you here, come back
@@ -1390,5 +1411,15 @@ And you also receive {0} 💎 for your pet’s high level</value>
   </data>
   <data name="ranksCommandInlineTicTakToe" xml:space="preserve">
     <value>❌⭕️ Tic-Tak-Toe</value>
+  </data>
+  <data name="Referal_Ads_changelog" xml:space="preserve">
+    <value>👫 We remind you about the referral program 👭
+
+It's more fun together, so invite your friends to join us in 🐾&lt;b&gt;Tamagotchi🐾 Virtual GPT Pet&lt;/b&gt;🐾
+You can get {0}💰 and {1}💎 for every new friend!
+➡️/referal
+
+Subscribe to our channel, where everything is about the bot:
+https://t.me/newsvirtualpetbot</value>
   </data>
 </root>

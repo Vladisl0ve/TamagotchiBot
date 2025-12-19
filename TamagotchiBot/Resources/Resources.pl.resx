@@ -463,15 +463,34 @@ Poddania: {2}</value>
   <data name="backToGameroomText" xml:space="preserve">
     <value>Znowu jesteś w pokoju gier ⚽️</value>
   </data>
-  <data name="changelog1Text" xml:space="preserve">
-    <value>👫 Przypominamy o programie poleceń 👭
+  <data name="changelog_onPatch_17" xml:space="preserve">
+    <value>⚡️⚡️ &lt;b&gt;Wydanie aktualizacji 1.7&lt;/b&gt; ⚡️⚡️
 
-Razem jest fajniej, więc zaproś znajomych, aby dołączyli do nas w 🐾&lt;b&gt;Tamagotchi Virtual GPT Pet&lt;/b&gt;🐾
-Za każdego nowego znajomego możesz otrzymać 1000💰!
-➡️/referal
+&lt;b&gt;NOWOŚCI:&lt;/b&gt;
+🧸 &lt;b&gt;Dodano nowe typy pupili:&lt;/b&gt;
+🐒 &lt;i&gt;Słodka małpka&lt;/i&gt;
+🐯 &lt;i&gt;Brutalny tygrysek&lt;/i&gt;
+🦁 &lt;i&gt;Dostojne lwiątko&lt;/i&gt;
 
-Subskrybuj nasz kanał, na którym wszystko jest o bocie:
-https://t.me/newsvirtualpetbot</value>
+&lt;i&gt;Lwiątko i tygrysek kupuje się tylko raz, więc po zakupie możesz bezpłatnie powrócić do ich wyglądu&lt;/i&gt;
+
+🎓 &lt;b&gt;Edukacja&lt;/b&gt; – różne stopnie edukacji, trzeba uczyć się każdego po kolei
+💡 &lt;b&gt;Nowe prace&lt;/b&gt;, zależne od edukacji pupila
+💎 &lt;b&gt;Dodano nową walutę – DIAMENTY&lt;/b&gt;💎. Można je zdobyć, zapraszając znajomych do gry w Tamagotchi w programie referencyjnym
+⚽️ &lt;b&gt;Nowe gry w pokoju dziecięcym&lt;/b&gt; – ❌⭕️ &lt;i&gt;Kółko i krzyżyk&lt;/i&gt; i &lt;i&gt;Wisielec [RU]&lt;/i&gt; (&lt;i&gt;Balda&lt;/i&gt;) 😵
+🏆 &lt;b&gt;Dodano nowe Rankingi&lt;/b&gt;
+🤖 &lt;b&gt;Dodano AUTOMATYCZNY KARMIK&lt;/b&gt; – urządzenie pozwalające karmić pupila, gdy jesteś offline. &lt;i&gt;Kupowane tylko za diamenty💎&lt;/i&gt;
+
+&lt;b&gt;ZMIANY:&lt;/b&gt;
+🍽 &lt;b&gt;Zmieniono balans Sytości&lt;/b&gt;
+💰 &lt;b&gt;Praca&lt;/b&gt; – zmieniono zarobki i czas oczekiwania
+🛏 &lt;b&gt;Sypialnia&lt;/b&gt; – czas snu skrócony z 10 minut do 2 minut
+🌻 Jeszcze wiele zmian, o których zapomniałem. Ale zobaczycie je w bocie :)
+
+Na razie wstrzymałem prace nad interfejsem graficznym, ale postanowiłem to zrekompensować dodaniem nowych bajerów 🦩
+
+🎄&lt;b&gt;WSZYSTKIM WESOŁYCH ŚWIĄT!&lt;/b&gt;🎄
+&lt;i&gt;Niech w Nowym Roku będzie więcej szczęścia i powodzenia, a problemy i negatyw omijają Was z daleka. Spełnienia marzeń, miłych wakacji i Szczęśliwego Nowego Roku!&lt;/i&gt; ⭐️</value>
   </data>
   <data name="ReminderNotifyText2" xml:space="preserve">
     <value>{0}: Czekam tu na Ciebie, wróć
@@ -1390,5 +1409,15 @@ A także za wysoki poziom pupila otrzymujesz {0} 💎</value>
   </data>
   <data name="ranksCommandInlineTicTakToe" xml:space="preserve">
     <value>❌⭕️ Kółko i krzyżyk</value>
+  </data>
+  <data name="Referal_Ads_changelog" xml:space="preserve">
+    <value>👫 Przypominamy o programie poleceń 👭
+
+Razem jest fajniej, więc zaproś znajomych, aby dołączyli do nas w 🐾&lt;b&gt;Tamagotchi Virtual GPT Pet&lt;/b&gt;🐾
+Za każdego nowego znajomego możesz otrzymać {0}💰 oraz {1}💎!
+➡️/referal
+
+Subskrybuj nasz kanał, na którym wszystko jest o bocie:
+https://t.me/newsvirtualpetbot</value>
   </data>
 </root>

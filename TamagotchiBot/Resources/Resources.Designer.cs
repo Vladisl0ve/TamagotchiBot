@@ -395,18 +395,25 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 👫 We remind you about the referral program 👭
+        ///   Looks up a localized string similar to English
         ///
-        ///It&apos;s more fun together, so invite your friends to join us in 🐾&lt;b&gt;Tamagotchi🐾 Virtual GPT Pet&lt;/b&gt;🐾
-        ///You can get 1000💰 for every new friend!
-        ///➡️/referal
+        ///⚡️⚡️ &lt;b&gt;Update 1.7 Released&lt;/b&gt; ⚡️⚡️
         ///
-        ///Subscribe to our channel, where everything is about the bot:
-        ///https://t.me/newsvirtualpetbot.
+        ///&lt;b&gt;NEW:&lt;/b&gt;
+        ///🧸 &lt;b&gt;Added new pet types:&lt;/b&gt;
+        ///🐒 &lt;i&gt;Adorable Monkey&lt;/i&gt;
+        ///🐯 &lt;i&gt;Brutal Tiger Cub&lt;/i&gt;
+        ///🦁 &lt;i&gt;Majestic Lion Cub&lt;/i&gt;
+        ///
+        ///&lt;i&gt;Lion and Tiger Cub are purchased once, so after buying you can switch back to their look for free&lt;/i&gt;
+        ///
+        ///🎓 &lt;b&gt;Education&lt;/b&gt; – there are different levels of education; you need to study each in order
+        ///💡 &lt;b&gt;New jobs&lt;/b&gt;, which depend on the pet’s education
+        ///💎 &lt;b&gt;New currency added – DIAMONDS&lt;/b&gt;💎. Can be earned by inviting friends to pla [rest of string was truncated]&quot;;.
         /// </summary>
-        public static string changelog1Text {
+        public static string changelog_onPatch_17 {
             get {
-                return ResourceManager.GetString("changelog1Text", resourceCulture);
+                return ResourceManager.GetString("changelog_onPatch_17", resourceCulture);
             }
         }
         
@@ -2380,6 +2387,22 @@ namespace TamagotchiBot.Resources {
         public static string ranksCommandTicTakToe {
             get {
                 return ResourceManager.GetString("ranksCommandTicTakToe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 👫 We remind you about the referral program 👭
+        ///
+        ///It&apos;s more fun together, so invite your friends to join us in 🐾&lt;b&gt;Tamagotchi🐾 Virtual GPT Pet&lt;/b&gt;🐾
+        ///You can get {0}💰 and {1}💎 for every new friend!
+        ///➡️/referal
+        ///
+        ///Subscribe to our channel, where everything is about the bot:
+        ///https://t.me/newsvirtualpetbot.
+        /// </summary>
+        public static string Referal_Ads_changelog {
+            get {
+                return ResourceManager.GetString("Referal_Ads_changelog", resourceCulture);
             }
         }
         
