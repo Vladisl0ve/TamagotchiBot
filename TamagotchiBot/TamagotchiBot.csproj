@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -17,6 +17,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Staging|AnyCPU'">
     <AssemblyName>TamagotchiBot.Staging</AssemblyName>
     <DefineConstants>$(DefineConstants);STAGING</DefineConstants>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AssemblyName>TamagotchiBot.Production</AssemblyName>
+    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Hotfix|AnyCPU'" />
