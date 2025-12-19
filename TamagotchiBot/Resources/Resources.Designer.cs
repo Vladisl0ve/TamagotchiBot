@@ -1539,7 +1539,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🦁 Lion cub.
+        ///   Looks up a localized string similar to Lion cub 🦁.
         /// </summary>
         public static string LionTypeText {
             get {

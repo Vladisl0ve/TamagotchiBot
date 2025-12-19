@@ -1368,7 +1368,7 @@ And you also receive {0} 💎 for your pet’s high level</value>
     <value>Tiger cub 🐯</value>
   </data>
   <data name="LionTypeText" xml:space="preserve">
-    <value>🦁 Lion cub</value>
+    <value>Lion cub 🦁</value>
   </data>
   <data name="changedTypeToTiger" xml:space="preserve">
     <value>🐯&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Stripes make me unique — and slightly more awesome</value>
