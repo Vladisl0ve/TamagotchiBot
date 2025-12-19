@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Directory where the bot binaries are located
-WORK_DIR="/home/vladislove/Tamagotchi"
-BINARY_NAME="./TamagotchiBot"
+WORK_DIR="/home/vladislove/TamagotchiBot_Staging/"
+DLL_NAME="TamagotchiBot.dll"
 
 # === ENV VARIABLES ===
 export MongoUsername=***

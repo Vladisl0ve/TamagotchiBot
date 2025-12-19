@@ -2,14 +2,20 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <Configurations>Debug;Release;Debug-Notify;Debug-Hotfix;Staging</Configurations>
+    <TargetFramework>net10.0</TargetFramework>
+    <Configurations>Debug;Release;Debug-Notify;Debug-Hotfix;Staging_Local;Staging</Configurations>
     <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Staging|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Staging_Local|AnyCPU'">
+    <DefineConstants>$(DefineConstants);STAGING</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Staging|AnyCPU'">
+    <DefineConstants>$(DefineConstants);STAGING</DefineConstants>
+  </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug-Hotfix|AnyCPU'" />
 
@@ -68,6 +74,18 @@
 
   <ItemGroup>
     <None Update="dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="linux_deploy\README.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="linux_deploy\README_STAGING.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="linux_deploy\start_bot.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="linux_deploy\start_bot_STAGING.sh">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Resources\Hangman_dicts\russian.txt">
