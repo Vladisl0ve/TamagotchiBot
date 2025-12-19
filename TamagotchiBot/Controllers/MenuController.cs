@@ -890,12 +890,17 @@ namespace TamagotchiBot.Controllers
                                               (int)timeRemaining.TotalHours,
                                               timeRemaining.Minutes,
                                               string.Format(nameof(turnedOn_F).UseCulture(_userCulture)),
-                                              Costs.AutoFeedCostDiamonds)
+                                              Costs.AutoFeedCostDiamonds,
+                                              userDB.Gold,
+                                              userDB.Diamonds)
+
                     : string.Format(nameof(farmCommand_DISABLED).UseCulture(_userCulture),
                                               encodedPetName,
                                               userDB.AutoFeedCharges,
                                               string.Format(nameof(turnedOff_F).UseCulture(_userCulture)),
-                                              Costs.AutoFeedCostDiamonds);
+                                              Costs.AutoFeedCostDiamonds,
+                                              userDB.Gold,
+                                              userDB.Diamonds);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.FarmCommandCounter++;
@@ -944,11 +949,18 @@ namespace TamagotchiBot.Controllers
                                               userDB.AutoFeedCharges,
                                               (int)timeRemaining.TotalHours,
                                               timeRemaining.Minutes,
-                                              string.Format(nameof(turnedOn_F).UseCulture(_userCulture)))
+                                              string.Format(nameof(turnedOn_F).UseCulture(_userCulture)),
+                                              Costs.AutoFeedCostDiamonds,
+                                              userDB.Gold,
+                                              userDB.Diamonds)
+
                     : string.Format(nameof(farmCommand_DISABLED).UseCulture(_userCulture),
                                               encodedPetName,
                                               userDB.AutoFeedCharges,
-                                              string.Format(nameof(turnedOff_F).UseCulture(_userCulture)));
+                                              string.Format(nameof(turnedOff_F).UseCulture(_userCulture)),
+                                              Costs.AutoFeedCostDiamonds,
+                                              userDB.Gold,
+                                              userDB.Diamonds);
 
             InlineKeyboardMarkup toSendInline = userDB.AutoFeedCharges > 0
                ? Extensions.InlineKeyboardOptimizer(InlineItems.InlineFarm(_userCulture), 1)

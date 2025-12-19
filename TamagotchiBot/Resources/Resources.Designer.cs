@@ -1062,6 +1062,9 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to 👨‍🌾: Oh, who came to us! It&apos;s {0} with its owner!
         ///
+        ///Gold: {4}💰
+        ///Diamonds: {5}💎
+        ///
         ///Auto-Feeder charges: {1} ⚡️
         ///Auto-Feeder status: &lt;b&gt;{2}&lt;/b&gt;
         ///
@@ -1077,6 +1080,9 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 👨‍🌾: Oh, who came to us! It&apos;s {0} with its owner!
+        ///
+        ///Gold: {6}💰
+        ///Diamonds: {7}💎
         ///
         ///Auto-Feeder charges: {1} ⚡️
         ///Auto-Feeder status: &lt;b&gt;{4}&lt;/b&gt;

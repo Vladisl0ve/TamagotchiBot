@@ -963,6 +963,9 @@ https://t.me/newsvirtualpetbot</value>
   <data name="farmCommand_ENABLED" xml:space="preserve">
     <value>👨‍🌾: О-о, хто да нас прыйшоў! Гэта {0} са сваім гаспадаром!
 
+Золата: {6}💰
+Дыяменты: {7}💎
+
 Зарады аўтакармілкі: {1} ⚡️
 Статус аўтакармілкі: &lt;b&gt;{4}&lt;/b&gt;
 Наступнае выкарыстанне аўтакармілкі праз: {2}г і {3}хв 🕗
@@ -1111,6 +1114,9 @@ https://t.me/newsvirtualpetbot</value>
   </data>
   <data name="farmCommand_DISABLED" xml:space="preserve">
     <value>👨‍🌾: О-о, хто да нас прыйшоў! Гэта {0} са сваім гаспадаром!
+
+Золата: {4}💰
+Дыяменты: {5}💎
 
 Зарады аўтакармілкі: {1} ⚡️
 Статус аўтакармілкі: &lt;b&gt;{2}&lt;/b&gt;

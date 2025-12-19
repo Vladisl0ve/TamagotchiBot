@@ -959,6 +959,9 @@ https://t.me/news_virtualpetbot</value>
   <data name="farmCommand_ENABLED" xml:space="preserve">
     <value>👨‍🌾: О, хто це до нас завітав! Це {0} зі своїм власником!
 
+Золото: {6}💰
+Діаманти: {7}💎
+
 Заряди авто-годувальника: {1} ⚡️
 Статус авто-годувальника: &lt;b&gt;{4}&lt;/b&gt;
 Наступне використання авто-годувальника через: {2}год і {3}хв 🕗
@@ -1107,6 +1110,9 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="farmCommand_DISABLED" xml:space="preserve">
     <value>👨‍🌾: О, хто це до нас завітав! Це {0} зі своїм власником!
+
+Золото: {4}💰
+Діаманти: {5}💎
 
 Заряди авто-годувальника: {1} ⚡️
 Статус авто-годувальника: &lt;b&gt;{2}&lt;/b&gt;

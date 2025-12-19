@@ -960,6 +960,9 @@ Masz tylko {0}%💊</value>
   <data name="farmCommand_ENABLED" xml:space="preserve">
     <value>👨‍🌾: Och, kto do nas przyszedł! To {0} ze swoim właścicielem!
 
+Złoto: {6}💰
+Diamenty: {7}💎
+
 Ładunki automatycznego karmnika: {1} ⚡️
 Status automatycznego karmnika: &lt;b&gt;{4}&lt;/b&gt;
 Następne użycie automatycznego karmnika za: {2}h i {3}min 🕗
@@ -1108,6 +1111,9 @@ Porozmawiaj z nim trochę później 🕐</value>
   </data>
   <data name="farmCommand_DISABLED" xml:space="preserve">
     <value>👨‍🌾: Och, kto do nas przyszedł! To {0} ze swoim właścicielem!
+
+Złoto: {4}💰
+Diamenty: {5}💎
 
 Ładunki automatycznego karmnika: {1} ⚡️
 Status automatycznego karmnika: &lt;b&gt;{2}&lt;/b&gt;
