@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MaintanceAlertBot\MaintanceAlertBot.csproj" />
+    <ProjectReference Include="..\TamagotchiBot\TamagotchiBot.csproj" />
   </ItemGroup>
 
   <ItemGroup>

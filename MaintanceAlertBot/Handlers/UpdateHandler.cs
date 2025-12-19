@@ -1,20 +1,26 @@
 using Serilog;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Globalization;
+using TamagotchiBot.Models.Answers;
+using TamagotchiBot.Services.Mongo;
+using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-
+using Telegram.Bot.Types.ReplyMarkups;
+using static TamagotchiBot.Resources.Resources;
+using static TamagotchiBot.UserExtensions.Constants;
 
 namespace MaintanceAlertBot.Handlers
 {
     public class UpdateHandler : IUpdateHandler
     {
-        public UpdateHandler()
+        private readonly UserService _userService;
+
+        public UpdateHandler(UserService userService)
         {
+            _userService = userService;
         }
 
         public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -44,14 +50,43 @@ namespace MaintanceAlertBot.Handlers
 
             var chatId = message.Chat.Id;
             var messageText = message.Text;
+            var userId = message.From?.Id;
 
             Log.Information($"Received a '{messageText}' message in chat {chatId}.");
 
-            // Echo received message text
-            // await botClient.SendTextMessageAsync(
-            //     chatId: chatId,
-            //     text: "You said:\n" + messageText
-            // );
+            var userCulture = GetUserCulture(userId ?? -1);
+
+            string linkToDiscussChat = "https://t.me/news_virtualpetbot";
+            string toSendText = string.Format(
+                nameof(changelogCommand).UseCulture(userCulture),
+                linkToDiscussChat);
+
+            string toSendAdditionalText = nameof(BotOnMaintanceWarning).UseCulture(userCulture);
+
+            var toSend = new AnswerMessage()
+            {
+                Text = toSendAdditionalText + toSendText,
+                StickerId = StickersId.ChangelogCommandSticker,
+                InlineKeyboardMarkup = new InlineKeyboardButton(nameof(ChangelogGoToDicussChannelButton).UseCulture(userCulture))
+                {
+                    Url = linkToDiscussChat
+                },
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(userCulture)
+            };
+
+            await botClient.SendSticker(chatId: chatId,
+                            sticker: new InputFileId(toSend.StickerId));
+
+
+            await botClient.SendMessage(chatId: chatId,
+                                        text: toSend.Text,
+                                        replyMarkup: toSend.ReplyMarkup,
+                                        linkPreviewOptions: linkToDiscussChat);
+        }
+
+        protected virtual CultureInfo GetUserCulture(long userId)
+        {
+            return new CultureInfo(_userService.Get(userId)?.Culture ?? "ru");
         }
 
         private Task UnknownUpdateHandlerAsync(ITelegramBotClient botClient, Update update)
@@ -73,6 +108,9 @@ namespace MaintanceAlertBot.Handlers
 
             Log.Error(exception, ErrorMessage);
             await Task.Delay(1000, cancellationToken);
+
+            if (exception is ApiRequestException)
+                Environment.Exit(-1);
         }
     }
 }

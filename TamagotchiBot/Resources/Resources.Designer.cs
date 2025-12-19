@@ -277,6 +277,17 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ⚠️ Bot update in progress ⚠️
+        ///
+        ///.
+        /// </summary>
+        public static string BotOnMaintanceWarning {
+            get {
+                return ResourceManager.GetString("BotOnMaintanceWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kitty 🐱.
         /// </summary>
         public static string CatTypeText {

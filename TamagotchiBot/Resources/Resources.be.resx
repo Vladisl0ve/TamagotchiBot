@@ -1359,4 +1359,9 @@ https://t.me/newsvirtualpetbot</value>
 
 А таксама за высокі ўзровень гадаванца вы атрымліваеце {0} 💎</value>
   </data>
+  <data name="BotOnMaintanceWarning" xml:space="preserve">
+    <value>⚠️ Ідзе абнаўленне бота ⚠️
+
+</value>
+  </data>
 </root>

@@ -1355,4 +1355,9 @@ https://t.me/news_virtualpetbot</value>
 
 А також за високий рівень улюбленця ви отримуєте {0} 💎</value>
   </data>
+  <data name="BotOnMaintanceWarning" xml:space="preserve">
+    <value>⚠️ Триває оновлення бота ⚠️
+
+</value>
+  </data>
 </root>

@@ -1354,4 +1354,9 @@ Pozostałe: {0} 🕔</value>
 
 A także za wysoki poziom pupila otrzymujesz {0} 💎</value>
   </data>
+  <data name="BotOnMaintanceWarning" xml:space="preserve">
+    <value>⚠️ Trwa aktualizacja bota ⚠️
+
+</value>
+  </data>
 </root>

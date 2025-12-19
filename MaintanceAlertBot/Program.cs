@@ -5,12 +5,9 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Serilog;
 using Serilog.Events;
-using System;
-using System.IO;
 using MaintanceAlertBot.Database;
 using MaintanceAlertBot.Handlers;
 using MaintanceAlertBot.Services;
-using MaintanceAlertBot.Services.Mongo;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 
@@ -61,15 +58,15 @@ namespace MaintanceAlertBot
                   {
                       services.AddHostedService<TelegramBotHostedService>();
                       services.AddTransient<IUpdateHandler, UpdateHandler>();
+                      services.AddTransient<TamagotchiBot.Services.Mongo.UserService>();
 
-                      services.Configure<TamagotchiDatabaseSettings>(context.Configuration.GetSection(nameof(TamagotchiDatabaseSettings)));
-                      services.AddTransient<ITamagotchiDatabaseSettings>(sp => sp.GetRequiredService<IOptions<TamagotchiDatabaseSettings>>().Value);
-
-                      services.AddTransient<SInfoService>();
+                      services.Configure<TamagotchiBot.Database.TamagotchiDatabaseSettings>(context.Configuration.GetSection(nameof(TamagotchiDatabaseSettings)));
+                      services.AddTransient<TamagotchiBot.Database.ITamagotchiDatabaseSettings>(sp => sp.GetRequiredService<IOptions<TamagotchiBot.Database.TamagotchiDatabaseSettings>>().Value);
+                      services.AddTransient<TamagotchiBot.Services.Mongo.SInfoService>();
 
                       services.AddTransient<ITelegramBotClient>(sp =>
                       {
-                          var sInfoService = sp.GetRequiredService<SInfoService>();
+                          var sInfoService = sp.GetRequiredService<TamagotchiBot.Services.Mongo.SInfoService>();
                           var token = sInfoService.GetBotToken();
                           if (string.IsNullOrEmpty(token))
                           {

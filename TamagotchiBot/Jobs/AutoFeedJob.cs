@@ -29,7 +29,6 @@ namespace TamagotchiBot.Jobs
                 {
                     // Feed
                     var newSatiety = pet.Satiety + Constants.AutoFeed.AutoFeedAmount;
-                    //if (newSatiety > 100) newSatiety = 100;
 
                     _appServices.PetService.UpdateSatiety(pet.UserId, newSatiety, true);
                     _appServices.UserService.UpdateAutoFeedCharges(pet.UserId, user.AutoFeedCharges - 1);

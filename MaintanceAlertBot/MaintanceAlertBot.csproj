@@ -23,4 +23,8 @@
     <ProjectReference Include="..\TamagotchiBot\TamagotchiBot.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Mongo\" />
+  </ItemGroup>
+
 </Project>

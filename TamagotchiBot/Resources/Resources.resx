@@ -1354,4 +1354,9 @@ Remaining: {0} 🕔</value>
 
 And you also receive {0} 💎 for your pet’s high level</value>
   </data>
+  <data name="BotOnMaintanceWarning" xml:space="preserve">
+    <value>⚠️ Bot update in progress ⚠️
+
+</value>
+  </data>
 </root>
