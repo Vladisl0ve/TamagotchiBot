@@ -194,7 +194,7 @@ namespace TamagotchiBot.Controllers
             }
             if (GetAllTranslatedAndLowered(nameof(farmButtonChangeType)).Contains(textReceived))
             {
-                await ChangeTypeCMD();
+                await ChangeTypeCMD(userDB);
                 return;
             }
             if (GetAllTranslatedAndLowered(nameof(farmButtonAutoFeed)).Contains(textReceived))
@@ -785,12 +785,14 @@ namespace TamagotchiBot.Controllers
         }
 
         #region Message Answers
-        private async Task ChangeTypeCMD()
+        private async Task ChangeTypeCMD(User userDB)
         {
             string toSendText = string.Format(nameof(changeTypeButtonCommand).UseCulture(_userCulture),
                                               Costs.ChangePetType,
                                               Costs.ChangePetTypeToTiger.ToString("N0", System.Globalization.CultureInfo.InvariantCulture),
-                                              Costs.ChangePetTypeToLion.ToString("N0", System.Globalization.CultureInfo.InvariantCulture));
+                                              Costs.ChangePetTypeToLion.ToString("N0", System.Globalization.CultureInfo.InvariantCulture),
+                                              userDB.Gold,
+                                              userDB.Diamonds);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.ChangeTypeButtonCounter++;

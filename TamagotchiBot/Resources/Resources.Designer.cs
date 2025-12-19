@@ -442,7 +442,10 @@ namespace TamagotchiBot.Resources {
         ///   Looks up a localized string similar to 👨‍🌾: I&apos;m a &lt;i&gt;magic&lt;/i&gt;farmer, so I can change the appearance of your pet
         ///Choose whoever you want!
         ///
-        ///Pet Shape: {0} gold 💰
+        ///Gold: {3}💰
+        ///Diamonds: {4}💎
+        ///
+        ///Pet shape change: {0} gold 💰
         ///
         ///Tiger 🐯: {1} gold 💰 
         ///Lion 🦁: {2} gold 💰
