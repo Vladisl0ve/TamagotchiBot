@@ -765,6 +765,12 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
+            if (_callback.Data == CallbackButtons.RanksCommand.RanksCommandInlineTicTakToe(_userCulture).CallbackData)
+            {
+                await ShowRanksTicTakToe();
+                return;
+            }
+
             if (_callback.Data == CallbackButtons.FarmCommand.FarmCommandInlineEnableAutoFeed(_userCulture).CallbackData)
             {
                 await SetAutoFeedStatus(petDb, true);
@@ -2467,6 +2473,21 @@ namespace TamagotchiBot.Controllers
                                                               new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
                                                               false);
         }
+
+        private async Task ShowRanksTicTakToe()
+        {
+            Log.Debug($"Callbacked ShowRanksTicTakToe for {_userInfo}");
+            string toSendText = GetRanksByTicTakToe();
+            if (toSendText == null)
+                return;
+
+            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineRanks(_userCulture), 3);
+
+            await _appServices.BotControlService.SendAnswerCallback(_userId,
+                                                              _callback?.Message?.MessageId ?? 0,
+                                                              new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
+                                                              false);
+        }
         private async Task ShowRanksLevelAllGame()
         {
             Log.Debug($"Callbacked ShowRanksLevelAllGame for {_userInfo}");
@@ -2674,6 +2695,77 @@ namespace TamagotchiBot.Controllers
                 .ToList()
                 .FindIndex(a => a.UserId == _userId);
                     anwserRating += "\n <b> " + (counterN == -1 ? _appServices.AppleGameDataService.GetAll()?.Count : counterN) + ". " + (currentUserApple?.TotalWins ?? 0) + HttpUtility.HtmlEncode($" {Extensions.GetTypeEmoji(currentPet.Type)} " + currentPet?.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName) + "</b>";
+                }
+
+                return anwserRating;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return null;
+            }
+        }
+        private string GetRanksByTicTakToe()
+        {
+            try
+            {
+                var topTicTakToe = _appServices.TicTacToeGameDataService.GetAll()
+                .OrderByDescending(a => a.TotalWins)
+                .Take(10); //First 10 top-apples users
+
+                string anwserRating = "";
+                var currentUser = _appServices.UserService.Get(_userId);
+                var currentPet = _appServices.PetService.Get(_userId);
+
+                int counter = 1;
+                foreach (var ticTakToeUser in topTicTakToe)
+                {
+                    var userDB = _appServices.UserService.Get(ticTakToeUser.UserId);
+                    var petDB = _appServices.PetService.Get(ticTakToeUser.UserId);
+                    string name = $" {Extensions.GetTypeEmoji(petDB?.Type ?? -1)} " + _appServices.PetService.Get(ticTakToeUser.UserId)?.Name ?? userDB?.Username ?? userDB?.FirstName + userDB?.LastName ?? "";
+                    if (counter == 1)
+                    {
+                        if (currentUser == null)
+                            continue;
+
+                        if (ticTakToeUser?.TotalWins == null)
+                            continue;
+
+                        anwserRating += nameof(ranksCommandTicTakToe).UseCulture(_userCulture) + "\n\n";
+                        if (currentUser.UserId == userDB?.UserId)
+                            anwserRating += "<b>" + "❌ " + ticTakToeUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
+                        else
+                            anwserRating += "❌ " + ticTakToeUser.TotalWins + HttpUtility.HtmlEncode(name);
+                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
+                        counter++;
+                    }
+                    else
+                    {
+                        if (userDB == null)
+                            continue;
+
+                        if (ticTakToeUser?.TotalWins == null)
+                            continue;
+
+                        anwserRating += "\n";
+                        if (currentUser.UserId == userDB.UserId)
+                            anwserRating += "<b>" + counter + ". " + ticTakToeUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
+                        else
+                            anwserRating += counter + ". " + ticTakToeUser.TotalWins + HttpUtility.HtmlEncode(name);
+                        counter++;
+                    }
+                }
+
+                if (!topTicTakToe.Any(a => a.UserId == _userId))
+                {
+                    var currentUserApple = _appServices.TicTacToeGameDataService.Get(_userId);
+
+                    anwserRating += "\n______________________________";
+                    var counterN = _appServices.TicTacToeGameDataService.GetAll()
+                .OrderByDescending(a => a.TotalWins)
+                .ToList()
+                .FindIndex(a => a.UserId == _userId);
+                    anwserRating += "\n <b> " + (counterN == -1 ? _appServices.TicTacToeGameDataService.GetAll()?.Count : counterN) + ". " + (currentUserApple?.TotalWins ?? 0) + HttpUtility.HtmlEncode($" {Extensions.GetTypeEmoji(currentPet.Type)} " + currentPet?.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName) + "</b>";
                 }
 
                 return anwserRating;

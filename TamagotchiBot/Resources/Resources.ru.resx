@@ -1380,4 +1380,10 @@ https://t.me/news_virtualpetbot</value>
   <data name="changedTypeToLion" xml:space="preserve">
     <value>🦁&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Саванна — моё королевство… сразу после обеда.</value>
   </data>
+  <data name="ranksCommandTicTakToe" xml:space="preserve">
+    <value>❌⭕️ Топ-10 в игре «Крестики-нолики» ⭕️❌</value>
+  </data>
+  <data name="ranksCommandInlineTicTakToe" xml:space="preserve">
+    <value>❌⭕️ Крестики-нолики</value>
+  </data>
 </root>

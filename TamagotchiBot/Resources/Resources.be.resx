@@ -1381,4 +1381,10 @@ https://t.me/newsvirtualpetbot</value>
   <data name="changedTypeToLion" xml:space="preserve">
     <value>🦁&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Саванна — маё каралеўства… адразу пасля абеду.</value>
   </data>
+  <data name="ranksCommandTicTakToe" xml:space="preserve">
+    <value>❌⭕️ Топ-10 у гульні «Крыжыкі-нулікі» ⭕️❌</value>
+  </data>
+  <data name="ranksCommandInlineTicTakToe" xml:space="preserve">
+    <value>❌⭕️ Крыжыкі-нулікі</value>
+  </data>
 </root>

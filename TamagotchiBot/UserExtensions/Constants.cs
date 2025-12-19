@@ -1090,6 +1090,7 @@ namespace TamagotchiBot.UserExtensions
                 CallbackButtons.RanksCommand.RanksCommandInlineGold(culture),
                 CallbackButtons.RanksCommand.RanksCommandInlineDiamonds(culture),
                 CallbackButtons.RanksCommand.RanksCommandInlineApples(culture),
+                CallbackButtons.RanksCommand.RanksCommandInlineTicTakToe(culture),
                 CallbackButtons.RanksCommand.RanksCommandInlineLevelAll(culture),
             };
 

@@ -260,6 +260,11 @@ namespace TamagotchiBot.UserExtensions
                 Text = nameof(Resources.Resources.ranksCommandInlineApples).UseCulture(culture),
                 CallbackData = nameof(RanksCommandInlineApples)
             };
+            public static CallbackModel RanksCommandInlineTicTakToe(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.ranksCommandInlineTicTakToe).UseCulture(culture),
+                CallbackData = nameof(RanksCommandInlineTicTakToe)
+            };
         }
         public static class RewardsCommand
         {

@@ -2348,11 +2348,29 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ❌⭕️ Tic-Tak-Toe.
+        /// </summary>
+        public static string ranksCommandInlineTicTakToe {
+            get {
+                return ResourceManager.GetString("ranksCommandInlineTicTakToe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ⭐️ Top 10 Levels (All Time) ⭐️.
         /// </summary>
         public static string ranksCommandLevelAll {
             get {
                 return ResourceManager.GetString("ranksCommandLevelAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ❌⭕️ Top 10 in Tic-Tak-Toe game ⭕️❌.
+        /// </summary>
+        public static string ranksCommandTicTakToe {
+            get {
+                return ResourceManager.GetString("ranksCommandTicTakToe", resourceCulture);
             }
         }
         
