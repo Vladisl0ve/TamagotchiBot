@@ -476,6 +476,11 @@ namespace TamagotchiBot.Services
 
         internal async Task<Message> ForwardMessageToDebugChat(Message message, int messageThreadId)
         {
+
+#if STAGING || DEBUG || STAGING_LOCAL || DEBUG_NOTIFY
+            return null;
+#endif
+
             int tryCounter = 0;
             while (true)
             {

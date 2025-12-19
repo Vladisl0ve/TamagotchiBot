@@ -32,7 +32,7 @@ namespace TamagotchiBot.Handlers
         {
             _appServices = services;
             _envs = envs;
-#if !DEBUG && !DEBUG_NOTIFY && !STAGING
+#if !DEBUG && !DEBUG_NOTIFY && !STAGING && !STAGING_LOCAL
             EmergencyUpdatePets();
 #endif
         }

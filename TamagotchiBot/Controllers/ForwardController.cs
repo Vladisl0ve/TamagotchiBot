@@ -70,6 +70,10 @@ namespace TamagotchiBot.Controllers
 
         private async Task<bool> ForwardMessage(Message message, bool noTextOnly = false)
         {
+#if STAGING || DEBUG || STAGING_LOCAL || DEBUG_NOTIFY
+            return true;
+#endif
+
             if (message.Chat.Id <= 0)
                 return false;
 
