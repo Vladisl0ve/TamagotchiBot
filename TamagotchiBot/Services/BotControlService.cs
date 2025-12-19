@@ -25,12 +25,16 @@ namespace TamagotchiBot.Services
         private AllUsersDataService _allUsersDataService;
         private ChatService _chatService;
         private AppleGameDataService _appleGameDataService;
+        private TicTacToeGameDataService _ticTacToeGameDataService;
+        private HangmanGameDataService _hangmanGameDataService ;
         private MetaUserService _metaUserService;
         public BotControlService(ITelegramBotClient bot,
                                  UserService userService,
                                  PetService petService,
                                  ChatService chatService,
                                  AppleGameDataService appleGameDataService,
+                                 TicTacToeGameDataService ticTacToeGameDataService,
+                                 HangmanGameDataService hangmanGameDataService,
                                  AllUsersDataService allUsersDataService,
                                  MetaUserService metaUserService,
                                  IEnvsSettings envs)
@@ -40,6 +44,8 @@ namespace TamagotchiBot.Services
             _petService = petService;
             _chatService = chatService;
             _appleGameDataService = appleGameDataService;
+            _hangmanGameDataService = hangmanGameDataService;
+            _ticTacToeGameDataService = ticTacToeGameDataService;
             _allUsersDataService = allUsersDataService;
             _metaUserService = metaUserService;
             _envs = envs;
@@ -139,6 +145,8 @@ namespace TamagotchiBot.Services
                     _petService.Remove(chatId);
                     _userService.Remove(chatId);
                     _appleGameDataService.Delete(chatId);
+                    _hangmanGameDataService.Delete(chatId);
+                    _ticTacToeGameDataService.Delete(chatId);
                     _metaUserService.Remove(chatId);
                 }
                 Log.Warning($"{ex.Message} : {logInfo}");
@@ -191,6 +199,8 @@ namespace TamagotchiBot.Services
                     _petService.Remove(chatId);
                     _userService.Remove(chatId);
                     _appleGameDataService.Delete(chatId);
+                    _hangmanGameDataService.Delete(chatId);
+                    _ticTacToeGameDataService.Delete(chatId);
                     _metaUserService.Remove(chatId);
                 }
                 return default;

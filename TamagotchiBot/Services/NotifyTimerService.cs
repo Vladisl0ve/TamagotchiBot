@@ -11,6 +11,7 @@ using TamagotchiBot.Models.Mongo;
 using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot.Exceptions;
+using Telegram.Bot.Types;
 using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.Services
@@ -47,7 +48,8 @@ namespace TamagotchiBot.Services
 
             _notifyTimer = new Timer(TimeSpan.FromSeconds(60));
 #if STAGING || DEBUG_HOTFIX
-            _notifyTimer = new Timer(TimeSpan.FromDays(10));
+            return;
+            _notifyTimer = new Timer(TimeSpan.FromDays(20));
 #endif
             _notifyTimer.Elapsed += OnNotifyTimedEvent;
             _notifyTimer.AutoReset = true;
@@ -91,7 +93,8 @@ namespace TamagotchiBot.Services
 #if DEBUG_NOTIFY
             TimeSpan timeToWait = TimeSpan.FromSeconds(10);
 #elif STAGING || DEBUG_HOTFIX
-            TimeSpan timeToWait = TimeSpan.FromDays(10);
+            return;
+            TimeSpan timeToWait = TimeSpan.FromDays(20);
 #else
             TimeSpan timeToWait = TimeSpan.FromSeconds(300);
 #endif
@@ -106,7 +109,8 @@ namespace TamagotchiBot.Services
 #if DEBUG_NOTIFY
             TimeSpan timeToWait = TimeSpan.FromSeconds(7);
 #elif STAGING || DEBUG_HOTFIX
-            TimeSpan timeToWait = TimeSpan.FromDays(10);
+            return;
+            TimeSpan timeToWait = TimeSpan.FromDays(20);
 #else
             TimeSpan timeToWait = TimeSpan.FromMinutes(10);
 #endif
@@ -197,6 +201,8 @@ namespace TamagotchiBot.Services
                         _appServices.UserService.Remove(user.UserId);
                         _appServices.MetaUserService.Remove(user.UserId);
                         _appServices.AppleGameDataService.Delete(user.UserId);
+                        _appServices.TicTacToeGameDataService.Delete(user.UserId);
+                        _appServices.HangmanGameDataService.Delete(user.UserId);
                     }
                 }
                 catch (Exception ex)
@@ -225,6 +231,8 @@ namespace TamagotchiBot.Services
                     _appServices.ChatService.Remove(userId);
                     _appServices.MetaUserService.Remove(userId);
                     _appServices.AppleGameDataService.Delete(userId);
+                    _appServices.TicTacToeGameDataService.Delete(userId);
+                    _appServices.HangmanGameDataService.Delete(userId);
 
                     Log.Information($"DELETED (partly) id: {userId}");
                     usersDeletedPartly++;
@@ -239,6 +247,8 @@ namespace TamagotchiBot.Services
                     _appServices.UserService.Remove(userId);
                     _appServices.MetaUserService.Remove(userId);
                     _appServices.AppleGameDataService.Delete(userId);
+                    _appServices.TicTacToeGameDataService.Delete(userId);
+                    _appServices.HangmanGameDataService.Delete(userId);
 
                     Log.Information($"DELETED id: {userId}");
                     usersDeletedFull++;
@@ -337,6 +347,9 @@ namespace TamagotchiBot.Services
                     _appServices.UserService.Remove(userDB.UserId);
                     _appServices.MetaUserService.Remove(userDB.UserId);
                     _appServices.AppleGameDataService.Delete(userDB.UserId);
+                    _appServices.TicTacToeGameDataService.Delete(userDB.UserId);
+                    _appServices.HangmanGameDataService.Delete(userDB.UserId);
+
 
                     Log.Information($"DELETED {Extensions.GetLogUser(userDB)}");
                     usersDeleted++;
@@ -371,7 +384,7 @@ namespace TamagotchiBot.Services
                     {
                         if (ex == null)
                         {
-                            Log.Error("HZ: ApiRequestException is null 0_o");
+                            Log.Error("HZ: ApiRequestException is null 0_o, ErrorCode == 403");
                             continue;
                         }
 
@@ -382,6 +395,9 @@ namespace TamagotchiBot.Services
                         _appServices.UserService.Remove(userDB.UserId);
                         _appServices.MetaUserService.Remove(userDB.UserId);
                         _appServices.AppleGameDataService.Delete(userDB.UserId);
+                        _appServices.TicTacToeGameDataService.Delete(userDB.UserId);
+                        _appServices.HangmanGameDataService.Delete(userDB.UserId);
+
                         usersForbidden++;
                     }
                 }

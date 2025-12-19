@@ -639,7 +639,12 @@ namespace TamagotchiBot.Controllers
         {
             _appServices.PetService.Remove(_userId);
             _appServices.AppleGameDataService.Delete(_userId);
+            _appServices.TicTacToeGameDataService.Delete(_userId);
+            _appServices.HangmanGameDataService.Delete(_userId);
+
             await _appServices.UserService.UpdateAppleGameStatus(_userId, false);
+            await _appServices.UserService.UpdateHangmanGameStatus(_userId, false);
+            await _appServices.UserService.UpdateTicTacToeGameStatus(_userId, false);
             await AskALanguage();
         }
         private async Task AskForResurrect()
