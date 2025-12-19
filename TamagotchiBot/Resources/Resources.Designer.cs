@@ -336,6 +336,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🦁&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: The savannah is my kingdom… right after lunch..
+        /// </summary>
+        public static string changedTypeToLion {
+            get {
+                return ResourceManager.GetString("changedTypeToLion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🐒&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: I AM MONKEY KING!.
         /// </summary>
         public static string changedTypeToMonkey {
@@ -359,6 +368,15 @@ namespace TamagotchiBot.Resources {
         public static string changedTypeToPanda {
             get {
                 return ResourceManager.GetString("changedTypeToPanda", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🐯&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Stripes make me unique — and slightly more awesome.
+        /// </summary>
+        public static string changedTypeToTiger {
+            get {
+                return ResourceManager.GetString("changedTypeToTiger", resourceCulture);
             }
         }
         
@@ -424,7 +442,12 @@ namespace TamagotchiBot.Resources {
         ///   Looks up a localized string similar to 👨‍🌾: I&apos;m a &lt;i&gt;magic&lt;/i&gt;farmer, so I can change the appearance of your pet
         ///Choose whoever you want!
         ///
-        ///Pet Shape: {0} gold 💰.
+        ///Pet Shape: {0} gold 💰
+        ///
+        ///Tiger 🐯: {1} gold 💰 
+        ///Lion 🦁: {2} gold 💰
+        ///
+        ///&lt;i&gt; After buying, you can apply the Lion or Tiger look at no cost &lt;/i&gt;.
         /// </summary>
         public static string changeTypeButtonCommand {
             get {
@@ -1512,6 +1535,15 @@ namespace TamagotchiBot.Resources {
         public static string languageCommandDescription {
             get {
                 return ResourceManager.GetString("languageCommandDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🦁 Lion cub.
+        /// </summary>
+        public static string LionTypeText {
+            get {
+                return ResourceManager.GetString("LionTypeText", resourceCulture);
             }
         }
         
@@ -2682,6 +2714,15 @@ namespace TamagotchiBot.Resources {
         public static string TicTakToeGameStatisticsCommand {
             get {
                 return ResourceManager.GetString("TicTakToeGameStatisticsCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tiger cub 🐯.
+        /// </summary>
+        public static string TigerTypeText {
+            get {
+                return ResourceManager.GetString("TigerTypeText", resourceCulture);
             }
         }
         

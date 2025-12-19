@@ -978,10 +978,15 @@ https://t.me/newsvirtualpetbot</value>
     <value>👋 Развітацца і пайсці 👋</value>
   </data>
   <data name="changeTypeButtonCommand" xml:space="preserve">
-    <value>👨‍🌾: Я ж &lt;i&gt;чароўны&lt;/i&gt; фермер, таму магу змяніць аблічча твайму гадаванцу
-Выбірай каго хочаш!
+    <value>👨‍🌾: Я &lt;i&gt;чароўны&lt;/i&gt; фермер, таму магу змяніць знешні выгляд твайго гадаванца
+Выбірай, каго хочаш!
 
-Змена аблічча гадаванца: {0} золата 💰</value>
+Форма гадаванца: {0} золата 💰
+
+Тыгр 🐯: {1} золата 💰
+Леў 🦁: {2} золата 💰
+
+&lt;i&gt; Пасля пакупкі можна прымяніць выгляд Льва або Тыгра бясплатна &lt;/i&gt;</value>
   </data>
   <data name="CatTypeText" xml:space="preserve">
     <value>Коцік 🐱</value>
@@ -1363,5 +1368,17 @@ https://t.me/newsvirtualpetbot</value>
     <value>⚠️ Ідзе абнаўленне бота ⚠️
 
 </value>
+  </data>
+  <data name="TigerTypeText" xml:space="preserve">
+    <value>Тыграня 🐯</value>
+  </data>
+  <data name="LionTypeText" xml:space="preserve">
+    <value>🦁 Ільвяня</value>
+  </data>
+  <data name="changedTypeToTiger" xml:space="preserve">
+    <value>🐯&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Палоскі робяць мяне ўнікальным — і трохі круцейшым</value>
+  </data>
+  <data name="changedTypeToLion" xml:space="preserve">
+    <value>🦁&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Саванна — маё каралеўства… адразу пасля абеду.</value>
   </data>
 </root>

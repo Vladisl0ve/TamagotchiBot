@@ -59,7 +59,10 @@ namespace TamagotchiBot.UserExtensions
             Mouse = 2,
             Fox = 3,
             Panda = 4,
-            Monkey = 5
+            Monkey = 5,
+
+            Tiger = 6,
+            Lion = 7,
         }
 
         public enum Fatigue
@@ -170,6 +173,8 @@ namespace TamagotchiBot.UserExtensions
 
             //Change type
             public const int ChangePetType = 5000;
+            public const int ChangePetTypeToTiger = 500000;
+            public const int ChangePetTypeToLion = 1000000;
 
             //Rename
             public const int RenamePet = 500;
@@ -405,6 +410,9 @@ namespace TamagotchiBot.UserExtensions
                     PetType.Panda => nameof(PetType.Panda),
                     PetType.Mouse => nameof(PetType.Mouse),
                     PetType.Monkey => nameof(PetType.Monkey),
+                    PetType.Tiger => nameof(PetType.Tiger),
+                    PetType.Lion => nameof(PetType.Lion),
+
                     _ => nameof(PetType.UNKNOWN)
                 };
 
@@ -636,6 +644,78 @@ namespace TamagotchiBot.UserExtensions
                 {nameof(PetEducationInfoSticker_Monkey), PetEducationInfoSticker_Monkey },
                 {nameof(PetTooTiredSticker_Monkey), PetTooTiredSticker_Monkey },
 
+                //TIGER
+                {nameof(PetCreatedSticker_Tiger), PetCreatedSticker_Tiger },
+                {nameof(PetInfoSticker_Tiger), PetInfoSticker_Tiger },
+                {nameof(PetChooseNameSticker_Tiger), PetChooseNameSticker_Tiger },
+                {nameof(PetConfirmedNameSticker_Tiger), PetConfirmedNameSticker_Tiger },
+                {nameof(PetAskForConfirmNameSticker_Tiger), PetAskForConfirmNameSticker_Tiger },
+                {nameof(PetKitchenSticker_Tiger), PetKitchenSticker_Tiger },
+                {nameof(PetBathroomSticker_Tiger), PetBathroomSticker_Tiger },
+                {nameof(PetGameroomSticker_Tiger), PetGameroomSticker_Tiger },
+                {nameof(PetSleepSticker_Tiger), PetSleepSticker_Tiger },
+                {nameof(PetBusySticker_Tiger), PetBusySticker_Tiger },
+                {nameof(PetWorkSticker_Tiger), PetWorkSticker_Tiger },
+                {nameof(PetWorkOnPCSticker_Tiger), PetWorkOnPCSticker_Tiger },
+                {nameof(PetFlyersJobSticker_Tiger), PetFlyersJobSticker_Tiger },
+                {nameof(PetMcDonaldsSticker_Tiger), PetMcDonaldsSticker_Tiger },
+                {nameof(PetMakeUpArtistSticker_Tiger), PetMakeUpArtistSticker_Tiger },
+                {nameof(PetFoodDeliverySticker_Tiger), PetFoodDeliverySticker_Tiger },
+                {nameof(PetAccountantSticker_Tiger), PetAccountantSticker_Tiger },
+                {nameof(PetEngineerSticker_Tiger), PetEngineerSticker_Tiger },
+                {nameof(PetPilotSticker_Tiger), PetPilotSticker_Tiger },
+                {nameof(PetStartStudyingSticker_Tiger), PetStartStudyingSticker_Tiger },
+                {nameof(PetRanksSticker_Tiger), PetRanksSticker_Tiger },
+                {nameof(PetHospitalLowHPSticker_Tiger), PetHospitalLowHPSticker_Tiger },
+                {nameof(PetHospitalMidHPSticker_Tiger), PetHospitalMidHPSticker_Tiger },
+                {nameof(PetHospitalHighHPSticker_Tiger), PetHospitalHighHPSticker_Tiger },
+                {nameof(PetGoneSticker_Tiger), PetGoneSticker_Tiger },
+                {nameof(PetBoredSticker_Tiger), PetBoredSticker_Tiger },
+                {nameof(PetEpilogueSticker_Tiger), PetEpilogueSticker_Tiger },
+                {nameof(PetChangeTypeSticker_Tiger), PetChangeTypeSticker_Tiger },
+                {nameof(PetResurrectedSticker_Tiger), PetResurrectedSticker_Tiger },
+                {nameof(PetDailyRewardSticker_Tiger), PetDailyRewardSticker_Tiger },
+                {nameof(RandomEventStepOnFootSticker_Tiger), RandomEventStepOnFootSticker_Tiger },
+                {nameof(RandomEventPlayComputerSticker_Tiger), RandomEventPlayComputerSticker_Tiger },
+                {nameof(PetEducationInfoSticker_Tiger), PetEducationInfoSticker_Tiger },
+                {nameof(PetTooTiredSticker_Tiger), PetTooTiredSticker_Tiger },
+
+                //LION
+                {nameof(PetCreatedSticker_Lion), PetCreatedSticker_Lion },
+                {nameof(PetInfoSticker_Lion), PetInfoSticker_Lion },
+                {nameof(PetChooseNameSticker_Lion), PetChooseNameSticker_Lion },
+                {nameof(PetConfirmedNameSticker_Lion), PetConfirmedNameSticker_Lion },
+                {nameof(PetAskForConfirmNameSticker_Lion), PetAskForConfirmNameSticker_Lion },
+                {nameof(PetKitchenSticker_Lion), PetKitchenSticker_Lion },
+                {nameof(PetBathroomSticker_Lion), PetBathroomSticker_Lion },
+                {nameof(PetGameroomSticker_Lion), PetGameroomSticker_Lion },
+                {nameof(PetSleepSticker_Lion), PetSleepSticker_Lion },
+                {nameof(PetBusySticker_Lion), PetBusySticker_Lion },
+                {nameof(PetWorkSticker_Lion), PetWorkSticker_Lion },
+                {nameof(PetWorkOnPCSticker_Lion), PetWorkOnPCSticker_Lion },
+                {nameof(PetFlyersJobSticker_Lion), PetFlyersJobSticker_Lion },
+                {nameof(PetMcDonaldsSticker_Lion), PetMcDonaldsSticker_Lion },
+                {nameof(PetMakeUpArtistSticker_Lion), PetMakeUpArtistSticker_Lion },
+                {nameof(PetFoodDeliverySticker_Lion), PetFoodDeliverySticker_Lion },
+                {nameof(PetAccountantSticker_Lion), PetAccountantSticker_Lion },
+                {nameof(PetEngineerSticker_Lion), PetEngineerSticker_Lion },
+                {nameof(PetPilotSticker_Lion), PetPilotSticker_Lion },
+                {nameof(PetStartStudyingSticker_Lion), PetStartStudyingSticker_Lion },
+                {nameof(PetRanksSticker_Lion), PetRanksSticker_Lion },
+                {nameof(PetHospitalLowHPSticker_Lion), PetHospitalLowHPSticker_Lion },
+                {nameof(PetHospitalMidHPSticker_Lion), PetHospitalMidHPSticker_Lion },
+                {nameof(PetHospitalHighHPSticker_Lion), PetHospitalHighHPSticker_Lion },
+                {nameof(PetGoneSticker_Lion), PetGoneSticker_Lion },
+                {nameof(PetBoredSticker_Lion), PetBoredSticker_Lion },
+                {nameof(PetEpilogueSticker_Lion), PetEpilogueSticker_Lion },
+                {nameof(PetChangeTypeSticker_Lion), PetChangeTypeSticker_Lion },
+                {nameof(PetResurrectedSticker_Lion), PetResurrectedSticker_Lion },
+                {nameof(PetDailyRewardSticker_Lion), PetDailyRewardSticker_Lion },
+                {nameof(RandomEventStepOnFootSticker_Lion), RandomEventStepOnFootSticker_Lion },
+                {nameof(RandomEventPlayComputerSticker_Lion), RandomEventPlayComputerSticker_Lion },
+                {nameof(PetEducationInfoSticker_Lion), PetEducationInfoSticker_Lion },
+                {nameof(PetTooTiredSticker_Lion), PetTooTiredSticker_Lion },
+
             }.ToLookup(x => x.Key, x => x.Value);
 
             #region Cat
@@ -862,6 +942,80 @@ namespace TamagotchiBot.UserExtensions
             public const string RandomEventStepOnFootSticker_Monkey = "CAACAgIAAxkBAAEQBRJpQdNZtjOAHQ0DLGrqK2BI-TbyyQACPFsAAg5GwEtaGFjQ1osRhjYE";
             public const string RandomEventPlayComputerSticker_Monkey = "CAACAgIAAxkBAAEQBRRpQdNqpEReZtxF53MWetuniIr5wwACmpQAAiNGWEvbZ5_jKM3fWTYE";
             public const string PetTooTiredSticker_Monkey = "CAACAgIAAxkBAAEQBRZpQdOfGctehO9xXM6PDHdl0M1KVAAC9xsAAqwEYEjzEWUpSGGxDDYE";
+
+            #endregion
+            #region Tiger
+            public const string PetCreatedSticker_Tiger = "CAACAgIAAxkBAAEQChxpRX5TE--p7r6H-MbWKrQnBweuyQACCwADoQ1iNUlcK48IuY3oNgQ";
+            public const string PetInfoSticker_Tiger = "CAACAgIAAxkBAAEQCkFpRYB_A9MjELFcY2N-CDA9dPnjuAACIHUAAmAKCEsoU6uUWJxltTYE";
+            public const string PetEducationInfoSticker_Tiger = "CAACAgIAAxkBAAEQCkNpRYCI25wpMQqw5poM_SKahJ61_AACU3MAAkJpAAFLyRe5IlHtD8g2BA";
+            public const string PetChooseNameSticker_Tiger = "CAACAgIAAxkBAAEQCiBpRX6spbtOiVV1Pazo6a9Q1zj6kQAC5eYBAAFji0YMce8xrqjK8wY2BA";
+            public const string PetConfirmedNameSticker_Tiger = "CAACAgIAAxkBAAEQCkVpRYCRVlvSy2XOMZmWhJTApzJATQACunEAAogeAUvUkYYeEd2ChDYE";
+            public const string PetAskForConfirmNameSticker_Tiger = "CAACAgIAAxkBAAEQCjJpRX_dfNQnxprcMS403C9Fh_7JwgACAQADoQ1iNWZzQkRDAoqPNgQ";
+            public const string PetKitchenSticker_Tiger = "CAACAgIAAxkBAAEQCklpRYCt45XL8Jf3r4f1S65-4OSyNQACMHUAAgpFAAFLG28V-mgTl5E2BA";
+            public const string PetBathroomSticker_Tiger = "CAACAgIAAxkBAAEQClFpRYDnGzJHy--5nx1dMyg7yZRKywAClnUAAsFJAAFLQN7Nkc36KN02BA";
+            public const string PetGameroomSticker_Tiger = "CAACAgIAAxkBAAEQCjBpRX_S8AlI5R7X4aC3sDkaS38LSQACO0kAAjcxwEmaHU2kYnldvjYE";
+            public const string PetSleepSticker_Tiger = "CAACAgIAAxkBAAEQCktpRYC2C-2CrMna7sU3RmRv3OwbzwACam8AAnJSAUuPwDfBSxHfnTYE";
+            public const string PetBusySticker_Tiger = "CAACAgIAAxkBAAEQClNpRYD7DOHNGX03ImaMd2qyOk7qIgACw2wAAigmCEsKqwYgsET4ljYE";
+            public const string PetWorkSticker_Tiger = "CAACAgIAAxkBAAEQCjZpRX_4RI42InCS57dLuOEUiR3UxQACEAADoQ1iNZD6DI-zbaPTNgQ";
+            public const string PetWorkOnPCSticker_Tiger = "CAACAgEAAxkBAAEQCl1pRYFSp-gLGaAOkS4htNVXU1mdGAAC7AADOA6CEWJyDgUYkJqXNgQ";
+            public const string PetFlyersJobSticker_Tiger = "CAACAgEAAxkBAAEQCldpRYE0BV8KECwuAYQPsi2s6cmOGgAC4gADOA6CEeTgk4YIcTeWNgQ";
+            public const string PetMcDonaldsSticker_Tiger = "CAACAgIAAxkBAAEQCjRpRX_rJs2wHCTSwtbTFOo3PCevTgACCgADoQ1iNVnsbigPY5CyNgQ";
+            public const string PetMakeUpArtistSticker_Tiger = "CAACAgIAAxkBAAEQCippRX84UQIZInun30S7pLDr0ycoygACBQADvRghDM4iN1BQZXpqNgQ";
+            public const string PetFoodDeliverySticker_Tiger = "CAACAgEAAxkBAAEQCltpRYFJ5AHgqcguYkKRef87dzFtZwAC4AADOA6CEfL8_yejXdRWNgQ";
+            public const string PetAccountantSticker_Tiger = "CAACAgUAAxkBAAEQCi5pRX-XbE6RjLD2CtqC1169xKa9QAACqwUAAuXeqVfMCCMfE_hgnjYE";
+            public const string PetEngineerSticker_Tiger = "CAACAgIAAxkBAAEQCj1pRYBi4QLeQPJAgwj7ZoaQuQTvqgACF3oAAvx1AUsX7G4tg4b2RTYE";
+            public const string PetPilotSticker_Tiger = "CAACAgIAAxkBAAEQCjZpRX_4RI42InCS57dLuOEUiR3UxQACEAADoQ1iNZD6DI-zbaPTNgQ";
+            public const string PetStartStudyingSticker_Tiger = "CAACAgEAAxkBAAEQCllpRYE9aOi4bsyI5sJwanuVA-jBxwAC-wADOA6CEQcXLYLtWH6SNgQ";
+            public const string PetRanksSticker_Tiger = "CAACAgEAAxkBAAEQClVpRYEXkRtzu-Hnkq8c4NL3Edyp3wAC_QADOA6CESaXOgqqWcdaNgQ";
+            public const string PetHospitalLowHPSticker_Tiger = "CAACAgIAAxkBAAEQCiZpRX8fpzREqq26cIJPC9z4RoG24wACXjYBAAFji0YMwHIyINKxu9E2BA";
+            public const string PetHospitalMidHPSticker_Tiger = "CAACAgIAAxkBAAEQCihpRX8tTxrPzOT3tBR58Fq1jN5g8wACXTYBAAFji0YMhD9xRDxp0bc2BA";
+            public const string PetHospitalHighHPSticker_Tiger = "CAACAgIAAxkBAAEQCiRpRX8T93uorms3qcrlcqXECWypZwACXzYBAAFji0YMJVgpJ3DZHKo2BA";
+            public const string PetGoneSticker_Tiger = "CAACAgEAAxkBAAEQCl9pRYFidQkGe8s-bIDmqL6c4_FEYAAC4QADOA6CEe08cPTt1al2NgQ";
+            public const string PetBoredSticker_Tiger = "CAACAgIAAxkBAAEQCk1pRYDEJzmUaxDqaHcSqq_yw5oecAACd3gAAscyAUvESsk611iNtjYE";
+            public const string PetEpilogueSticker_Tiger = "CAACAgEAAxkBAAEQCmFpRYFr-9_oi0pRQTSNKkJFhTRsAgAC3gADOA6CEZoH98o9hZwINgQ";
+            public const string PetChangeTypeSticker_Tiger = "CAACAgEAAxkBAAEQCmNpRYF7r-JCUg00jgAB9MM2DAqcLLsAAuQAAzgOghFFmaodnUspHjYE";
+            public const string PetResurrectedSticker_Tiger = "CAACAgIAAxkBAAEQCixpRX9GVsp9SvZGgdmwxLOtbsAvXgACCgADvRghDAAB6tSM5Jw-5TYE";
+            public const string PetDailyRewardSticker_Tiger = "CAACAgEAAxkBAAEQCmVpRYGWyuERIjHZrbIYK3XFMYx44gAC-QADOA6CEYlITcSCBqnlNgQ";
+            public const string RandomEventStepOnFootSticker_Tiger = "CAACAgEAAxkBAAEQCmdpRYGl8LyE6NCZ_EW6vnHHmksZAAPwAAM4DoIRruE0uFASO8g2BA";
+            public const string RandomEventPlayComputerSticker_Tiger = "CAACAgEAAxkBAAEQCmlpRYGutwAB5bPt4UvPDcZ9nycGVJMAAusAAzgOghGhka4ZSLIMJzYE";
+            public const string PetTooTiredSticker_Tiger = "CAACAgIAAxkBAAEQCiJpRX73_cySJeDaVw8N3FUyyMbtdwACXDYBAAFji0YMYAqeCX5LA8o2BA";
+
+            #endregion
+            #region Lion
+            public const string PetCreatedSticker_Lion = "CAACAgIAAxkBAAEQCs1pRYXUEfjFs_yw-V38xkZvGuERCwAC9w4AAqgDeEm8uh9VY6Uq9TYE";
+            public const string PetInfoSticker_Lion = "CAACAgIAAxkBAAEQCmtpRYLqERdOiMgq2UlImwiZH9NL2AAChxAAAoCUmEjosmLrrqI7HjYE";
+            public const string PetEducationInfoSticker_Lion = "CAACAgIAAxkBAAEQCstpRYXISwqgcLzjjFYtDRpxpj5AHQACTRIAAg-BAAFJPLMh4ikS6pM2BA";
+            public const string PetChooseNameSticker_Lion = "CAACAgIAAxkBAAEQCtFpRYXxhv_jecXDkne_e0skaUCYJgACuhAAAlDAKEvjAAFLDgaqeYQ2BA";
+            public const string PetConfirmedNameSticker_Lion = "CAACAgIAAxkBAAEQCs9pRYXcxyzfMjLWQRPSFxi3lnh10AACKQ8AApK2mEjrXrrZVWqW_TYE";
+            public const string PetAskForConfirmNameSticker_Lion = "CAACAgIAAxkBAAEQCslpRYW5Hy5PoVvM3W3v1-s_jYwdJwACZhEAApcqUElfarX1iN_DOTYE";
+            public const string PetKitchenSticker_Lion = "CAACAgIAAxkBAAEQCoppRYPsowxU4fCC-G1qaZo0crsfMgAClQsAAp4r6EsqZH_f4PajIzYE";
+            public const string PetBathroomSticker_Lion = "CAACAgIAAxkBAAEQCoFpRYNj_rp3T1k6o1GKtKJ4Znyn6wACthAAAopbWUlzJQHhOAu7SzYE";
+            public const string PetGameroomSticker_Lion = "CAACAgIAAxkBAAEQCsJpRYUqnAgTn3ObElZ6VhAFPFuMogAChwwAAgb_6Et4YhlCW0KdZzYE";
+            public const string PetSleepSticker_Lion = "CAACAgIAAxkBAAEQCsdpRYWXaFi_FtvQHJ2WnARu8FDfMQACJU0AArHseUs6jePuSDPCRTYE";
+            public const string PetBusySticker_Lion = "CAACAgIAAxkBAAEQCpxpRYQ6rggQPxo4MgH9BBFbeOHYLAACCQsAAv3qKUvOLWM83ZmZuDYE";
+            public const string PetWorkSticker_Lion = "CAACAgIAAxkBAAEQCn9pRYNWED8wxheDTIdgr9lmOtRVUQACJQ8AAkuTkUjrHBy-H6OZCjYE";
+            public const string PetWorkOnPCSticker_Lion = "CAACAgIAAxkBAAEQCm1pRYL1I1MlzT-STuL3c3bwugABUqIAAmASAAIzSJBIQXc0ZrT4Lgk2BA";
+            public const string PetFlyersJobSticker_Lion = "CAACAgIAAxkBAAEQCrhpRYUAAQ6CC15kzxiJZigLYOaFBsYAAgQQAAJ0cGhJUhrry-Zw8542BA";
+            public const string PetMcDonaldsSticker_Lion = "CAACAgIAAxkBAAEQCrxpRYUZRWjlZcbMxLD77_XzYroDyQACBkkAAsjPUUsC7XCPQ30eazYE";
+            public const string PetMakeUpArtistSticker_Lion = "CAACAgIAAxkBAAEQCqxpRYTclA80e6-TfRPOAAEJL_pmQLsAAjAJAAIunelLgkGZrcWFntg2BA";
+            public const string PetFoodDeliverySticker_Lion = "CAACAgIAAxkBAAEQCndpRYMn-Uj-QKGL6cxDC0EKgg8jjAACShAAAsKlmUil3gGcjbmV8DYE";
+            public const string PetAccountantSticker_Lion = "CAACAgIAAxkBAAEQCqhpRYS96KuUQac8zIWaDElCgD1eXAACjhIAAuShKEibiNh65xb-ETYE";
+            public const string PetEngineerSticker_Lion = "CAACAgIAAxkBAAEQCqJpRYSeSQdFLmWiRTLX-BktVIfdbAACSg4AAia1kEh71t_nugzCzTYE";
+            public const string PetPilotSticker_Lion = "CAACAgIAAxkBAAEQCqBpRYSSI3xIuMGyWoRPeHoCsLWq0QACaBAAAqb6kUjYPJZA_-g3djYE";
+            public const string PetStartStudyingSticker_Lion = "CAACAgIAAxkBAAEQCqZpRYStvXmU24PbInEp_gmQDstpVwACmAwAAvIWIEvxpeDZ2C8GvzYE";
+            public const string PetRanksSticker_Lion = "CAACAgIAAxkBAAEQCntpRYM8IIqfPX34m9a7MDRS2uyYoAAC-Q4AAtKjmEgbHKF9Y-9YmjYE";
+            public const string PetHospitalLowHPSticker_Lion = "CAACAgIAAxkBAAEQCpRpRYQXNG3h0XXJpjyBHFDn0yrDWgACwQwAAunjEEjBme0Dinx35jYE";
+            public const string PetHospitalMidHPSticker_Lion = "CAACAgIAAxkBAAEQCpZpRYQf2lj17gYHkCx8ARp0-snkzgACSwsAAheU6Ut0b5oHoNivDjYE";
+            public const string PetHospitalHighHPSticker_Lion = "CAACAgIAAxkBAAEQCpJpRYQOlBid0DW0f8QCXyppJoMB4AAC8Q8AAm_GOEhxDG--UnvTWzYE";
+            public const string PetGoneSticker_Lion = "CAACAgIAAxkBAAEQCphpRYQotDppqcgb6rBnCY21-y41ygACeQwAAmy9KEsCneDnhxRZMTYE";
+            public const string PetBoredSticker_Lion = "CAACAgIAAxkBAAEQCpppRYQvSbeFElCuu2F7-kI2ShYmpQAC1QoAAqJj6Usrsuo6GfOf4DYE";
+            public const string PetEpilogueSticker_Lion = "CAACAgIAAxkBAAEQCnVpRYMeh6IaPLQHsXQG1Uyaw3OTDgAC8REAArvcaUnECGQ3xls1QzYE";
+            public const string PetChangeTypeSticker_Lion = "CAACAgIAAxkBAAEQCp5pRYSHGXvfMk9nu_7K0IYX5KNh7AACyBEAAhXZmUi35TkWvq3pyjYE";
+            public const string PetResurrectedSticker_Lion = "CAACAgIAAxkBAAEQCm9pRYL_Ya6Z_fjvWE6XPzeQwc0EzgAChxMAAmu9GUlTj4unfK2sUjYE";
+            public const string PetDailyRewardSticker_Lion = "CAACAgIAAxkBAAEQCoxpRYP3wfFYr0T_00xPPnYd9GHHRAACtgwAAit4OUgu5oaA1SQwPzYE";
+            public const string RandomEventStepOnFootSticker_Lion = "CAACAgIAAxkBAAEQCpBpRYQGFdYvftB6RB9yPFAcS-AEfwAC3Q4AAs75OUiZkk-XAAEtGTY2BA";
+            public const string RandomEventPlayComputerSticker_Lion = "CAACAgIAAxkBAAEQCqppRYTSqhDMItpze0e0hV4JjgLtOgACDgwAApcJIUttIRFxDRW4tTYE";
+            public const string PetTooTiredSticker_Lion = "CAACAgIAAxkBAAEQCo5pRYP-bS9qRcRbe5DTmT0I1liEFAAC9g8AAlSvOEhcSBWnnB-zUTYE";
 
             #endregion
 

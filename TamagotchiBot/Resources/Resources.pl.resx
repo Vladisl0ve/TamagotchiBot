@@ -975,10 +975,15 @@ Automatyczny karmnik (5 ładunków): {5} 💎
     <value>👋 Pożegnaj się i odejdź 👋</value>
   </data>
   <data name="changeTypeButtonCommand" xml:space="preserve">
-    <value>👨‍🌾: Jestem &lt;i&gt;magicznym&lt;/i&gt;rolnikiem, więc mogę zmienić wygląd Twojego zwierzaka
-Wybierz kogo chcesz!
+    <value>👨‍🌾: Jestem &lt;i&gt;magiczny&lt;/i&gt; rolnik, więc mogę zmienić wygląd Twojego pupila
+Wybierz, kogo chcesz!
 
-Kształt zwierzaka: {0} złoty 💰</value>
+Wygląd pupila: {0} złota 💰
+
+Tygrys 🐯: {1} złota 💰
+Lew 🦁: {2} złota 💰
+
+&lt;i&gt; Po zakupie możesz zastosować wygląd Lwa lub Tygrysa bez dodatkowych kosztów &lt;/i&gt;</value>
   </data>
   <data name="CatTypeText" xml:space="preserve">
     <value>Kotek 🐱</value>
@@ -1358,5 +1363,17 @@ A także za wysoki poziom pupila otrzymujesz {0} 💎</value>
     <value>⚠️ Trwa aktualizacja bota ⚠️
 
 </value>
+  </data>
+  <data name="TigerTypeText" xml:space="preserve">
+    <value>Tygrysek 🐯</value>
+  </data>
+  <data name="LionTypeText" xml:space="preserve">
+    <value>🦁 Lwiątko</value>
+  </data>
+  <data name="changedTypeToTiger" xml:space="preserve">
+    <value>🐯&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Paski czynią mnie wyjątkowym — i nieco bardziej niesamowitym</value>
+  </data>
+  <data name="changedTypeToLion" xml:space="preserve">
+    <value>🦁&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Sawanna to moje królestwo… zaraz po obiedzie.</value>
   </data>
 </root>

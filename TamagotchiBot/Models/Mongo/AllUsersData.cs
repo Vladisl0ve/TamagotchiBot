@@ -93,6 +93,12 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("ChangedToMouseCounter")]
         public long ChangedToMouseCounter { get; set; }
 
+        [BsonElement("ChangedToTigerCounter")]
+        public long ChangedToTigerCounter { get; set; }
+
+        [BsonElement("ChangedToLionCounter")]
+        public long ChangedToLionCounter { get; set; }
+
         [BsonElement("ChangedToPandaCounter")]
         public long ChangedToPandaCounter { get; set; }
 

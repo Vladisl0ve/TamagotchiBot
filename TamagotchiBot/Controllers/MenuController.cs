@@ -227,6 +227,16 @@ namespace TamagotchiBot.Controllers
                 await ChangeTypeToPandaCMD(userDB, petDB);
                 return;
             }
+            if (GetAllTranslatedAndLowered(nameof(TigerTypeText)).Contains(textReceived))
+            {
+                await ChangeTypeToTigerCMD(userDB, petDB);
+                return;
+            }
+            if (GetAllTranslatedAndLowered(nameof(LionTypeText)).Contains(textReceived))
+            {
+                await ChangeTypeToLionCMD(userDB, petDB);
+                return;
+            }
             if (GetAllTranslatedAndLowered(nameof(MonkeyTypeText)).Contains(textReceived))
             {
                 await ChangeTypeToMonkeyCMD(userDB, petDB);
@@ -468,6 +478,36 @@ namespace TamagotchiBot.Controllers
                                    PetType.Mouse,
                                    nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
                                        nameof(changedTypeToMouse).UseCulture(_userCulture),
+                                       HttpUtility.HtmlEncode(petDB.Name)));
+        }
+
+        private async Task ChangeTypeToTigerCMD(User userDB, Pet petDB)
+        {
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.ChangedToTigerCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            Log.Debug($"Called /ChangeTypeToTigerCMD for {_userInfo}");
+            await ChangePetTypeCMD(userDB,
+                                   petDB,
+                                   PetType.Tiger,
+                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
+                                       nameof(changedTypeToTiger).UseCulture(_userCulture),
+                                       HttpUtility.HtmlEncode(petDB.Name)));
+        }
+
+        private async Task ChangeTypeToLionCMD(User userDB, Pet petDB)
+        {
+            var aud = _appServices.AllUsersDataService.Get(_userId);
+            aud.ChangedToLionCounter++;
+            _appServices.AllUsersDataService.Update(aud);
+
+            Log.Debug($"Called /ChangeTypeToLionCMD for {_userInfo}");
+            await ChangePetTypeCMD(userDB,
+                                   petDB,
+                                   PetType.Lion,
+                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
+                                       nameof(changedTypeToLion).UseCulture(_userCulture),
                                        HttpUtility.HtmlEncode(petDB.Name)));
         }
 
@@ -713,7 +753,9 @@ namespace TamagotchiBot.Controllers
         private async Task ChangeTypeCMD()
         {
             string toSendText = string.Format(nameof(changeTypeButtonCommand).UseCulture(_userCulture),
-                                              Costs.ChangePetType);
+                                              Costs.ChangePetType,
+                                              Costs.ChangePetTypeToTiger.ToString("N0", System.Globalization.CultureInfo.InvariantCulture),
+                                              Costs.ChangePetTypeToLion.ToString("N0", System.Globalization.CultureInfo.InvariantCulture));
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.ChangeTypeButtonCounter++;

@@ -974,10 +974,15 @@ https://t.me/news_virtualpetbot</value>
     <value>👋 Попрощатися та піти 👋</value>
   </data>
   <data name="changeTypeButtonCommand" xml:space="preserve">
-    <value>👨‍🌾: Я ж &lt;i&gt;чарівний&lt;/i&gt; фермер, тому можу змінити вигляд твоєму вихованцю 
-Вибирай кого хочеш! 
+    <value>👨‍🌾: Я &lt;i&gt;магічний&lt;/i&gt; фермер, тому можу змінити зовнішній вигляд твого улюбленця
+Вибирай, кого хочеш!
 
-Зміна вигляду вихованця: {0} золота 💰</value>
+Форма улюбленця: {0} золота 💰
+
+Тигр 🐯: {1} золота 💰
+Лев 🦁: {2} золота 💰
+
+&lt;i&gt; Після покупки можна застосувати вигляд Лева або Тигра безкоштовно &lt;/i&gt;</value>
   </data>
   <data name="CatTypeText" xml:space="preserve">
     <value>Котик 🐱</value>
@@ -1359,5 +1364,17 @@ https://t.me/news_virtualpetbot</value>
     <value>⚠️ Триває оновлення бота ⚠️
 
 </value>
+  </data>
+  <data name="TigerTypeText" xml:space="preserve">
+    <value>Тигреня 🐯</value>
+  </data>
+  <data name="LionTypeText" xml:space="preserve">
+    <value>🦁 Левеня</value>
+  </data>
+  <data name="changedTypeToTiger" xml:space="preserve">
+    <value>🐯&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Смуги роблять мене унікальним — і трохи крутішим</value>
+  </data>
+  <data name="changedTypeToLion" xml:space="preserve">
+    <value>🦁&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Савана — моє королівство… одразу після обіду.</value>
   </data>
 </root>

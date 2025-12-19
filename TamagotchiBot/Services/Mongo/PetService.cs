@@ -253,26 +253,61 @@ namespace TamagotchiBot.Services.Mongo
         }
         public List<Pet> GetTop10PetsByLevelAllGame()
         {
-            var collection = _collection;
             var pipeline = new EmptyPipelineDefinition<Pet>()
-                .AppendStage<Pet, Pet, Pet>(BsonDocument.Parse("{ $addFields: { totalLevel: { $add: ['$LevelAllGame', '$Level'] } } }"))
-                .Sort(Builders<Pet>.Sort.Descending("totalLevel").Descending(p => p.LastUpdateTime))
+                .AppendStage<Pet, Pet, Pet>(AddTotalLevelStage)
+                .Sort(Builders<Pet>.Sort
+                .Descending("totalLevel")
+                .Descending(p => p.LastUpdateTime))
                 .Limit(10)
-                .AppendStage<Pet, Pet, Pet>(BsonDocument.Parse("{ $unset: 'totalLevel' }"));
+                .AppendStage<Pet, Pet, Pet>(
+                new BsonDocument("$unset", "totalLevel"));
 
-            return collection.Aggregate(pipeline).ToList();
+            return _collection.Aggregate(pipeline).ToList();
         }
 
         public long CountPetsWithHigherLevel(int myTotalLevel, DateTime myLastUpdate)
         {
-            var collection = _collection;
             var pipeline = new EmptyPipelineDefinition<Pet>()
-                .AppendStage<Pet, Pet, Pet>(BsonDocument.Parse("{ $addFields: { totalLevel: { $add: ['$LevelAllGame', '$Level'] } } }"))
-                .Match(BsonDocument.Parse($"{{ $or: [ {{ totalLevel: {{ $gt: {myTotalLevel} }} }}, {{ $and: [ {{ totalLevel: {{ $eq: {myTotalLevel} }} }}, {{ LastUpdateTime: {{ $gt: ISODate('{myLastUpdate:yyyy-MM-ddTHH:mm:ss.000Z}') }} }} ] }} ] }}"))
-                .Group(BsonDocument.Parse("{ _id: null, count: { $sum: 1 } }"));
-
-            var result = collection.Aggregate(pipeline).FirstOrDefault();
-            return result == null ? 0 : result.GetValue("count").AsInt32;
+                .AppendStage<Pet, Pet, Pet>(AddTotalLevelStage)
+                .AppendStage<Pet, Pet, Pet>(
+                BuildHigherRankMatchStage(myTotalLevel, myLastUpdate))
+                .Group(new BsonDocument
+                {
+                    { "_id", BsonNull.Value },
+                    { "count", new BsonDocument("$sum", 1) }
+                });
+            
+            var result = _collection.Aggregate(pipeline).FirstOrDefault();
+            return result?["count"].AsInt32 ?? 0;
         }
+
+        private static BsonDocument BuildHigherRankMatchStage(int myTotalLevel, DateTime myLastUpdate)
+        {
+            return new BsonDocument("$match",
+                new BsonDocument("$or", new BsonArray
+                {
+                    new BsonDocument("totalLevel",
+                    new BsonDocument("$gt", myTotalLevel)),
+                    new BsonDocument("$and", new BsonArray
+                    {
+                        new BsonDocument("totalLevel",
+                        new BsonDocument("$eq", myTotalLevel)),
+                        new BsonDocument("LastUpdateTime",
+                        new BsonDocument("$gt", myLastUpdate))
+                    })
+                })
+                );
+        }
+
+        private static BsonDocument AddTotalLevelStage =>
+            new BsonDocument("$addFields",
+                new BsonDocument("totalLevel",
+                    new BsonDocument("$add", new BsonArray
+                    {
+                        new BsonDocument("$ifNull", new BsonArray { "$LevelAllGame", 0 }),
+                        new BsonDocument("$ifNull", new BsonArray { "$Level", 0 })
+                    })
+                )
+            );
     }
 }

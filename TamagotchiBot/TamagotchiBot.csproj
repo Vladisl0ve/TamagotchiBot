@@ -10,10 +10,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Staging_Local|AnyCPU'">
+    <AssemblyName>TamagotchiBot.Staging</AssemblyName>
     <DefineConstants>$(DefineConstants);STAGING</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Staging|AnyCPU'">
+    <AssemblyName>TamagotchiBot.Staging</AssemblyName>
     <DefineConstants>$(DefineConstants);STAGING</DefineConstants>
   </PropertyGroup>
 

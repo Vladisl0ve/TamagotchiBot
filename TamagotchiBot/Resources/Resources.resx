@@ -977,7 +977,12 @@ Auto-Feeder 5 charges: {5} 💎
     <value>👨‍🌾: I'm a &lt;i&gt;magic&lt;/i&gt;farmer, so I can change the appearance of your pet
 Choose whoever you want!
 
-Pet Shape: {0} gold 💰</value>
+Pet Shape: {0} gold 💰
+
+Tiger 🐯: {1} gold 💰 
+Lion 🦁: {2} gold 💰
+
+&lt;i&gt; After buying, you can apply the Lion or Tiger look at no cost &lt;/i&gt;</value>
   </data>
   <data name="CatTypeText" xml:space="preserve">
     <value>Kitty 🐱</value>
@@ -1358,5 +1363,17 @@ And you also receive {0} 💎 for your pet’s high level</value>
     <value>⚠️ Bot update in progress ⚠️
 
 </value>
+  </data>
+  <data name="TigerTypeText" xml:space="preserve">
+    <value>Tiger cub 🐯</value>
+  </data>
+  <data name="LionTypeText" xml:space="preserve">
+    <value>🦁 Lion cub</value>
+  </data>
+  <data name="changedTypeToTiger" xml:space="preserve">
+    <value>🐯&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Stripes make me unique — and slightly more awesome</value>
+  </data>
+  <data name="changedTypeToLion" xml:space="preserve">
+    <value>🦁&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: The savannah is my kingdom… right after lunch.</value>
   </data>
 </root>
