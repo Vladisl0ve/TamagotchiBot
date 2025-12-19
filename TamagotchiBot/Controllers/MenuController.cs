@@ -488,12 +488,20 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
 
             Log.Debug($"Called /ChangeTypeToTigerCMD for {_userInfo}");
+            int cost = Costs.ChangePetTypeToTiger;
+            bool isPremium = true;
+
+            if (userDB.OwnedPetTypes != null && userDB.OwnedPetTypes.Contains((int)PetType.Tiger))
+                cost = 0;
+
             await ChangePetTypeCMD(userDB,
                                    petDB,
                                    PetType.Tiger,
                                    nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
                                        nameof(changedTypeToTiger).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)));
+                                       HttpUtility.HtmlEncode(petDB.Name)),
+                                   cost,
+                                   isPremium);
         }
 
         private async Task ChangeTypeToLionCMD(User userDB, Pet petDB)
@@ -503,15 +511,23 @@ namespace TamagotchiBot.Controllers
             _appServices.AllUsersDataService.Update(aud);
 
             Log.Debug($"Called /ChangeTypeToLionCMD for {_userInfo}");
+            int cost = Costs.ChangePetTypeToLion;
+            bool isPremium = true;
+
+            if (userDB.OwnedPetTypes != null && userDB.OwnedPetTypes.Contains((int)PetType.Lion))
+                cost = 0;
+
             await ChangePetTypeCMD(userDB,
                                    petDB,
                                    PetType.Lion,
                                    nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
                                        nameof(changedTypeToLion).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)));
+                                       HttpUtility.HtmlEncode(petDB.Name)),
+                                   cost,
+                                   isPremium);
         }
 
-        private async Task ChangePetTypeCMD(User userDB, Pet petDB, PetType newPetType, string toSendText)
+        private async Task ChangePetTypeCMD(User userDB, Pet petDB, PetType newPetType, string toSendText, int cost = Costs.ChangePetType, bool isPremium = false)
         {
             if ((int)newPetType == petDB.Type)
             {
@@ -527,7 +543,7 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            if (userDB.Gold < Costs.ChangePetType)
+            if (userDB.Gold < cost)
             {
                 var toSendErr2 = new AnswerMessage()
                 {
@@ -540,8 +556,21 @@ namespace TamagotchiBot.Controllers
 
                 return;
             }
+
+            if (isPremium)
+            {
+                if (userDB.OwnedPetTypes == null)
+                    userDB.OwnedPetTypes = new List<int>();
+
+                if (!userDB.OwnedPetTypes.Contains((int)newPetType))
+                {
+                    userDB.OwnedPetTypes.Add((int)newPetType);
+                    _appServices.UserService.Update(userDB.UserId, userDB);
+                }
+            }
+
             _appServices.PetService.UpdateType(userDB.UserId, newPetType);
-            _appServices.UserService.UpdateGold(_userId, userDB.Gold - Costs.ChangePetType);
+            _appServices.UserService.UpdateGold(_userId, userDB.Gold - cost);
 
             var toSend = new AnswerMessage()
             {

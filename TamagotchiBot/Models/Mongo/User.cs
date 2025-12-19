@@ -58,6 +58,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("AutoFeedCharges")]
         public int AutoFeedCharges { get; set; }
 
+        [BsonElement("OwnedPetTypes")]
+        public List<int> OwnedPetTypes { get; set; } = [];
+
         public static User Clone(User userToClone)
         {
             var clone = new User()
@@ -74,6 +77,7 @@ namespace TamagotchiBot.Models.Mongo
                 NextDailyRewardNotificationTime = userToClone.NextDailyRewardNotificationTime,
                 Username = userToClone.Username,
                 Gold = userToClone.Gold,
+                OwnedPetTypes = userToClone.OwnedPetTypes,
             };
 
             return clone;
