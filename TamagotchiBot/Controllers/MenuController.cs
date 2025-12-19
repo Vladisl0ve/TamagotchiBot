@@ -184,7 +184,7 @@ namespace TamagotchiBot.Controllers
             }
             if (textReceived == Commands.ReferalCommand || GetAllTranslatedAndLowered(nameof(referalCommandDescription)).Contains(textReceived))
             {
-                await ShowReferalInfo();
+                await ShowReferalInfo(userDB);
                 return;
             }
             if (textReceived == Commands.FarmCommand || GetAllTranslatedAndLowered(nameof(farmCommandDescription)).Contains(textReceived))
@@ -1646,14 +1646,14 @@ namespace TamagotchiBot.Controllers
             Log.Debug($"Called /ShowHelpInfo for {_userInfo}");
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
-        private async Task ShowReferalInfo()
+        private async Task ShowReferalInfo(User userDB)
         {
             Log.Debug($"Called /ShowReferalInfo for {_userInfo}");
             var botUsername = (await _appServices.BotControlService.GetBotUserInfo()).Username;
 
             var refAmounts = _appServices.ReferalInfoService.GetDoneRefsAmount(_userId);
             var goldByRef = Rewards.ReferalAddedGold * refAmounts;
-            var diamondsByRef = Rewards.ReferalAddedDiamonds * refAmounts;
+            var diamondsByRef = userDB.DiamondsGotByRef;
             var refLink = Extensions.GetReferalLink(_userId, botUsername);
             string toSendText = string.Format(
                 nameof(referalCommand).UseCulture(_userCulture),

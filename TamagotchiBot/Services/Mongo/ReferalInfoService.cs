@@ -76,6 +76,7 @@ namespace TamagotchiBot.Services.Mongo
                     { 
                         _userService.UpdateGold(creatorUserId, (_userService.Get(creatorUserId)?.Gold ?? 0) + Rewards.ReferalAddedGold);
                         _userService.UpdateDiamonds(creatorUserId, (_userService.Get(creatorUserId)?.Diamonds ?? 0) + Rewards.ReferalAddedDiamonds);
+                        _userService.UpdateDiamondsGotByRef(creatorUserId, (_userService.Get(creatorUserId)?.DiamondsGotByRef ?? 0) + Rewards.ReferalAddedDiamonds);
                     }
 
                     return true;
