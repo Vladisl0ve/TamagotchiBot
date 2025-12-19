@@ -1023,6 +1023,9 @@ namespace TamagotchiBot.Controllers
 
         private async Task AnswerByGemini(Pet petDB, User userDB)
         {
+            if (_message.Text == default || _message.Text.StartsWith('/')) // Ignore commands
+                return;
+
             await _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
 
             var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
