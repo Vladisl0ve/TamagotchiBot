@@ -11,6 +11,8 @@ using TamagotchiBot.UserExtensions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.UserExtensions.Constants;
+using Serilog;
+using Extensions = TamagotchiBot.UserExtensions.Extensions;
 
 namespace TamagotchiBot.Controllers
 {
@@ -22,6 +24,7 @@ namespace TamagotchiBot.Controllers
         private readonly long _userId;
         private readonly CultureInfo _userCulture;
         private readonly PetType _userPetType;
+        private readonly string _userInfo;
 
         public HangmanGameController(IApplicationServices services, Message message = null, CallbackQuery callback = null)
         {
@@ -31,6 +34,7 @@ namespace TamagotchiBot.Controllers
             _userId = message?.From?.Id ?? callback.From.Id;
             _userCulture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
             _userPetType = Extensions.GetEnumPetType(_appServices.PetService.Get(_userId)?.Type ?? -1);
+            _userInfo = Extensions.GetLogUser(_appServices.UserService.Get(_userId));
         }
 
         public async Task Menu()
@@ -127,26 +131,32 @@ namespace TamagotchiBot.Controllers
             if (userDB.Gold < Costs.HangmanGame)
             {
                 string anwser = nameof(Resources.Resources.NotEnoughGold).UseCulture(_userCulture);
-                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser, true);
+                if (_callback != null)
+                    await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser, true);
+                else
+                    await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage() { Text = anwser }, _userId, false);
+
                 return;
             }
 
             if (petDB.Fatigue >= 100)
             {
                 string anwser = nameof(Resources.Resources.tooTiredText).UseCulture(_userCulture);
-                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
-                                                                        _userId,
-                                                                        anwser,
-                                                                        true);
+                if (_callback != null)
+                    await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser, true);
+                else
+                    await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage() { Text = anwser }, _userId, false);
+
                 return;
             }
             if (petDB.Joy >= 100)
             {
                 string anwser = nameof(Resources.Resources.PetIsFullOfJoyText).UseCulture(_userCulture);
-                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
-                                                                        _userId,
-                                                                        anwser,
-                                                                        true);
+                if (_callback != null)
+                    await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser, true);
+                else
+                    await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage() { Text = anwser }, _userId, false);
+
                 return;
             }
 
@@ -183,6 +193,7 @@ namespace TamagotchiBot.Controllers
             _appServices.HangmanGameDataService.Update(gameData);
 
             await SendGameStatus(gameData, string.Format(nameof(Resources.Resources.hangmanGameStart).UseCulture(_userCulture), GetHiddenWord(gameData), 0, 7), false);
+            Log.Debug($"Started HangmanGame {_userInfo}");
         }
 
         private async Task MakeGuess(char letter)

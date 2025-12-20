@@ -10,6 +10,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 using static TamagotchiBot.UserExtensions.Constants;
 using Extensions = TamagotchiBot.UserExtensions.Extensions;
+using Serilog;
 
 namespace TamagotchiBot.Controllers
 {
@@ -127,26 +128,29 @@ namespace TamagotchiBot.Controllers
             if (userDB.Gold < Costs.TicTacToeGame)
             {
                 string anwser = nameof(Resources.Resources.NotEnoughGold).UseCulture(_userCulture);
-                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser, true);
+                if (_callback != null)
+                    await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser, true);
+                else
+                    await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage() { Text = anwser }, _userId, false);
                 return;
             }
 
             if (petDB.Fatigue >= 100)
             {
                 string anwser = nameof(Resources.Resources.tooTiredText).UseCulture(_userCulture);
-                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
-                                                                        _userId,
-                                                                        anwser,
-                                                                        true);
+                if (_callback != null)
+                    await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser, true);
+                else
+                    await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage() { Text = anwser }, _userId, false);
                 return;
             }
             if (petDB.Joy >= 100)
             {
                 string anwser = nameof(Resources.Resources.PetIsFullOfJoyText).UseCulture(_userCulture);
-                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
-                                                                        _userId,
-                                                                        anwser,
-                                                                        true);
+                if (_callback != null)
+                    await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id, _userId, anwser, true);
+                else
+                    await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage() { Text = anwser }, _userId, false);
                 return;
             }
 
@@ -174,6 +178,7 @@ namespace TamagotchiBot.Controllers
             _appServices.TicTacToeGameDataService.Update(gameData);
 
             await SendBoard(gameData, nameof(Resources.Resources.startGameTicTacToeText).UseCulture(_userCulture));
+            Log.Debug($"Started TicTacToeGame {_userInfo}");
         }
 
         private async Task MakeMove(int cellIndex)
