@@ -1040,6 +1040,8 @@ namespace TamagotchiBot.Controllers
             if (_message.Text == default || _message.Text.StartsWith('/')) // Ignore commands
                 return;
 
+            new ForwardController(_appServices, _message).StartForwarding();
+
             await _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
 
             var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
