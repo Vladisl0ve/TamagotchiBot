@@ -1,0 +1,12 @@
+services:
+  tamagotchibot:
+    build:
+      context: .
+      dockerfile: dockerfile
+    restart: always
+    environment:
+      - MongoUsername=${***}
+      - MongoPass=${***}
+      - MongoIP=${***} # Use 'host.docker.internal' if mongo is on the host machine, or the server's IP
+      - MongoPort=***
+    network_mode: "host" # Uncomment if you want the container to share the host's network stack (easier for accessing local Mongo)

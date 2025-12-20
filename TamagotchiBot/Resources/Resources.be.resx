@@ -1,0 +1,1440 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Test" xml:space="preserve">
+    <value>Тэставае значэнне</value>
+    <comment>2345</comment>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>🎮 Вітаю ў Tamagotchi Bot! Тут можаш вырасціць свайго віртуальнага гадаванца, гуляць з ім, а таксама паспаборнічаць з іншымі гульцамі 🎮
+Пачнем!</value>
+  </data>
+  <data name="ChooseName" xml:space="preserve">
+    <value>🧸 Спачатку вам трэба даць імя новаму сябру
+Проста ўвядзіце яго тут</value>
+  </data>
+  <data name="ConfirmedName" xml:space="preserve">
+    <value>🧃 Круць!
+Твой гадаванец {0} чакае 🐱
+
+Распарадак дня:
+1️⃣ Паснедаць на кухні 🍳
+2️⃣ Пачысціць зубы і прыняць душ 🛁
+3️⃣ Пагуляць у дзіцячай (гадаванец вельмі любіць гульню ў Яблык🍎)
+
+Не забывай наведваць гадаванца, інакш ён можа пакрыўдзіцца і пайсці
+Забаўляйцеся 🍿</value>
+  </data>
+  <data name="petCommand" xml:space="preserve">
+    <value>{11} {0}
+
+💊 Здароўе: {1}%
+🍕 Сытасць: {4}%
+🛁 Гігіена: {9}%
+😴 Стамленне: {5}%
+🎊 Радасць: {7}%
+
+💰 Золата: {8} 💴
+💎 Дыяменты: {13} 💎
+
+⚡️ Статус:&lt;b&gt; {6}&lt;/b&gt;
+🎓 Адукацыя: {17}
+
+🏅 &lt;b&gt;{3} узровень&lt;/b&gt;
+✨ &lt;i&gt;EXP: {2}/{10}&lt;/i&gt;
+
+{12}
+
+{14}
+
+&lt;b&gt;&lt;i&gt;Таксама можаш размаўляць са мной прама тут!&lt;/i&gt;&lt;/b&gt; {16}
+
+{11}{0}: {15}</value>
+  </data>
+  <data name="DevelopWarning" xml:space="preserve">
+    <value>У распрацоўцы, чакай наступнага абнаўлення 👾</value>
+  </data>
+  <data name="ChangeLanguage" xml:space="preserve">
+    <value>Выберы новую мову:
+- Belarusian (беларуская) 🇨🇷
+- Ukrainian (українська) 🇺🇦
+- Russian (русский) 🇷🇺
+- English 🇺🇸
+- Polish (Polski) 🇵🇱</value>
+  </data>
+  <data name="ConfirmedLanguage" xml:space="preserve">
+    <value>Выбрана беларуская мова 🤍❤️🤍</value>
+  </data>
+  <data name="petCommandMoreInfo1" xml:space="preserve">
+    <value>{0} {1}
+
+🎂 Дата нараджэння: {2}
+👫 Рэфералаў: {3}
+
+🍗 Гадаванца кармілі &lt;b&gt;&lt;i&gt;{4} разоў&lt;/i&gt;&lt;/b&gt;
+🍎 Згуляна ў Яблык &lt;b&gt;&lt;i&gt;{5} разоў&lt;/i&gt;&lt;/b&gt;
+🌙 Гадаванец праспаў &lt;b&gt;&lt;i&gt;{6} хвілін&lt;/i&gt;&lt;/b&gt;
+🧰 &lt;b&gt;&lt;i&gt;{7} хвілін&lt;/i&gt;&lt;/b&gt; гадаванец працаваў
+
+🦭 Гадавачу &lt;b&gt;&lt;i&gt;{8} дзён&lt;/i&gt;&lt;/b&gt;</value>
+  </data>
+  <data name="petCommandInlineBasicInfo" xml:space="preserve">
+    <value>Асноўныя звесткі 📋</value>
+  </data>
+  <data name="petCommandInlineExtraInfo" xml:space="preserve">
+    <value>Больш інфы 📝</value>
+  </data>
+  <data name="kitchenCommand" xml:space="preserve">
+    <value>Вы на кухні 🥦
+🍕 Сытасць жывёлы: {0}%
+💰 Золата: {1}
+
+Хлеб 🍞 = +50%🍕 |-30💰
+Яблык 🍎 = +5%🍕 |-1💰
+Лядзёнка 🍭 = +1%🍕 |-0 💰
+Шоколадка 🍫 = +2%🍕 |-0💰
+
+Не забывай карміць жывёліну 🐣</value>
+  </data>
+  <data name="PetFeedingAnwserCallback" xml:space="preserve">
+    <value>Твой гадаванец здаволіў голад на {0}%</value>
+  </data>
+  <data name="FatigueFresh" xml:space="preserve">
+    <value>бадзёры</value>
+  </data>
+  <data name="FatigueRested" xml:space="preserve">
+    <value>адпачыўшы</value>
+  </data>
+  <data name="FatigueSlightlyTired" xml:space="preserve">
+    <value>трохі стомлены</value>
+  </data>
+  <data name="FatigueTired" xml:space="preserve">
+    <value>стомлены</value>
+  </data>
+  <data name="FatigueSleepy" xml:space="preserve">
+    <value>сонны</value>
+  </data>
+  <data name="petCommandDescription" xml:space="preserve">
+    <value>Стан жывёлы ❤️‍🩹</value>
+  </data>
+  <data name="kitchenCommandDescription" xml:space="preserve">
+    <value>Кухня 🍽</value>
+  </data>
+  <data name="languageCommandDescription" xml:space="preserve">
+    <value>language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺 | мова 🇺🇦</value>
+  </data>
+  <data name="sleepCommand" xml:space="preserve">
+    <value>{0} {1}
+😴 Стомленасць: {2}%
+⚡️ Стан: {3}</value>
+  </data>
+  <data name="sleepCommandDescription" xml:space="preserve">
+    <value>Спальня 🛏</value>
+  </data>
+  <data name="PetSleepingAlreadyAnwserCallback" xml:space="preserve">
+    <value>Ваш гадаванец ужо спіць 💤</value>
+  </data>
+  <data name="sleepCommandInlineShowTime" xml:space="preserve">
+    <value>Пачакай пакуль спіць: {0} 🌚</value>
+  </data>
+  <data name="CurrentStatusActive" xml:space="preserve">
+    <value>актыўны 🌞</value>
+  </data>
+  <data name="CurrentStatusSleeping" xml:space="preserve">
+    <value>спіць 🌙</value>
+  </data>
+  <data name="PetSleepingDoesntWantYetAnwserCallback" xml:space="preserve">
+    <value>Гадаванец яшчэ не хоча спаць 🌞</value>
+  </data>
+  <data name="sleepCommandInlinePutToSleep" xml:space="preserve">
+    <value>Пакласці спаць 🛌</value>
+  </data>
+  <data name="gameroomCommand" xml:space="preserve">
+    <value>Вы ў дзіцячым пакою
+
+⚽️ Стомленасць: {0}%
+🎊 Радасць: {1}%
+💰 Золата: {2} 
+
+🍏 Яблычная гульня = +{3}🎊 | -{4}💰
+🎲 Гульня ў карты = +{5}🎊 | -{6}💰
+❌⭕️ Крыжыкі-Нулікі: +{7}🎊 | -{8}💰
+😵 Шыбеніца [RU]: +{9}🎊 | -{10}💰
+
+Гульня, ды не штодня 🧗‍♀️</value>
+  </data>
+  <data name="gameroomCommandDescription" xml:space="preserve">
+    <value>Дзіцячая ⚽️</value>
+  </data>
+  <data name="geminiCommandDescription" xml:space="preserve">
+    <value>Gemini 🤖</value>
+  </data>
+  <data name="PetPlayingAnwserCallback" xml:space="preserve">
+    <value>Радасць павялічылася на {0}% 🎊</value>
+  </data>
+  <data name="denyAccessSleeping" xml:space="preserve">
+    <value>Ты не можаш зайсці да пакою: твой гадаванец спіць 🌙</value>
+  </data>
+  <data name="ranksCommand" xml:space="preserve">
+    <value>🌈⭐️ Топ 10 па ўзроўнях ⭐️🌈</value>
+  </data>
+  <data name="ranksCommandDescription" xml:space="preserve">
+    <value>Рэйтынг 🏆</value>
+  </data>
+  <data name="restartCommand" xml:space="preserve">
+    <value>ДРОПНУЎ ГАДА {0} 💔</value>
+  </data>
+  <data name="renameCommand" xml:space="preserve">
+    <value>Увядзі новае імя гадаванца 🗯️</value>
+  </data>
+  <data name="renameCommandDescription" xml:space="preserve">
+    <value>Новае імя ✏️</value>
+  </data>
+  <data name="hospitalCommandHighHp" xml:space="preserve">
+    <value>Клопат пра сваё цела і розум - ключ да доўгага і здаровага жыцця 🏄🏄🏻‍♀️🏄
+Гадаванец здаровы на {0}% ❤️‍🔥
+Ты малайчынка 🫵</value>
+  </data>
+  <data name="hospitalCommandMidHp" xml:space="preserve">
+    <value>Бяспека ў першую чаргу! 🏥
+Не забывай карміць гадаванца! 🤕
+Сярэдні ўзровень здароўя: {0}%</value>
+  </data>
+  <data name="hospitalCommandLowHp" xml:space="preserve">
+    <value>Ай-яй-яй! Яшчэ крыху і памрэ ☠️
+Ратуй свайго гадавнца! 🚑
+Здароўе: {0}%</value>
+  </data>
+  <data name="hospitalCommandCurePills" xml:space="preserve">
+    <value>З'есьці нясмачную пілюлю 💊💊💊</value>
+  </data>
+  <data name="PetCuringAnwserCallback" xml:space="preserve">
+    <value>Ваш гадаванец быў вылечаны на {0}% 🌡
+Пілюлі былі вельмі нясмачныя 🧸
+Радасць змянілася на {1}%</value>
+  </data>
+  <data name="hospitalCommandDescription" xml:space="preserve">
+    <value>Шпіталь 🏥</value>
+  </data>
+  <data name="bathroomCommandDescription" xml:space="preserve">
+    <value>Ванная 🛁</value>
+  </data>
+  <data name="helpCommand" xml:space="preserve">
+    <value>🌈 &lt;b&gt;Сардэчна запрашаем у свет Тамагочы!&lt;/b&gt; 🌈
+Тут ты можаш завесці сабе новага віртуальнага сябра 🐩🐈🐈‍⬛🐕
+Абавязкова сачы за поспехамі свайго гадаванца:
+▫️ &lt;b&gt;гульняй з ім у розныя гульні&lt;/b&gt; ⚽️
+▫️ &lt;b&gt;кармі смачнай ежай&lt;/b&gt; 🍕🍳🍫
+▫️ &lt;b&gt;клапаціся пра яго&lt;/b&gt; 🍼
+▫️ &lt;b&gt;даглядай і проста любі&lt;/b&gt; 😻
+
+У меню каманд ты знойдзеш усё, што патрэбна твайму гадаванцу 🌻
+&lt;i&gt;Часта наведвай гадаванца, бо ён цябе таксама любіць і будзе рады пагуляць&lt;/i&gt; 🤍❤️🤍
+
+&lt;b&gt;FAQ:&lt;/b&gt;
+
+&lt;b&gt;Як назапашваецца ўзровень 🏅?&lt;/b&gt;
+&lt;i&gt;1 вопыт = 1 хвіліна жыцця гадаванца. Дастаткова не забываць пра свайго гадаванца 🦩&lt;/i&gt;
+
+&lt;b&gt;Як зарабляць грошы 💰?&lt;/b&gt;
+&lt;i&gt;Золата зарабляецца на працы (/work)&lt;/i&gt;
+
+&lt;b&gt;Ці можа гадаванец памерці 💀?&lt;/b&gt;
+&lt;i&gt;На жаль, як у жыцці, так і ў Тамагочы, гадаванец можа вельмі абурыцца і пайсці 💔
+Таму часцей наведвай свайго віртуальнага сябра 🧸&lt;/i&gt;
+
+&lt;b&gt;Як атрымаць дыяманты 💎?&lt;/b&gt;
+&lt;i&gt;Пакуль толькі праз рэферальную праграму (/referal) або займаючы ТОП-3 па ўзроўню ў канцы месяца.&lt;/i&gt;
+
+&lt;b&gt;Кожны месяц у мяне знікаюць узроўні гадаванца. Што гэта?&lt;/b&gt;
+&lt;i&gt;Так, кожны месяц узроўні гадаванца скідаюцца. Гадаванцы з ТОП-10 атрымліваюць прызы. ТОП-3 атрымліваюць і золата💰, і дыяманты💎!&lt;/i&gt;
+
+&lt;b&gt;Як працуе АЎТАКАРМІЛКА?&lt;/b&gt;
+&lt;i&gt;На Ферме можна ўключаць/выключаць аўтакармілку. Калі ўключыць, то раз у 4 гадзіны гадаванец карміцца сам (СЫТAСЦЬ можа быць нават больш за 100) і расходуецца адзін зарад. Заряджаць аўтакармілку можна на Ферме.&lt;/i&gt;
+
+&lt;b&gt;/menu&lt;/b&gt; – &lt;i&gt;тут амаль усе магчымыя каманды&lt;/i&gt;</value>
+  </data>
+  <data name="helpCommandDescription" xml:space="preserve">
+    <value>Даведка ❓</value>
+  </data>
+  <data name="menuCommand" xml:space="preserve">
+    <value>Што рабіць з гадаванцам:
+/pet - паказльнікі гадаванца {0}
+/kitchen - есці тут 🍕
+/work - зарабляць грошы 💰
+/sleep - спальня 🧸
+/gameroom - забавы 🎳
+/ranks - лепшыя з лепшых! 👑
+/hospital- ветэрынар 🏥
+/bathroom - чысціня гадаванца 🛁
+/referal - бонусы за сяброў 👩‍👩‍👧‍👦
+/rename - змяніць імя 🌀
+
+/reward - &lt;i&gt;&lt;b&gt;атрымаць штодзённы бонус&lt;/b&gt;&lt;/i&gt; 🎁
+
+/changelog - афіцыяльны канал бота Tamagotchi 🚀
+/language - language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺
+/help - FAQ 🆘
+
+У будучыні будзе больш!
+Сачыце за абнаўленнямі! 💝</value>
+  </data>
+  <data name="menuCommandDescription" xml:space="preserve">
+    <value>Іншае 🎒</value>
+  </data>
+  <data name="FarewellText" xml:space="preserve">
+    <value>Ты заходзіш да {0}, але бачыш толькі пусты пакой і занатоўку на стале:
+"Дарагі сябар {1}!
+Было вельмі прыемна бавіць з табой час, але я пачаў хварэць
+Шкода...❤️‍🩹
+
+Твой гадаванец сышоў, таму што не хапала клопату аб ім 💔
+
+&lt;b&gt;⚠️ УВАГА: КАЛІ НІЧОГА НЕ ЗРАБІЦЬ, ТЫ СТРАЦІШ ГАДАВАНЦА ☠️&lt;/b&gt;
+
+У цябе ёсць:
+&lt;b&gt;{2}&lt;/b&gt; 💰 золата
+&lt;b&gt;{3}&lt;/b&gt; 💎 дыяментаў</value>
+  </data>
+  <data name="EpilogueText" xml:space="preserve">
+    <value>Бывае з кожным, але жыццё працягваецца!
+Можа з новым гадаванцам табе павязе 😼
+
+Давай спачатку? 🫶</value>
+  </data>
+  <data name="ReminderNotifyText1" xml:space="preserve">
+    <value>{0}: Ты вярнуўся!
+Мне так цябе не хапала!
+Хачу есці 🌭 і гуляць 🪁
+
+/kitchen пакарміць 🍩
+/gameroom гуляць 🏓</value>
+  </data>
+  <data name="quitText" xml:space="preserve">
+    <value>Выйсці ❌</value>
+  </data>
+  <data name="againText" xml:space="preserve">
+    <value>Яшчэ раз 🍏</value>
+  </data>
+  <data name="statisticsText" xml:space="preserve">
+    <value>Статыстыка 📊</value>
+  </data>
+  <data name="ConcedeText" xml:space="preserve">
+    <value>Здацца</value>
+  </data>
+  <data name="appleGameHelpText" xml:space="preserve">
+    <value>Правілы гульні простыя - прайграе той, хто з'есць няспелы зялёны яблык
+З'есці за раз можна на выбар адно 🍎, два 🍎🍎 ці тры яблыкі 🍎🍎🍎
+Зможаш перайграць свайго гадаванца і пакінуць яму нясмачнае 🍏?</value>
+  </data>
+  <data name="appleGameUndefiendText" xml:space="preserve">
+    <value>Выберы адно 🍎, два 🍎🍎 або тры яблыкі 🍎🍎🍎 каб з'есці</value>
+  </data>
+  <data name="remainingApplesText" xml:space="preserve">
+    <value>Засталося {0} яблыкаў</value>
+  </data>
+  <data name="appleGameSysEaten" xml:space="preserve">
+    <value>{0}: мною з'едзена яблыкаў - {1}</value>
+  </data>
+  <data name="appleGameLoseText" xml:space="preserve">
+    <value>Застаўся твой зялёны яблык
+
+{0}: Пашанцуе другім разам 😉</value>
+  </data>
+  <data name="appleGameWinText" xml:space="preserve">
+    <value>{0}: Ты выйграў, малайчына!</value>
+  </data>
+  <data name="appleGameStatisticsCommand" xml:space="preserve">
+    <value>📈СТАТЫСТЫКА ЯБЛЫКА📉
+Выйграна: {0}
+Прайграна: {1}
+Здаўся раз: {2}</value>
+  </data>
+  <data name="tooTiredText" xml:space="preserve">
+    <value>Твой гадаванец занадта стаміўся, яму трэба паспаць 💤</value>
+  </data>
+  <data name="quitCommandDescription" xml:space="preserve">
+    <value>📛 Выйсці з міні-гульні</value>
+  </data>
+  <data name="backToGameroomText" xml:space="preserve">
+    <value>Вы зноў у дзіцячай ⚽️</value>
+  </data>
+  <data name="changelog_onPatch_17" xml:space="preserve">
+    <value>⚡️⚡️ &lt;b&gt;Выйшла абнаўленне 1.7&lt;/b&gt; ⚡️⚡️
+
+&lt;b&gt;НОВАЕ:&lt;/b&gt;
+🧸 &lt;b&gt;Дададзены новыя тыпы гадаванцаў:&lt;/b&gt;
+🐒 &lt;i&gt;Мілая малпа&lt;/i&gt;
+🐯 &lt;i&gt;Брутальны тыгрыня&lt;/i&gt;
+🦁 &lt;i&gt;Статны ільвяня&lt;/i&gt;
+
+&lt;i&gt;Ільвяня і тыгрня купляюцца адзін раз, таму пасля пакупкі можна бясплатна вярнуцца да іх выгляду&lt;/i&gt;
+
+🎓 &lt;b&gt;Адукацыя&lt;/b&gt; – ёсць розныя ступені адукацыі, трэба вучыцца ў кожнай па чарзе
+💡 &lt;b&gt;Новыя працы&lt;/b&gt;, якія залежаць ад адукацыі гадаванца
+💎 &lt;b&gt;Дададзена новая валюта – ДЫЯМАНТЫ&lt;/b&gt;💎. Іх можна атрымаць, запрашаючы сяброў пагуляць у Тамагочы па рэферальнай праграме
+⚽️ &lt;b&gt;Новыя гульні ў Дзіцячай&lt;/b&gt; – ❌⭕️ &lt;i&gt;Крыжыкі-нулікі&lt;/i&gt; і &lt;i&gt;Віселіца [RU]&lt;/i&gt; (&lt;i&gt;Балда&lt;/i&gt;) 😵
+🏆 &lt;b&gt;Дададзены новыя Рэйтынгі&lt;/b&gt;
+📆 &lt;b&gt;Абнаўленне Рэйтынгу Ўзроўняў кожны месяц&lt;/b&gt; – цяпер кожны месяц гадаванцы скідаюць свае ўзроўні. &lt;i&gt;За трапленне ў ТОП-10 за месяц прадугледжаны прызы 🎁 &lt;/i&gt;
+🤖 &lt;b&gt;Дададзена АЎТАКАРМІЛКА&lt;/b&gt; – прылада, якая дазваляе карміць гадаванца пакуль вы афлайн. &lt;i&gt;Купляецца толькі за дыяменты💎&lt;/i&gt;
+
+&lt;b&gt;ЗМЯНЕННІ:&lt;/b&gt;
+🍽 &lt;b&gt;Зменены баланс Сытасці&lt;/b&gt;
+💰 &lt;b&gt;Праца&lt;/b&gt; – зменены заробкі і час чакання
+🛏 &lt;b&gt;Спальня&lt;/b&gt; – працягласць сну скарацілася з 10 хвілін да 2 хвілін
+📫 &lt;b&gt;Паляпшэнне камунікацыі з гадаванцам&lt;/b&gt; – цяпер гадаванец больш «разумны», можа ацаніць свой стан і ў адказ можа паскардзіцца або пахваліцца сваім станам
+🌻 Яшчэ вельмі шмат змен, пра якія я забыўся. Але вы ўбачыце іх у боте :)
+
+Пакуль што я прыпыніў працу над графічным інтэрфейсам, але вырашыў кампенсаваць даданнем новых фішак 🦩
+
+🎄&lt;b&gt;УСІХ З НАСТУПНЫМІ СВЯТАМІ!&lt;/b&gt;🎄
+&lt;i&gt;Няхай у Новым годзе будзе больш шчасця і ўдачы, а праблемы і негатыў абыходзяць вас бокам, няхай мары спраўджваюцца. Добрых канікул і з Новым годам!&lt;/i&gt; ⭐️</value>
+  </data>
+  <data name="ReminderNotifyText2" xml:space="preserve">
+    <value>{0}: Чакаю цябе тут, вяртайся
+
+/kitchen пакарміць 🍩
+/gameroom гуляць 🏓</value>
+  </data>
+  <data name="ReminderNotifyText3" xml:space="preserve">
+    <value>{0}: Сяджу, сумую...
+
+
+/kitchen пакарміць 🍩
+/gameroom гуляць 🏓</value>
+  </data>
+  <data name="CurrentStatusWorking" xml:space="preserve">
+    <value>на працы🧰</value>
+  </data>
+  <data name="denyAccessWorking" xml:space="preserve">
+    <value>Ты не можаш зайсці да пакою: твой гадаванец на працы 💻</value>
+  </data>
+  <data name="workCommand" xml:space="preserve">
+    <value>Выберыце, чым будзе займацца ваш гадаванец 💡
+
+😴 Стомленасць: {2}%
+
+Дастаўка ежы 🎒 -{7}⌛️, +{8} залатых 💰
+Працоўнік Макдональдс 🍔 -{5}⌛️, +{6} залатых 💰
+Раздача ўлётак 🤹‍♀️ -{3}⌛️, +{4} залатых 💰
+
+Інжынер 🛠 -{11}⌛️, +{12} залатых 💰
+Візажыст 💄 -{9}⌛️, +{10} залатых 💰
+
+Праграмаванне 💻 -{0}⌛️, +{1} залатых 💰
+Бухгалтар 📔 -{13}⌛️, +{14} залатых 💰
+Пілот ✈️ -{15}⌛️, +{16} залатых 💰</value>
+  </data>
+  <data name="workCommandInlinePC" xml:space="preserve">
+    <value>💻Кодзіць</value>
+  </data>
+  <data name="workCommandDescription" xml:space="preserve">
+    <value>Праца 💰</value>
+  </data>
+  <data name="PetWorkingAnswerCallback" xml:space="preserve">
+    <value>Золата +{1} 💰
+Гадаванец стаміўся на +{0}% 😓
+Пачакай пакуль гадаванец не скончыць працу</value>
+  </data>
+  <data name="workCommandPCWorking" xml:space="preserve">
+    <value>Гадаванец зараз працуе за кампом 👩‍💻</value>
+  </data>
+  <data name="workCommandInlineShowTime" xml:space="preserve">
+    <value>Засталося папрацаваць: {0} ⏱</value>
+  </data>
+  <data name="renameBannedCommand" xml:space="preserve">
+    <value>Атрымаў бан, бо вёў сябе дрэнна</value>
+  </data>
+  <data name="goldNotEnough" xml:space="preserve">
+    <value>Мала грошай 💰</value>
+  </data>
+  <data name="tooManyStarvingCommand" xml:space="preserve">
+    <value>Ён больш не хоча есьці 🤢</value>
+  </data>
+  <data name="rewardCommandDailyRewardGotten" xml:space="preserve">
+    <value>Вы ўжо атрымалі сваю штодзённую ўзнагароду сёння🫶🏻</value>
+  </data>
+  <data name="rewardCommandDailyRewardInlineShowTime" xml:space="preserve">
+    <value>Да наступнай нагроды: {0} ⏱</value>
+  </data>
+  <data name="rewardCommand" xml:space="preserve">
+    <value>Штодзённая ўзнагарода ўжо тут! 💸
+Хутчэй забірай!🎁</value>
+  </data>
+  <data name="rewardCommandInlineDailyReward" xml:space="preserve">
+    <value>Штодня 🎉(+{0}💰)</value>
+  </data>
+  <data name="DailyRewardAnwserCallback" xml:space="preserve">
+    <value>Віншую, ты атрымаў +{0} золата!🎈</value>
+  </data>
+  <data name="ranksCommandGold" xml:space="preserve">
+    <value>💰⭐️ Топ-10 па золату ⭐️💰</value>
+  </data>
+  <data name="ranksCommandInlineGold" xml:space="preserve">
+    <value>💰Золата</value>
+  </data>
+  <data name="ranksCommandInlineLevel" xml:space="preserve">
+    <value>🏅Узровень</value>
+  </data>
+  <data name="rewardNotification" xml:space="preserve">
+    <value>🎁 Бягі па штодзённы бонус 🎉
+/reward 🎁</value>
+  </data>
+  <data name="rewardCommandDescription" xml:space="preserve">
+    <value>Узнагарода 🎁</value>
+  </data>
+  <data name="ranksCommandInlineApples" xml:space="preserve">
+    <value>🍎Яблыкі</value>
+  </data>
+  <data name="ranksCommandInlineLevelAll" xml:space="preserve">
+    <value>⭐️Узроўні за ўвесь час</value>
+  </data>
+  <data name="ranksCommandLevelAll" xml:space="preserve">
+    <value>⭐️ Топ-10 па ўзроўнях за ўвесь час ⭐️</value>
+  </data>
+  <data name="ranksCommandApples" xml:space="preserve">
+    <value>🍎⭐️ Топ-10 перамог у яблыках ⭐️🍎</value>
+  </data>
+  <data name="RandomEventStomachache" xml:space="preserve">
+    <value>❤️‍🔥Дапамажыце неадкладна свайму гадаванцу!
+{0}:Мой жывоцік вельмі баліць...
+
+-5% здароўя 💊
+-15% сытасці 🍕
+
+/hospital - трэба ісці ў паліклініку!</value>
+  </data>
+  <data name="RandomEventFriendMet" xml:space="preserve">
+    <value>Гуляючы з гадаванцам па горадзе, вы сустрэлі старога сябра Льва🦁
+
++40% Радасць 🎊
++15 золата 💰 (пазычыў у сябра)
+
+/pet - правер свайго гадаванца</value>
+  </data>
+  <data name="RandomEventHotdog" xml:space="preserve">
+    <value>🌭 Вам было прапанавана ацаніць новы рэцэпт хот-дога 🧑‍🍳
+
++40 насычанасць🍕
++20 золата💰
+
+/pet - правер свайго гадаванца</value>
+  </data>
+  <data name="RandomEventStepOnFoot" xml:space="preserve">
+    <value>🧑‍🌾Нехта наступіў на нагу гадаванцу🗣
+Вось рэптылія 👺 
+
+-1% здароўя 💊
+-10% радасці🎊
+
+/pet - правер свайго гадаванца</value>
+  </data>
+  <data name="RandomEventRainbow" xml:space="preserve">
+    <value>🌈 Вы спаткалі вясёлку пасля дажджу 🌦
+
++ 10% радасці 🎊
+
+/pet - правер свайго гадаванца</value>
+  </data>
+  <data name="WelcomeStatusButton" xml:space="preserve">
+    <value>Пачнем 😻</value>
+  </data>
+  <data name="bathroomCommand" xml:space="preserve">
+    <value>Вы знаходзіцеся ў ваннай 🛁
+🚿 Гігіена гадаванца: {0}%
+
+Не забывайце чысціць зубы перад сном🪥</value>
+  </data>
+  <data name="bathroomCommandTakeShower" xml:space="preserve">
+    <value>🛁 Душ</value>
+  </data>
+  <data name="bathroomCommandBrushTeeth" xml:space="preserve">
+    <value>🪥 Пачысціць зубы</value>
+  </data>
+  <data name="PetHygieneAnwserCallback" xml:space="preserve">
+    <value>Гігіена +{0}%</value>
+  </data>
+  <data name="RandomEventFireworks" xml:space="preserve">
+    <value>Вы пайшлі глядзець на феерверк 🎇
+Але гадаванец выпадкова наступіў у лужыну 💦
+
+
++20% радасць 🎊
+-10% гігіены 🛁
+
+/pet - правер свайго гадаванца</value>
+  </data>
+  <data name="ResurrectYesText" xml:space="preserve">
+    <value>Так (-1000 💰)</value>
+  </data>
+  <data name="ResurrectNoText" xml:space="preserve">
+    <value>Не ⁉️</value>
+  </data>
+  <data name="ToResurrectQuestion" xml:space="preserve">
+    <value>Вярнуць гадаванца? 🧬</value>
+  </data>
+  <data name="PetCameBackText" xml:space="preserve">
+    <value>Пасля доўгіх пошукаў і кучы грошай на дэтэктываў гадаванец знайшоўся! {0}
+Ты доўга прасіў прабачэння і абяцаў больш не забываць пра свайго гадаванца 🐣
+Вы абодва памірыліся 💕
+
+/pet - праверыць стан гадаванца</value>
+  </data>
+  <data name="NotEnoughGold" xml:space="preserve">
+    <value>На жаль, у цябе занадта мала грошай ☠️</value>
+  </data>
+  <data name="PetIsCleanEnoughAlert" xml:space="preserve">
+    <value>Гадаванец дастаткова чысты 💦</value>
+  </data>
+  <data name="PetIsFullOfJoyText" xml:space="preserve">
+    <value>Гадаванец ужо найграўся ⛹️‍♀️</value>
+  </data>
+  <data name="AskToConfirmRenamingPet" xml:space="preserve">
+    <value>Ты сапраўды хочаш памяняць імя гадаванца з {0} на {1}? 🗃
+Кошт: {2} золата 💰</value>
+  </data>
+  <data name="YesText" xml:space="preserve">
+    <value>Так</value>
+  </data>
+  <data name="NoText" xml:space="preserve">
+    <value>Не</value>
+  </data>
+  <data name="YesTextEmoji" xml:space="preserve">
+    <value>Так ✅</value>
+  </data>
+  <data name="NoTextEmoji" xml:space="preserve">
+    <value>Не ❌</value>
+  </data>
+  <data name="InviteGlobalMultiplayerButton" xml:space="preserve">
+    <value>{0} Завесці свайго Тамагочы</value>
+  </data>
+  <data name="InviteReferalMultiplayerButton" xml:space="preserve">
+    <value>{0} Стаць сябрам для {1}</value>
+  </data>
+  <data name="InviteGlobalMultiplayerText" xml:space="preserve">
+    <value>{0}, у цябе яшчэ няма свайго Тамагочы 🐧</value>
+  </data>
+  <data name="MultiplayerShowPet" xml:space="preserve">
+    <value>{8}, вось твой гадаванец
+
+{9} &lt;b&gt;{0}&lt;/b&gt;
+💊 Здароўе: {1}%
+🍕 Сытасць: {2}%
+🛁 Гігіена: {3}%
+😴 Стомленасць: {4}%
+🎊 Радасць: {5}%
+
+🏅 {6} ўзровень
+💰 Золата: {7} 💴</value>
+  </data>
+  <data name="ShowPetMPCommand" xml:space="preserve">
+    <value>🦁 Паказаць свайго гадаванца</value>
+  </data>
+  <data name="referalCommandDescription" xml:space="preserve">
+    <value>👬 Прызы за сябра</value>
+  </data>
+  <data name="referalCommand" xml:space="preserve">
+    <value>Гуляць разам значна весялей, праўда? 👯‍♀️
+Запрашай сяброў далучыцца па тваёй рэферальнай спасылцы і атрымлівай узнагароды! 🎁
+
+🚦Сябар павінен стварыць свайго Тамагочы, каб узнагароды залічыліся на твой рахунак 🚦
+💰&lt;b&gt; Атрымаеш {3} золата за кожнага новага сябра!&lt;/b&gt;
+💎&lt;b&gt; І {4} дыяментаў!&lt;/b&gt;
+
+🤼‍♀️ Твае рэфералы: {0}
+Золата, атрыманае за рэфералаў: {1}💰
+Дыяменты, атрыманыя за рэфералаў: {5}💎
+
+Твая рэферальная спасылка:
+{2}</value>
+  </data>
+  <data name="ToShareReferalCommand" xml:space="preserve">
+    <value>📩 Падзяліцца спасылкай</value>
+  </data>
+  <data name="ToAddToNewGroupReferalCommand" xml:space="preserve">
+    <value>🚀 Дадаць у новы чат</value>
+  </data>
+  <data name="ShowWelcomeMessageMultiplayer" xml:space="preserve">
+    <value>Прывітанне ўсім у чаце {0}!
+Бот 🐾 Тамагочы | Virtual Pet 🐾 дае магчымасць завесці свайго гадаванца прама ў Тэлеграме
+
+Даступныя каманды ў чаце:
+/show_pet - паказаць свайго гадаванца 🦁
+/start_duel - пачаць дуэль гадаванцаў ⚔️
+/feed_pet - пакарміць чужога гадаванца 🥞
+/ranks - Топ-10 найлепшых 🏆</value>
+  </data>
+  <data name="changelogCommand" xml:space="preserve">
+    <value>📢💬 Паглядзець і пагаварыць аб абнаўленнях бота можна тут:
+{0}</value>
+  </data>
+  <data name="ChangelogGoToDicussChannelButton" xml:space="preserve">
+    <value>🗳 Канал з абнаўленнямі</value>
+  </data>
+  <data name="changelogCommandDescription" xml:space="preserve">
+    <value>📲 Абнаўленні</value>
+  </data>
+  <data name="RandomEventNiceFlower" xml:space="preserve">
+    <value>Вы пагулялі па батанічным садзе 🌷🌷🌷
+{0}: Вельмі спадабалася, абавязкова яшчэ сюды вернемся!
+
++10% радасць 🎊
+
+/pet - праверыць стан гадаванца</value>
+  </data>
+  <data name="RandomEventWatermelon" xml:space="preserve">
+    <value>{0}: Смачны кавун, хачу яшчэ 🍉
+
++15% сытасці 🍕
+
+/pet - праверыць стан гадаванца</value>
+  </data>
+  <data name="RandomEventPlayComputerGames" xml:space="preserve">
+    <value>🎮 Вы разам з гадаванцам выдатна правялі час, гуляючы ў кампутар
+
++30% радасць 🎊
+
+/pet - праверыць стан гадаванца</value>
+  </data>
+  <data name="BadWordDetected" xml:space="preserve">
+    <value>Гадаванцу не падабаецца яго новае імя {0}:
+Прапануй іншае ⬇️</value>
+  </data>
+  <data name="StartDuelMPCommand" xml:space="preserve">
+    <value>Пачаць бітву гадаванцаў! ⚔️</value>
+  </data>
+  <data name="DuelMPStartCommand" xml:space="preserve">
+    <value>♨️{0} аб'яўляе дуэль гадаванцаў!♨️
+
+"Мой &lt;i&gt;&lt;b&gt;{2} {1}&lt;/b&gt;&lt;/i&gt; парве ўсіх як Тузік грэлку! Хто кіне нам выклік?!"</value>
+  </data>
+  <data name="DuelMPAcceptButton" xml:space="preserve">
+    <value>⚔️Прыняць выклік</value>
+  </data>
+  <data name="DuelMPFighting1" xml:space="preserve">
+    <value>🔰ДУЭЛЬ ПАЧАЛАСЯ🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕐🟥🟥🟥🟥
+
+{2} {4}🛡                    🗡{5}{3}</value>
+  </data>
+  <data name="DuelMPFighting2" xml:space="preserve">
+    <value>🔰ДУЭЛЬ ПАЧАЛАСЯ🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕒🟥🟥🟥🟥
+
+{2} {4}🛡               🗡{5}{3}
+
+❕ Гадаванец {3} пачаў атаку на {2}!</value>
+  </data>
+  <data name="DuelMPFighting3" xml:space="preserve">
+    <value>🔰ДУЭЛЬ ПАЧАЛАСЯ🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕢🟥🟥🟥🟥
+
+{2} {4}🛡          🗡{5}{3}
+
+‼️Пітомец {3} ужо зусім блізка да {2}!</value>
+  </data>
+  <data name="DuelMPFighting4" xml:space="preserve">
+    <value>🔰ДУЭЛЬ ПАЧАЛАСЯ🔰
+{0} ⚔️ {1}
+🟥🟥🟥🟥🕙🟥🟥🟥🟥
+
+{2} {4}🛡   🗡{5}{3}
+
+💥Пітомец {3} наносіць удар па {2}...</value>
+  </data>
+  <data name="DuelMPFightingEnd" xml:space="preserve">
+    <value>🎌&lt;b&gt;ДУЭЛЬ СКОНЧАНА&lt;/b&gt;🎌
+{0} ⚔️ {1}
+🏆&lt;b&gt;ПЕРАМОГА&lt;/b&gt; {2}🏆
+🟩🟩🟩🟩🎖🟩🟩🟩🟩
+
+{3}
+
+&lt;b&gt;Узнагарода: {4}&lt;/b&gt;💰</value>
+  </data>
+  <data name="DuelMPFightingEnding1" xml:space="preserve">
+    <value>Гадаванец {1}{3} паслізнуўся і зваліўся на попу прама падчас нападу🧸
+
+{2}{0} перамагае 🥇</value>
+  </data>
+  <data name="DuelMPFightingEnding2" xml:space="preserve">
+    <value>Гадаванец {1}{3} вокамгненна б'е па шчыце💢
+{0}{2} спалохаўся і папрасіў спыніць дуэль🙅‍♂️
+
+{3}{1} перамагае 🥇</value>
+  </data>
+  <data name="DuelMPTimeout" xml:space="preserve">
+    <value>Ніхто не прыняў двубой ад {0}
+&lt;i&gt;Значыць усе баяцца гадаванца {1}&lt;/i&gt; 🌚
+
+Узнос у памеры {2}💰 вярнуўся на рахунак</value>
+  </data>
+  <data name="MPNoPetCallbackAlert" xml:space="preserve">
+    <value>Каб удзельнічаць трэба завесці гадаванца 🪿</value>
+  </data>
+  <data name="NotEnoughGoldForDuel" xml:space="preserve">
+    <value>{0}, каб пачаць дуэль трэба {2}💰золата
+У цябе ёсць толькі {1}💰</value>
+  </data>
+  <data name="NotEnoughGoldForDuelCallback" xml:space="preserve">
+    <value>Каб прыняць дуэль трэба {1}💰золата
+У цябе ёсць толькі {0}💰</value>
+  </data>
+  <data name="DuelMPCooldownCallback" xml:space="preserve">
+    <value>Твой гадаванец адпачывае пасля пройгрышу ў апошняй дуэлі🥷
+Засталося пачакаць {0}</value>
+  </data>
+  <data name="DuelMPCooldown" xml:space="preserve">
+    <value>{1}, Твой гадаванец адпачывае пасля пройгрышу ў апошняй дуэлі🥷
+Засталося пачакаць {0}</value>
+  </data>
+  <data name="DuelMPErrorYourself" xml:space="preserve">
+    <value>Ты не можаш прымаць свае ж дуэлі 🙈</value>
+  </data>
+  <data name="FeedMPNotFound" xml:space="preserve">
+    <value>Такіх гульцоў не знойдзена 👀</value>
+  </data>
+  <data name="NotEnoughGoldForMPFeed" xml:space="preserve">
+    <value>{0}, каб пакарміць гадаванца трэба {2}💰золата
+У цябе ёсць толькі {1}💰</value>
+  </data>
+  <data name="NotEnoughTimeSpentFeedMP" xml:space="preserve">
+    <value>{0}, прайшло занадта мала часу 🍕
+Гадаванец {1} не захацеў есці🐣
+
+Пачакай яшчэ {2}🕑 перш чым можна будзе карміць гадаванца яшчэ раз</value>
+  </data>
+  <data name="NotEnoughTimeSpentByLastMPFeed" xml:space="preserve">
+    <value>{0}, трэба пачакаць яшчэ {1}🕑 каб пакарміць чужога гадаванца🍗</value>
+  </data>
+  <data name="FeedMPCommand" xml:space="preserve">
+    <value>Пакарміць чужога гадаванца 🍔</value>
+  </data>
+  <data name="FeedMPStart" xml:space="preserve">
+    <value>{0}, прыйшлі нікнейм каго гадаванца ты хочаш пакарміць 🍽
+&lt;i&gt;Падказка: пачні ўводзіць '@' і выберы гульца &lt;/i&gt;</value>
+  </data>
+  <data name="FeedMPEndSuccess" xml:space="preserve">
+    <value>Гадаванец &lt;b&gt;{0}&lt;/b&gt; з радасцю накінуўся на велізарны бургер 🍔 з бульбай фры 🍟
+{2}&lt;b&gt;{3}&lt;/b&gt;: &lt;i&gt;Дзякуй вялікі! Я перадам гаспадару, што ў яго выдатны сябар!&lt;/i&gt;
+
+-{1}💰</value>
+  </data>
+  <data name="FeedMPErrorFeedOwnPet" xml:space="preserve">
+    <value>Свайго гадаванца можна карміць толькі ў ЛС боту 🤷‍♂️</value>
+  </data>
+  <data name="workCommandInlineFlyers" xml:space="preserve">
+    <value>🤹‍♀️ Раздаваць улёткі</value>
+  </data>
+  <data name="tooTiredForJobPC" xml:space="preserve">
+    <value>Гадаванец не хоча працаваць за кампутарам 🫧
+Для гэтай працы трэба мець не больш за {0}😴 стомленасці</value>
+  </data>
+  <data name="tooTiredForJobFlyers" xml:space="preserve">
+    <value>Гадаванец не хоча раздаваць флаеры 🫧
+Для гэтай працы трэба мець не больш за {0}😴 стомленасці</value>
+  </data>
+  <data name="workCommandFlyersWorking" xml:space="preserve">
+    <value>Гадаванец зараз раздае ўлёткі 🤹‍♀️</value>
+  </data>
+  <data name="NotEnoughHPForDuel" xml:space="preserve">
+    <value>{0}, каб пачаць дуэль трэба {1}%💊 здароўя
+У цябе ёсць толькі {2}%💊</value>
+  </data>
+  <data name="NotEnoughHPForDuelCallback" xml:space="preserve">
+    <value>Каб прыняць дуэль трэба {1}%💊 здароўя
+У цябе ёсць толькі {0}%💊</value>
+  </data>
+  <data name="ShowChatRanksMPCommand" xml:space="preserve">
+    <value>Топ-10 гульцоў чата 🎖</value>
+  </data>
+  <data name="ShowGlobalRanksMPCommand" xml:space="preserve">
+    <value>Топ-10 гульцоў усіх чатаў 🏆</value>
+  </data>
+  <data name="ShowChatRanksMPHeader" xml:space="preserve">
+    <value>🎖&lt;b&gt;Лепшыя дуэлянты чата {0}&lt;/b&gt;🎖</value>
+  </data>
+  <data name="ShowGlobalRanksMPHeader" xml:space="preserve">
+    <value>🏆&lt;b&gt;Лепшыя дуэлянты свету&lt;/b&gt; 🏆</value>
+  </data>
+  <data name="ShowChatRanksMPButton" xml:space="preserve">
+    <value>Топ-10 чата 🎖</value>
+  </data>
+  <data name="ShowGlobalRanksMPButton" xml:space="preserve">
+    <value>Топ-10 свету 🏆</value>
+  </data>
+  <data name="bathroomCommandMakePoo" xml:space="preserve">
+    <value>🧻Пакакаць💩</value>
+  </data>
+  <data name="PetDoesntWantToPoo" xml:space="preserve">
+    <value>Гадаванец не хоча какаць 🗿</value>
+  </data>
+  <data name="farmCommandDescription" xml:space="preserve">
+    <value>Ферма 🚜</value>
+  </data>
+  <data name="farmCommand_ENABLED" xml:space="preserve">
+    <value>👨‍🌾: О-о, хто да нас прыйшоў! Гэта {0} са сваім гаспадаром!
+
+Золата: {6}💰
+Дыяменты: {7}💎
+
+Зарады аўтакармілкі: {1} ⚡️
+Статус аўтакармілкі: &lt;b&gt;{4}&lt;/b&gt;
+Наступнае выкарыстанне аўтакармілкі праз: {2}г і {3}хв 🕗
+
+Аўтакармілка на 5 зарадаў: {5} 💎
+
+&lt;b&gt;Чым я магу дапамагчы?&lt;/b&gt;</value>
+  </data>
+  <data name="farmButtonChangeType" xml:space="preserve">
+    <value>🎩 Змяніць аблічча гадаванца 🎩</value>
+  </data>
+  <data name="goAwayButton" xml:space="preserve">
+    <value>👋 Развітацца і пайсці 👋</value>
+  </data>
+  <data name="changeTypeButtonCommand" xml:space="preserve">
+    <value>👨‍🌾: Я &lt;i&gt;чароўны&lt;/i&gt; фермер, таму магу змяніць знешні выгляд твайго гадаванца
+Выбірай, каго хочаш!
+
+Золата: {3}💰
+Алмазы: {4}💎
+
+Змена формы гадаванца: {0} золата 💰
+
+Тыгр 🐯: {1} золата 💰
+Леў 🦁: {2} золата 💰
+
+&lt;i&gt; Пасля пакупкі можна прымяніць выгляд Льва або Тыгра бясплатна &lt;/i&gt;</value>
+  </data>
+  <data name="CatTypeText" xml:space="preserve">
+    <value>Коцік 🐱</value>
+  </data>
+  <data name="DogTypeText" xml:space="preserve">
+    <value>Пёсік 🐶</value>
+  </data>
+  <data name="FoxTypeText" xml:space="preserve">
+    <value>Лісяня 🦊</value>
+  </data>
+  <data name="PandaTypeText" xml:space="preserve">
+    <value>Панда 🐼</value>
+  </data>
+  <data name="MouseTypeText" xml:space="preserve">
+    <value>Мышаня 🐭</value>
+  </data>
+  <data name="changedTypeToCat" xml:space="preserve">
+    <value>😼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: ОГО! Я цяпер коцік!</value>
+  </data>
+  <data name="changedTypeToDog" xml:space="preserve">
+    <value>🐶&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Гаў-гаў! Што гэта з маім голасам?
+І хвост нязвыклы...</value>
+  </data>
+  <data name="changedTypeToMouse" xml:space="preserve">
+    <value>🐭&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Якія ж вы ўсё вялікія, а я маленькая!</value>
+  </data>
+  <data name="changedTypeToPanda" xml:space="preserve">
+    <value>🐼&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Свет не падзелены на чорнае і белае. А вось панды так!</value>
+  </data>
+  <data name="changedTypeToFox" xml:space="preserve">
+    <value>🦊&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Ой, які ж утульны і прыемны мех ❤️</value>
+  </data>
+  <data name="changeTypeErrorSameType" xml:space="preserve">
+    <value>Твой гадаванец ужо такога аблічча ❌</value>
+  </data>
+  <data name="petIsBusyForFarm" xml:space="preserve">
+    <value>Нельга пайсці на ферму, бо гадаванец заняты 🚫</value>
+  </data>
+  <data name="DuelMPFightingEnding3" xml:space="preserve">
+    <value>Гадаванец {3}{1} смела абараняўся, блакуючы кожны напад сваім шчытом 🛡️
+
+Гадаванец {2}{0} у канчатковым выніку знайшоў шчыліну і атрымаў перамогу 🎉</value>
+  </data>
+  <data name="DuelMPFightingEnding4" xml:space="preserve">
+    <value>Гадаванец {3}{1} вытрымаў серыю магутных удараў,
+але яго сіла пачала згасаць, і ён саступіў перад атакай гадаванца {2}{0}
+
+Гадаванец {2}{0} перамагае 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding5" xml:space="preserve">
+    <value>Гадаванец {2}{0} быў марудлівым, але яго цярпенне і ўстойлівасць дазволілі яму адбіць усе атакі 🛡️
+Гадаванец {3}{1} здаўся, убачыўшы, што яго супернік не саступіць
+
+Гадаванец {2}{0} перамагае 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding6" xml:space="preserve">
+    <value>Гадаванец {3}{1} спалохаўся нападу і замёр на месцы,
+дазваляючы свайму суперніку {2}{0} выйграць бітву 🏁
+
+Гадаванец {2}{0} перамагае 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding7" xml:space="preserve">
+    <value>Гадаванец {3}{1} скакаў з боку ў бок, пазбягаючы кожнага нападу свайго суперніка 🦎
+Аднак гадаванец {2}{0} знайшоў слабое месца і перамог 🎖️
+
+Гадаванец {2}{0} перамагае 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding8" xml:space="preserve">
+    <value>Гадаванец {3}{1} выкарыстаў сваю чароўную сілу, каб стварыць шчыт, які адлюстроўвае напады свайго суперніка {2}{0},
+але стомленасць у выніку прывяла да яго паразы.
+
+Гадаванец {2}{0} перамагае 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding9" xml:space="preserve">
+    <value>Гадаванец {3}{1} нёсся на поўную хуткасць, спрабуючы ўхіліцца ад нападу свайго суперніка {2}{0}
+але ў выніку пацярпеў паражэнне з-за недахопу канцэнтрацыі 🪫
+
+Гадаванец {2}{0} перамагае 🏆</value>
+  </data>
+  <data name="DuelMPFightingEnding10" xml:space="preserve">
+    <value>Гадаванец {3}{1} паспрабаваў ухіліцца ад нападу, але яго спрыт не выратавала яго ад магутнага ўдару 🥊
+
+Гадаванец {2}{0} перамагае 🏆</value>
+  </data>
+  <data name="GoldCompensastionGotText" xml:space="preserve">
+    <value>Залічана кампенсацыя: {0}💰</value>
+  </data>
+  <data name="ChatgptErrorAnswerText" xml:space="preserve">
+    <value>🛋 Гадаванец заняты сваімі справамі і не звяртае на цябе ўвагі</value>
+  </data>
+  <data name="ChatGPTTimeOutText" xml:space="preserve">
+    <value>Гадаванец {0}&lt;b&gt;{1}&lt;/b&gt; моўчкі глядзіць на цябе. Напэўна ён стаміўся размаўляць і робіць выгляд, што цябе не разумее 🔇
+Пагавары з ім крыху пазней 🕐</value>
+  </data>
+  <data name="ReferalAddedMessageText" xml:space="preserve">
+    <value>💎 {2} дыяментаў і 💰 {0} золата залічана за новага сябра {1}</value>
+  </data>
+  <data name="MonthlyGoldReward" xml:space="preserve">
+    <value>🎉 Віншуем! Ваш гадаванец дасяг &lt;b&gt;{0}&lt;/b&gt; рангу месяца! Усе трэніроўкі акупіліся — вам пераведзена &lt;b&gt;{1} золата&lt;/b&gt; у якасці ўзнагароды! 💰</value>
+  </data>
+  <data name="farmButtonAutoFeed" xml:space="preserve">
+    <value>🤖 Купіць аўтакармілку на 5 зарадаў 🤖</value>
+  </data>
+  <data name="autoFeedBought" xml:space="preserve">
+    <value>Куплена аўтакармілка! У вас {0} зарадаў</value>
+  </data>
+  <data name="autoFeedEnabled" xml:space="preserve">
+    <value>Аўтакармленне ўключана 🪺</value>
+  </data>
+  <data name="autoFeedDisabled" xml:space="preserve">
+    <value>Аўтакармленне выключана. Патрабуецца зарадка ⚡️</value>
+  </data>
+  <data name="turnedOn_F" xml:space="preserve">
+    <value>уключана</value>
+  </data>
+  <data name="turnedOff_F" xml:space="preserve">
+    <value>выключана</value>
+  </data>
+  <data name="autoFeederUserStatus" xml:space="preserve">
+    <value>🍱 Статус аўтакармілкі: &lt;b&gt;{0}&lt;/b&gt;, 
+🍽 Засталося зарадаў: {1}</value>
+  </data>
+  <data name="farmCommand_DISABLED" xml:space="preserve">
+    <value>👨‍🌾: О-о, хто да нас прыйшоў! Гэта {0} са сваім гаспадаром!
+
+Золата: {4}💰
+Дыяменты: {5}💎
+
+Зарады аўтакармілкі: {1} ⚡️
+Статус аўтакармілкі: &lt;b&gt;{2}&lt;/b&gt;
+
+Аўтакармілка на 5 зарадаў: {3} 💎
+
+&lt;b&gt;Чым я магу дапамагчы?&lt;/b&gt;</value>
+  </data>
+  <data name="autoFeedUsedNotification" xml:space="preserve">
+    <value>🥫 Твой гадаванец &lt;b&gt;{0}&lt;/b&gt; паеў з аўтакармілкі
++{1}% сытасці 🍕
+
+Засталося зарадаў аўтакармілкі: {2}
+
+&lt;i&gt; Не забывай зараджаць аўтакармілку ў Фермера, каб гадаванец меў што паесці 🥣&lt;/i&gt;</value>
+  </data>
+  <data name="FarmCommandInlineEnableAutoFeed" xml:space="preserve">
+    <value>Уключыць аўтакармілку</value>
+  </data>
+  <data name="FarmCommandInlineDisableAutoFeed" xml:space="preserve">
+    <value>Выключыць аўтакармілку</value>
+  </data>
+  <data name="AutoFeedDisabledCallbackAnswer" xml:space="preserve">
+    <value>Аўтакармілка выключана!</value>
+  </data>
+  <data name="AutoFeedEnabledCallbackAnswer" xml:space="preserve">
+    <value>Аўтакармілка ўключана!</value>
+  </data>
+  <data name="ranksCommandDiamonds" xml:space="preserve">
+    <value>💎⭐️ Топ-10 па дыяментах ⭐️💎</value>
+  </data>
+  <data name="ranksCommandInlineDiamonds" xml:space="preserve">
+    <value>💎 Дыяменты</value>
+  </data>
+  <data name="notEnoughDiamonds" xml:space="preserve">
+    <value>У цябе недастаткова дыяментаў 💎</value>
+  </data>
+  <data name="petCommand_ads_1" xml:space="preserve">
+    <value>/reward - атрымай штодзённую ўзнагароду 🎁</value>
+  </data>
+  <data name="petCommand_ads_2" xml:space="preserve">
+    <value>/gameroom - пайдзем гуляць у Яблык🍎</value>
+  </data>
+  <data name="petCommand_ads_3" xml:space="preserve">
+    <value>/work – Адправіць гадаванца на працу і зарабляйце золата 💼</value>
+  </data>
+  <data name="petCommand_ads_4" xml:space="preserve">
+    <value>/ranks – Правер, хто з’яўляецца топ-гадованцам 🏆</value>
+  </data>
+  <data name="petCommand_ads_5" xml:space="preserve">
+    <value>/referal – Запрашай сяброў і стань багатым 🤝</value>
+  </data>
+  <data name="petCommand_phrase_1" xml:space="preserve">
+    <value>Прывітанне! Я цябе чакаў. Як праходзіць твой дзень?</value>
+  </data>
+  <data name="petCommand_phrase_2" xml:space="preserve">
+    <value>Прывітанне! 
+&lt;i&gt; Пацягнуў лапкі і гатовы да забаваў&lt;/i&gt;
+Як ты сёння?</value>
+  </data>
+  <data name="petCommand_phrase_3" xml:space="preserve">
+    <value>Прывітанне! Рады зноў цябе бачыць. Як ты сябе адчуваеш?</value>
+  </data>
+  <data name="petCommand_phrase_4" xml:space="preserve">
+    <value>Прывітанне! Я якраз думаў пра цябе. Пабудзем крыху разам?</value>
+  </data>
+  <data name="petCommand_phrase_5" xml:space="preserve">
+    <value>Дароўкі! Я трэніраваўся быць яшчэ мілашэйшым. Як атрымліваецца? А ты як?</value>
+  </data>
+  <data name="petCommand_phrase_6" xml:space="preserve">
+    <value>Вітанкі! Твой любімы жэўжык на сувязі! Як у цябе справы?</value>
+  </data>
+  <data name="startGameTicTacToeText" xml:space="preserve">
+    <value>Новая гульня! Ты гуляеш за ❌</value>
+  </data>
+  <data name="InvalidMove_text" xml:space="preserve">
+    <value>Некарэктны ход ⛔️</value>
+  </data>
+  <data name="YourTurn_text" xml:space="preserve">
+    <value>{0}: Твой ход!</value>
+  </data>
+  <data name="YouWon" xml:space="preserve">
+    <value>{0}: Перамога твая 🏆</value>
+  </data>
+  <data name="YouLost_TicTakToe" xml:space="preserve">
+    <value>{0}: Ты прайграў! 📸
+А я выйграў 😎</value>
+  </data>
+  <data name="Draw_TicTakToe" xml:space="preserve">
+    <value>{0}: Нічыя! 🤝</value>
+  </data>
+  <data name="PlayAgain_TicTakToe" xml:space="preserve">
+    <value>Згуляць зноў ❌⭕️</value>
+  </data>
+  <data name="TicTakToeGameStatisticsCommand" xml:space="preserve">
+    <value>📈СТАТЫСТЫКА КРЫЖЫКАЎ-НУЛІКАЎ📉
+Выйграна: {0}
+Прайграна: {1}
+Здаўся раз: {2}</value>
+  </data>
+  <data name="petCommand_ads_6" xml:space="preserve">
+    <value>/gameroom - можа у хрэсьцікі-нулікі? ❌⭕️</value>
+  </data>
+  <data name="hangmanGameStart" xml:space="preserve">
+    <value>🎮 Гульня "Шыбеніца" пачалася!
+Адгадай слова!
+    
+{0}
+    
+Памылкі: {1}/{2}</value>
+  </data>
+  <data name="hangmanGameWin" xml:space="preserve">
+    <value>🎉 Вы выйгралі!
+Было слова: {0}
+
+Гадаванец атрымаў +{1} радасці 🎊 за перамогу</value>
+  </data>
+  <data name="hangmanGameLose" xml:space="preserve">
+    <value>💀 Вы прайгралі!
+Было слова: {0}
+    
+Поспехаў наступным разам!</value>
+  </data>
+  <data name="hangmanGameGuessLetter" xml:space="preserve">
+    <value>Адгадай літару</value>
+  </data>
+  <data name="hangmanGameAlreadyGuessed" xml:space="preserve">
+    <value>Вы ўжо здагадаліся пра гэтую літару!</value>
+  </data>
+  <data name="hangmanGameInvalidGuess" xml:space="preserve">
+    <value>Няправільная здагадка! Калі ласка, увядзіце адну літару.</value>
+  </data>
+  <data name="hangmanGameWordStatus" xml:space="preserve">
+    <value>Слова: {0}</value>
+  </data>
+  <data name="PlayAgain_Hangman" xml:space="preserve">
+    <value>Згуляць яшчэ 😵</value>
+  </data>
+  <data name="hangmanFooter" xml:space="preserve">
+    <value>{0}
+
+Слова: {1}
+Памылкі: {2}/7</value>
+  </data>
+  <data name="HangmanGameStatisticsCommand" xml:space="preserve">
+    <value>📈СТАТЫСТЫКА ШЫБЕНІЦА 📉
+Выйграна: {0}
+Прайграна: {1}</value>
+  </data>
+  <data name="petCommand_isPetSilenced" xml:space="preserve">
+    <value>
+🕟 Праўда, гадаванец будзе маўчаць яшчэ {0} хвілін</value>
+  </data>
+  <data name="PetIsFullOfHealth" xml:space="preserve">
+    <value>💬 Твой гадаванец і так не хварэе</value>
+  </data>
+  <data name="educationCommandDescription" xml:space="preserve">
+    <value>Адукацыя 🎓</value>
+  </data>
+  <data name="educationCommand" xml:space="preserve">
+    <value>&lt;b&gt;Выберыце ступень адукацыі &lt;/b&gt;
+
+🎓Бягучая ступень: {0}
+Бягучы этап: {1}/{2}
+
++{3}% Стамленне 😴</value>
+  </data>
+  <data name="educationCommand_Primary" xml:space="preserve">
+    <value>Пачатковая школа 👶</value>
+  </data>
+  <data name="educationCommand_Middle" xml:space="preserve">
+    <value>Сярэдняя школа 🧒</value>
+  </data>
+  <data name="educationCommand_High" xml:space="preserve">
+    <value>Універсітэт 🧑‍🎓</value>
+  </data>
+  <data name="educationCommandShowTime" xml:space="preserve">
+    <value>Засталося часу навучання: {0} 🕔</value>
+  </data>
+  <data name="educationCommand_InProgress" xml:space="preserve">
+    <value>Гадаванец цяпер вучыцца 📚
+
+Засталося: {0} 🕔</value>
+  </data>
+  <data name="educationCommand_NeedFinishPrevious" xml:space="preserve">
+    <value>Вам трэба спачатку скончыць папярэдні ўзровень</value>
+  </data>
+  <data name="educationCommand_Finished" xml:space="preserve">
+    <value>Гадаванец ужо скончыў гэтую ступень</value>
+  </data>
+  <data name="educationCommand_NotifyFinished" xml:space="preserve">
+    <value>Гадаванец скончыў вучыцца!
+
++{0} этап 🎓
++{1} EXP ✨</value>
+  </data>
+  <data name="educationCommand_CheckTime" xml:space="preserve">
+    <value>🕝 Праверыць, колькі часу засталося</value>
+  </data>
+  <data name="CurrentStatusStudying" xml:space="preserve">
+    <value>вучыцца 📚</value>
+  </data>
+  <data name="educationCommand_CompletedHigh" xml:space="preserve">
+    <value>Скончаны універсітэт 🧑‍🔬</value>
+  </data>
+  <data name="educationCommand_OveredAllEducationLevels" xml:space="preserve">
+    <value>Гадаванец скончыў усе ступені навучання 🧑‍🎓</value>
+  </data>
+  <data name="educationCommand_newLevelCompleted" xml:space="preserve">
+    <value>
+
+🎉 &lt;b&gt;Віншуем з атрыманнем новай ступені навучання для гадаванца&lt;/b&gt;: &lt;i&gt;{0}&lt;/i&gt;</value>
+  </data>
+  <data name="workCommand_Working" xml:space="preserve">
+    <value>🏛 Ваш гадаванец пачаў працаваць як {0}</value>
+  </data>
+  <data name="workCommandInlineMcDonalds" xml:space="preserve">
+    <value>🍔 Персанал Макдональдса</value>
+  </data>
+  <data name="workCommandInlineMakeUpArtist" xml:space="preserve">
+    <value>💄 Візажыст</value>
+  </data>
+  <data name="workCommandInlineFoodDelivery" xml:space="preserve">
+    <value>🎒 Дастаўка ежы</value>
+  </data>
+  <data name="workCommandInlineAccountant" xml:space="preserve">
+    <value>📔 Бухгалтар</value>
+  </data>
+  <data name="workCommandInlineEngineer" xml:space="preserve">
+    <value>🛠 Інжынер</value>
+  </data>
+  <data name="workCommandInlinePilot" xml:space="preserve">
+    <value>✈️ Пілот</value>
+  </data>
+  <data name="petCommand_ads_7" xml:space="preserve">
+    <value>/gameroom - гуляць у Шыбеніцу [RU] 😵</value>
+  </data>
+  <data name="MonkeyTypeText" xml:space="preserve">
+    <value>Малпа 🐒</value>
+  </data>
+  <data name="changedTypeToMonkey" xml:space="preserve">
+    <value>🐒&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Я КАРОЛЬ МАЛПАЎ!</value>
+  </data>
+  <data name="changedTypeHeader" xml:space="preserve">
+    <value>&lt;b&gt;Віншую, у твайго гадаванца новы аблічча!&lt;/b&gt;
+
+</value>
+  </data>
+  <data name="MonthlyRewardAdditionalDiamonds" xml:space="preserve">
+    <value>
+
+А таксама за высокі ўзровень гадаванца вы атрымліваеце {0} 💎</value>
+  </data>
+  <data name="BotOnMaintanceWarning" xml:space="preserve">
+    <value>⚠️ Ідзе абнаўленне бота ⚠️
+
+</value>
+  </data>
+  <data name="TigerTypeText" xml:space="preserve">
+    <value>Тыграня 🐯</value>
+  </data>
+  <data name="LionTypeText" xml:space="preserve">
+    <value>Ільвяня 🦁 </value>
+  </data>
+  <data name="changedTypeToTiger" xml:space="preserve">
+    <value>🐯&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Палоскі робяць мяне ўнікальным — і трохі круцейшым</value>
+  </data>
+  <data name="changedTypeToLion" xml:space="preserve">
+    <value>🦁&lt;i&gt;&lt;b&gt;{0}&lt;/b&gt;&lt;/i&gt;: Саванна — маё каралеўства… адразу пасля абеду.</value>
+  </data>
+  <data name="ranksCommandTicTakToe" xml:space="preserve">
+    <value>❌⭕️ Топ-10 у гульні «Крыжыкі-нулікі» ⭕️❌</value>
+  </data>
+  <data name="ranksCommandInlineTicTakToe" xml:space="preserve">
+    <value>❌⭕️ Крыжыкі-нулікі</value>
+  </data>
+  <data name="Referal_Ads_changelog" xml:space="preserve">
+    <value>👫 Нагадваем пра реферальную праграму 👭
+
+Разам весялей, таму запрашай сваіх сяброў да нас у 🐾&lt;b&gt;Тамагочы &lt;/b&gt;🐾
+Можаш атрымаць {0}💰 і {1}💎 за кожнага новага сябра!
+➡️/referal
+
+Падпісвайцеся на наш канал, дзе ўсё аб боце:
+https://t.me/newsvirtualpetbot</value>
+  </data>
+</root>

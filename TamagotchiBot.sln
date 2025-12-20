@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.7.34003.232
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11222.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TamagotchiBot", "TamagotchiBot.csproj", "{AF79211C-A7F1-422A-A197-E3694F5FD1CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TamagotchiBot", "TamagotchiBot\TamagotchiBot.csproj", "{AF79211C-A7F1-422A-A197-E3694F5FD1CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaintanceAlertBot", "MaintanceAlertBot\MaintanceAlertBot.csproj", "{BACEBF22-4F15-415D-9AC9-D31CC4153F1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaintanceAlertBot.Tests", "MaintanceAlertBot.Tests\MaintanceAlertBot.Tests.csproj", "{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,6 +15,8 @@ Global
 		Debug-Hotfix|Any CPU = Debug-Hotfix|Any CPU
 		Debug-Notify|Any CPU = Debug-Notify|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Staging_Local|Any CPU = Staging_Local|Any CPU
+		Staging|Any CPU = Staging|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{AF79211C-A7F1-422A-A197-E3694F5FD1CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -21,12 +27,39 @@ Global
 		{AF79211C-A7F1-422A-A197-E3694F5FD1CF}.Debug-Notify|Any CPU.Build.0 = Debug-Notify|Any CPU
 		{AF79211C-A7F1-422A-A197-E3694F5FD1CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF79211C-A7F1-422A-A197-E3694F5FD1CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF79211C-A7F1-422A-A197-E3694F5FD1CF}.Staging_Local|Any CPU.ActiveCfg = Staging_Local|Any CPU
+		{AF79211C-A7F1-422A-A197-E3694F5FD1CF}.Staging_Local|Any CPU.Build.0 = Staging_Local|Any CPU
+		{AF79211C-A7F1-422A-A197-E3694F5FD1CF}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{AF79211C-A7F1-422A-A197-E3694F5FD1CF}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{BACEBF22-4F15-415D-9AC9-D31CC4153F1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BACEBF22-4F15-415D-9AC9-D31CC4153F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BACEBF22-4F15-415D-9AC9-D31CC4153F1E}.Debug-Hotfix|Any CPU.ActiveCfg = Debug|Any CPU
+		{BACEBF22-4F15-415D-9AC9-D31CC4153F1E}.Debug-Hotfix|Any CPU.Build.0 = Debug|Any CPU
+		{BACEBF22-4F15-415D-9AC9-D31CC4153F1E}.Debug-Notify|Any CPU.ActiveCfg = Debug|Any CPU
+		{BACEBF22-4F15-415D-9AC9-D31CC4153F1E}.Debug-Notify|Any CPU.Build.0 = Debug|Any CPU
+		{BACEBF22-4F15-415D-9AC9-D31CC4153F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BACEBF22-4F15-415D-9AC9-D31CC4153F1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BACEBF22-4F15-415D-9AC9-D31CC4153F1E}.Staging_Local|Any CPU.ActiveCfg = Release|Any CPU
+		{BACEBF22-4F15-415D-9AC9-D31CC4153F1E}.Staging_Local|Any CPU.Build.0 = Release|Any CPU
+		{BACEBF22-4F15-415D-9AC9-D31CC4153F1E}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{BACEBF22-4F15-415D-9AC9-D31CC4153F1E}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}.Debug-Hotfix|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}.Debug-Hotfix|Any CPU.Build.0 = Debug|Any CPU
+		{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}.Debug-Notify|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}.Debug-Notify|Any CPU.Build.0 = Debug|Any CPU
+		{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}.Staging_Local|Any CPU.ActiveCfg = Release|Any CPU
+		{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}.Staging_Local|Any CPU.Build.0 = Release|Any CPU
+		{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}.Staging|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_NeutralResourcesLanguage = en-US
 		SolutionGuid = {CA526728-884A-46A9-B3E5-DB70859CBA4C}
 	EndGlobalSection
 EndGlobal
