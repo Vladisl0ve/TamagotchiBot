@@ -330,6 +330,8 @@ namespace TamagotchiBot.Controllers
             string text = addFooter ? string.Format(nameof(Resources.Resources.hangmanFooter).UseCulture(_userCulture), messageHeader, wordStatus, errors)
                                     : messageHeader;
 
+            Log.Information("Sent HangmanGame status to user {UserId}, Errors: {errors}", _userId, errors);
+
             await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
             {
                 Text = text,

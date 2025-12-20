@@ -183,6 +183,7 @@ namespace TamagotchiBot.Controllers
 
         private async Task MakeMove(int cellIndex)
         {
+            Log.Information($"TicTacToeGame MakeMove {_userInfo}");
             var gameData = _appServices.TicTacToeGameDataService.Get(_userId);
             if (cellIndex < 0 || cellIndex > 8 || gameData.Board[cellIndex] != '0')
             {
