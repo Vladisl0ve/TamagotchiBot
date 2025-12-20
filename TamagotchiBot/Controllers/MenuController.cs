@@ -3402,6 +3402,9 @@ namespace TamagotchiBot.Controllers
             // Send confirmation (update message to show timer)
             TimeSpan timeToWait = Extensions.GetEducationTime(currentLevel);
 
+            Log.Information($"Start Studying for {_userInfo}");
+
+
             string toSendText = string.Format(nameof(Resources.Resources.educationCommandShowTime).UseCulture(_userCulture), new DateTime(timeToWait.Ticks).ToString("HH:mm:ss"));
 
             await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
@@ -3441,6 +3444,7 @@ namespace TamagotchiBot.Controllers
                 await FinishStudying(petDB);
                 return;
             }
+            Log.Information($"Called ShowEducationLeftTime for {_userInfo}");
 
             string toSendText = string.Format(nameof(Resources.Resources.educationCommandShowTime).UseCulture(_userCulture), new DateTime(remainsTime.Ticks).ToString("HH:mm:ss"));
 
