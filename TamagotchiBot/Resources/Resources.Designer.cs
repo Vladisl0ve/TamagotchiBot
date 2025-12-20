@@ -3011,6 +3011,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your pet does not have enough education for this job 🤷.
+        /// </summary>
+        public static string workCommand_notEnoughEducation {
+            get {
+                return ResourceManager.GetString("workCommand_notEnoughEducation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🏛 Your pet has started working as {0}.
         /// </summary>
         public static string workCommand_Working {

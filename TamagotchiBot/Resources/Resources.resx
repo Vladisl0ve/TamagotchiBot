@@ -1483,4 +1483,7 @@ https://t.me/newsvirtualpetbot</value>
 
 +10 Joy 🎊</value>
   </data>
+  <data name="workCommand_notEnoughEducation" xml:space="preserve">
+    <value>Your pet does not have enough education for this job 🤷</value>
+  </data>
 </root>

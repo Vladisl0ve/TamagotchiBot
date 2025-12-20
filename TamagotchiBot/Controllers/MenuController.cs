@@ -2980,7 +2980,7 @@ namespace TamagotchiBot.Controllers
 
             if (petEducation < educationRequirement)
             {
-                await SendAlertToUser(string.Format(nameof(Resources.Resources.denyAccessWorking).UseCulture(_userCulture)), true);
+                await SendAlertToUser(string.Format(nameof(Resources.Resources.workCommand_notEnoughEducation).UseCulture(_userCulture)), true);
                 return false;
             }
 

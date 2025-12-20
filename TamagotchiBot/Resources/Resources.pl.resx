@@ -1483,4 +1483,7 @@ https://t.me/newsvirtualpetbot</value>
 
 +10 Radości 🎊</value>
   </data>
+  <data name="workCommand_notEnoughEducation" xml:space="preserve">
+    <value>Twój pupil nie ma wystarczającego wykształcenia do tej pracy 🤷</value>
+  </data>
 </root>

@@ -1488,4 +1488,7 @@ https://t.me/news_virtualpetbot</value>
 
 +10 Радости 🎊</value>
   </data>
+  <data name="workCommand_notEnoughEducation" xml:space="preserve">
+    <value>Твой питомец не имеет достаточно образования для этой работы 🤷</value>
+  </data>
 </root>
