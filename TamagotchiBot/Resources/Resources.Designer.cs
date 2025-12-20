@@ -407,7 +407,7 @@ namespace TamagotchiBot.Resources {
         ///
         ///🎓 &lt;b&gt;Education&lt;/b&gt; – there are different levels of education; you need to study each in order
         ///💡 &lt;b&gt;New jobs&lt;/b&gt;, which depend on the pet’s education
-        ///💎 &lt;b&gt;New currency added – DIAMONDS&lt;/b&gt;💎. Can be earned by inviting friends to play Tamagot [rest of string was truncated]&quot;;.
+        ///💎 &lt;b&gt;New currency added – DIAMONDS&lt;/b&gt;💎. Can be earned by inviting friends to  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string changelog_onPatch_17 {
             get {
@@ -1414,7 +1414,7 @@ namespace TamagotchiBot.Resources {
         ///&lt;b&gt;FAQ:&lt;/b&gt;
         ///
         ///&lt;b&gt;How is level earned 🏅?&lt;/b&gt;
-        ///&lt;i&gt;1 XP = 1 minute of pe [rest of string was truncated]&quot;;.
+        ///&lt;i&gt;1 XP =  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string helpCommand {
             get {
@@ -2147,6 +2147,17 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} had a nightmare... 
+        ///
+        ///-10% Joy 🎊.
+        /// </summary>
+        public static string RandomEventBadDream {
+            get {
+                return ResourceManager.GetString("RandomEventBadDream", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You went to watch the fireworks 🎇
         ///But the pet accidentally stepped into a puddle 💦
         ///
@@ -2159,6 +2170,39 @@ namespace TamagotchiBot.Resources {
         public static string RandomEventFireworks {
             get {
                 return ResourceManager.GetString("RandomEventFireworks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} found a coin on the walk! 
+        ///
+        ///+20 Gold 💰.
+        /// </summary>
+        public static string RandomEventFoundCoin {
+            get {
+                return ResourceManager.GetString("RandomEventFoundCoin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} found a very tasty snack! 
+        ///
+        ///+15% Satiety 🍕.
+        /// </summary>
+        public static string RandomEventFoundTastySnack {
+            get {
+                return ResourceManager.GetString("RandomEventFoundTastySnack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Look! {0} found a lost toy! 
+        ///
+        ///+10% Joy 🎊.
+        /// </summary>
+        public static string RandomEventFoundToy {
+            get {
+                return ResourceManager.GetString("RandomEventFoundToy", resourceCulture);
             }
         }
         
@@ -2177,6 +2221,17 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} has hiccups! 
+        ///
+        ///-5 Satiety 🍕.
+        /// </summary>
+        public static string RandomEventHiccups {
+            get {
+                return ResourceManager.GetString("RandomEventHiccups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🌭 You were asked to rate a new hot dog recipe 🧑‍🍳
         ///
         ///+40 satiety🍕
@@ -2187,6 +2242,39 @@ namespace TamagotchiBot.Resources {
         public static string RandomEventHotdog {
             get {
                 return ResourceManager.GetString("RandomEventHotdog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oh no! {0} dropped a coin through a hole in the pocket... 
+        ///
+        ///-10 Gold 💰.
+        /// </summary>
+        public static string RandomEventLostCoin {
+            get {
+                return ResourceManager.GetString("RandomEventLostCoin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ouch! {0} was bitten by a mosquito! 
+        ///
+        ///-5 HP 💊.
+        /// </summary>
+        public static string RandomEventMosquitoBite {
+            get {
+                return ResourceManager.GetString("RandomEventMosquitoBite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} had a wonderful dream! 
+        ///
+        ///+10 Joy 🎊.
+        /// </summary>
+        public static string RandomEventNiceDream {
+            get {
+                return ResourceManager.GetString("RandomEventNiceDream", resourceCulture);
             }
         }
         
@@ -2231,10 +2319,22 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🧑‍🌾Some passerby stepped on the pet&apos;s foot 🗣
+        ///   Looks up a localized string similar to It started raining... 
+        ///{0} got wet and sad. 
         ///
-        /// 👺-1% health
-        /// 💊-10% joy🎊
+        ///-10 Joy 🎊.
+        /// </summary>
+        public static string RandomEventRainyDay {
+            get {
+                return ResourceManager.GetString("RandomEventRainyDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🧑‍🌾Some passerby stepped on the pet&apos;s foot 👺 
+        ///
+        ///-1% health 💊
+        ///-10% joy 🎊
         ///
         ////pet - check pet&apos;s status.
         /// </summary>
@@ -2256,6 +2356,17 @@ namespace TamagotchiBot.Resources {
         public static string RandomEventStomachache {
             get {
                 return ResourceManager.GetString("RandomEventStomachache", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The sun is so warm and nice today! {0} is happy! 
+        ///
+        ///+10 Joy 🎊.
+        /// </summary>
+        public static string RandomEventWarmSun {
+            get {
+                return ResourceManager.GetString("RandomEventWarmSun", resourceCulture);
             }
         }
         

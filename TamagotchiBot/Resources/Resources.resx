@@ -634,10 +634,10 @@ Take it soon! 🎁</value>
 /pet - check pet's status</value>
   </data>
   <data name="RandomEventStepOnFoot" xml:space="preserve">
-    <value>🧑‍🌾Some passerby stepped on the pet's foot 🗣
+    <value>🧑‍🌾Some passerby stepped on the pet's foot 👺 
 
- 👺-1% health
- 💊-10% joy🎊
+-1% health 💊
+-10% joy 🎊
 
 /pet - check pet's status</value>
   </data>
@@ -1431,5 +1431,56 @@ You can get {0}💰 and {1}💎 for every new friend!
 
 Subscribe to our channel, where everything is about the bot:
 https://t.me/newsvirtualpetbot</value>
+  </data>
+  <data name="RandomEventFoundCoin" xml:space="preserve">
+    <value>{0} found a coin on the walk! 
+
++20 Gold 💰</value>
+  </data>
+  <data name="RandomEventLostCoin" xml:space="preserve">
+    <value>Oh no! {0} dropped a coin through a hole in the pocket... 
+
+-10 Gold 💰</value>
+  </data>
+  <data name="RandomEventHiccups" xml:space="preserve">
+    <value>{0} has hiccups! 
+
+-5 Satiety 🍕</value>
+  </data>
+  <data name="RandomEventFoundToy" xml:space="preserve">
+    <value>Look! {0} found a lost toy! 
+
++10% Joy 🎊</value>
+  </data>
+  <data name="RandomEventMosquitoBite" xml:space="preserve">
+    <value>Ouch! {0} was bitten by a mosquito! 
+
+-5 HP 💊</value>
+  </data>
+  <data name="RandomEventRainyDay" xml:space="preserve">
+    <value>It started raining... 
+{0} got wet and sad. 
+
+-10 Joy 🎊</value>
+  </data>
+  <data name="RandomEventNiceDream" xml:space="preserve">
+    <value>{0} had a wonderful dream! 
+
++10 Joy 🎊</value>
+  </data>
+  <data name="RandomEventBadDream" xml:space="preserve">
+    <value>{0} had a nightmare... 
+
+-10% Joy 🎊</value>
+  </data>
+  <data name="RandomEventFoundTastySnack" xml:space="preserve">
+    <value>{0} found a very tasty snack! 
+
++15% Satiety 🍕</value>
+  </data>
+  <data name="RandomEventWarmSun" xml:space="preserve">
+    <value>The sun is so warm and nice today! {0} is happy! 
+
++10 Joy 🎊</value>
   </data>
 </root>

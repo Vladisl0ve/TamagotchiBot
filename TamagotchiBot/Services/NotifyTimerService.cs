@@ -91,7 +91,7 @@ namespace TamagotchiBot.Services
         public void SetDailyRewardNotificationTimer()
         {
 #if DEBUG_NOTIFY
-            TimeSpan timeToWait = TimeSpan.FromSeconds(10);
+            TimeSpan timeToWait = TimeSpan.FromSeconds(100);
 #elif STAGING || DEBUG_HOTFIX
             return;
             TimeSpan timeToWait = TimeSpan.FromDays(20);
@@ -616,7 +616,7 @@ namespace TamagotchiBot.Services
 
         private async Task DoRandomEvent(Models.Mongo.User user)
         {
-            var random = new Random().Next(10);
+            var random = new Random().Next(20);
             switch (random)
             {
                 case 0:
@@ -642,6 +642,36 @@ namespace TamagotchiBot.Services
                     break;
                 case 7:
                     await RandomEventPlayComputerGames(user);
+                    break;
+                case 8:
+                    await RandomEventFoundCoin(user);
+                    break;
+                case 9:
+                    await RandomEventLostCoin(user);
+                    break;
+                case 10:
+                    await RandomEventHiccups(user);
+                    break;
+                case 11:
+                    await RandomEventFoundToy(user);
+                    break;
+                case 12:
+                    await RandomEventMosquitoBite(user);
+                    break;
+                case 13:
+                    await RandomEventRainyDay(user);
+                    break;
+                case 14:
+                    await RandomEventNiceDream(user);
+                    break;
+                case 15:
+                    await RandomEventBadDream(user);
+                    break;
+                case 16:
+                    await RandomEventFoundTastySnack(user);
+                    break;
+                case 17:
+                    await RandomEventWarmSun(user);
                     break;
                 default:
                     await RandomEventNotify(user);
@@ -673,7 +703,7 @@ namespace TamagotchiBot.Services
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             if (petDB == null) return;
-            int newJoy = petDB.Joy + 10 ;
+            int newJoy = petDB.Joy + 10;
             _appServices.PetService.UpdateJoy(user.UserId, newJoy);
 
             _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
@@ -690,8 +720,8 @@ namespace TamagotchiBot.Services
         {
             var petDB = _appServices.PetService.Get(user.UserId);
             var userDB = _appServices.UserService.Get(user.UserId);
-            int newGold = userDB.Gold + 15 ;
-            int newJoy = petDB.Joy + 40 ;
+            int newGold = userDB.Gold + 15;
+            int newJoy = petDB.Joy + 40;
 
             _appServices.UserService.UpdateGold(user.UserId, newGold);
             _appServices.PetService.UpdateJoy(user.UserId, newJoy);
@@ -816,6 +846,169 @@ namespace TamagotchiBot.Services
             {
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.RandomEventPlayComputerSticker_Cat), petDB.Type),
                 Text = nameof(Resources.Resources.RandomEventPlayComputerGames).UseCulture(user.Culture)
+            };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+        }
+
+        private async Task RandomEventFoundCoin(Models.Mongo.User user)
+        {
+            var userDB = _appServices.UserService.Get(user.UserId);
+            var petDB = _appServices.PetService.Get(user.UserId);
+            int newGold = userDB.Gold + 20;
+
+            _appServices.UserService.UpdateGold(user.UserId, newGold);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+
+            var toSend = new AnswerMessage()
+            {
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetDailyRewardSticker_Cat), petDB.Type),
+                Text = string.Format(nameof(Resources.Resources.RandomEventFoundCoin).UseCulture(user.Culture), Extensions.GetTypeEmoji(petDB.Type))
+            };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+        }
+
+        private async Task RandomEventLostCoin(Models.Mongo.User user)
+        {
+            var userDB = _appServices.UserService.Get(user.UserId);
+            var petDB = _appServices.PetService.Get(user.UserId);
+            int newGold = userDB.Gold - 10;
+            if (newGold < 0) newGold = 0;
+
+            _appServices.UserService.UpdateGold(user.UserId, newGold);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+
+            var toSend = new AnswerMessage()
+            {
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetGoneSticker_Cat), petDB.Type), // Sad sticker
+                Text = string.Format(nameof(Resources.Resources.RandomEventLostCoin).UseCulture(user.Culture), Extensions.GetTypeEmoji(petDB.Type))
+            };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+        }
+
+        private async Task RandomEventHiccups(Models.Mongo.User user)
+        {
+            var petDB = _appServices.PetService.Get(user.UserId);
+            var newSatiety = petDB.Satiety - 5;
+
+            _appServices.PetService.UpdateSatiety(user.UserId, newSatiety, true);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+
+            var toSend = new AnswerMessage()
+            {
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetHospitalLowHPSticker_Cat), petDB.Type),
+                Text = string.Format(nameof(Resources.Resources.RandomEventHiccups).UseCulture(user.Culture), Extensions.GetTypeEmoji(petDB.Type))
+            };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+        }
+
+        private async Task RandomEventFoundToy(Models.Mongo.User user)
+        {
+            var petDB = _appServices.PetService.Get(user.UserId);
+            var newJoy = petDB.Joy + 10;
+
+            _appServices.PetService.UpdateJoy(user.UserId, newJoy, true);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+
+            var toSend = new AnswerMessage()
+            {
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetGameroomSticker_Cat), petDB.Type),
+                Text = string.Format(nameof(Resources.Resources.RandomEventFoundToy).UseCulture(user.Culture), Extensions.GetTypeEmoji(petDB.Type))
+            };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+        }
+
+        private async Task RandomEventMosquitoBite(Models.Mongo.User user)
+        {
+            var petDB = _appServices.PetService.Get(user.UserId);
+            var newHP = petDB.HP - 5;
+
+            _appServices.PetService.UpdateHP(user.UserId, newHP);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+
+            var toSend = new AnswerMessage()
+            {
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetHospitalLowHPSticker_Cat), petDB.Type),
+                Text = string.Format(nameof(Resources.Resources.RandomEventMosquitoBite).UseCulture(user.Culture), Extensions.GetTypeEmoji(petDB.Type))
+            };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+        }
+
+        private async Task RandomEventRainyDay(Models.Mongo.User user)
+        {
+            var petDB = _appServices.PetService.Get(user.UserId);
+            var newJoy = petDB.Joy - 10;
+
+            _appServices.PetService.UpdateJoy(user.UserId, newJoy, true);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+
+            var toSend = new AnswerMessage()
+            {
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetBoredSticker_Cat), petDB.Type),
+                Text = string.Format(nameof(Resources.Resources.RandomEventRainyDay).UseCulture(user.Culture), Extensions.GetTypeEmoji(petDB.Type))
+            };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+        }
+
+        private async Task RandomEventNiceDream(Models.Mongo.User user)
+        {
+            var petDB = _appServices.PetService.Get(user.UserId);
+            var newJoy = petDB.Joy + 10;
+
+            _appServices.PetService.UpdateJoy(user.UserId, newJoy, true);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+
+            var toSend = new AnswerMessage()
+            {
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetSleepSticker_Cat), petDB.Type),
+                Text = string.Format(nameof(Resources.Resources.RandomEventNiceDream).UseCulture(user.Culture), Extensions.GetTypeEmoji(petDB.Type))
+            };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+        }
+
+        private async Task RandomEventBadDream(Models.Mongo.User user)
+        {
+            var petDB = _appServices.PetService.Get(user.UserId);
+            var newJoy = petDB.Joy - 10;
+
+            _appServices.PetService.UpdateJoy(user.UserId, newJoy, true);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+
+            var toSend = new AnswerMessage()
+            {
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetTooTiredSticker_Cat), petDB.Type),
+                Text = string.Format(nameof(Resources.Resources.RandomEventBadDream).UseCulture(user.Culture), Extensions.GetTypeEmoji(petDB.Type))
+            };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+        }
+
+        private async Task RandomEventFoundTastySnack(Models.Mongo.User user)
+        {
+            var petDB = _appServices.PetService.Get(user.UserId);
+            var newSatiety = petDB.Satiety + 15;
+
+            _appServices.PetService.UpdateSatiety(user.UserId, newSatiety, true);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+
+            var toSend = new AnswerMessage()
+            {
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetKitchenSticker_Cat), petDB.Type),
+                Text = string.Format(nameof(Resources.Resources.RandomEventFoundTastySnack).UseCulture(user.Culture), Extensions.GetTypeEmoji(petDB.Type))
+            };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
+        }
+
+        private async Task RandomEventWarmSun(Models.Mongo.User user)
+        {
+            var petDB = _appServices.PetService.Get(user.UserId);
+            var newJoy = petDB.Joy + 10;
+
+            _appServices.PetService.UpdateJoy(user.UserId, newJoy, true);
+            _appServices.PetService.UpdateGotRandomEventTime(user.UserId, DateTime.UtcNow);
+
+            var toSend = new AnswerMessage()
+            {
+                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetInfoSticker_Cat), petDB.Type),
+                Text = string.Format(nameof(Resources.Resources.RandomEventWarmSun).UseCulture(user.Culture), Extensions.GetTypeEmoji(petDB.Type))
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, user.UserId, false);
         }

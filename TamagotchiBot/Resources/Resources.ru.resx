@@ -1437,4 +1437,55 @@
 Подписывайтесь на наш канал, где всё о боте:
 https://t.me/news_virtualpetbot</value>
   </data>
+  <data name="RandomEventFoundCoin" xml:space="preserve">
+    <value>{0} Нашёл монетку во время прогулки!
+
++20 золота 💰</value>
+  </data>
+  <data name="RandomEventLostCoin" xml:space="preserve">
+    <value>О нет! {0} уронил монету в дырку в кармане...
+
+-10 золотых 💰</value>
+  </data>
+  <data name="RandomEventHiccups" xml:space="preserve">
+    <value>{0} икает!
+
+-5 Насыщенность 🍕</value>
+  </data>
+  <data name="RandomEventFoundToy" xml:space="preserve">
+    <value>Смотрите! {0} нашла потерянную игрушку!
+
++10% Радости 🎊</value>
+  </data>
+  <data name="RandomEventMosquitoBite" xml:space="preserve">
+    <value>Ой! {0} укусил комар!
+
+-5 HP 💊</value>
+  </data>
+  <data name="RandomEventRainyDay" xml:space="preserve">
+    <value>Начался дождь...
+{0} промок и расстроился.
+
+-10 Радость 🎊</value>
+  </data>
+  <data name="RandomEventNiceDream" xml:space="preserve">
+    <value>{0} видел чудесный сон!
+
++10 Радости 🎊</value>
+  </data>
+  <data name="RandomEventBadDream" xml:space="preserve">
+    <value>{0} приснился кошмар... 
+
+-10% Радость 🎊</value>
+  </data>
+  <data name="RandomEventFoundTastySnack" xml:space="preserve">
+    <value>{0} нашёл очень вкусную закуску!
+
++15% к сытости 🍕</value>
+  </data>
+  <data name="RandomEventWarmSun" xml:space="preserve">
+    <value>Сегодня такое теплое и приятное солнце! {0} счастлив!
+
++10 Радости 🎊</value>
+  </data>
 </root>

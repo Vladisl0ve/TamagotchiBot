@@ -1432,4 +1432,55 @@ Za każdego nowego znajomego możesz otrzymać {0}💰 oraz {1}💎!
 Subskrybuj nasz kanał, na którym wszystko jest o bocie:
 https://t.me/newsvirtualpetbot</value>
   </data>
+  <data name="RandomEventFoundCoin" xml:space="preserve">
+    <value>{0} znalazł monetę na spacerze!
+
++20 złota 💰</value>
+  </data>
+  <data name="RandomEventLostCoin" xml:space="preserve">
+    <value>O nie! {0} wpadł monetą przez dziurę w kieszeni...
+
+-10 złota 💰</value>
+  </data>
+  <data name="RandomEventHiccups" xml:space="preserve">
+    <value>{0} ma czkawkę!
+
+-5 Sytości 🍕</value>
+  </data>
+  <data name="RandomEventFoundToy" xml:space="preserve">
+    <value>Patrz! {0} znalazł zgubioną zabawkę!
+
++10% Radości 🎊</value>
+  </data>
+  <data name="RandomEventMosquitoBite" xml:space="preserve">
+    <value>Auć! {0} został ugryziony przez komara!
+
+-5 punktów zdrowia 💊</value>
+  </data>
+  <data name="RandomEventRainyDay" xml:space="preserve">
+    <value>Zaczął padać deszcz... 
+{0} zrobiło się mokro i smutno.
+
+-10 Radości 🎊</value>
+  </data>
+  <data name="RandomEventNiceDream" xml:space="preserve">
+    <value>{0} miał cudowny sen!
+
++10 radości 🎊</value>
+  </data>
+  <data name="RandomEventBadDream" xml:space="preserve">
+    <value>{0} miał koszmar... 
+
+-10% radości 🎊</value>
+  </data>
+  <data name="RandomEventFoundTastySnack" xml:space="preserve">
+    <value>{0} znalazł(a) bardzo smaczną przekąskę!
+
++15% Sytości 🍕</value>
+  </data>
+  <data name="RandomEventWarmSun" xml:space="preserve">
+    <value>Słońce jest dziś takie ciepłe i przyjemne! {0} jest szczęśliwy!
+
++10 Radości 🎊</value>
+  </data>
 </root>
