@@ -180,9 +180,9 @@ namespace TamagotchiBot.Services.Mongo
             return true;
         }
 
-        public bool AppendNewChatGPTQA(long userId, string userQ, string chatGptA)
+        public bool AppendNewChatGPTQA(long userId, string userQ, string chatGptA, int maxHistoryCounter)
         {
-            return AppendNewChatGPTQA(userId, $"{userQ}|xxx|{chatGptA}|xxx|{DateTime.UtcNow:R}");
+            return AppendNewChatGPTQA(userId, $"{userQ}|xxx|{chatGptA}|xxx|{DateTime.UtcNow:R}", maxHistoryCounter);
         }
 
         public bool AppendNewGeminiQA(long userId, string userQ, string geminiA, int maxLimits)
@@ -190,7 +190,7 @@ namespace TamagotchiBot.Services.Mongo
             return AppendNewGeminiQA(userId, $"{userQ}|xxx|{geminiA}|xxx|{DateTime.UtcNow:R}", maxLimits);
         }
 
-        private bool AppendNewChatGPTQA(long userId, string newMsg)
+        private bool AppendNewChatGPTQA(long userId, string newMsg, int maxHistoryCounter)
         {
             var metauserDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
             metauserDb ??= Create(new MetaUser() { UserId = userId });
@@ -202,7 +202,7 @@ namespace TamagotchiBot.Services.Mongo
 
             result.Add(newMsg);
 
-            if (result.Count > Constants.QA_MAX_COUNTER)
+            if (result.Count > maxHistoryCounter)
                 result.RemoveAt(0);
 
             metauserDb.LastChatGptQA = result;

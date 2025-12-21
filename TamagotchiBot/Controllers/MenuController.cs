@@ -266,10 +266,11 @@ namespace TamagotchiBot.Controllers
         {
             new ForwardController(_appServices, _message).StartForwarding();
 
+            var maxHistoryCounter = _appServices.SInfoService.GetGeminiMaxHistory();
             var previousQA = _appServices.MetaUserService.GetLastChatGPTQA(_userId);
             bool isTimeOut;
             string chatGptAnswer;
-            if (previousQA.Count >= QA_MAX_COUNTER && (DateTime.UtcNow - previousQA[0].revision) < new TimeSpan(0, 30, 0)) //30 minutes timeout
+            if (previousQA.Count >= maxHistoryCounter && (DateTime.UtcNow - previousQA[0].revision) < new TimeSpan(0, 30, 0)) //30 minutes timeout
             {
                 isTimeOut = true;
                 chatGptAnswer = string.Format(
@@ -343,6 +344,7 @@ namespace TamagotchiBot.Controllers
                 chat.AppendUserInput("Ты живой?");
                 chat.AppendExampleChatbotOutput(petDB.HP > 50 ? $"ДА, я полон сил! У меня {petDB.HP} здоровья" : $"Мне плохо, всё болит. Моё здоровье всего лишь {petDB.HP}");
 
+                var maxHistoryCounter = _appServices.SInfoService.GetGeminiMaxHistory();
                 var previousQA = _appServices.MetaUserService.GetLastChatGPTQA(_userId);
                 foreach (var item in previousQA.Skip(Math.Max(0, previousQA.Count - Constants.QA_TO_FEED_COUNTER)))
                 {
@@ -356,7 +358,7 @@ namespace TamagotchiBot.Controllers
                 Log.Information($"CHATGPT USAGE ========> {chat.MostRecentApiResult.Model.ModelID}: TOTAL [{chat.MostRecentApiResult.Usage.TotalTokens}] = PROMPT [{chat.MostRecentApiResult.Usage.PromptTokens}] + COMPLETETION [{chat.MostRecentApiResult.Usage.CompletionTokens}]");
 
                 result = FixHTMLEscaping(result);
-                _appServices.MetaUserService.AppendNewChatGPTQA(_userId, _message.Text, result);
+                _appServices.MetaUserService.AppendNewChatGPTQA(_userId, _message.Text, result, maxHistoryCounter);
             }
             catch (Exception ex)
             {
@@ -1044,11 +1046,12 @@ namespace TamagotchiBot.Controllers
 
             await _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
 
+            var maxHistoryCounter = _appServices.SInfoService.GetGeminiMaxHistory();
             var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
             bool isTimeOut;
             string geminiAnswer;
 
-            if (IsGeminiTimeout(previousQA))
+            if (IsGeminiTimeout(previousQA, maxHistoryCounter))
             {
                 isTimeOut = true;
                 geminiAnswer = string.Format(
@@ -1237,6 +1240,7 @@ namespace TamagotchiBot.Controllers
             encodedPetName = "<b>" + encodedPetName + "</b>";
 
             var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
+            var maxHistoryCounter = _appServices.SInfoService.GetGeminiMaxHistory();
 
             return string.Format(
                 nameof(petCommand).UseCulture(_userCulture),
@@ -1258,7 +1262,7 @@ namespace TamagotchiBot.Controllers
                 userDB.Diamonds,
                 randomAd,
                 randomPetPhrase,
-                IsGeminiTimeout(previousQA) ? string.Format(nameof(petCommand_isPetSilenced).UseCulture(_userCulture), GetGeminiTimeout(previousQA))
+                IsGeminiTimeout(previousQA, maxHistoryCounter) ? string.Format(nameof(petCommand_isPetSilenced).UseCulture(_userCulture), GetGeminiTimeout(previousQA))
                                             : string.Empty,
                 petDB.EducationLevel.GetActualEducationLevelTranslatedString(_userCulture)
             );
@@ -1289,8 +1293,9 @@ namespace TamagotchiBot.Controllers
             bool isDailyRewardOnCooldown = dateTimeWhenOver > DateTime.UtcNow;
             var randomAd = GetRandomAd(isDailyRewardOnCooldown);
 
+            var maxHistoryCounter = _appServices.SInfoService.GetGeminiMaxHistory();
             var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
-            var randomPetPhrase = IsGeminiTimeout(previousQA) ? "..." : GetRandomPetPhrase();
+            var randomPetPhrase = IsGeminiTimeout(previousQA, maxHistoryCounter) ? "..." : GetRandomPetPhrase();
 
             string toSendText = BuildPetInfoText(petDB, userDB, randomAd, randomPetPhrase);
 
@@ -3476,9 +3481,9 @@ namespace TamagotchiBot.Controllers
                                                               false);
         }
 
-        private static bool IsGeminiTimeout(List<(string userQ, string geminiA, DateTime revision)> previousQA)
+        private static bool IsGeminiTimeout(List<(string userQ, string geminiA, DateTime revision)> previousQA, int maxCounter)
         {
-            if (previousQA == null || previousQA.Count < Constants.QA_MAX_COUNTER)
+            if (previousQA == null || previousQA.Count < maxCounter)
                 return false;
 
             return (DateTime.UtcNow - previousQA[0].revision) < Constants.TimesToWait.GeminiTimeout;
