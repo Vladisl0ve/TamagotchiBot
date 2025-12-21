@@ -760,8 +760,11 @@ namespace TamagotchiBot.UserExtensions
         }
         public static string UseCulture(this string toTranslate, string culture)
         {
-            if (string.IsNullOrEmpty(culture) || string.IsNullOrEmpty(toTranslate))
+            if (string.IsNullOrEmpty(toTranslate))
                 return null;
+
+            if (string.IsNullOrEmpty(culture))
+                culture = "ru";
 
             CultureInfo cultureInfo;
             try
