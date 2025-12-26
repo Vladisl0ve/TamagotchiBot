@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
@@ -101,6 +102,15 @@ namespace TamagotchiBot.UserExtensions
 
             foreach (Languages l in Enum.GetValues(typeof(Languages)))
                 result.Add($"{l} {l.GetDisplayShortName()}");
+
+            return result;
+        }
+        public static List<string> TryGameAgainAnswer(CultureInfo userCulture)
+        {
+            List<string> result = new()
+            {
+                nameof(Resources.Resources.TryAgainAnswerYes).UseCulture(userCulture),
+            };
 
             return result;
         }
@@ -797,6 +807,36 @@ namespace TamagotchiBot.UserExtensions
         public static EducationLevel GetActualEducationLevel(this int level)
         {
             return level == 0 ? EducationLevel.Primary : (EducationLevel)level;
+        }
+
+        public static string GetRandomPetName(string culture)
+        {
+            string baseFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", culture);
+            string filePath = Path.Combine(baseFolder, $"PetNames_{culture}.txt");
+
+            if (!File.Exists(filePath))
+            {
+                // Fallback to English or default if specific culture file is missing
+                // Try just Resources/culture/PetNames_{culture}.txt assuming the folder might be just Resources
+                // But based on user request i made subfolders.
+                Log.Warning($"Pet names file not found: {filePath}");
+                return "кот";
+            }
+
+            try
+            {
+                var lines = File.ReadAllLines(filePath);
+                if (lines.Length == 0)
+                    return "кот";
+
+                Random random = new Random();
+                return lines[random.Next(lines.Length)];
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error reading random pet name");
+                return "кот";
+            }
         }
 
         public static string GetActualEducationLevelTranslatedString(this int level, CultureInfo culture)

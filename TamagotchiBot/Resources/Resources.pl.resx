@@ -1486,4 +1486,7 @@ https://t.me/newsvirtualpetbot</value>
   <data name="workCommand_notEnoughEducation" xml:space="preserve">
     <value>Twój pupil nie ma wystarczającego wykształcenia do tej pracy 🤷</value>
   </data>
+  <data name="TryAgainAnswerYes" xml:space="preserve">
+    <value>O, zaczynamy od nowa 🧞‍♀️</value>
+  </data>
 </root>

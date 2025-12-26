@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
+using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.Models.Mongo
 {
@@ -13,10 +14,10 @@ namespace TamagotchiBot.Models.Mongo
         public string Name { get; set; }
 
         [BsonElement("Type")]
-        public int Type { get; set; }
+        public int Type { get; set; } = (int)PetType.Cat;
 
         [BsonElement("BirthDateTime")]
-        public DateTime BirthDateTime { get; set; }
+        public DateTime BirthDateTime { get; set; } = DateTime.UtcNow;
 
         [BsonElement("StartWorkingTime")]
         public DateTime StartWorkingTime { get; set; }
@@ -28,13 +29,13 @@ namespace TamagotchiBot.Models.Mongo
         public DateTime GotRandomEventTime { get; set; }
 
         [BsonElement("LastUpdateTime")]
-        public DateTime LastUpdateTime { get; set; }
+        public DateTime LastUpdateTime { get; set; } = DateTime.UtcNow;
 
         [BsonElement("StartSleepingTime")]
         public DateTime StartSleepingTime { get; set; }
 
         [BsonElement("NextRandomEventNotificationTime")]
-        public DateTime NextRandomEventNotificationTime { get; set; }
+        public DateTime NextRandomEventNotificationTime { get; set; } = DateTime.UtcNow.AddMinutes(25);
 
         [BsonElement("CurrentStatus")]
         public int CurrentStatus { get; set; }
@@ -43,13 +44,13 @@ namespace TamagotchiBot.Models.Mongo
         public int CurrentJob { get; set; }
 
         [BsonElement("HP")]
-        public int HP { get; set; }
+        public int HP { get; set; } = 100;
 
         [BsonElement("Hygiene")]
         public int Hygiene { get; set; }
 
         [BsonElement("Satiety")]
-        public double Satiety { get; set; }
+        public double Satiety { get; set; } = 80;
 
         [BsonElement("MPSatiety")]
         public int MPSatiety { get; set; }
@@ -58,10 +59,10 @@ namespace TamagotchiBot.Models.Mongo
         public DateTime LastMPFedTime { get; set; }
 
         [BsonElement("Joy")]
-        public int Joy { get; set; }
+        public int Joy { get; set; } = 30;
 
         [BsonElement("Fatigue")]
-        public int Fatigue { get; set; }
+        public int Fatigue { get; set; } = 0;
 
         [Obsolete]
         [BsonElement("IsNew")]
@@ -71,10 +72,10 @@ namespace TamagotchiBot.Models.Mongo
         public bool IsGone { get; set; }
 
         [BsonElement("EXP")]
-        public int EXP { get; set; }
+        public int EXP { get; set; } = 0;
 
         [BsonElement("Level")]
-        public int Level { get; set; }
+        public int Level { get; set; } = 1;
 
         [BsonElement("LevelAllGame")]
         public int LevelAllGame { get; set; }

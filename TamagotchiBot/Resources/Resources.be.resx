@@ -1491,4 +1491,7 @@ https://t.me/newsvirtualpetbot</value>
   <data name="workCommand_notEnoughEducation" xml:space="preserve">
     <value>Твайму гадаванцу не хапае адукацыі для гэтай працы 🤷</value>
   </data>
+  <data name="TryAgainAnswerYes" xml:space="preserve">
+    <value>О, зноў пачалося 🧞‍♀️</value>
+  </data>
 </root>

@@ -14,6 +14,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Web;
+using User = TamagotchiBot.Models.Mongo.User;
 
 namespace TamagotchiBot.Controllers
 {
@@ -39,10 +40,12 @@ namespace TamagotchiBot.Controllers
             _userCulture = new CultureInfo(_appServices.UserService.Get(_userId)?.Culture ?? "ru");
             UpdateOrCreateAUD(message?.From ?? callback.From, message, callback);
         }
-        public void CreateUser()
+        public User CreateUser()
         {
             if (_message != null)
-                CreateUserFromMessage(_message);
+                return CreateUserFromMessage(_message);
+
+            return default;
         }
         public async Task AskALanguage()
         {
@@ -56,16 +59,16 @@ namespace TamagotchiBot.Controllers
             _appServices.UserService.UpdateIsLanguageAskedOnCreate(_userId, true);
         }
 
-        internal async Task<bool> CreatePet(Models.Mongo.User userDB)
+        internal async Task<bool> CreatePet(Models.Mongo.User userDB, string petName = null)
         {
-            var msgText = _message?.Text;
-            if (string.IsNullOrEmpty(msgText))
+            var nameForPet = petName ?? _message?.Text;
+            if (string.IsNullOrEmpty(nameForPet))
                 return false;
 
             _appServices.PetService.Create(new Pet()
             {
                 UserId = _userId,
-                Name = msgText,
+                Name = nameForPet,
                 Level = 1,
                 BirthDateTime = DateTime.UtcNow,
                 LastUpdateTime = DateTime.UtcNow,
@@ -79,9 +82,8 @@ namespace TamagotchiBot.Controllers
                 Satiety = 80,
                 Type = (int)PetType.Cat
             });
-            Log.Information($"Pet of UserID: {_userId} has been added to Db");
+            Log.Information($"Pet of UserID: {_userId} has been added to Db with culture {userDB.Culture}");
 
-            _appServices.UserService.UpdateIsPetNameAskedOnCreate(_userId, false);
             var resultRef = _appServices.ReferalInfoService.UpdateTaskDone(_userId, true);
 
             if (userDB.ReferaledBy != 0 && resultRef)
@@ -103,7 +105,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = string.Format(
                     nameof(ConfirmedName).UseCulture(_userCulture),
-                    HttpUtility.HtmlEncode(msgText)),
+                    HttpUtility.HtmlEncode(nameForPet)),
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.PetConfirmedNameSticker_Cat), PetType.Cat),
                 ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
@@ -493,12 +495,12 @@ namespace TamagotchiBot.Controllers
                 var toSend = new AnswerMessage()
                 {
                     Text = nameof(EpilogueText).UseCulture(_userCulture),
-                    StickerId = StickersId.GetStickerByType(nameof(StickersId.PetEpilogueSticker_Cat), _appServices.PetService.Get(_userId)?.Type)
+                    StickerId = StickersId.GetStickerByType(nameof(StickersId.PetEpilogueSticker_Cat), _appServices.PetService.Get(_userId)?.Type),
+                    ReplyMarkup = Constants.ReplyKeyboardItems.TryAgainMarkup(_userCulture),
                 };
 
                 Log.Debug($"Sent epilogue for {_userInfo}");
                 await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
-                await Task.Delay(2500);
                 await KillThePet();
             }
         }
@@ -525,7 +527,7 @@ namespace TamagotchiBot.Controllers
             return true;
         }
 
-        private void CreateUserFromMessage(Message msg)
+        private User CreateUserFromMessage(Message msg)
         {
             var userTMP = _appServices.UserService.Create(msg.From);
             _userInfo = Extensions.GetLogUser(userTMP);
@@ -533,6 +535,8 @@ namespace TamagotchiBot.Controllers
 
             AdsAndRefChecks(msg);
             _userCulture = new CultureInfo(msg.From.LanguageCode ?? "ru");
+
+            return _appServices.UserService.Get(msg.From.Id);
 
             void AdsAndRefChecks(Message msg)
             {
@@ -645,7 +649,6 @@ namespace TamagotchiBot.Controllers
             await _appServices.UserService.UpdateAppleGameStatus(_userId, false);
             await _appServices.UserService.UpdateHangmanGameStatus(_userId, false);
             await _appServices.UserService.UpdateTicTacToeGameStatus(_userId, false);
-            await AskALanguage();
         }
         private async Task AskForResurrect()
         {

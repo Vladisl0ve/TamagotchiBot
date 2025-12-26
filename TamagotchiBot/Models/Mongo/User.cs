@@ -32,10 +32,10 @@ namespace TamagotchiBot.Models.Mongo
         public bool IsInHangmanGame { get; set; }
 
         [BsonElement("IsLanguageAskedOnCreate")]
-        public bool IsLanguageAskedOnCreate { get; set; }
+        public bool IsLanguageAskedOnCreate { get; set; } = false;
 
         [BsonElement("IsPetNameAskedOnCreate")]
-        public bool IsPetNameAskedOnCreate { get; set; }
+        public bool IsPetNameAskedOnCreate { get; set; } = false;
 
         [BsonElement("Culture")]
         public string Culture { get; set; }

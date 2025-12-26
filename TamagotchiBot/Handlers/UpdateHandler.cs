@@ -496,34 +496,32 @@ namespace TamagotchiBot.Handlers
 
         private async Task RegisterUserAndPet(Message message)
         {
-            CreatorController creatorController;
+            CreatorController creatorController = new CreatorController(_appServices, message);
             var userId = message.From.Id;
             var userDB = _appServices.UserService.Get(userId);
             if (userDB == null)
             {
-                creatorController = new CreatorController(_appServices, message);
-                creatorController.CreateUser();
-                await creatorController.AskALanguage();
-            }
-            else if (userDB.IsLanguageAskedOnCreate)
-            {
-                creatorController = new CreatorController(_appServices, message);
-                if (!await creatorController.ApplyNewLanguage())
+                try
+                {
+                    userDB = creatorController.CreateUser();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, $"Error creating userId: {userId}");
                     return;
-                await creatorController.SendWelcomeText();
-                await Task.Delay(1000);
-                await creatorController.AskForAPetName();
-            }
-            else if (userDB.IsPetNameAskedOnCreate)
-            {
-                creatorController = new CreatorController(_appServices, message);
-                if (!await creatorController.IsNicknameAcceptable())
-                    return;
+                }
 
-                if (!await creatorController.CreatePet(userDB))
+                if (userDB == null)
+                {
+                    Log.Error($"Error creating userId: {userId}");
                     return;
+                }
             }
+
+            await creatorController.SendWelcomeText();
+            await creatorController.CreatePet(userDB, Extensions.GetRandomPetName(userDB.Culture));
         }
+
         private async void SendGramadsPostToChat(long chatId)
         {
             const int TIMEOUT_SECONDS = 5;

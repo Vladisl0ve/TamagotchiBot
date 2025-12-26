@@ -14,11 +14,11 @@ namespace TamagotchiBot.UserExtensions
         public const int QA_TO_FEED_COUNTER = 5;
         public enum Languages
         {
-            [Display(ShortName = "🇨🇷", Name = "be")] Belarusian,
-            [Display(ShortName = "🇺🇦", Name = "uk")] Ukrainian,
-            [Display(ShortName = "🇷🇺", Name = "ru")] Russian,
-            [Display(ShortName = "🇺🇸", Name = "en")] English,
-            [Display(ShortName = "🇵🇱", Name = "pl")] Polish,
+            [Display(ShortName = "🇨🇷", Name =  "be")] Belarusian,
+            [Display(ShortName = "🇺🇦", Name =  "uk")] Ukrainian,
+            [Display(ShortName = "🇷🇺", Name =  "ru")] Russian,
+            [Display(ShortName = "🇺🇸", Name =  "en")] English,
+            [Display(ShortName = "🇵🇱", Name =  "pl")] Polish,
         }
 
         public enum CurrentStatus
@@ -1169,6 +1169,9 @@ namespace TamagotchiBot.UserExtensions
 
             public static ReplyKeyboardMarkup LanguagesMarkup => _languagesMarkup;
             private static ReplyKeyboardMarkup _languagesMarkup = Extensions.ReplyKeyboardOptimizer(Extensions.LanguagesWithFlags(), isOneTimeKeyboard: true);
+
+            public static ReplyKeyboardMarkup TryAgainMarkup(CultureInfo culture) => _tryAgainMarkup(culture);
+            private static ReplyKeyboardMarkup _tryAgainMarkup(CultureInfo culture) => Extensions.ReplyKeyboardOptimizer(Extensions.TryGameAgainAnswer(culture), isOneTimeKeyboard: true);
         }
 
     }

@@ -2952,6 +2952,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Oh, here we go again 🧞‍♀️.
+        /// </summary>
+        public static string TryAgainAnswerYes {
+            get {
+                return ResourceManager.GetString("TryAgainAnswerYes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to turned off.
         /// </summary>
         public static string turnedOff_F {

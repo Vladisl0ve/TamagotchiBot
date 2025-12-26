@@ -31,7 +31,7 @@ namespace TamagotchiBot.Services.Mongo
                 LastName = user.LastName,
                 UserId = user.Id,
                 Username = user.Username,
-                Culture = user.LanguageCode,
+                Culture = user.LanguageCode ?? "ru",
                 Gold = 50,
                 ChatIds = new List<long>() { user.Id },
                 Created = DateTime.UtcNow

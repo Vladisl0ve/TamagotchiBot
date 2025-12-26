@@ -56,11 +56,12 @@ namespace TamagotchiBot.Services.Mongo
         public bool UpdateTaskDone(long userId, bool isTaskDone)
         {
             var userDB = _userService.Get(userId);
+
             if (userDB != null && userDB.ReferaledBy != 0)
             {
                 var creatorUserId = userDB.ReferaledBy;
                 var refInfoOfCreator = Get(creatorUserId);
-                if (refInfoOfCreator != null && refInfoOfCreator.RefUsers.Exists(u => u.RefUserId == userId))
+                if (refInfoOfCreator != null && refInfoOfCreator.RefUsers.Exists(u => u.RefUserId == userId && u.IsTaskDone == false))
                 {
                     var refUsers = refInfoOfCreator.RefUsers;
                     refUsers.Remove(refUsers.Find(u => u.RefUserId == userId));
