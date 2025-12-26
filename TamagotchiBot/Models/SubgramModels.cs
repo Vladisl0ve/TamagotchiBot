@@ -15,16 +15,13 @@ namespace TamagotchiBot.Models
         public string resource_name { get; set; }
     }
 
-    public class SubgramAdditional
-    {
-        public List<SubgramSponsor> sponsors { get; set; }
-    }
 
     public class SubgramResponse
     {
         public string status { get; set; }
         public int code { get; set; }
         public string message { get; set; }
-        public SubgramAdditional additional { get; set; }
+        public int total_fixed_link { get; set; }
+        public List<SubgramSponsor> sponsors { get; set; }
     }
 }

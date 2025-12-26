@@ -97,7 +97,7 @@ namespace TamagotchiBot.Handlers
 
         private async Task<bool> IsUserRegisteredSubgramCheck(long userId, long chatId, string name, string username, string languageCode)
         {
-            if (_subgramKey == null)
+            if (string.IsNullOrEmpty(_subgramKey))
                 _subgramKey = _appServices.SInfoService.GetSubgramKey();
 
             if (string.IsNullOrEmpty(_subgramKey))
@@ -109,9 +109,6 @@ namespace TamagotchiBot.Handlers
 #endif
             try
             {
-                if (userId != 401250312 || userId != 6432502400 || userId != 1297838077)
-                    return true;
-
                 using var client = new HttpClient();
                 client.Timeout = TimeSpan.FromSeconds(TIMEOUT_SECONDS);
                 client.DefaultRequestHeaders.Add("Auth", _subgramKey);
@@ -144,14 +141,6 @@ namespace TamagotchiBot.Handlers
                 if (subgramResponse?.status == "warning")
                 {
                     Log.Information($"Subgram ==> tasks not done, userId: {userId}");
-                    await _appServices.BotControlService.SendStickerAsync(chatId, StickersId.FlyerADSSticker);
-
-                    if (subgramResponse.additional?.sponsors != null && subgramResponse.additional.sponsors.Any())
-                    {
-                        //In Turnkey mode (Variant 1), Subgram should handle the UI. 
-                        //We just block execution.
-                    }
-
                     return false;
                 }
 
