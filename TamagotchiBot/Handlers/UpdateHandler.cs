@@ -19,6 +19,7 @@ using System.Linq;
 using TamagotchiBot.Database;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
+using TamagotchiBot.Models;
 
 namespace TamagotchiBot.Handlers
 {
@@ -27,6 +28,7 @@ namespace TamagotchiBot.Handlers
         private readonly IApplicationServices _appServices;
         private readonly IEnvsSettings _envs;
         private readonly ConcurrentDictionary<(long userId, long chatId), DateTime> lastMsgList = new ConcurrentDictionary<(long, long), DateTime>();
+        private static string _subgramKey = null;
 
         public UpdateHandler(IApplicationServices services, IEnvsSettings envs)
         {
@@ -93,53 +95,76 @@ namespace TamagotchiBot.Handlers
             }
         }
 
-        private async Task<bool> IsUserRegisteredFlyerCheck(long userId)
+        private async Task<bool> IsUserRegisteredSubgramCheck(long userId, long chatId, string name, string username, string languageCode)
         {
-            const int TIMEOUT_SECONDS = 2;
+            if (_subgramKey == null)
+                _subgramKey = _appServices.SInfoService.GetSubgramKey();
+
+            if (string.IsNullOrEmpty(_subgramKey))
+                return true;
+
+            const int TIMEOUT_SECONDS = 3;
 #if DEBUG || DEBUG_NOTIFY || STAGING
             return true; //true on DEBUG
 #endif
             try
             {
+                if (userId != 401250312 || userId != 6432502400 || userId != 1297838077)
+                    return true;
+
                 using var client = new HttpClient();
                 client.Timeout = TimeSpan.FromSeconds(TIMEOUT_SECONDS);
+                client.DefaultRequestHeaders.Add("Auth", _subgramKey);
 
-                var sendPostDto = new { key = "FL-eWYKid-AEeWAG-ElIsea-FunlRj", user_id = userId };
+                var sendPostDto = new
+                {
+                    user_id = userId,
+                    chat_id = chatId,
+                    first_name = name,
+                    username = username,
+                    language_code = languageCode
+                };
                 var json = JsonConvert.SerializeObject(sendPostDto);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await client.PostAsync("https://api.flyerservice.io/check", content);
+                var response = await client.PostAsync("https://api.subgram.org/get-sponsors", content);
 
                 var result = await response.Content.ReadAsStringAsync();
 
+                Log.Information($"Subgram response: {result}");
+
                 if (!response.IsSuccessStatusCode)
                 {
-                    Log.Error("==> ERROR ON FLYER RESPONSE:" + result);
+                    Log.Error("==> ERROR ON SUBGRAM RESPONSE:" + result);
                     return true;
                 }
 
-                if (result.Contains("\"skip\":false"))
+                var subgramResponse = JsonConvert.DeserializeObject<SubgramResponse>(result);
+
+                if (subgramResponse?.status == "warning")
                 {
-                    Log.Information($"Flyer ==> tasks not done, userId: {userId}");
+                    Log.Information($"Subgram ==> tasks not done, userId: {userId}");
+                    await _appServices.BotControlService.SendStickerAsync(chatId, StickersId.FlyerADSSticker);
+
+                    if (subgramResponse.additional?.sponsors != null && subgramResponse.additional.sponsors.Any())
+                    {
+                        //In Turnkey mode (Variant 1), Subgram should handle the UI. 
+                        //We just block execution.
+                    }
+
                     return false;
                 }
-                else if (result.Contains("\"skip\":true"))
-                {
-                    Log.Information($"Flyer ==> tasks done, userId: {userId}, result: {result}");
-                    return true;
-                }
 
-                Log.Fatal($"Flyer ==> wrong result: {result}");
-                return true; //true on error
+                return true;
             }
             catch (TaskCanceledException)
             {
-                Log.Error($"TIMEOUT FLYER - {TIMEOUT_SECONDS}s");
+                Log.Error($"TIMEOUT SUBGRAM - {TIMEOUT_SECONDS}s");
                 return true; //true on error
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error FLYER HTTP: ");
+                Log.Error(ex, "Error SUBGRAM HTTP: ");
                 return true; //true on error
             }
         }
@@ -200,12 +225,21 @@ namespace TamagotchiBot.Handlers
                 return;
             }
 
-            //if(_appServices.UserService.Get(userId)?.Created < DateTime.UtcNow.AddDays(1))
-            //    if (!await IsUserRegisteredFlyerCheck(userId))//FLYER
-            //{
-            //    await _appServices.BotControlService.SendStickerAsync(userId, StickersId.FlyerADSSticker);
-            //    return;
-            //}
+            if (_appServices.UserService.Get(userId)?.Created < DateTime.UtcNow.AddDays(-1))
+            {
+                try
+                {
+                    if (!await IsUserRegisteredSubgramCheck(userId, message.Chat.Id, message.From.FirstName, message.From.Username, message.From.LanguageCode))
+                    {
+                        return;
+                    }
+
+                }
+                catch 
+                {
+                    Log.Error($"Error on Subgram check for userId: {userId}");
+                }
+            }
 
             if (_appServices.PetService.Get(message.From.Id)?.Name != null)
                 SendGramadsPostToChat(message.From.Id);
@@ -281,11 +315,11 @@ namespace TamagotchiBot.Handlers
                 return;
             }
 
-            //if (!await IsUserRegisteredFlyerCheck(userId))//FLYER
-            //{
-            //    await _appServices.BotControlService.SendStickerAsync(userId, StickersId.FlyerADSSticker);
-            //    return;
-            //}
+            if (_appServices.UserService.Get(userId)?.Created < DateTime.UtcNow.AddDays(-1))
+                if (!await IsUserRegisteredSubgramCheck(userId, callbackQuery.Message.Chat.Id, callbackQuery.From.FirstName, callbackQuery.From.Username, callbackQuery.From.LanguageCode))
+                {
+                    return;
+                }
 
             // call this method wherever you want to show an ad,
             // for example your bot just made its job and

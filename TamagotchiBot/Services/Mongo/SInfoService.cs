@@ -23,6 +23,7 @@ namespace TamagotchiBot.Services.Mongo
         public string GetLastBotstatId() => _collection.Find(si => true).FirstOrDefault()?.BotstatCheckId;
 
         public int GetGeminiMaxHistory() => _collection.Find(si => true).FirstOrDefault()?.MaxGeminiHistory ?? 10;
+        public string GetSubgramKey() => _collection.Find(si => true).FirstOrDefault()?.SubgramKey;
 
         public DateTime GetNextNotify()
         {

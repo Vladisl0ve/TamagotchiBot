@@ -38,5 +38,8 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("MaxGeminiHistory")]
         public int MaxGeminiHistory { get; set; } = 10;
+
+        [BsonElement("SubgramKey")]
+        public string SubgramKey { get; set; } = string.Empty;
     }
 }
