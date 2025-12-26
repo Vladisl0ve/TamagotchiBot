@@ -11,7 +11,6 @@ using TamagotchiBot.Models.Mongo;
 using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot.Exceptions;
-using Telegram.Bot.Types;
 using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.Services
@@ -570,26 +569,34 @@ namespace TamagotchiBot.Services
         {
             List<long> usersToNotify = new();
             var petsDB = _appServices.PetService.GetAll().Where(p => p.Name != null);
-
             foreach (var pet in petsDB)
             {
                 var user = _appServices.UserService.Get(pet.UserId);
 
+                try
+                {
 #if DEBUG_NOTIFY
-                if (user.NextDailyRewardNotificationTime < DateTime.UtcNow && user.GotDailyRewardTime.AddSeconds(1) < DateTime.UtcNow)
-                {
-                    _appServices.UserService.UpdateNextDailyRewardNotificationTime(user.UserId, DateTime.UtcNow.AddSeconds(1));
-                    usersToNotify.Add(user.UserId);
-                }
+                    if (user.NextDailyRewardNotificationTime < DateTime.UtcNow && user.GotDailyRewardTime.AddSeconds(1) < DateTime.UtcNow)
+                    {
+                        _appServices.UserService.UpdateNextDailyRewardNotificationTime(user.UserId, DateTime.UtcNow.AddSeconds(1));
+                        usersToNotify.Add(user.UserId);
+                    }
 #else
-
-                if (user.NextDailyRewardNotificationTime < DateTime.UtcNow && user.GotDailyRewardTime.AddDays(1) < DateTime.UtcNow)
-                {
-                    _appServices.UserService.UpdateNextDailyRewardNotificationTime(user.UserId, DateTime.UtcNow.AddDays(1));
-                    usersToNotify.Add(user.UserId);
-                }
+                    if (user.NextDailyRewardNotificationTime < DateTime.UtcNow && user.GotDailyRewardTime.AddDays(1) < DateTime.UtcNow)
+                    {
+                        _appServices.UserService.UpdateNextDailyRewardNotificationTime(user.UserId, DateTime.UtcNow.AddDays(1));
+                        usersToNotify.Add(user.UserId);
+                    }
 #endif
+
+
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, $"Error on UpdateAllDailyRewardUsersIds for userId: {pet.UserId}");
+                }
             }
+
             return usersToNotify;
         }
 

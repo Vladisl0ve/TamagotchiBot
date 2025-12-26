@@ -1204,49 +1204,6 @@ namespace TamagotchiBot.Controllers
             return (result, isCanceled);
         }
 
-        [Obsolete]
-        private async Task SendGeminiMessage(Pet petDB, User userDB)
-        {
-            string question = _message.Text
-                .Replace("/gemini", "")
-                .Replace("@test_tmg_bot", "") //hardcoded for now as it is not critical
-                .Trim();
-
-            if (string.IsNullOrEmpty(question))
-            {
-                var toSend = new AnswerMessage()
-                {
-                    Text = "daroŭ",
-                    StickerId = null,
-                    ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
-                    InlineKeyboardMarkup = null
-                };
-                Log.Debug($"Called /gemini for {_userInfo}");
-                await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
-                return;
-            }
-
-            await _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
-            var (answer, isCanceled) = await GetAnswerGemini(question, petDB, userDB);
-
-            if (isCanceled)
-            {
-                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
-                {
-                    Text = answer,
-                    ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
-                }, _userId, false);
-            }
-            else
-            {
-                await _appServices.BotControlService.SendAnswerMessageAsync(new AnswerMessage()
-                {
-                    Text = answer,
-                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Markdown,
-                    ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
-                }, _userId, false);
-            }
-        }
         private string BuildPetInfoText(Pet petDB, User userDB, string randomAd, string randomPetPhrase)
         {
             var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);

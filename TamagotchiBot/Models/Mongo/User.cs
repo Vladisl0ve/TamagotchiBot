@@ -31,9 +31,11 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("IsInHangmanGame")]
         public bool IsInHangmanGame { get; set; }
 
+        [Obsolete]
         [BsonElement("IsLanguageAskedOnCreate")]
         public bool IsLanguageAskedOnCreate { get; set; } = false;
 
+        [Obsolete]
         [BsonElement("IsPetNameAskedOnCreate")]
         public bool IsPetNameAskedOnCreate { get; set; } = false;
 
@@ -75,8 +77,6 @@ namespace TamagotchiBot.Models.Mongo
                 Culture = userToClone.Culture,
                 Id = userToClone.Id,
                 IsInAppleGame = userToClone.IsInAppleGame,
-                IsLanguageAskedOnCreate = userToClone.IsLanguageAskedOnCreate,
-                IsPetNameAskedOnCreate = userToClone.IsPetNameAskedOnCreate,
                 NextDailyRewardNotificationTime = userToClone.NextDailyRewardNotificationTime,
                 Username = userToClone.Username,
                 Gold = userToClone.Gold,

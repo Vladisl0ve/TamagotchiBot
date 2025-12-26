@@ -193,7 +193,7 @@ namespace TamagotchiBot.Handlers
 
             if (!DidUserChoseLanguage(userId))
             {
-                await new CreatorController(_appServices, message).ApplyNewLanguage(true);
+                await new CreatorController(_appServices, message).ApplyNewLanguage();
                 return;
             }
 
@@ -478,12 +478,6 @@ namespace TamagotchiBot.Handlers
             var userDB = _appServices.UserService.Get(userId);
             var petDB = _appServices.PetService.Get(userId);
             if (userDB == null)
-                return false;
-
-            if (userDB.IsLanguageAskedOnCreate)
-                return false;
-
-            if (userDB.IsPetNameAskedOnCreate)
                 return false;
 
             if (petDB == null)

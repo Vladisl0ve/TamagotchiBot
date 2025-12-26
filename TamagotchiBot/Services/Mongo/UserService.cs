@@ -134,31 +134,6 @@ namespace TamagotchiBot.Services.Mongo
             return user;
         }
 
-        public bool UpdateIsPetNameAskedOnCreate(long userId, bool isAsked)
-        {
-            var user = _collection.Find(p => p.UserId == userId).FirstOrDefault();
-            if (user != null)
-            {
-                user.IsPetNameAskedOnCreate = isAsked;
-                Update(userId, user);
-                return true;
-            }
-
-            return false;
-        }
-        public bool UpdateIsLanguageAskedOnCreate(long userId, bool isAsked)
-        {
-            var user = _collection.Find(p => p.UserId == userId).FirstOrDefault();
-            if (user != null)
-            {
-                user.IsLanguageAskedOnCreate = isAsked;
-                Update(userId, user);
-                return true;
-            }
-
-            return false;
-        }
-
         public User Update(long userId, Telegram.Bot.Types.User userIn)
         {
             var oldUser = _collection.Find(u => u.UserId == userId).First();
