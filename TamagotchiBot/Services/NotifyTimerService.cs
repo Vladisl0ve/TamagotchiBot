@@ -420,7 +420,9 @@ namespace TamagotchiBot.Services
             DateTime nextDevNotifyDB = _appServices.SInfoService.GetNextDevNotify();
             if (nextDevNotifyDB < DateTime.UtcNow)
             {
+#if RELEASE
                 SendDevNotify();
+#endif
 
                 _nextDevNotify = DateTime.UtcNow + _notifyDevEvery;
                 _appServices.SInfoService.UpdateNextDevNotify(_nextDevNotify);
