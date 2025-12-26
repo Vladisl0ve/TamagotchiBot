@@ -47,17 +47,6 @@ namespace TamagotchiBot.Controllers
 
             return default;
         }
-        public async Task AskALanguage()
-        {
-            var toSend = new AnswerMessage(nameof(ChangeLanguage).UseCulture(_userCulture),
-                                    StickersId.ChangeLanguageSticker,
-                                    Constants.ReplyKeyboardItems.LanguagesMarkup,
-                                    null);
-            Log.Debug($"Asked for language after register {_userInfo}");
-
-            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
-            _appServices.UserService.UpdateIsLanguageAskedOnCreate(_userId, true);
-        }
 
         internal async Task<bool> CreatePet(Models.Mongo.User userDB, string petName = null)
         {
@@ -176,7 +165,7 @@ namespace TamagotchiBot.Controllers
 
             return true;
         }
-        internal async Task<bool> ApplyNewLanguage(bool isLanguageChanged = false)
+        internal async Task<bool> ApplyNewLanguage()
         {
             var msgText = _message?.Text;
             if (string.IsNullOrEmpty(msgText))
@@ -203,12 +192,6 @@ namespace TamagotchiBot.Controllers
 
             _appServices.UserService.UpdateLanguage(_userId, newLanguage);
             _userCulture = new CultureInfo(newLanguage);
-
-            if (!isLanguageChanged)
-            {
-                _appServices.UserService.UpdateIsLanguageAskedOnCreate(_userId, false);
-                return true;
-            }
 
             string stickerToSend = newLanguage.Language() switch
             {
@@ -242,20 +225,6 @@ namespace TamagotchiBot.Controllers
 
             Log.Debug($"Sent welcome text for {_userInfo}");
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
-        }
-        internal async Task AskForAPetName()
-        {
-            var petDB = _appServices.PetService.Get(_userId);
-            var toSend = new AnswerMessage()
-            {
-                Text = nameof(ChooseName).UseCulture(_userCulture),
-                StickerId = StickersId.GetStickerByType(nameof(StickersId.PetChooseNameSticker_Cat), Extensions.GetEnumPetType(petDB?.Type ?? new Random().Next(5))),
-            };
-
-            Log.Debug($"Asked for a pet name for {_userInfo}");
-            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
-
-            _appServices.UserService.UpdateIsPetNameAskedOnCreate(_userId, true);
         }
 
         internal async Task UpdateIndicators()
@@ -530,6 +499,13 @@ namespace TamagotchiBot.Controllers
         private User CreateUserFromMessage(Message msg)
         {
             var userTMP = _appServices.UserService.Create(msg.From);
+            _ = _appServices.MetaUserService.Create(new MetaUser()
+            {
+                UserId = userTMP.UserId,
+                LastChatGptQA = [],
+                LastGeminiQA = []
+            });
+
             _userInfo = Extensions.GetLogUser(userTMP);
             Log.Information($"{_userInfo} has been added to Db");
 

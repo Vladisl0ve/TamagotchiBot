@@ -7,6 +7,7 @@ using TamagotchiBot.Models.Mongo;
 
 namespace TamagotchiBot.Services.Mongo
 {
+    [Obsolete]
     public class ChatService(ITamagotchiDatabaseSettings settings) : MongoServiceBase<Chat>(settings)
     {
         public List<Chat> GetAll() => _collection.Find(c => true).ToList();
@@ -27,6 +28,7 @@ namespace TamagotchiBot.Services.Mongo
             return chat;
         }
 
+        [Obsolete]
         public void Remove(long userId) => _collection.DeleteOne(u => u.UserId == userId);
     }
 }

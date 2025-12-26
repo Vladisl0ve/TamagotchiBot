@@ -749,12 +749,6 @@ namespace TamagotchiBot.Controllers
             if (userDB == null)
                 return false;
 
-            if (userDB.IsLanguageAskedOnCreate)
-                return false;
-
-            if (userDB.IsPetNameAskedOnCreate)
-                return false;
-
             if (petDB == null)
                 return false;
 

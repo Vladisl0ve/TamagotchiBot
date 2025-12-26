@@ -2,9 +2,6 @@
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TamagotchiBot.Models.Mongo
 {
@@ -15,6 +12,7 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("IsPetNameAskedOnRename")]
         public bool IsPetNameAskedOnRename { get; set; }
+
         [BsonElement("IsConfirmedPetRenaming")]
         public bool IsAskedToConfirmRenaming { get; set; }
 
@@ -29,6 +27,7 @@ namespace TamagotchiBot.Models.Mongo
 
         [BsonElement("ChatDuelId")]
         public long ChatDuelId { get; set; }
+
         [BsonElement("DebugMessageThreadId")]
         public int DebugMessageThreadId { get; set; }
 
