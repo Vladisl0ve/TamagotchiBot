@@ -141,7 +141,7 @@
 Развлекайтесь 🍿</value>
   </data>
   <data name="petCommand" xml:space="preserve">
-    <value>{11} {0}
+    <value>{11} {0} {18}
 
 💊 HP: {1}%
 🍕 Сытость: {4}%
@@ -527,18 +527,20 @@
   <data name="workCommand" xml:space="preserve">
     <value>Выберите, чем будет заниматься ваш питомец 💡
 
-😴 Усталость: {2}%
+😴 Усталость питомца: {2}%
 
-Доставка еды 🎒 -{7}⌛️, +{8} золота 💰
-Работник Макдоналдс 🍔 -{5}⌛️, +{6} золота 💰
-Раздача листовок 🤹‍♀️ -{3}⌛️, +{4} золота 💰
+Доставка еды 🎒 -{7}⌛️, +{8} 💰, +{20} 😴
+Работник Макдоналдс 🍔 -{5}⌛️, +{6} 💰, +{21} 😴
+Раздача листовок 🤹‍♀️ -{3}⌛️, +{4} 💰, +{22} 😴
 
-Инженер 🛠 -{11}⌛️, +{12} золота 💰
-Визажист 💄 -{9}⌛️, +{10} золота 💰
+Инженер 🛠 -{11}⌛️, +{12} 💰, +{23} 😴
+Визажист 💄 -{9}⌛️, +{10} 💰, +{24} 😴
 
-Программист 💻 -{0}⌛️, +{1} золота 💰
-Бухгалтер 📔 -{13}⌛️, +{14} золота 💰
-Пилот ✈️ -{15}⌛️, +{16} золота 💰</value>
+Программист 💻 -{0}⌛️, +{1} 💰, +{25} 😴
+Бухгалтер 📔 -{13}⌛️, +{14} 💰, +{26} 😴
+Пилот ✈️ -{15}⌛️, +{16} 💰, +{27} 😴
+
+Ювелир 💍 -{17}⌛️, +{18} 💰, +{19} 💎, +{28} 😴</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
     <value>💻Разрабатывать сайты</value>
@@ -1493,5 +1495,47 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="TryAgainAnswerYes" xml:space="preserve">
     <value>О, ну вот и снова началось 🧞‍♀️</value>
+  </data>
+  <data name="farmButtonBuyPremiumWeek" xml:space="preserve">
+    <value>👑 Купить VIP-подписку на 7️⃣ дней 👑</value>
+  </data>
+  <data name="farmButtonBuyDiamondsWithTgStars" xml:space="preserve">
+    <value>💎 Купить алмазы💎</value>
+  </data>
+  <data name="premiumXdaysBought" xml:space="preserve">
+    <value>👑 &lt;b&gt;Поздравляем с покупкой VIP-аккаунта на {0} дней&lt;/b&gt; 👑
+
+Вместе с покупкой тебе начислено:
+{1}</value>
+  </data>
+  <data name="premiumVIPBenefits" xml:space="preserve">
+    <value>✅ Возможность играть в мини-игры в Детской ⚽️ даже с большой усталостью
+✅ &lt;b&gt;Убирается обязательная подписка на каналы спонсоров 🕶&lt;/b&gt;
+✅ +{0} 💰
+✅ На {1}%⚡️ быстрее получение образования питомца 🎓
+✅ Доступ к уникальной работе — &lt;b&gt;Ювелир 💍&lt;/b&gt;(+{2} 💰, +{3} 💎)
+✅ {4}% скидки на &lt;b&gt;Автокормилку 🤖&lt;/b&gt;
+✅ На {5}% больше сообщений для общения с питомцем &lt;i&gt;(с VIP {6} сообщений в час, без VIP {7} сообщений)&lt;/i&gt;</value>
+  </data>
+  <data name="AskToConfirmXdaysVIPpremium" xml:space="preserve">
+    <value>&lt;b&gt;Ты уверен, что хочешь купить VIP-аккаунт на {0} дней?&lt;/b&gt;
+
+&lt;i&gt;Твои алмазы: {3} 💎&lt;/i&gt;
+&lt;b&gt;К оплате: {1} 💎&lt;/b&gt;
+
+&lt;i&gt;Улучшения для VIP-аккаунтов:&lt;/i&gt;
+{2}</value>
+  </data>
+  <data name="educationCommand_SpecialJeweler" xml:space="preserve">
+    <value>Специальность «Ювелир» 💍</value>
+  </data>
+  <data name="VIPPremium_decline_noVIPEnabled" xml:space="preserve">
+    <value>Для этого нужно приобрести VIP-аккаунт 👑</value>
+  </data>
+  <data name="workCommandInlineJeweler" xml:space="preserve">
+    <value>Ювелир 💍</value>
+  </data>
+  <data name="petCommand__VIPinfo" xml:space="preserve">
+    <value>👑 - &lt;i&gt;&lt;b&gt;VIP&lt;/b&gt; ещё {0}&lt;/i&gt;</value>
   </data>
 </root>

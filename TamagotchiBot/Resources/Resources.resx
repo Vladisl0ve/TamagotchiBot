@@ -141,7 +141,7 @@ Don't forget to visit your pet, otherwise he may get offended and leave
 Have fun 🍿</value>
   </data>
   <data name="petCommand" xml:space="preserve">
-    <value>{11} {0}
+    <value>{11} {0} {18}
 
 💊 HP: {1}%
 🍕 Satiety: {4}%
@@ -525,18 +525,20 @@ For now, I’ve paused work on the graphical interface, but decided to compensat
   <data name="workCommand" xml:space="preserve">
     <value>Choose what your pet will be doing 💡
 
-😴 Fatigue: {2}%
+😴 Pet fatigue: {2}%
 
-Food Delivery 🎒 -{7}⌛️, +{8} golds 💰
-McDonalds 🍔 -{5}⌛️, +{6} golds 💰
-Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} gold 💰
+Food Delivery 🎒 -{7}⌛️, +{8} 💰, +{20} 😴
+McDonalds Worker 🍔 -{5}⌛️, +{6} 💰, +{21} 😴
+Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} 💰, +{22} 😴
 
-Engineer 🛠 -{11}⌛️, +{12} golds 💰
-Make-up Artist 💄 -{9}⌛️, +{10} golds 💰
+Engineer 🛠 -{11}⌛️, +{12} 💰, +{23} 😴
+Make-up Artist 💄 -{9}⌛️, +{10} 💰, +{24} 😴
 
-Programing 💻 -{0}⌛️, +{1} golds 💰
-Accountant 📔 -{13}⌛️, +{14} golds 💰
-Pilot ✈️ -{15}⌛️, +{16} golds 💰</value>
+Programmer 💻 -{0}⌛️, +{1} 💰, +{25} 😴
+Accountant 📔 -{13}⌛️, +{14} 💰, +{26} 😴
+Pilot ✈️ -{15}⌛️, +{16} 💰, +{27} 😴
+
+Jeweler 💍 -{17}⌛️, +{18} 💰, +{19} 💎, +{28} 😴</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
     <value>💻 Program</value>
@@ -1488,5 +1490,47 @@ https://t.me/newsvirtualpetbot</value>
   </data>
   <data name="TryAgainAnswerYes" xml:space="preserve">
     <value>Oh, here we go again 🧞‍♀️</value>
+  </data>
+  <data name="farmButtonBuyPremiumWeek" xml:space="preserve">
+    <value>👑 Buy VIP 7️⃣ days 👑</value>
+  </data>
+  <data name="farmButtonBuyDiamondsWithTgStars" xml:space="preserve">
+    <value>💎 Buy Diamonds 💎</value>
+  </data>
+  <data name="premiumXdaysBought" xml:space="preserve">
+    <value>👑 &lt;b&gt;Congratulations on purchasing a VIP account for {0} days&lt;/b&gt; 👑
+
+Along with your purchase, you received:
+{1}</value>
+  </data>
+  <data name="premiumVIPBenefits" xml:space="preserve">
+    <value>✅ Ability to play mini-games in the &lt;b&gt;Gameroom ⚽️&lt;/b&gt; even with high fatigue
+✅ &lt;b&gt;Mandatory subscription to sponsor channels is removed 🕶&lt;/b&gt;
+✅ +{0} 💰
+✅ {1}%⚡️ faster pet education progress 🎓
+✅ Access to a unique job — &lt;b&gt;Jeweler 💍&lt;/b&gt;(+{2} 💰, +{3} 💎)
+✅ {4}% discount on the &lt;b&gt;Auto-Feeder 🤖&lt;/b&gt;
+✅ {5}% more messages for chatting with your pet &lt;i&gt;(with VIP {6} messages per hour, without VIP {7} messages)&lt;/i&gt;</value>
+  </data>
+  <data name="AskToConfirmXdaysVIPpremium" xml:space="preserve">
+    <value>&lt;b&gt;Are you sure you want to purchase a VIP account for {0} days?&lt;/b&gt;
+
+&lt;i&gt;Your diamonds: {3} 💎&lt;/i&gt;
+&lt;b&gt;To pay: {1} 💎&lt;/b&gt;
+
+&lt;i&gt;VIP account upgrades:&lt;/i&gt;
+{2}</value>
+  </data>
+  <data name="educationCommand_SpecialJeweler" xml:space="preserve">
+    <value>Jeweler specialization 💍</value>
+  </data>
+  <data name="VIPPremium_decline_noVIPEnabled" xml:space="preserve">
+    <value>You need to purchase a VIP account for this 👑</value>
+  </data>
+  <data name="workCommandInlineJeweler" xml:space="preserve">
+    <value>Jeweler 💍</value>
+  </data>
+  <data name="petCommand__VIPinfo" xml:space="preserve">
+    <value>👑 - &lt;i&gt;&lt;b&gt;VIP&lt;/b&gt; for {0}&lt;/i&gt;</value>
   </data>
 </root>

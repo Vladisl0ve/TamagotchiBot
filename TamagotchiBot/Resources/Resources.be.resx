@@ -142,7 +142,7 @@
 Забаўляйцеся 🍿</value>
   </data>
   <data name="petCommand" xml:space="preserve">
-    <value>{11} {0}
+    <value>{11} {0} {18}
 
 💊 Здароўе: {1}%
 🍕 Сытасць: {4}%
@@ -528,18 +528,20 @@
   <data name="workCommand" xml:space="preserve">
     <value>Выберыце, чым будзе займацца ваш гадаванец 💡
 
-😴 Стомленасць: {2}%
+😴 Стомленасць гадаванца: {2}%
 
-Дастаўка ежы 🎒 -{7}⌛️, +{8} залатых 💰
-Працоўнік Макдональдс 🍔 -{5}⌛️, +{6} залатых 💰
-Раздача ўлётак 🤹‍♀️ -{3}⌛️, +{4} залатых 💰
+Дастаўка ежы 🎒 -{7}⌛️, +{8} 💰, +{20} 😴
+Працоўнік Макдоналдс 🍔 -{5}⌛️, +{6} 💰, +{21} 😴
+Раздача ўлётак 🤹‍♀️ -{3}⌛️, +{4} 💰, +{22} 😴
 
-Інжынер 🛠 -{11}⌛️, +{12} залатых 💰
-Візажыст 💄 -{9}⌛️, +{10} залатых 💰
+Інжынер 🛠 -{11}⌛️, +{12} 💰, +{23} 😴
+Візажыст 💄 -{9}⌛️, +{10} 💰, +{24} 😴
 
-Праграмаванне 💻 -{0}⌛️, +{1} залатых 💰
-Бухгалтар 📔 -{13}⌛️, +{14} залатых 💰
-Пілот ✈️ -{15}⌛️, +{16} залатых 💰</value>
+Праграміст 💻 -{0}⌛️, +{1} 💰, +{25} 😴
+Бухгалтар 📔 -{13}⌛️, +{14} 💰, +{26} 😴
+Пілот ✈️ -{15}⌛️, +{16} 💰, +{27} 😴
+
+Ювелір 💍 -{17}⌛️, +{18} 💰, +{19} 💎, +{28} 😴</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
     <value>💻Кодзіць</value>
@@ -1493,5 +1495,47 @@ https://t.me/newsvirtualpetbot</value>
   </data>
   <data name="TryAgainAnswerYes" xml:space="preserve">
     <value>О, зноў пачалося 🧞‍♀️</value>
+  </data>
+  <data name="farmButtonBuyPremiumWeek" xml:space="preserve">
+    <value>👑 Купіць VIP на 7️⃣ дзён 👑</value>
+  </data>
+  <data name="farmButtonBuyDiamondsWithTgStars" xml:space="preserve">
+    <value>💎 Купіць дыяменты 💎</value>
+  </data>
+  <data name="premiumXdaysBought" xml:space="preserve">
+    <value>👑 &lt;b&gt;Віншуем з купляй VIP-акаўнта на {0} дзён&lt;/b&gt; 👑
+
+Разам з пакупкай табе налічана:
+{1}</value>
+  </data>
+  <data name="premiumVIPBenefits" xml:space="preserve">
+    <value>✅ Магчымасць гуляць у міні-гульні ў Дзіцячым пакоі ⚽️ нават пры вялікай стомленасці
+✅ &lt;b&gt;Прыбіраецца абавязковая падпіска на каналы спонсараў 🕶&lt;/b&gt;
+✅ +{0} 💰
+✅ На {1}%⚡️ хутчэйшае атрыманне адукацыі гадаванца 🎓
+✅ Доступ да ўнікальнай працы — &lt;b&gt;Ювелір 💍&lt;/b&gt;(+{2} 💰, +{3} 💎)
+✅ {4}% зніжкі на &lt;b&gt;Аўтакармілку 🤖&lt;/b&gt;
+✅ На {5}% больш паведамленняў для зносін з гадаванцам &lt;i&gt;(з VIP {6} паведамленняў у гадзіну, без VIP {7} паведамленняў)&lt;/i&gt;</value>
+  </data>
+  <data name="AskToConfirmXdaysVIPpremium" xml:space="preserve">
+    <value>&lt;b&gt;Ты ўпэўнены, што хочаш набыць VIP-акаўнт на {0} дзён?&lt;/b&gt;
+
+&lt;i&gt;Твае алмазы: {3} 💎&lt;/i&gt;
+&lt;b&gt;Да аплаты: {1} 💎&lt;/b&gt;
+
+&lt;i&gt;Паляпшэнні для VIP-акаўнтаў:&lt;/i&gt;
+{2}</value>
+  </data>
+  <data name="educationCommand_SpecialJeweler" xml:space="preserve">
+    <value>Спецыяльнасць «Ювелір» 💍</value>
+  </data>
+  <data name="VIPPremium_decline_noVIPEnabled" xml:space="preserve">
+    <value>Для гэтага трэба набыць VIP-акаўнт 👑</value>
+  </data>
+  <data name="workCommandInlineJeweler" xml:space="preserve">
+    <value>Ювелір 💍</value>
+  </data>
+  <data name="petCommand__VIPinfo" xml:space="preserve">
+    <value>👑 - &lt;i&gt;&lt;b&gt;VIP&lt;/b&gt; яшчэ {0}&lt;/i&gt;</value>
   </data>
 </root>

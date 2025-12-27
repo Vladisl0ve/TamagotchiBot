@@ -131,7 +131,7 @@ namespace TamagotchiBot.Controllers
                 _appServices.MetaUserService.UpdateIsPetNameAskedOnRename(_userId, false);
                 _appServices.MetaUserService.UpdateIsAskedToConfirmRenaming(_userId, false);
 
-                await new MenuController(_appServices, null, _message).ProcessMessage("/pet");
+                await new MenuController(_appServices, null, _message).ProcessMessage($"{_message.Text}");
                 return true;
             }
 
@@ -164,6 +164,72 @@ namespace TamagotchiBot.Controllers
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
 
             return true;
+        }
+
+        internal async Task<bool> TryApplyVIP7days()
+        {
+            var msgText = _message?.Text;
+
+            if (string.IsNullOrEmpty(msgText))
+            {
+                var maxHistory = _appServices.SInfoService.GetGeminiMaxHistory();
+
+                string vipBenefits = Extensions.GetVipBenefitsString(maxHistory, _userCulture);
+
+                var userDbDiamonds = _appServices.UserService.Get(_userId)?.Diamonds ?? 0;
+                var toSendTryApplyVIP7days = new AnswerMessage()
+                {
+                    Text = string.Format(nameof(AskToConfirmXdaysVIPpremium).UseCulture(_userCulture), 7, Constants.Costs.VIP7DaysDiamonds, vipBenefits, userDbDiamonds),
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    StickerId = StickersId.ConfirmVIPBuyingSticker,
+                    ReplyMarkup = new ReplyKeyboardMarkup(new List<KeyboardButton>()
+                {
+                    new KeyboardButton(nameof(YesTextEmoji).UseCulture(_userCulture)),
+                    new KeyboardButton(nameof(NoTextEmoji).UseCulture(_userCulture))
+                })
+                    {
+                        OneTimeKeyboard = true
+                    }
+                };
+
+                Log.Information($"Asked again TryApplyVIP7days {_userInfo}");
+
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSendTryApplyVIP7days, _userId, false);
+                return false;
+            }
+
+            if (!string.IsNullOrEmpty(_message.Text)
+                && _message.Text.FirstOrDefault() == '/')
+            {
+                _appServices.MetaUserService.IsConfirmAskedOnVIP7daysBuying(_userId, false);
+
+                await new MenuController(_appServices, null, _message).ProcessMessage($"{_message.Text}");
+                return true;
+            }
+
+            bool? answerFromUser = null;
+            msgText = msgText.ToLower();
+
+            if (GetAllTranslatedAndLowered(nameof(YesTextEmoji)).Contains(msgText))
+                answerFromUser = true;
+            else if (GetAllTranslatedAndLowered(nameof(NoTextEmoji)).Contains(msgText))
+                answerFromUser = false;
+
+            if (answerFromUser.HasValue && answerFromUser == true)
+            {
+                await new MenuController(_appServices, null, _message).ProcessMessage($"{CommandsInternal.Buy7daysVIP}");
+                return true;
+            }
+
+            if (answerFromUser.HasValue && answerFromUser == false)
+            {
+                _appServices.MetaUserService.IsConfirmAskedOnVIP7daysBuying(_userId, false);
+                await new MenuController(_appServices, null, _message).ProcessMessage($"{Commands.FarmCommand}");
+                return false;
+            }
+
+            _appServices.MetaUserService.IsConfirmAskedOnVIP7daysBuying(_userId, false);
+            return false;
         }
         internal async Task<bool> ApplyNewLanguage()
         {
@@ -231,6 +297,7 @@ namespace TamagotchiBot.Controllers
         {
             Telegram.Bot.Types.User userFromMsg = _message?.From ?? _callback?.From;
             var petDB = _appServices.PetService.Get(_userId);
+            var userDB = _appServices.UserService.Get(_userId);
 
             if (userFromMsg == null || petDB == null || petDB.IsGone || petDB.HP <= 0)
                 return;
@@ -282,20 +349,35 @@ namespace TamagotchiBot.Controllers
             if (petDB.CurrentStatus == (int)CurrentStatus.Studying)
             {
                 var aud = _appServices.AllUsersDataService.Get(_userId);
-                await UpdateIndicatorStudying(petResult, aud);
+
+                if (userDB.VIPIsEnabled)
+                {
+                    await UpdateIndicatorStudying(petResult, aud, Factors.EducationCoefFasterVIPProc);
+                }
+                else
+                    await UpdateIndicatorStudying(petResult, aud);
                 _appServices.AllUsersDataService.Update(aud);
+            }
+
+            //VIP
+            if (userDB?.VIPIsEnabled ?? false)
+            {
+                if (userDB.VIPStartTime.AddDays(userDB.VIPLongDays) < DateTime.UtcNow)
+                {
+                    _appServices.UserService.UpdateVIPIsEnabled(_userId, false);
+                }
             }
 
             petResult.LastUpdateTime = DateTime.UtcNow;
             _appServices.PetService.Update(userFromMsg.Id, petResult);
         }
 
-        private async Task UpdateIndicatorStudying(Pet petResult, AllUsersData aud)
+        private async Task UpdateIndicatorStudying(Pet petResult, AllUsersData aud, int? coefFasterStudying = null)
         {
             var currentLevel = petResult.EducationLevel.GetActualEducationLevel();
             bool isLevelCompleted = false;
 
-            var timeLeft = petResult.StartStudyingTime + Extensions.GetEducationTime(currentLevel) - DateTime.UtcNow;
+            var timeLeft = petResult.StartStudyingTime + Extensions.GetEducationTime(currentLevel, coefFasterStudying) - DateTime.UtcNow;
 
             if (timeLeft > TimeSpan.Zero)
                 return;

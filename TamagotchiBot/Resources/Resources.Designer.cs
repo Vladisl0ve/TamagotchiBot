@@ -141,6 +141,21 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;Are you sure you want to purchase a VIP account for {0} days?&lt;/b&gt;
+        ///
+        ///&lt;i&gt;Your diamonds: {3} 💎&lt;/i&gt;
+        ///&lt;b&gt;To pay: {1} 💎&lt;/b&gt;
+        ///
+        ///&lt;i&gt;VIP account upgrades:&lt;/i&gt;
+        ///{2}.
+        /// </summary>
+        public static string AskToConfirmXdaysVIPpremium {
+            get {
+                return ResourceManager.GetString("AskToConfirmXdaysVIPpremium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto-feeder bought! You have {0} charges.
         /// </summary>
         public static string autoFeedBought {
@@ -1000,6 +1015,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Jeweler specialization 💍.
+        /// </summary>
+        public static string educationCommand_SpecialJeweler {
+            get {
+                return ResourceManager.GetString("educationCommand_SpecialJeweler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Education 🎓.
         /// </summary>
         public static string educationCommandDescription {
@@ -1055,6 +1079,24 @@ namespace TamagotchiBot.Resources {
         public static string farmButtonAutoFeed {
             get {
                 return ResourceManager.GetString("farmButtonAutoFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 💎 Buy Diamonds 💎.
+        /// </summary>
+        public static string farmButtonBuyDiamondsWithTgStars {
+            get {
+                return ResourceManager.GetString("farmButtonBuyDiamondsWithTgStars", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 👑 Buy VIP 7️⃣ days 👑.
+        /// </summary>
+        public static string farmButtonBuyPremiumWeek {
+            get {
+                return ResourceManager.GetString("farmButtonBuyPremiumWeek", resourceCulture);
             }
         }
         
@@ -1794,7 +1836,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {11} {0}
+        ///   Looks up a localized string similar to {11} {0} {18}
         ///
         ///💊 HP: {1}%
         ///🍕 Satiety: {4}%
@@ -1822,6 +1864,15 @@ namespace TamagotchiBot.Resources {
         public static string petCommand {
             get {
                 return ResourceManager.GetString("petCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 👑 - &lt;i&gt;&lt;b&gt;VIP&lt;/b&gt; for {0}&lt;/i&gt;.
+        /// </summary>
+        public static string petCommand__VIPinfo {
+            get {
+                return ResourceManager.GetString("petCommand__VIPinfo", resourceCulture);
             }
         }
         
@@ -2125,6 +2176,33 @@ namespace TamagotchiBot.Resources {
         public static string PlayAgain_TicTakToe {
             get {
                 return ResourceManager.GetString("PlayAgain_TicTakToe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ✅ Ability to play mini-games in the &lt;b&gt;Gameroom ⚽️&lt;/b&gt; even with high fatigue
+        ///✅ &lt;b&gt;Mandatory subscription to sponsor channels is removed 🕶&lt;/b&gt;
+        ///✅ +{0} 💰
+        ///✅ {1}%⚡️ faster pet education progress 🎓
+        ///✅ Access to a unique job — &lt;b&gt;Jeweler 💍&lt;/b&gt;(+{2} 💰, +{3} 💎)
+        ///✅ {4}% discount on the &lt;b&gt;Auto-Feeder 🤖&lt;/b&gt;
+        ///✅ {5}% more messages for chatting with your pet &lt;i&gt;(with VIP {6} messages per hour, without VIP {7} messages)&lt;/i&gt;.
+        /// </summary>
+        public static string premiumVIPBenefits {
+            get {
+                return ResourceManager.GetString("premiumVIPBenefits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 👑 &lt;b&gt;Congratulations on purchasing a VIP account for {0} days&lt;/b&gt; 👑
+        ///
+        ///Along with your purchase, you received:
+        ///{1}.
+        /// </summary>
+        public static string premiumXdaysBought {
+            get {
+                return ResourceManager.GetString("premiumXdaysBought", resourceCulture);
             }
         }
         
@@ -2979,6 +3057,15 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You need to purchase a VIP account for this 👑.
+        /// </summary>
+        public static string VIPPremium_decline_noVIPEnabled {
+            get {
+                return ResourceManager.GetString("VIPPremium_decline_noVIPEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🎮 Welcome to Tamagotchi Bot! Here you can raise your own virtual pet, play with him and compete with another players 🎮
         ///Let&apos;s start!.
         /// </summary>
@@ -3000,18 +3087,20 @@ namespace TamagotchiBot.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Choose what your pet will be doing 💡
         ///
-        ///😴 Fatigue: {2}%
+        ///😴 Pet fatigue: {2}%
         ///
-        ///Food Delivery 🎒 -{7}⌛️, +{8} golds 💰
-        ///McDonalds 🍔 -{5}⌛️, +{6} golds 💰
-        ///Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} gold 💰
+        ///Food Delivery 🎒 -{7}⌛️, +{8} 💰, +{20} 😴
+        ///McDonalds Worker 🍔 -{5}⌛️, +{6} 💰, +{21} 😴
+        ///Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} 💰, +{22} 😴
         ///
-        ///Engineer 🛠 -{11}⌛️, +{12} golds 💰
-        ///Make-up Artist 💄 -{9}⌛️, +{10} golds 💰
+        ///Engineer 🛠 -{11}⌛️, +{12} 💰, +{23} 😴
+        ///Make-up Artist 💄 -{9}⌛️, +{10} 💰, +{24} 😴
         ///
-        ///Programing 💻 -{0}⌛️, +{1} golds 💰
-        ///Accountant 📔 -{13}⌛️, +{14} golds 💰
-        ///Pilot ✈️ -{15}⌛️, +{16} golds 💰.
+        ///Programmer 💻 -{0}⌛️, +{1} 💰, +{25} 😴
+        ///Accountant 📔 -{13}⌛️, +{14} 💰, +{26} 😴
+        ///Pilot ✈️ -{15}⌛️, +{16} 💰, +{27} 😴
+        ///
+        ///Jeweler 💍 -{17}⌛️, +{18} 💰, +{19} 💎, +{28} 😴.
         /// </summary>
         public static string workCommand {
             get {
@@ -3088,6 +3177,15 @@ namespace TamagotchiBot.Resources {
         public static string workCommandInlineFoodDelivery {
             get {
                 return ResourceManager.GetString("workCommandInlineFoodDelivery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jeweler 💍.
+        /// </summary>
+        public static string workCommandInlineJeweler {
+            get {
+                return ResourceManager.GetString("workCommandInlineJeweler", resourceCulture);
             }
         }
         

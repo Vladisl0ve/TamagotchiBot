@@ -79,6 +79,23 @@ namespace TamagotchiBot.Controllers
             var petDB = _appServices.PetService.Get(_userId);
             var userDB = _appServices.UserService.Get(_userId);
 
+            if (CommandsInternal.Buy7daysVIP == textReceived)
+            {
+                await BuyPremiumWeekCMD(userDB, petDB);
+                return;
+            }
+
+            if (GetAllTranslatedAndLowered(nameof(farmButtonBuyPremiumWeek)).Contains(textReceived))
+            {
+                await AskConfirmBuying7daysVIPCMD(userDB);
+                return;
+            }
+            //if (GetAllTranslatedAndLowered(nameof(farmButtonBuyDiamondsWithTgStars)).Contains(textReceived))
+            //{
+            //    //await BuyDiamondsWithTgStarsCMD(userDB, petDB);
+            //    return;
+            //}
+
             if (textReceived == Commands.LanguageCommand || GetAllTranslatedAndLowered(nameof(languageCommandDescription)).Contains(textReceived))
             {
                 await ChangeLanguageCmd(userDB);
@@ -125,6 +142,11 @@ namespace TamagotchiBot.Controllers
             if (GetAllTranslatedAndLowered(nameof(Resources.Resources.educationCommand_High)).Contains(textReceived))
             {
                 await StartStudying(userDB, petDB, EducationLevel.High);
+                return;
+            }
+            if (GetAllTranslatedAndLowered(nameof(Resources.Resources.educationCommand_SpecialJeweler)).Contains(textReceived))
+            {
+                await StartStudying(userDB, petDB, EducationLevel.CompletedHigh);
                 return;
             }
             if (textReceived == Commands.KitchenCommand || GetAllTranslatedAndLowered(nameof(kitchenCommandDescription)).Contains(textReceived))
@@ -682,6 +704,12 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
+            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineJeweler(_userCulture).CallbackData)
+            {
+                await StartJob(userDb, petDb, JobType.Jeweler);
+                return;
+            }
+
             // Generic Show Time Handler
             if (_callback.Data == nameof(CallbackButtons.WorkCommand.WorkCommandInlineShowTime))
             {
@@ -817,7 +845,7 @@ namespace TamagotchiBot.Controllers
 
             Log.Debug($"Called /ShowWorkInfo for {_userInfo}");
 
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB, IsGoToWorkCommand: true);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB, IsGoToWorkCommand: true);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -848,7 +876,20 @@ namespace TamagotchiBot.Controllers
                                        new DateTime(TimesToWait.AccountantToWait.Ticks).ToString("HH:mm:ss"),
                                        Rewards.AccountantGoldReward,
                                        new DateTime(TimesToWait.PilotToWait.Ticks).ToString("HH:mm:ss"),
-                                       Rewards.PilotGoldReward);
+                                       Rewards.PilotGoldReward,
+                                       new DateTime(TimesToWait.JewelerToWait.Ticks).ToString("HH:mm:ss"),
+                                       Rewards.VIPJewelerJobGoldReward,
+                                       Rewards.VIPJewelerJobDiamondReward,
+                                       Constants.Factors.FoodDeliveryFatigueFactor,
+                                       Constants.Factors.McDonaldsFatigueFactor,
+                                       Constants.Factors.FlyersDistributingFatigueFactor,
+                                       Constants.Factors.EngineerFatigueFactor,
+                                       Constants.Factors.MakeUpArtistFatigueFactor,
+                                       Constants.Factors.WorkOnPCFatigueFactor,
+                                       Constants.Factors.AccountantFatigueFactor,
+                                       Constants.Factors.PilotFatigueFactor,
+                                       Constants.Factors.JewelerFatigueFactor
+                                       );
 
             List<CallbackModel> inlineParts = InlineItems.InlineWork(_userCulture);
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
@@ -873,7 +914,7 @@ namespace TamagotchiBot.Controllers
                 return;
 
             Log.Debug($"Called /GoToFarm for {_userInfo}");
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -899,7 +940,7 @@ namespace TamagotchiBot.Controllers
                                               (int)timeRemaining.TotalHours,
                                               timeRemaining.Minutes,
                                               string.Format(nameof(turnedOn_F).UseCulture(_userCulture)),
-                                              Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 + Factors.AutofeederDiscountVIPProc / 100) : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds)
 
@@ -907,7 +948,7 @@ namespace TamagotchiBot.Controllers
                                               encodedPetName,
                                               userDB.AutoFeedCharges,
                                               string.Format(nameof(turnedOff_F).UseCulture(_userCulture)),
-                                              Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 + Factors.AutofeederDiscountVIPProc / 100) : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds);
 
@@ -961,7 +1002,7 @@ namespace TamagotchiBot.Controllers
                                               (int)timeRemaining.TotalHours,
                                               timeRemaining.Minutes,
                                               string.Format(nameof(turnedOn_F).UseCulture(_userCulture)),
-                                              Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 + Factors.AutofeederDiscountVIPProc / 100) : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds)
 
@@ -969,7 +1010,7 @@ namespace TamagotchiBot.Controllers
                                               encodedPetName,
                                               userDB.AutoFeedCharges,
                                               string.Format(nameof(turnedOff_F).UseCulture(_userCulture)),
-                                              Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 + Factors.AutofeederDiscountVIPProc / 100) : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds);
 
@@ -1060,6 +1101,9 @@ namespace TamagotchiBot.Controllers
             await _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
 
             var maxHistoryCounter = _appServices.SInfoService.GetGeminiMaxHistory();
+            maxHistoryCounter = userDB.VIPIsEnabled
+                ? maxHistoryCounter * (1 + Factors.LLMMesagesCoefMoreVIPProc / 100)
+                : maxHistoryCounter;
             var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
             bool isTimeOut;
             string geminiAnswer;
@@ -1100,9 +1144,10 @@ namespace TamagotchiBot.Controllers
                 var toSendErr = new AnswerMessage()
                 {
                     Text = nameof(Resources.Resources.notEnoughDiamonds).UseCulture(_userCulture),
-                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    ReplyMarkup = ReplyKeyboardItems.FarmKeyboardMarkup(_userCulture)
                 };
-                await _appServices.BotControlService.SendAnswerMessageAsync(toSendErr, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSendErr, _userId, true);
                 return;
             }
 
@@ -1115,7 +1160,72 @@ namespace TamagotchiBot.Controllers
                 Text = string.Format(nameof(autoFeedBought).UseCulture(_userCulture), userDB.AutoFeedCharges + Constants.AutoFeed.AutoFeedChargesInitial),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, true);
+        }
+        private async Task BuyPremiumWeekCMD(User userDB, Pet petDB)
+        {
+            if (userDB.Diamonds < Constants.Costs.VIP7DaysDiamonds)
+            {
+                var toSendErr = new AnswerMessage()
+                {
+                    Text = nameof(Resources.Resources.notEnoughDiamonds).UseCulture(_userCulture),
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    ReplyMarkup = ReplyKeyboardItems.FarmKeyboardMarkup(_userCulture)
+                };
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSendErr, _userId, true);
+                return;
+            }
+
+            _appServices.UserService.UpdateDiamonds(_userId, userDB.Diamonds - Constants.Costs.VIP7DaysDiamonds);
+            _appServices.UserService.UpdateVIPStartTime(_userId, DateTime.UtcNow);
+            _appServices.UserService.UpdateVIPLongDays(_userId, 7);
+            _appServices.UserService.UpdateVIPIsEnabled(_userId, true);
+
+            _appServices.UserService.AddGold(_userId, Rewards.VIP7DaysGoldReward);
+
+            _appServices.MetaUserService.IsConfirmAskedOnVIP7daysBuying(_userId, false);
+
+            Log.Information($"Bought VIP 7 DAYS BuyPremiumWeekCMD {_userInfo}");
+
+            var maxHistory = _appServices.SInfoService.GetGeminiMaxHistory();
+
+            string vipBenefits = Extensions.GetVipBenefitsString(maxHistory, _userCulture);
+
+            var toSend = new AnswerMessage()
+            {
+                Text = string.Format(nameof(premiumXdaysBought).UseCulture(_userCulture), 7, vipBenefits),
+                StickerId = StickersId.PremiumVIPBoughtSticker,
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                ReplyMarkup = ReplyKeyboardItems.FarmKeyboardMarkup(_userCulture)
+            };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
+        private async Task AskConfirmBuying7daysVIPCMD(User userDB)
+        {
+            var maxHistory = _appServices.SInfoService.GetGeminiMaxHistory();
+
+            string vipBenefits = Extensions.GetVipBenefitsString(maxHistory, _userCulture);
+
+            var toSendTryApplyVIP7days = new AnswerMessage()
+            {
+                Text = string.Format(nameof(AskToConfirmXdaysVIPpremium).UseCulture(_userCulture), 7, Constants.Costs.VIP7DaysDiamonds, vipBenefits, userDB?.Diamonds ?? 0),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                StickerId = StickersId.ConfirmVIPBuyingSticker,
+                ReplyMarkup = new ReplyKeyboardMarkup(new List<KeyboardButton>()
+                {
+                    new KeyboardButton(nameof(YesTextEmoji).UseCulture(_userCulture)),
+                    new KeyboardButton(nameof(NoTextEmoji).UseCulture(_userCulture))
+                })
+                {
+                    OneTimeKeyboard = true
+                }
+            };
+
+            _appServices.MetaUserService.IsConfirmAskedOnVIP7daysBuying(_userId, true);
+
+            Log.Information($"AskConfirmBuying7daysVIPCMD {_userInfo}");
+
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSendTryApplyVIP7days, _userId, false);
         }
 
         private async Task<(string answer, bool isCanceled)> GetAnswerGemini(string textToAnswer, Pet petDB, User userDB)
@@ -1212,29 +1322,37 @@ namespace TamagotchiBot.Controllers
             var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
             var maxHistoryCounter = _appServices.SInfoService.GetGeminiMaxHistory();
 
+            string vipInfo = null; ;
+            if (userDB.VIPIsEnabled)
+            {
+                string timeLeft = Extensions.GetTimeLeftVIPString(userDB.VIPStartTime, userDB.VIPLongDays, _userCulture);
+                vipInfo = string.Format(nameof(petCommand__VIPinfo).UseCulture(_userCulture), timeLeft);
+            }
+
             return string.Format(
-                nameof(petCommand).UseCulture(_userCulture),
-                encodedPetName,
-                petDB.HP,
-                petDB.EXP,
-                petDB.Level,
-                petDB.Satiety,
-                petDB.Fatigue,
-                Extensions.GetCurrentStatus(petDB.CurrentStatus, _userCulture),
-                petDB.Joy,
-                userDB.Gold,
-                petDB.Hygiene,
-                petDB.Level * Factors.ExpToLvl,
-                Extensions.GetLongTypeEmoji(_userPetType, _userCulture),
-                petDB.IsAutoFeedEnabled
-                    ? string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOn_F).UseCulture(_userCulture)), userDB.AutoFeedCharges)
-                    : string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOff_F).UseCulture(_userCulture)), userDB.AutoFeedCharges),
-                userDB.Diamonds,
-                randomAd,
-                randomPetPhrase,
-                IsGeminiTimeout(previousQA, maxHistoryCounter) ? string.Format(nameof(petCommand_isPetSilenced).UseCulture(_userCulture), GetGeminiTimeout(previousQA))
-                                            : string.Empty,
-                petDB.EducationLevel.GetActualEducationLevelTranslatedString(_userCulture)
+            nameof(petCommand).UseCulture(_userCulture),
+            encodedPetName,
+            petDB.HP,
+            petDB.EXP,
+            petDB.Level,
+            petDB.Satiety,
+            petDB.Fatigue,
+            Extensions.GetCurrentStatus(petDB.CurrentStatus, _userCulture),
+            petDB.Joy,
+            userDB.Gold,
+            petDB.Hygiene,
+            petDB.Level * Factors.ExpToLvl,
+            Extensions.GetLongTypeEmoji(_userPetType, _userCulture),
+            petDB.IsAutoFeedEnabled
+                ? string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOn_F).UseCulture(_userCulture)), userDB.AutoFeedCharges)
+                : string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOff_F).UseCulture(_userCulture)), userDB.AutoFeedCharges),
+            userDB.Diamonds,
+            randomAd,
+            randomPetPhrase,
+            IsGeminiTimeout(previousQA, maxHistoryCounter) ? string.Format(nameof(petCommand_isPetSilenced).UseCulture(_userCulture), GetGeminiTimeout(previousQA))
+                                        : string.Empty,
+            petDB.EducationLevel.GetActualEducationLevelTranslatedString(_userCulture),
+            vipInfo
             );
         }
 
@@ -1302,7 +1420,7 @@ namespace TamagotchiBot.Controllers
             return phrases[new Random().Next(phrases.Count)];
         }
 
-        private AnswerMessage CheckStatusIsInactiveOrNull(Pet petDB, bool IsGoToSleepCommand = false, bool IsGoToWorkCommand = false, bool isShowEducationLeftTime = false)
+        private AnswerMessage CheckStatusIsInactiveOrNull(User userDB, Pet petDB, bool IsGoToSleepCommand = false, bool IsGoToWorkCommand = false, bool isShowEducationLeftTime = false)
         {
             if (petDB.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
             {
@@ -1330,7 +1448,7 @@ namespace TamagotchiBot.Controllers
             {
                 string denyText = nameof(Resources.Resources.educationCommand_InProgress).UseCulture(_userCulture);
                 EducationLevel currentLevel = petDB.EducationLevel.GetActualEducationLevel();
-                TimeSpan timeToWait = Extensions.GetEducationTime(currentLevel);
+                TimeSpan timeToWait = userDB.VIPIsEnabled ? Extensions.GetEducationTime(currentLevel, Factors.EducationCoefFasterVIPProc) : Extensions.GetEducationTime(currentLevel);
 
                 var remainsTime = timeToWait - (DateTime.UtcNow - petDB.StartStudyingTime);
                 if (remainsTime < TimeSpan.Zero) remainsTime = TimeSpan.Zero;
@@ -1354,7 +1472,7 @@ namespace TamagotchiBot.Controllers
                 return;
 
             Log.Debug($"Called /GoToBathroom for {_userInfo}");
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -1388,7 +1506,7 @@ namespace TamagotchiBot.Controllers
                 return;
 
             Log.Debug($"Called /GoToKitchen for {_userInfo}");
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -1430,7 +1548,7 @@ namespace TamagotchiBot.Controllers
             if (userDB == null || petDB == null)
                 return;
             Log.Debug($"Called /GoToGameroom for {_userInfo}");
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -1473,7 +1591,7 @@ namespace TamagotchiBot.Controllers
                 return;
 
             Log.Debug($"Called /GoToHospital for {_userInfo}");
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -1545,7 +1663,7 @@ namespace TamagotchiBot.Controllers
 
             Log.Debug($"Called /GoToSleep for {_userInfo}");
 
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB, true);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB, true);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -2980,7 +3098,20 @@ namespace TamagotchiBot.Controllers
                                            new DateTime(TimesToWait.AccountantToWait.Ticks).ToString("HH:mm:ss"),
                                            Rewards.AccountantGoldReward,
                                            new DateTime(TimesToWait.PilotToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.PilotGoldReward);
+                                           Rewards.PilotGoldReward,
+                                           new DateTime(TimesToWait.JewelerToWait.Ticks).ToString("HH:mm:ss"),
+                                           Rewards.VIPJewelerJobGoldReward,
+                                           Rewards.VIPJewelerJobDiamondReward,
+                                           Constants.Factors.FoodDeliveryFatigueFactor,
+                                           Constants.Factors.McDonaldsFatigueFactor,
+                                           Constants.Factors.FlyersDistributingFatigueFactor,
+                                           Constants.Factors.EngineerFatigueFactor,
+                                           Constants.Factors.MakeUpArtistFatigueFactor,
+                                           Constants.Factors.WorkOnPCFatigueFactor,
+                                           Constants.Factors.AccountantFatigueFactor,
+                                           Constants.Factors.PilotFatigueFactor,
+                                           Constants.Factors.JewelerFatigueFactor
+                                           );
 
                 Log.Debug($"Callbacked UpdateWorkOnPCButtonToDefault (GENERIC REFACTORED) for {_userInfo}");
                 await _appServices.BotControlService.SendAnswerCallback(_userId,
@@ -2994,7 +3125,7 @@ namespace TamagotchiBot.Controllers
             }
         }
 
-        private async Task<bool> CheckJobAccess(Pet pet, JobType job)
+        private async Task<bool> CheckJobAccess(User userDB, Pet pet, JobType job)
         {
             var educationRequirement = job.GetEducationRequirement();
             var petEducation = pet.EducationLevel.GetActualEducationLevel();
@@ -3004,6 +3135,12 @@ namespace TamagotchiBot.Controllers
             if (petEducation < educationRequirement)
             {
                 await SendAlertToUser(string.Format(nameof(Resources.Resources.workCommand_notEnoughEducation).UseCulture(_userCulture)), true);
+                return false;
+            }
+
+            if (job > JobType.Pilot && !userDB.VIPIsEnabled)
+            {
+                await SendAlertToUser(string.Format(nameof(Resources.Resources.VIPPremium_decline_noVIPEnabled).UseCulture(_userCulture)), true);
                 return false;
             }
 
@@ -3034,6 +3171,9 @@ namespace TamagotchiBot.Controllers
                 case JobType.Pilot:
                     requiredFatigue = Constants.Factors.PilotFatigueFactor;
                     break;
+                case JobType.Jeweler:
+                    requiredFatigue = Constants.Factors.JewelerFatigueFactor;
+                    break;
             }
 
             if (pet.Fatigue + requiredFatigue > 100)
@@ -3051,7 +3191,7 @@ namespace TamagotchiBot.Controllers
                 return;
 
             if (await CheckStatusIsInactive(petDB)) return;
-            if (!await CheckJobAccess(petDB, job)) return;
+            if (!await CheckJobAccess(userDB, petDB, job)) return;
 
             //Calculate rewards and time
             int fatigueFactor = 0;
@@ -3126,6 +3266,14 @@ namespace TamagotchiBot.Controllers
                     timeToWait = job.GetTimeToWait();
                     expReward = Constants.ExpForAction.WorkPilot;
                     jobName = nameof(Resources.Resources.workCommandInlinePilot).UseCulture(_userCulture);
+                    break;
+                case JobType.Jeweler:
+                    fatigueFactor = Constants.Factors.JewelerFatigueFactor;
+                    joyFactor = Constants.Factors.JewelerJoyFactor;
+                    goldReward = Constants.Rewards.VIPJewelerJobGoldReward;
+                    timeToWait = job.GetTimeToWait();
+                    expReward = Constants.ExpForAction.WorkJeweler;
+                    jobName = nameof(Resources.Resources.workCommandInlineJeweler).UseCulture(_userCulture);
                     break;
             }
 
@@ -3247,7 +3395,21 @@ namespace TamagotchiBot.Controllers
                                                         new DateTime(TimesToWait.AccountantToWait.Ticks).ToString("HH:mm:ss"),
                                                         Rewards.AccountantGoldReward,
                                                         new DateTime(TimesToWait.PilotToWait.Ticks).ToString("HH:mm:ss"),
-                                                        Rewards.PilotGoldReward);
+                                                        Rewards.PilotGoldReward,
+                                                        new DateTime(TimesToWait.JewelerToWait.Ticks).ToString("HH:mm:ss"),
+                                                        Rewards.VIPJewelerJobGoldReward,
+                                                        Rewards.VIPJewelerJobDiamondReward,
+                                                        Constants.Factors.FoodDeliveryFatigueFactor,
+                                                        Constants.Factors.McDonaldsFatigueFactor,
+                                                        Constants.Factors.FlyersDistributingFatigueFactor,
+                                                        Constants.Factors.EngineerFatigueFactor,
+                                                        Constants.Factors.MakeUpArtistFatigueFactor,
+                                                        Constants.Factors.WorkOnPCFatigueFactor,
+                                                        Constants.Factors.AccountantFatigueFactor,
+                                                        Constants.Factors.PilotFatigueFactor,
+                                                        Constants.Factors.JewelerFatigueFactor
+                                                        );
+
             List<CallbackModel> inlineParts = InlineItems.InlineWork(_userCulture);
             InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
 
@@ -3271,7 +3433,9 @@ namespace TamagotchiBot.Controllers
             {
                 // Show analyzing message (Check time keyboard)
                 string text = nameof(Resources.Resources.educationCommand_InProgress).UseCulture(_userCulture);
-                TimeSpan timeToWait = Extensions.GetEducationTime(currentLevel);
+                TimeSpan timeToWait = userDB.VIPIsEnabled
+                                        ? Extensions.GetEducationTime(currentLevel, Factors.EducationCoefFasterVIPProc)
+                                        : Extensions.GetEducationTime(currentLevel);
 
                 var remainsTime = timeToWait - (DateTime.UtcNow - petDB.StartStudyingTime);
                 if (remainsTime < TimeSpan.Zero) remainsTime = TimeSpan.Zero;
@@ -3289,7 +3453,7 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -3299,7 +3463,7 @@ namespace TamagotchiBot.Controllers
 
             string toSendText;
             ReplyMarkup toSendReplyMarkup;
-            if (petDB.EducationLevel.GetActualEducationLevel() == EducationLevel.CompletedHigh)
+            if (petDB.EducationLevel.GetActualEducationLevel() == EducationLevel.SpecialJeweler)
             {
                 toSendText = nameof(Resources.Resources.educationCommand_OveredAllEducationLevels).UseCulture(_userCulture);
                 toSendReplyMarkup = ReplyKeyboardItems.EducationAllCompletedKeyboardMarkup(_userCulture);
@@ -3375,7 +3539,7 @@ namespace TamagotchiBot.Controllers
         {
             if (userDB == null || petDB == null)
                 return;
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -3392,10 +3556,14 @@ namespace TamagotchiBot.Controllers
 
             var currentLevel = petDB.EducationLevel.GetActualEducationLevel();
 
-            if (currentLevel != type)
+            if (currentLevel != type || (!userDB.VIPIsEnabled && type > EducationLevel.High))
             {
                 string statusText;
-                if (currentLevel < type)
+                if (!userDB.VIPIsEnabled && type > EducationLevel.High)
+                {
+                    statusText = "❗️" + nameof(Resources.Resources.VIPPremium_decline_noVIPEnabled).UseCulture(_userCulture);
+                }
+                else if (currentLevel < type)
                 {
                     statusText = "❗️" + nameof(Resources.Resources.educationCommand_NeedFinishPrevious).UseCulture(_userCulture);
                 }
@@ -3408,7 +3576,7 @@ namespace TamagotchiBot.Controllers
 
                 string educationInfo = string.Format(nameof(Resources.Resources.educationCommand).UseCulture(_userCulture),
                                            currentLevel.GetActualEducationLevelTranslatedString(_userCulture),
-                                           currentLevel == EducationLevel.CompletedHigh
+                                           currentLevel == EducationLevel.SpecialJeweler
                                                         ? totalStages
                                                         : petDB.EducationStage,
                                            totalStages,
@@ -3436,7 +3604,9 @@ namespace TamagotchiBot.Controllers
             _appServices.PetService.UpdateStartStudyingTime(_userId, petDB.StartStudyingTime);
 
             // Send confirmation (update message to show timer)
-            TimeSpan timeToWait = Extensions.GetEducationTime(currentLevel);
+            TimeSpan timeToWait = userDB.VIPIsEnabled
+                                        ? Extensions.GetEducationTime(currentLevel, Factors.EducationCoefFasterVIPProc)
+                                        : Extensions.GetEducationTime(currentLevel);
 
             Log.Information($"Start Studying for {_userInfo}");
 
@@ -3464,7 +3634,7 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB, isShowEducationLeftTime: true);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB, isShowEducationLeftTime: true);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -3474,7 +3644,9 @@ namespace TamagotchiBot.Controllers
 
             var currentLevel = petDB.EducationLevel.GetActualEducationLevel();
 
-            TimeSpan timeToWait = Extensions.GetEducationTime(currentLevel);
+            TimeSpan timeToWait = userDB.VIPIsEnabled
+                                        ? Extensions.GetEducationTime(currentLevel, Factors.EducationCoefFasterVIPProc)
+                                        : Extensions.GetEducationTime(currentLevel);
             TimeSpan remainsTime = timeToWait - (DateTime.UtcNow - petDB.StartStudyingTime);
 
             if (remainsTime <= TimeSpan.Zero)

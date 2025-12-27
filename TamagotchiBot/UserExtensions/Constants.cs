@@ -39,7 +39,8 @@ namespace TamagotchiBot.UserExtensions
             FoodDelivery = 5,
             Accountant = 6,
             Engineer = 7,
-            Pilot = 8
+            Pilot = 8,
+            Jeweler = 9,
         }
 
         public enum EducationLevel
@@ -48,6 +49,7 @@ namespace TamagotchiBot.UserExtensions
             Middle = 2,
             High = 3,
             CompletedHigh = 4,
+            SpecialJeweler = 5,
         }
 
         public enum PetType
@@ -92,6 +94,8 @@ namespace TamagotchiBot.UserExtensions
 
             public const int CardGameFatigueFactor = 20;
             public const int CardGameJoyFactor = 20;
+            public const int AppleGameFatigueFactor = 20;
+            public const int AppleGameJoyFactor = 20;
             public const int DiceGameFatigueFactor = 5;
             public const int DiceGameJoyFactor = 10;
             public const int TicTacToeGameFatigueFactor = 5;
@@ -117,11 +121,18 @@ namespace TamagotchiBot.UserExtensions
             public const int AccountantJoyFactor = -5;
             public const int PilotFatigueFactor = 15;
             public const int PilotJoyFactor = -5;
+            public const int JewelerFatigueFactor = 15;
+            public const int JewelerJoyFactor = -5;
 
             public const int EducationFatigueFactor = 60;
 
             public const int PillHPFactor = 20;
             public const int PillJoyFactor = -10;
+
+            //VIP
+            public const int EducationCoefFasterVIPProc = 50;
+            public const int AutofeederDiscountVIPProc = 50;
+            public const int LLMMesagesCoefMoreVIPProc = 100;
         }
 
         public struct Rewards //in gold
@@ -144,6 +155,11 @@ namespace TamagotchiBot.UserExtensions
 
             //Multiplayer
             public const int WonDuel = 150;
+
+            //VIP
+            public const int VIP7DaysGoldReward = 700;
+            public const int VIPJewelerJobGoldReward = 100;
+            public const int VIPJewelerJobDiamondReward = 5;
         }
 
         public struct ExpRewards
@@ -151,6 +167,8 @@ namespace TamagotchiBot.UserExtensions
             public const int PrimaryEducation = 50;
             public const int MiddleEducation = 100;
             public const int HighEducation = 200;
+            public const int CompletedEducation = 250;
+            public const int SpecialJewelerEducation = 300;
         }
 
         public struct Costs //in gold
@@ -184,8 +202,10 @@ namespace TamagotchiBot.UserExtensions
             public const int FeedMP = 20;
 
             //AutoFeed
-            public const int AutoFeedCost = 500;
             public const int AutoFeedCostDiamonds = 100;
+
+            //VIP
+            public const int VIP7DaysDiamonds = 100;
         }
 
         public struct AutoFeed
@@ -199,6 +219,8 @@ namespace TamagotchiBot.UserExtensions
             public const int PrimarySchoolStages = 3;
             public const int MiddleSchoolStages = 5;
             public const int HighSchoolStages = 10;
+            public const int CompletedStages = 5;
+            public const int SpecialJewelerSchoolStages = 5;
         }
 
         public struct CronSchedule
@@ -219,6 +241,7 @@ namespace TamagotchiBot.UserExtensions
             public readonly static TimeSpan FoodDeliveryToWait = new(0, 3, 0);
             public readonly static TimeSpan AccountantToWait = new(0, 1, 0);
             public readonly static TimeSpan PilotToWait = new(0, 1, 0);
+            public readonly static TimeSpan JewelerToWait = new(0, 1, 0);
             public readonly static TimeSpan DailyRewardToWait = new(24, 0, 0);
             public readonly static TimeSpan SleepToWait = new(0, 2, 0);
             public readonly static TimeSpan DuelCDToWait = new(0, 5, 0);
@@ -276,6 +299,7 @@ namespace TamagotchiBot.UserExtensions
             public const int WorkFoodDelivery = 50; //Primary
             public const int WorkAccountant = 1000; //High
             public const int WorkPilot = 1000; //High
+            public const int WorkJeweler = 1500; //CompletedHigh
         }
 
         public struct FoodFactors
@@ -326,6 +350,11 @@ namespace TamagotchiBot.UserExtensions
             public const string EducationCommand = "education";
         }
 
+        public static class CommandsInternal
+        {
+            public const string Buy7daysVIP = "buy7daysvip";
+        }
+
         public struct CommandsMP
         {
             public const string ShowPetCommand = "show_pet";
@@ -359,6 +388,9 @@ namespace TamagotchiBot.UserExtensions
             public const string ChangeTypeErrorGoldSticker = "CAACAgIAAxkBAAELUzdlwUQlfiUpuAPpKwejhj8JUrtamAAC6z4AAr4b2UkCVdfVjLsgnDQE";
 
             //public const string EducationReferenceSticker = "CAACAgIAAxkBAAEQAAFTaT72Bsw9rMlGpouwUtw9dMCFNRIAApsQAAJ4GUhKooazklII5ak2BA";
+
+            public const string ConfirmVIPBuyingSticker = "CAACAgIAAxkBAAEQGxppTxfpj_uwdpRM2c1WImdh-VLfWgACc1UAAmJwCEjbAoLEOzDa8jYE";
+            public const string PremiumVIPBoughtSticker = "CAACAgIAAxkBAAEQGx5pTx0BrOLlRB-hZLyaeQo96zhZYQACrEAAAlvNaEh8Dbx1NPqo_TYE";
 
             public const string ChangelogSticker = "CAACAgIAAxkBAAIoiWQfmY19TqmIZL38KrfWnSS9frV0AAIrKwACnQhYSBduaR-WJLE7LwQ"; //usual changelog panda jumps
             //public const string ChangelogSticker = "CAACAgIAAxkBAAELb2Rl0nuZd49DEzvd2J9VRgABL_CKEvQAAlwCAAKQWXYt3NXqzbbMLvU0BA"; //referal notify ring
@@ -1080,6 +1112,7 @@ namespace TamagotchiBot.UserExtensions
                 CallbackButtons.WorkCommand.WorkCommandInlineWorkOnPC(culture), //high
                 CallbackButtons.WorkCommand.WorkCommandInlineAccountant(culture),
                 CallbackButtons.WorkCommand.WorkCommandInlinePilot(culture),
+                CallbackButtons.WorkCommand.WorkCommandInlineJeweler(culture),//special
             };
 
             public static List<CallbackModel> InlineRanks(CultureInfo culture) => _inlineRanks(culture);

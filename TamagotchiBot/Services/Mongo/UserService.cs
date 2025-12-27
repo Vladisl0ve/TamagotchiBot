@@ -193,5 +193,35 @@ namespace TamagotchiBot.Services.Mongo
                 Update(userId, userDb);
             }
         }
+
+        public void UpdateVIPStartTime(long userId, DateTime startTime)
+        {
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb != null)
+            {
+                userDb.VIPStartTime = startTime;
+                Update(userId, userDb);
+            }
+        }
+
+        public void UpdateVIPIsEnabled(long userId, bool isEnabled)
+        {
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb != null)
+            {
+                userDb.VIPIsEnabled = isEnabled;
+                Update(userId, userDb);
+            }
+        }
+
+        public void UpdateVIPLongDays(long userId, int longDays)
+        {
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb != null)
+            {
+                userDb.VIPLongDays = longDays;
+                Update(userId, userDb);
+            }
+        }
     }
 }

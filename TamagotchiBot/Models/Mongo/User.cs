@@ -51,11 +51,20 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("Gold")]
         public int Gold { get; set; }
 
+        [BsonElement("VIPStartTime")]
+        public DateTime VIPStartTime { get; set; } = default;
+
+        [BsonElement("VIPIsEnabled")]
+        public bool VIPIsEnabled { get; set; } = false;
+
+        [BsonElement("VIPLongDays")]
+        public int VIPLongDays { get; set; } = 0;
+
         [BsonElement("Diamonds")]
-        public int Diamonds { get; set; }
+        public int Diamonds { get; set; } = 0;
 
         [BsonElement("DiamondsGotByRef")]
-        public int DiamondsGotByRef { get; set; }
+        public int DiamondsGotByRef { get; set; } = 0;
 
         [BsonElement("ReferaledBy")]
         public long ReferaledBy { get; set; }

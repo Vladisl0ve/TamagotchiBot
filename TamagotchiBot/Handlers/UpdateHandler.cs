@@ -214,6 +214,23 @@ namespace TamagotchiBot.Handlers
                 return;
             }
 
+            #region buying checks
+
+            if (IsUserAskedOnBuying7daysVIP(userId) ?? false)
+            {
+                await new CreatorController(_appServices, message).TryApplyVIP7days();
+                return;
+            }
+
+            //if (DidUserConfirmBuyingWithTgStars(userId) ?? false)
+            //{
+            //    await new CreatorController(_appServices, message).ToRenamingAnswer();
+            //    return;
+            //}
+
+            #endregion
+
+
             if (_appServices.UserService.Get(userId)?.Created < DateTime.UtcNow.AddDays(-1))
             {
                 try
@@ -224,7 +241,7 @@ namespace TamagotchiBot.Handlers
                     }
 
                 }
-                catch 
+                catch
                 {
                     Log.Error($"Error on Subgram check for userId: {userId}");
                 }
@@ -461,6 +478,14 @@ namespace TamagotchiBot.Handlers
                 return null;
 
             return metauserDB.IsPetNameAskedOnRename;
+        }
+        private bool? IsUserAskedOnBuying7daysVIP(long userId)
+        {
+            var metauserDB = _appServices.MetaUserService.Get(userId);
+            if (metauserDB == null)
+                return null;
+
+            return metauserDB.IsConfirmAskedOnVIP7daysBuying;
         }
         private bool IsUserAndPetRegisteredChecking(long userId)
         {

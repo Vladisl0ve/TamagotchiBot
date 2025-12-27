@@ -158,6 +158,8 @@ namespace TamagotchiBot.UserExtensions
             {
                 nameof(Resources.Resources.farmButtonChangeType).UseCulture(culture),
                 nameof(Resources.Resources.farmButtonAutoFeed).UseCulture(culture),
+                nameof(Resources.Resources.farmButtonBuyPremiumWeek).UseCulture(culture),
+                nameof(Resources.Resources.farmButtonBuyDiamondsWithTgStars).UseCulture(culture),
                 nameof(Resources.Resources.goAwayButton).UseCulture(culture),
             };
         }
@@ -740,6 +742,7 @@ namespace TamagotchiBot.UserExtensions
                 nameof(Resources.Resources.educationCommand_Primary).UseCulture(culture),
                 nameof(Resources.Resources.educationCommand_Middle).UseCulture(culture),
                 nameof(Resources.Resources.educationCommand_High).UseCulture(culture),
+                nameof(Resources.Resources.educationCommand_SpecialJeweler).UseCulture(culture),
                 nameof(Resources.Resources.goAwayButton).UseCulture(culture)
             };
         }
@@ -792,8 +795,19 @@ namespace TamagotchiBot.UserExtensions
 
 
 
-        public static TimeSpan GetEducationTime(EducationLevel level)
+        public static TimeSpan GetEducationTime(EducationLevel level, int? coefFasterStudying = null)
         {
+            if (coefFasterStudying.HasValue)
+            {
+                return level switch
+                {
+                    EducationLevel.Primary => TimeSpan.FromTicks((long)(TimesToWait.EducationPrimaryToWait.Ticks * (1 - coefFasterStudying / 100.0))),
+                    EducationLevel.Middle => TimeSpan.FromTicks((long)(TimesToWait.EducationMiddleToWait.Ticks * (1 - coefFasterStudying / 100.0))),
+                    EducationLevel.High => TimeSpan.FromTicks((long)(TimesToWait.EducationHighToWait.Ticks * (1 - coefFasterStudying / 100.0))),
+                    _ => TimeSpan.FromTicks((long)(TimesToWait.EducationHighToWait.Ticks * (1 - coefFasterStudying / 100.0))),
+                };
+            }
+
             return level switch
             {
                 EducationLevel.Primary => TimesToWait.EducationPrimaryToWait,
@@ -847,6 +861,7 @@ namespace TamagotchiBot.UserExtensions
                 EducationLevel.Middle => nameof(Resources.Resources.educationCommand_Middle).UseCulture(culture),
                 EducationLevel.High => nameof(Resources.Resources.educationCommand_High).UseCulture(culture),
                 EducationLevel.CompletedHigh => nameof(Resources.Resources.educationCommand_CompletedHigh).UseCulture(culture),
+                EducationLevel.SpecialJeweler => nameof(Resources.Resources.educationCommand_SpecialJeweler).UseCulture(culture),
                 _ => nameof(Resources.Resources.educationCommand_Primary).UseCulture(culture)
             };
         }
@@ -863,7 +878,9 @@ namespace TamagotchiBot.UserExtensions
                 EducationLevel.Primary => Education.PrimarySchoolStages,
                 EducationLevel.Middle => Education.MiddleSchoolStages,
                 EducationLevel.High => Education.HighSchoolStages,
-                _ => Education.HighSchoolStages
+                EducationLevel.CompletedHigh => Education.CompletedStages,
+                EducationLevel.SpecialJeweler => Education.SpecialJewelerSchoolStages,
+                _ => Education.CompletedStages
             };
         }
 
@@ -874,6 +891,8 @@ namespace TamagotchiBot.UserExtensions
                 EducationLevel.Primary => Constants.ExpRewards.PrimaryEducation,
                 EducationLevel.Middle => Constants.ExpRewards.MiddleEducation,
                 EducationLevel.High => Constants.ExpRewards.HighEducation,
+                EducationLevel.CompletedHigh => Constants.ExpRewards.CompletedEducation,
+                EducationLevel.SpecialJeweler => Constants.ExpRewards.SpecialJewelerEducation,
                 _ => Constants.ExpRewards.PrimaryEducation
             };
         }
@@ -889,6 +908,7 @@ namespace TamagotchiBot.UserExtensions
                 JobType.WorkingOnPC => EducationLevel.High,
                 JobType.Accountant => EducationLevel.High,
                 JobType.Pilot => EducationLevel.High,
+                JobType.Jeweler => EducationLevel.SpecialJeweler,
                 _ => EducationLevel.Primary
             };
         }
@@ -905,8 +925,120 @@ namespace TamagotchiBot.UserExtensions
                 JobType.WorkingOnPC => Constants.TimesToWait.WorkOnPCToWait,
                 JobType.Accountant => Constants.TimesToWait.AccountantToWait,
                 JobType.Pilot => Constants.TimesToWait.PilotToWait,
+                JobType.Jeweler => Constants.TimesToWait.JewelerToWait,
                 _ => TimeSpan.Zero
             };
+        }
+
+        internal static string GetTimeLeftVIPString(
+            DateTime vipStartTime,
+            int vipLongDays,
+            CultureInfo userCulture)
+        {
+            var remainingTime = vipStartTime.AddDays(vipLongDays) - DateTime.UtcNow;
+            if (remainingTime.TotalMinutes < 1)
+                remainingTime = TimeSpan.FromMinutes(1);
+
+            var lang = userCulture?.TwoLetterISOLanguageName?.ToLowerInvariant() ?? "en";
+
+            int value;
+            TimeUnit unit;
+
+            if (remainingTime.TotalHours > 24)
+            {
+                value = (int)remainingTime.TotalDays;
+                unit = TimeUnit.Day;
+            }
+            else if (remainingTime.TotalHours >= 1)
+            {
+                value = (int)remainingTime.TotalHours;
+                unit = TimeUnit.Hour;
+            }
+            else
+            {
+                value = (int)remainingTime.TotalMinutes;
+                unit = TimeUnit.Minute;
+            }
+
+            return $"{value} {GetLocalizedUnit(lang, unit, value)}";
+        }
+
+        private enum TimeUnit
+        {
+            Day,
+            Hour,
+            Minute
+        }
+
+        private static string GetLocalizedUnit(string lang, TimeUnit unit, int value)
+        {
+            return lang switch
+            {
+                "ru" => GetSlavicForm(unit switch
+                {
+                    TimeUnit.Day => ("день", "дня", "дней"),
+                    TimeUnit.Hour => ("час", "часа", "часов"),
+                    TimeUnit.Minute => ("минута", "минуты", "минут"),
+                    _ => ("", "", "")
+                }, value),
+
+                "uk" => GetSlavicForm(unit switch
+                {
+                    TimeUnit.Day => ("день", "дні", "днів"),
+                    TimeUnit.Hour => ("година", "години", "годин"),
+                    TimeUnit.Minute => ("хвилина", "хвилини", "хвилин"),
+                    _ => ("", "", "")
+                }, value),
+
+                "be" => GetSlavicForm(unit switch
+                {
+                    TimeUnit.Day => ("дзень", "дні", "дзён"),
+                    TimeUnit.Hour => ("гадзіна", "гадзіны", "гадзін"),
+                    TimeUnit.Minute => ("хвіліна", "хвіліны", "хвілін"),
+                    _ => ("", "", "")
+                }, value),
+
+                _ => unit switch // EN (default)
+                {
+                    TimeUnit.Day => value == 1 ? "day" : "days",
+                    TimeUnit.Hour => value == 1 ? "hour" : "hours",
+                    TimeUnit.Minute => value == 1 ? "minute" : "minutes",
+                    _ => ""
+                }
+            };
+        }
+
+        /// <summary>
+        /// 1 → form1, 2–4 → form2, 5+ → form5
+        /// </summary>
+        private static string GetSlavicForm(
+            (string one, string few, string many) forms,
+            int value)
+        {
+            var mod10 = value % 10;
+            var mod100 = value % 100;
+
+            if (mod10 == 1 && mod100 != 11)
+                return forms.one;
+
+            if (mod10 is >= 2 and <= 4 && (mod100 < 12 || mod100 > 14))
+                return forms.few;
+
+            return forms.many;
+        }
+
+
+        public static string GetVipBenefitsString(int maxHistory, CultureInfo userCulture)
+        {
+            return string.Format(nameof(Resources.Resources.premiumVIPBenefits).UseCulture(userCulture),
+                                Rewards.VIP7DaysGoldReward,
+                                Factors.EducationCoefFasterVIPProc,
+                                Rewards.VIPJewelerJobGoldReward,
+                                Rewards.VIPJewelerJobDiamondReward,
+                                Factors.AutofeederDiscountVIPProc,
+                                Factors.LLMMesagesCoefMoreVIPProc,
+                                maxHistory * (1 + Factors.LLMMesagesCoefMoreVIPProc / 100) * 2,
+                                maxHistory * 2);
         }
     }
 }

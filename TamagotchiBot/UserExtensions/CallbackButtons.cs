@@ -180,6 +180,11 @@ namespace TamagotchiBot.UserExtensions
                         Text = string.Format(nameof(Resources.Resources.workCommandInlineShowTime).UseCulture(culture), timeToShow),
                         CallbackData = nameof(WorkCommandInlineShowTime)
                     },
+                    JobType.Jeweler => new CallbackModel()
+                    {
+                        Text = string.Format(nameof(Resources.Resources.workCommandInlineShowTime).UseCulture(culture), timeToShow),
+                        CallbackData = nameof(WorkCommandInlineShowTime)
+                    },
 
                     _ => new CallbackModel()
                     {
@@ -227,6 +232,12 @@ namespace TamagotchiBot.UserExtensions
             {
                 Text = nameof(Resources.Resources.workCommandInlinePilot).UseCulture(culture),
                 CallbackData = nameof(WorkCommandInlinePilot)
+            };
+
+            public static CallbackModel WorkCommandInlineJeweler(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.workCommandInlineJeweler).UseCulture(culture),
+                CallbackData = nameof(WorkCommandInlineJeweler)
             };
         }
         public static class RanksCommand
