@@ -97,6 +97,9 @@ namespace TamagotchiBot.Handlers
 
         private async Task<bool> IsUserRegisteredSubgramCheck(long userId, long chatId, string name, string username, string languageCode)
         {
+#if DEBUG || DEBUG_NOTIFY || STAGING
+            return true; //true on DEBUG
+#endif
             if (string.IsNullOrEmpty(_subgramKey))
                 _subgramKey = _appServices.SInfoService.GetSubgramKey();
 
@@ -104,9 +107,7 @@ namespace TamagotchiBot.Handlers
                 return true;
 
             const int TIMEOUT_SECONDS = 3;
-#if DEBUG || DEBUG_NOTIFY || STAGING
-            return true; //true on DEBUG
-#endif
+
             try
             {
                 using var client = new HttpClient();
