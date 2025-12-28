@@ -303,8 +303,8 @@ namespace TamagotchiBot.UserExtensions
 
         public struct DiamondsForTopExpRanking
         {
-            public const int Top1 = 1000;
-            public const int Top2 = 500;
+            public const int Top1 = 300;
+            public const int Top2 = 200;
             public const int Top3 = 100;
             public const int Top4_10 = 0;
         }
