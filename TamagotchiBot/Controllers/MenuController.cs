@@ -1842,7 +1842,16 @@ namespace TamagotchiBot.Controllers
         }
         private async Task ShowHelpInfo()
         {
-            string toSendText = nameof(helpCommand).UseCulture(_userCulture);
+            string toSendText = string.Format(nameof(helpCommand).UseCulture(_userCulture),
+                                                Constants.GoldForTopExpRanking.Top1.ToString("N0", System.Globalization.CultureInfo.InvariantCulture),
+                                                Constants.DiamondsForTopExpRanking.Top1,
+                                                Constants.GoldForTopExpRanking.Top2.ToString("N0", System.Globalization.CultureInfo.InvariantCulture),
+                                                Constants.DiamondsForTopExpRanking.Top2,
+                                                Constants.GoldForTopExpRanking.Top3.ToString("N0", System.Globalization.CultureInfo.InvariantCulture),
+                                                Constants.DiamondsForTopExpRanking.Top3,
+                                                Constants.GoldForTopExpRanking.Top4_10.ToString("N0", System.Globalization.CultureInfo.InvariantCulture),
+                                                Constants.DiamondsForTopExpRanking.Top4_10);
+
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.HelpCommandCounter++;
@@ -1917,7 +1926,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.MenuCommandSticker,
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);

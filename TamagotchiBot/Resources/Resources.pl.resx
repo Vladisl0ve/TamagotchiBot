@@ -355,23 +355,29 @@ W menu znajdziesz wszystkie potrzebne komendy dla pupila 🌻
 &lt;b&gt;FAQ:&lt;/b&gt;
 
 &lt;b&gt;Jak zdobywa się poziom 🏅?&lt;/b&gt;
-&lt;i&gt;1 doświadczenie = 1 minuta życia pupila. Wystarczy pamiętać o swoim pupilu 🦩&lt;/i&gt;
+&lt;i&gt;✅ 1 doświadczenie = 1 minuta życia pupila. Wystarczy pamiętać o swoim pupilu 🦩&lt;/i&gt;
 
 &lt;b&gt;Jak zarabiać pieniądze 💰?&lt;/b&gt;
-&lt;i&gt;Złoto zarabia się w pracy (/work)&lt;/i&gt;
+&lt;i&gt;✅ Złoto zarabia się w pracy (/work)&lt;/i&gt;
 
 &lt;b&gt;Czy pupil może umrzeć 💀?&lt;/b&gt;
-&lt;i&gt;Niestety, tak jak w życiu, tak i w Tamagotchi pupil może się bardzo zdenerwować i odejść 💔
+&lt;i&gt;✅ Niestety, tak jak w życiu, tak i w Tamagotchi pupil może się bardzo zdenerwować i odejść 💔
 Dlatego odwiedzaj swojego wirtualnego przyjaciela częściej 🧸&lt;/i&gt;
 
 &lt;b&gt;Jak zdobyć Diamenty 💎?&lt;/b&gt;
-&lt;i&gt;Na razie tylko przez program referencyjny (/referal) lub zajmując TOP-3 pod względem poziomu na koniec miesiąca.&lt;/i&gt;
+&lt;i&gt;✅ Na razie tylko przez program referencyjny (/referal) lub zajmując TOP-3 pod względem poziomu na koniec miesiąca.&lt;/i&gt;
 
-&lt;b&gt;Co miesiąc znikają mi poziomy pupila. Dlaczego?&lt;/b&gt;
-&lt;i&gt;Tak, co miesiąc poziomy pupila są resetowane. Pupile z TOP-10 dostają nagrody. TOP-3 otrzymują zarówno złoto💰, jak i diamenty💎!&lt;/i&gt;
+&lt;b&gt;Co miesiąc znikają mi poziomy pupila. Co to jest?&lt;/b&gt;
+&lt;i&gt;✅ Tak, co miesiąc poziomy pupila są resetowane.
+Ale nagrody przyznawane są najlepszym pupilom miesiąca!&lt;/i&gt;
+&lt;b&gt;TOP 1:&lt;/b&gt; {0}💰, {1}💎
+&lt;b&gt;TOP 2:&lt;/b&gt; {2}💰, {3}💎
+&lt;b&gt;TOP 3:&lt;/b&gt; {4}💰, {5}💎
+&lt;b&gt;TOP 4-10:&lt;/b&gt; {6}💰
+
 
 &lt;b&gt;Jak działa AUTOMATYCZNY KARMIK?&lt;/b&gt;
-&lt;i&gt;Na Farmie można włączać/wyłączać automatyczny karmnik. Jeśli włączysz, co 4 godziny pupil karmi się sam (SYTOŚĆ może być nawet powyżej 100) i zużywa się jeden ładunek. Ładować karmnik można na Farmie.&lt;/i&gt;
+&lt;i&gt;✅ Na Farmie można włączać/wyłączać automatyczny karmnik. Jeśli włączysz, co 4 godziny pupil karmi się sam (SYTOŚĆ może być nawet powyżej 100) i zużywa się jeden ładunek. Ładować karmnik można na Farmie.&lt;/i&gt;
 
 &lt;b&gt;/menu&lt;/b&gt; – &lt;i&gt;tu prawie wszystkie możliwe komendy&lt;/i&gt;</value>
   </data>
@@ -390,6 +396,8 @@ Dlatego odwiedzaj swojego wirtualnego przyjaciela częściej 🧸&lt;/i&gt;
 /bathroom - posprzątaj swojego zwierzaka 🛁
 /referal - program referancyjny 👩‍👩‍👧‍👦
 /rename - zmień imię 🌀
+
+/farm - KołHoz🚜
 
 /reward - &lt;i&gt;&lt;b&gt;dostać codzienny bonus&lt;/b&gt;&lt;/i&gt; 🎁
 

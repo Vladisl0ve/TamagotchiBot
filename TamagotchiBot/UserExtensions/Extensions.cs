@@ -198,6 +198,22 @@ namespace TamagotchiBot.UserExtensions
             };
         }
 
+        public static List<string> GetOtherMenuButtons(CultureInfo culture)
+        {
+            return new List<string>()
+            {
+                nameof(Resources.Resources.changelogCommandDescription).UseCulture(culture),
+                nameof(Resources.Resources.hospitalCommandDescription).UseCulture(culture),
+                nameof(Resources.Resources.ranksCommandDescription).UseCulture(culture),
+
+                nameof(Resources.Resources.languageCommandDescription).UseCulture(culture),
+                nameof(Resources.Resources.rewardCommandDescription).UseCulture(culture),
+                nameof(Resources.Resources.helpCommandDescription).UseCulture(culture),
+
+                nameof(Resources.Resources.goAwayButton).UseCulture(culture)
+            };
+        }
+
         public static List<BotCommand> GetCommands(string culture, bool showAllCommands = true)
         {
             List<BotCommand> result = new()

@@ -355,23 +355,28 @@ In the commands menu, you’ll find everything your pet needs 🌻
 &lt;b&gt;FAQ:&lt;/b&gt;
 
 &lt;b&gt;How is level earned 🏅?&lt;/b&gt;
-&lt;i&gt;1 XP = 1 minute of pet’s life. Just remember your pet 🦩&lt;/i&gt;
+&lt;i&gt;✅ 1 XP = 1 minute of pet’s life. Just remember your pet 🦩&lt;/i&gt;
 
 &lt;b&gt;How to earn money 💰?&lt;/b&gt;
-&lt;i&gt;Gold is earned by working (/work)&lt;/i&gt;
+&lt;i&gt;✅ Gold is earned by working (/work)&lt;/i&gt;
 
 &lt;b&gt;Can the pet die 💀?&lt;/b&gt;
-&lt;i&gt;Unfortunately, just like in real life, a pet in Tamagotchi can get very upset and leave 💔
+&lt;i&gt;✅ Unfortunately, just like in real life, a pet in Tamagotchi can get very upset and leave 💔
 So visit your virtual friend often 🧸&lt;/i&gt;
 
 &lt;b&gt;How to get Diamonds 💎?&lt;/b&gt;
-&lt;i&gt;For now, only via the referral program (/referal) or by ranking in the TOP-3 pets by level at the end of the month.&lt;/i&gt;
+&lt;i&gt;✅ For now, only via the referral program (/referal) or by ranking in the TOP-3 pets by level at the end of the month.&lt;/i&gt;
 
-&lt;b&gt;Every month my pet’s levels reset. Why?&lt;/b&gt;
-&lt;i&gt;Yes, each month pet levels reset. Pets in the TOP-10 get prizes. TOP-3 get both gold💰 and diamonds💎!&lt;/i&gt;
+&lt;b&gt;Every month my pet levels disappear. What is this?&lt;/b&gt;
+&lt;i&gt;✅ Yes, every month pet levels are reset.
+But rewards are given to the best pets of the month!&lt;/i&gt;
+&lt;b&gt;TOP 1:&lt;/b&gt; {0}💰, {1}💎
+&lt;b&gt;TOP 2:&lt;/b&gt; {2}💰, {3}💎
+&lt;b&gt;TOP 3:&lt;/b&gt; {4}💰, {5}💎
+&lt;b&gt;TOP 4-10:&lt;/b&gt; {6}💰
 
 &lt;b&gt;How does the AUTO-FEEDER work?&lt;/b&gt;
-&lt;i&gt;On the Farm you can turn the auto-feeder on/off. If turned on, the pet feeds itself every 4 hours (SATIETY can even exceed 100) and consumes one charge. You can recharge the auto-feeder on the Farm.&lt;/i&gt;
+&lt;i&gt;✅ On the Farm you can turn the auto-feeder on/off. If turned on, the pet feeds itself every 4 hours (SATIETY can even exceed 100) and consumes one charge. You can recharge the auto-feeder on the Farm.&lt;/i&gt;
 
 &lt;b&gt;/menu&lt;/b&gt; – &lt;i&gt;here are almost all possible commands&lt;/i&gt;</value>
   </data>
@@ -384,6 +389,7 @@ So visit your virtual friend often 🧸&lt;/i&gt;
 /kitchen - feed your pet 🍕
 /work - to earn more gold 💰
 /sleep - bedroom 🧸
+/farm - Farm 🚜
 /gameroom entertainments 🎳
 /ranks - see the best pets! 👑
 /hospital - cure your pet 🏥

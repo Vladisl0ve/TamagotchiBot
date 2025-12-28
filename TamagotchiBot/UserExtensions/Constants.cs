@@ -1281,6 +1281,14 @@ namespace TamagotchiBot.UserExtensions
                 isOneTimeKeyboard: false
                 );
 
+            public static ReplyKeyboardMarkup OtherMenuKeyboardMarkup(CultureInfo culture) => _otherMenuKeyboardMarkup(culture);
+            private static ReplyKeyboardMarkup _otherMenuKeyboardMarkup(CultureInfo culture) =>
+            Extensions.ReplyKeyboardOptimizer(
+                Extensions.GetOtherMenuButtons(culture),
+                columnCounter: 3,
+                isOneTimeKeyboard: false
+                );
+
             public static ReplyKeyboardMarkup LanguagesMarkup => _languagesMarkup;
             private static ReplyKeyboardMarkup _languagesMarkup = Extensions.ReplyKeyboardOptimizer(Extensions.LanguagesWithFlags(), isOneTimeKeyboard: true);
 

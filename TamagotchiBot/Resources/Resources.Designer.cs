@@ -1456,7 +1456,7 @@ namespace TamagotchiBot.Resources {
         ///&lt;b&gt;FAQ:&lt;/b&gt;
         ///
         ///&lt;b&gt;How is level earned 🏅?&lt;/b&gt;
-        ///&lt;i&gt;1 XP =  [rest of string was truncated]&quot;;.
+        ///&lt;i&gt;✅ 1 XP  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string helpCommand {
             get {
@@ -1617,6 +1617,7 @@ namespace TamagotchiBot.Resources {
         ////kitchen - feed your pet 🍕
         ////work - to earn more gold 💰
         ////sleep - bedroom 🧸
+        ////farm - Farm 🚜
         ////gameroom entertainments 🎳
         ////ranks - see the best pets! 👑
         ////hospital - cure your pet 🏥
@@ -1628,9 +1629,7 @@ namespace TamagotchiBot.Resources {
         ///
         ////changelog - official channel of Tamagotchi bot 🚀
         ////language - language 🇺🇸 | język 🇵🇱 | мова 🇨🇷 | язык 🇷🇺
-        ////help - FAQ 🆘
-        ///
-        ///There  [rest of string was truncated]&quot;;.
+        ////help - [rest of string was truncated]&quot;;.
         /// </summary>
         public static string menuCommand {
             get {
