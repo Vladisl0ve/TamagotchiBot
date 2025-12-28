@@ -45,6 +45,12 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("LollypopEatenCounter")]
         public long LollypopEatenCounter { get; set; }
 
+        [BsonElement("CoffeeEatenCounter")]
+        public long CoffeeEatenCounter { get; set; }
+
+        [BsonElement("MilkEatenCounter")]
+        public long MilkEatenCounter { get; set; }
+
         [BsonElement("SleepenTimesCounter")]
         public long SleepenTimesCounter { get; set; }
 

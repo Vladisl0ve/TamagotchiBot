@@ -134,12 +134,8 @@ namespace TamagotchiBot.UserExtensions
             public const int HangmanGameFatigueFactor = 5;
             public const int HangmanGameJoyFactor = 20;
 
-            public const int WorkOnPCFatigueFactor = 15;
-            public const int WorkOnPCJoyFactor = -5;
             public const int FlyersDistributingFatigueFactor = 30;
             public const int FlyersDistributingJoyFactor = -15;
-
-            //New Jobs
             public const int McDonaldsFatigueFactor = 30;
             public const int McDonaldsJoyFactor = -15;
             public const int MakeUpArtistFatigueFactor = 20;
@@ -152,10 +148,13 @@ namespace TamagotchiBot.UserExtensions
             public const int AccountantJoyFactor = -5;
             public const int PilotFatigueFactor = 15;
             public const int PilotJoyFactor = -5;
+            public const int WorkOnPCFatigueFactor = 15;
+            public const int WorkOnPCJoyFactor = -5;
             public const int JewelerFatigueFactor = 15;
             public const int JewelerJoyFactor = -5;
 
             public const int EducationFatigueFactor = 60;
+            public const int WorkSatietyFactor = 30;
 
             public const int PillHPFactor = 20;
             public const int PillJoyFactor = -10;
@@ -206,9 +205,11 @@ namespace TamagotchiBot.UserExtensions
         {
             //Food
             public const int Bread = 50;
-            public const int Apple = 1;
-            public const int Lollipop = 0;
-            public const int Chocolate = 0;
+            public const int Apple = 5;
+            public const int Lollipop = 1;
+            public const int Chocolate = 4;
+            public const int Coffee = 10;
+            public const int Milk = 10;
 
             //Games
             public const int AppleGame = 20;
@@ -310,8 +311,12 @@ namespace TamagotchiBot.UserExtensions
 
         public struct ExpForAction
         {
-            public const int FeedingBread = 20;
-            public const int FeedingApple = 20;
+            public const int FeedingBread = 50;
+            public const int FeedingApple = 5;
+            public const int FeedingChocolate = 4;
+            public const int FeedingLollipop = 1;
+            public const int FeedingCoffee = 10;
+            public const int FeedingMilk = 10;
 
             public const int PlayApple = 20;
             public const int Play = 5;
@@ -339,6 +344,14 @@ namespace TamagotchiBot.UserExtensions
             public const double RedAppleHungerFactor = 5; //🍎
             public const double ChocolateHungerFactor = 2; //🍫
             public const double LollipopHungerFactor = 1; //🍭
+            public const double CoffeeHungerFactor = 2; 
+            public const double MilkHungerFactor = 10; 
+
+            public const int RedAppleHPFactor = 1; //🍎
+            public const int MilkHPFactor = 2;
+
+            public const int ChocolateFatigueFactor = 1;
+            public const int CoffeeFatigueFactor = 5; 
 
             //Multiplayer
             public const int MPFeedFactor = 100; //🍭
@@ -1098,7 +1111,26 @@ namespace TamagotchiBot.UserExtensions
                 CallbackButtons.KitchenCommand.KitchenCommandInlineBread,
                 CallbackButtons.KitchenCommand.KitchenCommandInlineRedApple,
                 CallbackButtons.KitchenCommand.KitchenCommandInlineChocolate,
-                CallbackButtons.KitchenCommand.KitchenCommandInlineLollipop
+                CallbackButtons.KitchenCommand.KitchenCommandInlineLollipop,
+                CallbackButtons.KitchenCommand.KitchenCommandInlineCoffee,
+                CallbackButtons.KitchenCommand.KitchenCommandInlineMilk,
+            };
+
+            public static InlineKeyboardButton[][] InlineFoodKeyboardButtonArrays => _inlineFoodKeyboardButtonArrays;
+            private static InlineKeyboardButton[][] _inlineFoodKeyboardButtonArrays = new InlineKeyboardButton[][]
+            {
+                [
+                    CallbackButtons.KitchenCommand.KitchenCommandInlineBread.ToInlineKeyboardButton(),
+                    CallbackButtons.KitchenCommand.KitchenCommandInlineRedApple.ToInlineKeyboardButton()
+                ],
+                [
+                    CallbackButtons.KitchenCommand.KitchenCommandInlineChocolate.ToInlineKeyboardButton(),
+                    CallbackButtons.KitchenCommand.KitchenCommandInlineLollipop.ToInlineKeyboardButton()
+                ],
+                [
+                    CallbackButtons.KitchenCommand.KitchenCommandInlineCoffee.ToInlineKeyboardButton(),
+                    CallbackButtons.KitchenCommand.KitchenCommandInlineMilk.ToInlineKeyboardButton()
+                ]
             };
 
             public static List<CallbackModel> InlineReferal(CultureInfo culture) => _inlineReferal(culture);

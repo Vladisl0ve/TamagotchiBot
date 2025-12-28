@@ -1560,16 +1560,23 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You are in the kitchen 🥦
-        ///🍕 Pet&apos;s satiety: {0}%
+        ///   Looks up a localized string similar to &lt;b&gt;You are in the kitchen 🥣&lt;/b&gt;
+        ///
+        ///🍕 Pet satiety: {0}%
         ///💰 Gold: {1}
+        ///😴 Fatigue: {2}%
+        ///💊 HP: {3}%
         ///
-        ///Bread 🍞 = +50%🍕 |-30💰
-        ///Apple 🍎 = +5%🍕 |-1💰
-        ///Lollipop 🍭 = +1%🍕 |-0 💰
-        ///Chocolate 🍫 = +2%🍕 |-0💰
+        ///Bread 🍞 = +{4}%🍕 |-{5}💰
+        ///Apple 🍎 = +{6}%🍕 |+{7}%💊 |-{8}💰
         ///
-        ///Don&apos;t forget feed him 🐣.
+        ///Chocolate 🍫 = +{9}%🍕 |-{10}%😴 |-{11}💰
+        ///Lollipop 🍭 = +{12}%🍕 |-{13}💰
+        ///
+        ///Coffee ☕️ = +{14}%🍕 |-{15}%😴 |-{16}💰
+        ///Milk 🥛 = +{17}%🍕 |+{18}%💊 |-{19}💰
+        ///
+        ///Don’t forget to feed your pet 🐣.
         /// </summary>
         public static string kitchenCommand {
             get {
@@ -2117,7 +2124,7 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your pet has satisfied hunger on {0}%.
+        ///   Looks up a localized string similar to 🥗 Your pet has satisfied hunger on {0}% 🥗.
         /// </summary>
         public static string PetFeedingAnwserCallback {
             get {
@@ -3136,6 +3143,8 @@ namespace TamagotchiBot.Resources {
         ///
         ///😴 Pet fatigue: {2}%
         ///
+        ///&lt;b&gt;&lt;i&gt;On all jobs: -{29}% satiety 🍕&lt;/i&gt;&lt;/b&gt;
+        ///
         ///Food Delivery 🎒 -{7}⌛️, +{8} 💰, +{20} 😴
         ///McDonalds Worker 🍔 -{5}⌛️, +{6} 💰, +{21} 😴
         ///Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} 💰, +{22} 😴
@@ -3147,11 +3156,20 @@ namespace TamagotchiBot.Resources {
         ///Accountant 📔 -{13}⌛️, +{14} 💰, +{26} 😴
         ///Pilot ✈️ -{15}⌛️, +{16} 💰, +{27} 😴
         ///
-        ///Jeweler 💍 -{17}⌛️, +{18} 💰, +{19} 💎, +{28} 😴.
+        ///Jeweler 💍 -{17}⌛️, +{18} 💰, +{19} 💎,  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string workCommand {
             get {
                 return ResourceManager.GetString("workCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ⚠️ Warning: Your pet has {0}% satiety left, feed it! ⚠️.
+        /// </summary>
+        public static string workCommand_LowSatiety {
+            get {
+                return ResourceManager.GetString("workCommand_LowSatiety", resourceCulture);
             }
         }
         

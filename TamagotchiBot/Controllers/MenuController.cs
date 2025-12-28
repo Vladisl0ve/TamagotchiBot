@@ -672,6 +672,18 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
+            if (_callback.Data == CallbackButtons.KitchenCommand.KitchenCommandInlineCoffee.CallbackData)
+            {
+                await FeedWithCoffeeInline(userDb, petDb);
+                return;
+            }
+
+            if (_callback.Data == CallbackButtons.KitchenCommand.KitchenCommandInlineMilk.CallbackData)
+            {
+                await FeedWithMilkInline(userDb, petDb);
+                return;
+            }
+
             if (_callback.Data == CallbackButtons.SleepCommand.SleepCommandInlinePutToSleep(default, _userCulture).CallbackData)
             {
                 await PutToSleepInline(petDb);
@@ -910,7 +922,8 @@ namespace TamagotchiBot.Controllers
                                        Constants.Factors.WorkOnPCFatigueFactor,
                                        Constants.Factors.AccountantFatigueFactor,
                                        Constants.Factors.PilotFatigueFactor,
-                                       Constants.Factors.JewelerFatigueFactor
+                                       Constants.Factors.JewelerFatigueFactor,
+                                       Constants.Factors.WorkSatietyFactor
                                        );
 
             InlineKeyboardMarkup toSendInline = InlineItems.InlineWorkKeyboardButtonArrays(_userCulture);
@@ -924,7 +937,8 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.PetWorkSticker_Cat), _userPetType),
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -1592,17 +1606,27 @@ namespace TamagotchiBot.Controllers
                 nameof(kitchenCommand).UseCulture(_userCulture),
                 petDB.Satiety,
                 userDB.Gold,
+                petDB.Fatigue,
+                petDB.HP,
                 FoodFactors.BreadHungerFactor,
                 Costs.Bread,
                 FoodFactors.RedAppleHungerFactor,
+                FoodFactors.RedAppleHPFactor,
                 Costs.Apple,
+                FoodFactors.ChocolateHungerFactor,
+                FoodFactors.ChocolateFatigueFactor,
+                Costs.Chocolate,
                 FoodFactors.LollipopHungerFactor,
                 Costs.Lollipop,
-                FoodFactors.ChocolateHungerFactor,
-                Costs.Chocolate);
+                FoodFactors.CoffeeHungerFactor,
+                FoodFactors.CoffeeFatigueFactor,
+                Costs.Coffee,
+                FoodFactors.MilkHungerFactor,
+                FoodFactors.MilkHPFactor,
+                Costs.Milk
+                );
 
-            List<CallbackModel> inlineParts = InlineItems.InlineFood;
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+            InlineKeyboardMarkup toSendInline = InlineItems.InlineFoodKeyboardButtonArrays;
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.KitchenCommandCounter++;
@@ -1613,7 +1637,8 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.PetKitchenSticker_Cat), _userPetType),
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
@@ -2163,6 +2188,8 @@ namespace TamagotchiBot.Controllers
                 petDB,
                 Costs.Bread,
                 FoodFactors.BreadHungerFactor,
+                0,
+                0,
                 ExpForAction.FeedingBread,
                 aud => aud.BreadEatenCounter++);
         }
@@ -2174,6 +2201,8 @@ namespace TamagotchiBot.Controllers
                 petDB,
                 Costs.Apple,
                 FoodFactors.RedAppleHungerFactor,
+                0,
+                FoodFactors.RedAppleHPFactor,
                 ExpForAction.FeedingApple,
                 aud => aud.AppleEatenCounter++);
         }
@@ -2185,7 +2214,9 @@ namespace TamagotchiBot.Controllers
                 petDB,
                 Costs.Chocolate,
                 FoodFactors.ChocolateHungerFactor,
+                FoodFactors.ChocolateFatigueFactor,
                 0,
+                ExpForAction.FeedingChocolate,
                 aud => aud.ChocolateEatenCounter++);
         }
 
@@ -2197,10 +2228,36 @@ namespace TamagotchiBot.Controllers
                 Costs.Lollipop,
                 FoodFactors.LollipopHungerFactor,
                 0,
+                0,
+                ExpForAction.FeedingLollipop,
                 aud => aud.LollypopEatenCounter++);
         }
+        private async Task FeedWithCoffeeInline(User userDB, Pet petDB)
+        {
+            await FeedWithFoodInline(
+                userDB,
+                petDB,
+                Costs.Coffee,
+                FoodFactors.CoffeeHungerFactor,
+                FoodFactors.CoffeeFatigueFactor,
+                0,
+                ExpForAction.FeedingCoffee,
+                aud => aud.CoffeeEatenCounter++);
+        }
+        private async Task FeedWithMilkInline(User userDB, Pet petDB)
+        {
+            await FeedWithFoodInline(
+                userDB,
+                petDB,
+                Costs.Milk,
+                FoodFactors.MilkHungerFactor,
+                0,
+                FoodFactors.MilkHPFactor,
+                ExpForAction.FeedingMilk,
+                aud => aud.MilkEatenCounter++);
+        }
 
-        private async Task FeedWithFoodInline(User userDB, Pet petDB, int cost, double hungerFactor, int expReward, Action<AllUsersData> updateCounter)
+        private async Task FeedWithFoodInline(User userDB, Pet petDB, int cost, double hungerFactor, int fatigueFactor, int HPFactor, int expReward, Action<AllUsersData> updateCounter)
         {
             if (userDB == null || petDB == null)
                 return;
@@ -2210,10 +2267,13 @@ namespace TamagotchiBot.Controllers
 
             var newGold = userDB.Gold - cost;
             var newSatiety = Math.Round(petDB.Satiety + hungerFactor, 2);
-            newSatiety = newSatiety > 100 ? 100 : newSatiety;
+            var newFatigue = petDB.Fatigue - fatigueFactor;
+            var newHP = petDB.HP + HPFactor;
 
             _appServices.UserService.UpdateGold(_userId, newGold);
             _appServices.PetService.UpdateSatiety(_userId, newSatiety);
+            _appServices.PetService.UpdateFatigue(_userId, newFatigue);
+            _appServices.PetService.UpdateHP(_userId, newHP);
             if (expReward > 0)
                 _appServices.PetService.UpdateEXP(_userId, petDB.EXP + expReward);
 
@@ -2225,23 +2285,38 @@ namespace TamagotchiBot.Controllers
             string anwser = string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)hungerFactor);
             await SendAlertToUser(anwser);
 
+            petDB = _appServices.PetService.Get(_userId);
+            userDB = _appServices.UserService.Get(_userId);
+
             string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture),
-                newSatiety,
-                newGold,
+                petDB.Satiety,
+                userDB.Gold,
+                petDB.Fatigue,
+                petDB.HP,
                 FoodFactors.BreadHungerFactor,
                 Costs.Bread,
                 FoodFactors.RedAppleHungerFactor,
+                FoodFactors.RedAppleHPFactor,
                 Costs.Apple,
+                FoodFactors.ChocolateHungerFactor,
+                FoodFactors.ChocolateFatigueFactor,
+                Costs.Chocolate,
                 FoodFactors.LollipopHungerFactor,
                 Costs.Lollipop,
-                FoodFactors.ChocolateHungerFactor,
-                Costs.Chocolate);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
+                FoodFactors.CoffeeHungerFactor,
+                FoodFactors.CoffeeFatigueFactor,
+                Costs.Coffee,
+                FoodFactors.MilkHungerFactor,
+                FoodFactors.MilkHPFactor,
+                Costs.Milk
+                );
+
+            InlineKeyboardMarkup toSendInline = InlineItems.InlineFoodKeyboardButtonArrays;
 
             Log.Debug($"Callbacked FeedWithFoodInline ({hungerFactor} hunger) for {_userInfo}");
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                       _callback?.Message?.MessageId ?? 0,
-                                                      new AnswerCallback(toSendText, toSendInline),
+                                                      new AnswerCallback(toSendText, toSendInline, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html),
                                                       false);
         }
 
@@ -3147,57 +3222,6 @@ namespace TamagotchiBot.Controllers
             }
         }
 
-        private async Task UpdateWorkOnPCButtonToDefault(Pet petDB)
-        {
-            try
-            {
-                InlineKeyboardMarkup toSendInline = InlineItems.InlineWorkKeyboardButtonArrays(_userCulture);
-
-                string toSendText = nameof(workCommand).UseCulture(_userCulture);
-                toSendText = string.Format(toSendText,
-                                           new DateTime(TimesToWait.WorkOnPCToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.WorkOnPCGoldReward,
-                                           petDB.Fatigue,
-                                           new DateTime(TimesToWait.FlyersDistToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.FlyersDistributingGoldReward,
-                                           new DateTime(TimesToWait.McDonaldsToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.McDonaldsGoldReward,
-                                           new DateTime(TimesToWait.FoodDeliveryToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.FoodDeliveryGoldReward,
-                                           new DateTime(TimesToWait.MakeUpArtistToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.MakeUpArtistGoldReward,
-                                           new DateTime(TimesToWait.EngineerToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.EngineerGoldReward,
-                                           new DateTime(TimesToWait.AccountantToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.AccountantGoldReward,
-                                           new DateTime(TimesToWait.PilotToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.PilotGoldReward,
-                                           new DateTime(TimesToWait.JewelerToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.VIPJewelerJobGoldReward,
-                                           Rewards.VIPJewelerJobDiamondReward,
-                                           Constants.Factors.FoodDeliveryFatigueFactor,
-                                           Constants.Factors.McDonaldsFatigueFactor,
-                                           Constants.Factors.FlyersDistributingFatigueFactor,
-                                           Constants.Factors.EngineerFatigueFactor,
-                                           Constants.Factors.MakeUpArtistFatigueFactor,
-                                           Constants.Factors.WorkOnPCFatigueFactor,
-                                           Constants.Factors.AccountantFatigueFactor,
-                                           Constants.Factors.PilotFatigueFactor,
-                                           Constants.Factors.JewelerFatigueFactor
-                                           );
-
-                Log.Debug($"Callbacked UpdateWorkOnPCButtonToDefault (GENERIC REFACTORED) for {_userInfo}");
-                await _appServices.BotControlService.SendAnswerCallback(_userId,
-                                                                  _callback?.Message?.MessageId ?? 0,
-                                                                  new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
-                                                                  false);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error in UpdateWorkOnPCButtonToDefault");
-            }
-        }
-
         private async Task<bool> CheckJobAccess(User userDB, Pet pet, JobType job)
         {
             var educationRequirement = job.GetEducationRequirement();
@@ -3268,6 +3292,7 @@ namespace TamagotchiBot.Controllers
 
             //Calculate rewards and time
             int fatigueFactor = 0;
+            int satietyFactor = Constants.Factors.WorkSatietyFactor;
             int joyFactor = 0;
             int goldReward = 0;
             int expReward = 0;
@@ -3351,21 +3376,34 @@ namespace TamagotchiBot.Controllers
             }
 
             //Update Pet
-            petDB.Fatigue += fatigueFactor;
-            petDB.Joy += joyFactor;
-            if (petDB.Joy < 0)
-                petDB.Joy = 0;
-            petDB.StartWorkingTime = DateTime.UtcNow;
-            petDB.CurrentStatus = (int)CurrentStatus.Working;
-            petDB.CurrentJob = (int)job;
+            var newFatigue = petDB.Fatigue + fatigueFactor;
+            var newSatiety = petDB.Satiety - satietyFactor;
+            var newJoy = petDB.Joy + joyFactor;
+            var newEXP = petDB.EXP + expReward;
+            var newGold = userDB.Gold + goldReward;
 
-            _appServices.PetService.Update(_userId, petDB);
-            _appServices.UserService.UpdateGold(_userId, userDB.Gold + goldReward);
-            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + expReward);
+            _appServices.PetService.UpdateFatigue(_userId, newFatigue);
+            _appServices.PetService.UpdateSatiety(_userId, newSatiety);
+            _appServices.PetService.UpdateJoy(_userId, newJoy);
+            _appServices.PetService.UpdateStartWorkingTime(_userId, DateTime.UtcNow);
+            _appServices.PetService.UpdateCurrentStatus(_userId, (int)CurrentStatus.Working);
+            _appServices.PetService.UpdateCurrentJob(_userId, (int)job);
+            _appServices.PetService.UpdateEXP(_userId, newEXP);
 
+            _appServices.UserService.UpdateGold(_userId, newGold);
+
+            userDB = _appServices.UserService.Get(_userId);
+            petDB = _appServices.PetService.Get(_userId);
 
             string toSendText = string.Format(nameof(Resources.Resources.workCommand_Working).UseCulture(_userCulture), jobName);
-            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback?.Id, _userId, toSendText, false);
+
+            if (petDB.Satiety < 30)
+            {
+                string toAddText = Environment.NewLine + Environment.NewLine + string.Format(nameof(Resources.Resources.workCommand_LowSatiety).UseCulture(_userCulture), (int)petDB.Satiety);
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback?.Id, _userId, toSendText + toAddText, true);
+            }
+            else
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback?.Id, _userId, toSendText, false);
 
             await ServeJob(userDB, petDB);
         }
@@ -3480,7 +3518,8 @@ namespace TamagotchiBot.Controllers
                                                         Constants.Factors.WorkOnPCFatigueFactor,
                                                         Constants.Factors.AccountantFatigueFactor,
                                                         Constants.Factors.PilotFatigueFactor,
-                                                        Constants.Factors.JewelerFatigueFactor
+                                                        Constants.Factors.JewelerFatigueFactor,
+                                                        Constants.Factors.WorkSatietyFactor
                                                         );
 
             InlineKeyboardMarkup toSendInlineIfTimeOver = InlineItems.InlineWorkKeyboardButtonArrays(_userCulture);
@@ -3488,7 +3527,7 @@ namespace TamagotchiBot.Controllers
             Log.Debug($"Callbacked ShowDefaultWorkCommand (work is over) for {_userInfo}");
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
-                                                              new AnswerCallback(toSendTextIfTimeOver, toSendInlineIfTimeOver),
+                                                              new AnswerCallback(toSendTextIfTimeOver, toSendInlineIfTimeOver, Telegram.Bot.Types.Enums.ParseMode.Html),
                                                               false);
         }
 

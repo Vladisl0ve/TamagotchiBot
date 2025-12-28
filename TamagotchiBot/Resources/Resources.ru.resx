@@ -200,19 +200,26 @@
     <value>Больше инфы 📝</value>
   </data>
   <data name="kitchenCommand" xml:space="preserve">
-    <value>Вы в кухне 🥦
+    <value>&lt;b&gt;Вы на кухне 🥣&lt;/b&gt;
+
 🍕 Сытость питомца: {0}%
 💰 Золото: {1}
+😴 Усталость: {2}%
+💊 HP: {3}%
 
-Хлеб 🍞 = +50%🍕 |-30💰
-Яблоко 🍎 = +5%🍕 |-1💰
-Леденец 🍭 = +1%🍕 |-0 💰
-Шоколад 🍫 = +2%🍕 |-0💰
+Хлеб 🍞 = +{4}%🍕 |-{5}💰
+Яблоко 🍎 = +{6}%🍕 |+{7}%💊 |-{8}💰
+
+Шоколад 🍫 = +{9}%🍕 |-{10}%😴 |-{11}💰
+Леденец 🍭 = +{12}%🍕 |-{13}💰
+
+Кофе ☕️ = +{14}%🍕 |-{15}%😴 |-{16}💰
+Молоко 🥛 = +{17}%🍕 |+{18}%💊 |-{19}💰
 
 Не забывай кормить питомца 🐣</value>
   </data>
   <data name="PetFeedingAnwserCallback" xml:space="preserve">
-    <value>Твой питомец насытился на {0}%</value>
+    <value>🥗 Твой питомец насытился на {0}% 🥗</value>
   </data>
   <data name="FatigueFresh" xml:space="preserve">
     <value>бодрый</value>
@@ -529,6 +536,8 @@
 
 😴 Усталость питомца: {2}%
 
+&lt;b&gt;&lt;i&gt;На всех работах -{29}% сытости 🍕&lt;/i&gt;&lt;/b&gt;
+
 Доставка еды 🎒 -{7}⌛️, +{8} 💰, +{20} 😴
 Работник Макдоналдс 🍔 -{5}⌛️, +{6} 💰, +{21} 😴
 Раздача листовок 🤹‍♀️ -{3}⌛️, +{4} 💰, +{22} 😴
@@ -543,7 +552,7 @@
 Ювелир 💍 -{17}⌛️, +{18} 💰, +{19} 💎, +{28} 😴</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
-    <value>💻Разрабатывать сайты</value>
+    <value>💻Программировать</value>
   </data>
   <data name="workCommandDescription" xml:space="preserve">
     <value>Работа 💰</value>
@@ -1452,7 +1461,9 @@ https://t.me/news_virtualpetbot</value>
   <data name="RandomEventHiccups" xml:space="preserve">
     <value>{0} икает!
 
--5 Насыщенность 🍕</value>
+-5 Сытости 🍕
+
+/kitchen - покорми питомца</value>
   </data>
   <data name="RandomEventFoundToy" xml:space="preserve">
     <value>Смотрите! {0} нашла потерянную игрушку!
@@ -1554,5 +1565,8 @@ https://t.me/news_virtualpetbot</value>
     <value>Вы получили {0} 💎 алмазов!
 
 Спасибо за поддержку этого бота ❤️🤍❤️</value>
+  </data>
+  <data name="workCommand_LowSatiety" xml:space="preserve">
+    <value>⚠️ Внимание: у твоего питомца осталось {0}% сытости, покорми его! ⚠️</value>
   </data>
 </root>

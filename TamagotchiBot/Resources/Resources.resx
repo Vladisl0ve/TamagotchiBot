@@ -200,19 +200,26 @@ Have fun 🍿</value>
     <value>Extra info 📝</value>
   </data>
   <data name="kitchenCommand" xml:space="preserve">
-    <value>You are in the kitchen 🥦
-🍕 Pet's satiety: {0}%
+    <value>&lt;b&gt;You are in the kitchen 🥣&lt;/b&gt;
+
+🍕 Pet satiety: {0}%
 💰 Gold: {1}
+😴 Fatigue: {2}%
+💊 HP: {3}%
 
-Bread 🍞 = +50%🍕 |-30💰
-Apple 🍎 = +5%🍕 |-1💰
-Lollipop 🍭 = +1%🍕 |-0 💰
-Chocolate 🍫 = +2%🍕 |-0💰
+Bread 🍞 = +{4}%🍕 |-{5}💰
+Apple 🍎 = +{6}%🍕 |+{7}%💊 |-{8}💰
 
-Don't forget feed him 🐣</value>
+Chocolate 🍫 = +{9}%🍕 |-{10}%😴 |-{11}💰
+Lollipop 🍭 = +{12}%🍕 |-{13}💰
+
+Coffee ☕️ = +{14}%🍕 |-{15}%😴 |-{16}💰
+Milk 🥛 = +{17}%🍕 |+{18}%💊 |-{19}💰
+
+Don’t forget to feed your pet 🐣</value>
   </data>
   <data name="PetFeedingAnwserCallback" xml:space="preserve">
-    <value>Your pet has satisfied hunger on {0}%</value>
+    <value>🥗 Your pet has satisfied hunger on {0}% 🥗</value>
   </data>
   <data name="FatigueFresh" xml:space="preserve">
     <value>fresh</value>
@@ -526,6 +533,8 @@ For now, I’ve paused work on the graphical interface, but decided to compensat
     <value>Choose what your pet will be doing 💡
 
 😴 Pet fatigue: {2}%
+
+&lt;b&gt;&lt;i&gt;On all jobs: -{29}% satiety 🍕&lt;/i&gt;&lt;/b&gt;
 
 Food Delivery 🎒 -{7}⌛️, +{8} 💰, +{20} 😴
 McDonalds Worker 🍔 -{5}⌛️, +{6} 💰, +{21} 😴
@@ -1549,5 +1558,8 @@ Along with your purchase, you received:
     <value>You received {0} 💎!
 
 Thank you for supporting this bot ❤️🤍❤️</value>
+  </data>
+  <data name="workCommand_LowSatiety" xml:space="preserve">
+    <value>⚠️ Warning: Your pet has {0}% satiety left, feed it! ⚠️</value>
   </data>
 </root>

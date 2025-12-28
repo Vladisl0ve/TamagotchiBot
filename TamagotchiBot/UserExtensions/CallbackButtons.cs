@@ -48,6 +48,26 @@ namespace TamagotchiBot.UserExtensions
                 Text = "🍭",
                 CallbackData = nameof(KitchenCommandInlineLollipop)
             };
+
+            public static CallbackModel KitchenCommandInlineCoffee
+            {
+                get => _kitchenCommandInlineCoffee;
+            }
+            private static CallbackModel _kitchenCommandInlineCoffee = new CallbackModel()
+            {
+                Text = "☕️",
+                CallbackData = nameof(KitchenCommandInlineCoffee)
+            };
+
+            public static CallbackModel KitchenCommandInlineMilk
+            {
+                get => _kitchenCommandInlineMilk;
+            }
+            private static CallbackModel _kitchenCommandInlineMilk = new CallbackModel()
+            {
+                Text = "🥛",
+                CallbackData = nameof(KitchenCommandInlineMilk)
+            };
         }
 
         public static class FarmCommand

@@ -99,6 +99,7 @@ namespace TamagotchiBot.Services.Mongo
             else if (newSatiety < 0 && !forcePush)
                 newSatiety = 0;
 
+            newSatiety = Math.Round(newSatiety, 2);
             var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
@@ -127,8 +128,13 @@ namespace TamagotchiBot.Services.Mongo
             }
         }
 
-        public void UpdateFatigue(long userId, int newFatigue)
+        public void UpdateFatigue(long userId, int newFatigue, bool forcePush = false)
         {
+            if (newFatigue > 100 && !forcePush)
+                newFatigue = 100;
+            else if (newFatigue < 0 && !forcePush)
+                newFatigue = 0;
+
             var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {

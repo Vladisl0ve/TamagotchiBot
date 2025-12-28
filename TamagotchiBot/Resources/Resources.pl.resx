@@ -200,19 +200,26 @@ Miłej zabawy 🍿</value>
     <value>Info dodatkowe 📝</value>
   </data>
   <data name="kitchenCommand" xml:space="preserve">
-    <value>Jesteś w kuchni 🥦
-🍕 Nasycenie zwierzaka: {0}%
-💰 Zł: {1}
+    <value>&lt;b&gt;Jesteś w kuchni 🥣&lt;/b&gt;
 
-Chleb 🍞 = +50%🍕 |-30💰
-Jabłko 🍎 = +5%🍕 |-1💰
-Lollipop 🍭 = +1%🍕 |-0 💰
-Czekolada 🍫 = +2%🍕 |-0💰
+🍕 Sytość pupila: {0}%
+💰 Złoto: {1}
+😴 Zmęczenie: {2}%
+💊 HP: {3}%
 
-Nie zapominaj karmić zwierzaka 🐣</value>
+Chleb 🍞 = +{4}%🍕 |-{5}💰
+Jabłko 🍎 = +{6}%🍕 |+{7}%💊 |-{8}💰
+
+Czekolada 🍫 = +{9}%🍕 |-{10}%😴 |-{11}💰
+Lizak 🍭 = +{12}%🍕 |-{13}💰
+
+Kawa ☕️ = +{14}%🍕 |-{15}%😴 |-{16}💰
+Mleko 🥛 = +{17}%🍕 |+{18}%💊 |-{19}💰
+
+Nie zapomnij karmić swojego pupila 🐣</value>
   </data>
   <data name="PetFeedingAnwserCallback" xml:space="preserve">
-    <value>Twój zwierzak ugasił głód na {0}%</value>
+    <value>🥗 Twój zwierzak ugasił głód na {0}% 🥗</value>
   </data>
   <data name="FatigueFresh" xml:space="preserve">
     <value>świeży</value>
@@ -526,6 +533,8 @@ Na razie wstrzymałem prace nad interfejsem graficznym, ale postanowiłem to zre
     <value>Wybierz, co będzie robił Twój pupil 💡
 
 😴 Zmęczenie pupila: {2}%
+
+&lt;b&gt;&lt;i&gt;We wszystkich pracach -{29}% sytości 🍕&lt;/i&gt;&lt;/b&gt;
 
 Dostawa jedzenia 🎒 -{7}⌛️, +{8} 💰, +{20} 😴
 Pracownik McDonalds 🍔 -{5}⌛️, +{6} 💰, +{21} 😴
@@ -1549,5 +1558,8 @@ Wraz z zakupem otrzymujesz:
     <value>Otrzymałeś {0} 💎!
 
 Dziękujemy za wsparcie tego bota ❤️🤍❤️</value>
+  </data>
+  <data name="workCommand_LowSatiety" xml:space="preserve">
+    <value>⚠️ Uwaźaj: Twojemu pupilowi pozostało {0}% sytości, nakarm go! ⚠️</value>
   </data>
 </root>
