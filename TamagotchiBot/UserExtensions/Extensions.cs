@@ -11,6 +11,8 @@ using TamagotchiBot.Models;
 using TamagotchiBot.Models.Mongo;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
+using System.Web;
+using TamagotchiBot.DTO;
 using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.UserExtensions
@@ -1044,6 +1046,72 @@ namespace TamagotchiBot.UserExtensions
         public static InlineKeyboardButton ToInlineKeyboardButton(this CallbackModel model)
         {
             return new InlineKeyboardButton(model.Text, model.CallbackData);
+        }
+
+        public static string GetRankString(
+            List<RankItem> topItems,
+            string rankTitle,
+            RankItem currentUserSortItem,
+            int? currentUserRankPosition,
+            string firstPlaceEmoji = "🌟")
+        {
+            try
+            {
+                string anwserRating = "";
+                int counter = 1;
+
+                foreach (var item in topItems)
+                {
+                    if (counter == 1)
+                        anwserRating += rankTitle + "\n\n";
+                    else
+                        anwserRating += "\n";
+
+                    string vipEmoji = item.IsVip ? " 👑" : "";
+                    string name = HttpUtility.HtmlEncode(item.Name);
+                    string row;
+
+                    // "🌟 " + value + " {Emoji} " + name
+                    // With VIP: value + " 👑" + " {Emoji} " + name
+                    if (counter == 1)
+                    {
+                        if (currentUserSortItem != null && currentUserSortItem.IsVip == true && item.UserId == currentUserSortItem.UserId)
+                            vipEmoji = " 👑"; // Re-evaluate for current user if needed, but item has IsVip
+
+                        row = $"{firstPlaceEmoji} {item.Value}{vipEmoji} {item.Emoji} {name}";
+                    }
+                    else
+                    {
+                        row = $"{counter}. {item.Value}{vipEmoji} {item.Emoji} {name}";
+                    }
+
+                    if (currentUserSortItem != null && currentUserSortItem.UserId == item.UserId)
+                        anwserRating += "<b>" + row + "</b>";
+                    else
+                        anwserRating += row;
+
+                    if (counter == 1)
+                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
+
+                    counter++;
+                }
+
+                if (currentUserSortItem != null && !topItems.Any(a => a.UserId == currentUserSortItem.UserId))
+                {
+                    anwserRating += "\n______________________________";
+                    string vipEmoji = currentUserSortItem.IsVip ? " 👑" : "";
+                    string name = HttpUtility.HtmlEncode(currentUserSortItem.Name);
+                    // Footer format: "N. Value {Emoji} Name" with bold
+                    anwserRating += $"\n <b>{(currentUserRankPosition.HasValue ? currentUserRankPosition + 1 : "?")}. {currentUserSortItem.Value}{vipEmoji} {currentUserSortItem.Emoji} {name}</b>";
+                }
+
+                return anwserRating;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return null;
+            }
         }
     }
 }

@@ -24,6 +24,7 @@ using static TamagotchiBot.Resources.Resources;
 using static TamagotchiBot.UserExtensions.Constants;
 using Extensions = TamagotchiBot.UserExtensions.Extensions;
 using User = TamagotchiBot.Models.Mongo.User;
+using TamagotchiBot.DTO;
 
 namespace TamagotchiBot.Controllers
 {
@@ -2812,61 +2813,6 @@ namespace TamagotchiBot.Controllers
                                                               false);
         }
 
-        private string GetRanksByLevelAllGame()
-        {
-            try
-            {
-                var topPets = _appServices.PetService.GetTop10PetsByLevelAllGame();
-
-                string anwserRating = "";
-                var currentUser = _appServices.UserService.Get(_userId);
-                var currentPet = _appServices.PetService.Get(_userId);
-
-                int counter = 1;
-                foreach (var petDB in topPets)
-                {
-                    var userDB = _appServices.UserService.Get(petDB.UserId);
-                    string name = petDB.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
-
-                    if (counter == 1)
-                    {
-                        anwserRating += nameof(ranksCommandLevelAll).UseCulture(_userCulture) + "\n\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + "🌟 " + (petDB.LevelAllGame + petDB.Level) + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += "🌟 " + (petDB.LevelAllGame + petDB.Level) + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name);
-                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
-                        counter++;
-                    }
-                    else
-                    {
-                        anwserRating += "\n";
-
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + counter + ". " + (petDB.LevelAllGame + petDB.Level) + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += counter + ". " + (petDB.LevelAllGame + petDB.Level) + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name);
-                        counter++;
-                    }
-                }
-
-                if (!topPets.Any(a => a.UserId == currentUser.UserId))
-                {
-                    string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
-
-                    anwserRating += "\n______________________________";
-                    anwserRating += "\n <b>" + (_appServices.PetService.CountPetsWithHigherLevel(currentPet.LevelAllGame + currentPet.Level, currentPet.LastUpdateTime) + 1) + ". " + (currentPet.LevelAllGame + currentPet.Level) + $" {Extensions.GetTypeEmoji(currentPet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                }
-
-                return anwserRating;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, ex.Message);
-                return null;
-            }
-        }
-
         private async Task ShowRanksLevel()
         {
             Log.Debug($"Callbacked ShowRanksLevel for {_userInfo}");
@@ -2882,61 +2828,50 @@ namespace TamagotchiBot.Controllers
         }
 
         #endregion
-
-        private string GetRanksByLevel()
+        private string GetRanksByLevelAllGame()
         {
             try
             {
-                var topPets = _appServices.PetService.GetAll()
-                .OrderByDescending(p => p.Level)
-                .ThenByDescending(p => p.LastUpdateTime)
-                .Take(10); //First 10 top-level pets
-
-                string anwserRating = "";
+                var topPets = _appServices.PetService.GetTop10PetsByLevelAllGame();
                 var currentUser = _appServices.UserService.Get(_userId);
                 var currentPet = _appServices.PetService.Get(_userId);
 
-                int counter = 1;
+                List<RankItem> rankItems = new List<RankItem>();
                 foreach (var petDB in topPets)
                 {
                     var userDB = _appServices.UserService.Get(petDB.UserId);
                     string name = petDB.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
-
-                    if (counter == 1)
+                    rankItems.Add(new RankItem
                     {
-                        anwserRating += nameof(ranksCommand).UseCulture(_userCulture) + "\n\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + "🌟 " + petDB.Level + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += "🌟 " + petDB.Level + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name);
-                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
-                        counter++;
-                    }
-                    else
-                    {
-                        anwserRating += "\n";
-
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + counter + ". " + petDB.Level + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += counter + ". " + petDB.Level + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name);
-                        counter++;
-                    }
+                        Name = name,
+                        Value = (petDB.LevelAllGame + petDB.Level).ToString(),
+                        Emoji = Extensions.GetTypeEmoji(petDB.Type),
+                        UserId = petDB.UserId,
+                        IsVip = userDB.VIPIsEnabled
+                    });
                 }
 
-                if (!topPets.Any(a => a.UserId == currentUser.UserId))
+                RankItem currentUserItem = null;
+                int? currentUserRank = null;
+                if (currentUser != null && currentPet != null)
                 {
                     string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
+                    currentUserItem = new RankItem
+                    {
+                        Name = name,
+                        Value = (currentPet.LevelAllGame + currentPet.Level).ToString(),
+                        Emoji = Extensions.GetTypeEmoji(currentPet.Type),
+                        UserId = currentPet.UserId,
+                        IsVip = currentUser.VIPIsEnabled
+                    };
 
-                    anwserRating += "\n______________________________";
-                    anwserRating += "\n <b>" + _appServices.PetService.GetAll()
-                    .OrderByDescending(p => p.Level)
-                    .ThenByDescending(p => p.LastUpdateTime)
-                    .ToList()
-                    .FindIndex(a => a.UserId == currentUser.UserId) + ". " + currentPet.Level + $" {Extensions.GetTypeEmoji(currentPet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
+                    if (!topPets.Any(p => p.UserId == _userId))
+                    {
+                        currentUserRank = (int)_appServices.PetService.CountPetsWithHigherLevel(currentPet.LevelAllGame + currentPet.Level, currentPet.LastUpdateTime);
+                    }
                 }
 
-                return anwserRating;
+                return Extensions.GetRankString(rankItems, nameof(ranksCommandLevelAll).UseCulture(_userCulture), currentUserItem, currentUserRank);
             }
             catch (Exception ex)
             {
@@ -2944,70 +2879,127 @@ namespace TamagotchiBot.Controllers
                 return null;
             }
         }
+
+        private string GetRanksByLevel()
+        {
+            try
+            {
+                var topPets = _appServices.PetService.GetAll()
+                    .OrderByDescending(p => p.Level)
+                    .ThenByDescending(p => p.LastUpdateTime)
+                    .Take(10);
+
+                var currentUser = _appServices.UserService.Get(_userId);
+                var currentPet = _appServices.PetService.Get(_userId);
+
+                List<RankItem> rankItems = new List<RankItem>();
+                foreach (var petDB in topPets)
+                {
+                    var userDB = _appServices.UserService.Get(petDB.UserId);
+                    string name = petDB.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
+                    rankItems.Add(new RankItem
+                    {
+                        Name = name,
+                        Value = petDB.Level.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(petDB.Type),
+                        UserId = petDB.UserId,
+                        IsVip = userDB.VIPIsEnabled
+                    });
+                }
+
+                RankItem currentUserItem = null;
+                int? currentUserRank = null;
+                if (currentUser != null && currentPet != null)
+                {
+                    string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
+                    currentUserItem = new RankItem
+                    {
+                        Name = name,
+                        Value = currentPet.Level.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(currentPet.Type),
+                        UserId = currentPet.UserId,
+                        IsVip = currentUser.VIPIsEnabled
+                    };
+
+                    if (!topPets.Any(p => p.UserId == _userId))
+                    {
+                        currentUserRank = _appServices.PetService.GetAll()
+                            .OrderByDescending(p => p.Level)
+                            .ThenByDescending(p => p.LastUpdateTime)
+                            .ToList()
+                            .FindIndex(a => a.UserId == currentUser.UserId);
+                    }
+                }
+
+                return Extensions.GetRankString(rankItems, nameof(ranksCommand).UseCulture(_userCulture), currentUserItem, currentUserRank);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return null;
+            }
+        }
+
         private string GetRanksByApples()
         {
             try
             {
                 var topApples = _appServices.AppleGameDataService.GetAll()
-                .OrderByDescending(a => a.TotalWins)
-                .Take(10); //First 10 top-apples users
+                    .OrderByDescending(a => a.TotalWins)
+                    .Take(10);
 
-                string anwserRating = "";
                 var currentUser = _appServices.UserService.Get(_userId);
                 var currentPet = _appServices.PetService.Get(_userId);
 
-                int counter = 1;
+                List<RankItem> rankItems = new List<RankItem>();
                 foreach (var appleUser in topApples)
                 {
+                    // if (appleUser.TotalWins == null) continue; // Removed redundant check
+
                     var userDB = _appServices.UserService.Get(appleUser.UserId);
+                    if (userDB == null) continue; // Original check
+
                     var petDB = _appServices.PetService.Get(appleUser.UserId);
-                    string name = $" {Extensions.GetTypeEmoji(petDB?.Type ?? -1)} " + _appServices.PetService.Get(appleUser.UserId)?.Name ?? userDB?.Username ?? userDB?.FirstName + userDB?.LastName ?? "";
-                    if (counter == 1)
+                    string name = _appServices.PetService.Get(appleUser.UserId)?.Name ?? userDB?.Username ?? userDB?.FirstName + userDB?.LastName ?? "";
+
+                    rankItems.Add(new RankItem
                     {
-                        if (currentUser == null)
-                            continue;
-
-                        if (appleUser?.TotalWins == null)
-                            continue;
-
-                        anwserRating += nameof(ranksCommandApples).UseCulture(_userCulture) + "\n\n";
-                        if (currentUser.UserId == userDB?.UserId)
-                            anwserRating += "<b>" + "🍏 " + appleUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += "🍏 " + appleUser.TotalWins + HttpUtility.HtmlEncode(name);
-                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
-                        counter++;
-                    }
-                    else
-                    {
-                        if (userDB == null)
-                            continue;
-
-                        if (appleUser?.TotalWins == null)
-                            continue;
-
-                        anwserRating += "\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + counter + ". " + appleUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += counter + ". " + appleUser.TotalWins + HttpUtility.HtmlEncode(name);
-                        counter++;
-                    }
+                        Name = name,
+                        Value = appleUser.TotalWins.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(petDB?.Type ?? -1),
+                        UserId = appleUser.UserId,
+                        IsVip = userDB.VIPIsEnabled
+                    });
                 }
 
-                if (!topApples.Any(a => a.UserId == _userId))
+                RankItem currentUserItem = null;
+                int? currentUserRank = null;
+                if (currentUser != null)
                 {
                     var currentUserApple = _appServices.AppleGameDataService.Get(_userId);
+                    string name = currentPet?.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
 
-                    anwserRating += "\n______________________________";
-                    var counterN = _appServices.AppleGameDataService.GetAll()
-                .OrderByDescending(a => a.TotalWins)
-                .ToList()
-                .FindIndex(a => a.UserId == _userId);
-                    anwserRating += "\n <b> " + (counterN == -1 ? _appServices.AppleGameDataService.GetAll()?.Count : counterN) + ". " + (currentUserApple?.TotalWins ?? 0) + HttpUtility.HtmlEncode($" {Extensions.GetTypeEmoji(currentPet.Type)} " + currentPet?.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName) + "</b>";
+                    currentUserItem = new RankItem
+                    {
+                        Name = name,
+                        Value = (currentUserApple?.TotalWins ?? 0).ToString(),
+                        Emoji = Extensions.GetTypeEmoji(currentPet?.Type ?? -1),
+                        UserId = _userId,
+                        IsVip = currentUser.VIPIsEnabled
+                    };
+
+                    if (!topApples.Any(p => p.UserId == _userId))
+                    {
+                        var counterN = _appServices.AppleGameDataService.GetAll()
+                            .OrderByDescending(a => a.TotalWins)
+                            .ToList()
+                            .FindIndex(a => a.UserId == _userId);
+
+                        currentUserRank = counterN == -1 ? _appServices.AppleGameDataService.GetAll()?.Count : counterN;
+                    }
                 }
 
-                return anwserRating;
+                return Extensions.GetRankString(rankItems, nameof(ranksCommandApples).UseCulture(_userCulture), currentUserItem, currentUserRank, "🍏");
             }
             catch (Exception ex)
             {
@@ -3020,65 +3012,61 @@ namespace TamagotchiBot.Controllers
             try
             {
                 var topTicTakToe = _appServices.TicTacToeGameDataService.GetAll()
-                .OrderByDescending(a => a.TotalWins)
-                .Take(10); //First 10 top-apples users
+                    .OrderByDescending(a => a.TotalWins)
+                    .Take(10);
 
-                string anwserRating = "";
                 var currentUser = _appServices.UserService.Get(_userId);
                 var currentPet = _appServices.PetService.Get(_userId);
 
-                int counter = 1;
+                List<RankItem> rankItems = new List<RankItem>();
                 foreach (var ticTakToeUser in topTicTakToe)
                 {
+                    // if (ticTakToeUser.TotalWins == null) continue;
+
                     var userDB = _appServices.UserService.Get(ticTakToeUser.UserId);
+                    if (userDB == null) continue;
+
                     var petDB = _appServices.PetService.Get(ticTakToeUser.UserId);
-                    string name = $" {Extensions.GetTypeEmoji(petDB?.Type ?? -1)} " + _appServices.PetService.Get(ticTakToeUser.UserId)?.Name ?? userDB?.Username ?? userDB?.FirstName + userDB?.LastName ?? "";
-                    if (counter == 1)
+                    string name = _appServices.PetService.Get(ticTakToeUser.UserId)?.Name ?? userDB?.Username ?? userDB?.FirstName + userDB?.LastName ?? "";
+
+                    rankItems.Add(new RankItem
                     {
-                        if (currentUser == null)
-                            continue;
-
-                        if (ticTakToeUser?.TotalWins == null)
-                            continue;
-
-                        anwserRating += nameof(ranksCommandTicTakToe).UseCulture(_userCulture) + "\n\n";
-                        if (currentUser.UserId == userDB?.UserId)
-                            anwserRating += "<b>" + "❌ " + ticTakToeUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += "❌ " + ticTakToeUser.TotalWins + HttpUtility.HtmlEncode(name);
-                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
-                        counter++;
-                    }
-                    else
-                    {
-                        if (userDB == null)
-                            continue;
-
-                        if (ticTakToeUser?.TotalWins == null)
-                            continue;
-
-                        anwserRating += "\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + counter + ". " + ticTakToeUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += counter + ". " + ticTakToeUser.TotalWins + HttpUtility.HtmlEncode(name);
-                        counter++;
-                    }
+                        Name = name,
+                        Value = ticTakToeUser.TotalWins.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(petDB?.Type ?? -1),
+                        UserId = ticTakToeUser.UserId,
+                        IsVip = userDB.VIPIsEnabled
+                    });
                 }
 
-                if (!topTicTakToe.Any(a => a.UserId == _userId))
+                RankItem currentUserItem = null;
+                int? currentUserRank = null;
+                if (currentUser != null)
                 {
-                    var currentUserApple = _appServices.TicTacToeGameDataService.Get(_userId);
+                    var currentUserTicTacToe = _appServices.TicTacToeGameDataService.Get(_userId);
+                    string name = currentPet?.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
 
-                    anwserRating += "\n______________________________";
-                    var counterN = _appServices.TicTacToeGameDataService.GetAll()
-                .OrderByDescending(a => a.TotalWins)
-                .ToList()
-                .FindIndex(a => a.UserId == _userId);
-                    anwserRating += "\n <b> " + (counterN == -1 ? _appServices.TicTacToeGameDataService.GetAll()?.Count : counterN) + ". " + (currentUserApple?.TotalWins ?? 0) + HttpUtility.HtmlEncode($" {Extensions.GetTypeEmoji(currentPet.Type)} " + currentPet?.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName) + "</b>";
+                    currentUserItem = new RankItem
+                    {
+                        Name = name,
+                        Value = (currentUserTicTacToe?.TotalWins ?? 0).ToString(),
+                        Emoji = Extensions.GetTypeEmoji(currentPet?.Type ?? -1),
+                        UserId = _userId,
+                        IsVip = currentUser.VIPIsEnabled
+                    };
+
+                    if (!topTicTakToe.Any(p => p.UserId == _userId))
+                    {
+                        var counterN = _appServices.TicTacToeGameDataService.GetAll()
+                            .OrderByDescending(a => a.TotalWins)
+                            .ToList()
+                            .FindIndex(a => a.UserId == _userId);
+
+                        currentUserRank = counterN == -1 ? _appServices.TicTacToeGameDataService.GetAll()?.Count : counterN;
+                    }
                 }
 
-                return anwserRating;
+                return Extensions.GetRankString(rankItems, nameof(ranksCommandTicTakToe).UseCulture(_userCulture), currentUserItem, currentUserRank, "❌");
             }
             catch (Exception ex)
             {
@@ -3086,66 +3074,64 @@ namespace TamagotchiBot.Controllers
                 return null;
             }
         }
+
         private string GetRanksByGold()
         {
             try
             {
                 var topPets = _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
-                p => p.UserId,
-                u => u.UserId,
-                (pet, user) => new { user.UserId, user.Gold, pet.Name, pet.LastUpdateTime, pet.Type })
-                .OrderByDescending(p => p.Gold)
-                .ThenByDescending(p => p.LastUpdateTime)
-                .Take(10); //First 10 top-gold pets
+                    p => p.UserId,
+                    u => u.UserId,
+                    (pet, user) => new { user.UserId, user.Gold, pet.Name, pet.LastUpdateTime, pet.Type, user.Username, user.FirstName, user.LastName, user.VIPIsEnabled })
+                    .OrderByDescending(p => p.Gold)
+                    .ThenByDescending(p => p.LastUpdateTime)
+                    .Take(10);
 
-                string anwserRating = "";
                 var currentUser = _appServices.UserService.Get(_userId);
                 var currentPet = _appServices.PetService.Get(_userId);
 
-                int counter = 1;
+                List<RankItem> rankItems = new List<RankItem>();
                 foreach (var pet in topPets)
                 {
-                    var userDB = _appServices.UserService.Get(pet.UserId);
-                    string name = pet.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
-                    if (counter == 1)
+                    string name = pet.Name ?? pet.Username ?? pet.FirstName + pet.LastName;
+                    rankItems.Add(new RankItem
                     {
-                        anwserRating += nameof(ranksCommandGold).UseCulture(_userCulture) + "\n\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + "💎 " + pet.Gold + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += "💎 " + pet.Gold + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name);
-                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
-                        counter++;
-                    }
-                    else
-                    {
-                        anwserRating += "\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + counter + ". " + pet.Gold + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += counter + ". " + pet.Gold + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name);
-                        counter++;
-                    }
+                        Name = name,
+                        Value = pet.Gold.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(pet.Type),
+                        UserId = pet.UserId,
+                        IsVip = pet.VIPIsEnabled
+                    });
                 }
 
-                if (!topPets.Any(a => a.UserId == currentUser.UserId))
+                RankItem currentUserItem = null;
+                int? currentUserRank = null;
+                if (currentUser != null && currentPet != null)
                 {
                     string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
+                    currentUserItem = new RankItem
+                    {
+                        Name = name,
+                        Value = currentUser.Gold.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(currentPet.Type),
+                        UserId = currentUser.UserId,
+                        IsVip = currentUser.VIPIsEnabled
+                    };
 
-                    anwserRating += "\n______________________________";
-                    anwserRating += "\n <b>" +
-                        _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
-                        p => p.UserId,
-                        u => u.UserId,
-                        (pet, user) => new { user.UserId, user.Gold, pet.Name, pet.LastUpdateTime })
-                        .OrderByDescending(p => p.Gold)
-                        .ThenByDescending(p => p.LastUpdateTime)
-                    .ToList()
-                        .FindIndex(a => a.UserId == currentUser.UserId) + ". " + currentUser.Gold + $" {Extensions.GetTypeEmoji(currentPet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
+                    if (!topPets.Any(p => p.UserId == _userId))
+                    {
+                        currentUserRank = _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
+                            p => p.UserId,
+                            u => u.UserId,
+                            (pet, user) => new { user.UserId, user.Gold, pet.Name, pet.LastUpdateTime })
+                            .OrderByDescending(p => p.Gold)
+                            .ThenByDescending(p => p.LastUpdateTime)
+                            .ToList()
+                            .FindIndex(a => a.UserId == currentUser.UserId);
+                    }
                 }
 
-                return anwserRating;
-
+                return Extensions.GetRankString(rankItems, nameof(ranksCommandGold).UseCulture(_userCulture), currentUserItem, currentUserRank, "💎");
             }
             catch (Exception ex)
             {
@@ -3159,61 +3145,58 @@ namespace TamagotchiBot.Controllers
             try
             {
                 var topPets = _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
-                p => p.UserId,
-                u => u.UserId,
-                (pet, user) => new { user.UserId, user.Diamonds, pet.Name, pet.LastUpdateTime, pet.Type })
-                .OrderByDescending(p => p.Diamonds)
-                .ThenByDescending(p => p.LastUpdateTime)
-                .Take(10); //First 10 top-diamonds pets
+                    p => p.UserId,
+                    u => u.UserId,
+                    (pet, user) => new { user.UserId, user.Diamonds, pet.Name, pet.LastUpdateTime, pet.Type, user.Username, user.FirstName, user.LastName, user.VIPIsEnabled })
+                    .OrderByDescending(p => p.Diamonds)
+                    .ThenByDescending(p => p.LastUpdateTime)
+                    .Take(10);
 
-                string anwserRating = "";
                 var currentUser = _appServices.UserService.Get(_userId);
                 var currentPet = _appServices.PetService.Get(_userId);
 
-                int counter = 1;
+                List<RankItem> rankItems = new List<RankItem>();
                 foreach (var pet in topPets)
                 {
-                    var userDB = _appServices.UserService.Get(pet.UserId);
-                    string name = pet.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
-                    if (counter == 1)
+                    string name = pet.Name ?? pet.Username ?? pet.FirstName + pet.LastName;
+                    rankItems.Add(new RankItem
                     {
-                        anwserRating += nameof(Resources.Resources.ranksCommandDiamonds).UseCulture(_userCulture) + "\n\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + "💎 " + pet.Diamonds + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += "💎 " + pet.Diamonds + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name);
-                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
-                        counter++;
-                    }
-                    else
-                    {
-                        anwserRating += "\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + counter + ". " + pet.Diamonds + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += counter + ". " + pet.Diamonds + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name);
-                        counter++;
-                    }
+                        Name = name,
+                        Value = pet.Diamonds.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(pet.Type),
+                        UserId = pet.UserId,
+                        IsVip = pet.VIPIsEnabled
+                    });
                 }
 
-                if (!topPets.Any(a => a.UserId == currentUser.UserId))
+                RankItem currentUserItem = null;
+                int? currentUserRank = null;
+                if (currentUser != null && currentPet != null)
                 {
                     string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
+                    currentUserItem = new RankItem
+                    {
+                        Name = name,
+                        Value = currentUser.Diamonds.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(currentPet.Type),
+                        UserId = currentUser.UserId,
+                        IsVip = currentUser.VIPIsEnabled
+                    };
 
-                    anwserRating += "\n______________________________";
-                    anwserRating += "\n <b>" +
-                        _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
-                        p => p.UserId,
-                        u => u.UserId,
-                        (pet, user) => new { user.UserId, user.Diamonds, pet.Name, pet.LastUpdateTime })
-                        .OrderByDescending(p => p.Diamonds)
-                        .ThenByDescending(p => p.LastUpdateTime)
-                    .ToList()
-                        .FindIndex(a => a.UserId == currentUser.UserId) + ". " + currentUser.Diamonds + $" {Extensions.GetTypeEmoji(currentPet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
+                    if (!topPets.Any(p => p.UserId == _userId))
+                    {
+                        currentUserRank = _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
+                            p => p.UserId,
+                            u => u.UserId,
+                            (pet, user) => new { user.UserId, user.Diamonds, pet.Name, pet.LastUpdateTime })
+                            .OrderByDescending(p => p.Diamonds)
+                            .ThenByDescending(p => p.LastUpdateTime)
+                            .ToList()
+                            .FindIndex(a => a.UserId == currentUser.UserId);
+                    }
                 }
 
-                return anwserRating;
-
+                return Extensions.GetRankString(rankItems, nameof(Resources.Resources.ranksCommandDiamonds).UseCulture(_userCulture), currentUserItem, currentUserRank, "💎");
             }
             catch (Exception ex)
             {
