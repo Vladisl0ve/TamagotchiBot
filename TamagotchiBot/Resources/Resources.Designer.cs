@@ -1823,6 +1823,53 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose a diamond pack 💎.
+        /// </summary>
+        public static string payment_choose_diamonds_pack {
+            get {
+                return ResourceManager.GetString("payment_choose_diamonds_pack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Diamonds 💎.
+        /// </summary>
+        public static string payment_invoice_description {
+            get {
+                return ResourceManager.GetString("payment_invoice_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diamonds.
+        /// </summary>
+        public static string payment_invoice_label {
+            get {
+                return ResourceManager.GetString("payment_invoice_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diamonds 💎.
+        /// </summary>
+        public static string payment_invoice_title {
+            get {
+                return ResourceManager.GetString("payment_invoice_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You received {0} 💎!
+        ///
+        ///Thank you for supporting this bot ❤️🤍❤️.
+        /// </summary>
+        public static string payment_success_message {
+            get {
+                return ResourceManager.GetString("payment_success_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to After a long search and a lot of money for detectives, the pet was found! {0}
         ///You asked for forgiveness for a long time and promised not to forget about your pet again 🐣
         ///You both reconciled 💕

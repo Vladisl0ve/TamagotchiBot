@@ -24,5 +24,7 @@ namespace TamagotchiBot.Services.Interfaces
 
         TicTacToeGameDataService TicTacToeGameDataService { get; }
         HangmanGameDataService HangmanGameDataService { get; }
+
+        IPaymentService PaymentService { get; }
     }
 }

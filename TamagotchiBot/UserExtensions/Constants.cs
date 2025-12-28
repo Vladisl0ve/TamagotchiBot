@@ -12,13 +12,44 @@ namespace TamagotchiBot.UserExtensions
     public static class Constants
     {
         public const int QA_TO_FEED_COUNTER = 5;
+
+        public struct PaymentItems
+        {
+            public struct DiamondPack1
+            {
+                public const string Name = "diamond_10_stars";
+                public const int Price = 10;
+                public const int Amount = 10;
+            }
+
+            public struct DiamondPack2
+            {
+                public const string Name = "diamond_50_stars";
+                public const int Price = 50;
+                public const int Amount = 55;
+            }
+
+            public struct DiamondPack3
+            {
+                public const string Name = "diamond_100_stars";
+                public const int Price = 100;
+                public const int Amount = 120;
+            }
+
+            public struct DiamondPack4
+            {
+                public const string Name = "diamond_500_stars";
+                public const int Price = 500;
+                public const int Amount = 650;
+            }
+        }
         public enum Languages
         {
-            [Display(ShortName = "🇨🇷", Name =  "be")] Belarusian,
-            [Display(ShortName = "🇺🇦", Name =  "uk")] Ukrainian,
-            [Display(ShortName = "🇷🇺", Name =  "ru")] Russian,
-            [Display(ShortName = "🇺🇸", Name =  "en")] English,
-            [Display(ShortName = "🇵🇱", Name =  "pl")] Polish,
+            [Display(ShortName = "🇨🇷", Name = "be")] Belarusian,
+            [Display(ShortName = "🇺🇦", Name = "uk")] Ukrainian,
+            [Display(ShortName = "🇷🇺", Name = "ru")] Russian,
+            [Display(ShortName = "🇺🇸", Name = "en")] English,
+            [Display(ShortName = "🇵🇱", Name = "pl")] Polish,
         }
 
         public enum CurrentStatus

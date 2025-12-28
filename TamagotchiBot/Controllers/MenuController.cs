@@ -90,11 +90,12 @@ namespace TamagotchiBot.Controllers
                 await AskConfirmBuying7daysVIPCMD(userDB);
                 return;
             }
-            //if (GetAllTranslatedAndLowered(nameof(farmButtonBuyDiamondsWithTgStars)).Contains(textReceived))
-            //{
-            //    //await BuyDiamondsWithTgStarsCMD(userDB, petDB);
-            //    return;
-            //}
+
+            if (GetAllTranslatedAndLowered(nameof(farmButtonBuyDiamondsWithTgStars)).Contains(textReceived))
+            {
+                await BuyDiamondsWithTgStarsCMD(userDB, petDB);
+                return;
+            }
 
             if (textReceived == Commands.LanguageCommand || GetAllTranslatedAndLowered(nameof(languageCommandDescription)).Contains(textReceived))
             {
@@ -614,6 +615,27 @@ namespace TamagotchiBot.Controllers
             if (userDb == null || petDb == null)
                 return;
 
+            if (_callback.Data == Constants.PaymentItems.DiamondPack1.Name)
+            {
+                await SendPaymentInvoiceAsync((int)Constants.PaymentItems.DiamondPack1.Price, Constants.PaymentItems.DiamondPack1.Name, Constants.PaymentItems.DiamondPack1.Amount);
+                return;
+            }
+            if (_callback.Data == Constants.PaymentItems.DiamondPack2.Name)
+            {
+                await SendPaymentInvoiceAsync((int)Constants.PaymentItems.DiamondPack2.Price, Constants.PaymentItems.DiamondPack2.Name, Constants.PaymentItems.DiamondPack2.Amount);
+                return;
+            }
+            if (_callback.Data == Constants.PaymentItems.DiamondPack3.Name)
+            {
+                await SendPaymentInvoiceAsync((int)Constants.PaymentItems.DiamondPack3.Price, Constants.PaymentItems.DiamondPack3.Name, Constants.PaymentItems.DiamondPack3.Amount);
+                return;
+            }
+            if (_callback.Data == Constants.PaymentItems.DiamondPack4.Name)
+            {
+                await SendPaymentInvoiceAsync((int)Constants.PaymentItems.DiamondPack4.Price, Constants.PaymentItems.DiamondPack4.Name, Constants.PaymentItems.DiamondPack4.Amount);
+                return;
+            }
+
             if (_callback.Data == CallbackButtons.PetCommand.PetCommandInlineBasicInfo(_userCulture).CallbackData)
             {
                 await ShowBasicInfoInline(userDb, petDb);
@@ -940,7 +962,7 @@ namespace TamagotchiBot.Controllers
                                               (int)timeRemaining.TotalHours,
                                               timeRemaining.Minutes,
                                               string.Format(nameof(turnedOn_F).UseCulture(_userCulture)),
-                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 + Factors.AutofeederDiscountVIPProc / 100) : Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds)
 
@@ -948,7 +970,7 @@ namespace TamagotchiBot.Controllers
                                               encodedPetName,
                                               userDB.AutoFeedCharges,
                                               string.Format(nameof(turnedOff_F).UseCulture(_userCulture)),
-                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 + Factors.AutofeederDiscountVIPProc / 100) : Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds);
 
@@ -1002,7 +1024,7 @@ namespace TamagotchiBot.Controllers
                                               (int)timeRemaining.TotalHours,
                                               timeRemaining.Minutes,
                                               string.Format(nameof(turnedOn_F).UseCulture(_userCulture)),
-                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 + Factors.AutofeederDiscountVIPProc / 100) : Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds)
 
@@ -1010,7 +1032,7 @@ namespace TamagotchiBot.Controllers
                                               encodedPetName,
                                               userDB.AutoFeedCharges,
                                               string.Format(nameof(turnedOff_F).UseCulture(_userCulture)),
-                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 + Factors.AutofeederDiscountVIPProc / 100) : Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds);
 
@@ -1226,6 +1248,59 @@ namespace TamagotchiBot.Controllers
             Log.Information($"AskConfirmBuying7daysVIPCMD {_userInfo}");
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSendTryApplyVIP7days, _userId, false);
+        }
+
+        private async Task BuyDiamondsWithTgStarsCMD(User userDB, Pet petDB)
+        {
+            var starsPrice1 = Constants.PaymentItems.DiamondPack1.Price;
+            var diamondsAmount1 = Constants.PaymentItems.DiamondPack1.Amount;
+            var starsPrice2 = Constants.PaymentItems.DiamondPack2.Price;
+            var diamondsAmount2 = Constants.PaymentItems.DiamondPack2.Amount;
+            var starsPrice3 = Constants.PaymentItems.DiamondPack3.Price;
+            var diamondsAmount3 = Constants.PaymentItems.DiamondPack3.Amount;
+            var starsPrice4 = Constants.PaymentItems.DiamondPack4.Price;
+            var diamondsAmount4 = Constants.PaymentItems.DiamondPack4.Amount;
+
+            var toSend = new AnswerMessage()
+            {
+                Text = nameof(Resources.Resources.payment_choose_diamonds_pack).UseCulture(_userCulture),
+                ReplyMarkup = new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>()
+                {
+                    new List<InlineKeyboardButton>()
+                    {
+                        InlineKeyboardButton.WithCallbackData($"{starsPrice1} ⭐️ = {diamondsAmount1} 💎", Constants.PaymentItems.DiamondPack1.Name),
+                    },
+                     new List<InlineKeyboardButton>()
+                    {
+                        InlineKeyboardButton.WithCallbackData($"{starsPrice2} ⭐️ = {diamondsAmount2} 💎", Constants.PaymentItems.DiamondPack2.Name),
+                    },
+                    new List<InlineKeyboardButton>()
+                    {
+                         InlineKeyboardButton.WithCallbackData($"{starsPrice3} ⭐️ = {diamondsAmount3} 💎", Constants.PaymentItems.DiamondPack3.Name),
+                    },
+                     new List<InlineKeyboardButton>()
+                    {
+                         InlineKeyboardButton.WithCallbackData($"{starsPrice4} ⭐️ = {diamondsAmount4} 💎", Constants.PaymentItems.DiamondPack4.Name),
+                    },
+                }),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+            };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
+
+        private async Task SendPaymentInvoiceAsync(int starsPrice, string payload, int diamondAmount)
+        {
+            var title = nameof(payment_invoice_title).UseCulture(_userCulture);
+            var description = string.Format(nameof(payment_invoice_description).UseCulture(_userCulture), diamondAmount);
+            var currency = "XTR";
+            var providerToken = "";
+
+            var prices = new List<Telegram.Bot.Types.Payments.LabeledPrice>
+            {
+                new Telegram.Bot.Types.Payments.LabeledPrice(nameof(payment_invoice_label).UseCulture(_userCulture), starsPrice)
+            };
+
+            await _appServices.BotControlService.SendInvoiceAsync(_userId, title, description, payload, providerToken, currency, prices);
         }
 
         private async Task<(string answer, bool isCanceled)> GetAnswerGemini(string textToAnswer, Pet petDB, User userDB)

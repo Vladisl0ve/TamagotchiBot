@@ -45,7 +45,8 @@ namespace TamagotchiBot.Services.Mongo
                 {nameof(AppleGameData), "AppleGame"},
                 {nameof(Chat), "Chats"},
                 {nameof(Pet), "Pets"},
-                {nameof(User), "Users"}
+                {nameof(User), "Users"},
+                {nameof(StarPayment), "StarPayments"},
         };
 
         private string GetConnectStringFromEnv()

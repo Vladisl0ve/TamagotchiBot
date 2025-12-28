@@ -1533,4 +1533,21 @@ Along with your purchase, you received:
   <data name="petCommand__VIPinfo" xml:space="preserve">
     <value>👑 - &lt;i&gt;&lt;b&gt;VIP&lt;/b&gt; for {0}&lt;/i&gt;</value>
   </data>
+  <data name="payment_choose_diamonds_pack" xml:space="preserve">
+    <value>Choose a diamond pack 💎</value>
+  </data>
+  <data name="payment_invoice_title" xml:space="preserve">
+    <value>Diamonds 💎</value>
+  </data>
+  <data name="payment_invoice_description" xml:space="preserve">
+    <value>{0} Diamonds 💎</value>
+  </data>
+  <data name="payment_invoice_label" xml:space="preserve">
+    <value>Diamonds</value>
+  </data>
+  <data name="payment_success_message" xml:space="preserve">
+    <value>You received {0} 💎!
+
+Thank you for supporting this bot ❤️🤍❤️</value>
+  </data>
 </root>

@@ -19,6 +19,7 @@
         public string ArchiveUserInfoCollectionName { get; set; }
         public string TicTacToeGameDataCollectionName { get; set; }
         public string HangmanGameDataCollectionName { get; set; }
+        public string PaymentCollectionName { get; set; }
     }
 
 
@@ -41,5 +42,6 @@
         string ArchiveUserInfoCollectionName { get; set; }
         string TicTacToeGameDataCollectionName { get; set; }
         string HangmanGameDataCollectionName { get; set; }
+        string PaymentCollectionName { get; set; }
     }
 }

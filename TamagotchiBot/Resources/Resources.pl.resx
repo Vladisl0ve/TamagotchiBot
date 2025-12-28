@@ -1533,4 +1533,21 @@ Wraz z zakupem otrzymujesz:
   <data name="petCommand__VIPinfo" xml:space="preserve">
     <value>👑 - &lt;i&gt;&lt;b&gt;VIP&lt;/b&gt; jeszcze {0}&lt;/i&gt;</value>
   </data>
+  <data name="payment_choose_diamonds_pack" xml:space="preserve">
+    <value>Wybierz pakiet diamentowy 💎</value>
+  </data>
+  <data name="payment_invoice_title" xml:space="preserve">
+    <value>Diamenty 💎</value>
+  </data>
+  <data name="payment_invoice_description" xml:space="preserve">
+    <value>{0} Diamenty 💎</value>
+  </data>
+  <data name="payment_invoice_label" xml:space="preserve">
+    <value>Diamenty</value>
+  </data>
+  <data name="payment_success_message" xml:space="preserve">
+    <value>Otrzymałeś {0} 💎!
+
+Dziękujemy za wsparcie tego bota ❤️🤍❤️</value>
+  </data>
 </root>

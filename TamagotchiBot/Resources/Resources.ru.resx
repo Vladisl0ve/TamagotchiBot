@@ -1538,4 +1538,21 @@ https://t.me/news_virtualpetbot</value>
   <data name="petCommand__VIPinfo" xml:space="preserve">
     <value>👑 - &lt;i&gt;&lt;b&gt;VIP&lt;/b&gt; ещё {0}&lt;/i&gt;</value>
   </data>
+  <data name="payment_choose_diamonds_pack" xml:space="preserve">
+    <value>Выберите набор алмазов 💎</value>
+  </data>
+  <data name="payment_invoice_title" xml:space="preserve">
+    <value>Алмазы 💎</value>
+  </data>
+  <data name="payment_invoice_description" xml:space="preserve">
+    <value>{0} Алмазы 💎</value>
+  </data>
+  <data name="payment_invoice_label" xml:space="preserve">
+    <value>Алмазы</value>
+  </data>
+  <data name="payment_success_message" xml:space="preserve">
+    <value>Вы получили {0} 💎 алмазов!
+
+Спасибо за поддержку этого бота ❤️🤍❤️</value>
+  </data>
 </root>
