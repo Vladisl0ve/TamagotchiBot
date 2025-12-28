@@ -913,8 +913,7 @@ namespace TamagotchiBot.Controllers
                                        Constants.Factors.JewelerFatigueFactor
                                        );
 
-            List<CallbackModel> inlineParts = InlineItems.InlineWork(_userCulture);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+            InlineKeyboardMarkup toSendInline = InlineItems.InlineWorkKeyboardButtonArrays(_userCulture);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.WorkCommandCounter++;
@@ -962,7 +961,7 @@ namespace TamagotchiBot.Controllers
                                               (int)timeRemaining.TotalHours,
                                               timeRemaining.Minutes,
                                               string.Format(nameof(turnedOn_F).UseCulture(_userCulture)),
-                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) : Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? $"<s>{Costs.AutoFeedCostDiamonds}</s> " + Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) + "👑" : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds)
 
@@ -970,7 +969,7 @@ namespace TamagotchiBot.Controllers
                                               encodedPetName,
                                               userDB.AutoFeedCharges,
                                               string.Format(nameof(turnedOff_F).UseCulture(_userCulture)),
-                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) : Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? $"<s>{Costs.AutoFeedCostDiamonds}</s> " + Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) + "👑" : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds);
 
@@ -1024,7 +1023,7 @@ namespace TamagotchiBot.Controllers
                                               (int)timeRemaining.TotalHours,
                                               timeRemaining.Minutes,
                                               string.Format(nameof(turnedOn_F).UseCulture(_userCulture)),
-                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) : Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? $"<s>{Costs.AutoFeedCostDiamonds}</s> " + Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) + "👑" : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds)
 
@@ -1032,7 +1031,7 @@ namespace TamagotchiBot.Controllers
                                               encodedPetName,
                                               userDB.AutoFeedCharges,
                                               string.Format(nameof(turnedOff_F).UseCulture(_userCulture)),
-                                              userDB.VIPIsEnabled ? Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) : Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? $"<s>{Costs.AutoFeedCostDiamonds}</s> " + Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) + "👑" : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds);
 
@@ -3152,8 +3151,7 @@ namespace TamagotchiBot.Controllers
         {
             try
             {
-                var workButtons = InlineItems.InlineWork(_userCulture);
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(workButtons, 3);
+                InlineKeyboardMarkup toSendInline = InlineItems.InlineWorkKeyboardButtonArrays(_userCulture);
 
                 string toSendText = nameof(workCommand).UseCulture(_userCulture);
                 toSendText = string.Format(toSendText,
@@ -3485,8 +3483,7 @@ namespace TamagotchiBot.Controllers
                                                         Constants.Factors.JewelerFatigueFactor
                                                         );
 
-            List<CallbackModel> inlineParts = InlineItems.InlineWork(_userCulture);
-            InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+            InlineKeyboardMarkup toSendInlineIfTimeOver = InlineItems.InlineWorkKeyboardButtonArrays(_userCulture);
 
             Log.Debug($"Callbacked ShowDefaultWorkCommand (work is over) for {_userInfo}");
             await _appServices.BotControlService.SendAnswerCallback(_userId,

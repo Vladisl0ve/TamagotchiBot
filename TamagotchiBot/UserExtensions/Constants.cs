@@ -190,7 +190,7 @@ namespace TamagotchiBot.UserExtensions
             //VIP
             public const int VIP7DaysGoldReward = 700;
             public const int VIPJewelerJobGoldReward = 100;
-            public const int VIPJewelerJobDiamondReward = 5;
+            public const int VIPJewelerJobDiamondReward = 1;
         }
 
         public struct ExpRewards
@@ -1145,6 +1145,24 @@ namespace TamagotchiBot.UserExtensions
                 CallbackButtons.WorkCommand.WorkCommandInlinePilot(culture),
                 CallbackButtons.WorkCommand.WorkCommandInlineJeweler(culture),//special
             };
+
+            public static InlineKeyboardButton[][] InlineWorkKeyboardButtonArrays(CultureInfo culture) => _inlineWorkKeyboardButtonArrays(culture);
+            private static InlineKeyboardButton[][] _inlineWorkKeyboardButtonArrays(CultureInfo culture) => new InlineKeyboardButton[][]
+            {
+                [CallbackButtons.WorkCommand.WorkCommandInlineFoodDelivery(culture).ToInlineKeyboardButton(),//primary
+                CallbackButtons.WorkCommand.WorkCommandInlineMcDonalds(culture).ToInlineKeyboardButton(),
+                CallbackButtons.WorkCommand.WorkCommandInlineDistributeFlyers(culture).ToInlineKeyboardButton()],
+
+                [CallbackButtons.WorkCommand.WorkCommandInlineEngineer(culture).ToInlineKeyboardButton(),//middle
+                CallbackButtons.WorkCommand.WorkCommandInlineMakeUpArtist(culture).ToInlineKeyboardButton()],
+
+                [CallbackButtons.WorkCommand.WorkCommandInlineAccountant(culture).ToInlineKeyboardButton(),//high
+                CallbackButtons.WorkCommand.WorkCommandInlinePilot(culture).ToInlineKeyboardButton(),
+                CallbackButtons.WorkCommand.WorkCommandInlineWorkOnPC(culture).ToInlineKeyboardButton()],
+
+                [CallbackButtons.WorkCommand.WorkCommandInlineJeweler(culture).ToInlineKeyboardButton()],//special
+            };
+
 
             public static List<CallbackModel> InlineRanks(CultureInfo culture) => _inlineRanks(culture);
             private static List<CallbackModel> _inlineRanks(CultureInfo culture) => new()

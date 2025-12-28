@@ -1040,5 +1040,10 @@ namespace TamagotchiBot.UserExtensions
                                 maxHistory * (1 + Factors.LLMMesagesCoefMoreVIPProc / 100) * 2,
                                 maxHistory * 2);
         }
+
+        public static InlineKeyboardButton ToInlineKeyboardButton(this CallbackModel model)
+        {
+            return new InlineKeyboardButton(model.Text, model.CallbackData);
+        }
     }
 }
