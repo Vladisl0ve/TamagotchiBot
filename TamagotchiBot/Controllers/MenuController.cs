@@ -1000,7 +1000,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.FarmSticker,
-                ReplyMarkup = ReplyKeyboardItems.FarmKeyboardMarkup(_userCulture),
+                ReplyMarkup = Extensions.GetFarmKeyboardButtonArrays(_userCulture),
                 InlineKeyboardMarkup = toSendInline,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
@@ -1181,7 +1181,7 @@ namespace TamagotchiBot.Controllers
                 {
                     Text = nameof(Resources.Resources.notEnoughDiamonds).UseCulture(_userCulture),
                     ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                    ReplyMarkup = ReplyKeyboardItems.FarmKeyboardMarkup(_userCulture)
+                    ReplyMarkup = Extensions.GetFarmKeyboardButtonArrays(_userCulture),
                 };
                 await _appServices.BotControlService.SendAnswerMessageAsync(toSendErr, _userId, true);
                 return;
@@ -1206,7 +1206,7 @@ namespace TamagotchiBot.Controllers
                 {
                     Text = nameof(Resources.Resources.notEnoughDiamonds).UseCulture(_userCulture),
                     ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                    ReplyMarkup = ReplyKeyboardItems.FarmKeyboardMarkup(_userCulture)
+                    ReplyMarkup = Extensions.GetFarmKeyboardButtonArrays(_userCulture),
                 };
                 await _appServices.BotControlService.SendAnswerMessageAsync(toSendErr, _userId, true);
                 return;
@@ -1232,7 +1232,7 @@ namespace TamagotchiBot.Controllers
                 Text = string.Format(nameof(premiumXdaysBought).UseCulture(_userCulture), 7, vipBenefits),
                 StickerId = StickersId.PremiumVIPBoughtSticker,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                ReplyMarkup = ReplyKeyboardItems.FarmKeyboardMarkup(_userCulture)
+                ReplyMarkup = Extensions.GetFarmKeyboardButtonArrays(_userCulture)
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }

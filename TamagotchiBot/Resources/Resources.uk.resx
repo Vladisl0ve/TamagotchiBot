@@ -1571,4 +1571,19 @@ https://t.me/news_virtualpetbot</value>
   <data name="workCommand_LowSatiety" xml:space="preserve">
     <value>⚠️ Увага: у твого вихованця залишилося {0}% ситості, погодуй його! ⚠️</value>
   </data>
+  <data name="changelog_onPatch_18" xml:space="preserve">
+    <value>⚡️⚡️ &lt;b&gt;Вийшло оновлення 1.8&lt;/b&gt; ⚡️⚡️
+
+&lt;b&gt;НОВЕ:&lt;/b&gt;
+🚜 &lt;b&gt;На фермі можна придбати:&lt;/b&gt;
+👑 &lt;i&gt;VIP-підписку&lt;/i&gt; — підписка дає багато бонусів, деталі шукайте в боті
+💎 &lt;i&gt;Діаманти&lt;/i&gt;
+
+&lt;b&gt;ПЕРЕРОБЛЕНО:&lt;/b&gt;
+
+🍽 &lt;b&gt;Кухня&lt;/b&gt; — додано нові види страв, змінено бонуси/ціни
+💰 &lt;b&gt;Робота&lt;/b&gt; — збалансовано бонуси, показано втому, додано нову роботу Ювелір 💍
+🎓 &lt;b&gt;Освіта&lt;/b&gt; — додано Спеціальність «Ювелір» 💍
+🎒 &lt;b&gt;Інше&lt;/b&gt; — ця кнопка тепер має власне меню з додатковими опціями бота</value>
+  </data>
 </root>

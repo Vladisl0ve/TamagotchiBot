@@ -431,6 +431,27 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ⚡️⚡️ &lt;b&gt;Update 1.8 is out&lt;/b&gt; ⚡️⚡️
+        ///
+        ///&lt;b&gt;NEW:&lt;/b&gt;
+        ///🚜 &lt;b&gt;You can now buy on the farm:&lt;/b&gt;
+        ///👑 &lt;i&gt;VIP subscription&lt;/i&gt; — the subscription gives lots of perks, check the details in the bot
+        ///💎 &lt;i&gt;Diamonds&lt;/i&gt;
+        ///
+        ///&lt;b&gt;REWORKED:&lt;/b&gt;
+        ///
+        ///🍽 &lt;b&gt;Kitchen&lt;/b&gt; — new types of dishes added, bonuses/prices updated
+        ///💰 &lt;b&gt;Jobs&lt;/b&gt; — bonuses rebalanced, fatigue is now shown, new job Jeweler added 💍
+        ///🎓 &lt;b&gt;Education&lt;/b&gt; — new Specialty “Jeweler” added 💍
+        ///🎒 &lt;b&gt;Other&lt;/b&gt; — this button now has its own menu with additional bot options.
+        /// </summary>
+        public static string changelog_onPatch_18 {
+            get {
+                return ResourceManager.GetString("changelog_onPatch_18", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 📢💬 You can view and discuss bot updates here:
         ///{0}.
         /// </summary>

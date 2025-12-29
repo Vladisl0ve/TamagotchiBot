@@ -359,7 +359,7 @@ namespace TamagotchiBot.Services
                 {
                     var toSend = new AnswerMessage()
                     {
-                        Text = nameof(Resources.Resources.changelog_onPatch_17).UseCulture(userDB?.Culture),
+                        Text = nameof(Resources.Resources.changelog_onPatch_18).UseCulture(userDB?.Culture),
                         StickerId = Constants.StickersId.ChangelogSticker,
                         ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
                     };

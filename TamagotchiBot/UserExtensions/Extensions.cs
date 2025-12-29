@@ -165,6 +165,14 @@ namespace TamagotchiBot.UserExtensions
                 nameof(Resources.Resources.goAwayButton).UseCulture(culture),
             };
         }
+
+        public static KeyboardButton[][] GetFarmKeyboardButtonArrays(CultureInfo culture) => new KeyboardButton[][]
+        {
+            [nameof(Resources.Resources.farmButtonChangeType).UseCulture(culture), nameof(Resources.Resources.farmButtonAutoFeed).UseCulture(culture),],
+            [nameof(Resources.Resources.farmButtonBuyDiamondsWithTgStars).UseCulture(culture), nameof(Resources.Resources.farmButtonBuyPremiumWeek).UseCulture(culture)],
+            [nameof(Resources.Resources.goAwayButton).UseCulture(culture)]
+        };
+
         public static List<string> GetChangeTypeButtons(CultureInfo culture)
         {
             return new List<string>()
