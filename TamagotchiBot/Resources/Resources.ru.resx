@@ -191,6 +191,20 @@
 🌙 Питомец проспал &lt;b&gt;&lt;i&gt;{6} минут&lt;/i&gt;&lt;/b&gt;
 🧰 &lt;b&gt;&lt;i&gt;{7} минут&lt;/i&gt;&lt;/b&gt; питомец работал
 
+🌙 Питомец ложился спать &lt;b&gt;&lt;i&gt;{9} раз&lt;/i&gt;&lt;/b&gt;
+🪙 Золота получено всего &lt;b&gt;&lt;i&gt;{10}&lt;/i&gt;&lt;/b&gt;
+
+💻 Начато работ как Программист &lt;b&gt;&lt;i&gt;{12}&lt;/i&gt;&lt;/b&gt;
+
+⚔️ Побед в Дуэли &lt;b&gt;&lt;i&gt;{13}&lt;/i&gt;&lt;/b&gt;
+🥊 Всего Дуэлей &lt;b&gt;&lt;i&gt;{14}&lt;/i&gt;&lt;/b&gt;
+
+🍞 Съедено хлеба &lt;b&gt;&lt;i&gt;{15} раз&lt;/i&gt;&lt;/b&gt;
+☕ Выпито кофе &lt;b&gt;&lt;i&gt;{16} раз&lt;/i&gt;&lt;/b&gt;
+🥛 Выпито молока &lt;b&gt;&lt;i&gt;{17} раз&lt;/i&gt;&lt;/b&gt;
+💊 Съедено пилюль &lt;b&gt;&lt;i&gt;{18} раз&lt;/i&gt;&lt;/b&gt;
+
+
 🦭 Питомцу &lt;b&gt;&lt;i&gt;{8} дней&lt;/i&gt;&lt;/b&gt;</value>
   </data>
   <data name="petCommandInlineBasicInfo" xml:space="preserve">

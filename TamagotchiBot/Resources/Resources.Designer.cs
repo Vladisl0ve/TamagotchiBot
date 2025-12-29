@@ -2137,7 +2137,16 @@ namespace TamagotchiBot.Resources {
         ///🌙 Pet slept for &lt;b&gt;&lt;i&gt;{6} minutes&lt;/i&gt;&lt;/b&gt;
         ///🧰 &lt;b&gt;&lt;i&gt;{7} minutes&lt;/i&gt;&lt;/b&gt; the pet worked
         ///
-        ///🦭 Pet is &lt;b&gt;&lt;i&gt;{8} days old&lt;/i&gt;&lt;/b&gt;.
+        ///🌙 The pet went to sleep &lt;b&gt;&lt;i&gt;{9} times&lt;/i&gt;&lt;/b&gt;
+        ///🪙 Total gold earned &lt;b&gt;&lt;i&gt;{10}&lt;/i&gt;&lt;/b&gt;
+        ///
+        ///💻 Jobs started as a Programmer &lt;b&gt;&lt;i&gt;{12}&lt;/i&gt;&lt;/b&gt;
+        ///
+        ///⚔️ Duel wins &lt;b&gt;&lt;i&gt;{13}&lt;/i&gt;&lt;/b&gt;
+        ///🥊 Total duels &lt;b&gt;&lt;i&gt;{14}&lt;/i&gt;&lt;/b&gt;
+        ///
+        ///🍞 Bread eaten &lt;b&gt;&lt;i&gt;{15} times&lt;/i&gt;&lt;/b&gt;
+        ///☕ Coffee drunk &lt;b&gt;&lt;i&gt;{16} times&lt;/i [rest of string was truncated]&quot;;.
         /// </summary>
         public static string petCommandMoreInfo1 {
             get {

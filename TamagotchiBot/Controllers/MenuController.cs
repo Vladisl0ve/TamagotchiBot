@@ -2100,7 +2100,17 @@ namespace TamagotchiBot.Controllers
                 audUser.AppleGamePlayedCounter,
                 petWasSleptMinutes,
                 petWasWorkingMinutes,
-                (int)((DateTime.UtcNow - petDB.BirthDateTime).TotalDays)
+                (int)((DateTime.UtcNow - petDB.BirthDateTime).TotalDays),
+                audUser.SleepenTimesCounter,
+                audUser.GoldEarnedCounter,
+                audUser.GoldSpentCounter,
+                audUser.WorkOnPCCounter,
+                audUser.DuelsWinCounter,
+                audUser.DuelsStartedCounter + audUser.DuelsAcceptedCounter,
+                audUser.BreadEatenCounter,
+                audUser.CoffeeEatenCounter,
+                audUser.MilkEatenCounter,
+                audUser.PillEatenCounter
                 );
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>()
             {
