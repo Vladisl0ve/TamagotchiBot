@@ -1498,7 +1498,7 @@ namespace TamagotchiBot.Resources {
         ///&lt;b&gt;FAQ:&lt;/b&gt;
         ///
         ///&lt;b&gt;How does the level 🏅 accumulate?&lt;/b&gt;
-        ///&lt; [rest of string was truncated]&quot;;.
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string helpCommand {
             get {
@@ -2299,6 +2299,18 @@ namespace TamagotchiBot.Resources {
         public static string premiumXdaysBought {
             get {
                 return ResourceManager.GetString("premiumXdaysBought", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 👑 &lt;b&gt;You received a VIP account for {0} days thanks to a bonus code&lt;/b&gt; 👑
+        ///
+        ///The VIP account gives you:
+        ///{1}.
+        /// </summary>
+        public static string premiumXdaysGotByBonusCode {
+            get {
+                return ResourceManager.GetString("premiumXdaysGotByBonusCode", resourceCulture);
             }
         }
         

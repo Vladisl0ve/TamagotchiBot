@@ -1606,4 +1606,10 @@ https://t.me/newsvirtualpetbot</value>
   <data name="AskToConfirmChangeType" xml:space="preserve">
     <value>Вы сапраўды хочаце змяніць тып вашага гадаванца на {0}?</value>
   </data>
+  <data name="premiumXdaysGotByBonusCode" xml:space="preserve">
+    <value>👑 &lt;b&gt;Ты атрымаў VIP-акаўнт на {0} дзён дзякуючы бонус-коду&lt;/b&gt; 👑
+
+VIP-акаўнт дае табе:
+{1}</value>
+  </data>
 </root>

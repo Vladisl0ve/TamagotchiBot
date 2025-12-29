@@ -97,6 +97,11 @@ namespace TamagotchiBot.UserExtensions
             Lion = 7,
         }
 
+        public enum BonusType
+        {
+            VIP7Days = 1,
+        }
+
         public enum Fatigue
         {
             Fresh,
@@ -344,14 +349,14 @@ namespace TamagotchiBot.UserExtensions
             public const double RedAppleHungerFactor = 5; //🍎
             public const double ChocolateHungerFactor = 2; //🍫
             public const double LollipopHungerFactor = 1; //🍭
-            public const double CoffeeHungerFactor = 2; 
-            public const double MilkHungerFactor = 10; 
+            public const double CoffeeHungerFactor = 2;
+            public const double MilkHungerFactor = 10;
 
             public const int RedAppleHPFactor = 1; //🍎
             public const int MilkHPFactor = 2;
 
             public const int ChocolateFatigueFactor = 1;
-            public const int CoffeeFatigueFactor = 5; 
+            public const int CoffeeFatigueFactor = 5;
 
             //Multiplayer
             public const int MPFeedFactor = 100; //🍭

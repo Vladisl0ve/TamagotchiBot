@@ -86,6 +86,42 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
+            if (textReceived.StartsWith("start "))
+            {
+                var splitted = textReceived.Split(" ");
+                if (splitted.Length == 2)
+                {
+                    var code = splitted[1];
+                    var bonusCode = _appServices.BonusCodeService.Get(code);
+                    if (bonusCode != null)
+                    {
+                        var metaUser = _appServices.MetaUserService.Get(_userId);
+
+                        metaUser ??= _appServices.MetaUserService.Create(new MetaUser() { UserId = _userId });
+
+                        metaUser.UsedBonusCodes ??= new List<UsedBonusCode>();
+
+                        if (metaUser.UsedBonusCodes.Any(x => x.CodeValue == code))
+                            return;
+
+                        if (bonusCode.ExpirationDateTime < DateTime.UtcNow)
+                            return;
+
+                        if (bonusCode.Type == BonusType.VIP7Days)
+                        {
+                            await BuyPremiumWeekCMD(userDB, petDB, true);
+                            metaUser.UsedBonusCodes.Add(new UsedBonusCode()
+                            {
+                                CodeValue = code,
+                                UsageDateTime = DateTime.UtcNow
+                            });
+                            _appServices.MetaUserService.Update(_userId, metaUser);
+                        }
+                    }
+                }
+                return;
+            }
+
             if (GetAllTranslatedAndLowered(nameof(farmButtonBuyPremiumWeek)).Contains(textReceived))
             {
                 await AskConfirmBuying7daysVIPCMD(userDB);
@@ -1226,38 +1262,47 @@ namespace TamagotchiBot.Controllers
                                    isPremium);
         }
 
-        private async Task BuyPremiumWeekCMD(User userDB, Pet petDB)
+        private async Task BuyPremiumWeekCMD(User userDB, Pet petDB, bool isFree = false)
         {
-            if (userDB.Diamonds < Constants.Costs.VIP7DaysDiamonds)
+            if (!isFree)
             {
-                var toSendErr = new AnswerMessage()
+                if (userDB.Diamonds < Constants.Costs.VIP7DaysDiamonds)
                 {
-                    Text = nameof(Resources.Resources.notEnoughDiamonds).UseCulture(_userCulture),
-                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
-                    ReplyMarkup = Extensions.GetFarmKeyboardButtonArrays(_userCulture),
-                };
-                await _appServices.BotControlService.SendAnswerMessageAsync(toSendErr, _userId, true);
-                return;
-            }
+                    var toSendErr = new AnswerMessage()
+                    {
+                        Text = nameof(Resources.Resources.notEnoughDiamonds).UseCulture(_userCulture),
+                        ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                        ReplyMarkup = Extensions.GetFarmKeyboardButtonArrays(_userCulture),
+                    };
+                    await _appServices.BotControlService.SendAnswerMessageAsync(toSendErr, _userId, true);
+                    return;
+                }
 
-            _appServices.UserService.UpdateDiamonds(_userId, userDB.Diamonds - Constants.Costs.VIP7DaysDiamonds);
+                _appServices.UserService.UpdateDiamonds(_userId, userDB.Diamonds - Constants.Costs.VIP7DaysDiamonds);
+            }
             _appServices.UserService.UpdateVIPStartTime(_userId, DateTime.UtcNow);
-            _appServices.UserService.UpdateVIPLongDays(_userId, 7);
+            _appServices.UserService.UpdateVIPLongDays(_userId, userDB.VIPLongDays + 7);
             _appServices.UserService.UpdateVIPIsEnabled(_userId, true);
 
             _appServices.UserService.AddGold(_userId, Rewards.VIP7DaysGoldReward);
 
             _appServices.MetaUserService.IsConfirmAskedOnVIP7daysBuying(_userId, false);
 
-            Log.Information($"Bought VIP 7 DAYS BuyPremiumWeekCMD {_userInfo}");
+            if (isFree)
+                Log.Information($"Got with bonus-code VIP 7 DAYS BuyPremiumWeekCMD {_userInfo}");
+            else
+                Log.Information($"Bought VIP 7 DAYS BuyPremiumWeekCMD {_userInfo}");
 
             var maxHistory = _appServices.SInfoService.GetGeminiMaxHistory();
 
             string vipBenefits = Extensions.GetVipBenefitsString(maxHistory, _userCulture);
+            string textToSend = isFree
+                ? string.Format(nameof(premiumXdaysGotByBonusCode).UseCulture(_userCulture), 7, vipBenefits)
+                : string.Format(nameof(premiumXdaysBought).UseCulture(_userCulture), 7, vipBenefits);
 
             var toSend = new AnswerMessage()
             {
-                Text = string.Format(nameof(premiumXdaysBought).UseCulture(_userCulture), 7, vipBenefits),
+                Text = textToSend,
                 StickerId = StickersId.PremiumVIPBoughtSticker,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
                 ReplyMarkup = Extensions.GetFarmKeyboardButtonArrays(_userCulture)

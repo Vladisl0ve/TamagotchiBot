@@ -34,6 +34,8 @@ namespace TamagotchiBot.Handlers
         {
             _appServices = services;
             _envs = envs;
+
+            CreateAdditionalCollectionsInDatabase();
 #if !DEBUG && !DEBUG_NOTIFY && !STAGING && !STAGING_LOCAL
             EmergencyUpdatePets();
 #endif
@@ -578,6 +580,20 @@ namespace TamagotchiBot.Handlers
                 _appServices.PetService.Update(pet.UserId, pet);
             }
             Log.Fatal($"EmergencyUpdate: delta time is {deltaTime}, updated {petsToUpdate.Count} pets");
+        }
+
+        private void CreateAdditionalCollectionsInDatabase()
+        {
+            if (_appServices.BonusCodeService.GetAll().Count == 0)
+            {
+                _appServices.BonusCodeService.Create(new Models.Mongo.BonusCode()
+                {
+                    CodeName = "Happy New Year 2026",
+                    CodeValue = "happynewyear2026",
+                    ExpirationDateTime = new DateTime(2026, 01, 01, 0, 0, 0, DateTimeKind.Utc),
+                    Type = Constants.BonusType.VIP7Days
+                });
+            }
         }
 
         private async Task RegisterUserAndPet(Message message)

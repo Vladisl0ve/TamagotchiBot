@@ -53,10 +53,13 @@ namespace TamagotchiBot.Models.Mongo
         public bool IsFeedingMPStarted { get; set; }
 
         [BsonElement("LastChatGptQA")]
-        public List<string> LastChatGptQA { get; set; }
+        public List<string> LastChatGptQA { get; set; } = [];
 
         [BsonElement("LastGeminiQA")]
-        public List<string> LastGeminiQA { get; set; }
+        public List<string> LastGeminiQA { get; set; } = [];
+
+        [BsonElement("UsedBonusCodes")]
+        public List<UsedBonusCode> UsedBonusCodes { get; set; } = new List<UsedBonusCode>();
 
         public MetaUser Clone(MetaUser toClone)
         {
@@ -67,8 +70,10 @@ namespace TamagotchiBot.Models.Mongo
                 IsAskedToConfirmRenaming = toClone.IsAskedToConfirmRenaming,
                 TmpPetName = toClone.TmpPetName,
                 ChatDuelId = toClone.ChatDuelId,
-                LastChatGptQA = new List<string>(toClone.LastChatGptQA),
-                LastGeminiQA = new List<string>(toClone.LastGeminiQA),
+                LastChatGptQA = new List<string>(toClone.LastChatGptQA ?? new List<string>()),
+
+                LastGeminiQA = new List<string>(toClone.LastGeminiQA ?? new List<string>()),
+                UsedBonusCodes = new List<UsedBonusCode>(toClone.UsedBonusCodes ?? new List<UsedBonusCode>()),
                 LastSubgramCheckingTime = toClone.LastSubgramCheckingTime,
                 DebugMessageThreadId = toClone.DebugMessageThreadId,
                 DuelStartTime = toClone.DuelStartTime,
@@ -83,5 +88,14 @@ namespace TamagotchiBot.Models.Mongo
                 Created = toClone.Created
             };
         }
+    }
+
+    public class UsedBonusCode
+    {
+        [BsonElement("CodeValue")]
+        public string CodeValue { get; set; }
+
+        [BsonElement("UsageDateTime")]
+        public DateTime UsageDateTime { get; set; }
     }
 }

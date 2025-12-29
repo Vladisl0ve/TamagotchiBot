@@ -644,9 +644,7 @@ namespace TamagotchiBot.Controllers
             var userTMP = _appServices.UserService.Create(msg.From);
             _ = _appServices.MetaUserService.Create(new MetaUser()
             {
-                UserId = userTMP.UserId,
-                LastChatGptQA = [],
-                LastGeminiQA = []
+                UserId = userTMP.UserId
             });
 
             _userInfo = Extensions.GetLogUser(userTMP);

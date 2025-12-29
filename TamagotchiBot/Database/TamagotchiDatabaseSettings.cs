@@ -22,6 +22,7 @@
         public string PaymentCollectionName { get; set; }
         public string PetsBackupCollectionName { get; set; }
         public string UsersBackupCollectionName { get; set; }
+        public string BonusCodesCollectionName { get; set; }
     }
 
 
@@ -47,5 +48,6 @@
         string PaymentCollectionName { get; set; }
         string PetsBackupCollectionName { get; set; }
         string UsersBackupCollectionName { get; set; }
+        string BonusCodesCollectionName { get; set; }
     }
 }

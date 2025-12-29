@@ -30,6 +30,7 @@ namespace TamagotchiBot.Services
         public BotControlService BotControlService { get; }
 
         public ReferalInfoService ReferalInfoService { get; }
+        public BonusCodeService BonusCodeService { get; }
 
         public ApplicationServices(AdsProducersService adsProducersService,
                                    AllUsersDataService allUsersDataService,
@@ -43,6 +44,7 @@ namespace TamagotchiBot.Services
                                    MetaUserService metaUserService,
                                    ChatsMPService chatsMPService,
                                    ReferalInfoService referalInfoService,
+                                   BonusCodeService bonusCodeService,
 
                                    TicTacToeGameDataService ticTacToeGameDataService,
                                    HangmanGameDataService hangmanGameDataService,
@@ -62,6 +64,7 @@ namespace TamagotchiBot.Services
             BotControlService = botControlService;
             ChatsMPService = chatsMPService;
             ReferalInfoService = referalInfoService;
+            BonusCodeService = bonusCodeService;
 
             TicTacToeGameDataService = ticTacToeGameDataService;
             HangmanGameDataService = hangmanGameDataService;

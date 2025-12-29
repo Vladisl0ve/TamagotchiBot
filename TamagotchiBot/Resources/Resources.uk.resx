@@ -1603,4 +1603,10 @@ https://t.me/news_virtualpetbot</value>
   <data name="AskToConfirmChangeType" xml:space="preserve">
     <value>Ви справді хочете змінити тип вашого домашнього улюбленця на {0}?</value>
   </data>
+  <data name="premiumXdaysGotByBonusCode" xml:space="preserve">
+    <value>👑 &lt;b&gt;Ви отримали VIP-акаунт на {0} днів завдяки бонус-коду&lt;/b&gt; 👑
+
+VIP-акаунт дає вам:
+{1}</value>
+  </data>
 </root>

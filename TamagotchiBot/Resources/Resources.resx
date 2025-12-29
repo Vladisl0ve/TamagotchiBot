@@ -1601,4 +1601,10 @@ Price: {0} diamonds 💎</value>
   <data name="AskToConfirmChangeType" xml:space="preserve">
     <value>Do you really want to change your pet type to {0}?</value>
   </data>
+  <data name="premiumXdaysGotByBonusCode" xml:space="preserve">
+    <value>👑 &lt;b&gt;You received a VIP account for {0} days thanks to a bonus code&lt;/b&gt; 👑
+
+The VIP account gives you:
+{1}</value>
+  </data>
 </root>

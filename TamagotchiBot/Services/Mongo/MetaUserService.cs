@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
-using TamagotchiBot.UserExtensions;
 
 namespace TamagotchiBot.Services.Mongo
 {

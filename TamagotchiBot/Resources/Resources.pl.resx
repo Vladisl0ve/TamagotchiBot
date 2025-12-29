@@ -1601,4 +1601,10 @@ Cena: {0} diamentów 💎</value>
   <data name="AskToConfirmChangeType" xml:space="preserve">
     <value>Czy na pewno chcesz zmienić typ swojego zwierzaka na {0}?</value>
   </data>
+  <data name="premiumXdaysGotByBonusCode" xml:space="preserve">
+    <value>👑 &lt;b&gt;Otrzymałeś konto VIP na {0} dni dzięki kodowi bonusowemu&lt;/b&gt; 👑
+
+Konto VIP daje Ci:
+{1}</value>
+  </data>
 </root>
