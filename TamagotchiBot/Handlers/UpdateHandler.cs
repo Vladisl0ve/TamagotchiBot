@@ -591,8 +591,8 @@ namespace TamagotchiBot.Handlers
                 }
             }
 
-            await creatorController.SendWelcomeText();
-            await creatorController.CreatePet(userDB, Extensions.GetRandomPetName(userDB.Culture));
+            creatorController.SendWelcomeText();
+            creatorController.CreatePet(userDB, Extensions.GetRandomPetName(userDB.Culture));
         }
 
         private async void SendGramadsPostToChat(long chatId)
