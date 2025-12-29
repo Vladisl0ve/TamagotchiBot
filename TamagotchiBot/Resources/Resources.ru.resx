@@ -1512,7 +1512,9 @@ https://t.me/news_virtualpetbot</value>
     <value>Начался дождь...
 {0} промок и расстроился.
 
--10 Радость 🎊</value>
+-10 Радость 🎊
+
+/pet - проверить состояние питомца</value>
   </data>
   <data name="RandomEventNiceDream" xml:space="preserve">
     <value>{0} видел чудесный сон!
@@ -1527,12 +1529,16 @@ https://t.me/news_virtualpetbot</value>
   <data name="RandomEventFoundTastySnack" xml:space="preserve">
     <value>{0} нашёл очень вкусную закуску!
 
-+15% к сытости 🍕</value>
++15% к сытости 🍕
+
+/pet - проверить состояние питомца</value>
   </data>
   <data name="RandomEventWarmSun" xml:space="preserve">
     <value>Сегодня такое теплое и приятное солнце! {0} счастлив!
 
-+10 Радости 🎊</value>
++10 Радости 🎊
+
+/pet - проверить состояние питомца</value>
   </data>
   <data name="workCommand_notEnoughEducation" xml:space="preserve">
     <value>Твой питомец не имеет достаточно образования для этой работы 🤷</value>
