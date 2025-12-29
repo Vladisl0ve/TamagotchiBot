@@ -1,25 +1,25 @@
-﻿using Serilog;
+﻿using Newtonsoft.Json;
+using Serilog;
 using System;
-using System.Net.Http.Headers;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TamagotchiBot.Controllers;
+using TamagotchiBot.Database;
+using TamagotchiBot.Models;
+using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using Newtonsoft.Json;
-using TamagotchiBot.Services.Interfaces;
 using static TamagotchiBot.UserExtensions.Constants;
-using System.Linq;
-using TamagotchiBot.Database;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-using TamagotchiBot.Models;
 
 namespace TamagotchiBot.Handlers
 {
@@ -601,6 +601,8 @@ namespace TamagotchiBot.Handlers
 #if DEBUG || STAGING || DEBUG_NOTIFY
             return;
 #endif
+            var userDB = _appServices.UserService.Get(chatId);
+
             try
             {
                 using var client = new HttpClient();
@@ -620,20 +622,20 @@ namespace TamagotchiBot.Handlers
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    Log.Warning("==> Gramads:" + result);
+                    Log.Warning("==> Gramads:" + result + $" {Extensions.GetLogUser(userDB)}");
                     return;
                 }
 
-                Log.Information("==> Gramads: " + result);
+                Log.Information("==> Gramads: " + result + $" {Extensions.GetLogUser(userDB)}");
 
             }
             catch (TaskCanceledException)
             {
-                Log.Error($"TIMEOUT GRAMADS - {TIMEOUT_SECONDS}s");
+                Log.Error($"TIMEOUT GRAMADS - {TIMEOUT_SECONDS}s, {Extensions.GetLogUser(userDB)}");
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error GRAMADS HTTP: ");
+                Log.Error(ex, $"Error for {Extensions.GetLogUser(userDB)} GRAMADS HTTP: ");
             }
         }
 
