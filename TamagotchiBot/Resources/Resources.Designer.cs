@@ -1497,8 +1497,8 @@ namespace TamagotchiBot.Resources {
         ///
         ///&lt;b&gt;FAQ:&lt;/b&gt;
         ///
-        ///&lt;b&gt;How is level earned 🏅?&lt;/b&gt;
-        ///&lt;i&gt;✅ 1 XP  [rest of string was truncated]&quot;;.
+        ///&lt;b&gt;How does the level 🏅 accumulate?&lt;/b&gt;
+        ///&lt; [rest of string was truncated]&quot;;.
         /// </summary>
         public static string helpCommand {
             get {
@@ -2786,7 +2786,10 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type new name for pet 🗯️.
+        ///   Looks up a localized string similar to Type new name for pet 🗯️
+        ///
+        ///Click /pet for cancel
+        ///.
         /// </summary>
         public static string renameCommand {
             get {

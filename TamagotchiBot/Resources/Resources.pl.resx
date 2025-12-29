@@ -307,7 +307,9 @@ Bezpieczeństwo przede wszystkim 🧗‍♀️</value>
     <value>ДРОПНУЎ ГАДА {0} 💔</value>
   </data>
   <data name="renameCommand" xml:space="preserve">
-    <value>Wprowadź nowe imię dla zwierzaka 🗯️</value>
+    <value>Wprowadź nowe imię dla zwierzaka 🗯️
+
+Albo /pet</value>
   </data>
   <data name="renameCommandDescription" xml:space="preserve">
     <value>Nowe imię ✏️</value>
@@ -355,7 +357,8 @@ W menu znajdziesz wszystkie potrzebne komendy dla pupila 🌻
 &lt;b&gt;FAQ:&lt;/b&gt;
 
 &lt;b&gt;Jak zdobywa się poziom 🏅?&lt;/b&gt;
-&lt;i&gt;✅ 1 doświadczenie = 1 minuta życia pupila. Wystarczy pamiętać o swoim pupilu 🦩&lt;/i&gt;
+&lt;i&gt;✅ 1 doświadczenie = 1 minuta życia pupila. Wystarczy pamiętać o swoim pupilu 🦩.
+Doświadczenie jest również zdobywane za różne działania z pupilem (karmienie, granie w mini-gry)&lt;/i&gt;
 
 &lt;b&gt;Jak zarabiać pieniądze 💰?&lt;/b&gt;
 &lt;i&gt;✅ Złoto zarabia się w pracy (/work)&lt;/i&gt;
@@ -1587,7 +1590,8 @@ Dziękujemy za wsparcie tego bota ❤️🤍❤️</value>
 🍽 &lt;b&gt;Kuchnia&lt;/b&gt; — dodano nowe rodzaje potraw, zmieniono bonusy/ceny
 💰 &lt;b&gt;Praca&lt;/b&gt; — zbalansowano bonusy, pokazano zmęczenie, dodano nową pracę Jubiler 💍
 🎓 &lt;b&gt;Edukacja&lt;/b&gt; — dodano Specjalizację „Jubiler” 💍
-🎒 &lt;b&gt;Inne&lt;/b&gt; — ten przycisk ma teraz własne menu z dodatkowymi opcjami bota</value>
+🎒 &lt;b&gt;Inne&lt;/b&gt; — ten przycisk ma teraz własne menu z dodatkowymi opcjami bota
+❓ &lt;b&gt;O grze&lt;/b&gt; — zaktualizowano informacje o bocie, dodano więcej podpowiedzi</value>
   </data>
   <data name="AskToConfirmAutoFeed" xml:space="preserve">
     <value>Czy naprawdę chcesz kupić 5 ładunków kormienia automatycznego? 🤖

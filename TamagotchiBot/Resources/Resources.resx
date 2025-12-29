@@ -308,7 +308,10 @@ Do not play so much and safety first! 🧗‍♀️</value>
     <value>Dropped pet {0} 💔</value>
   </data>
   <data name="renameCommand" xml:space="preserve">
-    <value>Type new name for pet 🗯️</value>
+    <value>Type new name for pet 🗯️
+
+Click /pet for cancel
+</value>
   </data>
   <data name="renameCommandDescription" xml:space="preserve">
     <value>New name ✏️</value>
@@ -354,8 +357,9 @@ In the commands menu, you’ll find everything your pet needs 🌻
 
 &lt;b&gt;FAQ:&lt;/b&gt;
 
-&lt;b&gt;How is level earned 🏅?&lt;/b&gt;
-&lt;i&gt;✅ 1 XP = 1 minute of pet’s life. Just remember your pet 🦩&lt;/i&gt;
+&lt;b&gt;How does the level 🏅 accumulate?&lt;/b&gt;
+&lt;i&gt;✅ 1 experience = 1 minute of pet’s life. Just remember to take care of your pet 🦩.
+Experience is also earned through various actions with the pet (feeding, playing mini-games)&lt;/i&gt;
 
 &lt;b&gt;How to earn money 💰?&lt;/b&gt;
 &lt;i&gt;✅ Gold is earned by working (/work)&lt;/i&gt;
@@ -1586,7 +1590,8 @@ Thank you for supporting this bot ❤️🤍❤️</value>
 🍽 &lt;b&gt;Kitchen&lt;/b&gt; — new types of dishes added, bonuses/prices updated
 💰 &lt;b&gt;Jobs&lt;/b&gt; — bonuses rebalanced, fatigue is now shown, new job Jeweler added 💍
 🎓 &lt;b&gt;Education&lt;/b&gt; — new Specialty “Jeweler” added 💍
-🎒 &lt;b&gt;Other&lt;/b&gt; — this button now has its own menu with additional bot options</value>
+🎒 &lt;b&gt;Other&lt;/b&gt; — this button now has its own menu with additional bot options
+❓ &lt;b&gt;About the game&lt;/b&gt; — updated bot information, more hints added</value>
   </data>
   <data name="AskToConfirmAutoFeed" xml:space="preserve">
     <value>Do you really want to buy auto-feed 5 charges?
