@@ -431,6 +431,9 @@ namespace TamagotchiBot.UserExtensions
             public const string ChangeTypeErrorSticker = "CAACAgIAAxkBAAELUzVlwUL-5fyYwZJCGyjXYWDqDMPX3gACrUUAAgsn4En6llfN6C4pCjQE";
             public const string ChangeTypeErrorGoldSticker = "CAACAgIAAxkBAAELUzdlwUQlfiUpuAPpKwejhj8JUrtamAAC6z4AAr4b2UkCVdfVjLsgnDQE";
 
+            public const string ConfirmChangeTypePetSticker = "CAACAgIAAxkBAAEQHyFpUet37WQVOFEmIu2YyVzvExocNwAChRcAAu2RUErHEZ3RjE4W6zYE";
+            public const string ConfirmBuyAutoFeedSticker = "CAACAgQAAxkBAAEQHyVpUevWq90d36p6QWedqHWt0CroLwACCBAAAvvpWFKg6wqFljQPYDYE";
+
             //public const string EducationReferenceSticker = "CAACAgIAAxkBAAEQAAFTaT72Bsw9rMlGpouwUtw9dMCFNRIAApsQAAJ4GUhKooazklII5ak2BA";
 
             public const string ConfirmVIPBuyingSticker = "CAACAgIAAxkBAAEQGxppTxfpj_uwdpRM2c1WImdh-VLfWgACc1UAAmJwCEjbAoLEOzDa8jYE";

@@ -375,6 +375,9 @@ But rewards are given to the best pets of the month!&lt;/i&gt;
 &lt;b&gt;TOP 3:&lt;/b&gt; {4}💰, {5}💎
 &lt;b&gt;TOP 4-10:&lt;/b&gt; {6}💰
 
+&lt;b&gt;What are the benefits of a VIP account?&lt;/b&gt;
+{8}
+
 &lt;b&gt;How does the AUTO-FEEDER work?&lt;/b&gt;
 &lt;i&gt;✅ On the Farm you can turn the auto-feeder on/off. If turned on, the pet feeds itself every 4 hours (SATIETY can even exceed 100) and consumes one charge. You can recharge the auto-feeder on the Farm.&lt;/i&gt;
 
@@ -720,6 +723,7 @@ You both reconciled 💕
   </data>
   <data name="AskToConfirmRenamingPet" xml:space="preserve">
     <value>Are you sure you want to change your pet's name from {0} to {1}? 🗃
+
 Price: {2} gold 💰</value>
   </data>
   <data name="YesText" xml:space="preserve">
@@ -1525,7 +1529,8 @@ Along with your purchase, you received:
 ✅ {1}%⚡️ faster pet education progress 🎓
 ✅ Access to a unique job — &lt;b&gt;Jeweler 💍&lt;/b&gt;(+{2} 💰, +{3} 💎)
 ✅ {4}% discount on the &lt;b&gt;Auto-Feeder 🤖&lt;/b&gt;
-✅ {5}% more messages for chatting with your pet &lt;i&gt;(with VIP {6} messages per hour, without VIP {7} messages)&lt;/i&gt;</value>
+✅ {5}% more messages for chatting with your pet &lt;i&gt;(with VIP {6} messages per hour, without VIP {7} messages)&lt;/i&gt;
+✅ Crown 👑 near the pet’s name in the Rankings 🏆</value>
   </data>
   <data name="AskToConfirmXdaysVIPpremium" xml:space="preserve">
     <value>&lt;b&gt;Are you sure you want to purchase a VIP account for {0} days?&lt;/b&gt;
@@ -1582,5 +1587,13 @@ Thank you for supporting this bot ❤️🤍❤️</value>
 💰 &lt;b&gt;Jobs&lt;/b&gt; — bonuses rebalanced, fatigue is now shown, new job Jeweler added 💍
 🎓 &lt;b&gt;Education&lt;/b&gt; — new Specialty “Jeweler” added 💍
 🎒 &lt;b&gt;Other&lt;/b&gt; — this button now has its own menu with additional bot options</value>
+  </data>
+  <data name="AskToConfirmAutoFeed" xml:space="preserve">
+    <value>Do you really want to buy auto-feed 5 charges?
+
+Price: {0} diamonds 💎</value>
+  </data>
+  <data name="AskToConfirmChangeType" xml:space="preserve">
+    <value>Do you really want to change your pet type to {0}?</value>
   </data>
 </root>

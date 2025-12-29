@@ -423,134 +423,37 @@ namespace TamagotchiBot.Controllers
 
         private async Task ChangeTypeToCatCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToCatCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToCatCMD for {_userInfo}");
-            await ChangePetTypeCMD(userDB,
-                                   petDB,
-                                   PetType.Cat,
-                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                                       nameof(changedTypeToCat).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)));
+            await AskConfirmChangeType(PetType.Cat);
         }
         private async Task ChangeTypeToDogCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToDogCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToDogCMD for {_userInfo}");
-            await ChangePetTypeCMD(
-                userDB,
-                petDB,
-                PetType.Dog,
-                nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                    nameof(changedTypeToDog).UseCulture(_userCulture),
-                    HttpUtility.HtmlEncode(petDB.Name)));
+            await AskConfirmChangeType(PetType.Dog);
         }
         private async Task ChangeTypeToPandaCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToPandaCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToPandaCMD for {_userInfo}");
-            await ChangePetTypeCMD(userDB,
-                                   petDB,
-                                   PetType.Panda,
-                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                                       nameof(changedTypeToPanda).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)));
+            await AskConfirmChangeType(PetType.Panda);
         }
         private async Task ChangeTypeToMonkeyCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToMonkeyCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToMonkeyCMD for {_userInfo}");
-            await ChangePetTypeCMD(userDB,
-                                   petDB,
-                                   PetType.Monkey,
-                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                                       nameof(changedTypeToMonkey).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)));
+            await AskConfirmChangeType(PetType.Monkey);
         }
         private async Task ChangeTypeToFoxCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToFoxCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToFoxCMD for {_userInfo}");
-            await ChangePetTypeCMD(userDB,
-                                   petDB,
-                                   PetType.Fox,
-                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                                       nameof(changedTypeToFox).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)));
+            await AskConfirmChangeType(PetType.Fox);
         }
         private async Task ChangeTypeToMouseCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToMouseCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToMouseCMD for {_userInfo}");
-            await ChangePetTypeCMD(userDB,
-                                   petDB,
-                                   PetType.Mouse,
-                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                                       nameof(changedTypeToMouse).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)));
+            await AskConfirmChangeType(PetType.Mouse);
         }
 
         private async Task ChangeTypeToTigerCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToTigerCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToTigerCMD for {_userInfo}");
-            int cost = Costs.ChangePetTypeToTiger;
-            bool isPremium = true;
-
-            if (userDB.OwnedPetTypes != null && userDB.OwnedPetTypes.Contains((int)PetType.Tiger))
-                cost = 0;
-
-            await ChangePetTypeCMD(userDB,
-                                   petDB,
-                                   PetType.Tiger,
-                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                                       nameof(changedTypeToTiger).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)),
-                                   cost,
-                                   isPremium);
+            await AskConfirmChangeType(PetType.Tiger);
         }
 
         private async Task ChangeTypeToLionCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToLionCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToLionCMD for {_userInfo}");
-            int cost = Costs.ChangePetTypeToLion;
-            bool isPremium = true;
-
-            if (userDB.OwnedPetTypes != null && userDB.OwnedPetTypes.Contains((int)PetType.Lion))
-                cost = 0;
-
-            await ChangePetTypeCMD(userDB,
-                                   petDB,
-                                   PetType.Lion,
-                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                                       nameof(changedTypeToLion).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)),
-                                   cost,
-                                   isPremium);
+            await AskConfirmChangeType(PetType.Lion);
         }
 
         private async Task ChangePetTypeCMD(User userDB, Pet petDB, PetType newPetType, string toSendText, int cost = Costs.ChangePetType, bool isPremium = false)
@@ -1100,7 +1003,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.DailyRewardSticker,
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture)
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -1187,17 +1090,142 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            _appServices.UserService.UpdateDiamonds(_userId, userDB.Diamonds - Constants.Costs.AutoFeedCostDiamonds);
-            _appServices.UserService.UpdateAutoFeedCharges(_userId, userDB.AutoFeedCharges + Constants.AutoFeed.AutoFeedChargesInitial);
-            _appServices.PetService.UpdateIsAutoFeedEnabled(_userId, true);
+            await AskConfirmBuyAutoFeed();
+        }
+
+        private async Task AskConfirmBuyAutoFeed()
+        {
+            var toSend = new AnswerMessage()
+            {
+                Text = string.Format(nameof(Resources.Resources.AskToConfirmAutoFeed).UseCulture(_userCulture), Constants.Costs.AutoFeedCostDiamonds),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                StickerId = StickersId.ConfirmBuyAutoFeedSticker,
+                ReplyMarkup = new ReplyKeyboardMarkup(new List<KeyboardButton>()
+                {
+                    new KeyboardButton(nameof(Resources.Resources.YesTextEmoji).UseCulture(_userCulture)),
+                    new KeyboardButton(nameof(Resources.Resources.NoTextEmoji).UseCulture(_userCulture))
+                })
+                {
+                    OneTimeKeyboard = true,
+                    ResizeKeyboard = true
+                }
+            };
+
+            _appServices.MetaUserService.UpdatePendingConfirmation(_userId, Confirms.BuyAutoFeed);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
+
+        private async Task AskConfirmChangeType(PetType type)
+        {
+            var toSend = new AnswerMessage()
+            {
+                Text = string.Format(nameof(AskToConfirmChangeType).UseCulture(_userCulture), Extensions.GetLongTypeEmoji(type, _userCulture)),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                StickerId = StickersId.ConfirmChangeTypePetSticker,
+                ReplyMarkup = new ReplyKeyboardMarkup(new List<KeyboardButton>()
+                {
+                    new KeyboardButton(nameof(Resources.Resources.YesTextEmoji).UseCulture(_userCulture)),
+                    new KeyboardButton(nameof(Resources.Resources.NoTextEmoji).UseCulture(_userCulture))
+                })
+                {
+                    OneTimeKeyboard = true,
+                    ResizeKeyboard = true
+                }
+            };
+
+            _appServices.MetaUserService.UpdatePendingConfirmation(_userId, $"ChangeTypeTo{type}");
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
+        public async Task BuyAutoFeedConfirm(long userId)
+        {
+            var userDB = _appServices.UserService.Get(userId);
+            if (userDB == null) return;
+
+            if (userDB.Diamonds < Constants.Costs.AutoFeedCostDiamonds)
+            {
+                var toSendErr = new AnswerMessage()
+                {
+                    Text = nameof(Resources.Resources.notEnoughDiamonds).UseCulture(_userCulture),
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    ReplyMarkup = Extensions.GetFarmKeyboardButtonArrays(_userCulture),
+                };
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSendErr, userId, true);
+                return;
+            }
+
+            _appServices.UserService.UpdateDiamonds(userId, userDB.Diamonds - Constants.Costs.AutoFeedCostDiamonds);
+            _appServices.UserService.UpdateAutoFeedCharges(userId, userDB.AutoFeedCharges + Constants.AutoFeed.AutoFeedChargesInitial);
+            _appServices.PetService.UpdateIsAutoFeedEnabled(userId, true);
 
             var toSend = new AnswerMessage()
             {
-                Text = string.Format(nameof(autoFeedBought).UseCulture(_userCulture), userDB.AutoFeedCharges + Constants.AutoFeed.AutoFeedChargesInitial),
+                Text = string.Format(nameof(Resources.Resources.autoFeedBought).UseCulture(_userCulture), userDB.AutoFeedCharges + Constants.AutoFeed.AutoFeedChargesInitial),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
-            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, true);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, userId, true);
         }
+
+        public async Task ChangeTypeConfirm(long userId, PetType newPetType)
+        {
+            var userDB = _appServices.UserService.Get(userId);
+            var petDB = _appServices.PetService.Get(userId);
+            if (userDB == null || petDB == null) return;
+
+            int cost = Constants.Costs.ChangePetType;
+            bool isPremium = false;
+
+            if (newPetType == PetType.Tiger)
+            {
+                cost = Constants.Costs.ChangePetTypeToTiger;
+                isPremium = true;
+                if (userDB.OwnedPetTypes != null && userDB.OwnedPetTypes.Contains((int)PetType.Tiger))
+                    cost = 0;
+            }
+            else if (newPetType == PetType.Lion)
+            {
+                cost = Constants.Costs.ChangePetTypeToLion;
+                isPremium = true;
+                if (userDB.OwnedPetTypes != null && userDB.OwnedPetTypes.Contains((int)PetType.Lion))
+                    cost = 0;
+            }
+
+            var aud = _appServices.AllUsersDataService.Get(userId);
+            switch (newPetType)
+            {
+                case PetType.Cat: aud.ChangedToCatCounter++; break;
+                case PetType.Dog: aud.ChangedToDogCounter++; break;
+                case PetType.Mouse: aud.ChangedToMouseCounter++; break;
+                case PetType.Fox: aud.ChangedToFoxCounter++; break;
+                case PetType.Panda: aud.ChangedToPandaCounter++; break;
+                case PetType.Monkey: aud.ChangedToMonkeyCounter++; break;
+                case PetType.Tiger: aud.ChangedToTigerCounter++; break;
+                case PetType.Lion: aud.ChangedToLionCounter++; break;
+            }
+            _appServices.AllUsersDataService.Update(aud);
+
+            string changedTypeMsg = newPetType switch
+            {
+                PetType.Cat => nameof(Resources.Resources.changedTypeToCat),
+                PetType.Dog => nameof(Resources.Resources.changedTypeToDog),
+                PetType.Mouse => nameof(Resources.Resources.changedTypeToMouse),
+                PetType.Fox => nameof(Resources.Resources.changedTypeToFox),
+                PetType.Panda => nameof(Resources.Resources.changedTypeToPanda),
+                PetType.Monkey => nameof(Resources.Resources.changedTypeToMonkey),
+                PetType.Tiger => nameof(Resources.Resources.changedTypeToTiger),
+                PetType.Lion => nameof(Resources.Resources.changedTypeToLion),
+                _ => nameof(Resources.Resources.changedTypeToCat) // Default fallback?
+            };
+
+            await ChangePetTypeCMD(userDB,
+                                   petDB,
+                                   newPetType,
+                                   nameof(Resources.Resources.changedTypeHeader).UseCulture(_userCulture) + string.Format(
+                                       changedTypeMsg.UseCulture(_userCulture),
+                                       HttpUtility.HtmlEncode(petDB.Name)),
+                                   cost,
+                                   isPremium);
+        }
+
         private async Task BuyPremiumWeekCMD(User userDB, Pet petDB)
         {
             if (userDB.Diamonds < Constants.Costs.VIP7DaysDiamonds)
@@ -1585,7 +1613,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.PetBathroomSticker_Cat), _userPetType),
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture)
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
@@ -1727,7 +1755,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = stickerHospital,
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture)
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -1835,13 +1863,15 @@ namespace TamagotchiBot.Controllers
                 {
                     Url = linkToDiscussChat
                 },
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture)
             };
             Log.Debug($"Called /ShowChangelogsInfo for {_userInfo}");
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
         private async Task ShowHelpInfo()
         {
+            var maxHistory = _appServices.SInfoService.GetGeminiMaxHistory();
+
             string toSendText = string.Format(nameof(helpCommand).UseCulture(_userCulture),
                                                 Constants.GoldForTopExpRanking.Top1.ToString("N0", System.Globalization.CultureInfo.InvariantCulture),
                                                 Constants.DiamondsForTopExpRanking.Top1,
@@ -1850,7 +1880,8 @@ namespace TamagotchiBot.Controllers
                                                 Constants.GoldForTopExpRanking.Top3.ToString("N0", System.Globalization.CultureInfo.InvariantCulture),
                                                 Constants.DiamondsForTopExpRanking.Top3,
                                                 Constants.GoldForTopExpRanking.Top4_10.ToString("N0", System.Globalization.CultureInfo.InvariantCulture),
-                                                Constants.DiamondsForTopExpRanking.Top4_10);
+                                                Constants.DiamondsForTopExpRanking.Top4_10,
+                                                Extensions.GetVipBenefitsString(maxHistory, _userCulture));
 
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
@@ -1861,7 +1892,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.HelpCommandSticker,
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             Log.Debug($"Called /ShowHelpInfo for {_userInfo}");
@@ -1907,7 +1938,7 @@ namespace TamagotchiBot.Controllers
                         Url = $"https://t.me/share/url?url={Extensions.GetReferalLink(_userId, botUsername)}"
                     }
                 }),
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -2679,7 +2710,13 @@ namespace TamagotchiBot.Controllers
                         }
                     });
 
-            return new AnswerMessage() { InlineKeyboardMarkup = toSendInline, Text = toSendText, StickerId = StickersId.DailyRewardSticker, ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture) };
+            return new AnswerMessage()
+            {
+                InlineKeyboardMarkup = toSendInline,
+                Text = toSendText,
+                StickerId = StickersId.DailyRewardSticker,
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture)
+            };
         }
         private async Task<AnswerCallback> ShowRemainedTimeDailyRewardCallback(TimeSpan remainedTime = default, bool isAlert = false)
         {
@@ -3140,7 +3177,7 @@ namespace TamagotchiBot.Controllers
                     }
                 }
 
-                return Extensions.GetRankString(rankItems, nameof(ranksCommandGold).UseCulture(_userCulture), currentUserItem, currentUserRank, "💎");
+                return Extensions.GetRankString(rankItems, nameof(ranksCommandGold).UseCulture(_userCulture), currentUserItem, currentUserRank, "💰");
             }
             catch (Exception ex)
             {

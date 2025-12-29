@@ -11,6 +11,7 @@ using Extensions = TamagotchiBot.UserExtensions.Extensions;
 using TamagotchiBot.UserExtensions;
 using System.Linq;
 using Telegram.Bot.Types.ReplyMarkups;
+using TamagotchiBot.Models;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Web;
@@ -229,6 +230,66 @@ namespace TamagotchiBot.Controllers
             }
 
             _appServices.MetaUserService.IsConfirmAskedOnVIP7daysBuying(_userId, false);
+            return false;
+        }
+
+        internal async Task<bool> TryApplyConfirmation(string pendingConfirm)
+        {
+            if (string.IsNullOrEmpty(pendingConfirm))
+                return false;
+
+            var msgText = _message?.Text;
+            if (string.IsNullOrEmpty(msgText))
+            {
+                // Re-ask confirmation if message is empty (similar logic to VIP) in case of confusion?
+                // Or just return for now as we need text response.
+                return false;
+            }
+
+            // Cancel if command
+            if (msgText.FirstOrDefault() == '/')
+            {
+                _appServices.MetaUserService.UpdatePendingConfirmation(_userId, null);
+                await new MenuController(_appServices, null, _message).ProcessMessage($"{msgText}");
+                return true;
+            }
+
+            bool? answerFromUser = null;
+            msgText = msgText.ToLower();
+
+            if (GetAllTranslatedAndLowered(nameof(Resources.Resources.YesTextEmoji)).Contains(msgText))
+                answerFromUser = true;
+            else if (GetAllTranslatedAndLowered(nameof(Resources.Resources.NoTextEmoji)).Contains(msgText))
+                answerFromUser = false;
+
+            if (answerFromUser.HasValue && answerFromUser == false)
+            {
+                _appServices.MetaUserService.UpdatePendingConfirmation(_userId, null);
+                await new MenuController(_appServices, null, _message).ProcessMessage($"/{Commands.FarmCommand}"); // Redirect to Farm or Pet? default back to something safe
+                return false;
+            }
+
+            if (answerFromUser.HasValue && answerFromUser == true)
+            {
+                _appServices.MetaUserService.UpdatePendingConfirmation(_userId, null);
+
+                // Execute logic based on PendingConfirmation
+                if (pendingConfirm == Confirms.BuyAutoFeed)
+                {
+                    await new MenuController(_appServices, null, _message).BuyAutoFeedConfirm(_userId);
+                    return true;
+                }
+                else if (pendingConfirm.StartsWith("ChangeTypeTo"))
+                {
+                    if (Enum.TryParse<PetType>(pendingConfirm.Replace("ChangeTypeTo", ""), out var type))
+                    {
+                        await new MenuController(_appServices, null, _message).ChangeTypeConfirm(_userId, type);
+                        return true;
+                    }
+                }
+            }
+
+            _appServices.MetaUserService.UpdatePendingConfirmation(_userId, null);
             return false;
         }
         internal async Task<bool> ApplyNewLanguage()

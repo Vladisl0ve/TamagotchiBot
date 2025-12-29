@@ -260,11 +260,12 @@ namespace TamagotchiBot.Handlers
                 return;
             }
 
-            //if (DidUserConfirmBuyingWithTgStars(userId) ?? false)
-            //{
-            //    await new CreatorController(_appServices, message).ToRenamingAnswer();
-            //    return;
-            //}
+            var pendingConfirm = _appServices.MetaUserService.GetPendingConfirmation(userId);
+            if (pendingConfirm != null)
+            {
+                await new CreatorController(_appServices, message).TryApplyConfirmation(pendingConfirm);
+                return;
+            }
 
             #endregion
 

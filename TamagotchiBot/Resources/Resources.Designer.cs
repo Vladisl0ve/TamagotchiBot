@@ -131,7 +131,28 @@ namespace TamagotchiBot.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to buy auto-feed 5 charges?
+        ///
+        ///Price: {0} diamonds 💎.
+        /// </summary>
+        public static string AskToConfirmAutoFeed {
+            get {
+                return ResourceManager.GetString("AskToConfirmAutoFeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to change your pet type to {0}?.
+        /// </summary>
+        public static string AskToConfirmChangeType {
+            get {
+                return ResourceManager.GetString("AskToConfirmChangeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to change your pet&apos;s name from {0} to {1}? 🗃
+        ///
         ///Price: {2} gold 💰.
         /// </summary>
         public static string AskToConfirmRenamingPet {
@@ -443,7 +464,7 @@ namespace TamagotchiBot.Resources {
         ///🍽 &lt;b&gt;Kitchen&lt;/b&gt; — new types of dishes added, bonuses/prices updated
         ///💰 &lt;b&gt;Jobs&lt;/b&gt; — bonuses rebalanced, fatigue is now shown, new job Jeweler added 💍
         ///🎓 &lt;b&gt;Education&lt;/b&gt; — new Specialty “Jeweler” added 💍
-        ///🎒 &lt;b&gt;Other&lt;/b&gt; — this button now has its own menu with additional bot options.
+        ///🎒 &lt;b&gt;Other&lt;/b&gt; — this button now has its own menu with additional bot [rest of string was truncated]&quot;;.
         /// </summary>
         public static string changelog_onPatch_18 {
             get {
@@ -2260,7 +2281,8 @@ namespace TamagotchiBot.Resources {
         ///✅ {1}%⚡️ faster pet education progress 🎓
         ///✅ Access to a unique job — &lt;b&gt;Jeweler 💍&lt;/b&gt;(+{2} 💰, +{3} 💎)
         ///✅ {4}% discount on the &lt;b&gt;Auto-Feeder 🤖&lt;/b&gt;
-        ///✅ {5}% more messages for chatting with your pet &lt;i&gt;(with VIP {6} messages per hour, without VIP {7} messages)&lt;/i&gt;.
+        ///✅ {5}% more messages for chatting with your pet &lt;i&gt;(with VIP {6} messages per hour, without VIP {7} messages)&lt;/i&gt;
+        ///✅ Crown 👑 near the pet’s name in the Rankings 🏆.
         /// </summary>
         public static string premiumVIPBenefits {
             get {

@@ -212,12 +212,14 @@ namespace TamagotchiBot.UserExtensions
             {
                 nameof(Resources.Resources.changelogCommandDescription).UseCulture(culture),
                 nameof(Resources.Resources.hospitalCommandDescription).UseCulture(culture),
-                nameof(Resources.Resources.ranksCommandDescription).UseCulture(culture),
+                nameof(Resources.Resources.bathroomCommandDescription).UseCulture(culture),
 
                 nameof(Resources.Resources.languageCommandDescription).UseCulture(culture),
                 nameof(Resources.Resources.rewardCommandDescription).UseCulture(culture),
                 nameof(Resources.Resources.helpCommandDescription).UseCulture(culture),
 
+                nameof(Resources.Resources.referalCommandDescription).UseCulture(culture),
+                nameof(Resources.Resources.renameCommandDescription).UseCulture(culture),
                 nameof(Resources.Resources.goAwayButton).UseCulture(culture)
             };
         }

@@ -19,6 +19,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("IsConfirmAskedOnVIP7daysBuying")]
         public bool IsConfirmAskedOnVIP7daysBuying { get; set; } = false;
 
+        [BsonElement("PendingConfirmation")]
+        public string PendingConfirmation { get; set; } = null;
+
         [BsonElement("TmpPetName")]
         public string TmpPetName { get; set; }
 
