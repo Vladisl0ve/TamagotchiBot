@@ -8,8 +8,13 @@ using TamagotchiBot.Models.Mongo;
 
 namespace TamagotchiBot.Services.Mongo
 {
-    public class UserService(ITamagotchiDatabaseSettings settings) : MongoServiceBase<User>(settings)
+    public class UserService : MongoServiceBase<User>
     {
+        private readonly IMongoCollection<User> _backupCollection;
+        public UserService(ITamagotchiDatabaseSettings settings) : base(settings)
+        {
+            _backupCollection = MongoDatabase.GetCollection<User>(settings.UsersBackupCollectionName);
+        }
         public List<User> GetAll() => _collection.Find(u => true).ToList();
 
         public User Get(long userId) => _collection.Find(u => u.UserId == userId).FirstOrDefault();
@@ -162,7 +167,15 @@ namespace TamagotchiBot.Services.Mongo
             return true;
         }
 
-        public void Remove(long userId) => _collection.DeleteOne(u => u.UserId == userId);
+        public void Remove(long userId)
+        {
+            var user = Get(userId);
+            if (user != null)
+            {
+                _backupCollection.InsertOne(user);
+                _collection.DeleteOne(u => u.UserId == userId);
+            }
+        }
 
         public void UpdateAutoFeedCharges(long userId, int charges)
         {

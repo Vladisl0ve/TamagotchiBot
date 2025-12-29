@@ -173,7 +173,9 @@ namespace Telegram.Bots.Example
                     ArchiveUserInfoCollectionName = "ArchiveUserInfo",
                     TicTacToeGameDataCollectionName = "TicTacToeGameData",
                     HangmanGameDataCollectionName = "HangmanGameData",
-                    PaymentCollectionName = "StarPayments"
+                    PaymentCollectionName = "StarPayments",
+                    PetsBackupCollectionName = "PetsBackup",
+                    UsersBackupCollectionName = "UsersBackup"
                 },
 
                 EnvsSettings = new EnvsSettings()
