@@ -26,7 +26,7 @@ namespace TamagotchiBot.Services
         private ChatService _chatService;
         private AppleGameDataService _appleGameDataService;
         private TicTacToeGameDataService _ticTacToeGameDataService;
-        private HangmanGameDataService _hangmanGameDataService ;
+        private HangmanGameDataService _hangmanGameDataService;
         private MetaUserService _metaUserService;
         public BotControlService(ITelegramBotClient bot,
                                  UserService userService,
@@ -545,6 +545,51 @@ namespace TamagotchiBot.Services
             catch
             {
                 return 0;
+            }
+        }
+        public async Task SendInvoiceAsync(long chatId,
+                                           string title,
+                                           string description,
+                                           string payload,
+                                           string providerToken,
+                                           string currency,
+                                           IEnumerable<Telegram.Bot.Types.Payments.LabeledPrice> prices,
+                                           CancellationToken cancellationToken = default,
+                                           bool toLog = true)
+        {
+            var userDB = _userService.Get(chatId);
+            string logInfo = Extensions.GetLogUser(userDB);
+
+            try
+            {
+                if (toLog)
+                    Log.Information($"Invoice sent to {logInfo}, payload: {payload}");
+
+                await _botClient.SendInvoice(chatId: chatId,
+                                             title: title,
+                                             description: description,
+                                             payload: payload,
+                                             providerToken: providerToken,
+                                             currency: currency,
+                                             prices: prices,
+                                             cancellationToken: cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"INVOICE MSG: {ex.Message}, InnerExeption: {ex.InnerException?.Message}, USER: {logInfo}");
+            }
+        }
+        public async Task AnswerPreCheckoutQueryAsync(string preCheckoutQueryId, bool ok, string errorMessage = null, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                if (ok) errorMessage = null;
+                await _botClient.AnswerPreCheckoutQuery(preCheckoutQueryId: preCheckoutQueryId, errorMessage: errorMessage, cancellationToken: cancellationToken);
+                Log.Information($"PreCheckoutQuery answered: {(ok ? "ok" : "not ok, " + errorMessage)}");
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"AnswerPreCheckoutQuery ERROR: {ex.Message}");
             }
         }
     }

@@ -13,7 +13,7 @@ namespace TamagotchiBot.Services.Mongo
     public abstract class MongoServiceBase<T> : IMainConnectService
     {
         protected readonly IMongoCollection<T> _collection;
-        readonly IMongoDatabase MongoDatabase;
+        protected readonly IMongoDatabase MongoDatabase;
         public MongoServiceBase(ITamagotchiDatabaseSettings settings)
         {
             bool restart;
@@ -23,9 +23,10 @@ namespace TamagotchiBot.Services.Mongo
                 {
                     restart = false;
 
-                    _collection = new MongoClient(MongoClientSettings.FromConnectionString(GetConnectStringFromEnv()))
-                        .GetDatabase(settings.DatabaseName)
-                        .GetCollection<T>
+                    MongoDatabase = new MongoClient(MongoClientSettings.FromConnectionString(GetConnectStringFromEnv()))
+                        .GetDatabase(settings.DatabaseName);
+
+                    _collection = MongoDatabase.GetCollection<T>
                         (
                             EditedClassNames.TryGetValue(typeof(T).Name, out string value) ? value : typeof(T).Name
                         );
@@ -45,7 +46,8 @@ namespace TamagotchiBot.Services.Mongo
                 {nameof(AppleGameData), "AppleGame"},
                 {nameof(Chat), "Chats"},
                 {nameof(Pet), "Pets"},
-                {nameof(User), "Users"}
+                {nameof(User), "Users"},
+                {nameof(StarPayment), "StarPayments"},
         };
 
         private string GetConnectStringFromEnv()

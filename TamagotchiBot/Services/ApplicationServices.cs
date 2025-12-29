@@ -46,6 +46,7 @@ namespace TamagotchiBot.Services
 
                                    TicTacToeGameDataService ticTacToeGameDataService,
                                    HangmanGameDataService hangmanGameDataService,
+                                   PaymentService paymentService,
                                    BotControlService botControlService)
         {
             AdsProducersService = adsProducersService;
@@ -64,10 +65,12 @@ namespace TamagotchiBot.Services
 
             TicTacToeGameDataService = ticTacToeGameDataService;
             HangmanGameDataService = hangmanGameDataService;
+            PaymentService = paymentService;
         }
 
 
         public TicTacToeGameDataService TicTacToeGameDataService { get; }
         public HangmanGameDataService HangmanGameDataService { get; }
+        public IPaymentService PaymentService { get; }
     }
 }

@@ -19,6 +19,7 @@ using System.Linq;
 using TamagotchiBot.Database;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
+using TamagotchiBot.Models;
 
 namespace TamagotchiBot.Handlers
 {
@@ -27,6 +28,7 @@ namespace TamagotchiBot.Handlers
         private readonly IApplicationServices _appServices;
         private readonly IEnvsSettings _envs;
         private readonly ConcurrentDictionary<(long userId, long chatId), DateTime> lastMsgList = new ConcurrentDictionary<(long, long), DateTime>();
+        private static string _subgramKey = null;
 
         public UpdateHandler(IApplicationServices services, IEnvsSettings envs)
         {
@@ -37,115 +39,165 @@ namespace TamagotchiBot.Handlers
 #endif
         }
 
-        public Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            if (!ToContinueHandlingUpdateChecking(update))
-                return Task.CompletedTask;
+            var handler = update.Type switch
+            {
+                UpdateType.Message => BotOnMessageReceived(botClient, update.Message!),
+                UpdateType.CallbackQuery => BotOnCallbackQueryReceived(botClient, update.CallbackQuery!),
+                UpdateType.PreCheckoutQuery => OnPreCheckoutQuery(update.PreCheckoutQuery!),
+                _ => UnknownUpdateHandlerAsync(botClient, update)
+            };
 
-            var messageFromUser = update.Message;
-            var callbackFromUser = update.CallbackQuery;
-            var userId = messageFromUser?.From.Id ?? callbackFromUser?.From.Id ?? default;
-            var chatId = messageFromUser?.Chat.Id ?? callbackFromUser?.Message.Chat.Id ?? default;
+            try
+            {
+                await handler;
+            }
+            catch (Exception exception)
+            {
+                await HandleErrorAsync(botClient, exception, HandleErrorSource.HandleUpdateError, cancellationToken);
+            }
+        }
+
+        private async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
+        {
+            if (message.Type == MessageType.SuccessfulPayment)
+            {
+                await OnSuccessfulPayment(message);
+                return;
+            }
+
+            if (message.Type != MessageType.Text && message.Type != MessageType.NewChatMembers && message.Type != MessageType.LeftChatMember)
+                return;
+
+            if (message.From == null)
+                return;
+
+            if (message.Chat?.Id != null && _envs.ChatsToDevNotify.Any(c => message.Chat.Id.ToString() == c))
+                return;
+
+            if (message.ForwardDate != null)
+                return;
+
+            var userId = message.From.Id;
+            var chatId = message.Chat.Id;
             var msgAudience = chatId > 0 ? MessageAudience.Private : MessageAudience.Group;
-
-            HandleUpdate(update, msgAudience);
 
             new SetCommandController(_appServices, _envs, userId, chatId).UpdateCommands(msgAudience, _appServices.UserService.Get(userId)?.Culture ?? "ru");
 
             _appServices.SInfoService.UpdateLastGlobalUpdate();
-            return Task.CompletedTask;
 
-            async void HandleUpdate(Update update, MessageAudience messageAudience)
-            {
-                switch (messageAudience)
-                {
-                    case MessageAudience.Private:
-                        {
-                            switch (update.Type)
-                            {
-                                case UpdateType.Message:
-                                    await OnMessagePrivate(update.Message);
-                                    return;
-                                case UpdateType.CallbackQuery:
-                                    await OnCallbackPrivate(update.CallbackQuery);
-                                    return;
-                                default:
-                                    return;
-                            }
-                        }
-                    case MessageAudience.Group:
-                        {
-                            switch (update.Type)
-                            {
-                                case UpdateType.Message:
-                                    await OnMessageGroup(update.Message, (await botClient.GetMe(cancellationToken: cancellationToken)).Id);
-                                    return;
-                                case UpdateType.CallbackQuery:
-                                    await OnCallbackGroup(update.CallbackQuery);
-                                    return;
-                                default:
-                                    return;
-                            }
-                        }
-                    default:
-                        return;
-                }
-            }
+            if (msgAudience == MessageAudience.Private)
+                await OnMessagePrivate(message);
+            else
+                await OnMessageGroup(message, (await botClient.GetMe(cancellationToken: default)).Id);
         }
 
-        private async Task<bool> IsUserRegisteredFlyerCheck(long userId)
+        private async Task BotOnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
         {
-            const int TIMEOUT_SECONDS = 2;
+            if (callbackQuery.Message == null)
+                return;
+
+            if (callbackQuery.Message.Chat?.Id != null && _envs.ChatsToDevNotify.Any(c => callbackQuery.Message.Chat.Id.ToString() == c))
+                return;
+
+            if (callbackQuery.Message.ForwardDate != null)
+                return;
+
+            var userId = callbackQuery.From.Id;
+            var chatId = callbackQuery.Message.Chat.Id;
+            var msgAudience = chatId > 0 ? MessageAudience.Private : MessageAudience.Group;
+
+            Log.Information($"Received callback type: {callbackQuery.Message.Type} from userId: {userId} in chatId: {chatId}, msgAudience: {msgAudience}");
+
+            new SetCommandController(_appServices, _envs, userId, chatId).UpdateCommands(msgAudience, _appServices.UserService.Get(userId)?.Culture ?? "ru");
+
+            _appServices.SInfoService.UpdateLastGlobalUpdate();
+
+            if (msgAudience == MessageAudience.Private)
+                await OnCallbackPrivate(callbackQuery);
+            else
+                await OnCallbackGroup(callbackQuery);
+        }
+
+        private Task UnknownUpdateHandlerAsync(ITelegramBotClient botClient, Update update)
+        {
+            Log.Information($"Unknown update type: {update.Type}");
+            return Task.CompletedTask;
+        }
+
+        private async Task<bool> IsUserRegisteredSubgramCheck(long userId, long chatId, string name, string username, string languageCode)
+        {
 #if DEBUG || DEBUG_NOTIFY || STAGING
             return true; //true on DEBUG
 #endif
+            if (string.IsNullOrEmpty(_subgramKey))
+                _subgramKey = _appServices.SInfoService.GetSubgramKey();
+
+            if (string.IsNullOrEmpty(_subgramKey))
+                return true;
+
+            const int TIMEOUT_SECONDS = 3;
+
             try
             {
                 using var client = new HttpClient();
                 client.Timeout = TimeSpan.FromSeconds(TIMEOUT_SECONDS);
+                client.DefaultRequestHeaders.Add("Auth", _subgramKey);
 
-                var sendPostDto = new { key = "FL-eWYKid-AEeWAG-ElIsea-FunlRj", user_id = userId };
+                var sendPostDto = new
+                {
+                    user_id = userId,
+                    chat_id = chatId,
+                    first_name = name,
+                    username = username,
+                    language_code = languageCode
+                };
                 var json = JsonConvert.SerializeObject(sendPostDto);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await client.PostAsync("https://api.flyerservice.io/check", content);
+                var response = await client.PostAsync("https://api.subgram.org/get-sponsors", content);
 
                 var result = await response.Content.ReadAsStringAsync();
 
+                Log.Information($"Subgram response: {result}");
+
                 if (!response.IsSuccessStatusCode)
                 {
-                    Log.Error("==> ERROR ON FLYER RESPONSE:" + result);
+                    Log.Error("==> ERROR ON SUBGRAM RESPONSE:" + result);
                     return true;
                 }
 
-                if (result.Contains("\"skip\":false"))
+                var subgramResponse = JsonConvert.DeserializeObject<SubgramResponse>(result);
+
+                if (subgramResponse?.status == "warning")
                 {
-                    Log.Information($"Flyer ==> tasks not done, userId: {userId}");
+                    Log.Information($"Subgram ==> tasks not done, userId: {userId}");
                     return false;
                 }
-                else if (result.Contains("\"skip\":true"))
-                {
-                    Log.Information($"Flyer ==> tasks done, userId: {userId}, result: {result}");
-                    return true;
-                }
 
-                Log.Fatal($"Flyer ==> wrong result: {result}");
-                return true; //true on error
+                return true;
             }
             catch (TaskCanceledException)
             {
-                Log.Error($"TIMEOUT FLYER - {TIMEOUT_SECONDS}s");
+                Log.Error($"TIMEOUT SUBGRAM - {TIMEOUT_SECONDS}s");
                 return true; //true on error
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error FLYER HTTP: ");
+                Log.Error(ex, "Error SUBGRAM HTTP: ");
                 return true; //true on error
             }
         }
 
         private async Task OnMessagePrivate(Message message)
         {
+            if (message.Type == MessageType.SuccessfulPayment)
+            {
+                await OnSuccessfulPayment(message);
+                return;
+            }
+
             var userId = message.From.Id;
             if (IsAdminMessage(userId))
             {
@@ -200,12 +252,39 @@ namespace TamagotchiBot.Handlers
                 return;
             }
 
-            //if(_appServices.UserService.Get(userId)?.Created < DateTime.UtcNow.AddDays(1))
-            //    if (!await IsUserRegisteredFlyerCheck(userId))//FLYER
-            //{
-            //    await _appServices.BotControlService.SendStickerAsync(userId, StickersId.FlyerADSSticker);
-            //    return;
-            //}
+            #region buying checks
+
+            if (IsUserAskedOnBuying7daysVIP(userId) ?? false)
+            {
+                await new CreatorController(_appServices, message).TryApplyVIP7days();
+                return;
+            }
+
+            var pendingConfirm = _appServices.MetaUserService.GetPendingConfirmation(userId);
+            if (pendingConfirm != null)
+            {
+                await new CreatorController(_appServices, message).TryApplyConfirmation(pendingConfirm);
+                return;
+            }
+
+            #endregion
+
+
+            if (_appServices.UserService.Get(userId)?.Created < DateTime.UtcNow.AddDays(-1))
+            {
+                try
+                {
+                    if (!await IsUserRegisteredSubgramCheck(userId, message.Chat.Id, message.From.FirstName, message.From.Username, message.From.LanguageCode))
+                    {
+                        return;
+                    }
+
+                }
+                catch
+                {
+                    Log.Error($"Error on Subgram check for userId: {userId}");
+                }
+            }
 
             if (_appServices.PetService.Get(message.From.Id)?.Name != null)
                 SendGramadsPostToChat(message.From.Id);
@@ -281,11 +360,11 @@ namespace TamagotchiBot.Handlers
                 return;
             }
 
-            //if (!await IsUserRegisteredFlyerCheck(userId))//FLYER
-            //{
-            //    await _appServices.BotControlService.SendStickerAsync(userId, StickersId.FlyerADSSticker);
-            //    return;
-            //}
+            if (_appServices.UserService.Get(userId)?.Created < DateTime.UtcNow.AddDays(-1))
+                if (!await IsUserRegisteredSubgramCheck(userId, callbackQuery.Message.Chat.Id, callbackQuery.From.FirstName, callbackQuery.From.Username, callbackQuery.From.LanguageCode))
+                {
+                    return;
+                }
 
             // call this method wherever you want to show an ad,
             // for example your bot just made its job and
@@ -375,24 +454,7 @@ namespace TamagotchiBot.Handlers
         }
 
 
-        /// <returns>true == handled update is acceptable to continue, otherwise must to stop</returns>
-        private bool ToContinueHandlingUpdateChecking(Update update)
-        {
-            if ((update.Type == UpdateType.Message)
-                && (update.Message.Type == MessageType.Text || update.Message.Type == MessageType.NewChatMembers || update.Message.Type == MessageType.LeftChatMember)
-                && (update.Message.From != null)
-                && (update.Message.Chat?.Id != null && !_envs.ChatsToDevNotify.Any(c => update.Message.Chat.Id.ToString() == c))
-                && (update.Message.ForwardDate == null))
-                return true;
 
-            if ((update.Type == UpdateType.CallbackQuery)
-                && (update.CallbackQuery.Message != null)
-                && (update.CallbackQuery.Message.Chat?.Id != null && !_envs.ChatsToDevNotify.Any(c => update.CallbackQuery.Message.Chat.Id.ToString() == c))
-                && (update.CallbackQuery.Message.ForwardDate == null))
-                return true;
-
-            return false;
-        }
 
         private bool IsCooldown(long userId, long chatId, DateTime sentMsgTime)
         {
@@ -438,6 +500,14 @@ namespace TamagotchiBot.Handlers
                 return null;
 
             return metauserDB.IsPetNameAskedOnRename;
+        }
+        private bool? IsUserAskedOnBuying7daysVIP(long userId)
+        {
+            var metauserDB = _appServices.MetaUserService.Get(userId);
+            if (metauserDB == null)
+                return null;
+
+            return metauserDB.IsConfirmAskedOnVIP7daysBuying;
         }
         private bool IsUserAndPetRegisteredChecking(long userId)
         {
@@ -556,6 +626,49 @@ namespace TamagotchiBot.Handlers
             {
                 Log.Error(ex, "Error GRAMADS HTTP: ");
             }
+        }
+
+        private async Task OnPreCheckoutQuery(Telegram.Bot.Types.Payments.PreCheckoutQuery preCheckoutQuery)
+        {
+            Log.Information($"Received PreCheckoutQuery: {preCheckoutQuery.Id} from {preCheckoutQuery.From.Id}");
+            await _appServices.BotControlService.AnswerPreCheckoutQueryAsync(preCheckoutQuery.Id, true);
+        }
+
+        private async Task OnSuccessfulPayment(Message message)
+        {
+            var successfulPayment = message.SuccessfulPayment;
+            var payload = successfulPayment.InvoicePayload;
+            var userId = message.From.Id;
+
+            int amountDiamonds = 0;
+            if (payload == Constants.PaymentItems.DiamondPack1.Name) amountDiamonds = Constants.PaymentItems.DiamondPack1.Amount;
+            else if (payload == Constants.PaymentItems.DiamondPack2.Name) amountDiamonds = Constants.PaymentItems.DiamondPack2.Amount;
+            else if (payload == Constants.PaymentItems.DiamondPack3.Name) amountDiamonds = Constants.PaymentItems.DiamondPack3.Amount;
+            else if (payload == Constants.PaymentItems.DiamondPack4.Name) amountDiamonds = Constants.PaymentItems.DiamondPack4.Amount;
+
+            if (amountDiamonds > 0)
+            {
+                var starPayment = new Models.Mongo.StarPayment
+                {
+                    UserId = userId,
+                    TelegramPaymentChargeId = successfulPayment.TelegramPaymentChargeId,
+                    ProviderPaymentChargeId = successfulPayment.ProviderPaymentChargeId,
+                    Amount = successfulPayment.TotalAmount,
+                    Currency = successfulPayment.Currency,
+                    PaymentDate = DateTime.UtcNow
+                };
+                await _appServices.PaymentService.Create(starPayment);
+
+                var user = _appServices.UserService.Get(userId);
+                _appServices.UserService.UpdateDiamonds(userId, (user?.Diamonds ?? 0) + amountDiamonds);
+
+                var culture = user?.Culture ?? "ru";
+                await _appServices.BotControlService.SendTextMessageAsync(userId,
+                                                                        string.Format(nameof(TamagotchiBot.Resources.Resources.payment_success_message).UseCulture(culture), amountDiamonds)
+                                                                        );
+            }
+
+            Log.Information($"User {userId} successful payment: {successfulPayment.TotalAmount} {successfulPayment.Currency}, payload: {payload}");
         }
 
         public async Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, HandleErrorSource source, CancellationToken cancellationToken)

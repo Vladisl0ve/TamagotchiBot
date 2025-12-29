@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaintanceAlertBot", "Mainta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaintanceAlertBot.Tests", "MaintanceAlertBot.Tests\MaintanceAlertBot.Tests.csproj", "{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TamagotchiBot.Tests", "TamagotchiBot.Tests\TamagotchiBot.Tests.csproj", "{03F2CB1D-8D12-40D1-9159-82AD31AD1AD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}.Staging_Local|Any CPU.Build.0 = Release|Any CPU
 		{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{C4D1EF0E-28DE-4E6F-8C64-9526E819D2FD}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{03F2CB1D-8D12-40D1-9159-82AD31AD1AD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03F2CB1D-8D12-40D1-9159-82AD31AD1AD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03F2CB1D-8D12-40D1-9159-82AD31AD1AD3}.Debug-Hotfix|Any CPU.ActiveCfg = Debug|Any CPU
+		{03F2CB1D-8D12-40D1-9159-82AD31AD1AD3}.Debug-Hotfix|Any CPU.Build.0 = Debug|Any CPU
+		{03F2CB1D-8D12-40D1-9159-82AD31AD1AD3}.Debug-Notify|Any CPU.ActiveCfg = Debug|Any CPU
+		{03F2CB1D-8D12-40D1-9159-82AD31AD1AD3}.Debug-Notify|Any CPU.Build.0 = Debug|Any CPU
+		{03F2CB1D-8D12-40D1-9159-82AD31AD1AD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03F2CB1D-8D12-40D1-9159-82AD31AD1AD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03F2CB1D-8D12-40D1-9159-82AD31AD1AD3}.Staging_Local|Any CPU.ActiveCfg = Release|Any CPU
+		{03F2CB1D-8D12-40D1-9159-82AD31AD1AD3}.Staging_Local|Any CPU.Build.0 = Release|Any CPU
+		{03F2CB1D-8D12-40D1-9159-82AD31AD1AD3}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{03F2CB1D-8D12-40D1-9159-82AD31AD1AD3}.Staging|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

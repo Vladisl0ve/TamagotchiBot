@@ -141,7 +141,7 @@ Don't forget to visit your pet, otherwise he may get offended and leave
 Have fun 🍿</value>
   </data>
   <data name="petCommand" xml:space="preserve">
-    <value>{11} {0}
+    <value>{11} {0} {18}
 
 💊 HP: {1}%
 🍕 Satiety: {4}%
@@ -200,19 +200,26 @@ Have fun 🍿</value>
     <value>Extra info 📝</value>
   </data>
   <data name="kitchenCommand" xml:space="preserve">
-    <value>You are in the kitchen 🥦
-🍕 Pet's satiety: {0}%
+    <value>&lt;b&gt;You are in the kitchen 🥣&lt;/b&gt;
+
+🍕 Pet satiety: {0}%
 💰 Gold: {1}
+😴 Fatigue: {2}%
+💊 HP: {3}%
 
-Bread 🍞 = +50%🍕 |-30💰
-Apple 🍎 = +5%🍕 |-1💰
-Lollipop 🍭 = +1%🍕 |-0 💰
-Chocolate 🍫 = +2%🍕 |-0💰
+Bread 🍞 = +{4}%🍕 |-{5}💰
+Apple 🍎 = +{6}%🍕 |+{7}%💊 |-{8}💰
 
-Don't forget feed him 🐣</value>
+Chocolate 🍫 = +{9}%🍕 |-{10}%😴 |-{11}💰
+Lollipop 🍭 = +{12}%🍕 |-{13}💰
+
+Coffee ☕️ = +{14}%🍕 |-{15}%😴 |-{16}💰
+Milk 🥛 = +{17}%🍕 |+{18}%💊 |-{19}💰
+
+Don’t forget to feed your pet 🐣</value>
   </data>
   <data name="PetFeedingAnwserCallback" xml:space="preserve">
-    <value>Your pet has satisfied hunger on {0}%</value>
+    <value>🥗 Your pet has satisfied hunger on {0}% 🥗</value>
   </data>
   <data name="FatigueFresh" xml:space="preserve">
     <value>fresh</value>
@@ -301,7 +308,10 @@ Do not play so much and safety first! 🧗‍♀️</value>
     <value>Dropped pet {0} 💔</value>
   </data>
   <data name="renameCommand" xml:space="preserve">
-    <value>Type new name for pet 🗯️</value>
+    <value>Type new name for pet 🗯️
+
+Click /pet for cancel
+</value>
   </data>
   <data name="renameCommandDescription" xml:space="preserve">
     <value>New name ✏️</value>
@@ -347,24 +357,33 @@ In the commands menu, you’ll find everything your pet needs 🌻
 
 &lt;b&gt;FAQ:&lt;/b&gt;
 
-&lt;b&gt;How is level earned 🏅?&lt;/b&gt;
-&lt;i&gt;1 XP = 1 minute of pet’s life. Just remember your pet 🦩&lt;/i&gt;
+&lt;b&gt;How does the level 🏅 accumulate?&lt;/b&gt;
+&lt;i&gt;✅ 1 experience = 1 minute of pet’s life. Just remember to take care of your pet 🦩.
+Experience is also earned through various actions with the pet (feeding, playing mini-games)&lt;/i&gt;
 
 &lt;b&gt;How to earn money 💰?&lt;/b&gt;
-&lt;i&gt;Gold is earned by working (/work)&lt;/i&gt;
+&lt;i&gt;✅ Gold is earned by working (/work)&lt;/i&gt;
 
 &lt;b&gt;Can the pet die 💀?&lt;/b&gt;
-&lt;i&gt;Unfortunately, just like in real life, a pet in Tamagotchi can get very upset and leave 💔
+&lt;i&gt;✅ Unfortunately, just like in real life, a pet in Tamagotchi can get very upset and leave 💔
 So visit your virtual friend often 🧸&lt;/i&gt;
 
 &lt;b&gt;How to get Diamonds 💎?&lt;/b&gt;
-&lt;i&gt;For now, only via the referral program (/referal) or by ranking in the TOP-3 pets by level at the end of the month.&lt;/i&gt;
+&lt;i&gt;✅ For now, only via the referral program (/referal) or by ranking in the TOP-3 pets by level at the end of the month.&lt;/i&gt;
 
-&lt;b&gt;Every month my pet’s levels reset. Why?&lt;/b&gt;
-&lt;i&gt;Yes, each month pet levels reset. Pets in the TOP-10 get prizes. TOP-3 get both gold💰 and diamonds💎!&lt;/i&gt;
+&lt;b&gt;Every month my pet levels disappear. What is this?&lt;/b&gt;
+&lt;i&gt;✅ Yes, every month pet levels are reset.
+But rewards are given to the best pets of the month!&lt;/i&gt;
+&lt;b&gt;TOP 1:&lt;/b&gt; {0}💰, {1}💎
+&lt;b&gt;TOP 2:&lt;/b&gt; {2}💰, {3}💎
+&lt;b&gt;TOP 3:&lt;/b&gt; {4}💰, {5}💎
+&lt;b&gt;TOP 4-10:&lt;/b&gt; {6}💰
+
+&lt;b&gt;What are the benefits of a VIP account?&lt;/b&gt;
+{8}
 
 &lt;b&gt;How does the AUTO-FEEDER work?&lt;/b&gt;
-&lt;i&gt;On the Farm you can turn the auto-feeder on/off. If turned on, the pet feeds itself every 4 hours (SATIETY can even exceed 100) and consumes one charge. You can recharge the auto-feeder on the Farm.&lt;/i&gt;
+&lt;i&gt;✅ On the Farm you can turn the auto-feeder on/off. If turned on, the pet feeds itself every 4 hours (SATIETY can even exceed 100) and consumes one charge. You can recharge the auto-feeder on the Farm.&lt;/i&gt;
 
 &lt;b&gt;/menu&lt;/b&gt; – &lt;i&gt;here are almost all possible commands&lt;/i&gt;</value>
   </data>
@@ -377,6 +396,7 @@ So visit your virtual friend often 🧸&lt;/i&gt;
 /kitchen - feed your pet 🍕
 /work - to earn more gold 💰
 /sleep - bedroom 🧸
+/farm - Farm 🚜
 /gameroom entertainments 🎳
 /ranks - see the best pets! 👑
 /hospital - cure your pet 🏥
@@ -525,18 +545,22 @@ For now, I’ve paused work on the graphical interface, but decided to compensat
   <data name="workCommand" xml:space="preserve">
     <value>Choose what your pet will be doing 💡
 
-😴 Fatigue: {2}%
+😴 Pet fatigue: {2}%
 
-Food Delivery 🎒 -{7}⌛️, +{8} golds 💰
-McDonalds 🍔 -{5}⌛️, +{6} golds 💰
-Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} gold 💰
+&lt;b&gt;&lt;i&gt;On all jobs: -{29}% satiety 🍕&lt;/i&gt;&lt;/b&gt;
 
-Engineer 🛠 -{11}⌛️, +{12} golds 💰
-Make-up Artist 💄 -{9}⌛️, +{10} golds 💰
+Food Delivery 🎒 -{7}⌛️, +{8} 💰, +{20} 😴
+McDonalds Worker 🍔 -{5}⌛️, +{6} 💰, +{21} 😴
+Distribute leaflets 🤹‍♀️ -{3}⌛️, +{4} 💰, +{22} 😴
 
-Programing 💻 -{0}⌛️, +{1} golds 💰
-Accountant 📔 -{13}⌛️, +{14} golds 💰
-Pilot ✈️ -{15}⌛️, +{16} golds 💰</value>
+Engineer 🛠 -{11}⌛️, +{12} 💰, +{23} 😴
+Make-up Artist 💄 -{9}⌛️, +{10} 💰, +{24} 😴
+
+Programmer 💻 -{0}⌛️, +{1} 💰, +{25} 😴
+Accountant 📔 -{13}⌛️, +{14} 💰, +{26} 😴
+Pilot ✈️ -{15}⌛️, +{16} 💰, +{27} 😴
+
+Jeweler 💍 -{17}⌛️, +{18} 💰, +{19} 💎, +{28} 😴</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
     <value>💻 Program</value>
@@ -703,6 +727,7 @@ You both reconciled 💕
   </data>
   <data name="AskToConfirmRenamingPet" xml:space="preserve">
     <value>Are you sure you want to change your pet's name from {0} to {1}? 🗃
+
 Price: {2} gold 💰</value>
   </data>
   <data name="YesText" xml:space="preserve">
@@ -1488,5 +1513,92 @@ https://t.me/newsvirtualpetbot</value>
   </data>
   <data name="TryAgainAnswerYes" xml:space="preserve">
     <value>Oh, here we go again 🧞‍♀️</value>
+  </data>
+  <data name="farmButtonBuyPremiumWeek" xml:space="preserve">
+    <value>👑 Buy VIP 7️⃣ days 👑</value>
+  </data>
+  <data name="farmButtonBuyDiamondsWithTgStars" xml:space="preserve">
+    <value>💎 Buy Diamonds 💎</value>
+  </data>
+  <data name="premiumXdaysBought" xml:space="preserve">
+    <value>👑 &lt;b&gt;Congratulations on purchasing a VIP account for {0} days&lt;/b&gt; 👑
+
+Along with your purchase, you received:
+{1}</value>
+  </data>
+  <data name="premiumVIPBenefits" xml:space="preserve">
+    <value>✅ Ability to play mini-games in the &lt;b&gt;Gameroom ⚽️&lt;/b&gt; even with high fatigue
+✅ &lt;b&gt;Mandatory subscription to sponsor channels is removed 🕶&lt;/b&gt;
+✅ +{0} 💰
+✅ {1}%⚡️ faster pet education progress 🎓
+✅ Access to a unique job — &lt;b&gt;Jeweler 💍&lt;/b&gt;(+{2} 💰, +{3} 💎)
+✅ {4}% discount on the &lt;b&gt;Auto-Feeder 🤖&lt;/b&gt;
+✅ {5}% more messages for chatting with your pet &lt;i&gt;(with VIP {6} messages per hour, without VIP {7} messages)&lt;/i&gt;
+✅ Crown 👑 near the pet’s name in the Rankings 🏆</value>
+  </data>
+  <data name="AskToConfirmXdaysVIPpremium" xml:space="preserve">
+    <value>&lt;b&gt;Are you sure you want to purchase a VIP account for {0} days?&lt;/b&gt;
+
+&lt;i&gt;Your diamonds: {3} 💎&lt;/i&gt;
+&lt;b&gt;To pay: {1} 💎&lt;/b&gt;
+
+&lt;i&gt;VIP account upgrades:&lt;/i&gt;
+{2}</value>
+  </data>
+  <data name="educationCommand_SpecialJeweler" xml:space="preserve">
+    <value>Jeweler specialization 💍</value>
+  </data>
+  <data name="VIPPremium_decline_noVIPEnabled" xml:space="preserve">
+    <value>You need to purchase a VIP account for this 👑</value>
+  </data>
+  <data name="workCommandInlineJeweler" xml:space="preserve">
+    <value>Jeweler 💍</value>
+  </data>
+  <data name="petCommand__VIPinfo" xml:space="preserve">
+    <value>👑 - &lt;i&gt;&lt;b&gt;VIP&lt;/b&gt; for {0}&lt;/i&gt;</value>
+  </data>
+  <data name="payment_choose_diamonds_pack" xml:space="preserve">
+    <value>Choose a diamond pack 💎</value>
+  </data>
+  <data name="payment_invoice_title" xml:space="preserve">
+    <value>Diamonds 💎</value>
+  </data>
+  <data name="payment_invoice_description" xml:space="preserve">
+    <value>{0} Diamonds 💎</value>
+  </data>
+  <data name="payment_invoice_label" xml:space="preserve">
+    <value>Diamonds</value>
+  </data>
+  <data name="payment_success_message" xml:space="preserve">
+    <value>You received {0} 💎!
+
+Thank you for supporting this bot ❤️🤍❤️</value>
+  </data>
+  <data name="workCommand_LowSatiety" xml:space="preserve">
+    <value>⚠️ Warning: Your pet has {0}% satiety left, feed it! ⚠️</value>
+  </data>
+  <data name="changelog_onPatch_18" xml:space="preserve">
+    <value>⚡️⚡️ &lt;b&gt;Update 1.8 is out&lt;/b&gt; ⚡️⚡️
+
+&lt;b&gt;NEW:&lt;/b&gt;
+🚜 &lt;b&gt;You can now buy on the farm:&lt;/b&gt;
+👑 &lt;i&gt;VIP subscription&lt;/i&gt; — the subscription gives lots of perks, check the details in the bot
+💎 &lt;i&gt;Diamonds&lt;/i&gt;
+
+&lt;b&gt;REWORKED:&lt;/b&gt;
+
+🍽 &lt;b&gt;Kitchen&lt;/b&gt; — new types of dishes added, bonuses/prices updated
+💰 &lt;b&gt;Jobs&lt;/b&gt; — bonuses rebalanced, fatigue is now shown, new job Jeweler added 💍
+🎓 &lt;b&gt;Education&lt;/b&gt; — new Specialty “Jeweler” added 💍
+🎒 &lt;b&gt;Other&lt;/b&gt; — this button now has its own menu with additional bot options
+❓ &lt;b&gt;About the game&lt;/b&gt; — updated bot information, more hints added</value>
+  </data>
+  <data name="AskToConfirmAutoFeed" xml:space="preserve">
+    <value>Do you really want to buy auto-feed 5 charges?
+
+Price: {0} diamonds 💎</value>
+  </data>
+  <data name="AskToConfirmChangeType" xml:space="preserve">
+    <value>Do you really want to change your pet type to {0}?</value>
   </data>
 </root>

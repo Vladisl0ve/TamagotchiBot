@@ -141,7 +141,7 @@
 Развлекайтесь 🍿</value>
   </data>
   <data name="petCommand" xml:space="preserve">
-    <value>{11} {0}
+    <value>{11} {0} {18}
 
 💊 HP: {1}%
 🍕 Сытость: {4}%
@@ -200,19 +200,26 @@
     <value>Больше инфы 📝</value>
   </data>
   <data name="kitchenCommand" xml:space="preserve">
-    <value>Вы в кухне 🥦
+    <value>&lt;b&gt;Вы на кухне 🥣&lt;/b&gt;
+
 🍕 Сытость питомца: {0}%
 💰 Золото: {1}
+😴 Усталость: {2}%
+💊 HP: {3}%
 
-Хлеб 🍞 = +50%🍕 |-30💰
-Яблоко 🍎 = +5%🍕 |-1💰
-Леденец 🍭 = +1%🍕 |-0 💰
-Шоколад 🍫 = +2%🍕 |-0💰
+Хлеб 🍞 = +{4}%🍕 |-{5}💰
+Яблоко 🍎 = +{6}%🍕 |+{7}%💊 |-{8}💰
+
+Шоколад 🍫 = +{9}%🍕 |-{10}%😴 |-{11}💰
+Леденец 🍭 = +{12}%🍕 |-{13}💰
+
+Кофе ☕️ = +{14}%🍕 |-{15}%😴 |-{16}💰
+Молоко 🥛 = +{17}%🍕 |+{18}%💊 |-{19}💰
 
 Не забывай кормить питомца 🐣</value>
   </data>
   <data name="PetFeedingAnwserCallback" xml:space="preserve">
-    <value>Твой питомец насытился на {0}%</value>
+    <value>🥗 Твой питомец насытился на {0}% 🥗</value>
   </data>
   <data name="FatigueFresh" xml:space="preserve">
     <value>бодрый</value>
@@ -300,7 +307,9 @@
     <value>ДРОПНУЎ ГАДА {0} 💔</value>
   </data>
   <data name="renameCommand" xml:space="preserve">
-    <value>Введи новое имя для питомца 🗯️</value>
+    <value>Введи новое имя для питомца 🗯️
+
+Для отмены нажми /pet</value>
   </data>
   <data name="renameCommandDescription" xml:space="preserve">
     <value>Смена имени ✏️</value>
@@ -349,23 +358,32 @@
 &lt;b&gt;FAQ:&lt;/b&gt;
 
 &lt;b&gt;Как накапливается уровень 🏅?&lt;/b&gt;
-&lt;i&gt;1 опыт = 1 минута жизни питомца. Достаточно не забывать про своего питомца 🦩&lt;/i&gt;
+&lt;i&gt;✅ 1 опыт = 1 минута жизни питомца. Достаточно не забывать про своего питомца 🦩.
+Также опыт даётся за различные действия с питомцем (кормить, гулять в мини-игры)&lt;/i&gt;
 
 &lt;b&gt;Как зарабатывать деньги 💰?&lt;/b&gt;
-&lt;i&gt;Золото зарабатывается на работе (/work)&lt;/i&gt;
+&lt;i&gt;✅ Золото зарабатывается на работе (/work)&lt;/i&gt;
 
 &lt;b&gt;Может ли питомец умереть 💀?&lt;/b&gt;
-&lt;i&gt;К сожалению, как в жизни, так и в Тамагочи, питомец может сильно обидеться и уйти 💔
+&lt;i&gt;✅ К сожалению, как в жизни, так и в Тамагочи, питомец может сильно обидеться и уйти 💔
 Поэтому чаще навещай своего виртуального друга 🧸&lt;/i&gt;
 
 &lt;b&gt;Как получить Алмазы 💎?&lt;/b&gt;
-&lt;i&gt;Пока что только с помощью реферальной программы (/referal) либо занимая ТОП-3 питомцев по уровню в конце месяца.&lt;/i&gt;
+&lt;i&gt;✅ Пока что только с помощью реферальной программы (/referal) либо занимая ТОП-3 питомцев по уровню в конце месяца.&lt;/i&gt;
 
 &lt;b&gt;Каждый месяц у меня пропадают уровни питомца. Что это?&lt;/b&gt;
-&lt;i&gt;Да, каждый месяц уровни питомца сбрасываются. Питомцы из ТОП-10 получают призы. ТОП-3 получают и золото💰, и алмазы💎!&lt;/i&gt;
+&lt;i&gt;✅ Да, каждый месяц уровни питомца сбрасываются.
+Но выдаются призы для самых лучших питомцев месяца!&lt;/i&gt;
+&lt;b&gt;ТОП 1:&lt;/b&gt; {0}💰, {1}💎
+&lt;b&gt;ТОП 2:&lt;/b&gt; {2}💰, {3}💎
+&lt;b&gt;ТОП 3:&lt;/b&gt; {4}💰, {5}💎
+&lt;b&gt;ТОП 4-10:&lt;/b&gt; {6}💰
+
+&lt;b&gt;Какие преимущества у VIP-аккаунта?&lt;/b&gt;
+{8}
 
 &lt;b&gt;Как работает АВТОКОРМИЛКА?&lt;/b&gt;
-&lt;i&gt;На Ферме можно включать/выключать автокормилку. Если включить, то раз в 4 часа питомец кормится сам (СЫТОСТЬ может быть даже больше 100) и расходуется один заряд. Заряжать автокормилку можно на Ферме.&lt;/i&gt;
+&lt;i&gt;✅ На Ферме можно включать/выключать автокормилку. Если включить, то раз в 4 часа питомец кормится сам (СЫТОСТЬ может быть даже больше 100) и расходуется один заряд. Заряжать автокормилку можно на Ферме.&lt;/i&gt;
 
 &lt;b&gt;/menu&lt;/b&gt; – &lt;i&gt;тут почти все возможные команды&lt;/i&gt;</value>
   </data>
@@ -374,21 +392,28 @@
   </data>
   <data name="menuCommand" xml:space="preserve">
     <value>Что делать с питомцем:
+
+/bathroom - водные процедуры 🛁
 /pet - состояние питомца {0}
 /kitchen - кушать тут 🍕
 /work - заработать денюшку (золото) для питомца 💰
+
 /sleep - спальня 🧸
 /gameroom - развлечения 🎳
-/ranks - лучшие из лучших! 👑
+
 /hospital- ветеринар 🏥
-/bathroom - водные процедуры 🛁
+
+/farm - Ферма 🚜
+
 /referal - бонусы за друзей 👩‍👩‍👧‍👦
 /rename - сменить имя питомца 🌀
 
 /reward - &lt;i&gt;&lt;b&gt;получить ежедневный бонус&lt;/b&gt;&lt;/i&gt; 🎁
+/ranks - лучшие из лучших! 👑
 
 /changelog - официальный канал бота Тамагочи 🚀
 /language - смена языка 🇨🇦
+
 /help - FAQ (вопросы-ответ) 🆘
 
 В будущем будет больше!
@@ -527,21 +552,25 @@
   <data name="workCommand" xml:space="preserve">
     <value>Выберите, чем будет заниматься ваш питомец 💡
 
-😴 Усталость: {2}%
+😴 Усталость питомца: {2}%
 
-Доставка еды 🎒 -{7}⌛️, +{8} золота 💰
-Работник Макдоналдс 🍔 -{5}⌛️, +{6} золота 💰
-Раздача листовок 🤹‍♀️ -{3}⌛️, +{4} золота 💰
+&lt;b&gt;&lt;i&gt;На всех работах -{29}% сытости 🍕&lt;/i&gt;&lt;/b&gt;
 
-Инженер 🛠 -{11}⌛️, +{12} золота 💰
-Визажист 💄 -{9}⌛️, +{10} золота 💰
+Доставка еды 🎒 -{7}⌛️, +{8} 💰, +{20} 😴
+Работник Макдоналдс 🍔 -{5}⌛️, +{6} 💰, +{21} 😴
+Раздача листовок 🤹‍♀️ -{3}⌛️, +{4} 💰, +{22} 😴
 
-Программист 💻 -{0}⌛️, +{1} золота 💰
-Бухгалтер 📔 -{13}⌛️, +{14} золота 💰
-Пилот ✈️ -{15}⌛️, +{16} золота 💰</value>
+Инженер 🛠 -{11}⌛️, +{12} 💰, +{23} 😴
+Визажист 💄 -{9}⌛️, +{10} 💰, +{24} 😴
+
+Программист 💻 -{0}⌛️, +{1} 💰, +{25} 😴
+Бухгалтер 📔 -{13}⌛️, +{14} 💰, +{26} 😴
+Пилот ✈️ -{15}⌛️, +{16} 💰, +{27} 😴
+
+Ювелир 💍 -{17}⌛️, +{18} 💰, +{19} 💎, +{28} 😴</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
-    <value>💻Разрабатывать сайты</value>
+    <value>💻Программировать</value>
   </data>
   <data name="workCommandDescription" xml:space="preserve">
     <value>Работа 💰</value>
@@ -706,6 +735,7 @@
   </data>
   <data name="AskToConfirmRenamingPet" xml:space="preserve">
     <value>Ты действительно хочешь поменять имя питомца с {0} на {1}? 🗃
+
 Цена: {2} золота 💰</value>
   </data>
   <data name="YesText" xml:space="preserve">
@@ -1450,7 +1480,9 @@ https://t.me/news_virtualpetbot</value>
   <data name="RandomEventHiccups" xml:space="preserve">
     <value>{0} икает!
 
--5 Насыщенность 🍕</value>
+-5 Сытости 🍕
+
+/kitchen - покорми питомца</value>
   </data>
   <data name="RandomEventFoundToy" xml:space="preserve">
     <value>Смотрите! {0} нашла потерянную игрушку!
@@ -1493,5 +1525,92 @@ https://t.me/news_virtualpetbot</value>
   </data>
   <data name="TryAgainAnswerYes" xml:space="preserve">
     <value>О, ну вот и снова началось 🧞‍♀️</value>
+  </data>
+  <data name="farmButtonBuyPremiumWeek" xml:space="preserve">
+    <value>👑 Купить VIP-подписку на 7️⃣ дней 👑</value>
+  </data>
+  <data name="farmButtonBuyDiamondsWithTgStars" xml:space="preserve">
+    <value>💎 Купить алмазы💎</value>
+  </data>
+  <data name="premiumXdaysBought" xml:space="preserve">
+    <value>👑 &lt;b&gt;Поздравляем с покупкой VIP-аккаунта на {0} дней&lt;/b&gt; 👑
+
+Вместе с покупкой тебе начислено:
+{1}</value>
+  </data>
+  <data name="premiumVIPBenefits" xml:space="preserve">
+    <value>✅ Возможность играть в мини-игры в Детской ⚽️ даже с большой усталостью
+✅ &lt;b&gt;Убирается обязательная подписка на каналы спонсоров 🕶&lt;/b&gt;
+✅ +{0} 💰
+✅ На {1}%⚡️ быстрее получение образования питомца 🎓
+✅ Доступ к уникальной работе — &lt;b&gt;Ювелир 💍&lt;/b&gt;(+{2} 💰, +{3} 💎)
+✅ {4}% скидки на &lt;b&gt;Автокормилку 🤖&lt;/b&gt;
+✅ На {5}% больше сообщений для общения с питомцем &lt;i&gt;(с VIP {6} сообщений в час, без VIP {7} сообщений)&lt;/i&gt;
+✅ Корона 👑 около имени питомца в Рейтингах 🏆</value>
+  </data>
+  <data name="AskToConfirmXdaysVIPpremium" xml:space="preserve">
+    <value>&lt;b&gt;Ты уверен, что хочешь купить VIP-аккаунт на {0} дней?&lt;/b&gt;
+
+&lt;i&gt;Твои алмазы: {3} 💎&lt;/i&gt;
+&lt;b&gt;К оплате: {1} 💎&lt;/b&gt;
+
+&lt;i&gt;Улучшения для VIP-аккаунтов:&lt;/i&gt;
+{2}</value>
+  </data>
+  <data name="educationCommand_SpecialJeweler" xml:space="preserve">
+    <value>Специальность «Ювелир» 💍</value>
+  </data>
+  <data name="VIPPremium_decline_noVIPEnabled" xml:space="preserve">
+    <value>Для этого нужно приобрести VIP-аккаунт 👑</value>
+  </data>
+  <data name="workCommandInlineJeweler" xml:space="preserve">
+    <value>Ювелир 💍</value>
+  </data>
+  <data name="petCommand__VIPinfo" xml:space="preserve">
+    <value>👑 - &lt;i&gt;&lt;b&gt;VIP&lt;/b&gt; ещё {0}&lt;/i&gt;</value>
+  </data>
+  <data name="payment_choose_diamonds_pack" xml:space="preserve">
+    <value>Выберите набор алмазов 💎</value>
+  </data>
+  <data name="payment_invoice_title" xml:space="preserve">
+    <value>Алмазы 💎</value>
+  </data>
+  <data name="payment_invoice_description" xml:space="preserve">
+    <value>{0} Алмазы 💎</value>
+  </data>
+  <data name="payment_invoice_label" xml:space="preserve">
+    <value>Алмазы</value>
+  </data>
+  <data name="payment_success_message" xml:space="preserve">
+    <value>Вы получили {0} 💎 алмазов!
+
+Спасибо за поддержку этого бота ❤️🤍❤️</value>
+  </data>
+  <data name="workCommand_LowSatiety" xml:space="preserve">
+    <value>⚠️ Внимание: у твоего питомца осталось {0}% сытости, покорми его! ⚠️</value>
+  </data>
+  <data name="changelog_onPatch_18" xml:space="preserve">
+    <value>⚡️⚡️ &lt;b&gt;Вышло обновление 1.8&lt;/b&gt; ⚡️⚡️
+
+&lt;b&gt;НОВОЕ:&lt;/b&gt;
+🚜 &lt;b&gt;На ферме можно купить:&lt;/b&gt;
+👑 &lt;i&gt;VIP-подписку&lt;/i&gt; — подписка даёт кучу своих плюшек, ищите подробности в боте
+💎 &lt;i&gt;Алмазы&lt;/i&gt;
+
+&lt;b&gt;ПЕРЕРАБОТАНО:&lt;/b&gt;
+
+🍽 &lt;b&gt;Кухня&lt;/b&gt; — добавлены новые виды блюд, изменены бонусы/цены
+💰 &lt;b&gt;Работа&lt;/b&gt; — сбалансированы бонусы, показана усталость, добавлена новая работа Ювелир 💍
+🎓 &lt;b&gt;Образование&lt;/b&gt; — добавлена Специальность «Ювелир» 💍
+🎒 &lt;b&gt;Прочее&lt;/b&gt; — эта кнопка теперь имеет своё меню с дополнительными опциями бота
+❓ &lt;b&gt;Об игре&lt;/b&gt; — обновлена информация о боте, добавлено больше подсказок</value>
+  </data>
+  <data name="AskToConfirmAutoFeed" xml:space="preserve">
+    <value>Вы действительно хотите купить Автокормилку на 5 зарядов? 🤖
+
+Цена: {0} алмазов 💎</value>
+  </data>
+  <data name="AskToConfirmChangeType" xml:space="preserve">
+    <value>Вы действительно хотите изменить тип своего питомца на {0}?</value>
   </data>
 </root>

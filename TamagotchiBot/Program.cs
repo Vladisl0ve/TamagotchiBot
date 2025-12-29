@@ -89,6 +89,7 @@ namespace Telegram.Bots.Example
                       services.AddTransient<MetaUserService>();
                       services.AddTransient<ChatsMPService>();
                       services.AddTransient<ReferalInfoService>();
+                      services.AddTransient<PaymentService>();
 
 
                       services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -171,7 +172,10 @@ namespace Telegram.Bots.Example
                     ReferalInfoCollectionName = "ReferalInfo",
                     ArchiveUserInfoCollectionName = "ArchiveUserInfo",
                     TicTacToeGameDataCollectionName = "TicTacToeGameData",
-                    HangmanGameDataCollectionName = "HangmanGameData"
+                    HangmanGameDataCollectionName = "HangmanGameData",
+                    PaymentCollectionName = "StarPayments",
+                    PetsBackupCollectionName = "PetsBackup",
+                    UsersBackupCollectionName = "UsersBackup"
                 },
 
                 EnvsSettings = new EnvsSettings()

@@ -24,6 +24,7 @@ using static TamagotchiBot.Resources.Resources;
 using static TamagotchiBot.UserExtensions.Constants;
 using Extensions = TamagotchiBot.UserExtensions.Extensions;
 using User = TamagotchiBot.Models.Mongo.User;
+using TamagotchiBot.DTO;
 
 namespace TamagotchiBot.Controllers
 {
@@ -79,6 +80,24 @@ namespace TamagotchiBot.Controllers
             var petDB = _appServices.PetService.Get(_userId);
             var userDB = _appServices.UserService.Get(_userId);
 
+            if (CommandsInternal.Buy7daysVIP == textReceived)
+            {
+                await BuyPremiumWeekCMD(userDB, petDB);
+                return;
+            }
+
+            if (GetAllTranslatedAndLowered(nameof(farmButtonBuyPremiumWeek)).Contains(textReceived))
+            {
+                await AskConfirmBuying7daysVIPCMD(userDB);
+                return;
+            }
+
+            if (GetAllTranslatedAndLowered(nameof(farmButtonBuyDiamondsWithTgStars)).Contains(textReceived))
+            {
+                await BuyDiamondsWithTgStarsCMD(userDB, petDB);
+                return;
+            }
+
             if (textReceived == Commands.LanguageCommand || GetAllTranslatedAndLowered(nameof(languageCommandDescription)).Contains(textReceived))
             {
                 await ChangeLanguageCmd(userDB);
@@ -125,6 +144,11 @@ namespace TamagotchiBot.Controllers
             if (GetAllTranslatedAndLowered(nameof(Resources.Resources.educationCommand_High)).Contains(textReceived))
             {
                 await StartStudying(userDB, petDB, EducationLevel.High);
+                return;
+            }
+            if (GetAllTranslatedAndLowered(nameof(Resources.Resources.educationCommand_SpecialJeweler)).Contains(textReceived))
+            {
+                await StartStudying(userDB, petDB, EducationLevel.CompletedHigh);
                 return;
             }
             if (textReceived == Commands.KitchenCommand || GetAllTranslatedAndLowered(nameof(kitchenCommandDescription)).Contains(textReceived))
@@ -399,134 +423,37 @@ namespace TamagotchiBot.Controllers
 
         private async Task ChangeTypeToCatCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToCatCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToCatCMD for {_userInfo}");
-            await ChangePetTypeCMD(userDB,
-                                   petDB,
-                                   PetType.Cat,
-                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                                       nameof(changedTypeToCat).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)));
+            await AskConfirmChangeType(PetType.Cat);
         }
         private async Task ChangeTypeToDogCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToDogCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToDogCMD for {_userInfo}");
-            await ChangePetTypeCMD(
-                userDB,
-                petDB,
-                PetType.Dog,
-                nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                    nameof(changedTypeToDog).UseCulture(_userCulture),
-                    HttpUtility.HtmlEncode(petDB.Name)));
+            await AskConfirmChangeType(PetType.Dog);
         }
         private async Task ChangeTypeToPandaCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToPandaCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToPandaCMD for {_userInfo}");
-            await ChangePetTypeCMD(userDB,
-                                   petDB,
-                                   PetType.Panda,
-                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                                       nameof(changedTypeToPanda).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)));
+            await AskConfirmChangeType(PetType.Panda);
         }
         private async Task ChangeTypeToMonkeyCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToMonkeyCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToMonkeyCMD for {_userInfo}");
-            await ChangePetTypeCMD(userDB,
-                                   petDB,
-                                   PetType.Monkey,
-                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                                       nameof(changedTypeToMonkey).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)));
+            await AskConfirmChangeType(PetType.Monkey);
         }
         private async Task ChangeTypeToFoxCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToFoxCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToFoxCMD for {_userInfo}");
-            await ChangePetTypeCMD(userDB,
-                                   petDB,
-                                   PetType.Fox,
-                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                                       nameof(changedTypeToFox).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)));
+            await AskConfirmChangeType(PetType.Fox);
         }
         private async Task ChangeTypeToMouseCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToMouseCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToMouseCMD for {_userInfo}");
-            await ChangePetTypeCMD(userDB,
-                                   petDB,
-                                   PetType.Mouse,
-                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                                       nameof(changedTypeToMouse).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)));
+            await AskConfirmChangeType(PetType.Mouse);
         }
 
         private async Task ChangeTypeToTigerCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToTigerCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToTigerCMD for {_userInfo}");
-            int cost = Costs.ChangePetTypeToTiger;
-            bool isPremium = true;
-
-            if (userDB.OwnedPetTypes != null && userDB.OwnedPetTypes.Contains((int)PetType.Tiger))
-                cost = 0;
-
-            await ChangePetTypeCMD(userDB,
-                                   petDB,
-                                   PetType.Tiger,
-                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                                       nameof(changedTypeToTiger).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)),
-                                   cost,
-                                   isPremium);
+            await AskConfirmChangeType(PetType.Tiger);
         }
 
         private async Task ChangeTypeToLionCMD(User userDB, Pet petDB)
         {
-            var aud = _appServices.AllUsersDataService.Get(_userId);
-            aud.ChangedToLionCounter++;
-            _appServices.AllUsersDataService.Update(aud);
-
-            Log.Debug($"Called /ChangeTypeToLionCMD for {_userInfo}");
-            int cost = Costs.ChangePetTypeToLion;
-            bool isPremium = true;
-
-            if (userDB.OwnedPetTypes != null && userDB.OwnedPetTypes.Contains((int)PetType.Lion))
-                cost = 0;
-
-            await ChangePetTypeCMD(userDB,
-                                   petDB,
-                                   PetType.Lion,
-                                   nameof(changedTypeHeader).UseCulture(_userCulture) + string.Format(
-                                       nameof(changedTypeToLion).UseCulture(_userCulture),
-                                       HttpUtility.HtmlEncode(petDB.Name)),
-                                   cost,
-                                   isPremium);
+            await AskConfirmChangeType(PetType.Lion);
         }
 
         private async Task ChangePetTypeCMD(User userDB, Pet petDB, PetType newPetType, string toSendText, int cost = Costs.ChangePetType, bool isPremium = false)
@@ -592,6 +519,27 @@ namespace TamagotchiBot.Controllers
             if (userDb == null || petDb == null)
                 return;
 
+            if (_callback.Data == Constants.PaymentItems.DiamondPack1.Name)
+            {
+                await SendPaymentInvoiceAsync((int)Constants.PaymentItems.DiamondPack1.Price, Constants.PaymentItems.DiamondPack1.Name, Constants.PaymentItems.DiamondPack1.Amount);
+                return;
+            }
+            if (_callback.Data == Constants.PaymentItems.DiamondPack2.Name)
+            {
+                await SendPaymentInvoiceAsync((int)Constants.PaymentItems.DiamondPack2.Price, Constants.PaymentItems.DiamondPack2.Name, Constants.PaymentItems.DiamondPack2.Amount);
+                return;
+            }
+            if (_callback.Data == Constants.PaymentItems.DiamondPack3.Name)
+            {
+                await SendPaymentInvoiceAsync((int)Constants.PaymentItems.DiamondPack3.Price, Constants.PaymentItems.DiamondPack3.Name, Constants.PaymentItems.DiamondPack3.Amount);
+                return;
+            }
+            if (_callback.Data == Constants.PaymentItems.DiamondPack4.Name)
+            {
+                await SendPaymentInvoiceAsync((int)Constants.PaymentItems.DiamondPack4.Price, Constants.PaymentItems.DiamondPack4.Name, Constants.PaymentItems.DiamondPack4.Amount);
+                return;
+            }
+
             if (_callback.Data == CallbackButtons.PetCommand.PetCommandInlineBasicInfo(_userCulture).CallbackData)
             {
                 await ShowBasicInfoInline(userDb, petDb);
@@ -625,6 +573,18 @@ namespace TamagotchiBot.Controllers
             if (_callback.Data == CallbackButtons.KitchenCommand.KitchenCommandInlineLollipop.CallbackData)
             {
                 await FeedWithLollipopInline(userDb, petDb);
+                return;
+            }
+
+            if (_callback.Data == CallbackButtons.KitchenCommand.KitchenCommandInlineCoffee.CallbackData)
+            {
+                await FeedWithCoffeeInline(userDb, petDb);
+                return;
+            }
+
+            if (_callback.Data == CallbackButtons.KitchenCommand.KitchenCommandInlineMilk.CallbackData)
+            {
+                await FeedWithMilkInline(userDb, petDb);
                 return;
             }
 
@@ -679,6 +639,12 @@ namespace TamagotchiBot.Controllers
             if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlinePilot(_userCulture).CallbackData)
             {
                 await StartJob(userDb, petDb, JobType.Pilot);
+                return;
+            }
+
+            if (_callback.Data == CallbackButtons.WorkCommand.WorkCommandInlineJeweler(_userCulture).CallbackData)
+            {
+                await StartJob(userDb, petDb, JobType.Jeweler);
                 return;
             }
 
@@ -817,7 +783,7 @@ namespace TamagotchiBot.Controllers
 
             Log.Debug($"Called /ShowWorkInfo for {_userInfo}");
 
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB, IsGoToWorkCommand: true);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB, IsGoToWorkCommand: true);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -848,10 +814,23 @@ namespace TamagotchiBot.Controllers
                                        new DateTime(TimesToWait.AccountantToWait.Ticks).ToString("HH:mm:ss"),
                                        Rewards.AccountantGoldReward,
                                        new DateTime(TimesToWait.PilotToWait.Ticks).ToString("HH:mm:ss"),
-                                       Rewards.PilotGoldReward);
+                                       Rewards.PilotGoldReward,
+                                       new DateTime(TimesToWait.JewelerToWait.Ticks).ToString("HH:mm:ss"),
+                                       Rewards.VIPJewelerJobGoldReward,
+                                       Rewards.VIPJewelerJobDiamondReward,
+                                       Constants.Factors.FoodDeliveryFatigueFactor,
+                                       Constants.Factors.McDonaldsFatigueFactor,
+                                       Constants.Factors.FlyersDistributingFatigueFactor,
+                                       Constants.Factors.EngineerFatigueFactor,
+                                       Constants.Factors.MakeUpArtistFatigueFactor,
+                                       Constants.Factors.WorkOnPCFatigueFactor,
+                                       Constants.Factors.AccountantFatigueFactor,
+                                       Constants.Factors.PilotFatigueFactor,
+                                       Constants.Factors.JewelerFatigueFactor,
+                                       Constants.Factors.WorkSatietyFactor
+                                       );
 
-            List<CallbackModel> inlineParts = InlineItems.InlineWork(_userCulture);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+            InlineKeyboardMarkup toSendInline = InlineItems.InlineWorkKeyboardButtonArrays(_userCulture);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.WorkCommandCounter++;
@@ -862,7 +841,8 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.PetWorkSticker_Cat), _userPetType),
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -873,7 +853,7 @@ namespace TamagotchiBot.Controllers
                 return;
 
             Log.Debug($"Called /GoToFarm for {_userInfo}");
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -899,7 +879,7 @@ namespace TamagotchiBot.Controllers
                                               (int)timeRemaining.TotalHours,
                                               timeRemaining.Minutes,
                                               string.Format(nameof(turnedOn_F).UseCulture(_userCulture)),
-                                              Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? $"<s>{Costs.AutoFeedCostDiamonds}</s> " + Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) + "👑" : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds)
 
@@ -907,7 +887,7 @@ namespace TamagotchiBot.Controllers
                                               encodedPetName,
                                               userDB.AutoFeedCharges,
                                               string.Format(nameof(turnedOff_F).UseCulture(_userCulture)),
-                                              Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? $"<s>{Costs.AutoFeedCostDiamonds}</s> " + Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) + "👑" : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds);
 
@@ -923,7 +903,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.FarmSticker,
-                ReplyMarkup = ReplyKeyboardItems.FarmKeyboardMarkup(_userCulture),
+                ReplyMarkup = Extensions.GetFarmKeyboardButtonArrays(_userCulture),
                 InlineKeyboardMarkup = toSendInline,
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
@@ -961,7 +941,7 @@ namespace TamagotchiBot.Controllers
                                               (int)timeRemaining.TotalHours,
                                               timeRemaining.Minutes,
                                               string.Format(nameof(turnedOn_F).UseCulture(_userCulture)),
-                                              Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? $"<s>{Costs.AutoFeedCostDiamonds}</s> " + Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) + "👑" : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds)
 
@@ -969,7 +949,7 @@ namespace TamagotchiBot.Controllers
                                               encodedPetName,
                                               userDB.AutoFeedCharges,
                                               string.Format(nameof(turnedOff_F).UseCulture(_userCulture)),
-                                              Costs.AutoFeedCostDiamonds,
+                                              userDB.VIPIsEnabled ? $"<s>{Costs.AutoFeedCostDiamonds}</s> " + Costs.AutoFeedCostDiamonds * (1 - Factors.AutofeederDiscountVIPProc / 100.0) + "👑" : Costs.AutoFeedCostDiamonds,
                                               userDB.Gold,
                                               userDB.Diamonds);
 
@@ -1023,7 +1003,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.DailyRewardSticker,
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture)
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -1060,6 +1040,9 @@ namespace TamagotchiBot.Controllers
             await _appServices.BotControlService.SendChatActionAsync(_userId, Telegram.Bot.Types.Enums.ChatAction.Typing);
 
             var maxHistoryCounter = _appServices.SInfoService.GetGeminiMaxHistory();
+            maxHistoryCounter = userDB.VIPIsEnabled
+                ? maxHistoryCounter * (1 + Factors.LLMMesagesCoefMoreVIPProc / 100)
+                : maxHistoryCounter;
             var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
             bool isTimeOut;
             string geminiAnswer;
@@ -1100,22 +1083,266 @@ namespace TamagotchiBot.Controllers
                 var toSendErr = new AnswerMessage()
                 {
                     Text = nameof(Resources.Resources.notEnoughDiamonds).UseCulture(_userCulture),
-                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    ReplyMarkup = Extensions.GetFarmKeyboardButtonArrays(_userCulture),
                 };
-                await _appServices.BotControlService.SendAnswerMessageAsync(toSendErr, _userId, false);
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSendErr, _userId, true);
                 return;
             }
 
-            _appServices.UserService.UpdateDiamonds(_userId, userDB.Diamonds - Constants.Costs.AutoFeedCostDiamonds);
-            _appServices.UserService.UpdateAutoFeedCharges(_userId, userDB.AutoFeedCharges + Constants.AutoFeed.AutoFeedChargesInitial);
-            _appServices.PetService.UpdateIsAutoFeedEnabled(_userId, true);
+            await AskConfirmBuyAutoFeed();
+        }
+
+        private async Task AskConfirmBuyAutoFeed()
+        {
+            var toSend = new AnswerMessage()
+            {
+                Text = string.Format(nameof(Resources.Resources.AskToConfirmAutoFeed).UseCulture(_userCulture), Constants.Costs.AutoFeedCostDiamonds),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                StickerId = StickersId.ConfirmBuyAutoFeedSticker,
+                ReplyMarkup = new ReplyKeyboardMarkup(new List<KeyboardButton>()
+                {
+                    new KeyboardButton(nameof(Resources.Resources.YesTextEmoji).UseCulture(_userCulture)),
+                    new KeyboardButton(nameof(Resources.Resources.NoTextEmoji).UseCulture(_userCulture))
+                })
+                {
+                    OneTimeKeyboard = true,
+                    ResizeKeyboard = true
+                }
+            };
+
+            _appServices.MetaUserService.UpdatePendingConfirmation(_userId, Confirms.BuyAutoFeed);
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
+
+        private async Task AskConfirmChangeType(PetType type)
+        {
+            var toSend = new AnswerMessage()
+            {
+                Text = string.Format(nameof(AskToConfirmChangeType).UseCulture(_userCulture), Extensions.GetLongTypeEmoji(type, _userCulture)),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                StickerId = StickersId.ConfirmChangeTypePetSticker,
+                ReplyMarkup = new ReplyKeyboardMarkup(new List<KeyboardButton>()
+                {
+                    new KeyboardButton(nameof(Resources.Resources.YesTextEmoji).UseCulture(_userCulture)),
+                    new KeyboardButton(nameof(Resources.Resources.NoTextEmoji).UseCulture(_userCulture))
+                })
+                {
+                    OneTimeKeyboard = true,
+                    ResizeKeyboard = true
+                }
+            };
+
+            _appServices.MetaUserService.UpdatePendingConfirmation(_userId, $"ChangeTypeTo{type}");
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
+        public async Task BuyAutoFeedConfirm(long userId)
+        {
+            var userDB = _appServices.UserService.Get(userId);
+            if (userDB == null) return;
+
+            if (userDB.Diamonds < Constants.Costs.AutoFeedCostDiamonds)
+            {
+                var toSendErr = new AnswerMessage()
+                {
+                    Text = nameof(Resources.Resources.notEnoughDiamonds).UseCulture(_userCulture),
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    ReplyMarkup = Extensions.GetFarmKeyboardButtonArrays(_userCulture),
+                };
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSendErr, userId, true);
+                return;
+            }
+
+            _appServices.UserService.UpdateDiamonds(userId, userDB.Diamonds - Constants.Costs.AutoFeedCostDiamonds);
+            _appServices.UserService.UpdateAutoFeedCharges(userId, userDB.AutoFeedCharges + Constants.AutoFeed.AutoFeedChargesInitial);
+            _appServices.PetService.UpdateIsAutoFeedEnabled(userId, true);
 
             var toSend = new AnswerMessage()
             {
-                Text = string.Format(nameof(autoFeedBought).UseCulture(_userCulture), userDB.AutoFeedCharges + Constants.AutoFeed.AutoFeedChargesInitial),
+                Text = string.Format(nameof(Resources.Resources.autoFeedBought).UseCulture(_userCulture), userDB.AutoFeedCharges + Constants.AutoFeed.AutoFeedChargesInitial),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
+            };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, userId, true);
+        }
+
+        public async Task ChangeTypeConfirm(long userId, PetType newPetType)
+        {
+            var userDB = _appServices.UserService.Get(userId);
+            var petDB = _appServices.PetService.Get(userId);
+            if (userDB == null || petDB == null) return;
+
+            int cost = Constants.Costs.ChangePetType;
+            bool isPremium = false;
+
+            if (newPetType == PetType.Tiger)
+            {
+                cost = Constants.Costs.ChangePetTypeToTiger;
+                isPremium = true;
+                if (userDB.OwnedPetTypes != null && userDB.OwnedPetTypes.Contains((int)PetType.Tiger))
+                    cost = 0;
+            }
+            else if (newPetType == PetType.Lion)
+            {
+                cost = Constants.Costs.ChangePetTypeToLion;
+                isPremium = true;
+                if (userDB.OwnedPetTypes != null && userDB.OwnedPetTypes.Contains((int)PetType.Lion))
+                    cost = 0;
+            }
+
+            var aud = _appServices.AllUsersDataService.Get(userId);
+            switch (newPetType)
+            {
+                case PetType.Cat: aud.ChangedToCatCounter++; break;
+                case PetType.Dog: aud.ChangedToDogCounter++; break;
+                case PetType.Mouse: aud.ChangedToMouseCounter++; break;
+                case PetType.Fox: aud.ChangedToFoxCounter++; break;
+                case PetType.Panda: aud.ChangedToPandaCounter++; break;
+                case PetType.Monkey: aud.ChangedToMonkeyCounter++; break;
+                case PetType.Tiger: aud.ChangedToTigerCounter++; break;
+                case PetType.Lion: aud.ChangedToLionCounter++; break;
+            }
+            _appServices.AllUsersDataService.Update(aud);
+
+            string changedTypeMsg = newPetType switch
+            {
+                PetType.Cat => nameof(Resources.Resources.changedTypeToCat),
+                PetType.Dog => nameof(Resources.Resources.changedTypeToDog),
+                PetType.Mouse => nameof(Resources.Resources.changedTypeToMouse),
+                PetType.Fox => nameof(Resources.Resources.changedTypeToFox),
+                PetType.Panda => nameof(Resources.Resources.changedTypeToPanda),
+                PetType.Monkey => nameof(Resources.Resources.changedTypeToMonkey),
+                PetType.Tiger => nameof(Resources.Resources.changedTypeToTiger),
+                PetType.Lion => nameof(Resources.Resources.changedTypeToLion),
+                _ => nameof(Resources.Resources.changedTypeToCat) // Default fallback?
+            };
+
+            await ChangePetTypeCMD(userDB,
+                                   petDB,
+                                   newPetType,
+                                   nameof(Resources.Resources.changedTypeHeader).UseCulture(_userCulture) + string.Format(
+                                       changedTypeMsg.UseCulture(_userCulture),
+                                       HttpUtility.HtmlEncode(petDB.Name)),
+                                   cost,
+                                   isPremium);
+        }
+
+        private async Task BuyPremiumWeekCMD(User userDB, Pet petDB)
+        {
+            if (userDB.Diamonds < Constants.Costs.VIP7DaysDiamonds)
+            {
+                var toSendErr = new AnswerMessage()
+                {
+                    Text = nameof(Resources.Resources.notEnoughDiamonds).UseCulture(_userCulture),
+                    ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                    ReplyMarkup = Extensions.GetFarmKeyboardButtonArrays(_userCulture),
+                };
+                await _appServices.BotControlService.SendAnswerMessageAsync(toSendErr, _userId, true);
+                return;
+            }
+
+            _appServices.UserService.UpdateDiamonds(_userId, userDB.Diamonds - Constants.Costs.VIP7DaysDiamonds);
+            _appServices.UserService.UpdateVIPStartTime(_userId, DateTime.UtcNow);
+            _appServices.UserService.UpdateVIPLongDays(_userId, 7);
+            _appServices.UserService.UpdateVIPIsEnabled(_userId, true);
+
+            _appServices.UserService.AddGold(_userId, Rewards.VIP7DaysGoldReward);
+
+            _appServices.MetaUserService.IsConfirmAskedOnVIP7daysBuying(_userId, false);
+
+            Log.Information($"Bought VIP 7 DAYS BuyPremiumWeekCMD {_userInfo}");
+
+            var maxHistory = _appServices.SInfoService.GetGeminiMaxHistory();
+
+            string vipBenefits = Extensions.GetVipBenefitsString(maxHistory, _userCulture);
+
+            var toSend = new AnswerMessage()
+            {
+                Text = string.Format(nameof(premiumXdaysBought).UseCulture(_userCulture), 7, vipBenefits),
+                StickerId = StickersId.PremiumVIPBoughtSticker,
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                ReplyMarkup = Extensions.GetFarmKeyboardButtonArrays(_userCulture)
+            };
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
+        private async Task AskConfirmBuying7daysVIPCMD(User userDB)
+        {
+            var maxHistory = _appServices.SInfoService.GetGeminiMaxHistory();
+
+            string vipBenefits = Extensions.GetVipBenefitsString(maxHistory, _userCulture);
+
+            var toSendTryApplyVIP7days = new AnswerMessage()
+            {
+                Text = string.Format(nameof(AskToConfirmXdaysVIPpremium).UseCulture(_userCulture), 7, Constants.Costs.VIP7DaysDiamonds, vipBenefits, userDB?.Diamonds ?? 0),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html,
+                StickerId = StickersId.ConfirmVIPBuyingSticker,
+                ReplyMarkup = new ReplyKeyboardMarkup(new List<KeyboardButton>()
+                {
+                    new KeyboardButton(nameof(YesTextEmoji).UseCulture(_userCulture)),
+                    new KeyboardButton(nameof(NoTextEmoji).UseCulture(_userCulture))
+                })
+                {
+                    OneTimeKeyboard = true
+                }
+            };
+
+            _appServices.MetaUserService.IsConfirmAskedOnVIP7daysBuying(_userId, true);
+
+            Log.Information($"AskConfirmBuying7daysVIPCMD {_userInfo}");
+
+            await _appServices.BotControlService.SendAnswerMessageAsync(toSendTryApplyVIP7days, _userId, false);
+        }
+
+        private async Task BuyDiamondsWithTgStarsCMD(User userDB, Pet petDB)
+        {
+            var starsPrice1 = Constants.PaymentItems.DiamondPack1.Price;
+            var diamondsAmount1 = Constants.PaymentItems.DiamondPack1.Amount;
+            var starsPrice2 = Constants.PaymentItems.DiamondPack2.Price;
+            var diamondsAmount2 = Constants.PaymentItems.DiamondPack2.Amount;
+            var starsPrice3 = Constants.PaymentItems.DiamondPack3.Price;
+            var diamondsAmount3 = Constants.PaymentItems.DiamondPack3.Amount;
+            var starsPrice4 = Constants.PaymentItems.DiamondPack4.Price;
+            var diamondsAmount4 = Constants.PaymentItems.DiamondPack4.Amount;
+
+            var toSend = new AnswerMessage()
+            {
+                Text = nameof(Resources.Resources.payment_choose_diamonds_pack).UseCulture(_userCulture),
+                ReplyMarkup = new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>()
+                {
+                    new List<InlineKeyboardButton>()
+                    {
+                        InlineKeyboardButton.WithCallbackData($"{starsPrice1} ⭐️ = {diamondsAmount1} 💎", Constants.PaymentItems.DiamondPack1.Name),
+                    },
+                     new List<InlineKeyboardButton>()
+                    {
+                        InlineKeyboardButton.WithCallbackData($"{starsPrice2} ⭐️ = {diamondsAmount2} 💎", Constants.PaymentItems.DiamondPack2.Name),
+                    },
+                    new List<InlineKeyboardButton>()
+                    {
+                         InlineKeyboardButton.WithCallbackData($"{starsPrice3} ⭐️ = {diamondsAmount3} 💎", Constants.PaymentItems.DiamondPack3.Name),
+                    },
+                     new List<InlineKeyboardButton>()
+                    {
+                         InlineKeyboardButton.WithCallbackData($"{starsPrice4} ⭐️ = {diamondsAmount4} 💎", Constants.PaymentItems.DiamondPack4.Name),
+                    },
+                }),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
+        }
+
+        private async Task SendPaymentInvoiceAsync(int starsPrice, string payload, int diamondAmount)
+        {
+            var title = nameof(payment_invoice_title).UseCulture(_userCulture);
+            var description = string.Format(nameof(payment_invoice_description).UseCulture(_userCulture), diamondAmount);
+            var currency = "XTR";
+            var providerToken = "";
+
+            var prices = new List<Telegram.Bot.Types.Payments.LabeledPrice>
+            {
+                new Telegram.Bot.Types.Payments.LabeledPrice(nameof(payment_invoice_label).UseCulture(_userCulture), starsPrice)
+            };
+
+            await _appServices.BotControlService.SendInvoiceAsync(_userId, title, description, payload, providerToken, currency, prices);
         }
 
         private async Task<(string answer, bool isCanceled)> GetAnswerGemini(string textToAnswer, Pet petDB, User userDB)
@@ -1212,29 +1439,37 @@ namespace TamagotchiBot.Controllers
             var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
             var maxHistoryCounter = _appServices.SInfoService.GetGeminiMaxHistory();
 
+            string vipInfo = null; ;
+            if (userDB.VIPIsEnabled)
+            {
+                string timeLeft = Extensions.GetTimeLeftVIPString(userDB.VIPStartTime, userDB.VIPLongDays, _userCulture);
+                vipInfo = string.Format(nameof(petCommand__VIPinfo).UseCulture(_userCulture), timeLeft);
+            }
+
             return string.Format(
-                nameof(petCommand).UseCulture(_userCulture),
-                encodedPetName,
-                petDB.HP,
-                petDB.EXP,
-                petDB.Level,
-                petDB.Satiety,
-                petDB.Fatigue,
-                Extensions.GetCurrentStatus(petDB.CurrentStatus, _userCulture),
-                petDB.Joy,
-                userDB.Gold,
-                petDB.Hygiene,
-                petDB.Level * Factors.ExpToLvl,
-                Extensions.GetLongTypeEmoji(_userPetType, _userCulture),
-                petDB.IsAutoFeedEnabled
-                    ? string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOn_F).UseCulture(_userCulture)), userDB.AutoFeedCharges)
-                    : string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOff_F).UseCulture(_userCulture)), userDB.AutoFeedCharges),
-                userDB.Diamonds,
-                randomAd,
-                randomPetPhrase,
-                IsGeminiTimeout(previousQA, maxHistoryCounter) ? string.Format(nameof(petCommand_isPetSilenced).UseCulture(_userCulture), GetGeminiTimeout(previousQA))
-                                            : string.Empty,
-                petDB.EducationLevel.GetActualEducationLevelTranslatedString(_userCulture)
+            nameof(petCommand).UseCulture(_userCulture),
+            encodedPetName,
+            petDB.HP,
+            petDB.EXP,
+            petDB.Level,
+            petDB.Satiety,
+            petDB.Fatigue,
+            Extensions.GetCurrentStatus(petDB.CurrentStatus, _userCulture),
+            petDB.Joy,
+            userDB.Gold,
+            petDB.Hygiene,
+            petDB.Level * Factors.ExpToLvl,
+            Extensions.GetLongTypeEmoji(_userPetType, _userCulture),
+            petDB.IsAutoFeedEnabled
+                ? string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOn_F).UseCulture(_userCulture)), userDB.AutoFeedCharges)
+                : string.Format(nameof(autoFeederUserStatus).UseCulture(_userCulture), string.Format(nameof(turnedOff_F).UseCulture(_userCulture)), userDB.AutoFeedCharges),
+            userDB.Diamonds,
+            randomAd,
+            randomPetPhrase,
+            IsGeminiTimeout(previousQA, maxHistoryCounter) ? string.Format(nameof(petCommand_isPetSilenced).UseCulture(_userCulture), GetGeminiTimeout(previousQA))
+                                        : string.Empty,
+            petDB.EducationLevel.GetActualEducationLevelTranslatedString(_userCulture),
+            vipInfo
             );
         }
 
@@ -1302,7 +1537,7 @@ namespace TamagotchiBot.Controllers
             return phrases[new Random().Next(phrases.Count)];
         }
 
-        private AnswerMessage CheckStatusIsInactiveOrNull(Pet petDB, bool IsGoToSleepCommand = false, bool IsGoToWorkCommand = false, bool isShowEducationLeftTime = false)
+        private AnswerMessage CheckStatusIsInactiveOrNull(User userDB, Pet petDB, bool IsGoToSleepCommand = false, bool IsGoToWorkCommand = false, bool isShowEducationLeftTime = false)
         {
             if (petDB.CurrentStatus == (int)CurrentStatus.Sleeping && !IsGoToSleepCommand)
             {
@@ -1330,7 +1565,7 @@ namespace TamagotchiBot.Controllers
             {
                 string denyText = nameof(Resources.Resources.educationCommand_InProgress).UseCulture(_userCulture);
                 EducationLevel currentLevel = petDB.EducationLevel.GetActualEducationLevel();
-                TimeSpan timeToWait = Extensions.GetEducationTime(currentLevel);
+                TimeSpan timeToWait = userDB.VIPIsEnabled ? Extensions.GetEducationTime(currentLevel, Factors.EducationCoefFasterVIPProc) : Extensions.GetEducationTime(currentLevel);
 
                 var remainsTime = timeToWait - (DateTime.UtcNow - petDB.StartStudyingTime);
                 if (remainsTime < TimeSpan.Zero) remainsTime = TimeSpan.Zero;
@@ -1354,7 +1589,7 @@ namespace TamagotchiBot.Controllers
                 return;
 
             Log.Debug($"Called /GoToBathroom for {_userInfo}");
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -1378,7 +1613,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.PetBathroomSticker_Cat), _userPetType),
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture)
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
@@ -1388,7 +1623,7 @@ namespace TamagotchiBot.Controllers
                 return;
 
             Log.Debug($"Called /GoToKitchen for {_userInfo}");
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -1400,17 +1635,27 @@ namespace TamagotchiBot.Controllers
                 nameof(kitchenCommand).UseCulture(_userCulture),
                 petDB.Satiety,
                 userDB.Gold,
+                petDB.Fatigue,
+                petDB.HP,
                 FoodFactors.BreadHungerFactor,
                 Costs.Bread,
                 FoodFactors.RedAppleHungerFactor,
+                FoodFactors.RedAppleHPFactor,
                 Costs.Apple,
+                FoodFactors.ChocolateHungerFactor,
+                FoodFactors.ChocolateFatigueFactor,
+                Costs.Chocolate,
                 FoodFactors.LollipopHungerFactor,
                 Costs.Lollipop,
-                FoodFactors.ChocolateHungerFactor,
-                Costs.Chocolate);
+                FoodFactors.CoffeeHungerFactor,
+                FoodFactors.CoffeeFatigueFactor,
+                Costs.Coffee,
+                FoodFactors.MilkHungerFactor,
+                FoodFactors.MilkHPFactor,
+                Costs.Milk
+                );
 
-            List<CallbackModel> inlineParts = InlineItems.InlineFood;
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+            InlineKeyboardMarkup toSendInline = InlineItems.InlineFoodKeyboardButtonArrays;
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.KitchenCommandCounter++;
@@ -1421,7 +1666,8 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = StickersId.GetStickerByType(nameof(StickersId.PetKitchenSticker_Cat), _userPetType),
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
+                ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
@@ -1430,7 +1676,7 @@ namespace TamagotchiBot.Controllers
             if (userDB == null || petDB == null)
                 return;
             Log.Debug($"Called /GoToGameroom for {_userInfo}");
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -1473,7 +1719,7 @@ namespace TamagotchiBot.Controllers
                 return;
 
             Log.Debug($"Called /GoToHospital for {_userInfo}");
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -1509,7 +1755,7 @@ namespace TamagotchiBot.Controllers
                 Text = toSendText,
                 StickerId = stickerHospital,
                 InlineKeyboardMarkup = toSendInline,
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture)
             };
 
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -1545,7 +1791,7 @@ namespace TamagotchiBot.Controllers
 
             Log.Debug($"Called /GoToSleep for {_userInfo}");
 
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB, true);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB, true);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -1617,14 +1863,26 @@ namespace TamagotchiBot.Controllers
                 {
                     Url = linkToDiscussChat
                 },
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture)
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture)
             };
             Log.Debug($"Called /ShowChangelogsInfo for {_userInfo}");
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
         }
         private async Task ShowHelpInfo()
         {
-            string toSendText = nameof(helpCommand).UseCulture(_userCulture);
+            var maxHistory = _appServices.SInfoService.GetGeminiMaxHistory();
+
+            string toSendText = string.Format(nameof(helpCommand).UseCulture(_userCulture),
+                                                Constants.GoldForTopExpRanking.Top1.ToString("N0", System.Globalization.CultureInfo.InvariantCulture),
+                                                Constants.DiamondsForTopExpRanking.Top1,
+                                                Constants.GoldForTopExpRanking.Top2.ToString("N0", System.Globalization.CultureInfo.InvariantCulture),
+                                                Constants.DiamondsForTopExpRanking.Top2,
+                                                Constants.GoldForTopExpRanking.Top3.ToString("N0", System.Globalization.CultureInfo.InvariantCulture),
+                                                Constants.DiamondsForTopExpRanking.Top3,
+                                                Constants.GoldForTopExpRanking.Top4_10.ToString("N0", System.Globalization.CultureInfo.InvariantCulture),
+                                                Constants.DiamondsForTopExpRanking.Top4_10,
+                                                Extensions.GetVipBenefitsString(maxHistory, _userCulture));
+
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.HelpCommandCounter++;
@@ -1634,7 +1892,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.HelpCommandSticker,
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             Log.Debug($"Called /ShowHelpInfo for {_userInfo}");
@@ -1680,7 +1938,7 @@ namespace TamagotchiBot.Controllers
                         Url = $"https://t.me/share/url?url={Extensions.GetReferalLink(_userId, botUsername)}"
                     }
                 }),
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -1699,7 +1957,7 @@ namespace TamagotchiBot.Controllers
             {
                 Text = toSendText,
                 StickerId = StickersId.MenuCommandSticker,
-                ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture),
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture),
                 ParseMode = Telegram.Bot.Types.Enums.ParseMode.Html
             };
             await _appServices.BotControlService.SendAnswerMessageAsync(toSend, _userId, false);
@@ -1971,6 +2229,8 @@ namespace TamagotchiBot.Controllers
                 petDB,
                 Costs.Bread,
                 FoodFactors.BreadHungerFactor,
+                0,
+                0,
                 ExpForAction.FeedingBread,
                 aud => aud.BreadEatenCounter++);
         }
@@ -1982,6 +2242,8 @@ namespace TamagotchiBot.Controllers
                 petDB,
                 Costs.Apple,
                 FoodFactors.RedAppleHungerFactor,
+                0,
+                FoodFactors.RedAppleHPFactor,
                 ExpForAction.FeedingApple,
                 aud => aud.AppleEatenCounter++);
         }
@@ -1993,7 +2255,9 @@ namespace TamagotchiBot.Controllers
                 petDB,
                 Costs.Chocolate,
                 FoodFactors.ChocolateHungerFactor,
+                FoodFactors.ChocolateFatigueFactor,
                 0,
+                ExpForAction.FeedingChocolate,
                 aud => aud.ChocolateEatenCounter++);
         }
 
@@ -2005,10 +2269,36 @@ namespace TamagotchiBot.Controllers
                 Costs.Lollipop,
                 FoodFactors.LollipopHungerFactor,
                 0,
+                0,
+                ExpForAction.FeedingLollipop,
                 aud => aud.LollypopEatenCounter++);
         }
+        private async Task FeedWithCoffeeInline(User userDB, Pet petDB)
+        {
+            await FeedWithFoodInline(
+                userDB,
+                petDB,
+                Costs.Coffee,
+                FoodFactors.CoffeeHungerFactor,
+                FoodFactors.CoffeeFatigueFactor,
+                0,
+                ExpForAction.FeedingCoffee,
+                aud => aud.CoffeeEatenCounter++);
+        }
+        private async Task FeedWithMilkInline(User userDB, Pet petDB)
+        {
+            await FeedWithFoodInline(
+                userDB,
+                petDB,
+                Costs.Milk,
+                FoodFactors.MilkHungerFactor,
+                0,
+                FoodFactors.MilkHPFactor,
+                ExpForAction.FeedingMilk,
+                aud => aud.MilkEatenCounter++);
+        }
 
-        private async Task FeedWithFoodInline(User userDB, Pet petDB, int cost, double hungerFactor, int expReward, Action<AllUsersData> updateCounter)
+        private async Task FeedWithFoodInline(User userDB, Pet petDB, int cost, double hungerFactor, int fatigueFactor, int HPFactor, int expReward, Action<AllUsersData> updateCounter)
         {
             if (userDB == null || petDB == null)
                 return;
@@ -2018,10 +2308,13 @@ namespace TamagotchiBot.Controllers
 
             var newGold = userDB.Gold - cost;
             var newSatiety = Math.Round(petDB.Satiety + hungerFactor, 2);
-            newSatiety = newSatiety > 100 ? 100 : newSatiety;
+            var newFatigue = petDB.Fatigue - fatigueFactor;
+            var newHP = petDB.HP + HPFactor;
 
             _appServices.UserService.UpdateGold(_userId, newGold);
             _appServices.PetService.UpdateSatiety(_userId, newSatiety);
+            _appServices.PetService.UpdateFatigue(_userId, newFatigue);
+            _appServices.PetService.UpdateHP(_userId, newHP);
             if (expReward > 0)
                 _appServices.PetService.UpdateEXP(_userId, petDB.EXP + expReward);
 
@@ -2033,23 +2326,38 @@ namespace TamagotchiBot.Controllers
             string anwser = string.Format(nameof(PetFeedingAnwserCallback).UseCulture(_userCulture), (int)hungerFactor);
             await SendAlertToUser(anwser);
 
+            petDB = _appServices.PetService.Get(_userId);
+            userDB = _appServices.UserService.Get(_userId);
+
             string toSendText = string.Format(nameof(kitchenCommand).UseCulture(_userCulture),
-                newSatiety,
-                newGold,
+                petDB.Satiety,
+                userDB.Gold,
+                petDB.Fatigue,
+                petDB.HP,
                 FoodFactors.BreadHungerFactor,
                 Costs.Bread,
                 FoodFactors.RedAppleHungerFactor,
+                FoodFactors.RedAppleHPFactor,
                 Costs.Apple,
+                FoodFactors.ChocolateHungerFactor,
+                FoodFactors.ChocolateFatigueFactor,
+                Costs.Chocolate,
                 FoodFactors.LollipopHungerFactor,
                 Costs.Lollipop,
-                FoodFactors.ChocolateHungerFactor,
-                Costs.Chocolate);
-            InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(InlineItems.InlineFood, 3);
+                FoodFactors.CoffeeHungerFactor,
+                FoodFactors.CoffeeFatigueFactor,
+                Costs.Coffee,
+                FoodFactors.MilkHungerFactor,
+                FoodFactors.MilkHPFactor,
+                Costs.Milk
+                );
+
+            InlineKeyboardMarkup toSendInline = InlineItems.InlineFoodKeyboardButtonArrays;
 
             Log.Debug($"Callbacked FeedWithFoodInline ({hungerFactor} hunger) for {_userInfo}");
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                       _callback?.Message?.MessageId ?? 0,
-                                                      new AnswerCallback(toSendText, toSendInline),
+                                                      new AnswerCallback(toSendText, toSendInline, parseMode: Telegram.Bot.Types.Enums.ParseMode.Html),
                                                       false);
         }
 
@@ -2402,7 +2710,13 @@ namespace TamagotchiBot.Controllers
                         }
                     });
 
-            return new AnswerMessage() { InlineKeyboardMarkup = toSendInline, Text = toSendText, StickerId = StickersId.DailyRewardSticker, ReplyMarkup = ReplyKeyboardItems.MenuKeyboardMarkup(_userCulture) };
+            return new AnswerMessage()
+            {
+                InlineKeyboardMarkup = toSendInline,
+                Text = toSendText,
+                StickerId = StickersId.DailyRewardSticker,
+                ReplyMarkup = ReplyKeyboardItems.OtherMenuKeyboardMarkup(_userCulture)
+            };
         }
         private async Task<AnswerCallback> ShowRemainedTimeDailyRewardCallback(TimeSpan remainedTime = default, bool isAlert = false)
         {
@@ -2545,61 +2859,6 @@ namespace TamagotchiBot.Controllers
                                                               false);
         }
 
-        private string GetRanksByLevelAllGame()
-        {
-            try
-            {
-                var topPets = _appServices.PetService.GetTop10PetsByLevelAllGame();
-
-                string anwserRating = "";
-                var currentUser = _appServices.UserService.Get(_userId);
-                var currentPet = _appServices.PetService.Get(_userId);
-
-                int counter = 1;
-                foreach (var petDB in topPets)
-                {
-                    var userDB = _appServices.UserService.Get(petDB.UserId);
-                    string name = petDB.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
-
-                    if (counter == 1)
-                    {
-                        anwserRating += nameof(ranksCommandLevelAll).UseCulture(_userCulture) + "\n\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + "🌟 " + (petDB.LevelAllGame + petDB.Level) + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += "🌟 " + (petDB.LevelAllGame + petDB.Level) + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name);
-                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
-                        counter++;
-                    }
-                    else
-                    {
-                        anwserRating += "\n";
-
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + counter + ". " + (petDB.LevelAllGame + petDB.Level) + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += counter + ". " + (petDB.LevelAllGame + petDB.Level) + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name);
-                        counter++;
-                    }
-                }
-
-                if (!topPets.Any(a => a.UserId == currentUser.UserId))
-                {
-                    string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
-
-                    anwserRating += "\n______________________________";
-                    anwserRating += "\n <b>" + (_appServices.PetService.CountPetsWithHigherLevel(currentPet.LevelAllGame + currentPet.Level, currentPet.LastUpdateTime) + 1) + ". " + (currentPet.LevelAllGame + currentPet.Level) + $" {Extensions.GetTypeEmoji(currentPet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                }
-
-                return anwserRating;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, ex.Message);
-                return null;
-            }
-        }
-
         private async Task ShowRanksLevel()
         {
             Log.Debug($"Callbacked ShowRanksLevel for {_userInfo}");
@@ -2615,61 +2874,50 @@ namespace TamagotchiBot.Controllers
         }
 
         #endregion
-
-        private string GetRanksByLevel()
+        private string GetRanksByLevelAllGame()
         {
             try
             {
-                var topPets = _appServices.PetService.GetAll()
-                .OrderByDescending(p => p.Level)
-                .ThenByDescending(p => p.LastUpdateTime)
-                .Take(10); //First 10 top-level pets
-
-                string anwserRating = "";
+                var topPets = _appServices.PetService.GetTop10PetsByLevelAllGame();
                 var currentUser = _appServices.UserService.Get(_userId);
                 var currentPet = _appServices.PetService.Get(_userId);
 
-                int counter = 1;
+                List<RankItem> rankItems = new List<RankItem>();
                 foreach (var petDB in topPets)
                 {
                     var userDB = _appServices.UserService.Get(petDB.UserId);
                     string name = petDB.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
-
-                    if (counter == 1)
+                    rankItems.Add(new RankItem
                     {
-                        anwserRating += nameof(ranksCommand).UseCulture(_userCulture) + "\n\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + "🌟 " + petDB.Level + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += "🌟 " + petDB.Level + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name);
-                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
-                        counter++;
-                    }
-                    else
-                    {
-                        anwserRating += "\n";
-
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + counter + ". " + petDB.Level + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += counter + ". " + petDB.Level + $" {Extensions.GetTypeEmoji(petDB.Type)} " + HttpUtility.HtmlEncode(name);
-                        counter++;
-                    }
+                        Name = name,
+                        Value = (petDB.LevelAllGame + petDB.Level).ToString(),
+                        Emoji = Extensions.GetTypeEmoji(petDB.Type),
+                        UserId = petDB.UserId,
+                        IsVip = userDB.VIPIsEnabled
+                    });
                 }
 
-                if (!topPets.Any(a => a.UserId == currentUser.UserId))
+                RankItem currentUserItem = null;
+                int? currentUserRank = null;
+                if (currentUser != null && currentPet != null)
                 {
                     string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
+                    currentUserItem = new RankItem
+                    {
+                        Name = name,
+                        Value = (currentPet.LevelAllGame + currentPet.Level).ToString(),
+                        Emoji = Extensions.GetTypeEmoji(currentPet.Type),
+                        UserId = currentPet.UserId,
+                        IsVip = currentUser.VIPIsEnabled
+                    };
 
-                    anwserRating += "\n______________________________";
-                    anwserRating += "\n <b>" + _appServices.PetService.GetAll()
-                    .OrderByDescending(p => p.Level)
-                    .ThenByDescending(p => p.LastUpdateTime)
-                    .ToList()
-                    .FindIndex(a => a.UserId == currentUser.UserId) + ". " + currentPet.Level + $" {Extensions.GetTypeEmoji(currentPet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
+                    if (!topPets.Any(p => p.UserId == _userId))
+                    {
+                        currentUserRank = (int)_appServices.PetService.CountPetsWithHigherLevel(currentPet.LevelAllGame + currentPet.Level, currentPet.LastUpdateTime);
+                    }
                 }
 
-                return anwserRating;
+                return Extensions.GetRankString(rankItems, nameof(ranksCommandLevelAll).UseCulture(_userCulture), currentUserItem, currentUserRank);
             }
             catch (Exception ex)
             {
@@ -2677,70 +2925,127 @@ namespace TamagotchiBot.Controllers
                 return null;
             }
         }
+
+        private string GetRanksByLevel()
+        {
+            try
+            {
+                var topPets = _appServices.PetService.GetAll()
+                    .OrderByDescending(p => p.Level)
+                    .ThenByDescending(p => p.LastUpdateTime)
+                    .Take(10);
+
+                var currentUser = _appServices.UserService.Get(_userId);
+                var currentPet = _appServices.PetService.Get(_userId);
+
+                List<RankItem> rankItems = new List<RankItem>();
+                foreach (var petDB in topPets)
+                {
+                    var userDB = _appServices.UserService.Get(petDB.UserId);
+                    string name = petDB.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
+                    rankItems.Add(new RankItem
+                    {
+                        Name = name,
+                        Value = petDB.Level.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(petDB.Type),
+                        UserId = petDB.UserId,
+                        IsVip = userDB.VIPIsEnabled
+                    });
+                }
+
+                RankItem currentUserItem = null;
+                int? currentUserRank = null;
+                if (currentUser != null && currentPet != null)
+                {
+                    string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
+                    currentUserItem = new RankItem
+                    {
+                        Name = name,
+                        Value = currentPet.Level.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(currentPet.Type),
+                        UserId = currentPet.UserId,
+                        IsVip = currentUser.VIPIsEnabled
+                    };
+
+                    if (!topPets.Any(p => p.UserId == _userId))
+                    {
+                        currentUserRank = _appServices.PetService.GetAll()
+                            .OrderByDescending(p => p.Level)
+                            .ThenByDescending(p => p.LastUpdateTime)
+                            .ToList()
+                            .FindIndex(a => a.UserId == currentUser.UserId);
+                    }
+                }
+
+                return Extensions.GetRankString(rankItems, nameof(ranksCommand).UseCulture(_userCulture), currentUserItem, currentUserRank);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+                return null;
+            }
+        }
+
         private string GetRanksByApples()
         {
             try
             {
                 var topApples = _appServices.AppleGameDataService.GetAll()
-                .OrderByDescending(a => a.TotalWins)
-                .Take(10); //First 10 top-apples users
+                    .OrderByDescending(a => a.TotalWins)
+                    .Take(10);
 
-                string anwserRating = "";
                 var currentUser = _appServices.UserService.Get(_userId);
                 var currentPet = _appServices.PetService.Get(_userId);
 
-                int counter = 1;
+                List<RankItem> rankItems = new List<RankItem>();
                 foreach (var appleUser in topApples)
                 {
+                    // if (appleUser.TotalWins == null) continue; // Removed redundant check
+
                     var userDB = _appServices.UserService.Get(appleUser.UserId);
+                    if (userDB == null) continue; // Original check
+
                     var petDB = _appServices.PetService.Get(appleUser.UserId);
-                    string name = $" {Extensions.GetTypeEmoji(petDB?.Type ?? -1)} " + _appServices.PetService.Get(appleUser.UserId)?.Name ?? userDB?.Username ?? userDB?.FirstName + userDB?.LastName ?? "";
-                    if (counter == 1)
+                    string name = _appServices.PetService.Get(appleUser.UserId)?.Name ?? userDB?.Username ?? userDB?.FirstName + userDB?.LastName ?? "";
+
+                    rankItems.Add(new RankItem
                     {
-                        if (currentUser == null)
-                            continue;
-
-                        if (appleUser?.TotalWins == null)
-                            continue;
-
-                        anwserRating += nameof(ranksCommandApples).UseCulture(_userCulture) + "\n\n";
-                        if (currentUser.UserId == userDB?.UserId)
-                            anwserRating += "<b>" + "🍏 " + appleUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += "🍏 " + appleUser.TotalWins + HttpUtility.HtmlEncode(name);
-                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
-                        counter++;
-                    }
-                    else
-                    {
-                        if (userDB == null)
-                            continue;
-
-                        if (appleUser?.TotalWins == null)
-                            continue;
-
-                        anwserRating += "\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + counter + ". " + appleUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += counter + ". " + appleUser.TotalWins + HttpUtility.HtmlEncode(name);
-                        counter++;
-                    }
+                        Name = name,
+                        Value = appleUser.TotalWins.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(petDB?.Type ?? -1),
+                        UserId = appleUser.UserId,
+                        IsVip = userDB.VIPIsEnabled
+                    });
                 }
 
-                if (!topApples.Any(a => a.UserId == _userId))
+                RankItem currentUserItem = null;
+                int? currentUserRank = null;
+                if (currentUser != null)
                 {
                     var currentUserApple = _appServices.AppleGameDataService.Get(_userId);
+                    string name = currentPet?.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
 
-                    anwserRating += "\n______________________________";
-                    var counterN = _appServices.AppleGameDataService.GetAll()
-                .OrderByDescending(a => a.TotalWins)
-                .ToList()
-                .FindIndex(a => a.UserId == _userId);
-                    anwserRating += "\n <b> " + (counterN == -1 ? _appServices.AppleGameDataService.GetAll()?.Count : counterN) + ". " + (currentUserApple?.TotalWins ?? 0) + HttpUtility.HtmlEncode($" {Extensions.GetTypeEmoji(currentPet.Type)} " + currentPet?.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName) + "</b>";
+                    currentUserItem = new RankItem
+                    {
+                        Name = name,
+                        Value = (currentUserApple?.TotalWins ?? 0).ToString(),
+                        Emoji = Extensions.GetTypeEmoji(currentPet?.Type ?? -1),
+                        UserId = _userId,
+                        IsVip = currentUser.VIPIsEnabled
+                    };
+
+                    if (!topApples.Any(p => p.UserId == _userId))
+                    {
+                        var counterN = _appServices.AppleGameDataService.GetAll()
+                            .OrderByDescending(a => a.TotalWins)
+                            .ToList()
+                            .FindIndex(a => a.UserId == _userId);
+
+                        currentUserRank = counterN == -1 ? _appServices.AppleGameDataService.GetAll()?.Count : counterN;
+                    }
                 }
 
-                return anwserRating;
+                return Extensions.GetRankString(rankItems, nameof(ranksCommandApples).UseCulture(_userCulture), currentUserItem, currentUserRank, "🍏");
             }
             catch (Exception ex)
             {
@@ -2753,65 +3058,61 @@ namespace TamagotchiBot.Controllers
             try
             {
                 var topTicTakToe = _appServices.TicTacToeGameDataService.GetAll()
-                .OrderByDescending(a => a.TotalWins)
-                .Take(10); //First 10 top-apples users
+                    .OrderByDescending(a => a.TotalWins)
+                    .Take(10);
 
-                string anwserRating = "";
                 var currentUser = _appServices.UserService.Get(_userId);
                 var currentPet = _appServices.PetService.Get(_userId);
 
-                int counter = 1;
+                List<RankItem> rankItems = new List<RankItem>();
                 foreach (var ticTakToeUser in topTicTakToe)
                 {
+                    // if (ticTakToeUser.TotalWins == null) continue;
+
                     var userDB = _appServices.UserService.Get(ticTakToeUser.UserId);
+                    if (userDB == null) continue;
+
                     var petDB = _appServices.PetService.Get(ticTakToeUser.UserId);
-                    string name = $" {Extensions.GetTypeEmoji(petDB?.Type ?? -1)} " + _appServices.PetService.Get(ticTakToeUser.UserId)?.Name ?? userDB?.Username ?? userDB?.FirstName + userDB?.LastName ?? "";
-                    if (counter == 1)
+                    string name = _appServices.PetService.Get(ticTakToeUser.UserId)?.Name ?? userDB?.Username ?? userDB?.FirstName + userDB?.LastName ?? "";
+
+                    rankItems.Add(new RankItem
                     {
-                        if (currentUser == null)
-                            continue;
-
-                        if (ticTakToeUser?.TotalWins == null)
-                            continue;
-
-                        anwserRating += nameof(ranksCommandTicTakToe).UseCulture(_userCulture) + "\n\n";
-                        if (currentUser.UserId == userDB?.UserId)
-                            anwserRating += "<b>" + "❌ " + ticTakToeUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += "❌ " + ticTakToeUser.TotalWins + HttpUtility.HtmlEncode(name);
-                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
-                        counter++;
-                    }
-                    else
-                    {
-                        if (userDB == null)
-                            continue;
-
-                        if (ticTakToeUser?.TotalWins == null)
-                            continue;
-
-                        anwserRating += "\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + counter + ". " + ticTakToeUser.TotalWins + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += counter + ". " + ticTakToeUser.TotalWins + HttpUtility.HtmlEncode(name);
-                        counter++;
-                    }
+                        Name = name,
+                        Value = ticTakToeUser.TotalWins.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(petDB?.Type ?? -1),
+                        UserId = ticTakToeUser.UserId,
+                        IsVip = userDB.VIPIsEnabled
+                    });
                 }
 
-                if (!topTicTakToe.Any(a => a.UserId == _userId))
+                RankItem currentUserItem = null;
+                int? currentUserRank = null;
+                if (currentUser != null)
                 {
-                    var currentUserApple = _appServices.TicTacToeGameDataService.Get(_userId);
+                    var currentUserTicTacToe = _appServices.TicTacToeGameDataService.Get(_userId);
+                    string name = currentPet?.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
 
-                    anwserRating += "\n______________________________";
-                    var counterN = _appServices.TicTacToeGameDataService.GetAll()
-                .OrderByDescending(a => a.TotalWins)
-                .ToList()
-                .FindIndex(a => a.UserId == _userId);
-                    anwserRating += "\n <b> " + (counterN == -1 ? _appServices.TicTacToeGameDataService.GetAll()?.Count : counterN) + ". " + (currentUserApple?.TotalWins ?? 0) + HttpUtility.HtmlEncode($" {Extensions.GetTypeEmoji(currentPet.Type)} " + currentPet?.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName) + "</b>";
+                    currentUserItem = new RankItem
+                    {
+                        Name = name,
+                        Value = (currentUserTicTacToe?.TotalWins ?? 0).ToString(),
+                        Emoji = Extensions.GetTypeEmoji(currentPet?.Type ?? -1),
+                        UserId = _userId,
+                        IsVip = currentUser.VIPIsEnabled
+                    };
+
+                    if (!topTicTakToe.Any(p => p.UserId == _userId))
+                    {
+                        var counterN = _appServices.TicTacToeGameDataService.GetAll()
+                            .OrderByDescending(a => a.TotalWins)
+                            .ToList()
+                            .FindIndex(a => a.UserId == _userId);
+
+                        currentUserRank = counterN == -1 ? _appServices.TicTacToeGameDataService.GetAll()?.Count : counterN;
+                    }
                 }
 
-                return anwserRating;
+                return Extensions.GetRankString(rankItems, nameof(ranksCommandTicTakToe).UseCulture(_userCulture), currentUserItem, currentUserRank, "❌");
             }
             catch (Exception ex)
             {
@@ -2819,66 +3120,64 @@ namespace TamagotchiBot.Controllers
                 return null;
             }
         }
+
         private string GetRanksByGold()
         {
             try
             {
                 var topPets = _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
-                p => p.UserId,
-                u => u.UserId,
-                (pet, user) => new { user.UserId, user.Gold, pet.Name, pet.LastUpdateTime, pet.Type })
-                .OrderByDescending(p => p.Gold)
-                .ThenByDescending(p => p.LastUpdateTime)
-                .Take(10); //First 10 top-gold pets
+                    p => p.UserId,
+                    u => u.UserId,
+                    (pet, user) => new { user.UserId, user.Gold, pet.Name, pet.LastUpdateTime, pet.Type, user.Username, user.FirstName, user.LastName, user.VIPIsEnabled })
+                    .OrderByDescending(p => p.Gold)
+                    .ThenByDescending(p => p.LastUpdateTime)
+                    .Take(10);
 
-                string anwserRating = "";
                 var currentUser = _appServices.UserService.Get(_userId);
                 var currentPet = _appServices.PetService.Get(_userId);
 
-                int counter = 1;
+                List<RankItem> rankItems = new List<RankItem>();
                 foreach (var pet in topPets)
                 {
-                    var userDB = _appServices.UserService.Get(pet.UserId);
-                    string name = pet.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
-                    if (counter == 1)
+                    string name = pet.Name ?? pet.Username ?? pet.FirstName + pet.LastName;
+                    rankItems.Add(new RankItem
                     {
-                        anwserRating += nameof(ranksCommandGold).UseCulture(_userCulture) + "\n\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + "💎 " + pet.Gold + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += "💎 " + pet.Gold + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name);
-                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
-                        counter++;
-                    }
-                    else
-                    {
-                        anwserRating += "\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + counter + ". " + pet.Gold + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += counter + ". " + pet.Gold + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name);
-                        counter++;
-                    }
+                        Name = name,
+                        Value = pet.Gold.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(pet.Type),
+                        UserId = pet.UserId,
+                        IsVip = pet.VIPIsEnabled
+                    });
                 }
 
-                if (!topPets.Any(a => a.UserId == currentUser.UserId))
+                RankItem currentUserItem = null;
+                int? currentUserRank = null;
+                if (currentUser != null && currentPet != null)
                 {
                     string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
+                    currentUserItem = new RankItem
+                    {
+                        Name = name,
+                        Value = currentUser.Gold.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(currentPet.Type),
+                        UserId = currentUser.UserId,
+                        IsVip = currentUser.VIPIsEnabled
+                    };
 
-                    anwserRating += "\n______________________________";
-                    anwserRating += "\n <b>" +
-                        _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
-                        p => p.UserId,
-                        u => u.UserId,
-                        (pet, user) => new { user.UserId, user.Gold, pet.Name, pet.LastUpdateTime })
-                        .OrderByDescending(p => p.Gold)
-                        .ThenByDescending(p => p.LastUpdateTime)
-                    .ToList()
-                        .FindIndex(a => a.UserId == currentUser.UserId) + ". " + currentUser.Gold + $" {Extensions.GetTypeEmoji(currentPet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
+                    if (!topPets.Any(p => p.UserId == _userId))
+                    {
+                        currentUserRank = _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
+                            p => p.UserId,
+                            u => u.UserId,
+                            (pet, user) => new { user.UserId, user.Gold, pet.Name, pet.LastUpdateTime })
+                            .OrderByDescending(p => p.Gold)
+                            .ThenByDescending(p => p.LastUpdateTime)
+                            .ToList()
+                            .FindIndex(a => a.UserId == currentUser.UserId);
+                    }
                 }
 
-                return anwserRating;
-
+                return Extensions.GetRankString(rankItems, nameof(ranksCommandGold).UseCulture(_userCulture), currentUserItem, currentUserRank, "💰");
             }
             catch (Exception ex)
             {
@@ -2892,61 +3191,58 @@ namespace TamagotchiBot.Controllers
             try
             {
                 var topPets = _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
-                p => p.UserId,
-                u => u.UserId,
-                (pet, user) => new { user.UserId, user.Diamonds, pet.Name, pet.LastUpdateTime, pet.Type })
-                .OrderByDescending(p => p.Diamonds)
-                .ThenByDescending(p => p.LastUpdateTime)
-                .Take(10); //First 10 top-diamonds pets
+                    p => p.UserId,
+                    u => u.UserId,
+                    (pet, user) => new { user.UserId, user.Diamonds, pet.Name, pet.LastUpdateTime, pet.Type, user.Username, user.FirstName, user.LastName, user.VIPIsEnabled })
+                    .OrderByDescending(p => p.Diamonds)
+                    .ThenByDescending(p => p.LastUpdateTime)
+                    .Take(10);
 
-                string anwserRating = "";
                 var currentUser = _appServices.UserService.Get(_userId);
                 var currentPet = _appServices.PetService.Get(_userId);
 
-                int counter = 1;
+                List<RankItem> rankItems = new List<RankItem>();
                 foreach (var pet in topPets)
                 {
-                    var userDB = _appServices.UserService.Get(pet.UserId);
-                    string name = pet.Name ?? userDB.Username ?? userDB.FirstName + userDB.LastName;
-                    if (counter == 1)
+                    string name = pet.Name ?? pet.Username ?? pet.FirstName + pet.LastName;
+                    rankItems.Add(new RankItem
                     {
-                        anwserRating += nameof(Resources.Resources.ranksCommandDiamonds).UseCulture(_userCulture) + "\n\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + "💎 " + pet.Diamonds + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += "💎 " + pet.Diamonds + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name);
-                        anwserRating += "\n⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯⋯";
-                        counter++;
-                    }
-                    else
-                    {
-                        anwserRating += "\n";
-                        if (currentUser.UserId == userDB.UserId)
-                            anwserRating += "<b>" + counter + ". " + pet.Diamonds + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
-                        else
-                            anwserRating += counter + ". " + pet.Diamonds + $" {Extensions.GetTypeEmoji(pet.Type)} " + HttpUtility.HtmlEncode(name);
-                        counter++;
-                    }
+                        Name = name,
+                        Value = pet.Diamonds.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(pet.Type),
+                        UserId = pet.UserId,
+                        IsVip = pet.VIPIsEnabled
+                    });
                 }
 
-                if (!topPets.Any(a => a.UserId == currentUser.UserId))
+                RankItem currentUserItem = null;
+                int? currentUserRank = null;
+                if (currentUser != null && currentPet != null)
                 {
                     string name = currentPet.Name ?? currentUser.Username ?? currentUser.FirstName + currentUser.LastName;
+                    currentUserItem = new RankItem
+                    {
+                        Name = name,
+                        Value = currentUser.Diamonds.ToString(),
+                        Emoji = Extensions.GetTypeEmoji(currentPet.Type),
+                        UserId = currentUser.UserId,
+                        IsVip = currentUser.VIPIsEnabled
+                    };
 
-                    anwserRating += "\n______________________________";
-                    anwserRating += "\n <b>" +
-                        _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
-                        p => p.UserId,
-                        u => u.UserId,
-                        (pet, user) => new { user.UserId, user.Diamonds, pet.Name, pet.LastUpdateTime })
-                        .OrderByDescending(p => p.Diamonds)
-                        .ThenByDescending(p => p.LastUpdateTime)
-                    .ToList()
-                        .FindIndex(a => a.UserId == currentUser.UserId) + ". " + currentUser.Diamonds + $" {Extensions.GetTypeEmoji(currentPet.Type)} " + HttpUtility.HtmlEncode(name) + "</b>";
+                    if (!topPets.Any(p => p.UserId == _userId))
+                    {
+                        currentUserRank = _appServices.PetService.GetAll().Join(_appServices.UserService.GetAll(),
+                            p => p.UserId,
+                            u => u.UserId,
+                            (pet, user) => new { user.UserId, user.Diamonds, pet.Name, pet.LastUpdateTime })
+                            .OrderByDescending(p => p.Diamonds)
+                            .ThenByDescending(p => p.LastUpdateTime)
+                            .ToList()
+                            .FindIndex(a => a.UserId == currentUser.UserId);
+                    }
                 }
 
-                return anwserRating;
-
+                return Extensions.GetRankString(rankItems, nameof(Resources.Resources.ranksCommandDiamonds).UseCulture(_userCulture), currentUserItem, currentUserRank, "💎");
             }
             catch (Exception ex)
             {
@@ -2955,46 +3251,7 @@ namespace TamagotchiBot.Controllers
             }
         }
 
-        private async Task UpdateWorkOnPCButtonToDefault(Pet petDB)
-        {
-            try
-            {
-                var workButtons = InlineItems.InlineWork(_userCulture);
-                InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(workButtons, 3);
-
-                string toSendText = nameof(workCommand).UseCulture(_userCulture);
-                toSendText = string.Format(toSendText,
-                                           new DateTime(TimesToWait.WorkOnPCToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.WorkOnPCGoldReward,
-                                           petDB.Fatigue,
-                                           new DateTime(TimesToWait.FlyersDistToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.FlyersDistributingGoldReward,
-                                           new DateTime(TimesToWait.McDonaldsToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.McDonaldsGoldReward,
-                                           new DateTime(TimesToWait.FoodDeliveryToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.FoodDeliveryGoldReward,
-                                           new DateTime(TimesToWait.MakeUpArtistToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.MakeUpArtistGoldReward,
-                                           new DateTime(TimesToWait.EngineerToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.EngineerGoldReward,
-                                           new DateTime(TimesToWait.AccountantToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.AccountantGoldReward,
-                                           new DateTime(TimesToWait.PilotToWait.Ticks).ToString("HH:mm:ss"),
-                                           Rewards.PilotGoldReward);
-
-                Log.Debug($"Callbacked UpdateWorkOnPCButtonToDefault (GENERIC REFACTORED) for {_userInfo}");
-                await _appServices.BotControlService.SendAnswerCallback(_userId,
-                                                                  _callback?.Message?.MessageId ?? 0,
-                                                                  new AnswerCallback(toSendText, toSendInline, Telegram.Bot.Types.Enums.ParseMode.Html),
-                                                                  false);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error in UpdateWorkOnPCButtonToDefault");
-            }
-        }
-
-        private async Task<bool> CheckJobAccess(Pet pet, JobType job)
+        private async Task<bool> CheckJobAccess(User userDB, Pet pet, JobType job)
         {
             var educationRequirement = job.GetEducationRequirement();
             var petEducation = pet.EducationLevel.GetActualEducationLevel();
@@ -3004,6 +3261,12 @@ namespace TamagotchiBot.Controllers
             if (petEducation < educationRequirement)
             {
                 await SendAlertToUser(string.Format(nameof(Resources.Resources.workCommand_notEnoughEducation).UseCulture(_userCulture)), true);
+                return false;
+            }
+
+            if (job > JobType.Pilot && !userDB.VIPIsEnabled)
+            {
+                await SendAlertToUser(string.Format(nameof(Resources.Resources.VIPPremium_decline_noVIPEnabled).UseCulture(_userCulture)), true);
                 return false;
             }
 
@@ -3034,6 +3297,9 @@ namespace TamagotchiBot.Controllers
                 case JobType.Pilot:
                     requiredFatigue = Constants.Factors.PilotFatigueFactor;
                     break;
+                case JobType.Jeweler:
+                    requiredFatigue = Constants.Factors.JewelerFatigueFactor;
+                    break;
             }
 
             if (pet.Fatigue + requiredFatigue > 100)
@@ -3051,10 +3317,11 @@ namespace TamagotchiBot.Controllers
                 return;
 
             if (await CheckStatusIsInactive(petDB)) return;
-            if (!await CheckJobAccess(petDB, job)) return;
+            if (!await CheckJobAccess(userDB, petDB, job)) return;
 
             //Calculate rewards and time
             int fatigueFactor = 0;
+            int satietyFactor = Constants.Factors.WorkSatietyFactor;
             int joyFactor = 0;
             int goldReward = 0;
             int expReward = 0;
@@ -3127,24 +3394,45 @@ namespace TamagotchiBot.Controllers
                     expReward = Constants.ExpForAction.WorkPilot;
                     jobName = nameof(Resources.Resources.workCommandInlinePilot).UseCulture(_userCulture);
                     break;
+                case JobType.Jeweler:
+                    fatigueFactor = Constants.Factors.JewelerFatigueFactor;
+                    joyFactor = Constants.Factors.JewelerJoyFactor;
+                    goldReward = Constants.Rewards.VIPJewelerJobGoldReward;
+                    timeToWait = job.GetTimeToWait();
+                    expReward = Constants.ExpForAction.WorkJeweler;
+                    jobName = nameof(Resources.Resources.workCommandInlineJeweler).UseCulture(_userCulture);
+                    break;
             }
 
             //Update Pet
-            petDB.Fatigue += fatigueFactor;
-            petDB.Joy += joyFactor;
-            if (petDB.Joy < 0)
-                petDB.Joy = 0;
-            petDB.StartWorkingTime = DateTime.UtcNow;
-            petDB.CurrentStatus = (int)CurrentStatus.Working;
-            petDB.CurrentJob = (int)job;
+            var newFatigue = petDB.Fatigue + fatigueFactor;
+            var newSatiety = petDB.Satiety - satietyFactor;
+            var newJoy = petDB.Joy + joyFactor;
+            var newEXP = petDB.EXP + expReward;
+            var newGold = userDB.Gold + goldReward;
 
-            _appServices.PetService.Update(_userId, petDB);
-            _appServices.UserService.UpdateGold(_userId, userDB.Gold + goldReward);
-            _appServices.PetService.UpdateEXP(_userId, petDB.EXP + expReward);
+            _appServices.PetService.UpdateFatigue(_userId, newFatigue);
+            _appServices.PetService.UpdateSatiety(_userId, newSatiety);
+            _appServices.PetService.UpdateJoy(_userId, newJoy);
+            _appServices.PetService.UpdateStartWorkingTime(_userId, DateTime.UtcNow);
+            _appServices.PetService.UpdateCurrentStatus(_userId, (int)CurrentStatus.Working);
+            _appServices.PetService.UpdateCurrentJob(_userId, (int)job);
+            _appServices.PetService.UpdateEXP(_userId, newEXP);
 
+            _appServices.UserService.UpdateGold(_userId, newGold);
+
+            userDB = _appServices.UserService.Get(_userId);
+            petDB = _appServices.PetService.Get(_userId);
 
             string toSendText = string.Format(nameof(Resources.Resources.workCommand_Working).UseCulture(_userCulture), jobName);
-            await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback?.Id, _userId, toSendText, false);
+
+            if (petDB.Satiety < 30)
+            {
+                string toAddText = Environment.NewLine + Environment.NewLine + string.Format(nameof(Resources.Resources.workCommand_LowSatiety).UseCulture(_userCulture), (int)petDB.Satiety);
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback?.Id, _userId, toSendText + toAddText, true);
+            }
+            else
+                await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback?.Id, _userId, toSendText, false);
 
             await ServeJob(userDB, petDB);
         }
@@ -3247,14 +3535,28 @@ namespace TamagotchiBot.Controllers
                                                         new DateTime(TimesToWait.AccountantToWait.Ticks).ToString("HH:mm:ss"),
                                                         Rewards.AccountantGoldReward,
                                                         new DateTime(TimesToWait.PilotToWait.Ticks).ToString("HH:mm:ss"),
-                                                        Rewards.PilotGoldReward);
-            List<CallbackModel> inlineParts = InlineItems.InlineWork(_userCulture);
-            InlineKeyboardMarkup toSendInlineIfTimeOver = Extensions.InlineKeyboardOptimizer(inlineParts, 3);
+                                                        Rewards.PilotGoldReward,
+                                                        new DateTime(TimesToWait.JewelerToWait.Ticks).ToString("HH:mm:ss"),
+                                                        Rewards.VIPJewelerJobGoldReward,
+                                                        Rewards.VIPJewelerJobDiamondReward,
+                                                        Constants.Factors.FoodDeliveryFatigueFactor,
+                                                        Constants.Factors.McDonaldsFatigueFactor,
+                                                        Constants.Factors.FlyersDistributingFatigueFactor,
+                                                        Constants.Factors.EngineerFatigueFactor,
+                                                        Constants.Factors.MakeUpArtistFatigueFactor,
+                                                        Constants.Factors.WorkOnPCFatigueFactor,
+                                                        Constants.Factors.AccountantFatigueFactor,
+                                                        Constants.Factors.PilotFatigueFactor,
+                                                        Constants.Factors.JewelerFatigueFactor,
+                                                        Constants.Factors.WorkSatietyFactor
+                                                        );
+
+            InlineKeyboardMarkup toSendInlineIfTimeOver = InlineItems.InlineWorkKeyboardButtonArrays(_userCulture);
 
             Log.Debug($"Callbacked ShowDefaultWorkCommand (work is over) for {_userInfo}");
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
-                                                              new AnswerCallback(toSendTextIfTimeOver, toSendInlineIfTimeOver),
+                                                              new AnswerCallback(toSendTextIfTimeOver, toSendInlineIfTimeOver, Telegram.Bot.Types.Enums.ParseMode.Html),
                                                               false);
         }
 
@@ -3271,7 +3573,9 @@ namespace TamagotchiBot.Controllers
             {
                 // Show analyzing message (Check time keyboard)
                 string text = nameof(Resources.Resources.educationCommand_InProgress).UseCulture(_userCulture);
-                TimeSpan timeToWait = Extensions.GetEducationTime(currentLevel);
+                TimeSpan timeToWait = userDB.VIPIsEnabled
+                                        ? Extensions.GetEducationTime(currentLevel, Factors.EducationCoefFasterVIPProc)
+                                        : Extensions.GetEducationTime(currentLevel);
 
                 var remainsTime = timeToWait - (DateTime.UtcNow - petDB.StartStudyingTime);
                 if (remainsTime < TimeSpan.Zero) remainsTime = TimeSpan.Zero;
@@ -3289,7 +3593,7 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -3299,7 +3603,7 @@ namespace TamagotchiBot.Controllers
 
             string toSendText;
             ReplyMarkup toSendReplyMarkup;
-            if (petDB.EducationLevel.GetActualEducationLevel() == EducationLevel.CompletedHigh)
+            if (petDB.EducationLevel.GetActualEducationLevel() == EducationLevel.SpecialJeweler)
             {
                 toSendText = nameof(Resources.Resources.educationCommand_OveredAllEducationLevels).UseCulture(_userCulture);
                 toSendReplyMarkup = ReplyKeyboardItems.EducationAllCompletedKeyboardMarkup(_userCulture);
@@ -3375,7 +3679,7 @@ namespace TamagotchiBot.Controllers
         {
             if (userDB == null || petDB == null)
                 return;
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -3392,10 +3696,14 @@ namespace TamagotchiBot.Controllers
 
             var currentLevel = petDB.EducationLevel.GetActualEducationLevel();
 
-            if (currentLevel != type)
+            if (currentLevel != type || (!userDB.VIPIsEnabled && type > EducationLevel.High))
             {
                 string statusText;
-                if (currentLevel < type)
+                if (!userDB.VIPIsEnabled && type > EducationLevel.High)
+                {
+                    statusText = "❗️" + nameof(Resources.Resources.VIPPremium_decline_noVIPEnabled).UseCulture(_userCulture);
+                }
+                else if (currentLevel < type)
                 {
                     statusText = "❗️" + nameof(Resources.Resources.educationCommand_NeedFinishPrevious).UseCulture(_userCulture);
                 }
@@ -3408,7 +3716,7 @@ namespace TamagotchiBot.Controllers
 
                 string educationInfo = string.Format(nameof(Resources.Resources.educationCommand).UseCulture(_userCulture),
                                            currentLevel.GetActualEducationLevelTranslatedString(_userCulture),
-                                           currentLevel == EducationLevel.CompletedHigh
+                                           currentLevel == EducationLevel.SpecialJeweler
                                                         ? totalStages
                                                         : petDB.EducationStage,
                                            totalStages,
@@ -3436,7 +3744,9 @@ namespace TamagotchiBot.Controllers
             _appServices.PetService.UpdateStartStudyingTime(_userId, petDB.StartStudyingTime);
 
             // Send confirmation (update message to show timer)
-            TimeSpan timeToWait = Extensions.GetEducationTime(currentLevel);
+            TimeSpan timeToWait = userDB.VIPIsEnabled
+                                        ? Extensions.GetEducationTime(currentLevel, Factors.EducationCoefFasterVIPProc)
+                                        : Extensions.GetEducationTime(currentLevel);
 
             Log.Information($"Start Studying for {_userInfo}");
 
@@ -3464,7 +3774,7 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            var accessCheck = CheckStatusIsInactiveOrNull(petDB, isShowEducationLeftTime: true);
+            var accessCheck = CheckStatusIsInactiveOrNull(userDB, petDB, isShowEducationLeftTime: true);
             if (accessCheck != null)
             {
                 Log.Debug($"Pet is busy for {_userInfo}");
@@ -3474,7 +3784,9 @@ namespace TamagotchiBot.Controllers
 
             var currentLevel = petDB.EducationLevel.GetActualEducationLevel();
 
-            TimeSpan timeToWait = Extensions.GetEducationTime(currentLevel);
+            TimeSpan timeToWait = userDB.VIPIsEnabled
+                                        ? Extensions.GetEducationTime(currentLevel, Factors.EducationCoefFasterVIPProc)
+                                        : Extensions.GetEducationTime(currentLevel);
             TimeSpan remainsTime = timeToWait - (DateTime.UtcNow - petDB.StartStudyingTime);
 
             if (remainsTime <= TimeSpan.Zero)

@@ -48,6 +48,26 @@ namespace TamagotchiBot.UserExtensions
                 Text = "🍭",
                 CallbackData = nameof(KitchenCommandInlineLollipop)
             };
+
+            public static CallbackModel KitchenCommandInlineCoffee
+            {
+                get => _kitchenCommandInlineCoffee;
+            }
+            private static CallbackModel _kitchenCommandInlineCoffee = new CallbackModel()
+            {
+                Text = "☕️",
+                CallbackData = nameof(KitchenCommandInlineCoffee)
+            };
+
+            public static CallbackModel KitchenCommandInlineMilk
+            {
+                get => _kitchenCommandInlineMilk;
+            }
+            private static CallbackModel _kitchenCommandInlineMilk = new CallbackModel()
+            {
+                Text = "🥛",
+                CallbackData = nameof(KitchenCommandInlineMilk)
+            };
         }
 
         public static class FarmCommand
@@ -180,6 +200,11 @@ namespace TamagotchiBot.UserExtensions
                         Text = string.Format(nameof(Resources.Resources.workCommandInlineShowTime).UseCulture(culture), timeToShow),
                         CallbackData = nameof(WorkCommandInlineShowTime)
                     },
+                    JobType.Jeweler => new CallbackModel()
+                    {
+                        Text = string.Format(nameof(Resources.Resources.workCommandInlineShowTime).UseCulture(culture), timeToShow),
+                        CallbackData = nameof(WorkCommandInlineShowTime)
+                    },
 
                     _ => new CallbackModel()
                     {
@@ -227,6 +252,12 @@ namespace TamagotchiBot.UserExtensions
             {
                 Text = nameof(Resources.Resources.workCommandInlinePilot).UseCulture(culture),
                 CallbackData = nameof(WorkCommandInlinePilot)
+            };
+
+            public static CallbackModel WorkCommandInlineJeweler(CultureInfo culture) => new CallbackModel()
+            {
+                Text = nameof(Resources.Resources.workCommandInlineJeweler).UseCulture(culture),
+                CallbackData = nameof(WorkCommandInlineJeweler)
             };
         }
         public static class RanksCommand

@@ -291,11 +291,11 @@ namespace TamagotchiBot.Controllers
                     appleDataToUpdate.TotalLoses += 1;
                     appleDataToUpdate.IsGameOvered = true;
 
-                    petDB.Joy += Factors.CardGameJoyFactor;
+                    petDB.Joy += Factors.AppleGameJoyFactor;
                     if (petDB.Joy > 100)
                         petDB.Joy = 100;
 
-                    petDB.Fatigue += Factors.CardGameFatigueFactor;
+                    petDB.Fatigue += Factors.AppleGameFatigueFactor;
                     if (petDB.Fatigue > 100)
                         petDB.Fatigue = 100;
 
@@ -308,11 +308,11 @@ namespace TamagotchiBot.Controllers
                     appleDataToUpdate.TotalWins += 1;
                     appleDataToUpdate.IsGameOvered = true;
 
-                    petDB.Joy += Factors.CardGameJoyFactor;
+                    petDB.Joy += Factors.AppleGameJoyFactor;
                     if (petDB.Joy > 100)
                         petDB.Joy = 100;
 
-                    petDB.Fatigue += Factors.CardGameFatigueFactor;
+                    petDB.Fatigue += Factors.AppleGameFatigueFactor;
                     if (petDB.Fatigue > 100)
                         petDB.Fatigue = 100;
 
@@ -343,7 +343,7 @@ namespace TamagotchiBot.Controllers
             if (petDB == null || userDB == null)
                 return;
 
-            if (petDB.Fatigue >= 100)
+            if (petDB.Fatigue >= 100 && !userDB.VIPIsEnabled)
             {
                 string anwser = nameof(tooTiredText).UseCulture(_userCulture);
                 await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,
@@ -352,7 +352,7 @@ namespace TamagotchiBot.Controllers
                                                                         true);
                 return;
             }
-            if (petDB.Joy >= 100)
+            if (petDB.Joy >= 100 && !userDB.VIPIsEnabled)
             {
                 string anwser = nameof(PetIsFullOfJoyText).UseCulture(_userCulture);
                 await _appServices.BotControlService.AnswerCallbackQueryAsync(_callback.Id,

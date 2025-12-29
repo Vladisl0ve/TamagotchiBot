@@ -9,8 +9,13 @@ using static TamagotchiBot.UserExtensions.Constants;
 
 namespace TamagotchiBot.Services.Mongo
 {
-    public class PetService(ITamagotchiDatabaseSettings settings) : MongoServiceBase<Pet>(settings)
+    public class PetService : MongoServiceBase<Pet>
     {
+        private readonly IMongoCollection<Pet> _backupCollection;
+        public PetService(ITamagotchiDatabaseSettings settings) : base(settings)
+        {
+            _backupCollection = MongoDatabase.GetCollection<Pet>(settings.PetsBackupCollectionName);
+        }
         public List<Pet> GetAll() => _collection.Find(p => true).ToList();
 
         public Pet Get(long userId) => _collection.Find(p => p.UserId == userId).FirstOrDefault();
@@ -99,6 +104,7 @@ namespace TamagotchiBot.Services.Mongo
             else if (newSatiety < 0 && !forcePush)
                 newSatiety = 0;
 
+            newSatiety = Math.Round(newSatiety, 2);
             var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
@@ -127,8 +133,13 @@ namespace TamagotchiBot.Services.Mongo
             }
         }
 
-        public void UpdateFatigue(long userId, int newFatigue)
+        public void UpdateFatigue(long userId, int newFatigue, bool forcePush = false)
         {
+            if (newFatigue > 100 && !forcePush)
+                newFatigue = 100;
+            else if (newFatigue < 0 && !forcePush)
+                newFatigue = 0;
+
             var pet = _collection.Find(p => p.UserId == userId).FirstOrDefault();
             if (pet != null)
             {
@@ -192,7 +203,15 @@ namespace TamagotchiBot.Services.Mongo
             _collection.ReplaceOne(u => u.UserId == userId, petDb);
             return true;
         }
-        public void Remove(long userId) => _collection.DeleteOne(p => p.UserId == userId);
+        public void Remove(long userId)
+        {
+            var pet = Get(userId);
+            if (pet != null)
+            {
+                _backupCollection.InsertOne(pet);
+                _collection.DeleteOne(p => p.UserId == userId);
+            }
+        }
 
         internal long CountLastWeekPlayed() => _collection.CountDocuments(p => p.LastUpdateTime > DateTime.UtcNow.AddDays(-7));
 
@@ -276,7 +295,7 @@ namespace TamagotchiBot.Services.Mongo
                     { "_id", BsonNull.Value },
                     { "count", new BsonDocument("$sum", 1) }
                 });
-            
+
             var result = _collection.Aggregate(pipeline).FirstOrDefault();
             return result?["count"].AsInt32 ?? 0;
         }

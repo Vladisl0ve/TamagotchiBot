@@ -270,5 +270,33 @@ namespace TamagotchiBot.Services.Mongo
             _collection.ReplaceOne(u => u.UserId == userId, metaUserDb);
             return true;
         }
+
+        internal bool IsConfirmAskedOnVIP7daysBuying(long userId, bool isAsked)
+        {
+            var metaUserDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
+            metaUserDb ??= Create(new MetaUser() { UserId = userId });
+
+            metaUserDb.IsConfirmAskedOnVIP7daysBuying = isAsked;
+            metaUserDb.Updated = DateTime.UtcNow;
+            _collection.ReplaceOne(u => u.UserId == userId, metaUserDb);
+            return true;
+        }
+
+        internal string GetPendingConfirmation(long userId)
+        {
+            var metaUserDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
+            return metaUserDb?.PendingConfirmation;
+        }
+
+        internal bool UpdatePendingConfirmation(long userId, string pendingConfirmation)
+        {
+            var metaUserDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
+            metaUserDb ??= Create(new MetaUser() { UserId = userId });
+
+            metaUserDb.PendingConfirmation = pendingConfirmation;
+            metaUserDb.Updated = DateTime.UtcNow;
+            _collection.ReplaceOne(u => u.UserId == userId, metaUserDb);
+            return true;
+        }
     }
 }

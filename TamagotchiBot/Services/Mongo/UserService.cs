@@ -8,8 +8,13 @@ using TamagotchiBot.Models.Mongo;
 
 namespace TamagotchiBot.Services.Mongo
 {
-    public class UserService(ITamagotchiDatabaseSettings settings) : MongoServiceBase<User>(settings)
+    public class UserService : MongoServiceBase<User>
     {
+        private readonly IMongoCollection<User> _backupCollection;
+        public UserService(ITamagotchiDatabaseSettings settings) : base(settings)
+        {
+            _backupCollection = MongoDatabase.GetCollection<User>(settings.UsersBackupCollectionName);
+        }
         public List<User> GetAll() => _collection.Find(u => true).ToList();
 
         public User Get(long userId) => _collection.Find(u => u.UserId == userId).FirstOrDefault();
@@ -162,7 +167,15 @@ namespace TamagotchiBot.Services.Mongo
             return true;
         }
 
-        public void Remove(long userId) => _collection.DeleteOne(u => u.UserId == userId);
+        public void Remove(long userId)
+        {
+            var user = Get(userId);
+            if (user != null)
+            {
+                _backupCollection.InsertOne(user);
+                _collection.DeleteOne(u => u.UserId == userId);
+            }
+        }
 
         public void UpdateAutoFeedCharges(long userId, int charges)
         {
@@ -190,6 +203,36 @@ namespace TamagotchiBot.Services.Mongo
             if (userDb != null)
             {
                 userDb.DiamondsGotByRef = newDiamonds;
+                Update(userId, userDb);
+            }
+        }
+
+        public void UpdateVIPStartTime(long userId, DateTime startTime)
+        {
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb != null)
+            {
+                userDb.VIPStartTime = startTime;
+                Update(userId, userDb);
+            }
+        }
+
+        public void UpdateVIPIsEnabled(long userId, bool isEnabled)
+        {
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb != null)
+            {
+                userDb.VIPIsEnabled = isEnabled;
+                Update(userId, userDb);
+            }
+        }
+
+        public void UpdateVIPLongDays(long userId, int longDays)
+        {
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
+            if (userDb != null)
+            {
+                userDb.VIPLongDays = longDays;
                 Update(userId, userDb);
             }
         }

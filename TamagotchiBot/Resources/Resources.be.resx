@@ -142,7 +142,7 @@
 Забаўляйцеся 🍿</value>
   </data>
   <data name="petCommand" xml:space="preserve">
-    <value>{11} {0}
+    <value>{11} {0} {18}
 
 💊 Здароўе: {1}%
 🍕 Сытасць: {4}%
@@ -201,19 +201,26 @@
     <value>Больш інфы 📝</value>
   </data>
   <data name="kitchenCommand" xml:space="preserve">
-    <value>Вы на кухні 🥦
-🍕 Сытасць жывёлы: {0}%
+    <value>&lt;b&gt;Вы на кухні 🥣&lt;/b&gt;
+
+🍕 Сытасць гадаванца: {0}%
 💰 Золата: {1}
+😴 Стомленасць: {2}%
+💊 HP: {3}%
 
-Хлеб 🍞 = +50%🍕 |-30💰
-Яблык 🍎 = +5%🍕 |-1💰
-Лядзёнка 🍭 = +1%🍕 |-0 💰
-Шоколадка 🍫 = +2%🍕 |-0💰
+Хлеб 🍞 = +{4}%🍕 |-{5}💰
+Яблык 🍎 = +{6}%🍕 |+{7}%💊 |-{8}💰
 
-Не забывай карміць жывёліну 🐣</value>
+Шакалад 🍫 = +{9}%🍕 |-{10}%😴 |-{11}💰
+Лядзяш 🍭 = +{12}%🍕 |-{13}💰
+
+Кава ☕️ = +{14}%🍕 |-{15}%😴 |-{16}💰
+Малако 🥛 = +{17}%🍕 |+{18}%💊 |-{19}💰
+
+Не забывай карміць свайго гадаванца 🐣</value>
   </data>
   <data name="PetFeedingAnwserCallback" xml:space="preserve">
-    <value>Твой гадаванец здаволіў голад на {0}%</value>
+    <value>🥗 Твой гадаванец здаволіў голад на {0}% 🥗</value>
   </data>
   <data name="FatigueFresh" xml:space="preserve">
     <value>бадзёры</value>
@@ -301,7 +308,9 @@
     <value>ДРОПНУЎ ГАДА {0} 💔</value>
   </data>
   <data name="renameCommand" xml:space="preserve">
-    <value>Увядзі новае імя гадаванца 🗯️</value>
+    <value>Увядзі новае імя гадаванца 🗯️
+
+Альбо націсні /pet</value>
   </data>
   <data name="renameCommandDescription" xml:space="preserve">
     <value>Новае імя ✏️</value>
@@ -350,23 +359,32 @@
 &lt;b&gt;FAQ:&lt;/b&gt;
 
 &lt;b&gt;Як назапашваецца ўзровень 🏅?&lt;/b&gt;
-&lt;i&gt;1 вопыт = 1 хвіліна жыцця гадаванца. Дастаткова не забываць пра свайго гадаванца 🦩&lt;/i&gt;
+&lt;i&gt;✅ 1 вопыт = 1 хвіліна жыцця гадаванца. Дастаткова не забываць пра свайго гадаванца 🦩.
+Таксама вопыт даецца за розныя дзеянні з гадаванцам (карміць, гуляць у міні-гульні)&lt;/i&gt;
 
 &lt;b&gt;Як зарабляць грошы 💰?&lt;/b&gt;
-&lt;i&gt;Золата зарабляецца на працы (/work)&lt;/i&gt;
+&lt;i&gt;✅ Золата зарабляецца на працы (/work)&lt;/i&gt;
 
 &lt;b&gt;Ці можа гадаванец памерці 💀?&lt;/b&gt;
-&lt;i&gt;На жаль, як у жыцці, так і ў Тамагочы, гадаванец можа вельмі абурыцца і пайсці 💔
+&lt;i&gt;✅ На жаль, як у жыцці, так і ў Тамагочы, гадаванец можа вельмі абурыцца і пайсці 💔
 Таму часцей наведвай свайго віртуальнага сябра 🧸&lt;/i&gt;
 
 &lt;b&gt;Як атрымаць дыяманты 💎?&lt;/b&gt;
-&lt;i&gt;Пакуль толькі праз рэферальную праграму (/referal) або займаючы ТОП-3 па ўзроўню ў канцы месяца.&lt;/i&gt;
+&lt;i&gt;✅ Пакуль толькі праз рэферальную праграму (/referal) або займаючы ТОП-3 па ўзроўню ў канцы месяца.&lt;/i&gt;
 
 &lt;b&gt;Кожны месяц у мяне знікаюць узроўні гадаванца. Што гэта?&lt;/b&gt;
-&lt;i&gt;Так, кожны месяц узроўні гадаванца скідаюцца. Гадаванцы з ТОП-10 атрымліваюць прызы. ТОП-3 атрымліваюць і золата💰, і дыяманты💎!&lt;/i&gt;
+&lt;i&gt;✅ Так, кожны месяц узроўні гадаванца абнуляюцца.
+Але выдаюцца ўзнагароды для лепшых гадаванцаў месяца!&lt;/i&gt;
+&lt;b&gt;TOP 1:&lt;/b&gt; {0}💰, {1}💎
+&lt;b&gt;TOP 2:&lt;/b&gt; {2}💰, {3}💎
+&lt;b&gt;TOP 3:&lt;/b&gt; {4}💰, {5}💎
+&lt;b&gt;TOP 4-10:&lt;/b&gt; {6}💰
+
+&lt;b&gt;Якія перавагі дае VIP-акаўнт?&lt;/b&gt;
+{8}
 
 &lt;b&gt;Як працуе АЎТАКАРМІЛКА?&lt;/b&gt;
-&lt;i&gt;На Ферме можна ўключаць/выключаць аўтакармілку. Калі ўключыць, то раз у 4 гадзіны гадаванец карміцца сам (СЫТAСЦЬ можа быць нават больш за 100) і расходуецца адзін зарад. Заряджаць аўтакармілку можна на Ферме.&lt;/i&gt;
+&lt;i&gt;✅ На Ферме можна ўключаць/выключаць аўтакармілку. Калі ўключыць, то раз у 4 гадзіны гадаванец карміцца сам (СЫТAСЦЬ можа быць нават больш за 100) і расходуецца адзін зарад. Заряджаць аўтакармілку можна на Ферме.&lt;/i&gt;
 
 &lt;b&gt;/menu&lt;/b&gt; – &lt;i&gt;тут амаль усе магчымыя каманды&lt;/i&gt;</value>
   </data>
@@ -385,6 +403,8 @@
 /bathroom - чысціня гадаванца 🛁
 /referal - бонусы за сяброў 👩‍👩‍👧‍👦
 /rename - змяніць імя 🌀
+
+/farm - Ферма 🚜
 
 /reward - &lt;i&gt;&lt;b&gt;атрымаць штодзённы бонус&lt;/b&gt;&lt;/i&gt; 🎁
 
@@ -528,18 +548,22 @@
   <data name="workCommand" xml:space="preserve">
     <value>Выберыце, чым будзе займацца ваш гадаванец 💡
 
-😴 Стомленасць: {2}%
+😴 Стомленасць гадаванца: {2}%
 
-Дастаўка ежы 🎒 -{7}⌛️, +{8} залатых 💰
-Працоўнік Макдональдс 🍔 -{5}⌛️, +{6} залатых 💰
-Раздача ўлётак 🤹‍♀️ -{3}⌛️, +{4} залатых 💰
+&lt;b&gt;&lt;i&gt;На ўсіх работах -{29}% сытасці 🍕&lt;/i&gt;&lt;/b&gt;
 
-Інжынер 🛠 -{11}⌛️, +{12} залатых 💰
-Візажыст 💄 -{9}⌛️, +{10} залатых 💰
+Дастаўка ежы 🎒 -{7}⌛️, +{8} 💰, +{20} 😴
+Працоўнік Макдоналдс 🍔 -{5}⌛️, +{6} 💰, +{21} 😴
+Раздача ўлётак 🤹‍♀️ -{3}⌛️, +{4} 💰, +{22} 😴
 
-Праграмаванне 💻 -{0}⌛️, +{1} залатых 💰
-Бухгалтар 📔 -{13}⌛️, +{14} залатых 💰
-Пілот ✈️ -{15}⌛️, +{16} залатых 💰</value>
+Інжынер 🛠 -{11}⌛️, +{12} 💰, +{23} 😴
+Візажыст 💄 -{9}⌛️, +{10} 💰, +{24} 😴
+
+Праграміст 💻 -{0}⌛️, +{1} 💰, +{25} 😴
+Бухгалтар 📔 -{13}⌛️, +{14} 💰, +{26} 😴
+Пілот ✈️ -{15}⌛️, +{16} 💰, +{27} 😴
+
+Ювелір 💍 -{17}⌛️, +{18} 💰, +{19} 💎, +{28} 😴</value>
   </data>
   <data name="workCommandInlinePC" xml:space="preserve">
     <value>💻Кодзіць</value>
@@ -707,6 +731,7 @@
   </data>
   <data name="AskToConfirmRenamingPet" xml:space="preserve">
     <value>Ты сапраўды хочаш памяняць імя гадаванца з {0} на {1}? 🗃
+
 Кошт: {2} золата 💰</value>
   </data>
   <data name="YesText" xml:space="preserve">
@@ -1493,5 +1518,92 @@ https://t.me/newsvirtualpetbot</value>
   </data>
   <data name="TryAgainAnswerYes" xml:space="preserve">
     <value>О, зноў пачалося 🧞‍♀️</value>
+  </data>
+  <data name="farmButtonBuyPremiumWeek" xml:space="preserve">
+    <value>👑 Купіць VIP на 7️⃣ дзён 👑</value>
+  </data>
+  <data name="farmButtonBuyDiamondsWithTgStars" xml:space="preserve">
+    <value>💎 Купіць дыяменты 💎</value>
+  </data>
+  <data name="premiumXdaysBought" xml:space="preserve">
+    <value>👑 &lt;b&gt;Віншуем з купляй VIP-акаўнта на {0} дзён&lt;/b&gt; 👑
+
+Разам з пакупкай табе налічана:
+{1}</value>
+  </data>
+  <data name="premiumVIPBenefits" xml:space="preserve">
+    <value>✅ Магчымасць гуляць у міні-гульні ў Дзіцячым пакоі ⚽️ нават пры вялікай стомленасці
+✅ &lt;b&gt;Прыбіраецца абавязковая падпіска на каналы спонсараў 🕶&lt;/b&gt;
+✅ +{0} 💰
+✅ На {1}%⚡️ хутчэйшае атрыманне адукацыі гадаванца 🎓
+✅ Доступ да ўнікальнай працы — &lt;b&gt;Ювелір 💍&lt;/b&gt;(+{2} 💰, +{3} 💎)
+✅ {4}% зніжкі на &lt;b&gt;Аўтакармілку 🤖&lt;/b&gt;
+✅ На {5}% больш паведамленняў для зносін з гадаванцам &lt;i&gt;(з VIP {6} паведамленняў у гадзіну, без VIP {7} паведамленняў)&lt;/i&gt;
+✅ Карона 👑 каля імя гадаванца ў Рэйтынгах 🏆</value>
+  </data>
+  <data name="AskToConfirmXdaysVIPpremium" xml:space="preserve">
+    <value>&lt;b&gt;Ты ўпэўнены, што хочаш набыць VIP-акаўнт на {0} дзён?&lt;/b&gt;
+
+&lt;i&gt;Твае алмазы: {3} 💎&lt;/i&gt;
+&lt;b&gt;Да аплаты: {1} 💎&lt;/b&gt;
+
+&lt;i&gt;Паляпшэнні для VIP-акаўнтаў:&lt;/i&gt;
+{2}</value>
+  </data>
+  <data name="educationCommand_SpecialJeweler" xml:space="preserve">
+    <value>Спецыяльнасць «Ювелір» 💍</value>
+  </data>
+  <data name="VIPPremium_decline_noVIPEnabled" xml:space="preserve">
+    <value>Для гэтага трэба набыць VIP-акаўнт 👑</value>
+  </data>
+  <data name="workCommandInlineJeweler" xml:space="preserve">
+    <value>Ювелір 💍</value>
+  </data>
+  <data name="petCommand__VIPinfo" xml:space="preserve">
+    <value>👑 - &lt;i&gt;&lt;b&gt;VIP&lt;/b&gt; яшчэ {0}&lt;/i&gt;</value>
+  </data>
+  <data name="payment_choose_diamonds_pack" xml:space="preserve">
+    <value>Выберыце дыяментавы набор 💎</value>
+  </data>
+  <data name="payment_invoice_title" xml:space="preserve">
+    <value>Дыяменты 💎</value>
+  </data>
+  <data name="payment_invoice_description" xml:space="preserve">
+    <value>{0} Дыяментаў 💎</value>
+  </data>
+  <data name="payment_invoice_label" xml:space="preserve">
+    <value>Дыяменты</value>
+  </data>
+  <data name="payment_success_message" xml:space="preserve">
+    <value>Вы атрымалі {0} 💎 дыяментаў!
+
+Дзякуй за падтрымку гэтага бота ❤️🤍❤️</value>
+  </data>
+  <data name="workCommand_LowSatiety" xml:space="preserve">
+    <value>⚠️ Увага: у твайго гадаванца засталося {0}% сытасці, пакармі яго! ⚠️</value>
+  </data>
+  <data name="changelog_onPatch_18" xml:space="preserve">
+    <value>⚡️⚡️ &lt;b&gt;Выйшла абнаўленне 1.8&lt;/b&gt; ⚡️⚡️
+
+&lt;b&gt;НОВАЕ:&lt;/b&gt;
+🚜 &lt;b&gt;На ферме можна купіць:&lt;/b&gt;
+👑 &lt;i&gt;VIP-падпіску&lt;/i&gt; — падпіска дае шмат сваіх плюшак, падрабязнасці шукайце ў боте
+💎 &lt;i&gt;Алмазы&lt;/i&gt;
+
+&lt;b&gt;ПЕРАПРАЦАВАНА:&lt;/b&gt;
+
+🍽 &lt;b&gt;Кухня&lt;/b&gt; — дададзены новыя віды страў, зменены бонусы/цэны
+💰 &lt;b&gt;Праца&lt;/b&gt; — збалансаваны бонусы, паказваецца стомленасць, дададзена новая праца Ювелір 💍
+🎓 &lt;b&gt;Адукацыя&lt;/b&gt; — дададзена Спецыяльнасць «Ювелір» 💍
+🎒 &lt;b&gt;Іншае&lt;/b&gt; — гэта кнопка цяпер мае сваё меню з дадатковымі опцыямі бота
+❓ &lt;b&gt;Пра гульню&lt;/b&gt; — абноўленая інфармацыя пра бота, дададзена больш падказак</value>
+  </data>
+  <data name="AskToConfirmAutoFeed" xml:space="preserve">
+    <value>Вы сапраўды хочаце купіць аўтакармілку на 5 зарадаў? 🤖
+
+Кошт: {0} дыяментаў 💎</value>
+  </data>
+  <data name="AskToConfirmChangeType" xml:space="preserve">
+    <value>Вы сапраўды хочаце змяніць тып вашага гадаванца на {0}?</value>
   </data>
 </root>

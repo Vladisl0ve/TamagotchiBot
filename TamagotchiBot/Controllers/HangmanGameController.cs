@@ -139,7 +139,7 @@ namespace TamagotchiBot.Controllers
                 return;
             }
 
-            if (petDB.Fatigue >= 100)
+            if (petDB.Fatigue >= 100 && !userDB.VIPIsEnabled)
             {
                 string anwser = nameof(Resources.Resources.tooTiredText).UseCulture(_userCulture);
                 if (_callback != null)
@@ -149,7 +149,7 @@ namespace TamagotchiBot.Controllers
 
                 return;
             }
-            if (petDB.Joy >= 100)
+            if (petDB.Joy >= 100 && !userDB.VIPIsEnabled)
             {
                 string anwser = nameof(Resources.Resources.PetIsFullOfJoyText).UseCulture(_userCulture);
                 if (_callback != null)

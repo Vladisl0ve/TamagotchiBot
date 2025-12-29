@@ -12,13 +12,44 @@ namespace TamagotchiBot.UserExtensions
     public static class Constants
     {
         public const int QA_TO_FEED_COUNTER = 5;
+
+        public struct PaymentItems
+        {
+            public struct DiamondPack1
+            {
+                public const string Name = "diamond_10_stars";
+                public const int Price = 10;
+                public const int Amount = 10;
+            }
+
+            public struct DiamondPack2
+            {
+                public const string Name = "diamond_50_stars";
+                public const int Price = 50;
+                public const int Amount = 55;
+            }
+
+            public struct DiamondPack3
+            {
+                public const string Name = "diamond_100_stars";
+                public const int Price = 100;
+                public const int Amount = 120;
+            }
+
+            public struct DiamondPack4
+            {
+                public const string Name = "diamond_500_stars";
+                public const int Price = 500;
+                public const int Amount = 650;
+            }
+        }
         public enum Languages
         {
-            [Display(ShortName = "🇨🇷", Name =  "be")] Belarusian,
-            [Display(ShortName = "🇺🇦", Name =  "uk")] Ukrainian,
-            [Display(ShortName = "🇷🇺", Name =  "ru")] Russian,
-            [Display(ShortName = "🇺🇸", Name =  "en")] English,
-            [Display(ShortName = "🇵🇱", Name =  "pl")] Polish,
+            [Display(ShortName = "🇨🇷", Name = "be")] Belarusian,
+            [Display(ShortName = "🇺🇦", Name = "uk")] Ukrainian,
+            [Display(ShortName = "🇷🇺", Name = "ru")] Russian,
+            [Display(ShortName = "🇺🇸", Name = "en")] English,
+            [Display(ShortName = "🇵🇱", Name = "pl")] Polish,
         }
 
         public enum CurrentStatus
@@ -39,7 +70,8 @@ namespace TamagotchiBot.UserExtensions
             FoodDelivery = 5,
             Accountant = 6,
             Engineer = 7,
-            Pilot = 8
+            Pilot = 8,
+            Jeweler = 9,
         }
 
         public enum EducationLevel
@@ -48,6 +80,7 @@ namespace TamagotchiBot.UserExtensions
             Middle = 2,
             High = 3,
             CompletedHigh = 4,
+            SpecialJeweler = 5,
         }
 
         public enum PetType
@@ -92,6 +125,8 @@ namespace TamagotchiBot.UserExtensions
 
             public const int CardGameFatigueFactor = 20;
             public const int CardGameJoyFactor = 20;
+            public const int AppleGameFatigueFactor = 20;
+            public const int AppleGameJoyFactor = 20;
             public const int DiceGameFatigueFactor = 5;
             public const int DiceGameJoyFactor = 10;
             public const int TicTacToeGameFatigueFactor = 5;
@@ -99,12 +134,8 @@ namespace TamagotchiBot.UserExtensions
             public const int HangmanGameFatigueFactor = 5;
             public const int HangmanGameJoyFactor = 20;
 
-            public const int WorkOnPCFatigueFactor = 15;
-            public const int WorkOnPCJoyFactor = -5;
             public const int FlyersDistributingFatigueFactor = 30;
             public const int FlyersDistributingJoyFactor = -15;
-
-            //New Jobs
             public const int McDonaldsFatigueFactor = 30;
             public const int McDonaldsJoyFactor = -15;
             public const int MakeUpArtistFatigueFactor = 20;
@@ -117,11 +148,21 @@ namespace TamagotchiBot.UserExtensions
             public const int AccountantJoyFactor = -5;
             public const int PilotFatigueFactor = 15;
             public const int PilotJoyFactor = -5;
+            public const int WorkOnPCFatigueFactor = 15;
+            public const int WorkOnPCJoyFactor = -5;
+            public const int JewelerFatigueFactor = 15;
+            public const int JewelerJoyFactor = -5;
 
             public const int EducationFatigueFactor = 60;
+            public const int WorkSatietyFactor = 30;
 
             public const int PillHPFactor = 20;
             public const int PillJoyFactor = -10;
+
+            //VIP
+            public const int EducationCoefFasterVIPProc = 50;
+            public const int AutofeederDiscountVIPProc = 50;
+            public const int LLMMesagesCoefMoreVIPProc = 100;
         }
 
         public struct Rewards //in gold
@@ -144,6 +185,11 @@ namespace TamagotchiBot.UserExtensions
 
             //Multiplayer
             public const int WonDuel = 150;
+
+            //VIP
+            public const int VIP7DaysGoldReward = 700;
+            public const int VIPJewelerJobGoldReward = 100;
+            public const int VIPJewelerJobDiamondReward = 1;
         }
 
         public struct ExpRewards
@@ -151,15 +197,19 @@ namespace TamagotchiBot.UserExtensions
             public const int PrimaryEducation = 50;
             public const int MiddleEducation = 100;
             public const int HighEducation = 200;
+            public const int CompletedEducation = 250;
+            public const int SpecialJewelerEducation = 300;
         }
 
         public struct Costs //in gold
         {
             //Food
             public const int Bread = 50;
-            public const int Apple = 1;
-            public const int Lollipop = 0;
-            public const int Chocolate = 0;
+            public const int Apple = 5;
+            public const int Lollipop = 1;
+            public const int Chocolate = 4;
+            public const int Coffee = 10;
+            public const int Milk = 10;
 
             //Games
             public const int AppleGame = 20;
@@ -184,8 +234,10 @@ namespace TamagotchiBot.UserExtensions
             public const int FeedMP = 20;
 
             //AutoFeed
-            public const int AutoFeedCost = 500;
             public const int AutoFeedCostDiamonds = 100;
+
+            //VIP
+            public const int VIP7DaysDiamonds = 100;
         }
 
         public struct AutoFeed
@@ -199,6 +251,8 @@ namespace TamagotchiBot.UserExtensions
             public const int PrimarySchoolStages = 3;
             public const int MiddleSchoolStages = 5;
             public const int HighSchoolStages = 10;
+            public const int CompletedStages = 5;
+            public const int SpecialJewelerSchoolStages = 5;
         }
 
         public struct CronSchedule
@@ -219,6 +273,7 @@ namespace TamagotchiBot.UserExtensions
             public readonly static TimeSpan FoodDeliveryToWait = new(0, 3, 0);
             public readonly static TimeSpan AccountantToWait = new(0, 1, 0);
             public readonly static TimeSpan PilotToWait = new(0, 1, 0);
+            public readonly static TimeSpan JewelerToWait = new(0, 1, 0);
             public readonly static TimeSpan DailyRewardToWait = new(24, 0, 0);
             public readonly static TimeSpan SleepToWait = new(0, 2, 0);
             public readonly static TimeSpan DuelCDToWait = new(0, 5, 0);
@@ -248,16 +303,20 @@ namespace TamagotchiBot.UserExtensions
 
         public struct DiamondsForTopExpRanking
         {
-            public const int Top1 = 1000;
-            public const int Top2 = 500;
+            public const int Top1 = 300;
+            public const int Top2 = 200;
             public const int Top3 = 100;
             public const int Top4_10 = 0;
         }
 
         public struct ExpForAction
         {
-            public const int FeedingBread = 20;
-            public const int FeedingApple = 20;
+            public const int FeedingBread = 50;
+            public const int FeedingApple = 5;
+            public const int FeedingChocolate = 4;
+            public const int FeedingLollipop = 1;
+            public const int FeedingCoffee = 10;
+            public const int FeedingMilk = 10;
 
             public const int PlayApple = 20;
             public const int Play = 5;
@@ -276,6 +335,7 @@ namespace TamagotchiBot.UserExtensions
             public const int WorkFoodDelivery = 50; //Primary
             public const int WorkAccountant = 1000; //High
             public const int WorkPilot = 1000; //High
+            public const int WorkJeweler = 1500; //CompletedHigh
         }
 
         public struct FoodFactors
@@ -284,6 +344,14 @@ namespace TamagotchiBot.UserExtensions
             public const double RedAppleHungerFactor = 5; //🍎
             public const double ChocolateHungerFactor = 2; //🍫
             public const double LollipopHungerFactor = 1; //🍭
+            public const double CoffeeHungerFactor = 2; 
+            public const double MilkHungerFactor = 10; 
+
+            public const int RedAppleHPFactor = 1; //🍎
+            public const int MilkHPFactor = 2;
+
+            public const int ChocolateFatigueFactor = 1;
+            public const int CoffeeFatigueFactor = 5; 
 
             //Multiplayer
             public const int MPFeedFactor = 100; //🍭
@@ -326,6 +394,11 @@ namespace TamagotchiBot.UserExtensions
             public const string EducationCommand = "education";
         }
 
+        public static class CommandsInternal
+        {
+            public const string Buy7daysVIP = "buy7daysvip";
+        }
+
         public struct CommandsMP
         {
             public const string ShowPetCommand = "show_pet";
@@ -358,7 +431,13 @@ namespace TamagotchiBot.UserExtensions
             public const string ChangeTypeErrorSticker = "CAACAgIAAxkBAAELUzVlwUL-5fyYwZJCGyjXYWDqDMPX3gACrUUAAgsn4En6llfN6C4pCjQE";
             public const string ChangeTypeErrorGoldSticker = "CAACAgIAAxkBAAELUzdlwUQlfiUpuAPpKwejhj8JUrtamAAC6z4AAr4b2UkCVdfVjLsgnDQE";
 
+            public const string ConfirmChangeTypePetSticker = "CAACAgIAAxkBAAEQHyFpUet37WQVOFEmIu2YyVzvExocNwAChRcAAu2RUErHEZ3RjE4W6zYE";
+            public const string ConfirmBuyAutoFeedSticker = "CAACAgQAAxkBAAEQHyVpUevWq90d36p6QWedqHWt0CroLwACCBAAAvvpWFKg6wqFljQPYDYE";
+
             //public const string EducationReferenceSticker = "CAACAgIAAxkBAAEQAAFTaT72Bsw9rMlGpouwUtw9dMCFNRIAApsQAAJ4GUhKooazklII5ak2BA";
+
+            public const string ConfirmVIPBuyingSticker = "CAACAgIAAxkBAAEQGxppTxfpj_uwdpRM2c1WImdh-VLfWgACc1UAAmJwCEjbAoLEOzDa8jYE";
+            public const string PremiumVIPBoughtSticker = "CAACAgIAAxkBAAEQGx5pTx0BrOLlRB-hZLyaeQo96zhZYQACrEAAAlvNaEh8Dbx1NPqo_TYE";
 
             public const string ChangelogSticker = "CAACAgIAAxkBAAIoiWQfmY19TqmIZL38KrfWnSS9frV0AAIrKwACnQhYSBduaR-WJLE7LwQ"; //usual changelog panda jumps
             //public const string ChangelogSticker = "CAACAgIAAxkBAAELb2Rl0nuZd49DEzvd2J9VRgABL_CKEvQAAlwCAAKQWXYt3NXqzbbMLvU0BA"; //referal notify ring
@@ -1035,7 +1114,26 @@ namespace TamagotchiBot.UserExtensions
                 CallbackButtons.KitchenCommand.KitchenCommandInlineBread,
                 CallbackButtons.KitchenCommand.KitchenCommandInlineRedApple,
                 CallbackButtons.KitchenCommand.KitchenCommandInlineChocolate,
-                CallbackButtons.KitchenCommand.KitchenCommandInlineLollipop
+                CallbackButtons.KitchenCommand.KitchenCommandInlineLollipop,
+                CallbackButtons.KitchenCommand.KitchenCommandInlineCoffee,
+                CallbackButtons.KitchenCommand.KitchenCommandInlineMilk,
+            };
+
+            public static InlineKeyboardButton[][] InlineFoodKeyboardButtonArrays => _inlineFoodKeyboardButtonArrays;
+            private static InlineKeyboardButton[][] _inlineFoodKeyboardButtonArrays = new InlineKeyboardButton[][]
+            {
+                [
+                    CallbackButtons.KitchenCommand.KitchenCommandInlineBread.ToInlineKeyboardButton(),
+                    CallbackButtons.KitchenCommand.KitchenCommandInlineRedApple.ToInlineKeyboardButton()
+                ],
+                [
+                    CallbackButtons.KitchenCommand.KitchenCommandInlineChocolate.ToInlineKeyboardButton(),
+                    CallbackButtons.KitchenCommand.KitchenCommandInlineLollipop.ToInlineKeyboardButton()
+                ],
+                [
+                    CallbackButtons.KitchenCommand.KitchenCommandInlineCoffee.ToInlineKeyboardButton(),
+                    CallbackButtons.KitchenCommand.KitchenCommandInlineMilk.ToInlineKeyboardButton()
+                ]
             };
 
             public static List<CallbackModel> InlineReferal(CultureInfo culture) => _inlineReferal(culture);
@@ -1080,7 +1178,26 @@ namespace TamagotchiBot.UserExtensions
                 CallbackButtons.WorkCommand.WorkCommandInlineWorkOnPC(culture), //high
                 CallbackButtons.WorkCommand.WorkCommandInlineAccountant(culture),
                 CallbackButtons.WorkCommand.WorkCommandInlinePilot(culture),
+                CallbackButtons.WorkCommand.WorkCommandInlineJeweler(culture),//special
             };
+
+            public static InlineKeyboardButton[][] InlineWorkKeyboardButtonArrays(CultureInfo culture) => _inlineWorkKeyboardButtonArrays(culture);
+            private static InlineKeyboardButton[][] _inlineWorkKeyboardButtonArrays(CultureInfo culture) => new InlineKeyboardButton[][]
+            {
+                [CallbackButtons.WorkCommand.WorkCommandInlineFoodDelivery(culture).ToInlineKeyboardButton(),//primary
+                CallbackButtons.WorkCommand.WorkCommandInlineMcDonalds(culture).ToInlineKeyboardButton(),
+                CallbackButtons.WorkCommand.WorkCommandInlineDistributeFlyers(culture).ToInlineKeyboardButton()],
+
+                [CallbackButtons.WorkCommand.WorkCommandInlineEngineer(culture).ToInlineKeyboardButton(),//middle
+                CallbackButtons.WorkCommand.WorkCommandInlineMakeUpArtist(culture).ToInlineKeyboardButton()],
+
+                [CallbackButtons.WorkCommand.WorkCommandInlineAccountant(culture).ToInlineKeyboardButton(),//high
+                CallbackButtons.WorkCommand.WorkCommandInlinePilot(culture).ToInlineKeyboardButton(),
+                CallbackButtons.WorkCommand.WorkCommandInlineWorkOnPC(culture).ToInlineKeyboardButton()],
+
+                [CallbackButtons.WorkCommand.WorkCommandInlineJeweler(culture).ToInlineKeyboardButton()],//special
+            };
+
 
             public static List<CallbackModel> InlineRanks(CultureInfo culture) => _inlineRanks(culture);
             private static List<CallbackModel> _inlineRanks(CultureInfo culture) => new()
@@ -1163,6 +1280,14 @@ namespace TamagotchiBot.UserExtensions
             private static ReplyKeyboardMarkup _menuKeyboardMarkup(CultureInfo culture) =>
             Extensions.ReplyKeyboardOptimizer(
                 Extensions.GetMenuButtons(culture),
+                columnCounter: 3,
+                isOneTimeKeyboard: false
+                );
+
+            public static ReplyKeyboardMarkup OtherMenuKeyboardMarkup(CultureInfo culture) => _otherMenuKeyboardMarkup(culture);
+            private static ReplyKeyboardMarkup _otherMenuKeyboardMarkup(CultureInfo culture) =>
+            Extensions.ReplyKeyboardOptimizer(
+                Extensions.GetOtherMenuButtons(culture),
                 columnCounter: 3,
                 isOneTimeKeyboard: false
                 );
