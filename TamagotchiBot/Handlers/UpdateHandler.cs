@@ -108,8 +108,6 @@ namespace TamagotchiBot.Handlers
             var chatId = callbackQuery.Message.Chat.Id;
             var msgAudience = chatId > 0 ? MessageAudience.Private : MessageAudience.Group;
 
-            Log.Information($"Received callback type: {callbackQuery.Message.Type} from userId: {userId} in chatId: {chatId}, msgAudience: {msgAudience}");
-
             new SetCommandController(_appServices, _envs, userId, chatId).UpdateCommands(msgAudience, _appServices.UserService.Get(userId)?.Culture ?? "ru");
 
             _appServices.SInfoService.UpdateLastGlobalUpdate();
