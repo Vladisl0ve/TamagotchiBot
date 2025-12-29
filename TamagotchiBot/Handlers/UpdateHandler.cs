@@ -139,6 +139,15 @@ namespace TamagotchiBot.Handlers
 
             try
             {
+                var userDB = _appServices.UserService.Get(userId);
+                var metaUserDB = _appServices.MetaUserService.Get(userId);
+
+                if (metaUserDB == null)
+                    return true;
+
+                if (metaUserDB.LastSubgramCheckingTime > DateTime.UtcNow.AddHours(-4))
+                    return true;
+
                 using var client = new HttpClient();
                 client.Timeout = TimeSpan.FromSeconds(TIMEOUT_SECONDS);
                 client.DefaultRequestHeaders.Add("Auth", _subgramKey);
@@ -158,32 +167,39 @@ namespace TamagotchiBot.Handlers
 
                 var result = await response.Content.ReadAsStringAsync();
 
-                Log.Information($"Subgram response: {result}");
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    Log.Error("==> ERROR ON SUBGRAM RESPONSE:" + result);
-                    return true;
-                }
+                Log.Verbose($"Subgram response: {result}");
 
                 var subgramResponse = JsonConvert.DeserializeObject<SubgramResponse>(result);
 
+                if (!response.IsSuccessStatusCode && subgramResponse?.status == "error")
+                {
+                    Log.Warning($"[SUBGRAM] code: {subgramResponse?.code} ==> ERROR ON RESPONSE: " + subgramResponse?.message);
+                    return true;
+                }
+
+                if (!response.IsSuccessStatusCode && subgramResponse?.status == "ok")
+                {
+                    Log.Verbose($"[SUBGRAM] code: {subgramResponse?.code} ==> OK, but: " + subgramResponse?.message);
+                    return true;
+                }
+
                 if (subgramResponse?.status == "warning")
                 {
-                    Log.Information($"Subgram ==> tasks not done, userId: {userId}");
+                    Log.Information($"[SUBGRAM] ==> tasks not done, userId: {Extensions.GetLogUser(userDB)}");
                     return false;
                 }
 
+                _appServices.MetaUserService.UpdateLastSubgramCheckingTime(userId, DateTime.UtcNow);
                 return true;
             }
             catch (TaskCanceledException)
             {
-                Log.Error($"TIMEOUT SUBGRAM - {TIMEOUT_SECONDS}s");
+                Log.Error($"TIMEOUT [SUBGRAM] - {TIMEOUT_SECONDS}s");
                 return true; //true on error
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error SUBGRAM HTTP: ");
+                Log.Error(ex, "Error [SUBGRAM] HTTP: ");
                 return true; //true on error
             }
         }
@@ -358,11 +374,6 @@ namespace TamagotchiBot.Handlers
                 return;
             }
 
-            if (_appServices.UserService.Get(userId)?.Created < DateTime.UtcNow.AddDays(-1))
-                if (!await IsUserRegisteredSubgramCheck(userId, callbackQuery.Message.Chat.Id, callbackQuery.From.FirstName, callbackQuery.From.Username, callbackQuery.From.LanguageCode))
-                {
-                    return;
-                }
 
             // call this method wherever you want to show an ad,
             // for example your bot just made its job and

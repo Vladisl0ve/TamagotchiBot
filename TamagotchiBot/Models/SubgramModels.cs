@@ -22,6 +22,5 @@ namespace TamagotchiBot.Models
         public int code { get; set; }
         public string message { get; set; }
         public int total_fixed_link { get; set; }
-        public List<SubgramSponsor> sponsors { get; set; }
     }
 }

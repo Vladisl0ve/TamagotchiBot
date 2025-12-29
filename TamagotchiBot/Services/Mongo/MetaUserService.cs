@@ -243,6 +243,17 @@ namespace TamagotchiBot.Services.Mongo
             return true;
         }
 
+        public bool UpdateLastSubgramCheckingTime(long userId, DateTime lastCheckTime)
+        {
+            var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();
+            userDb ??= Create(new MetaUser() { UserId = userId });
+
+            userDb.LastSubgramCheckingTime = lastCheckTime;
+            userDb.Updated = DateTime.UtcNow;
+            _collection.ReplaceOne(u => u.UserId == userId, userDb);
+            return true;
+        }
+
         public bool UpdateNextPossibleDuelTime(long userId, DateTime nextDuelTime)
         {
             var userDb = _collection.Find(u => u.UserId == userId).FirstOrDefault();

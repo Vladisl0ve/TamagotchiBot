@@ -46,6 +46,9 @@ namespace TamagotchiBot.Models.Mongo
         [BsonElement("LastMPFeedingTime")]
         public DateTime LastMPFeedingTime { get; set; }
 
+        [BsonElement("LastSubgramCheckingTime")]
+        public DateTime LastSubgramCheckingTime { get; set; } = default;
+
         [BsonElement("IsFeedingMPStarted")]
         public bool IsFeedingMPStarted { get; set; }
 
@@ -63,6 +66,21 @@ namespace TamagotchiBot.Models.Mongo
                 IsPetNameAskedOnRename = toClone.IsPetNameAskedOnRename,
                 IsAskedToConfirmRenaming = toClone.IsAskedToConfirmRenaming,
                 TmpPetName = toClone.TmpPetName,
+                ChatDuelId = toClone.ChatDuelId,
+                LastChatGptQA = new List<string>(toClone.LastChatGptQA),
+                LastGeminiQA = new List<string>(toClone.LastGeminiQA),
+                LastSubgramCheckingTime = toClone.LastSubgramCheckingTime,
+                DebugMessageThreadId = toClone.DebugMessageThreadId,
+                DuelStartTime = toClone.DuelStartTime,
+                IsConfirmAskedOnVIP7daysBuying = toClone.IsConfirmAskedOnVIP7daysBuying,
+                IsFeedingMPStarted = toClone.IsFeedingMPStarted,
+                LastMPFeedingTime = toClone.LastMPFeedingTime,
+                MsgCreatorDuelId = toClone.MsgCreatorDuelId,
+                MsgDuelId = toClone.MsgDuelId,
+                NextPossibleDuelTime = toClone.NextPossibleDuelTime,
+                PendingConfirmation = toClone.PendingConfirmation,
+                Updated = toClone.Updated,
+                Created = toClone.Created
             };
         }
     }
