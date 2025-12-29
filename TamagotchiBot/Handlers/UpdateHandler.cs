@@ -46,6 +46,7 @@ namespace TamagotchiBot.Handlers
                 UpdateType.Message => BotOnMessageReceived(botClient, update.Message!),
                 UpdateType.CallbackQuery => BotOnCallbackQueryReceived(botClient, update.CallbackQuery!),
                 UpdateType.PreCheckoutQuery => OnPreCheckoutQuery(update.PreCheckoutQuery!),
+                UpdateType.MyChatMember => OnMyChatMember(update),
                 _ => UnknownUpdateHandlerAsync(botClient, update)
             };
 
@@ -90,7 +91,7 @@ namespace TamagotchiBot.Handlers
             if (msgAudience == MessageAudience.Private)
                 await OnMessagePrivate(message);
             else
-                await OnMessageGroup(message, (await botClient.GetMe(cancellationToken: default)).Id);
+                await OnMessageGroup(message, botClient);
         }
 
         private async Task BotOnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
@@ -120,7 +121,7 @@ namespace TamagotchiBot.Handlers
 
         private Task UnknownUpdateHandlerAsync(ITelegramBotClient botClient, Update update)
         {
-            Log.Information($"Unknown update type: {update.Type}");
+            Log.Verbose($"Unknown update type: {update.Type}");
             return Task.CompletedTask;
         }
 
@@ -407,18 +408,28 @@ namespace TamagotchiBot.Handlers
 
             await multiplayerController.CallbackHandler();
         }
-        private Task OnMessageGroup(Message message, long botId)
+        private Task OnMessageGroup(Message message, ITelegramBotClient botClient)
         {
-            var userId = message.From.Id;
-            return message.Type switch
+            try
             {
-                MessageType.NewChatMembers => OnChatMemberAdded(botId),
-                MessageType.LeftChatMember => OnChatMemberLeft(botId),
-                _ => OnTextMessageGroup(message)
-            };
+                var userId = message.From.Id;
+                return message.Type switch
+                {
+                    MessageType.NewChatMembers => OnChatMemberAdded(),
+                    MessageType.LeftChatMember => OnChatMemberLeft(),
+                    _ => OnTextMessageGroup(message)
+                };
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"OnMessageGroup", ex);
+                return Task.CompletedTask;
+            }
 
-            async Task OnChatMemberAdded(long botId)
+            async Task OnChatMemberAdded()
             {
+                var botId = (await botClient.GetMe(cancellationToken: default)).Id;
+
                 if (message.NewChatMembers.Any(u => u.Id == botId))
                 {
                     _appServices.ChatsMPService.Create(new Models.Mongo.ChatsMP()
@@ -430,21 +441,23 @@ namespace TamagotchiBot.Handlers
                     MultiplayerController multiplayerController = new MultiplayerController(_appServices, message);
                     await multiplayerController.SendWelcomeMessageOnStart();
 
-                    await new SetCommandController(_appServices, _envs, userId, message.Chat.Id).UpdateCommandsForThisChat("ru");
+                    await new SetCommandController(_appServices, _envs, 0 /* Just zero, does nothing. TODO: refactor */, message.Chat.Id).UpdateCommandsForThisChat("ru");
                     Log.Information($"Bot has been added to new chat #{message.Chat.Title}, ID:{message.Chat.Id} #");
                 }
             }
-            Task OnChatMemberLeft(long botId)
+
+            async Task OnChatMemberLeft()
             {
+                var botId = (await botClient.GetMe(cancellationToken: default)).Id;
+
                 if (message.LeftChatMember.Id == botId)
                 {
                     _appServices.ChatsMPService.Remove(message.Chat.Id);
 
                     Log.Information($"Bot has been deleted from chat #{message.Chat.Title}, ID:{message.Chat.Id} #");
                 }
-
-                return Task.CompletedTask;
             }
+
             async Task OnTextMessageGroup(Message message)
             {
                 var botUsername = (await _appServices.BotControlService.GetBotUserInfo()).Username.ToLower();
@@ -643,6 +656,24 @@ namespace TamagotchiBot.Handlers
         {
             Log.Information($"Received PreCheckoutQuery: {preCheckoutQuery.Id} from {preCheckoutQuery.From.Id}");
             await _appServices.BotControlService.AnswerPreCheckoutQueryAsync(preCheckoutQuery.Id, true);
+        }
+        private static Task OnMyChatMember(Update update)
+        {
+            try
+            {
+                var json = JsonConvert.SerializeObject(update, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+
+                Log.Verbose($"Received MyChatMember:{Environment.NewLine}{json}");
+                return Task.CompletedTask;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error OnMyChatMember", ex);
+                return Task.CompletedTask;
+            }
         }
 
         private async Task OnSuccessfulPayment(Message message)
