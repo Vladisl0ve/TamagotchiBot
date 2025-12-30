@@ -1159,7 +1159,7 @@
   </data>
   <data name="ChatGPTTimeOutText" xml:space="preserve">
     <value>Питомец {0}&lt;b&gt;{1}&lt;/b&gt; молча смотрит на тебя. Наверное он устал разговаривать и делает вид что тебя не понимает 🔇
-Поговори с ним чуть позже 🕐</value>
+Поговори с ним чуть позже 🕐{2}</value>
   </data>
   <data name="ReferalAddedMessageText" xml:space="preserve">
     <value>💎 {2} алмазов и 💰 {0} золота начислено за нового друга {1}</value>
@@ -1345,7 +1345,7 @@
   </data>
   <data name="petCommand_isPetSilenced" xml:space="preserve">
     <value>
-🕟 Правда, питомец будет молчать ещё {0} минут</value>
+🕟 Правда, питомец будет молчать ещё {0}</value>
   </data>
   <data name="PetIsFullOfHealth" xml:space="preserve">
     <value>💬 Твой питомец и так не болеет</value>
@@ -1484,12 +1484,16 @@ https://t.me/news_virtualpetbot</value>
   <data name="RandomEventFoundCoin" xml:space="preserve">
     <value>{0} Нашёл монетку во время прогулки!
 
-+20 золота 💰</value>
++20 золота 💰
+
+/pet - проверить состояние питомца</value>
   </data>
   <data name="RandomEventLostCoin" xml:space="preserve">
     <value>О нет! {0} уронил монету в дырку в кармане...
 
--10 золотых 💰</value>
+-10 золотых 💰
+
+/pet - проверить состояние питомца</value>
   </data>
   <data name="RandomEventHiccups" xml:space="preserve">
     <value>{0} икает!
@@ -1519,12 +1523,16 @@ https://t.me/news_virtualpetbot</value>
   <data name="RandomEventNiceDream" xml:space="preserve">
     <value>{0} видел чудесный сон!
 
-+10 Радости 🎊</value>
++10 Радости 🎊
+
+/pet - проверить состояние питомца</value>
   </data>
   <data name="RandomEventBadDream" xml:space="preserve">
     <value>{0} приснился кошмар... 
 
--10% Радость 🎊</value>
+-10% Радость 🎊
+
+/pet - проверить состояние питомца</value>
   </data>
   <data name="RandomEventFoundTastySnack" xml:space="preserve">
     <value>{0} нашёл очень вкусную закуску!

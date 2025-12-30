@@ -223,7 +223,9 @@ namespace TamagotchiBot.Services.Mongo
             result.Add(newMsg);
 
             if (result.Count > maxLimits)
-                result.RemoveAt(0);
+            {
+                result.RemoveRange(0, result.Count - maxLimits);
+            }
 
             metauserDb.LastGeminiQA = result;
             metauserDb.Updated = DateTime.UtcNow;

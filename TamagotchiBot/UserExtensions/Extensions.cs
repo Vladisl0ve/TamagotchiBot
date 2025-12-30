@@ -994,7 +994,7 @@ namespace TamagotchiBot.UserExtensions
             return $"{value} {GetLocalizedUnit(lang, unit, value)}";
         }
 
-        private enum TimeUnit
+        public enum TimeUnit
         {
             Day,
             Hour,
@@ -1039,10 +1039,16 @@ namespace TamagotchiBot.UserExtensions
             };
         }
 
+        public enum Padezh
+        {
+            Imenitelny,
+            Roditelny
+        }
+
         /// <summary>
         /// 1 → form1, 2–4 → form2, 5+ → form5
         /// </summary>
-        private static string GetSlavicForm(
+        internal static string GetSlavicForm(
             (string one, string few, string many) forms,
             int value)
         {

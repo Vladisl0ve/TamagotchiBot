@@ -1151,7 +1151,7 @@
   </data>
   <data name="ChatGPTTimeOutText" xml:space="preserve">
     <value>Вихованець {0}&lt;b&gt;{1}&lt;/b&gt; мовчки дивиться на тебе. Напевно він втомився розмовляти і вдає що тебе не розуміє 🔇 
-Поговори з ним трохи пізніше 🕐</value>
+Поговори з ним трохи пізніше 🕐{2}</value>
   </data>
   <data name="ReferalAddedMessageText" xml:space="preserve">
     <value>💎 {2} діамантів і 💰 {0} золота нараховано за нового друга {1}</value>
@@ -1337,7 +1337,7 @@
   </data>
   <data name="petCommand_isPetSilenced" xml:space="preserve">
     <value>
-🕟 Правда, улюбленець ще мовчатиме {0} хвилин</value>
+🕟 Правда, улюбленець ще мовчатиме {0}</value>
   </data>
   <data name="PetIsFullOfHealth" xml:space="preserve">
     <value>💬 Твій улюбленець і так не хворіє</value>

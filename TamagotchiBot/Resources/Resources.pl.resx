@@ -1152,7 +1152,7 @@ Zwierzak {2}{0} wygrywa 🏆</value>
   </data>
   <data name="ChatGPTTimeOutText" xml:space="preserve">
     <value>Zwierzak {0}&lt;b&gt;{1}&lt;/b&gt; patrzy na ciebie w milczeniu. Prawdopodobnie jest zmęczony mówieniem i udaje, że Cię nie rozumie 🔇
-Porozmawiaj z nim trochę później 🕐</value>
+Porozmawiaj z nim trochę później 🕐{2}</value>
   </data>
   <data name="ReferalAddedMessageText" xml:space="preserve">
     <value>💎 {2} diamentów oraz 💰 {0} złota przyznano za nowego znajomego {1}</value>
@@ -1336,7 +1336,7 @@ Przegrane: {1}</value>
   </data>
   <data name="petCommand_isPetSilenced" xml:space="preserve">
     <value>
-🕟 Prawdę mówiąc, pupil będzie milczał jeszcze {0} minut</value>
+🕟 Prawdę mówiąc, pupil będzie milczał jeszcze {0}</value>
   </data>
   <data name="PetIsFullOfHealth" xml:space="preserve">
     <value>💬 Twój pupil i tak nie choruje</value>

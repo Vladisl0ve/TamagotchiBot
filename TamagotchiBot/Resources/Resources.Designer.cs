@@ -540,7 +540,7 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Pet {0}&lt;b&gt;{1}&lt;/b&gt; looks at you silently. He’s probably tired of talking and pretends he doesn’t understand you 🔇
-        ///Talk to him a little later 🕐.
+        ///Talk to him a bit later 🕐{2}.
         /// </summary>
         public static string ChatGPTTimeOutText {
             get {
@@ -2037,7 +2037,7 @@ namespace TamagotchiBot.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///🕟 Actually, the pet will stay silent for another {0} minutes.
+        ///🕟 Actually, the pet will stay silent for another {0}.
         /// </summary>
         public static string petCommand_isPetSilenced {
             get {

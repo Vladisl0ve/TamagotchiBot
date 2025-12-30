@@ -1085,16 +1085,20 @@ namespace TamagotchiBot.Controllers
 
             if (IsGeminiTimeout(previousQA, maxHistoryCounter))
             {
+                var timeoutMinutes = GetGeminiTimeout(previousQA);
+                var leftMinutesText = LanguageExtensions.GetLocalizedUnit(_userCulture, Extensions.TimeUnit.Minute, timeoutMinutes);
+                string onPetSilencedText = Environment.NewLine + string.Format(nameof(petCommand_isPetSilenced).UseCulture(_userCulture), timeoutMinutes + " " + leftMinutesText);
                 isTimeOut = true;
                 geminiAnswer = string.Format(
                     nameof(ChatGPTTimeOutText).UseCulture(_userCulture),
                     Extensions.GetTypeEmoji(petDB.Type),
-                    HttpUtility.HtmlEncode(petDB.Name)
+                    HttpUtility.HtmlEncode(petDB.Name),
+                    onPetSilencedText
                     );
             }
             else
             {
-                var (answer, isCanceled) = await GetAnswerGemini(_message.Text, petDB, userDB);
+                var (answer, isCanceled) = await GetAnswerGemini(_message.Text, petDB, userDB, maxHistoryCounter);
                 geminiAnswer = $"{Extensions.GetLongTypeEmoji(_userPetType, _userCulture)} <b>{HttpUtility.HtmlEncode(petDB.Name)}</b>: ";
                 geminiAnswer += answer;
                 isTimeOut = isCanceled;
@@ -1390,7 +1394,7 @@ namespace TamagotchiBot.Controllers
             await _appServices.BotControlService.SendInvoiceAsync(_userId, title, description, payload, providerToken, currency, prices);
         }
 
-        private async Task<(string answer, bool isCanceled)> GetAnswerGemini(string textToAnswer, Pet petDB, User userDB)
+        private async Task<(string answer, bool isCanceled)> GetAnswerGemini(string textToAnswer, Pet petDB, User userDB, int maxHistory)
         {
             var geminiKey = _appServices.SInfoService.GetGeminiKey();
             if (string.IsNullOrEmpty(geminiKey))
@@ -1417,7 +1421,6 @@ namespace TamagotchiBot.Controllers
                     .Replace("{{Diamonds}}", userDB.Diamonds.ToString());
 
                 var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
-                int historyLimit = _appServices.SInfoService.GetGeminiMaxHistory();
 
                 var contentsList = new List<object>();
 
@@ -1458,7 +1461,7 @@ namespace TamagotchiBot.Controllers
                         .GetString();
 
                     //Save to history
-                    _appServices.MetaUserService.AppendNewGeminiQA(_userId, textToAnswer, result, historyLimit);
+                    _appServices.MetaUserService.AppendNewGeminiQA(_userId, textToAnswer, result, maxHistory);
                 }
                 else
                 {
@@ -1476,19 +1479,26 @@ namespace TamagotchiBot.Controllers
             return (result, isCanceled);
         }
 
-        private string BuildPetInfoText(Pet petDB, User userDB, string randomAd, string randomPetPhrase)
+        private string BuildPetInfoText(Pet petDB, User userDB, string randomAd, string randomPetPhrase, bool isLLMTimeout)
         {
             var encodedPetName = HttpUtility.HtmlEncode(petDB.Name);
             encodedPetName = "<b>" + encodedPetName + "</b>";
 
             var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
-            var maxHistoryCounter = _appServices.SInfoService.GetGeminiMaxHistory();
 
             string vipInfo = null; ;
             if (userDB.VIPIsEnabled)
             {
                 string timeLeft = Extensions.GetTimeLeftVIPString(userDB.VIPStartTime, userDB.VIPLongDays, _userCulture);
                 vipInfo = string.Format(nameof(petCommand__VIPinfo).UseCulture(_userCulture), timeLeft);
+            }
+
+            string onPetSilencedText = string.Empty;
+            if (isLLMTimeout)
+            {
+                var timeoutMinutes = GetGeminiTimeout(previousQA);
+                var leftMinutesText = LanguageExtensions.GetLocalizedUnit(_userCulture, Extensions.TimeUnit.Minute, timeoutMinutes);
+                onPetSilencedText = Environment.NewLine + string.Format(nameof(petCommand_isPetSilenced).UseCulture(_userCulture), timeoutMinutes + " " + leftMinutesText);
             }
 
             return string.Format(
@@ -1511,8 +1521,7 @@ namespace TamagotchiBot.Controllers
             userDB.Diamonds,
             randomAd,
             randomPetPhrase,
-            IsGeminiTimeout(previousQA, maxHistoryCounter) ? string.Format(nameof(petCommand_isPetSilenced).UseCulture(_userCulture), GetGeminiTimeout(previousQA))
-                                        : string.Empty,
+            onPetSilencedText,
             petDB.EducationLevel.GetActualEducationLevelTranslatedString(_userCulture),
             vipInfo
             );
@@ -1545,11 +1554,15 @@ namespace TamagotchiBot.Controllers
             bool isDailyRewardOnCooldown = dateTimeWhenOver > DateTime.UtcNow;
             var randomAd = GetRandomAd(isDailyRewardOnCooldown);
 
-            var maxHistoryCounter = _appServices.SInfoService.GetGeminiMaxHistory();
+            var maxGeminiHistory = _appServices.SInfoService.GetGeminiMaxHistory();
+            var maxHistoryCounter = userDB.VIPIsEnabled
+                                                ? maxGeminiHistory * (1 + Factors.LLMMesagesCoefMoreVIPProc / 100)
+                                                : maxGeminiHistory;
             var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
-            var randomPetPhrase = IsGeminiTimeout(previousQA, maxHistoryCounter) ? "..." : GetRandomPetPhrase();
+            bool isLLMTimeout = IsGeminiTimeout(previousQA, maxHistoryCounter);
+            var randomPetPhrase = isLLMTimeout ? "..." : GetRandomPetPhrase();
 
-            string toSendText = BuildPetInfoText(petDB, userDB, randomAd, randomPetPhrase);
+            string toSendText = BuildPetInfoText(petDB, userDB, randomAd, randomPetPhrase, isLLMTimeout);
 
             var aud = _appServices.AllUsersDataService.Get(_userId);
             aud.PetCommandCounter++;
@@ -2057,9 +2070,10 @@ namespace TamagotchiBot.Controllers
             var dateTimeWhenOver = userDB.GotDailyRewardTime.Add(TimesToWait.DailyRewardToWait);
             bool isDailyRewardOnCooldown = dateTimeWhenOver > DateTime.UtcNow;
             var randomAd = GetRandomAd(isDailyRewardOnCooldown);
+            var isLLMTimeout = IsGeminiTimeout(_appServices.MetaUserService.GetLastGeminiQA(_userId), _appServices.SInfoService.GetGeminiMaxHistory());
             var randomPetPhrase = GetRandomPetPhrase();
 
-            string toSendText = BuildPetInfoText(petDB, userDB, randomAd, randomPetPhrase);
+            string toSendText = BuildPetInfoText(petDB, userDB, randomAd, randomPetPhrase, isLLMTimeout);
 
             InlineKeyboardMarkup toSendInline = Extensions.InlineKeyboardOptimizer(new List<CallbackModel>
             {
@@ -3874,7 +3888,18 @@ namespace TamagotchiBot.Controllers
         }
         private static int GetGeminiTimeout(List<(string userQ, string geminiA, DateTime revision)> previousQA)
         {
-            return Math.Abs((int)(DateTime.UtcNow - previousQA[0].revision - Constants.TimesToWait.GeminiTimeout).TotalMinutes);
+            if (previousQA == null || previousQA.Count < 1)
+                return -1;
+
+            var timeToWait = Constants.TimesToWait.GeminiTimeout;
+            var elapsed = DateTime.UtcNow - previousQA[0].revision;
+
+            var result = timeToWait - elapsed;
+
+            if (result < TimeSpan.Zero)
+                return 0;
+
+            return (int)Math.Ceiling(result.TotalMinutes);
         }
     }
 }
