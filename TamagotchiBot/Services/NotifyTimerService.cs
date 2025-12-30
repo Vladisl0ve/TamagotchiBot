@@ -12,6 +12,7 @@ using TamagotchiBot.Services.Interfaces;
 using TamagotchiBot.UserExtensions;
 using Telegram.Bot.Exceptions;
 using static TamagotchiBot.UserExtensions.Constants;
+using TamagotchiBot.Services.Helpers;
 
 namespace TamagotchiBot.Services
 {
@@ -472,60 +473,7 @@ namespace TamagotchiBot.Services
         }
         private string ToSendExtraDevNotify()
         {
-            int playedUsersToday = _appServices.AllUsersDataService.GetAll().Count(p => p.Updated.Date == DateTime.UtcNow.Date);
-
-            var dailyInfoDB = _appServices.DailyInfoService.GetToday() ?? _appServices.DailyInfoService.CreateDefault();
-            long messagesSent = _appServices.AllUsersDataService.GetAll().Select(u => u.MessageCounter).Sum();
-            long messagesSentToday = messagesSent - (_appServices.DailyInfoService.GetAll().Where(u => u.DateInfo.Date <= DateTime.UtcNow.AddDays(-1).Date).OrderByDescending(i => i.DateInfo).FirstOrDefault()?.MessagesSent ?? 0);
-            long callbacksSent = _appServices.AllUsersDataService.GetAll().Select(u => u.CallbacksCounter).Sum();
-            long callbacksSentToday = callbacksSent - (_appServices.DailyInfoService.GetAll().Where(u => u.DateInfo.Date <= DateTime.UtcNow.AddDays(-1).Date).OrderByDescending(i => i.DateInfo).FirstOrDefault()?.CallbacksSent ?? 0);
-            long registeredPets = _appServices.PetService.Count();
-            long registeredUsers = _appServices.UserService.Count();
-            var allAUDUsers = _appServices.AllUsersDataService.CountAllAUD();
-            var allRefUsers = _appServices.ReferalInfoService.CountAllRefUsers();
-            var allPetsLastWeek = _appServices.PetService.CountLastWeekPlayed(); //PetsLastWeek == PLW
-
-            string deltaUsers = "-", deltaPets = "-", deltaAUD = "-", deltaRef = "-", deltaPLW = "-";
-            var prevDay = _appServices.DailyInfoService.GetPreviousDay();
-            if (prevDay != default)
-            {
-                deltaPets = (registeredPets - prevDay.PetCounter).ToString();
-                deltaUsers = (registeredUsers - prevDay.UserCounter).ToString();
-                deltaAUD = (allAUDUsers - prevDay.AUDCounter).ToString();
-                deltaRef = (allRefUsers - prevDay.ReferalsCounter).ToString();
-                deltaPLW = (allPetsLastWeek - prevDay.PetPlayedLastWeek).ToString();
-            }
-
-            dailyInfoDB.UsersPlayed = playedUsersToday;
-            dailyInfoDB.MessagesSent = messagesSent;
-            dailyInfoDB.CallbacksSent = callbacksSent;
-            dailyInfoDB.DateInfo = DateTime.UtcNow;
-            dailyInfoDB.TodayCallbacks = (int)callbacksSentToday;
-            dailyInfoDB.TodayMessages = (int)messagesSentToday;
-            dailyInfoDB.UserCounter = registeredUsers;
-            dailyInfoDB.PetCounter = registeredPets;
-            dailyInfoDB.AUDCounter = allAUDUsers;
-            dailyInfoDB.ReferalsCounter = allRefUsers;
-            dailyInfoDB.PetPlayedLastWeek = allPetsLastWeek;
-
-            _appServices.DailyInfoService.UpdateOrCreate(dailyInfoDB);
-            string text = $"{dailyInfoDB.DateInfo:G}" + Environment.NewLine
-                        + $"Played users TODAY: {playedUsersToday}" + Environment.NewLine
-                        + $"Played pets   WEEK: {allPetsLastWeek}" + Environment.NewLine + Environment.NewLine
-                        + $"Messages     TODAY: {messagesSentToday}" + Environment.NewLine
-                        + $"Callbacks    TODAY: {callbacksSentToday}" + Environment.NewLine
-                        + $"------------------------" + Environment.NewLine
-                        + $"ΔUsers: {deltaUsers}" + Environment.NewLine
-                        + $"ΔPets: {deltaPets}" + Environment.NewLine
-                        + Environment.NewLine
-                        + $"ΔAUD: {deltaAUD}" + Environment.NewLine
-                        + $"ΔPLW: {deltaPLW}" + Environment.NewLine
-                        + $"ΔReferals: {deltaRef}" + Environment.NewLine
-                        + $"------------------------" + Environment.NewLine
-                        + $"Messages sent: {messagesSent}" + Environment.NewLine
-                        + $"Callbacks sent  : {callbacksSent}";
-
-            return text;
+            return DevNotifyHelper.UpdateAndGetDevNotifyReport(_appServices);
         }
 
         /// <summary>

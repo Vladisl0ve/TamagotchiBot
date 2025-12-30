@@ -20,6 +20,9 @@ namespace TamagotchiBot.Services.Mongo
 
         public Pet Get(long userId) => _collection.Find(p => p.UserId == userId).FirstOrDefault();
         public long Count() => _collection.CountDocuments(p => true);
+        public long CountShortAFK() => _collection.CountDocuments(p => p.Updated < DateTime.UtcNow.AddDays(-1));
+        public long CountMediumAFK() => _collection.CountDocuments(p => p.Updated < DateTime.UtcNow.AddDays(-7));
+        public long CountLongAFK() => _collection.CountDocuments(p => p.Updated < DateTime.UtcNow.AddDays(-30));
 
         public Pet Create(Pet pet)
         {

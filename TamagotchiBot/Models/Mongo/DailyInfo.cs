@@ -19,17 +19,26 @@ namespace TamagotchiBot.Models.Mongo
         public int TodayMessages { get; set; }
 
         [BsonElement("TodayCallbacks")]
-        public int TodayCallbacks { get; set; } 
-        
+        public int TodayCallbacks { get; set; }
+
         [BsonElement("PetCounter")]
-        public long PetCounter { get; set; }   
-        
+        public long PetCounter { get; set; }
+
+        [BsonElement("PetShortAFKCounter")]
+        public long PetShortAFKCounter { get; set; }
+
+        [BsonElement("PetMediumAFKCounter")]
+        public long PetMediumAFKCounter { get; set; }
+
+        [BsonElement("PetLongAFKCounter")]
+        public long PetLongAFKCounter { get; set; }
+
         [BsonElement("UserCounter")]
-        public long UserCounter { get; set; }   
-        
+        public long UserCounter { get; set; }
+
         [BsonElement("AUDCounter")]
-        public long AUDCounter { get; set; }   
-        
+        public long AUDCounter { get; set; }
+
         [BsonElement("ReferalsCounter")]
         public long ReferalsCounter { get; set; }
 

@@ -19,6 +19,9 @@ namespace TamagotchiBot.UserExtensions
 {
     public static class Extensions
     {
+        public static string ToStringWithCommas(this long number) => number.ToString("N0", System.Globalization.CultureInfo.InvariantCulture);
+        public static string ToStringWithCommas(this int number) => number.ToString("N0", System.Globalization.CultureInfo.InvariantCulture);
+        
         public static ReplyKeyboardMarkup ReplyKeyboardOptimizer(List<string> names, int columnCounter = 2, bool isOneTimeKeyboard = false)
         {
             int x = columnCounter < 2 ? 2 : columnCounter;
