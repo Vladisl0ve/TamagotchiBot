@@ -147,7 +147,7 @@ namespace Telegram.Bots.Example
             .WriteTo.Console(LogEventLevel.Debug)
             .CreateLogger();
 
-            Log.Warning("Path to logs: " + pathToLog);
+            Log.Warning("Path to logs: " + Environment.NewLine + Environment.NewLine + pathToLog);
         }
 
         private static void CreateDefaultConfig()

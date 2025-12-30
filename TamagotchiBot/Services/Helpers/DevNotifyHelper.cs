@@ -61,7 +61,9 @@ namespace TamagotchiBot.Services.Helpers
                         + $"Messages     TODAY: {messagesSentToday.ToStringWithCommas()}" + Environment.NewLine
                         + $"Callbacks    TODAY: {callbacksSentToday.ToStringWithCommas()}" + Environment.NewLine
                         + $"------------------------" + Environment.NewLine
+                        + $"Users: {registeredUsers}" + Environment.NewLine
                         + $"ΔUsers: {deltaUsers}" + Environment.NewLine
+                        + $"Pets: {registeredPets}" + Environment.NewLine
                         + $"ΔPets: {deltaPets}" + Environment.NewLine
                         + Environment.NewLine
                         + $"ΔPetsShortAFK: {deltaPetsShortAFK}" + Environment.NewLine
