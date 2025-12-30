@@ -3514,6 +3514,8 @@ namespace TamagotchiBot.Controllers
             var button = CallbackButtons.WorkCommand.WorkCommandInlineShowTime(remainsTime, job, _userCulture);
             var inlineMarkup = Extensions.InlineKeyboardOptimizer(new List<CallbackModel> { button });
 
+            Log.Information($"Callbacked ShowWorkTime for {_userInfo}");
+
             await _appServices.BotControlService.SendAnswerCallback(_userId,
                                                               _callback?.Message?.MessageId ?? 0,
                                                               new AnswerCallback(text, inlineMarkup),
@@ -3861,25 +3863,6 @@ namespace TamagotchiBot.Controllers
                 replyToMsgId = _message?.Id,
                 ReplyMarkup = ReplyKeyboardItems.EducationStudyingKeyboardMarkup(_userCulture),
             }, _userId, false);
-        }
-        private async Task ServeWorkOnPC(Pet petDB)
-        {
-            TimeSpan remainsTime = TimesToWait.WorkOnPCToWait - (DateTime.UtcNow - petDB.StartWorkingTime);
-
-            //if _callback handled when time of work is over
-            if (remainsTime <= TimeSpan.Zero)
-            {
-                await EditMessageToDefaultWorkCommand(petDB);
-                return;
-            }
-
-            Log.Debug($"Callbacked ServeWorkOnPC (still working) for {_userInfo}");
-
-            //if _callback handled when pet is still working
-            await _appServices.BotControlService.SendAnswerCallback(_userId,
-                                                              _callback?.Message?.MessageId ?? 0,
-                                                              await ShowRemainedTimeWorkOnPCCallback(remainsTime),
-                                                              false);
         }
 
         private static bool IsGeminiTimeout(List<(string userQ, string geminiA, DateTime revision)> previousQA, int maxCounter)
