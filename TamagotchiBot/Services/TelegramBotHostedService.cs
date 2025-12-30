@@ -11,15 +11,12 @@ namespace TamagotchiBot.Services
     {
         private readonly ITelegramBotClient _client;
         private readonly IUpdateHandler _updateHandler;
-        private readonly NotifyTimerService _timerService;
 
         public TelegramBotHostedService(ITelegramBotClient telegramBotClient,
-                                        IUpdateHandler updateHandler,
-                                        NotifyTimerService notifyTimerService)
+                                        IUpdateHandler updateHandler)
         {
             _client = telegramBotClient;
             _updateHandler = updateHandler;
-            _timerService = notifyTimerService;
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -34,12 +31,7 @@ namespace TamagotchiBot.Services
 #else
             Log.Information("RELEASE: Telegram Bot Hosted Service started");
 #endif
-            _timerService.SetMaintainActions();
-            _timerService.SetNotifyTimer();
-            _timerService.SetChangelogsTimer();
-            _timerService.SetDailyRewardNotificationTimer();
-            _timerService.SetRandomEventNotificationTimer();
-            _timerService.SetMPDuelsCheckingTimer();
+
             _client.StartReceiving(
                 updateHandler: _updateHandler,
                 cancellationToken: stoppingToken

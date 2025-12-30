@@ -70,7 +70,7 @@ namespace Telegram.Bots.Example
                       services.AddTransient<ITamagotchiDatabaseSettings>(sp => sp.GetRequiredService<IOptions<TamagotchiDatabaseSettings>>().Value);
 
                       services.AddTransient<IApplicationServices, ApplicationServices>();
-                      services.AddTransient<NotifyTimerService>();
+                      services.AddTransient<RandomEventService>();
                       services.Configure<EnvsSettings>(context.Configuration.GetSection(nameof(EnvsSettings)));
                       services.AddTransient<IEnvsSettings>(sp => sp.GetRequiredService<IOptions<EnvsSettings>>().Value);
                       services.AddTransient<UserService>();
@@ -113,6 +113,63 @@ namespace Telegram.Bots.Example
                               .ForJob(autoFeedJobKey)
                               .WithIdentity("AutoFeedJob-trigger")
                               .WithCronSchedule(Constants.CronSchedule.AutoFeedCron));
+
+                          // Daily Reward Job
+                          var dailyRewardJobKey = new JobKey("DailyRewardJob");
+                          q.AddJob<DailyRewardJob>(opts => opts.WithIdentity(dailyRewardJobKey));
+                          q.AddTrigger(opts => opts
+                              .ForJob(dailyRewardJobKey)
+                              .WithIdentity("DailyRewardJob-trigger")
+#if DEBUG_NOTIFY
+                              .WithSimpleSchedule(x => x.WithIntervalInSeconds(30).RepeatForever())); // Frequent for debug
+#else
+                              .WithSimpleSchedule(x => x.WithIntervalInMinutes(5).RepeatForever()));
+#endif
+
+                          // Random Event Job
+                          var randomEventJobKey = new JobKey("RandomEventJob");
+                          q.AddJob<RandomEventJob>(opts => opts.WithIdentity(randomEventJobKey));
+                          q.AddTrigger(opts => opts
+                              .ForJob(randomEventJobKey)
+                              .WithIdentity("RandomEventJob-trigger")
+#if DEBUG_NOTIFY
+                              .WithSimpleSchedule(x => x.WithIntervalInSeconds(10).RepeatForever()));
+#else
+                              .WithSimpleSchedule(x => x.WithIntervalInMinutes(10).RepeatForever()));
+#endif
+
+                          // Maintenance Job
+                          var maintenanceJobKey = new JobKey("MaintenanceJob");
+                          q.AddJob<MaintenanceJob>(opts => opts.WithIdentity(maintenanceJobKey));
+                          q.AddTrigger(opts => opts
+                              .ForJob(maintenanceJobKey)
+                              .WithIdentity("MaintenanceJob-trigger")
+                              .WithSimpleSchedule(x => x.WithIntervalInMinutes(1).RepeatForever())); // Check every minute
+
+                          // Changelog Job
+                          var changelogJobKey = new JobKey("ChangelogJob");
+                          q.AddJob<ChangelogJob>(opts => opts.WithIdentity(changelogJobKey));
+                          q.AddTrigger(opts => opts
+                              .ForJob(changelogJobKey)
+                              .WithIdentity("ChangelogJob-trigger")
+                              .WithSimpleSchedule(x => x.WithIntervalInSeconds(30).RepeatForever()));
+
+                          // Duel Timeout Job
+                          var duelTimeoutJobKey = new JobKey("DuelTimeoutJob");
+                          q.AddJob<DuelTimeoutJob>(opts => opts.WithIdentity(duelTimeoutJobKey));
+                          q.AddTrigger(opts => opts
+                              .ForJob(duelTimeoutJobKey)
+                              .WithIdentity("DuelTimeoutJob-trigger")
+                              .WithSimpleSchedule(x => x.WithIntervalInSeconds(100).RepeatForever()));
+
+                          // Dev Notify Job
+                          var devNotifyJobKey = new JobKey("DevNotifyJob");
+                          q.AddJob<DevNotifyJob>(opts => opts.WithIdentity(devNotifyJobKey));
+                          q.AddTrigger(opts => opts
+                              .ForJob(devNotifyJobKey)
+                              .WithIdentity("DevNotifyJob-trigger")
+                              .WithSimpleSchedule(x => x.WithIntervalInSeconds(60).RepeatForever()));
+
                       });
                       services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
                   })

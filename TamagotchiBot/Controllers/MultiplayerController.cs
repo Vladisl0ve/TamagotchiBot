@@ -645,7 +645,7 @@ namespace TamagotchiBot.Controllers
 
             if (!metaUserDB?.IsFeedingMPStarted ?? true)
             {
-                Log.Debug($"MP: called command FeedByMentionPetMP, but feeding not started yet by {_userLogInfo}");
+                Log.Verbose($"MP: called command FeedByMentionPetMP, but feeding not started yet by {_userLogInfo}");
                 return;
             }
 

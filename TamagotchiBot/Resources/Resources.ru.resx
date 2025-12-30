@@ -135,7 +135,7 @@
 Распорядок дня:
 1️⃣ Позавтракать на кухне 🍳
 2️⃣ Почистить зубы и принять душ 🛁
-3️⃣ Поиграть в детской (питомец очень любит игру в Яблоко🍎)
+3️⃣ Поиграть в Игровой (питомец очень любит игру в Яблоко🍎)
 
 &lt;b&gt;Не забывай навещать питомца, иначе он может обидеться и уйти &lt;/b&gt;
 Развлекайтесь 🍿</value>
@@ -300,7 +300,7 @@
 Делу время - потехе час 🧗‍♀️</value>
   </data>
   <data name="gameroomCommandDescription" xml:space="preserve">
-    <value>Детская ⚽️</value>
+    <value>Игровая ⚽️</value>
   </data>
   <data name="geminiCommandDescription" xml:space="preserve">
     <value>Gemini 🤖</value>
@@ -511,7 +511,7 @@
     <value>📛 Закончить мини-игру</value>
   </data>
   <data name="backToGameroomText" xml:space="preserve">
-    <value>Вы снова в детской ⚽️</value>
+    <value>Вы снова в Игровой ⚽️</value>
   </data>
   <data name="changelog_onPatch_17" xml:space="preserve">
     <value>⚡️⚡️ &lt;b&gt;Вышло обновление 1.7&lt;/b&gt; ⚡️⚡️
@@ -1567,7 +1567,7 @@ https://t.me/news_virtualpetbot</value>
 {1}</value>
   </data>
   <data name="premiumVIPBenefits" xml:space="preserve">
-    <value>✅ Возможность играть в мини-игры в Детской ⚽️ даже с большой усталостью
+    <value>✅ Возможность играть в мини-игры в Игровой ⚽️ даже с большой усталостью
 ✅ &lt;b&gt;Убирается обязательная подписка на каналы спонсоров 🕶&lt;/b&gt;
 ✅ +{0} 💰
 ✅ На {1}%⚡️ быстрее получение образования питомца 🎓

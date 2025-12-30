@@ -127,7 +127,7 @@ namespace TamagotchiBot.Handlers
             return Task.CompletedTask;
         }
 
-        private async Task<bool> IsUserRegisteredSubgramCheck(long userId, long chatId, string name, string username, string languageCode)
+        private async Task<bool> SendSubgramAds(long userId, long chatId, string name, string username, string languageCode)
         {
 #if DEBUG || DEBUG_NOTIFY || STAGING
             return true; //true on DEBUG
@@ -146,6 +146,9 @@ namespace TamagotchiBot.Handlers
                 var metaUserDB = _appServices.MetaUserService.Get(userId);
 
                 if (metaUserDB == null)
+                    return true;
+
+                if (userDB.Culture == "uk" || userDB.Culture == "be")
                     return true;
 
                 if (metaUserDB.LastSubgramCheckingTime > DateTime.UtcNow.AddHours(-4))
@@ -291,7 +294,7 @@ namespace TamagotchiBot.Handlers
             {
                 try
                 {
-                    if (!await IsUserRegisteredSubgramCheck(userId, message.Chat.Id, message.From.FirstName, message.From.Username, message.From.LanguageCode))
+                    if (!await SendSubgramAds(userId, message.Chat.Id, message.From.FirstName, message.From.Username, message.From.LanguageCode))
                     {
                         return;
                     }

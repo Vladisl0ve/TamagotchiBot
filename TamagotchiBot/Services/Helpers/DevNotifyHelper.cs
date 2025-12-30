@@ -56,24 +56,27 @@ namespace TamagotchiBot.Services.Helpers
 
             appServices.DailyInfoService.UpdateOrCreate(dailyInfoDB);
             string text = $"{dailyInfoDB.DateInfo:G}" + Environment.NewLine
-                        + $"Played pets TODAY: {playedUsersToday}" + Environment.NewLine
+                        + $"Played pets TODAY: {playedUsersToday.ToStringWithCommas()}" + Environment.NewLine
                         + $"Played pets   WEEK: {allPetsLastWeek.ToStringWithCommas()}" + Environment.NewLine + Environment.NewLine
                         + $"Messages     TODAY: {messagesSentToday.ToStringWithCommas()}" + Environment.NewLine
                         + $"Callbacks    TODAY: {callbacksSentToday.ToStringWithCommas()}" + Environment.NewLine
                         + $"------------------------" + Environment.NewLine
-                        + $"Users: {registeredUsers}" + Environment.NewLine
-                        + $"ΔUsers: {deltaUsers}" + Environment.NewLine
-                        + $"Pets: {registeredPets}" + Environment.NewLine
+                        + $"Users: {registeredUsers.ToStringWithCommas()}" + Environment.NewLine
+                        + $"ΔUsers: {deltaUsers}" + Environment.NewLine 
+                        + Environment.NewLine
+                        + $"Pets: {registeredPets.ToStringWithCommas()}" + Environment.NewLine
                         + $"ΔPets: {deltaPets}" + Environment.NewLine
                         + Environment.NewLine
                         + $"ΔPetsShortAFK: {deltaPetsShortAFK}" + Environment.NewLine
                         + $"ΔPetsMediumAFK: {deltaPetsMediumAFK}" + Environment.NewLine
                         + $"ΔPetsLongAFK: {deltaPetsLongAFK}" + Environment.NewLine
                         + Environment.NewLine
+                        + $"AUD: {allAUDUsers.ToStringWithCommas()}" + Environment.NewLine
                         + $"ΔAUD: {deltaAUD}" + Environment.NewLine
+                        + Environment.NewLine
                         + $"ΔPLW: {deltaPLW}" + Environment.NewLine
                         + $"ΔReferals: {deltaRef}" + Environment.NewLine
-                         + $"Referals: {allRefUsers}" + Environment.NewLine
+                         + $"Referals: {allRefUsers.ToStringWithCommas()}" + Environment.NewLine
                         + $"------------------------" + Environment.NewLine
                         + $"Messages sent: {messagesSent.ToStringWithCommas()}" + Environment.NewLine
                         + $"Callbacks sent  : {callbacksSent.ToStringWithCommas()}";
