@@ -197,6 +197,7 @@ namespace Telegram.Bots.Example
             .MinimumLevel.Verbose()
             .MinimumLevel.Override("Microsoft", LogEventLevel.Error)
             .MinimumLevel.Override("System", LogEventLevel.Warning)
+            .MinimumLevel.Override("Quartz", LogEventLevel.Warning)
             .WriteTo.File(pathToLog,
                           rollingInterval: RollingInterval.Day,
                           retainedFileCountLimit: null,

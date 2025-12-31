@@ -3393,6 +3393,7 @@ namespace TamagotchiBot.Controllers
             int satietyFactor = Constants.Factors.WorkSatietyFactor;
             int joyFactor = 0;
             int goldReward = 0;
+            int diamondReward = 0;
             int expReward = 0;
             TimeSpan timeToWait = TimeSpan.Zero;
             string jobName = "";
@@ -3467,6 +3468,7 @@ namespace TamagotchiBot.Controllers
                     fatigueFactor = Constants.Factors.JewelerFatigueFactor;
                     joyFactor = Constants.Factors.JewelerJoyFactor;
                     goldReward = Constants.Rewards.VIPJewelerJobGoldReward;
+                    diamondReward = Constants.Rewards.VIPJewelerJobDiamondReward;
                     timeToWait = job.GetTimeToWait();
                     expReward = Constants.ExpForAction.WorkJeweler;
                     jobName = nameof(Resources.Resources.workCommandInlineJeweler).UseCulture(_userCulture);
@@ -3479,6 +3481,7 @@ namespace TamagotchiBot.Controllers
             var newJoy = petDB.Joy + joyFactor;
             var newEXP = petDB.EXP + expReward;
             var newGold = userDB.Gold + goldReward;
+            var newDiamond = userDB.Diamonds + diamondReward;
 
             _appServices.PetService.UpdateFatigue(_userId, newFatigue);
             _appServices.PetService.UpdateSatiety(_userId, newSatiety);
@@ -3489,6 +3492,7 @@ namespace TamagotchiBot.Controllers
             _appServices.PetService.UpdateEXP(_userId, newEXP);
 
             _appServices.UserService.UpdateGold(_userId, newGold);
+            _appServices.UserService.UpdateDiamonds(_userId, newDiamond);
 
             userDB = _appServices.UserService.Get(_userId);
             petDB = _appServices.PetService.Get(_userId);
