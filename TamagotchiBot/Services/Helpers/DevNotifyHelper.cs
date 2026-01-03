@@ -69,9 +69,9 @@ namespace TamagotchiBot.Services.Helpers
                         + Environment.NewLine
                         + $"PetsShortAFK: {registeredPetsShortAFK}" + Environment.NewLine
                         + $"ΔPetsShortAFK: {deltaPetsShortAFK}" + Environment.NewLine + Environment.NewLine
-                        + $"PetsMediumAFK: {registeredPetsMediumAFK}" + Environment.NewLine + Environment.NewLine
-                        + $"ΔPetsMediumAFK: {deltaPetsMediumAFK}" + Environment.NewLine
-                        + $"PetsLongAFK: {registeredPetsLongAFK}" + Environment.NewLine + Environment.NewLine
+                        + $"PetsMediumAFK: {registeredPetsMediumAFK}" + Environment.NewLine
+                        + $"ΔPetsMediumAFK: {deltaPetsMediumAFK}" + Environment.NewLine + Environment.NewLine
+                        + $"PetsLongAFK: {registeredPetsLongAFK}" + Environment.NewLine
                         + $"ΔPetsLongAFK: {deltaPetsLongAFK}" + Environment.NewLine
                         + Environment.NewLine
                         + $"AUD: {allAUDUsers.ToStringWithCommas()}" + Environment.NewLine
