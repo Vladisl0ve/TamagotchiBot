@@ -306,7 +306,7 @@ namespace TamagotchiBot.Handlers
                 }
             }
 
-            if (_appServices.PetService.Get(message.From.Id)?.Name != null)
+            if (_appServices.UserService.Get(userId)?.Created < DateTime.UtcNow.AddHours(-8))
                 SendGramadsPostToChat(message.From.Id);
 
             if (_appServices.UserService.Get(message.From.Id)?.IsInAppleGame ?? false)
