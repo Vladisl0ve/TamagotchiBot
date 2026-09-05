@@ -1398,7 +1398,10 @@ namespace TamagotchiBot.Controllers
         {
             var geminiKey = _appServices.SInfoService.GetGeminiKey();
             if (string.IsNullOrEmpty(geminiKey))
-                return ("Gemini API key is not set", true);
+            {
+                Log.Error("GEMINI ERROR: API key is not set");
+                return (nameof(ChatgptErrorAnswerText).UseCulture(_userCulture), true);
+            }
 
             string result;
             bool isCanceled = false;
@@ -1421,19 +1424,14 @@ namespace TamagotchiBot.Controllers
                     .Replace("{{Diamonds}}", userDB.Diamonds.ToString());
 
                 var previousQA = _appServices.MetaUserService.GetLastGeminiQA(_userId);
+                var recentQA = previousQA.Skip(Math.Max(0, previousQA.Count - QA_TO_FEED_COUNTER)).ToList();
 
-                var contentsList = new List<object>();
-
-                //Add history
-                //Skipping older ones if we want to limit context window sent to API, similar to ChatGPT QA_TO_FEED_COUNTER
-                foreach (var item in previousQA.Skip(Math.Max(0, previousQA.Count - Constants.QA_TO_FEED_COUNTER)))
+                string userTurnText = textToAnswer;
+                if (recentQA.Count > 0)
                 {
-                    contentsList.Add(new { role = "user", parts = new[] { new { text = item.userQ } } });
-                    contentsList.Add(new { role = "model", parts = new[] { new { text = item.geminiA } } });
+                    var historyLines = recentQA.Select(item => $"Owner: {item.userQ}\nPet: {item.geminiA}");
+                    userTurnText = "Previous conversation:\n" + string.Join("\n", historyLines) + "\n\nCurrent message:\n" + textToAnswer;
                 }
-
-                //Add current message
-                contentsList.Add(new { role = "user", parts = new[] { new { text = textToAnswer } } });
 
                 var prompt = new
                 {
@@ -1441,12 +1439,24 @@ namespace TamagotchiBot.Controllers
                     {
                         parts = new[] { new { text = systemPrompt } }
                     },
-                    contents = contentsList.ToArray()
+                    contents = new[]
+                    {
+                        new { role = "user", parts = new[] { new { text = userTurnText } } }
+                    },
+                    generationConfig = new
+                    {
+                        maxOutputTokens = GeminiMaxOutputTokens,
+                        thinkingConfig = new
+                        {
+                            thinkingLevel = "MINIMAL"
+                        }
+                    }
                 };
 
+                var geminiModel = _appServices.SInfoService.GetGeminiModel();
                 using var client = new HttpClient();
                 var response = await client.PostAsJsonAsync(
-                    $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key={geminiKey}",
+                    $"https://generativelanguage.googleapis.com/v1beta/models/{geminiModel}:generateContent?key={geminiKey}",
                     prompt);
 
                 if (response.IsSuccessStatusCode)
@@ -1460,13 +1470,23 @@ namespace TamagotchiBot.Controllers
                         .GetProperty("text")
                         .GetString();
 
-                    //Save to history
-                    _appServices.MetaUserService.AppendNewGeminiQA(_userId, textToAnswer, result, maxHistory);
+                    if (string.IsNullOrEmpty(result))
+                    {
+                        Log.Error("GEMINI ERROR: empty text in successful response: {Body}", responseString);
+                        isCanceled = true;
+                        result = nameof(ChatgptErrorAnswerText).UseCulture(_userCulture);
+                    }
+                    else
+                    {
+                        _appServices.MetaUserService.AppendNewGeminiQA(_userId, textToAnswer, result, maxHistory);
+                    }
                 }
                 else
                 {
-                    result = $"Error: {response.StatusCode}";
+                    var errorBody = await response.Content.ReadAsStringAsync();
+                    Log.Error("GEMINI ERROR: {StatusCode} {Body}", response.StatusCode, errorBody);
                     isCanceled = true;
+                    result = nameof(ChatgptErrorAnswerText).UseCulture(_userCulture);
                 }
             }
             catch (Exception ex)

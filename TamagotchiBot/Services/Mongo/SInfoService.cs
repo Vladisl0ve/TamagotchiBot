@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TamagotchiBot.Database;
 using TamagotchiBot.Models.Mongo;
+using TamagotchiBot.UserExtensions;
 
 namespace TamagotchiBot.Services.Mongo
 {
@@ -23,6 +24,11 @@ namespace TamagotchiBot.Services.Mongo
         public string GetLastBotstatId() => _collection.Find(si => true).FirstOrDefault()?.BotstatCheckId;
 
         public int GetGeminiMaxHistory() => _collection.Find(si => true).FirstOrDefault()?.MaxGeminiHistory ?? 10;
+        public string GetGeminiModel()
+        {
+            var model = _collection.Find(si => true).FirstOrDefault()?.GeminiModel;
+            return string.IsNullOrWhiteSpace(model) ? Constants.DefaultGeminiModel : model;
+        }
         public string GetSubgramKey() => _collection.Find(si => true).FirstOrDefault()?.SubgramKey;
 
         public DateTime GetNextNotify()
@@ -145,7 +151,8 @@ namespace TamagotchiBot.Services.Mongo
                 NextNotify = DateTime.UtcNow + TimeSpan.FromMinutes(1),
                 NextDevNotify = DateTime.UtcNow,
                 Created = DateTime.UtcNow,
-                BannedWords = new List<string>() { "TEST_STRING" }
+                BannedWords = new List<string>() { "TEST_STRING" },
+                GeminiModel = Constants.DefaultGeminiModel
             });
             Log.Warning("Created default SInfo");
         }

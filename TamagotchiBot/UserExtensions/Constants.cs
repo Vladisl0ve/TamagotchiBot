@@ -12,6 +12,8 @@ namespace TamagotchiBot.UserExtensions
     public static class Constants
     {
         public const int QA_TO_FEED_COUNTER = 5;
+        public const string DefaultGeminiModel = "gemini-3.1-flash-lite";
+        public const int GeminiMaxOutputTokens = 256;
 
         public struct PaymentItems
         {
