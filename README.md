@@ -22,3 +22,7 @@ In the command menu, you will find everything your pet needs 🌻.
 Be sure to visit your pet frequently because they also love you and will be thrilled to play with you 🤍❤️🤍    
 
 ![virtual_pet_pic](https://user-images.githubusercontent.com/36882979/231563243-77320f43-e1fe-4397-817e-57065d386870.png)
+
+## Documentation
+
+Project wiki (architecture, game mechanics, data model, deployment): [docs/README.md](docs/README.md)
